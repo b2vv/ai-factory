@@ -27,3 +27,7 @@ Planning critique concepts were informed by a read-only comparison with a privat
 ## Release 0.6.1
 
 Documentation hygiene checklist, template prompts and forward-review scenarios are authored general guidance. No product-specific access policy, source code, host paths or private instructions are copied. Original skills and runtime behavior remain unchanged.
+
+## Release 0.7.0
+
+Selective authorized MIT adaptation from addyosmani/agent-skills aeac41d4d005999432bb7312f7ff06383a91d59d. Exact inputs, outputs and append-only original-skill adaptations are recorded in provenance/authorized-additions.json. Original 84-definition inventory remains intact, with one separate authorized added skill. No upstream executable code ran; new offline helper and fixtures are authored here. Existing entity coverage and grilling are unchanged.

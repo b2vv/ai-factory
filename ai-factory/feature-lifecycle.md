@@ -139,3 +139,7 @@ Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan:
 **PASS** — фактично виконаний застосовний gate із доказом. **FAIL** — виконаний, критерій порушено. **BLOCKED** — потрібний gate неможливо виконати через конкретну залежність/доступ/рішення. **N/A** — критерій не застосовується зі зрозумілою причиною; відсутній браузер, reviewer або дозвіл на destructive test не є N/A. Інші незалежні дозволені кроки можна продовжувати, але залежний landing gate залишається відкритим.
 
 Цей документ не свідчить, що фічу, skills, runtime-моделі або gates вже перевірено. Поточний стан можливостей ведеться в [status.md](status.md#capabilities); реальний пілот потребує конкретної задачі.
+
+## Targeted constraint lens
+
+Use [selective constraints and evaluation](constraint-adoption.md) for suspected quality-floor weakening, task-boundary/resume evidence and final snapshot drift. Reuse the existing primary record and reviewer; live behavior remains NOT_RUN until explicitly authorized trials.

@@ -20,3 +20,5 @@ Return a compact record in the existing plan/checkpoint, or a review artifact li
 4. What changed since the previous verdict and which evidence is retained. Acceptance/scope, contracts/dependencies, architecture, risk or test-strategy changes require fresh critique of the affected scope. Pure spelling/layout changes need a documented delta check and rebinding, not another full critique. Do not accept a different plan or snapshot by implication.
 
 An existing local critic prompt can be used instead when selected explicitly; retain its stronger requirements and record its immutable identity. This general prompt is not a replacement for the original four-lens plan-critique skill. A later independent implementation review remains a separate gate.
+
+Initial input should contain artifact, accepted contract and raw factual evidence without the author's proposed verdict or persuasive rationale. Preserve factual constraints and raw prior findings. Use the already selected independent reviewer; this clarification creates no duplicate route or paid fallback.

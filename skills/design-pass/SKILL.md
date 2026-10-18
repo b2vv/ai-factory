@@ -93,3 +93,7 @@ description: 'Створює або вдосконалює UI від проєк�
 Наприклад: «Онови екран налаштувань у поточному проєкті. Спершу знайди токени й примітиви; реалізуй і перевір основний сценарій, адаптивність та стани в браузері. Виправ знайдене, покажи докази й окремо назви заблоковані перевірки».
 
 Посилання на допоміжні скіли відкривай як файли відносно цієї папки, не припускай доступності slash-команди чи спеціального tool. Якщо ресурс відсутній — назви його, продовжуй за доступними вимогами цього скілу й не зараховуй невиконаний спеціалізований гейт.
+
+## Browser evidence refinement
+
+For permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.

@@ -7,7 +7,7 @@ class LayoutIntegrityTests(unittest.TestCase):
   for r in m['files']:
    p=ROOT/r['new_path'];self.assertTrue(p.is_file())
    if r['new_sha256']:self.assertEqual(r['new_sha256'],hashlib.sha256(p.read_bytes()).hexdigest())
-  skills=list(ROOT.rglob('SKILL.md'));self.assertEqual(73,len(skills));self.assertTrue(all(p.is_relative_to(ROOT/'skills') for p in skills))
+  skills=list(ROOT.rglob('SKILL.md'));self.assertEqual(74,len(skills));self.assertTrue((ROOT/'skills/constraint-driven-development/SKILL.md').is_file());self.assertTrue(all(p.is_relative_to(ROOT/'skills') for p in skills))
   registry=json.loads((ROOT/'provenance/skill-registry.json').read_text());ids=[b['id'] for b in registry['skills']];self.assertEqual(len(ids),len(set(ids)))
  def test_runtime_variants_and_notices_preserved_byte_for_byte(self):
   m=json.loads((ROOT/'provenance/layout-migration.json').read_text());rows={r['old_path']:r for r in m['files']}
@@ -20,5 +20,10 @@ class LayoutIntegrityTests(unittest.TestCase):
   normalize=lambda text:re.sub(r'\]\([^)]+\)','](LINK)',text)
   for b in m['bundles']:
    if b['status']=='INCLUDED':
-    self.assertEqual(normalize((previous/b['previous_release_destination']).read_text()),normalize((ROOT/b['destination']).read_text()),b['name']);count+=1
+    body=(ROOT/b['destination']).read_text()
+    additions=json.loads((ROOT/'provenance/authorized-additions.json').read_text())
+    for a in additions['adaptations']:
+     if a['destination']==b['destination']:
+      self.assertTrue(body.endswith(a['append']));body=body[:-len(a['append'])];self.assertEqual(hashlib.sha256(body.encode()).hexdigest(),a['before_sha256'])
+    self.assertEqual(normalize((previous/b['previous_release_destination']).read_text()),normalize(body),b['name']);count+=1
   self.assertEqual(73,count)

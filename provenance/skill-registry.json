@@ -506,6 +506,13 @@
       "name": "ux-review",
       "path": "skills/ux-review/SKILL.md",
       "status": "INCLUDED"
+    },
+    {
+      "id": "constraint-driven-development",
+      "name": "constraint-driven-development",
+      "path": "skills/constraint-driven-development/SKILL.md",
+      "status": "INCLUDED",
+      "provenance": "authorized-additions.json"
     }
   ],
   "policy_adapters": [

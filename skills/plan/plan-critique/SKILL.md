@@ -73,3 +73,9 @@ description: Прожарює готовий план чотирма незал�
 - [ ] Кожна знахідка має вагу.
 - [ ] Кожен blocking або внесений у план, або записаний як свідомо прийнятий — з причиною.
 - [ ] Назване підсумкове число: скільки blocking лишилося відкритими (нуль → план готовий до `plan-defense`).
+
+## Clean critic input
+
+Give the selected independent critic the exact artifact, accepted contract, scoped snapshot and raw supporting evidence. Keep the author's proposed verdict, persuasive summary and private reasoning out of the initial packet; preserve relevant factual constraints and raw prior findings. Classify findings as actionable, contract misunderstanding, accepted tradeoff or unsupported, with evidence for each disposition. This refines the existing four-lens/local reviewer route; it does not authorize duplicate reviewers, a different model, paid API fallback or an automatic review loop. Missing authorized execution remains BLOCKED.
+
+Adaptation source: [doubt-driven-development](https://github.com/addyosmani/agent-skills/blob/aeac41d4d005999432bb7312f7ff06383a91d59d/skills/doubt-driven-development/SKILL.md), MIT; [license](LICENSE.addyosmani).

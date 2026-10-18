@@ -1398,10 +1398,11 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "5e926be70e3d3c5c78063ebe02a2734fa5ee45f498b0a9c7d1e0d59ae62e69ff",
+      "sha256": "0059e1d4bf9fa85a4cfcb20618537591ea0f48e2c6ce957db3f766f638255ce6",
       "source_mode": "0o644",
       "transformations": [
-        "source/alias local links mapped to included portable destination"
+        "source/alias local links mapped to included portable destination",
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1742,9 +1743,11 @@
       "source": "~/.agents/skills/plan/plan-critique/SKILL.md",
       "destination": "skills/plan/plan-critique/SKILL.md",
       "source_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
-      "sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
+      "sha256": "2da18d121267b4ad53b248e6d61f7bfe4b8bd03d0cedce2819bb759ede38b840",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/plan-critique/SKILL.md"
     },
@@ -3728,14 +3731,15 @@
       "source": "~/.agents/ai-factory/feature-lifecycle.md",
       "destination": "ai-factory/feature-lifecycle.md",
       "source_sha256": "c01ea920e05f3eb03357d024f3499ec728b4866ba11ddafb0cc8cdaeec3bfd06",
-      "sha256": "4c0cec3fbad439b303aa6d77fc478430ba237b912ffbd9804f0223ed535bec30",
+      "sha256": "0649623e043ad1bc6ca6e799c1412922eaeb4b7149e9f84b86b4fa6077706b66",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "source/alias local links mapped to included portable destination",
         "excluded external dependency link retained as project-local runtime reference, no payload",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged"
+        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/feature-lifecycle.md"
@@ -3981,11 +3985,12 @@
       "source": "~/.agents/ai-factory/status.md",
       "destination": "ai-factory/status.md",
       "source_sha256": "528af2ca15f09be2097e3218a6073b5814bf57e1a42a3bc37f955ee7a398a63d",
-      "sha256": "fff5cb337ddbed7b9c66f59039b5b195db1190eb400dc63acad8d8cc7b87505a",
+      "sha256": "30e82f97199f7d51b33a4677031240a8ba3e98b88d6e25dcf4d7e6f48ed8e9f6",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/status.md"
@@ -3994,12 +3999,13 @@
       "source": "~/.agents/ai-factory/workflow.md",
       "destination": "ai-factory/workflow.md",
       "source_sha256": "486bedd21354d25a766a1e7b8577d0ab5d055621e7ad0ce62ae8f7238be961b7",
-      "sha256": "a0886e8598f0d687aa926947c532bd0a2f07f3c8d02621223204fa2809181578",
+      "sha256": "0ca054e8551631b2dd840a33d9310a7aca397b3fdc8c5c2f460c713415d82156",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged"
+        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/workflow.md"

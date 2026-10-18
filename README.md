@@ -1,4 +1,4 @@
-# AI Factory — 0.6.1 candidate
+# AI Factory — 0.7.0 candidate
 
 - **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
 - **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.
@@ -35,3 +35,5 @@ Product pins і immutable caches оновлюються окремим пого�
 Versioned [plan critic prompt](prompts/plan-critic.md), exact plan/snapshot binding and material-change rules extend that same checkpoint. No extra tracker, native registration or automatic reviewer dispatch.
 
 [Documentation hygiene](ai-factory/documentation-hygiene.md) уточнює чинний onboarding: factual drift, symlink routing, hook/CI coverage та scope provenance. Це документаційне доповнення; originals і runtime behavior незмінені.
+
+[Selective constraint adoption](ai-factory/constraint-adoption.md) adds one skill and offline evidence checks, preserving existing Storybook/E2E and reviewer routes. Live model behavior and native discovery remain NOT_TESTED.

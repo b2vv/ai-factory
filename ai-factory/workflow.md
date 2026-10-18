@@ -118,3 +118,7 @@ Build, статичний аналіз і тести звітуються окр
 ## Session-size handoff (2026-10-17)
 
 [Спільний helper](../docs/legacy/session-size.md) рахує bytes через stat точного transcript_path, не читає transcript. На 4 000 000 / 5 000 000 bytes пише draft; агент завершує pending operation і записує sanitized goal/done/pending/evidence/constraints через checkpoint. Лише COMPLETE checkpoint можна передати за явним ID. Нова сесія читає його після звірки root/branch/HEAD/dirty metadata. Handoff — контекст, не дозвіл. Не replay side effects, не resume старий великий transcript. Немає автозапуску CLI; запуск нової сесії належить користувачу. Якщо доступ до transcript/state заборонено — BLOCKED/UNKNOWN без обходу permissions.
+
+## Targeted constraint lens
+
+Use [selective constraints and evaluation](constraint-adoption.md) for suspected quality-floor weakening, task-boundary/resume evidence and final snapshot drift. Reuse the existing primary record and reviewer; live behavior remains NOT_RUN until explicitly authorized trials.

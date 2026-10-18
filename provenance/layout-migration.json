@@ -38,9 +38,10 @@
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
         "0.6 release evolution: critique protocol and refreshed provenance",
-        "0.6.1 documentation hygiene and provenance"
+        "0.6.1 documentation hygiene and provenance",
+        "0.7.0 targeted adoption and exact provenance checks"
       ],
-      "new_sha256": "cabd2b379532f84ab4783c718b586dbf771045124731b53850b86f17fcd70dbe"
+      "new_sha256": "a99c18ecdffc291bdcd05d2c937c9d0880614c81e870aee7454c1e22fa9c0107"
     },
     {
       "old_path": "README.md",
@@ -120,9 +121,10 @@
       "action": "relocated-and-updated",
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained",
-        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
+        "0.7.0 targeted adoption and exact provenance checks"
       ],
-      "new_sha256": "4c0cec3fbad439b303aa6d77fc478430ba237b912ffbd9804f0223ed535bec30"
+      "new_sha256": "0649623e043ad1bc6ca6e799c1412922eaeb4b7149e9f84b86b4fa6077706b66"
     },
     {
       "old_path": "collection/agents/ai-factory/history.md",
@@ -317,9 +319,10 @@
       "new_path": "ai-factory/status.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "0.7.0 targeted adoption and exact provenance checks"
       ],
-      "new_sha256": "fff5cb337ddbed7b9c66f59039b5b195db1190eb400dc63acad8d8cc7b87505a"
+      "new_sha256": "30e82f97199f7d51b33a4677031240a8ba3e98b88d6e25dcf4d7e6f48ed8e9f6"
     },
     {
       "old_path": "collection/agents/ai-factory/workflow.md",
@@ -328,9 +331,10 @@
       "action": "relocated-and-updated",
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained",
-        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
+        "0.7.0 targeted adoption and exact provenance checks"
       ],
-      "new_sha256": "a0886e8598f0d687aa926947c532bd0a2f07f3c8d02621223204fa2809181578"
+      "new_sha256": "0ca054e8551631b2dd840a33d9310a7aca397b3fdc8c5c2f460c713415d82156"
     },
     {
       "old_path": "collection/agents/obsidian-cheatsheet.md",
@@ -739,8 +743,10 @@
       "old_sha256": "5e926be70e3d3c5c78063ebe02a2734fa5ee45f498b0a9c7d1e0d59ae62e69ff",
       "new_path": "skills/design-pass/SKILL.md",
       "action": "moved",
-      "transformations": [],
-      "new_sha256": "5e926be70e3d3c5c78063ebe02a2734fa5ee45f498b0a9c7d1e0d59ae62e69ff"
+      "transformations": [
+        "0.7.0 targeted adoption and exact provenance checks"
+      ],
+      "new_sha256": "0059e1d4bf9fa85a4cfcb20618537591ea0f48e2c6ce957db3f766f638255ce6"
     },
     {
       "old_path": "collection/agents/skills/entity-e2e-coverage/SKILL.md",
@@ -1011,8 +1017,10 @@
       "old_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
       "new_path": "skills/plan/plan-critique/SKILL.md",
       "action": "moved",
-      "transformations": [],
-      "new_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777"
+      "transformations": [
+        "0.7.0 targeted adoption and exact provenance checks"
+      ],
+      "new_sha256": "2da18d121267b4ad53b248e6d61f7bfe4b8bd03d0cedce2819bb759ede38b840"
     },
     {
       "old_path": "collection/agents/skills/plan/plan-defense/SKILL.md",
@@ -2574,9 +2582,11 @@
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
-        "0.6.1 documentation hygiene and provenance"
+        "0.6.1 documentation hygiene and provenance",
+        "0.7.0 targeted adoption and exact provenance checks",
+        "0.7.0 targeted adoption and exact provenance checks"
       ],
-      "new_sha256": "a60f5b39bea5c6b7e76cea01ee27b42d47a99fc54fc71ef8420914aca811a37f"
+      "new_sha256": "bd224dc906ce934bdbfad6b33fc8c07247c3366d6723da3b6980760ea9466092"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -2872,9 +2882,10 @@
       "action": "updated",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
-        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
+        "0.7.0 targeted adoption and exact provenance checks"
       ],
-      "new_sha256": "4d84aa7dad682700c6f27418cc58bc480af5649fa537ca8112f91f24ef10c636"
+      "new_sha256": "b3fb06c335d1a7a84afd293f9633170ada85d69b371d1f76e69e22ced6dc9a1f"
     },
     {
       "old_path": "tools/test_collection.py",
@@ -2902,9 +2913,10 @@
       "new_path": "tools/verify_collection.py",
       "action": "updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "0.7.0 targeted adoption and exact provenance checks"
       ],
-      "new_sha256": "ca9d28dccec7a05cff743473969798bc9d7cf6b59e369a342af7b4a3680ed379"
+      "new_sha256": "9481d1f1ab77ec2d929f82bf9ae27da313771b9324928f1573c8ebd5f2b57e2a"
     },
     {
       "old_path": "tools/verify_release.py",

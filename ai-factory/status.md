@@ -60,3 +60,7 @@ reviewed: 2026-10-16
 ## Session-size helper — 2026-10-17
 
 Реалізація й disposable fixtures: [контракт](../docs/legacy/session-size.md). Глобальні command hooks підготовлено для Claude 2.1.302 та Codex 0.156.1: SessionStart/UserPromptSubmit/PostToolUse/Stop. Факт запису registration не означає execution: Codex потребує review/trust у /hooks; trust і security permissions автоматично не змінюються. Live CLI/model sessions не запускалися. 5 000 000 bytes — soft threshold; complete semantic checkpoint залежить від агента, автоматичного restart немає.
+
+## Selective adoption candidate 0.7.0 (2026-10-18)
+
+One constraint-driven-development skill plus focused design-pass and clean critic input adaptations are present. Existing grilling and entity-e2e-coverage remain unchanged. Offline evidence fixtures and package checks have separate recorded results; live agent trials, native CLI discovery, product Storybook/E2E execution and independent acceptance remain NOT_TESTED/PENDING. [Scope and limits](constraint-adoption.md). No upstream scripts or paid API were run.
