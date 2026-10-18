@@ -39,6 +39,8 @@ Helper тільки читає явно перелічені файли; JSON р
 
 ## Checklist адаптації
 
+Перед змінами звір [documentation hygiene matrix](documentation-hygiene.md): logical/physical entrypoints, README/standards, hook effects, local/CI/browser coverage, task/handoff та ADR currency. Це уточнення наявного інвентарю, без нового tracker або перенесення правил іншого продукту.
+
 - [ ] Root/HEAD/dirty scope; applicable instructions; архітектура/стек; місця tasks/spec/ADR/QA/archive визначені без міграції за замовчуванням.
 - [ ] Доручення/permissions обмежують scope. Acceptance/contracts/ADR нормативні; код/scripts описують фактичну поведінку. Конфлікт має обидва джерела, рішення власника або BLOCKED залежної роботи. Код не легалізує баг. Уже доручене виправлення до однозначного контракту не потребує нового рішення; воно потрібне лише для неясної/суперечливої норми або її зміни.
 - [ ] Один primary record для small: scope/acceptance, plan, append-only progress, verdict/evidence/next step. Незалежний review може бути окремим файлом. Для existing задач не зливати/видаляти артефакти автоматично. Full маршрут лише за ризиком/контрактом, resume — лише інвалідовані gates.

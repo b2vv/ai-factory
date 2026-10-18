@@ -23,3 +23,7 @@ The checkpoint protocol, generic fixtures and read-only declaration/index valida
 ## Release 0.6
 
 Planning critique concepts were informed by a read-only comparison with a private development workflow. This release independently authors a generic prompt, declaration checks, examples and tests; no text, code, domain content, model bindings, landing scripts or configuration from that project is copied. No third-party license is inferred from local access or the absence of a root license file. Any future direct reuse requires an explicit rights/notice review before copying. Original included skills and notices remain unchanged.
+
+## Release 0.6.1
+
+Documentation hygiene checklist, template prompts and forward-review scenarios are authored general guidance. No product-specific access policy, source code, host paths or private instructions are copied. Original skills and runtime behavior remain unchanged.

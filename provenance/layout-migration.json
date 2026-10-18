@@ -37,9 +37,10 @@
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
-        "0.6 release evolution: critique protocol and refreshed provenance"
+        "0.6 release evolution: critique protocol and refreshed provenance",
+        "0.6.1 documentation hygiene and provenance"
       ],
-      "new_sha256": "57f71d8e70a2a1437db70afb5923e452388ea68eef2a839088aaa26371561907"
+      "new_sha256": "cabd2b379532f84ab4783c718b586dbf771045124731b53850b86f17fcd70dbe"
     },
     {
       "old_path": "README.md",
@@ -149,9 +150,10 @@
       "new_path": "ai-factory/onboarding.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "0.6.1 documentation hygiene and provenance"
       ],
-      "new_sha256": "3cc63fadd5f9cf086104b018955e3bdb708b89515a91846400863ca09bd54a2b"
+      "new_sha256": "16ce883d0ac1bf9904a86486958090a1fea2628e6d3141b129c49ed10682c6d7"
     },
     {
       "old_path": "collection/agents/ai-factory/onboarding/README.md",
@@ -167,9 +169,10 @@
       "new_path": "templates/acceptance-full.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "0.6.1 documentation hygiene and provenance"
       ],
-      "new_sha256": "d96267bff6c4435fd896369a476d050421a4b148d7ace32c4b7704143da6c4b8"
+      "new_sha256": "3e506d139eb803242c355781cffd779b3ee729be481566760e403a9caa325887"
     },
     {
       "old_path": "collection/agents/ai-factory/onboarding/adapter-template.md",
@@ -177,9 +180,10 @@
       "new_path": "templates/adapter-full.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "0.6.1 documentation hygiene and provenance"
       ],
-      "new_sha256": "53d635ddcf8e77a416ca4596b6c6befc0aa6f8f33d591c59d4b30526107ae0dd"
+      "new_sha256": "88742e4fd7a64ce377b5bacbf6261b72222a40912378083345e5436d212e77eb"
     },
     {
       "old_path": "collection/agents/ai-factory/onboarding/change-protocol.md",
@@ -2569,9 +2573,10 @@
       "action": "relocated-and-updated",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
-        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
+        "0.6.1 documentation hygiene and provenance"
       ],
-      "new_sha256": "3ea97bcb68f57ef3eaff1c69be1ce91943c665b4df0d182327f2806cb8d5da7f"
+      "new_sha256": "a60f5b39bea5c6b7e76cea01ee27b42d47a99fc54fc71ef8420914aca811a37f"
     },
     {
       "old_path": "docs/capabilities.md",

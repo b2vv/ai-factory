@@ -35,3 +35,7 @@
 Невирішені owner decisions: джерела конфлікту → impact → залежна BLOCKED частина → власник/одна наступна дія. Інші дозволені частини можуть бути configured; не називай усе підключення повністю завершеним, якщо required gate лишився BLOCKED. За відсутності невирішених required decisions — documentary acceptance; runtime статус окремо.
 
 Підсумок: фактичні changed files, виконані перевірки, незалежний review, що не запускалось, залишкові рішення, короткий startup prompt. Немає гарантії, що довільний репозиторій не потребуватиме людських policy-рішень.
+
+## Documentation consistency
+
+Використай [спільний checklist](../ai-factory/documentation-hygiene.md) у цьому ж record. Для кожної застосовної прогалини: source/path/revision → factual correction або owner decision → збережена локальна відмінність → перевірка. Окремо назви logical/physical entry paths, hook effects, local/CI/browser coverage, task/handoff pointers та ADR currency. Provenance hunks не розширює authorization; commit, merge і acceptance gates визначаються точними локальними нормами. Невиконане незалежне review лишається PENDING.

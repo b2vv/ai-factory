@@ -41,3 +41,7 @@ Small має один основний record із scope/acceptance, плано�
 Record містить detected/configured/behavior-tested окремо, source/revision/result для перевірок; N/A із причиною; незалежний review, forward scenarios і наступну дію. Config/symlink не доводять runtime. Немає автоматичних installs/registrations/hooks/permissions/models або rollout.
 
 Перед записом і відновленням застосуй [change protocol](../ai-factory/onboarding/change-protocol.md) у shared onboarding; у скопійованому adapter заміни це посилання фактичним shared path або виклади необхідні правила тут. Підсумок — за [acceptance template](acceptance-full.md), у наявному task record. Власник adapter не стає власником source contracts; не копіюй нормативні таблиці без потреби, посилайся на них.
+
+## Documentation consistency
+
+Використай [спільний checklist](../ai-factory/documentation-hygiene.md) у цьому ж record. Для кожної застосовної прогалини: source/path/revision → factual correction або owner decision → збережена локальна відмінність → перевірка. Окремо назви logical/physical entry paths, hook effects, local/CI/browser coverage, task/handoff pointers та ADR currency. Provenance hunks не розширює authorization; commit, merge і acceptance gates визначаються точними локальними нормами. Невиконане незалежне review лишається PENDING.

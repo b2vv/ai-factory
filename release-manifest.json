@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.6.0-candidate",
+  "version": "0.6.1-candidate",
   "status": "AUTHOR_VALIDATED_CANDIDATE",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -84,12 +84,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "57f71d8e70a2a1437db70afb5923e452388ea68eef2a839088aaa26371561907",
+      "sha256": "cabd2b379532f84ab4783c718b586dbf771045124731b53850b86f17fcd70dbe",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "f6ad36d98bb4c021b60fafba5a0111b339af9c223a2e9610be7c79adafa044b8",
+      "sha256": "d5c2c54b8c2cc6b74845e591b68dc479e165099b26852c186714c93e0cfa28a8",
       "component": "core"
     },
     {
@@ -128,6 +128,11 @@
       "component": "core"
     },
     {
+      "path": "ai-factory/documentation-hygiene.md",
+      "sha256": "6d42388715448d4445132376c96f8d9cbcce0906ebaebeb287914f9e3749dd75",
+      "component": "core"
+    },
+    {
       "path": "ai-factory/feature-lifecycle.md",
       "sha256": "4c0cec3fbad439b303aa6d77fc478430ba237b912ffbd9804f0223ed535bec30",
       "component": "core"
@@ -149,7 +154,7 @@
     },
     {
       "path": "ai-factory/onboarding.md",
-      "sha256": "3cc63fadd5f9cf086104b018955e3bdb708b89515a91846400863ca09bd54a2b",
+      "sha256": "16ce883d0ac1bf9904a86486958090a1fea2628e6d3141b129c49ed10682c6d7",
       "component": "core"
     },
     {
@@ -324,7 +329,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "d27a29f4e7097db47cd55ae11976d48ff87528a6fbce81338521e4b23f4060a4",
+      "sha256": "7d5881faa462b0072ce9b39fa078a7da14765246f807b4b05137481679d62c00",
       "component": "core"
     },
     {
@@ -339,7 +344,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "3ea97bcb68f57ef3eaff1c69be1ce91943c665b4df0d182327f2806cb8d5da7f",
+      "sha256": "a60f5b39bea5c6b7e76cea01ee27b42d47a99fc54fc71ef8420914aca811a37f",
       "component": "core"
     },
     {
@@ -1774,7 +1779,7 @@
     },
     {
       "path": "templates/acceptance-full.md",
-      "sha256": "d96267bff6c4435fd896369a476d050421a4b148d7ace32c4b7704143da6c4b8",
+      "sha256": "3e506d139eb803242c355781cffd779b3ee729be481566760e403a9caa325887",
       "component": "core"
     },
     {
@@ -1784,7 +1789,7 @@
     },
     {
       "path": "templates/adapter-full.md",
-      "sha256": "53d635ddcf8e77a416ca4596b6c6befc0aa6f8f33d591c59d4b30526107ae0dd",
+      "sha256": "88742e4fd7a64ce377b5bacbf6261b72222a40912378083345e5436d212e77eb",
       "component": "core"
     },
     {

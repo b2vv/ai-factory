@@ -3780,10 +3780,11 @@
       "source": "~/.agents/ai-factory/onboarding/acceptance-template.md",
       "destination": "templates/acceptance-full.md",
       "source_sha256": "9c7c4cc0b3d809c1a9b96c88f7560f1cbe0b1de14ff3bcea4ac2629c91f4841f",
-      "sha256": "d96267bff6c4435fd896369a476d050421a4b148d7ace32c4b7704143da6c4b8",
+      "sha256": "3e506d139eb803242c355781cffd779b3ee729be481566760e403a9caa325887",
       "source_mode": "0o644",
       "transformations": [
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "0.6.1 documentation hygiene routing; original skills unchanged"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/acceptance-template.md"
@@ -3792,10 +3793,11 @@
       "source": "~/.agents/ai-factory/onboarding/adapter-template.md",
       "destination": "templates/adapter-full.md",
       "source_sha256": "027f4b281853154d33a1779c495b713d6ab0729fd2035438fc993e19e7b32b66",
-      "sha256": "53d635ddcf8e77a416ca4596b6c6befc0aa6f8f33d591c59d4b30526107ae0dd",
+      "sha256": "88742e4fd7a64ce377b5bacbf6261b72222a40912378083345e5436d212e77eb",
       "source_mode": "0o644",
       "transformations": [
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "0.6.1 documentation hygiene routing; original skills unchanged"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/adapter-template.md"
@@ -3846,12 +3848,13 @@
       "source": "~/.agents/ai-factory/onboarding.md",
       "destination": "ai-factory/onboarding.md",
       "source_sha256": "447bd78eeefc80a962204299a8cc81e2d4cadd85ac6f280fc9b8b834ef3f104b",
-      "sha256": "3cc63fadd5f9cf086104b018955e3bdb708b89515a91846400863ca09bd54a2b",
+      "sha256": "16ce883d0ac1bf9904a86486958090a1fea2628e6d3141b129c49ed10682c6d7",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.4 explicit path/example and test-import relocation; no policy merge"
+        "0.4 explicit path/example and test-import relocation; no policy merge",
+        "0.6.1 documentation hygiene routing; original skills unchanged"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding.md"
