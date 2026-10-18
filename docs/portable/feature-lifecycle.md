@@ -37,3 +37,8 @@ Read scripts and transitive prerequisites before executing tests/builds: reset, 
 UI copy can affect wrapping, locale, focus names, zoom and open/active states. Verify applicable empty/loading/error/success, keyboard/focus, recovery, viewport/locale and reflow. Inspect captured images; a created screenshot or green build alone does not prove UI quality. Existing UI/design/entity skills are optional extensions with separate provenance/dependencies, not silently bundled here.
 
 A short ship report in the same task records acceptance result, changed behavior, checks/evidence, review status, remaining risks and next owner. External notes are links/summaries only when requested; no automatic vault writes. Post-deploy checks require a separately authorized deployment and exact build identity. Missing runtime evidence is named, not filled with plausible success.
+
+
+## Explicit pre-code readiness
+
+The [shared checkpoint](../../ai-factory/pre-code-checkpoint.md) supplies the same minimum task-readiness evidence for this optional profile. Keep one existing record; batch approval does not waive per-task blockers or impact. Local stronger gates take precedence. No automatic CI/hook enforcement is implied.

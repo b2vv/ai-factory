@@ -35,9 +35,10 @@
       "new_path": "PROVENANCE.md",
       "action": "updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
       ],
-      "new_sha256": "7c3bb418b97b0fed66810d191be32e3a320ccbd30ea209a6b72e482865a3665d"
+      "new_sha256": "d4523099aa742bd5b498d83a986f013855bc4113a854e3f84ad040d16effd1d6"
     },
     {
       "old_path": "README.md",
@@ -95,9 +96,10 @@
       "new_path": "ai-factory/ai-factory-plan.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
       ],
-      "new_sha256": "d52ba7b03321db9e97570d20aa7a1de81f6f45348e7ddf54ccd1c332775a378e"
+      "new_sha256": "d85b99f053472c284790c59a8810336e25697d78ee046357dd05ea51adb1bfda"
     },
     {
       "old_path": "collection/agents/ai-factory/crg.md",
@@ -115,9 +117,10 @@
       "new_path": "ai-factory/feature-lifecycle.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
       ],
-      "new_sha256": "c9735140799959d82c967eec93e6428c2c2dac81858aac62d2ecd8e42bd61ced"
+      "new_sha256": "4c0cec3fbad439b303aa6d77fc478430ba237b912ffbd9804f0223ed535bec30"
     },
     {
       "old_path": "collection/agents/ai-factory/history.md",
@@ -319,9 +322,10 @@
       "new_path": "ai-factory/workflow.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
       ],
-      "new_sha256": "9116c2985447a1b5a5fe1bb866f9c7a486d87247bbc90aa46664267ec6fd3133"
+      "new_sha256": "a0886e8598f0d687aa926947c532bd0a2f07f3c8d02621223204fa2809181578"
     },
     {
       "old_path": "collection/agents/obsidian-cheatsheet.md",
@@ -2563,9 +2567,10 @@
       "new_path": "provenance/source-map.json",
       "action": "relocated-and-updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
       ],
-      "new_sha256": "dbfce4181229f75ed6356319f9a8e48c5c2a1f5a2ba6c47533bef96e22862ef9"
+      "new_sha256": "3ea97bcb68f57ef3eaff1c69be1ce91943c665b4df0d182327f2806cb8d5da7f"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -2593,9 +2598,10 @@
       "new_path": "docs/portable/feature-lifecycle.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
       ],
-      "new_sha256": "9ebf986da745388b145aba8683654c7733ed49ef1bd3ce029922753f3e971c84"
+      "new_sha256": "354eeb640c45e67803435d7909d58d3d836a381836bed73f622401d3b1302788"
     },
     {
       "old_path": "docs/models.md",
@@ -2859,9 +2865,10 @@
       "new_path": "tools/run_tests.py",
       "action": "updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
       ],
-      "new_sha256": "de68a8a37d53c3659752a0d1753ba9824eea3f78cc511702a224f23e4107be9d"
+      "new_sha256": "4d84aa7dad682700c6f27418cc58bc480af5649fa537ca8112f91f24ef10c636"
     },
     {
       "old_path": "tools/test_collection.py",

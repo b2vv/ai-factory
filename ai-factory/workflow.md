@@ -13,6 +13,10 @@ reviewed: 2026-10-16
 
 Практична [навігація feature lifecycle](feature-lifecycle.md) пов’язує етапи з наявними скілами, ролями й gates; вона не додає другого оркестратора та зберігає локальні workflow.
 
+## Before code: explicit task readiness
+
+Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
+
 ## Startup: хто виконує критику, review та перевірки
 
 До роботи запиши у чинний primary record і покажи користувачу: мета → **новий субагент / наявна окрема сесія / НЕ ВИЗНАЧЕНО**, owner, точний session/agent reference якщо відомий, підстава поточного вибору, хто передає пакет, координація shared-resource checks. Явне доручення має пріоритет. Якщо вибір не задано й не можна однозначно вивести з поточного доручення — запитай до spawn/надсилання; незалежні safe inventory/planning дозволені. Не створюй дубль reviewer і не контактуй з іншою сесією без авторизації. Наявна сесія ≠ виконаний review. Авторські checks позначай окремо.

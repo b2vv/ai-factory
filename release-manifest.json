@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.4.0-candidate",
+  "version": "0.5.0-candidate",
   "status": "AUTHOR_VALIDATED_CANDIDATE",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -84,12 +84,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "7c3bb418b97b0fed66810d191be32e3a320ccbd30ea209a6b72e482865a3665d",
+      "sha256": "d4523099aa742bd5b498d83a986f013855bc4113a854e3f84ad040d16effd1d6",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "d63ed273cf8c0079cc592cfc5d5afb111017d3ecad9b7a235f26969434670d5e",
+      "sha256": "8aa65f1325cd6c64697fbd5d94a8771ad4e92a3e75335f69dcc48a247354445b",
       "component": "core"
     },
     {
@@ -119,7 +119,7 @@
     },
     {
       "path": "ai-factory/ai-factory-plan.md",
-      "sha256": "d52ba7b03321db9e97570d20aa7a1de81f6f45348e7ddf54ccd1c332775a378e",
+      "sha256": "d85b99f053472c284790c59a8810336e25697d78ee046357dd05ea51adb1bfda",
       "component": "core"
     },
     {
@@ -129,7 +129,7 @@
     },
     {
       "path": "ai-factory/feature-lifecycle.md",
-      "sha256": "c9735140799959d82c967eec93e6428c2c2dac81858aac62d2ecd8e42bd61ced",
+      "sha256": "4c0cec3fbad439b303aa6d77fc478430ba237b912ffbd9804f0223ed535bec30",
       "component": "core"
     },
     {
@@ -150,6 +150,11 @@
     {
       "path": "ai-factory/onboarding.md",
       "sha256": "3cc63fadd5f9cf086104b018955e3bdb708b89515a91846400863ca09bd54a2b",
+      "component": "core"
+    },
+    {
+      "path": "ai-factory/pre-code-checkpoint.md",
+      "sha256": "698cafb9a8538cc08154754bb22b7d35d240896d2c8abca729c12f4940202622",
       "component": "core"
     },
     {
@@ -174,7 +179,7 @@
     },
     {
       "path": "ai-factory/workflow.md",
-      "sha256": "9116c2985447a1b5a5fe1bb866f9c7a486d87247bbc90aa46664267ec6fd3133",
+      "sha256": "a0886e8598f0d687aa926947c532bd0a2f07f3c8d02621223204fa2809181578",
       "component": "core"
     },
     {
@@ -239,7 +244,7 @@
     },
     {
       "path": "docs/portable/feature-lifecycle.md",
-      "sha256": "9ebf986da745388b145aba8683654c7733ed49ef1bd3ce029922753f3e971c84",
+      "sha256": "354eeb640c45e67803435d7909d58d3d836a381836bed73f622401d3b1302788",
       "component": "core"
     },
     {
@@ -273,6 +278,16 @@
       "component": "core"
     },
     {
+      "path": "examples/checkpoint/record.json",
+      "sha256": "737837b1bdfc695afa79b4f585e7523a1be6b7f69b34207a870010f62dbb73da",
+      "component": "core"
+    },
+    {
+      "path": "examples/checkpoint/snapshot.json",
+      "sha256": "a6364bf840111e023d699c6f842be8cb35972c4f33489155db6620a2797168e1",
+      "component": "core"
+    },
+    {
       "path": "examples/onboarding/manifest.json",
       "sha256": "53b686568a31b1004ee986315dbc4b70d839a4e0236cd41f27897fe6f172a0a2",
       "component": "core"
@@ -289,7 +304,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "7119e34b74f5800c1e4ce7cfdf80c7f8f7b70fdf1995dd62dfb119838e21565b",
+      "sha256": "cb3b926fe8acb14c2c42fd625c836078007a61580d406a4bc521309844650092",
       "component": "core"
     },
     {
@@ -304,7 +319,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "dbfce4181229f75ed6356319f9a8e48c5c2a1f5a2ba6c47533bef96e22862ef9",
+      "sha256": "3ea97bcb68f57ef3eaff1c69be1ce91943c665b4df0d182327f2806cb8d5da7f",
       "component": "core"
     },
     {
@@ -350,6 +365,11 @@
     {
       "path": "runtime/README.md",
       "sha256": "3a4c8d7ca173cc1971f211057e676e303a853c00a08b5910348ac427fa8efece",
+      "component": "core"
+    },
+    {
+      "path": "runtime/checkpoint/precode.py",
+      "sha256": "db99e28737d75a5e32855258daff915e1fdbc5dc5dfc9408f40461ffdd9b76f0",
       "component": "core"
     },
     {
@@ -1753,6 +1773,11 @@
       "component": "core"
     },
     {
+      "path": "tests/checkpoint/test_precode.py",
+      "sha256": "fb22bd2120845580cca2803a091806ade5d3c6d26da30fbe94a2fff9053374ac",
+      "component": "core"
+    },
+    {
       "path": "tests/collection/test_collection.py",
       "sha256": "98a1aa3b89f9228db264624995cebb2789f8f0911b401ce5b54e50b1f3ec2e6b",
       "component": "core"
@@ -1809,7 +1834,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "de68a8a37d53c3659752a0d1753ba9824eea3f78cc511702a224f23e4107be9d",
+      "sha256": "4d84aa7dad682700c6f27418cc58bc480af5649fa537ca8112f91f24ef10c636",
       "component": "core"
     },
     {

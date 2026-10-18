@@ -15,3 +15,7 @@ The earlier paragraphs describe only the original curated starter. The former `c
 ## Layout 0.4
 
 The full internal source now has one editable skills/ tree and ai-factory/ plan. provenance/source-map.json preserves historical sources and live destinations; provenance/layout-migration.json accounts for all old files. Seven byte-identical duplicates were deduplicated; no behaviorally different planning or runtime helper was merged. Existing notices remain alongside their files. The previous commit remains the immutable source baseline; old narrative sections describe their original release, not current layout.
+
+## Release 0.5
+
+The checkpoint protocol, generic fixtures and read-only declaration/index validator are authored additions. Inherited workflow navigation was amended with recorded transformations; original SKILL bodies, licenses and runtime variants remain unchanged. No product files, private local instructions, credentials or caches are included.

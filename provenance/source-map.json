@@ -3700,11 +3700,12 @@
       "source": "~/.agents/ai-factory/ai-factory-plan.md",
       "destination": "ai-factory/ai-factory-plan.md",
       "source_sha256": "38792d0770a46719fc3521bc239c3e7a67e80224507d3790884996b41f8fb5d4",
-      "sha256": "d52ba7b03321db9e97570d20aa7a1de81f6f45348e7ddf54ccd1c332775a378e",
+      "sha256": "d85b99f053472c284790c59a8810336e25697d78ee046357dd05ea51adb1bfda",
       "source_mode": "0o644",
       "transformations": [
         "absolute shared-source Markdown links made relative",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/ai-factory-plan.md"
@@ -3727,13 +3728,14 @@
       "source": "~/.agents/ai-factory/feature-lifecycle.md",
       "destination": "ai-factory/feature-lifecycle.md",
       "source_sha256": "c01ea920e05f3eb03357d024f3499ec728b4866ba11ddafb0cc8cdaeec3bfd06",
-      "sha256": "c9735140799959d82c967eec93e6428c2c2dac81858aac62d2ecd8e42bd61ced",
+      "sha256": "4c0cec3fbad439b303aa6d77fc478430ba237b912ffbd9804f0223ed535bec30",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "source/alias local links mapped to included portable destination",
         "excluded external dependency link retained as project-local runtime reference, no payload",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/feature-lifecycle.md"
@@ -3989,11 +3991,12 @@
       "source": "~/.agents/ai-factory/workflow.md",
       "destination": "ai-factory/workflow.md",
       "source_sha256": "486bedd21354d25a766a1e7b8577d0ab5d055621e7ad0ce62ae8f7238be961b7",
-      "sha256": "9116c2985447a1b5a5fe1bb866f9c7a486d87247bbc90aa46664267ec6fd3133",
+      "sha256": "a0886e8598f0d687aa926947c532bd0a2f07f3c8d02621223204fa2809181578",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/workflow.md"
@@ -6000,6 +6003,666 @@
   ],
   "links": [
     {
+      "file": "skills/anti-slop-design/SKILL.md",
+      "target": "../ship/frontend-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/anti-slop-design/SKILL.md",
+      "target": "../ship/frontend-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/anti-slop-design/SKILL.md",
+      "target": "../design-pass/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/DEEPENING.md",
+      "target": "SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
+      "target": "SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
+      "target": "DEEPENING.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
+      "target": "DEEPENING.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
+      "target": "SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
+      "target": "DEEPENING.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/SKILL.md",
+      "target": "DEEPENING.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/codebase-design/SKILL.md",
+      "target": "DESIGN-IT-TWICE.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "target": "./src/ordering/GLOSSARY.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "target": "./src/billing/GLOSSARY.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "target": "./src/fulfillment/GLOSSARY.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/arch/domain-modeling/SKILL.md",
+      "target": "GLOSSARY-FORMAT.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/domain-modeling/SKILL.md",
+      "target": "ADR-FORMAT.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/improve-codebase-architecture/SKILL.md",
+      "target": "HTML-REPORT.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/tdd/SKILL.md",
+      "target": "tests.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/arch/tdd/SKILL.md",
+      "target": "mocking.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/crg/crg-debug-issue/SKILL.md",
+      "target": "../../../ai-factory/crg.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/crg/crg-explore-codebase/SKILL.md",
+      "target": "../../../ai-factory/crg.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/crg/crg-refactor-safely/SKILL.md",
+      "target": "../../../ai-factory/crg.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/crg/crg-review-changes/SKILL.md",
+      "target": "../../../ai-factory/crg.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/deliver/triage/SKILL.md",
+      "target": "AGENT-BRIEF.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/deliver/triage/SKILL.md",
+      "target": "OUT-OF-SCOPE.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/deliver/triage/SKILL.md",
+      "target": "AGENT-BRIEF.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/deliver/triage/SKILL.md",
+      "target": "OUT-OF-SCOPE.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/deliver/wayfinder/SKILL.md",
+      "target": "link",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/design-pass/SKILL.md",
+      "target": "../reference-ui-reconstruction/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/design-pass/SKILL.md",
+      "target": "../ship/frontend-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/design-pass/SKILL.md",
+      "target": "../anti-slop-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/design-pass/SKILL.md",
+      "target": "../ux-review/references/rules.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/design-pass/SKILL.md",
+      "target": "../interface-review/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/SKILL.md",
+      "target": "references/testing-rules.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/SKILL.md",
+      "target": "references/testing-rules.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/SKILL.md",
+      "target": "references/testing-rules.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/SKILL.md",
+      "target": "../plan/acceptance-spec/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/SKILL.md",
+      "target": "../interface-review/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/SKILL.md",
+      "target": "references/matrix.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/SKILL.md",
+      "target": "scripts/validate_matrix.py",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/matrix.md",
+      "target": "example-contract.json",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/matrix.md",
+      "target": "example-report.json",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/matrix.md",
+      "target": "cases.json",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/matrix.md",
+      "target": "scoped-cases.json",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../../plan/acceptance-spec/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../../arch/tdd/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../../arch/tdd/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0008-a-wait-must-watch-the-thing-that-varies.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../../plan/acceptance-spec/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../../ship/ship-report/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../../design-pass/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "../../ship/ship-report/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/docs/agent/22-testing-strategy.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/docs/adr/0071-e2e-shared-session-and-new-spec-construction-rules.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/work/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0008-a-wait-must-watch-the-thing-that-varies.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0014-running-tests-gates-stands-live-telemetry.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cargo/cargotrans-ui/tests/FIXTURES.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/cargo/cargotrans-ui/work/qa/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/courses/docs/development/testing.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "target": "~/projects/courses/Makefile",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/git/git-guardrails-claude-code/SKILL.md",
+      "target": "scripts/block-dangerous-git.sh",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/interface-review/SKILL.md",
+      "target": "../anti-slop-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/interface-review/SKILL.md",
+      "target": "../ux-review/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/interface-review/SKILL.md",
+      "target": "../anti-slop-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/interface-review/SKILL.md",
+      "target": "../ux-review/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/interface-review/SKILL.md",
+      "target": "../design-pass/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/plan/ask-matt/SKILL.md",
+      "target": "PHASE-BOUNDARIES.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/frontend-design/SKILL.md",
+      "target": "../../anti-slop-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/frontend-design/SKILL.md",
+      "target": "../../anti-slop-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/frontend-design/SKILL.md",
+      "target": "WRITING.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/prototype/LOGIC.md",
+      "target": "UI.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/prototype/LOGIC.md",
+      "target": "SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/prototype/SKILL.md",
+      "target": "LOGIC.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/prototype/SKILL.md",
+      "target": "UI.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/prototype/UI.md",
+      "target": "LOGIC.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/prototype/UI.md",
+      "target": "SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/teach/RESOURCES-FORMAT.md",
+      "target": "SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/teach/SKILL.md",
+      "target": "MISSION-FORMAT.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/teach/SKILL.md",
+      "target": "RESOURCES-FORMAT.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ship/teach/SKILL.md",
+      "target": "LEARNING-RECORD-FORMAT.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/google-workspace/SKILL.md",
+      "target": "its link",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "skills/synced/snapshot-01/google-workspace/references/slides.md",
+      "target": "charts.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/synced/snapshot-01/google-workspace/references/slides.md",
+      "target": "charts.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/repo-bootstrap/SKILL.md",
+      "target": "../../../ai-factory/onboarding.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "target": "issue-tracker-github.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "target": "issue-tracker-gitlab.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "target": "issue-tracker-local.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "target": "triage-labels.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "target": "domain.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/wizard/SKILL.md",
+      "target": "template.sh",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/writing-for-agents/SKILL-MECHANICS.md",
+      "target": "SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/writing-for-agents/SKILL.md",
+      "target": "SKILL-MECHANICS.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/utils/writing-for-agents/SKILL.md",
+      "target": "SKILL-MECHANICS.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "../ship/frontend-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "../anti-slop-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "references/rules.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "references/rules.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "../anti-slop-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "../design-pass/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "../ship/frontend-design/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "onboarding.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "review-handoff.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "pre-code-checkpoint.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "status.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "feature-lifecycle.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "models.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "crg.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "roadmap.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "repo-evidence.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "history.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/ai-factory-plan.md",
+      "target": "../docs/legacy/session-size.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/crg.md",
+      "target": "../docs/legacy/ai-factory-plan-entry.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/crg.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/crg.md",
+      "target": "models.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/crg.md",
+      "target": "status.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/crg.md",
+      "target": "~/Documents/Codex/2026-10-16/task/crg-cargo-active-refresh/report.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/crg.md",
+      "target": "~/Documents/Codex/2026-10-16/task/crg-cargo-active-refresh/final-state.json",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/crg.md",
+      "target": "~/Documents/Codex/2026-10-16/task/crg-cargo-active-refresh/mcp-query-proof.json",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
       "file": "ai-factory/feature-lifecycle.md",
       "target": "../docs/legacy/ai-factory-plan-entry.md",
       "status": "RESOLVED"
@@ -6027,6 +6690,11 @@
     {
       "file": "ai-factory/feature-lifecycle.md",
       "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/feature-lifecycle.md",
+      "target": "pre-code-checkpoint.md",
       "status": "RESOLVED"
     },
     {
@@ -6240,6 +6908,381 @@
       "status": "RESOLVED"
     },
     {
+      "file": "ai-factory/models.md",
+      "target": "../docs/legacy/ai-factory-plan-entry.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/models.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/models.md",
+      "target": "crg.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/models.md",
+      "target": "../docs/onboarding-helper.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/models.md",
+      "target": "crg.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "templates/acceptance-full.md",
+      "target": "../ai-factory/onboarding.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "templates/acceptance-full.md",
+      "target": "../ai-factory/onboarding/change-protocol.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "templates/acceptance-full.md",
+      "target": "../ai-factory/review-handoff.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "templates/adapter-full.md",
+      "target": "../ai-factory/onboarding/change-protocol.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "templates/adapter-full.md",
+      "target": "acceptance-full.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding/change-protocol.md",
+      "target": "../onboarding.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding/change-protocol.md",
+      "target": "../../templates/acceptance-full.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "../docs/legacy/ai-factory-plan-entry.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "feature-lifecycle.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "review-handoff.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "../skills/utils/repo-bootstrap/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "../examples/onboarding/manifest.json",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "../docs/onboarding-helper.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "../templates/adapter-full.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "onboarding/change-protocol.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "models.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "../templates/acceptance-full.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/onboarding.md",
+      "target": "../templates/acceptance-full.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../docs/legacy/ai-factory-plan-entry.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "status.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "roadmap.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "repo-evidence.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "history.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/AGENTS.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/PRINCIPLES.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/constitution.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/lib/chat/docs/adr/0026-citation-replay-fold-is-a-cross-repo-contract.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/lib/chat/docs/adr/0032-rewind-surviving-events.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/constitution.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/PRINCIPLES.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/work/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/agents/work-reviewer.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/design/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/adr-format.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/work/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/skills/work/SKILL.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/work/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/README.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/validate-spec.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/analyze-specs.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/pre-qa-review.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/plan.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/work/002-keda-scaling/review.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/work/003-jobs-heartbeat-research/plan.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/generic-ui/work/004-navigate-message-feedback/plan.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/adr-format.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/skills/work/SKILL.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/repo-evidence.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/review-handoff.md",
+      "target": "../runtime/legacy/review/review_package.py",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/review-handoff.md",
+      "target": "../examples/review/manifest.json",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/review-handoff.md",
+      "target": "../examples/review/response.json",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "../docs/legacy/ai-factory-plan-entry.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "status.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "roadmap.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "repo-evidence.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "history.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "status.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "../skills/utils/writing-for-agents/SKILL.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "../../.codex/skills/.system/skill-creator/SKILL.md",
+      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "status.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "history.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "repo-evidence.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/roadmap.md",
+      "target": "workflow.md",
+      "status": "RESOLVED"
+    },
+    {
       "file": "ai-factory/status.md",
       "target": "../docs/legacy/ai-factory-plan-entry.md",
       "status": "RESOLVED"
@@ -6441,6 +7484,11 @@
     },
     {
       "file": "ai-factory/workflow.md",
+      "target": "pre-code-checkpoint.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/workflow.md",
       "target": "review-handoff.md",
       "status": "RESOLVED"
     },
@@ -6550,471 +7598,6 @@
       "status": "RESOLVED"
     },
     {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../docs/legacy/ai-factory-plan-entry.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "status.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "roadmap.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "repo-evidence.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "history.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/AGENTS.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/PRINCIPLES.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/constitution.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/lib/chat/docs/adr/0026-citation-replay-fold-is-a-cross-repo-contract.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/lib/chat/docs/adr/0032-rewind-surviving-events.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/constitution.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/PRINCIPLES.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/agents/work-reviewer.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/design/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/adr-format.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/skills/work/SKILL.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/validate-spec.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/analyze-specs.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/pre-qa-review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/plan.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/002-keda-scaling/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/003-jobs-heartbeat-research/plan.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/004-navigate-message-feedback/plan.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/adr-format.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/skills/work/SKILL.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "../docs/legacy/ai-factory-plan-entry.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "status.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "roadmap.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "repo-evidence.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "history.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "status.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "../skills/utils/writing-for-agents/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "../../.codex/skills/.system/skill-creator/SKILL.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "status.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "history.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "repo-evidence.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/roadmap.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/models.md",
-      "target": "../docs/legacy/ai-factory-plan-entry.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/models.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/models.md",
-      "target": "crg.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/models.md",
-      "target": "../docs/onboarding-helper.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/models.md",
-      "target": "crg.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/crg.md",
-      "target": "../docs/legacy/ai-factory-plan-entry.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/crg.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/crg.md",
-      "target": "models.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/crg.md",
-      "target": "status.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/crg.md",
-      "target": "~/Documents/Codex/2026-10-16/task/crg-cargo-active-refresh/report.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/crg.md",
-      "target": "~/Documents/Codex/2026-10-16/task/crg-cargo-active-refresh/final-state.json",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/crg.md",
-      "target": "~/Documents/Codex/2026-10-16/task/crg-cargo-active-refresh/mcp-query-proof.json",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "onboarding.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "review-handoff.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "status.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "feature-lifecycle.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "models.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "crg.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "roadmap.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "repo-evidence.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "history.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/ai-factory-plan.md",
-      "target": "../docs/legacy/session-size.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/review-handoff.md",
-      "target": "../runtime/legacy/review/review_package.py",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/review-handoff.md",
-      "target": "../examples/review/manifest.json",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/review-handoff.md",
-      "target": "../examples/review/response.json",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "../docs/legacy/ai-factory-plan-entry.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "feature-lifecycle.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "workflow.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "review-handoff.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "../skills/utils/repo-bootstrap/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "../examples/onboarding/manifest.json",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "../docs/onboarding-helper.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "../templates/adapter-full.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "onboarding/change-protocol.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "models.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "../templates/acceptance-full.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding.md",
-      "target": "../templates/acceptance-full.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "rules/agent-entry.md",
-      "target": "README.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "rules/agent-entry.md",
-      "target": "agent-stream-to-file.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "rules/agent-entry.md",
-      "target": "multi-model-roles.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "rules/agent-entry.md",
-      "target": "README.md",
-      "status": "RESOLVED"
-    },
-    {
       "file": "rules/README.md",
       "target": "agent-entry.md",
       "status": "RESOLVED"
@@ -7050,593 +7633,28 @@
       "status": "RESOLVED"
     },
     {
-      "file": "templates/adapter-full.md",
-      "target": "../ai-factory/onboarding/change-protocol.md",
+      "file": "rules/agent-entry.md",
+      "target": "README.md",
       "status": "RESOLVED"
     },
     {
-      "file": "templates/adapter-full.md",
-      "target": "acceptance-full.md",
+      "file": "rules/agent-entry.md",
+      "target": "agent-stream-to-file.md",
       "status": "RESOLVED"
     },
     {
-      "file": "templates/acceptance-full.md",
-      "target": "../ai-factory/onboarding.md",
+      "file": "rules/agent-entry.md",
+      "target": "multi-model-roles.md",
       "status": "RESOLVED"
     },
     {
-      "file": "templates/acceptance-full.md",
-      "target": "../ai-factory/onboarding/change-protocol.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "templates/acceptance-full.md",
-      "target": "../ai-factory/review-handoff.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ux-review/SKILL.md",
-      "target": "../ship/frontend-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ux-review/SKILL.md",
-      "target": "../anti-slop-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ux-review/SKILL.md",
-      "target": "references/rules.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ux-review/SKILL.md",
-      "target": "references/rules.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ux-review/SKILL.md",
-      "target": "../anti-slop-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ux-review/SKILL.md",
-      "target": "../design-pass/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ux-review/SKILL.md",
-      "target": "../ship/frontend-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/design-pass/SKILL.md",
-      "target": "../reference-ui-reconstruction/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/design-pass/SKILL.md",
-      "target": "../ship/frontend-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/design-pass/SKILL.md",
-      "target": "../anti-slop-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/design-pass/SKILL.md",
-      "target": "../ux-review/references/rules.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/design-pass/SKILL.md",
-      "target": "../interface-review/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/interface-review/SKILL.md",
-      "target": "../anti-slop-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/interface-review/SKILL.md",
-      "target": "../ux-review/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/interface-review/SKILL.md",
-      "target": "../anti-slop-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/interface-review/SKILL.md",
-      "target": "../ux-review/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/interface-review/SKILL.md",
-      "target": "../design-pass/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/anti-slop-design/SKILL.md",
-      "target": "../ship/frontend-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/anti-slop-design/SKILL.md",
-      "target": "../ship/frontend-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/anti-slop-design/SKILL.md",
-      "target": "../design-pass/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/SKILL.md",
-      "target": "references/testing-rules.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/SKILL.md",
-      "target": "references/testing-rules.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/SKILL.md",
-      "target": "references/testing-rules.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/SKILL.md",
-      "target": "../plan/acceptance-spec/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/SKILL.md",
-      "target": "../interface-review/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/SKILL.md",
-      "target": "references/matrix.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/SKILL.md",
-      "target": "scripts/validate_matrix.py",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/git/git-guardrails-claude-code/SKILL.md",
-      "target": "scripts/block-dangerous-git.sh",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../../plan/acceptance-spec/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../../arch/tdd/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../../arch/tdd/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0008-a-wait-must-watch-the-thing-that-varies.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../../plan/acceptance-spec/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../../ship/ship-report/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../../design-pass/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "../../ship/ship-report/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/docs/agent/22-testing-strategy.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/docs/adr/0071-e2e-shared-session-and-new-spec-construction-rules.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0008-a-wait-must-watch-the-thing-that-varies.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0014-running-tests-gates-stands-live-telemetry.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/tests/FIXTURES.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/work/qa/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/courses/docs/development/testing.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/courses/Makefile",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/matrix.md",
-      "target": "example-contract.json",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/matrix.md",
-      "target": "example-report.json",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/matrix.md",
-      "target": "cases.json",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/matrix.md",
-      "target": "scoped-cases.json",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/crg/crg-review-changes/SKILL.md",
-      "target": "../../../ai-factory/crg.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/crg/crg-explore-codebase/SKILL.md",
-      "target": "../../../ai-factory/crg.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/crg/crg-refactor-safely/SKILL.md",
-      "target": "../../../ai-factory/crg.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/crg/crg-debug-issue/SKILL.md",
-      "target": "../../../ai-factory/crg.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/prototype/SKILL.md",
-      "target": "LOGIC.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/prototype/SKILL.md",
-      "target": "UI.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/prototype/LOGIC.md",
-      "target": "UI.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/prototype/LOGIC.md",
-      "target": "SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/prototype/UI.md",
-      "target": "LOGIC.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/prototype/UI.md",
-      "target": "SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/teach/RESOURCES-FORMAT.md",
-      "target": "SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/teach/SKILL.md",
-      "target": "MISSION-FORMAT.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/teach/SKILL.md",
-      "target": "RESOURCES-FORMAT.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/teach/SKILL.md",
-      "target": "LEARNING-RECORD-FORMAT.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/frontend-design/SKILL.md",
-      "target": "../../anti-slop-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/frontend-design/SKILL.md",
-      "target": "../../anti-slop-design/SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/ship/frontend-design/SKILL.md",
-      "target": "WRITING.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
-      "target": "./src/ordering/GLOSSARY.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
-      "target": "./src/billing/GLOSSARY.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
-      "target": "./src/fulfillment/GLOSSARY.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/arch/domain-modeling/SKILL.md",
-      "target": "GLOSSARY-FORMAT.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/domain-modeling/SKILL.md",
-      "target": "ADR-FORMAT.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/improve-codebase-architecture/SKILL.md",
-      "target": "HTML-REPORT.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
-      "target": "SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
-      "target": "DEEPENING.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
-      "target": "DEEPENING.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
-      "target": "SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
-      "target": "DEEPENING.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/SKILL.md",
-      "target": "DEEPENING.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/SKILL.md",
-      "target": "DESIGN-IT-TWICE.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/codebase-design/DEEPENING.md",
-      "target": "SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/tdd/SKILL.md",
-      "target": "tests.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/arch/tdd/SKILL.md",
-      "target": "mocking.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
-      "target": "issue-tracker-github.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
-      "target": "issue-tracker-gitlab.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
-      "target": "issue-tracker-local.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
-      "target": "triage-labels.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/setup-matt-pocock-skills/SKILL.md",
-      "target": "domain.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/writing-for-agents/SKILL-MECHANICS.md",
-      "target": "SKILL.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/writing-for-agents/SKILL.md",
-      "target": "SKILL-MECHANICS.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/writing-for-agents/SKILL.md",
-      "target": "SKILL-MECHANICS.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/wizard/SKILL.md",
-      "target": "template.sh",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/utils/repo-bootstrap/SKILL.md",
-      "target": "../../../ai-factory/onboarding.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/deliver/wayfinder/SKILL.md",
-      "target": "link",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/deliver/triage/SKILL.md",
-      "target": "AGENT-BRIEF.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/deliver/triage/SKILL.md",
-      "target": "OUT-OF-SCOPE.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/deliver/triage/SKILL.md",
-      "target": "AGENT-BRIEF.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/deliver/triage/SKILL.md",
-      "target": "OUT-OF-SCOPE.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/synced/snapshot-01/google-workspace/SKILL.md",
-      "target": "its link",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/google-workspace/references/slides.md",
-      "target": "charts.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/synced/snapshot-01/google-workspace/references/slides.md",
-      "target": "charts.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
-      "target": "URL",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/plan/ask-matt/SKILL.md",
-      "target": "PHASE-BOUNDARIES.md",
+      "file": "rules/agent-entry.md",
+      "target": "README.md",
       "status": "RESOLVED"
     },
     {
       "file": "docs/legacy/ai-factory-plan-entry.md",
       "target": "../../ai-factory/ai-factory-plan.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding/change-protocol.md",
-      "target": "../onboarding.md",
-      "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/onboarding/change-protocol.md",
-      "target": "../../templates/acceptance-full.md",
       "status": "RESOLVED"
     }
   ],

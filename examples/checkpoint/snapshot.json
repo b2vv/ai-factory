@@ -1,0 +1,5 @@
+{
+  "root": "/example/repository",
+  "head": "example-revision",
+  "dirty_scope": "explicit scoped fingerprint"
+}

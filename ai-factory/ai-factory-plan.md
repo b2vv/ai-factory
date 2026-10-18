@@ -16,6 +16,10 @@ scope: global ~/.agents; cargotrans-ui і dg; практики QnA backend (open
 
 Перед роботою визнач [виконавця критики/review та пакет передачі](review-handoff.md): новий субагент чи наявна окрема сесія, owner/reference; за невизначеності запитай до spawn/надсилання.
 
+## Before code: explicit task readiness
+
+Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
+
 ## Обери маршрут
 
 | Ситуація | Що зробити |

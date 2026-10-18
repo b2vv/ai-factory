@@ -1,4 +1,4 @@
-# AI Factory — 0.4.0 candidate
+# AI Factory — 0.5.0 candidate
 
 - **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
 - **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.
@@ -26,4 +26,8 @@ python3 -B tools/kit.py plan --package "$PWD" --root '/absolute/dedicated/toolki
 
 Нові інсталяції та upgrades — лише у dedicated root, не поверх `~/.agents`, `~/.claude` або product repo. Передавайте повний бажаний component set. Native discovery не доведена exact-file читанням; вибирайте qualified skill paths. `docs`, `import-memory`, `morning`, `skill-creator` мають по дві збережені synced-версії; не активувати однойменні variants одночасно без явного mapping.
 
-Чинні Cargo/Courses/Cassiopeia pins і readonly cache `626fd68` не змінено. Вони продовжують стару layout до окремого погодженого upgrade. [Повна карта всіх 350 старих файлів](provenance/layout-migration.json) фіксує moved/deduplicated/revised destinations; жоден original skill не втрачено.
+Product pins і immutable caches оновлюються окремим погодженим rollout; публікація shared release сама їх не перемикає. [Повна карта всіх 350 старих файлів](provenance/layout-migration.json) фіксує moved/deduplicated/revised destinations; жоден original skill не втрачено.
+
+## Pre-code readiness
+
+[One checkpoint per task](ai-factory/pre-code-checkpoint.md): acceptance, proportional grilling, dependencies, scoped impact and READY/BLOCKED. Small/resume remain proportional. Optional offline declaration/index validation and regression fixtures are included; no automatic CI or agent enforcement is claimed.
