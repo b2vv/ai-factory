@@ -1,0 +1,155 @@
+{
+  "example_only": "Synthetic fixture; no actual review or product PASS",
+  "approved": true,
+  "tasks": [
+    {
+      "task_id": "example-small",
+      "owner": "operator",
+      "mode": "small",
+      "small_reason": "One local contract restoration with no new boundary",
+      "status": "READY",
+      "scope": "Restore one documented mapping",
+      "non_goals": "No API or deployment changes",
+      "acceptance": [
+        "task.md#acceptance"
+      ],
+      "snapshot": {
+        "root": "/example/repository",
+        "head": "example-revision",
+        "dirty_scope": "explicit scoped fingerprint"
+      },
+      "assumptions": [
+        "Existing contract confirmed at docs/contract.md:4"
+      ],
+      "alternatives": [
+        "Broader refactor rejected because unrelated to acceptance"
+      ],
+      "grilling": {
+        "status": "not-needed",
+        "reason": "Observable behavior and boundary already documented",
+        "questions": []
+      },
+      "dependencies": [],
+      "impact": {
+        "method": "files",
+        "snapshot": {
+          "root": "/example/repository",
+          "head": "example-revision",
+          "dirty_scope": "explicit scoped fingerprint"
+        },
+        "reason": "Direct scoped search is sufficient; no graph needed",
+        "callers": [
+          "src/caller.ts:10"
+        ],
+        "contracts": [
+          "docs/contract.md:4"
+        ],
+        "checks": [
+          "tests/mapping.test.ts:8"
+        ],
+        "evidence": [
+          "rg mapping src tests; inspected caller and contract at this snapshot"
+        ],
+        "coverage": "Named caller, contract and test; other modules outside scope"
+      },
+      "plan_review": {
+        "required": false,
+        "status": "N/A",
+        "reason": "Local small threshold permits focused post-code independent review; no new planning decision",
+        "findings": []
+      },
+      "plan": {
+        "version": "example-plan-v1",
+        "sha256": "f9a43878caacd78f02d7e10ee31eabdc860fcd9936c3078338340577541ebe78"
+      },
+      "decision_surface": {
+        "acceptance": "Restore documented mapping",
+        "scope": "One mapping; no API or deploy",
+        "contracts": "Existing mapping contract unchanged",
+        "dependencies": "None; one writer",
+        "architecture": "Existing local architecture retained",
+        "risk": "Bounded mapping restoration",
+        "test_strategy": "Focused mapping regression; no live services"
+      },
+      "measurements": []
+    },
+    {
+      "task_id": "example-blocked",
+      "owner": "operator",
+      "mode": "small",
+      "small_reason": "One local contract restoration with no new boundary",
+      "status": "BLOCKED",
+      "scope": "Restore one documented mapping",
+      "non_goals": "No API or deployment changes",
+      "acceptance": [
+        "task.md#acceptance"
+      ],
+      "snapshot": {
+        "root": "/example/repository",
+        "head": "example-revision",
+        "dirty_scope": "explicit scoped fingerprint"
+      },
+      "assumptions": [
+        "Existing contract confirmed at docs/contract.md:4"
+      ],
+      "alternatives": [
+        "Broader refactor rejected because unrelated to acceptance"
+      ],
+      "grilling": {
+        "status": "not-needed",
+        "reason": "Observable behavior and boundary already documented",
+        "questions": [
+          {
+            "question": "Which failure policy?",
+            "required": true,
+            "status": "deferred",
+            "reason": "Owner decision pending"
+          }
+        ]
+      },
+      "dependencies": [],
+      "impact": {
+        "method": "files",
+        "snapshot": {
+          "root": "/example/repository",
+          "head": "example-revision",
+          "dirty_scope": "explicit scoped fingerprint"
+        },
+        "reason": "Direct scoped search is sufficient; no graph needed",
+        "callers": [
+          "src/caller.ts:10"
+        ],
+        "contracts": [
+          "docs/contract.md:4"
+        ],
+        "checks": [
+          "tests/mapping.test.ts:8"
+        ],
+        "evidence": [
+          "rg mapping src tests; inspected caller and contract at this snapshot"
+        ],
+        "coverage": "Named caller, contract and test; other modules outside scope"
+      },
+      "plan_review": {
+        "required": false,
+        "status": "N/A",
+        "reason": "Local small threshold permits focused post-code independent review; no new planning decision",
+        "findings": []
+      },
+      "plan": {
+        "version": "example-plan-v1",
+        "sha256": "f9a43878caacd78f02d7e10ee31eabdc860fcd9936c3078338340577541ebe78"
+      },
+      "decision_surface": {
+        "acceptance": "Restore documented mapping",
+        "scope": "One mapping; no API or deploy",
+        "contracts": "Existing mapping contract unchanged",
+        "dependencies": "None; one writer",
+        "architecture": "Existing local architecture retained",
+        "risk": "Bounded mapping restoration",
+        "test_strategy": "Focused mapping regression; no live services"
+      },
+      "measurements": []
+    }
+  ]
+}

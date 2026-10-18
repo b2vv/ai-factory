@@ -51,6 +51,21 @@
   "plan_review": {
     "required": false,
     "status": "N/A",
-    "reason": "Local small threshold permits focused post-code independent review; no new planning decision"
-  }
+    "reason": "Local small threshold permits focused post-code independent review; no new planning decision",
+    "findings": []
+  },
+  "plan": {
+    "version": "example-plan-v1",
+    "sha256": "f9a43878caacd78f02d7e10ee31eabdc860fcd9936c3078338340577541ebe78"
+  },
+  "decision_surface": {
+    "acceptance": "Restore documented mapping",
+    "scope": "One mapping; no API or deploy",
+    "contracts": "Existing mapping contract unchanged",
+    "dependencies": "None; one writer",
+    "architecture": "Existing local architecture retained",
+    "risk": "Bounded mapping restoration",
+    "test_strategy": "Focused mapping regression; no live services"
+  },
+  "measurements": []
 }

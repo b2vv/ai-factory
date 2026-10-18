@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.5.0-candidate",
+  "version": "0.6.0-candidate",
   "status": "AUTHOR_VALIDATED_CANDIDATE",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -84,12 +84,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "d4523099aa742bd5b498d83a986f013855bc4113a854e3f84ad040d16effd1d6",
+      "sha256": "57f71d8e70a2a1437db70afb5923e452388ea68eef2a839088aaa26371561907",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "8aa65f1325cd6c64697fbd5d94a8771ad4e92a3e75335f69dcc48a247354445b",
+      "sha256": "f6ad36d98bb4c021b60fafba5a0111b339af9c223a2e9610be7c79adafa044b8",
       "component": "core"
     },
     {
@@ -154,7 +154,7 @@
     },
     {
       "path": "ai-factory/pre-code-checkpoint.md",
-      "sha256": "698cafb9a8538cc08154754bb22b7d35d240896d2c8abca729c12f4940202622",
+      "sha256": "f4152defdc0109ca6ce1684df0d15b0a583b027aab88d17978fd597944cfad30",
       "component": "core"
     },
     {
@@ -278,13 +278,28 @@
       "component": "core"
     },
     {
+      "path": "examples/checkpoint/batch-snapshots.json",
+      "sha256": "a4b3dcee92aaca3833e4827f4c0c89b2f40fc8a40d9264fc75832c05c3691892",
+      "component": "core"
+    },
+    {
+      "path": "examples/checkpoint/batch.json",
+      "sha256": "2fb7fa98090ea9fd43cd9b3e34dd0ef2c8dd3c98287d3f887cd17ab6e52b0d7c",
+      "component": "core"
+    },
+    {
       "path": "examples/checkpoint/record.json",
-      "sha256": "737837b1bdfc695afa79b4f585e7523a1be6b7f69b34207a870010f62dbb73da",
+      "sha256": "e906cce582d6696f0773daca3ad25caef139978ded63c39f17af8bbf59a68b48",
       "component": "core"
     },
     {
       "path": "examples/checkpoint/snapshot.json",
-      "sha256": "a6364bf840111e023d699c6f842be8cb35972c4f33489155db6620a2797168e1",
+      "sha256": "12a46293e2963cb25bebdeb30fcfc42b85e7996405498cac66541ef714d81a5b",
+      "component": "core"
+    },
+    {
+      "path": "examples/checkpoint/sprint-batch.md",
+      "sha256": "05dd1072925c8e53ce34d8dd69ac08231fd89172af053aac6d46504baec90507",
       "component": "core"
     },
     {
@@ -303,8 +318,13 @@
       "component": "core"
     },
     {
+      "path": "prompts/plan-critic.md",
+      "sha256": "b0d47591c293915084e6ea9b51460bc8e01248275ed003ab818a4b121eae785c",
+      "component": "core"
+    },
+    {
       "path": "provenance/layout-migration.json",
-      "sha256": "cb3b926fe8acb14c2c42fd625c836078007a61580d406a4bc521309844650092",
+      "sha256": "d27a29f4e7097db47cd55ae11976d48ff87528a6fbce81338521e4b23f4060a4",
       "component": "core"
     },
     {
@@ -369,7 +389,7 @@
     },
     {
       "path": "runtime/checkpoint/precode.py",
-      "sha256": "db99e28737d75a5e32855258daff915e1fdbc5dc5dfc9408f40461ffdd9b76f0",
+      "sha256": "e3d7849f7de0278629d3616067c0d49bd02dabad26144b9234c4677a66dab4ff",
       "component": "core"
     },
     {
@@ -1773,8 +1793,13 @@
       "component": "core"
     },
     {
+      "path": "tests/checkpoint/test_critique.py",
+      "sha256": "9ba716d0421bc11f9d91102a932d73897de139aa1bb0490163c7b014fec64bda",
+      "component": "core"
+    },
+    {
       "path": "tests/checkpoint/test_precode.py",
-      "sha256": "fb22bd2120845580cca2803a091806ade5d3c6d26da30fbe94a2fff9053374ac",
+      "sha256": "d73df5e82da02a7a1cd6c7350eb4e719ed1b637b2c8823721d8ae3b42c47528d",
       "component": "core"
     },
     {

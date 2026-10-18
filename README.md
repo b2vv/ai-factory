@@ -1,4 +1,4 @@
-# AI Factory — 0.5.0 candidate
+# AI Factory — 0.6.0 candidate
 
 - **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
 - **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.
@@ -31,3 +31,5 @@ Product pins і immutable caches оновлюються окремим пого�
 ## Pre-code readiness
 
 [One checkpoint per task](ai-factory/pre-code-checkpoint.md): acceptance, proportional grilling, dependencies, scoped impact and READY/BLOCKED. Small/resume remain proportional. Optional offline declaration/index validation and regression fixtures are included; no automatic CI or agent enforcement is claimed.
+
+Versioned [plan critic prompt](prompts/plan-critic.md), exact plan/snapshot binding and material-change rules extend that same checkpoint. No extra tracker, native registration or automatic reviewer dispatch.

@@ -17,6 +17,18 @@ Before the first product mutation, the operator/coder checks this block in the e
 
 The selected skill retains its contract: [grilling](../skills/plan/grilling/SKILL.md), [plan-critique](../skills/plan/plan-critique/SKILL.md), [plan-defense](../skills/plan/plan-defense/SKILL.md). A claim of `plan-critique` completion requires its four independent lenses; one author self-check is not that PASS. Use the currently authorized independent route; no implicit new reviewer, duplicate session or contact. Exact-file reading is an instruction fallback, not proof of native invocation. If a required independent gate is unavailable, mark that dependent scope BLOCKED. Local contracts can be stronger; this checkpoint does not waive queue grilling, human QA or product gates.
 
+## Bind critique to the plan, not to the conversation
+
+The existing checkpoint is also the decision surface: record what is known, assumed, undecided and excluded before code. No second tracker is needed. Plan critique happens before the dependent implementation; implementation review remains separate. Small can retain a justified local N/A, never a silent waiver of a stronger local gate.
+
+Use the selected versioned local critic prompt or [the generic plan critic](../prompts/plan-critic.md). Record prompt path/version/hash and its pinned release, critic reference, plan path/version/SHA-256 and the target root/HEAD plus relevant dirty/untracked hashes. Store raw findings or a durable pointer, each finding's disposition/evidence, the verdict and its precise scope. ACCEPTED with an open blocker is invalid. Changed prompt instructions require checking applicability; an old verdict is not approval under a new prompt by implication. Original skill contracts retain their required lenses.
+
+Material change means a change to **acceptance or scope; contracts or dependencies; an architecture decision; risk or test strategy**. Re-critique the affected plan scope before code, and revalidate dependent tasks that consume it. Do not invalidate unrelated tasks just because they share a sprint. Changed code/snapshot without a plan decision change requires affected evidence revalidation. Spelling/layout only: compare the delta, record unchanged decisions and rebind the retained verdict to the exact new plan/snapshot; do not claim a new critique occurred. Unresolved blockers stay visible in every route. For a plan edit that changes decisions, a carry-forward note cannot replace fresh required critique.
+
+Record each executed check as command + exit code + PASS/FAIL + artifact + exact HEAD and dirty scope. Planned commands are not execution evidence. Unrun required checks remain BLOCKED/NOT_TESTED, with no invented exit code. Preserve explicitly unaffected evidence on resume; state who verified the rebinding and why. An old HEAD-only PASS never covers new dirty bytes automatically.
+
+[Synthetic sprint example](../examples/checkpoint/sprint-batch.md) shows independent, blocked and dependent tasks without retrospective PASS. Its [batch JSON](../examples/checkpoint/batch.json) and [current snapshots](../examples/checkpoint/batch-snapshots.json) are fixture inputs, not real task state.
+
 ## Optional declaration validator
 
 [precode.py](../runtime/checkpoint/precode.py) checks explicitly supplied JSON and a separately supplied current snapshot. [Example](../examples/checkpoint/record.json) and [snapshot](../examples/checkpoint/snapshot.json) are generic fixtures, not live proof. The human-readable block above is sufficient unless the local task explicitly chooses JSON; do not create a duplicate source of truth merely to use the helper.
@@ -24,9 +36,12 @@ The selected skill retains its contract: [grilling](../skills/plan/grilling/SKIL
 ```sh
 python3 -B runtime/checkpoint/precode.py record /explicit/record.json /explicit/current-snapshot.json
 python3 -B runtime/checkpoint/precode.py batch /explicit/batch.json /explicit/current-snapshots.json
+python3 -B runtime/checkpoint/precode.py change /explicit/before.json /explicit/after.json
 python3 -B runtime/checkpoint/precode.py index --root /explicit/repository --index work/tasks/README.md --task-root work/tasks
 ```
 
 The validator checks declaration consistency: missing impact, unresolved required questions/dependencies, stale snapshot declarations and missing independent evidence block READY. Batch validation returns each task's status. `index` is an opt-in directory-index check for Cargo-style task folders, not a universal phase/queue migration. It checks links/directory coverage, not semantic status truth.
 
 **Enforcement limit:** neither prose nor this helper proves factual evidence, correct applicability, reviewer independence, native discovery or agent compliance. It never reads Git state, runs graphs, starts agents or changes configuration. The operator must collect/verify current evidence and invoke the check if selected. No CI/hook enforcement is installed by this release; fixtures validate the helper's behavior only.
+
+The 0.6 optional JSON contract adds plan identity, a declared decision surface, explicit findings and measurement lists. A required planning verdict also binds its stage, prompt, plan and target snapshot. `change` compares the seven declared material fields; it cannot infer semantics or detect a dishonest "wording-only" declaration. RECRITIQUE/BLOCKED return a nonzero exit; REAFFIRM/REVALIDATE are instructions to collect evidence, not READY. Carry-forward requires sourced rebinding by an owner and is rejected for material field changes. Markdown users record these same facts in their existing record; no format migration is automatic.

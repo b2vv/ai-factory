@@ -1,5 +1,9 @@
 {
   "root": "/example/repository",
   "head": "example-revision",
-  "dirty_scope": "explicit scoped fingerprint"
+  "dirty_scope": "explicit scoped fingerprint",
+  "plan": {
+    "version": "example-plan-v1",
+    "sha256": "f9a43878caacd78f02d7e10ee31eabdc860fcd9936c3078338340577541ebe78"
+  }
 }

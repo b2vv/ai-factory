@@ -36,9 +36,10 @@
       "action": "updated",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
-        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
+        "0.6 release evolution: critique protocol and refreshed provenance"
       ],
-      "new_sha256": "d4523099aa742bd5b498d83a986f013855bc4113a854e3f84ad040d16effd1d6"
+      "new_sha256": "57f71d8e70a2a1437db70afb5923e452388ea68eef2a839088aaa26371561907"
     },
     {
       "old_path": "README.md",

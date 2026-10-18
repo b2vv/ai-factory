@@ -13,7 +13,7 @@ spec.loader.exec_module(p)
 class CheckpointTests(unittest.TestCase):
     def setUp(self):
         self.record = json.loads((ROOT / 'examples/checkpoint/record.json').read_text())
-        self.current = copy.deepcopy(self.record['snapshot'])
+        self.current = json.loads((ROOT / 'examples/checkpoint/snapshot.json').read_text())
     def status(self):
         return p.validate(self.record, self.current)['status']
     def test_valid_small_file_fallback(self):
@@ -60,6 +60,9 @@ class CheckpointTests(unittest.TestCase):
         self.record.update(mode='full',plan_review={'required':True,'status':'ACCEPTED','evidence':'plan.md#verdict','route':'existing-session','reference':'author','author':'author','defense':['plan.md#defense']})
         self.assertEqual(self.status(), 'BLOCKED')
         self.record['plan_review']['reference'] = 'independent-session'
+        prompt = {'path':'prompts/plan-critic.md','version':'1','sha256':__import__('hashlib').sha256((ROOT/'prompts/plan-critic.md').read_bytes()).hexdigest()}
+        self.current['review_prompt'] = prompt
+        self.record['plan_review'].update(stage='plan', plan=copy.deepcopy(self.record['plan']), snapshot=copy.deepcopy(self.record['snapshot']), prompt=prompt, findings=[])
         self.assertEqual(self.status(), 'READY')
     def test_required_review_pending_blocks(self):
         self.record['plan_review'] = {'required':True,'status':'PENDING'}

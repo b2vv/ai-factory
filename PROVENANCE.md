@@ -19,3 +19,7 @@ The full internal source now has one editable skills/ tree and ai-factory/ plan.
 ## Release 0.5
 
 The checkpoint protocol, generic fixtures and read-only declaration/index validator are authored additions. Inherited workflow navigation was amended with recorded transformations; original SKILL bodies, licenses and runtime variants remain unchanged. No product files, private local instructions, credentials or caches are included.
+
+## Release 0.6
+
+Planning critique concepts were informed by a read-only comparison with a private development workflow. This release independently authors a generic prompt, declaration checks, examples and tests; no text, code, domain content, model bindings, landing scripts or configuration from that project is copied. No third-party license is inferred from local access or the absence of a root license file. Any future direct reuse requires an explicit rights/notice review before copying. Original included skills and notices remain unchanged.
