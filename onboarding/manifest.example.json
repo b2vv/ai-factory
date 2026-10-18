@@ -1,0 +1,62 @@
+{
+  "instructions": [
+    "AGENTS.md",
+    "CLAUDE.md"
+  ],
+  "workflow": [],
+  "dependency_files": [],
+  "command_files": [
+    "package.json",
+    "Makefile"
+  ],
+  "skills": [],
+  "integrations": [],
+  "conflicts": [],
+  "scope": {
+    "mode": "small"
+  },
+  "hosts": [
+    {
+      "host": "codex-local",
+      "session": "replace-with-current-session",
+      "discovered_skills": [],
+      "review": {
+        "source": "local",
+        "path": ".agents/skills/review/SKILL.md"
+      }
+    },
+    {
+      "host": "claude-local",
+      "session": "replace-with-current-session",
+      "discovered_skills": [],
+      "review": {
+        "source": "local",
+        "path": ".agents/skills/review/SKILL.md"
+      }
+    }
+  ],
+  "models": [
+    {
+      "host": "codex-local",
+      "session": "replace-with-current-session",
+      "role": "helper",
+      "entitlement": "unknown",
+      "budget": "unknown"
+    },
+    {
+      "host": "codex-local",
+      "session": "replace-with-current-session",
+      "role": "coder",
+      "entitlement": "unknown",
+      "budget": "unknown"
+    },
+    {
+      "host": "codex-local",
+      "session": "replace-with-current-session",
+      "role": "reviewer",
+      "entitlement": "unknown",
+      "budget": "unknown"
+    }
+  ],
+  "adapter_files": []
+}

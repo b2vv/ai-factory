@@ -1,0 +1,3075 @@
+[
+  {
+    "case": "scoped-complete",
+    "complete": true,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "simulated-browser-key",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "active-trigger",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "missing-trailers-even-from-rows",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "simulated-browser-key",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "active-trigger",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "keyboard-evidence-substituted-submit",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "dispatch-submit",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "active-trigger",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "keyboard-contract-substituted-submit",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "dispatch-submit",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "dispatch-submit",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "active-trigger",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "active-state-missing",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "simulated-browser-key",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "active-state-default-screenshot",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "simulated-browser-key",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "default",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "report-overclaim-unknown",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "simulated-browser-key",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "active-trigger",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips",
+        "bus-filter"
+      ]
+    }
+  },
+  {
+    "case": "report-overclaim-partial",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "simulated-browser-key",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PARTIAL",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "active-trigger",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          },
+          "reason": "No browser evidence"
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "scoped-keyboard-na",
+    "complete": true,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": false,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible",
+          "na_reason": "Edit-only scope excludes keyboard acceptance",
+          "na_source": "Synthetic owner scope"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "N/A"
+        }
+      ],
+      "claimed_pass_rows": []
+    }
+  },
+  {
+    "case": "final-diff-stale",
+    "complete": false,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "filter_scopes": [
+        {
+          "entity_type": "truck",
+          "surface": "list",
+          "source": "Synthetic AF"
+        },
+        {
+          "entity_type": "trailer",
+          "surface": "list",
+          "source": "Synthetic AF"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-matching"
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "trailer-filter-nonmatching-filtered expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "trailer",
+          "kind": "filter-nonmatching"
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-keyboard-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "keyboard",
+          "input_method": "simulated-browser-key",
+          "key": "Enter",
+          "ui_effect": "popover closes; matching A visible"
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "open-popover",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-open-popover expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "active-trigger",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-active-trigger expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        },
+        {
+          "id": "truck-visual-chips",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "contractual result",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "chips",
+          "action": "Perform scoped action",
+          "assertion": "truck-visual-chips expected effect",
+          "channel": "ui",
+          "required": true,
+          "entity_type": "truck",
+          "kind": "visual"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "old-ui-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "truck-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-matching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-matching-filtered expected effect",
+            "kind": "filter-matching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-matching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "trailer-filter-nonmatching-filtered",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "filtered",
+            "channel": "ui",
+            "assertion": "trailer-filter-nonmatching-filtered expected effect",
+            "kind": "filter-nonmatching",
+            "entity_type": "trailer",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "trailer-filter-nonmatching-filtered",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-keyboard-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-keyboard-open-popover expected effect",
+            "kind": "keyboard",
+            "entity_type": "truck",
+            "input_method": "simulated-browser-key",
+            "key": "Enter",
+            "ui_effect": "popover closes; matching A visible",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-keyboard-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-open-popover",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "open-popover",
+            "channel": "ui",
+            "assertion": "truck-visual-open-popover expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-open-popover",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-active-trigger",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "active-trigger",
+            "channel": "ui",
+            "assertion": "truck-visual-active-trigger expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-active-trigger",
+            "observed": "synthetic expected observation"
+          }
+        },
+        {
+          "id": "truck-visual-chips",
+          "status": "PASS",
+          "evidence": {
+            "revision": "synthetic-final",
+            "diff": "synthetic-diff",
+            "run_id": "synthetic-run",
+            "environment": "synthetic-only",
+            "fixture_id": "synthetic-A-B",
+            "surface": "list",
+            "state": "chips",
+            "channel": "ui",
+            "assertion": "truck-visual-chips expected effect",
+            "kind": "visual",
+            "entity_type": "truck",
+            "executed": true,
+            "artifact": "synthetic-trace",
+            "assertion_id": "truck-visual-chips",
+            "observed": "synthetic expected observation"
+          }
+        }
+      ],
+      "claimed_pass_rows": [
+        "truck-filter-matching-filtered",
+        "truck-filter-nonmatching-filtered",
+        "trailer-filter-matching-filtered",
+        "trailer-filter-nonmatching-filtered",
+        "truck-keyboard-open-popover",
+        "truck-visual-open-popover",
+        "truck-visual-active-trigger",
+        "truck-visual-chips"
+      ]
+    }
+  },
+  {
+    "case": "scoped-filter-na",
+    "complete": true,
+    "contract": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "qa": [
+        {
+          "id": "AF",
+          "source": "Synthetic scoped acceptance"
+        }
+      ],
+      "rows": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "qa_id": "AF",
+          "field": "brand",
+          "expected": "A visible",
+          "expected_source": "Synthetic fixture contract",
+          "surface": "list",
+          "state": "filtered",
+          "action": "Perform scoped action",
+          "assertion": "truck-filter-matching-filtered expected effect",
+          "channel": "ui",
+          "required": false,
+          "entity_type": "truck",
+          "kind": "filter-matching",
+          "na_reason": "Acceptance only edits name; filters excluded",
+          "na_source": "Synthetic owner scope"
+        }
+      ]
+    },
+    "report": {
+      "revision": "synthetic-final",
+      "diff": "synthetic-diff",
+      "run_id": "synthetic-run",
+      "environment": "synthetic-only",
+      "fixture_id": "synthetic-A-B",
+      "results": [
+        {
+          "id": "truck-filter-matching-filtered",
+          "status": "N/A"
+        }
+      ],
+      "claimed_pass_rows": []
+    }
+  }
+]

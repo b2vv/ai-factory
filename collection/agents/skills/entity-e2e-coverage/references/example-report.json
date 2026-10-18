@@ -1,0 +1,199 @@
+{
+  "revision": "demo-sha-17",
+  "diff": "sha256:demo-diff-17",
+  "run_id": "synthetic-run-17",
+  "environment": "isolated-demo",
+  "fixture_id": "depot-fixture-17",
+  "results": [
+    {
+      "id": "created-persisted-name",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "storage",
+        "state": "created-persisted",
+        "channel": "api",
+        "assertion": "name equals Depot Cedar",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "created-persisted-name",
+        "observed": "Depot Cedar"
+      }
+    },
+    {
+      "id": "created-persisted-region",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "storage",
+        "state": "created-persisted",
+        "channel": "api",
+        "assertion": "region equals r-17",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "created-persisted-region",
+        "observed": "r-17"
+      }
+    },
+    {
+      "id": "created-view-name",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "detail",
+        "state": "created-view",
+        "channel": "ui",
+        "assertion": "name equals Depot Cedar",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "created-view-name",
+        "observed": "Depot Cedar"
+      }
+    },
+    {
+      "id": "created-view-region",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "detail",
+        "state": "created-view",
+        "channel": "ui",
+        "assertion": "region equals Kyiv region",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "created-view-region",
+        "observed": "Kyiv region"
+      }
+    },
+    {
+      "id": "edit-prefill-name",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "edit-form",
+        "state": "edit-prefill",
+        "channel": "ui",
+        "assertion": "name equals Depot Cedar",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "edit-prefill-name",
+        "observed": "Depot Cedar"
+      }
+    },
+    {
+      "id": "edit-prefill-region",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "edit-form",
+        "state": "edit-prefill",
+        "channel": "ui",
+        "assertion": "region equals Kyiv region",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "edit-prefill-region",
+        "observed": "Kyiv region"
+      }
+    },
+    {
+      "id": "updated-persisted-name",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "storage",
+        "state": "updated-persisted",
+        "channel": "api",
+        "assertion": "name equals Depot Birch",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "updated-persisted-name",
+        "observed": "Depot Birch"
+      }
+    },
+    {
+      "id": "updated-persisted-region",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "storage",
+        "state": "updated-persisted",
+        "channel": "api",
+        "assertion": "region equals r-17",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "updated-persisted-region",
+        "observed": "r-17"
+      }
+    },
+    {
+      "id": "updated-reloaded-view-name",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "detail",
+        "state": "updated-reloaded-view",
+        "channel": "ui",
+        "assertion": "name equals Depot Birch",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "updated-reloaded-view-name",
+        "observed": "Depot Birch"
+      }
+    },
+    {
+      "id": "updated-reloaded-view-region",
+      "status": "PASS",
+      "evidence": {
+        "revision": "demo-sha-17",
+        "diff": "sha256:demo-diff-17",
+        "run_id": "synthetic-run-17",
+        "environment": "isolated-demo",
+        "fixture_id": "depot-fixture-17",
+        "surface": "detail",
+        "state": "updated-reloaded-view",
+        "channel": "ui",
+        "assertion": "region equals Kyiv region",
+        "executed": true,
+        "artifact": "synthetic-trace.json",
+        "assertion_id": "updated-reloaded-view-region",
+        "observed": "Kyiv region"
+      }
+    }
+  ]
+}

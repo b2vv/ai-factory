@@ -1,0 +1,128 @@
+[
+  {
+    "path": "onboarding/preflight.py",
+    "source": "personal AI Factory onboarding/preflight.py",
+    "source_sha256": "6cb368288d88124ef6aa108953e9689798575a77da0f534bd5dea0fe1a301fe7",
+    "adaptation": "byte-for-byte"
+  },
+  {
+    "path": "onboarding/test_preflight.py",
+    "source": "personal AI Factory onboarding/test_preflight.py",
+    "source_sha256": "75fcbaa8e4dc964dd37f929281b8ec3e5f9e733defdf402cf726f70731c2ef9b",
+    "adaptation": "byte-for-byte"
+  },
+  {
+    "path": "onboarding/README.md",
+    "source": "personal AI Factory onboarding/README.md",
+    "source_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
+    "adaptation": "byte-for-byte"
+  },
+  {
+    "path": "onboarding/manifest.example.json",
+    "source": "personal AI Factory onboarding/manifest.example.json",
+    "source_sha256": "53b686568a31b1004ee986315dbc4b70d839a4e0236cd41f27897fe6f172a0a2",
+    "adaptation": "byte-for-byte"
+  },
+  {
+    "path": "onboarding/change-protocol.md",
+    "source": "personal AI Factory onboarding/change-protocol.md",
+    "source_sha256": "3e9a2f5e676c8e215a1ab550a799139f4f07d800799325e01a101fadf309530a",
+    "adaptation": "navigation link only"
+  },
+  {
+    "path": "onboarding/acceptance-template.md",
+    "source": "personal AI Factory onboarding/acceptance-template.md",
+    "source_sha256": "9c7c4cc0b3d809c1a9b96c88f7560f1cbe0b1de14ff3bcea4ac2629c91f4841f",
+    "adaptation": "navigation links only; bundled review-handoff contract"
+  },
+  {
+    "path": "skills/graphify-local/SKILL.md",
+    "source": "canonical personal graphify-local skill",
+    "source_sha256": "eaa01e81610e837bd588cbb2075ebbd2ea6c5a3716dda7ec1529e2ca02ad36b0",
+    "adaptation": "byte-for-byte"
+  },
+  {
+    "path": "review/review_package.py",
+    "source": "personal AI Factory/ai-factory/review/review_package.py",
+    "source_sha256": "7552ed113b6f92909be68e091bb60520c1a57a4841c2c121ad9fbb5506c8dcc1",
+    "adaptation": "disable git fsmonitor/hooks for read queries; generic fixture reviewer identity"
+  },
+  {
+    "path": "review/test_review_package.py",
+    "source": "personal AI Factory/ai-factory/review/test_review_package.py",
+    "source_sha256": "89ff7acc6863fe6377af5c083b73d5f79aa9d833cc8cc6e5198a4456c591a5e5",
+    "adaptation": "disable git fsmonitor/hooks for read queries; generic fixture reviewer identity"
+  },
+  {
+    "path": "review/manifest.example.json",
+    "source": "personal AI Factory/ai-factory/review/manifest.example.json",
+    "source_sha256": "bdeb442e899a43d2e22537b0321a9de1ddce1c3c5e62ecfe49e32a2e5064d099",
+    "adaptation": "disable git fsmonitor/hooks for read queries; generic fixture reviewer identity"
+  },
+  {
+    "path": "review/response.example.json",
+    "source": "personal AI Factory/ai-factory/review/response.example.json",
+    "source_sha256": "7850b3b9faa5cad0f1eee576f4db354dcc4feddc233c25cfb1a4530344f8ba7f",
+    "adaptation": "disable git fsmonitor/hooks for read queries; generic fixture reviewer identity"
+  },
+  {
+    "path": "session-size/session_guard.py",
+    "source": "personal AI Factory/ai-factory/session-size/session_guard.py",
+    "source_sha256": "fa57563c529cd4ec685e6f6fe6a1f93bada386263218ed8cead6f7907dc27e37",
+    "adaptation": "explicit absolute --store; injected guidance includes store; generic adapter comment; disable Git hooks/fsmonitor"
+  },
+  {
+    "path": "session-size/test_session_guard.py",
+    "source": "personal AI Factory/ai-factory/session-size/test_session_guard.py",
+    "source_sha256": "69cc8d6a77e1de9acd45d737fb835804e517b8c1d5175af385580c274068f20f",
+    "adaptation": "source tests plus explicit-store test; synthetic key marker assembled at runtime (no real credential)"
+  },
+  {
+    "path": "docs/review-handoff.md",
+    "source": "personal AI Factory/ai-factory/review-handoff.md",
+    "source_sha256": "d8dd6d8fbabac2e80f02a4525af328a6711b448ad756eee318af1b12fc5d8a6c",
+    "adaptation": "relative bundled links and explicit KIT command path"
+  },
+  {
+    "path": "docs/models.md",
+    "source": "personal AI Factory/ai-factory/models.md",
+    "source_sha256": "c6be2aecf00624d04155b0ecc3fff34501518faa1e771da7850ecee462fc5878",
+    "adaptation": "remove historical frontmatter; relative bundled links"
+  },
+  {
+    "path": "docs/crg.md",
+    "source": "personal AI Factory/ai-factory/crg.md",
+    "source_sha256": "ff093a451960dc7e925d597780edbd07fbd63b024ea6aa1b4b23837cc0fd1ba4",
+    "adaptation": "retain generic freshness/recovery only; omit host registrations, project names, graphs and historical evidence"
+  },
+  {
+    "path": "skills/acceptance-spec/SKILL.md",
+    "source": "personal AI Factory/skills/plan/acceptance-spec/SKILL.md",
+    "source_sha256": "ff7d07cca0c28980c58ee8ca83d0283830ea93a2c2a157a29b37e02a7874fed4",
+    "adaptation": "portable scope/routing header; local TDD and normative precedence; independent route and bundled model references, no mandatory external skill dependency"
+  },
+  {
+    "path": "skills/plan-defense/SKILL.md",
+    "source": "personal AI Factory/skills/plan/plan-defense/SKILL.md",
+    "source_sha256": "11d1d73ab06cbe44cd3aac4f45fb58a632f415ea89d24959d8234f27b018da6a",
+    "adaptation": "portable scope/routing header; local TDD and normative precedence; independent route and bundled model references, no mandatory external skill dependency"
+  },
+  {
+    "path": "skills/cto-research/SKILL.md",
+    "source": "personal AI Factory/skills/plan/cto-research/SKILL.md",
+    "source_sha256": "b7cb8f3c8b3c369df2e8fc7e773313147ceda4666f9b4c1b5b713c42c7fea814",
+    "adaptation": "portable scope/routing header; local TDD and normative precedence; independent route and bundled model references, no mandatory external skill dependency"
+  },
+  {
+    "path": "skills/plan-critique/SKILL.md",
+    "source": "personal AI Factory/skills/plan/plan-critique/SKILL.md",
+    "source_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
+    "adaptation": "portable scope/routing header; local TDD and normative precedence; independent route and bundled model references, no mandatory external skill dependency"
+  },
+  {
+    "path": "docs/feature-lifecycle.md",
+    "source": "personal AI Factory/ai-factory/feature-lifecycle.md",
+    "source_sha256": "c01ea920e05f3eb03357d024f3499ec728b4866ba11ddafb0cc8cdaeec3bfd06",
+    "adaptation": "curated generic lifecycle; no project appendix, unsupported skills optional"
+  }
+]
