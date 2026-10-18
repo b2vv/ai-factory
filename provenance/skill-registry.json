@@ -1,0 +1,533 @@
+{
+  "canonical_skill_root": "skills",
+  "native_discovery": "NOT_TESTED",
+  "default_activation": "none; explicit qualified-ID selection",
+  "skills": [
+    {
+      "id": "anti-slop-design",
+      "name": "anti-slop-design",
+      "path": "skills/anti-slop-design/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/caveman",
+      "name": "caveman",
+      "path": "skills/arch/caveman/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/code-review",
+      "name": "code-review",
+      "path": "skills/arch/code-review/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/codebase-design",
+      "name": "codebase-design",
+      "path": "skills/arch/codebase-design/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/diagnosing-bugs",
+      "name": "diagnosing-bugs",
+      "path": "skills/arch/diagnosing-bugs/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/domain-modeling",
+      "name": "domain-modeling",
+      "path": "skills/arch/domain-modeling/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/improve-codebase-architecture",
+      "name": "improve-codebase-architecture",
+      "path": "skills/arch/improve-codebase-architecture/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/receiving-code-review",
+      "name": "receiving-code-review",
+      "path": "skills/arch/receiving-code-review/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "arch/tdd",
+      "name": "tdd",
+      "path": "skills/arch/tdd/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "crg/crg-debug-issue",
+      "name": "crg-debug-issue",
+      "path": "skills/crg/crg-debug-issue/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "crg/crg-explore-codebase",
+      "name": "crg-explore-codebase",
+      "path": "skills/crg/crg-explore-codebase/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "crg/crg-refactor-safely",
+      "name": "crg-refactor-safely",
+      "path": "skills/crg/crg-refactor-safely/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "crg/crg-review-changes",
+      "name": "crg-review-changes",
+      "path": "skills/crg/crg-review-changes/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "deliver/implement-spec",
+      "name": "implement-spec",
+      "path": "skills/deliver/implement-spec/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "deliver/implement",
+      "name": "implement",
+      "path": "skills/deliver/implement/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "deliver/spec-flow",
+      "name": "spec-flow",
+      "path": "skills/deliver/spec-flow/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "deliver/to-spec",
+      "name": "to-spec",
+      "path": "skills/deliver/to-spec/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "deliver/to-tickets",
+      "name": "to-tickets",
+      "path": "skills/deliver/to-tickets/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "deliver/triage",
+      "name": "triage",
+      "path": "skills/deliver/triage/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "deliver/wayfinder",
+      "name": "wayfinder",
+      "path": "skills/deliver/wayfinder/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "design-pass",
+      "name": "design-pass",
+      "path": "skills/design-pass/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "entity-e2e-coverage",
+      "name": "entity-e2e-coverage",
+      "path": "skills/entity-e2e-coverage/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "git/git-guardrails-claude-code",
+      "name": "git-guardrails-claude-code",
+      "path": "skills/git/git-guardrails-claude-code/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "git/pr",
+      "name": "pr",
+      "path": "skills/git/pr/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "git/resolving-merge-conflicts",
+      "name": "resolving-merge-conflicts",
+      "path": "skills/git/resolving-merge-conflicts/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "git/setup-pre-commit",
+      "name": "setup-pre-commit",
+      "path": "skills/git/setup-pre-commit/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "graphify-local",
+      "name": "graphify-local",
+      "path": "skills/graphify-local/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "interface-review",
+      "name": "interface-review",
+      "path": "skills/interface-review/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "pattern-architecture-review",
+      "name": "pattern-architecture-review",
+      "path": "skills/pattern-architecture-review/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/acceptance-spec",
+      "name": "acceptance-spec",
+      "path": "skills/plan/acceptance-spec/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/ask-matt",
+      "name": "ask-matt",
+      "path": "skills/plan/ask-matt/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/cto-agenda",
+      "name": "cto-agenda",
+      "path": "skills/plan/cto-agenda/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/cto-research",
+      "name": "cto-research",
+      "path": "skills/plan/cto-research/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/grill-me",
+      "name": "grill-me",
+      "path": "skills/plan/grill-me/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/grill-with-docs",
+      "name": "grill-with-docs",
+      "path": "skills/plan/grill-with-docs/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/grilling",
+      "name": "grilling",
+      "path": "skills/plan/grilling/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/plan-critique",
+      "name": "plan-critique",
+      "path": "skills/plan/plan-critique/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/plan-defense",
+      "name": "plan-defense",
+      "path": "skills/plan/plan-defense/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "plan/to-questionnaire",
+      "name": "to-questionnaire",
+      "path": "skills/plan/to-questionnaire/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "pt/ponytail-audit",
+      "name": "ponytail-audit",
+      "path": "skills/pt/ponytail-audit/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "pt/ponytail-debt",
+      "name": "ponytail-debt",
+      "path": "skills/pt/ponytail-debt/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "pt/ponytail-gain",
+      "name": "ponytail-gain",
+      "path": "skills/pt/ponytail-gain/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "pt/ponytail-help",
+      "name": "ponytail-help",
+      "path": "skills/pt/ponytail-help/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "pt/ponytail-review",
+      "name": "ponytail-review",
+      "path": "skills/pt/ponytail-review/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "pt/ponytail",
+      "name": "ponytail",
+      "path": "skills/pt/ponytail/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "reference-ui-reconstruction",
+      "name": "reference-ui-reconstruction",
+      "path": "skills/reference-ui-reconstruction/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/frontend-design",
+      "name": "frontend-design",
+      "path": "skills/ship/frontend-design/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/handoff",
+      "name": "handoff",
+      "path": "skills/ship/handoff/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/post-deploy-check",
+      "name": "post-deploy-check",
+      "path": "skills/ship/post-deploy-check/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/prototype",
+      "name": "prototype",
+      "path": "skills/ship/prototype/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/research",
+      "name": "research",
+      "path": "skills/ship/research/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/retro",
+      "name": "retro",
+      "path": "skills/ship/retro/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/ship-report",
+      "name": "ship-report",
+      "path": "skills/ship/ship-report/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ship/teach",
+      "name": "teach",
+      "path": "skills/ship/teach/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/built-in-browser",
+      "name": "built-in-browser",
+      "path": "skills/synced/snapshot-01/built-in-browser/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-01/canvas-design",
+      "name": "canvas-design",
+      "path": "skills/synced/snapshot-01/canvas-design/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/chrome-browser",
+      "name": "chrome-browser",
+      "path": "skills/synced/snapshot-01/chrome-browser/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-01/computer-use",
+      "name": "computer-use",
+      "path": "skills/synced/snapshot-01/computer-use/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-01/deep-research",
+      "name": "deep-research",
+      "path": "skills/synced/snapshot-01/deep-research/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/docs",
+      "name": "docs",
+      "path": "skills/synced/snapshot-01/docs/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/docx",
+      "name": "docx",
+      "path": "skills/synced/snapshot-01/docx/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-01/google-workspace",
+      "name": "google-workspace",
+      "path": "skills/synced/snapshot-01/google-workspace/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/import-memory",
+      "name": "import-memory",
+      "path": "skills/synced/snapshot-01/import-memory/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/morning",
+      "name": "morning",
+      "path": "skills/synced/snapshot-01/morning/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/pdf",
+      "name": "pdf",
+      "path": "skills/synced/snapshot-01/pdf/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-01/pptx",
+      "name": "pptx",
+      "path": "skills/synced/snapshot-01/pptx/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-01/skill-creator",
+      "name": "skill-creator",
+      "path": "skills/synced/snapshot-01/skill-creator/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-01/xlsx",
+      "name": "xlsx",
+      "path": "skills/synced/snapshot-01/xlsx/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-02/docs",
+      "name": "docs",
+      "path": "skills/synced/snapshot-02/docs/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-02/docx",
+      "name": "docx",
+      "path": "skills/synced/snapshot-02/docx/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-02/import-memory",
+      "name": "import-memory",
+      "path": "skills/synced/snapshot-02/import-memory/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-02/morning",
+      "name": "morning",
+      "path": "skills/synced/snapshot-02/morning/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-02/pdf",
+      "name": "pdf",
+      "path": "skills/synced/snapshot-02/pdf/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-02/pptx",
+      "name": "pptx",
+      "path": "skills/synced/snapshot-02/pptx/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "synced/snapshot-02/skill-creator",
+      "name": "skill-creator",
+      "path": "skills/synced/snapshot-02/skill-creator/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "synced/snapshot-02/xlsx",
+      "name": "xlsx",
+      "path": "skills/synced/snapshot-02/xlsx/SKILL.md",
+      "status": "EXCLUDED_EXPLICIT_LICENSE_RESTRICTION"
+    },
+    {
+      "id": "utils/migrate-to-shoehorn",
+      "name": "migrate-to-shoehorn",
+      "path": "skills/utils/migrate-to-shoehorn/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "utils/repo-bootstrap",
+      "name": "repo-bootstrap",
+      "path": "skills/utils/repo-bootstrap/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "utils/scaffold-exercises",
+      "name": "scaffold-exercises",
+      "path": "skills/utils/scaffold-exercises/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "utils/setup-matt-pocock-skills",
+      "name": "setup-matt-pocock-skills",
+      "path": "skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "utils/wait-what",
+      "name": "wait-what",
+      "path": "skills/utils/wait-what/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "utils/wizard",
+      "name": "wizard",
+      "path": "skills/utils/wizard/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "utils/writing-for-agents",
+      "name": "writing-for-agents",
+      "path": "skills/utils/writing-for-agents/SKILL.md",
+      "status": "INCLUDED"
+    },
+    {
+      "id": "ux-review",
+      "name": "ux-review",
+      "path": "skills/ux-review/SKILL.md",
+      "status": "INCLUDED"
+    }
+  ],
+  "policy_adapters": [
+    {
+      "id": "acceptance-spec-portable",
+      "path": "adapters/legacy-planning/acceptance-spec-portable.md",
+      "native_discovery": false
+    },
+    {
+      "id": "cto-research-portable",
+      "path": "adapters/legacy-planning/cto-research-portable.md",
+      "native_discovery": false
+    },
+    {
+      "id": "plan-critique-portable",
+      "path": "adapters/legacy-planning/plan-critique-portable.md",
+      "native_discovery": false
+    },
+    {
+      "id": "plan-defense-portable",
+      "path": "adapters/legacy-planning/plan-defense-portable.md",
+      "native_discovery": false
+    }
+  ]
+}

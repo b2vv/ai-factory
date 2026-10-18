@@ -3,7 +3,7 @@ import hashlib,json,re
 from pathlib import Path
 
 def verify(root):
-    root=Path(root).resolve();m=json.loads((root/'collection/manifest.json').read_text());issues=[]
+    root=Path(root).resolve();m=json.loads((root/'provenance/source-map.json').read_text());issues=[]
     recorded=set()
     for r in m['files']:
         p=root/r['destination']
@@ -13,8 +13,9 @@ def verify(root):
         if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=r['sha256']:issues.append('source hash mismatch: '+r['destination'])
         if not r['transformations'] and r['sha256']!=r['source_sha256']:issues.append('unrecorded transformation')
         if 'license' in p.name.lower() and r['transformations']:issues.append('license transformed')
-    actual={str(p.relative_to(root)) for p in (root/'collection').rglob('*') if p.is_file()}
-    if actual != recorded | {'collection/README.md','collection/manifest.json'}:issues.append('unrecorded or missing collection payload')
+    actual_skills={str(p.relative_to(root)) for p in (root/'skills').rglob('*') if p.is_file()}
+    recorded_skills={n for n in recorded if n.startswith('skills/')}
+    if actual_skills != recorded_skills:issues.append('unrecorded or missing skill payload')
     shared=[b for b in m['bundles'] if b['group']=='shared']
     if len(shared)!=84 or len({b['source'] for b in shared})!=84:issues.append('shared inventory must account for 84 distinct definitions')
     if any(b['name'].lower().startswith('b2b') or Path(b['source']).parent.name.lower().startswith('b2b') for b in m['bundles']):issues.append('b2b bundle forbidden')

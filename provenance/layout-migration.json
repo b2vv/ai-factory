@@ -1,0 +1,2907 @@
+{
+  "from_commit": "626fd6852e7ca53a4022feff30b7bcd492768733",
+  "from_files": 350,
+  "status": "AUTHOR_VALIDATED_CANDIDATE",
+  "files": [
+    {
+      "old_path": ".gitattributes",
+      "old_sha256": "d57a6c7af48fc8a85b19c5217196abd63ccd2aa72cd6dc8d58ac3a5c004e07f5",
+      "new_path": ".gitattributes",
+      "action": "unchanged",
+      "transformations": [],
+      "new_sha256": "d57a6c7af48fc8a85b19c5217196abd63ccd2aa72cd6dc8d58ac3a5c004e07f5"
+    },
+    {
+      "old_path": ".gitignore",
+      "old_sha256": "a1bd564a62214b0a18e05b60a8b5ea10feffc822eabb317a738b15ffce5118b2",
+      "new_path": ".gitignore",
+      "action": "unchanged",
+      "transformations": [],
+      "new_sha256": "a1bd564a62214b0a18e05b60a8b5ea10feffc822eabb317a738b15ffce5118b2"
+    },
+    {
+      "old_path": "AGENTS.md",
+      "old_sha256": "efc8bc1dc312156c534b6f3d7a88ef5364f29c244e068d29c2c058aac12dcfec",
+      "new_path": "AGENTS.md",
+      "action": "updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "aecd4fae24861824f6bef247dea8b810391a340fc50b56aea57cfdf742c4bdfa"
+    },
+    {
+      "old_path": "PROVENANCE.md",
+      "old_sha256": "2d8a713b39377e7ce5397231600b9ac92e9cf3c2e7c04ba589405b95c09c025d",
+      "new_path": "PROVENANCE.md",
+      "action": "updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "7c3bb418b97b0fed66810d191be32e3a320ccbd30ea209a6b72e482865a3665d"
+    },
+    {
+      "old_path": "README.md",
+      "old_sha256": "870d1fd43adeea277d0d3de3f561cc33e8614e5d6784f6d3b492293933a40b27",
+      "new_path": "docs/legacy/starter-readme.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "6329060b1357c88ca744fb691a44dc28912b85a941b0c1507fbccb7154a8c7b4"
+    },
+    {
+      "old_path": "checksums.sha256",
+      "old_sha256": "3c67574af9bcb5b4c23b4ef2c56b1297d824436443f697e94bf3d309d49b0c3f",
+      "new_path": "checksums.sha256",
+      "action": "regenerated-integrity-metadata",
+      "transformations": [
+        "Recomputed from current payload; self-referential hash omitted."
+      ],
+      "new_sha256": null
+    },
+    {
+      "old_path": "collection/README.md",
+      "old_sha256": "eb0a077eb2461ab635c0165b1b4aaa8d81319c5ae2fb3653a07910d97a0d3f8d",
+      "new_path": "docs/collection.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "de0a1f38ec8e9b47172989747e9943b578edc01d46ec126084c4174472395ebc"
+    },
+    {
+      "old_path": "collection/agents/AGENTS.md",
+      "old_sha256": "021700f566c3e7186a38037f87f1e794559084eab7f4defb3e848e480927284a",
+      "new_path": "rules/agent-entry.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "b0f4fd7eb84fb502f2744b71a34c4331805222002d9d15d0ca543a78c219c8b3"
+    },
+    {
+      "old_path": "collection/agents/ai-factory-plan.md",
+      "old_sha256": "5803fe7291d0aa61c4ad255f333683ff991d92982df2ab8ca5953929ae9410cc",
+      "new_path": "docs/legacy/ai-factory-plan-entry.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "d83984fef0a79373f95b5c84fda5a7d680df9bce46b526353a0b116951d529a7"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/ai-factory-plan.md",
+      "old_sha256": "66043671510fc953efb3864598aeab182b1da16a85f1f27f9aca5082a90fc805",
+      "new_path": "ai-factory/ai-factory-plan.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "d52ba7b03321db9e97570d20aa7a1de81f6f45348e7ddf54ccd1c332775a378e"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/crg.md",
+      "old_sha256": "e10cccf1614fd969e7c8dec48ee36faec1ca1c48621d405487079560a9c023b9",
+      "new_path": "ai-factory/crg.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "bec10ca22900408cec62250bbb18f4c15c3365271cfd239c4a92ac02b59de064"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/feature-lifecycle.md",
+      "old_sha256": "837bf988c64a9851ddfe35dd5bb016893af57ff81cb4f86ef564d23fef9acf99",
+      "new_path": "ai-factory/feature-lifecycle.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "c9735140799959d82c967eec93e6428c2c2dac81858aac62d2ecd8e42bd61ced"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/history.md",
+      "old_sha256": "da69842bc1cbe7e4138ec98e0d142ca70de231f155401ec0e249cb33487fc219",
+      "new_path": "ai-factory/history.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "d7520cdbe02175d651383dbe6c1e2ab756fa584357e096b5b42b279a0b752cdf"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/models.md",
+      "old_sha256": "f4dd8c61173b10b0793388562485cac454aef0a4da4acb0df7c459ccd88450e6",
+      "new_path": "ai-factory/models.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "c8f251577d27f8dbce6a7a4eda32c48617560758be4a0ad068c7d232ad2da3e7"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding.md",
+      "old_sha256": "102e0e0914c348ae0ba3f8464d1b1cd81cd8e09fc94730bd995cea6592a9cdd1",
+      "new_path": "ai-factory/onboarding.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "3cc63fadd5f9cf086104b018955e3bdb708b89515a91846400863ca09bd54a2b"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding/README.md",
+      "old_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
+      "new_path": "docs/onboarding-helper.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding/acceptance-template.md",
+      "old_sha256": "9c7c4cc0b3d809c1a9b96c88f7560f1cbe0b1de14ff3bcea4ac2629c91f4841f",
+      "new_path": "templates/acceptance-full.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "d96267bff6c4435fd896369a476d050421a4b148d7ace32c4b7704143da6c4b8"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding/adapter-template.md",
+      "old_sha256": "027f4b281853154d33a1779c495b713d6ab0729fd2035438fc993e19e7b32b66",
+      "new_path": "templates/adapter-full.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "53d635ddcf8e77a416ca4596b6c6befc0aa6f8f33d591c59d4b30526107ae0dd"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding/change-protocol.md",
+      "old_sha256": "3e9a2f5e676c8e215a1ab550a799139f4f07d800799325e01a101fadf309530a",
+      "new_path": "ai-factory/onboarding/change-protocol.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "cfd18d18725d0b8445219db207bc9f289ec82c0a6647f21e13fa45533128b39a"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding/manifest.example.json",
+      "old_sha256": "53b686568a31b1004ee986315dbc4b70d839a4e0236cd41f27897fe6f172a0a2",
+      "new_path": "examples/onboarding/manifest.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "53b686568a31b1004ee986315dbc4b70d839a4e0236cd41f27897fe6f172a0a2"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding/preflight.py",
+      "old_sha256": "6cb368288d88124ef6aa108953e9689798575a77da0f534bd5dea0fe1a301fe7",
+      "new_path": "runtime/onboarding/preflight.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6cb368288d88124ef6aa108953e9689798575a77da0f534bd5dea0fe1a301fe7"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/onboarding/test_preflight.py",
+      "old_sha256": "75fcbaa8e4dc964dd37f929281b8ec3e5f9e733defdf402cf726f70731c2ef9b",
+      "new_path": "tests/onboarding/test_preflight.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "75fcbaa8e4dc964dd37f929281b8ec3e5f9e733defdf402cf726f70731c2ef9b"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/repo-evidence.md",
+      "old_sha256": "28fb7b6a0419b45489bf98b4282f86aa92fc8c062473103d9a6dccee8317010a",
+      "new_path": "ai-factory/repo-evidence.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "1dc7347146630f15d4b0fff6a3878b21f0787006494be0d26c96a49f3585116c"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/review-handoff.md",
+      "old_sha256": "d8dd6d8fbabac2e80f02a4525af328a6711b448ad756eee318af1b12fc5d8a6c",
+      "new_path": "ai-factory/review-handoff.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "25e72566492abac0096eff09b85cbe984b1955692f0cf20c4d88bb25096716fe"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/review/manifest.example.json",
+      "old_sha256": "bdeb442e899a43d2e22537b0321a9de1ddce1c3c5e62ecfe49e32a2e5064d099",
+      "new_path": "examples/review/manifest.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "bdeb442e899a43d2e22537b0321a9de1ddce1c3c5e62ecfe49e32a2e5064d099"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/review/response.example.json",
+      "old_sha256": "7850b3b9faa5cad0f1eee576f4db354dcc4feddc233c25cfb1a4530344f8ba7f",
+      "new_path": "examples/review/response.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7850b3b9faa5cad0f1eee576f4db354dcc4feddc233c25cfb1a4530344f8ba7f"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/review/review_package.py",
+      "old_sha256": "7552ed113b6f92909be68e091bb60520c1a57a4841c2c121ad9fbb5506c8dcc1",
+      "new_path": "runtime/legacy/review/review_package.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7552ed113b6f92909be68e091bb60520c1a57a4841c2c121ad9fbb5506c8dcc1"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/review/test_review_package.py",
+      "old_sha256": "89ff7acc6863fe6377af5c083b73d5f79aa9d833cc8cc6e5198a4456c591a5e5",
+      "new_path": "tests/legacy-review/test_review_package.py",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "9eb2a3c6244b12463d4dfc2c738195a7238f5071d3fdcd1819fd6ed263e8be80"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/roadmap.md",
+      "old_sha256": "28624ef8fe66ec8b9b14d55dac204917d8973b7a9100fea1cf1a974dd1c787ca",
+      "new_path": "ai-factory/roadmap.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "2912e8ead873ea1a618c8e92299c6c055fd7f7eb5363855254b01d0a6b7b21a7"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/session-size/README.md",
+      "old_sha256": "30850e70759c46f3d45aecc3644bd02b39ff1b942c11f08a8fa844933c566001",
+      "new_path": "docs/legacy/session-size.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "dc6bcc7b25f4104c4f87a5aa5834940b90b189abb70edac12c23727d3385c563"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/session-size/session_guard.py",
+      "old_sha256": "fa57563c529cd4ec685e6f6fe6a1f93bada386263218ed8cead6f7907dc27e37",
+      "new_path": "runtime/legacy/session-size/session_guard.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fa57563c529cd4ec685e6f6fe6a1f93bada386263218ed8cead6f7907dc27e37"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/session-size/test_session_guard.py",
+      "old_sha256": "69cc8d6a77e1de9acd45d737fb835804e517b8c1d5175af385580c274068f20f",
+      "new_path": "tests/legacy-session/test_session_guard.py",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "dfe101ba9e14461badd6b7ab774d23a52a62e1bdc0e3677e0265fb4c73f0cbaf"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/status.md",
+      "old_sha256": "37cc4ccc5ce00002d529b543b445c0d108eadcb4d41396dbe866b8e2b593abde",
+      "new_path": "ai-factory/status.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "fff5cb337ddbed7b9c66f59039b5b195db1190eb400dc63acad8d8cc7b87505a"
+    },
+    {
+      "old_path": "collection/agents/ai-factory/workflow.md",
+      "old_sha256": "36038b4c6e5fe24437519a2ab45f4458a93b7073088aa2bcd0f2ddef3d4bbc0e",
+      "new_path": "ai-factory/workflow.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "9116c2985447a1b5a5fe1bb866f9c7a486d87247bbc90aa46664267ec6fd3133"
+    },
+    {
+      "old_path": "collection/agents/obsidian-cheatsheet.md",
+      "old_sha256": "c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0",
+      "new_path": "docs/guides/obsidian-cheatsheet.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0"
+    },
+    {
+      "old_path": "collection/agents/rules/README.md",
+      "old_sha256": "dbd12bc125744403ba108b5886fdd11b9d373226b0ee5532f53f1ab62caa08ea",
+      "new_path": "rules/README.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "d9200b675e715989f96f1699b7c50a57a313005269d4b5929df91b8ea9333ccc"
+    },
+    {
+      "old_path": "collection/agents/rules/agent-stream-to-file.md",
+      "old_sha256": "4b35270e78dc9bfdf2ff849cfeca28266649e40dc380c0e2ef2aaa0c6110a7e0",
+      "new_path": "rules/agent-stream-to-file.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4b35270e78dc9bfdf2ff849cfeca28266649e40dc380c0e2ef2aaa0c6110a7e0"
+    },
+    {
+      "old_path": "collection/agents/rules/multi-model-roles.md",
+      "old_sha256": "908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f",
+      "new_path": "rules/multi-model-roles.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f"
+    },
+    {
+      "old_path": "collection/agents/rules/repo-standards-manifest.md",
+      "old_sha256": "fe4c59fa3705145be5d197e031a301274a0c00d1ad5d8d64cbba3c19d6b87b82",
+      "new_path": "rules/repo-standards-manifest.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fe4c59fa3705145be5d197e031a301274a0c00d1ad5d8d64cbba3c19d6b87b82"
+    },
+    {
+      "old_path": "collection/agents/rules/subagent-orchestration-ledger.md",
+      "old_sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977",
+      "new_path": "rules/subagent-orchestration-ledger.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977"
+    },
+    {
+      "old_path": "collection/agents/rules/typescript-pocock-idioms.md",
+      "old_sha256": "06b659fe1b25ea31bd57b093b48646270ac08b05320798be4f50c94884266c42",
+      "new_path": "rules/typescript-pocock-idioms.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "06b659fe1b25ea31bd57b093b48646270ac08b05320798be4f50c94884266c42"
+    },
+    {
+      "old_path": "collection/agents/skills-cheatsheet.md",
+      "old_sha256": "4aa1bcca3b8c263499afadeb266ba06eda066e2cd0492643973ab8b6dece0bdd",
+      "new_path": "docs/guides/skills-cheatsheet.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4aa1bcca3b8c263499afadeb266ba06eda066e2cd0492643973ab8b6dece0bdd"
+    },
+    {
+      "old_path": "collection/agents/skills/anti-slop-design/SKILL.md",
+      "old_sha256": "605ced0506c7f3e8f18ee0b48a4749148b0f430164c48a2faa66cf02b2e156b1",
+      "new_path": "skills/anti-slop-design/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "605ced0506c7f3e8f18ee0b48a4749148b0f430164c48a2faa66cf02b2e156b1"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/caveman/SKILL.md",
+      "old_sha256": "08c8bc7fa34e845859792257bc520ee42e13f796e1c5dd07888c365143420ce9",
+      "new_path": "skills/arch/caveman/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "08c8bc7fa34e845859792257bc520ee42e13f796e1c5dd07888c365143420ce9"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/code-review/SKILL.md",
+      "old_sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1",
+      "new_path": "skills/arch/code-review/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/code-review/agents/openai.yaml",
+      "old_sha256": "8229ca854e11dc8e6aef2131ee03f31fb1561cf905fab9ccc325180cf3331352",
+      "new_path": "skills/arch/code-review/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8229ca854e11dc8e6aef2131ee03f31fb1561cf905fab9ccc325180cf3331352"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/codebase-design/DEEPENING.md",
+      "old_sha256": "f3dd099ce99289bd213914d8ee3e2429b78309c3957ca4583f7659551b1d53c1",
+      "new_path": "skills/arch/codebase-design/DEEPENING.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f3dd099ce99289bd213914d8ee3e2429b78309c3957ca4583f7659551b1d53c1"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/codebase-design/DESIGN-IT-TWICE.md",
+      "old_sha256": "52b52e75655a27aea59c6966b410bac82448968ad46ef1ebb9f07c274e3ae010",
+      "new_path": "skills/arch/codebase-design/DESIGN-IT-TWICE.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "52b52e75655a27aea59c6966b410bac82448968ad46ef1ebb9f07c274e3ae010"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/codebase-design/SKILL.md",
+      "old_sha256": "25d4efdb9957cdfc1eeb6a7d754c1cb1673be4c72591bda4ed1c18d875380574",
+      "new_path": "skills/arch/codebase-design/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "25d4efdb9957cdfc1eeb6a7d754c1cb1673be4c72591bda4ed1c18d875380574"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/codebase-design/agents/openai.yaml",
+      "old_sha256": "edebc9e4fcfe102114012575eaa9600b9b5fd08c311664f389c36e7bc717740f",
+      "new_path": "skills/arch/codebase-design/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "edebc9e4fcfe102114012575eaa9600b9b5fd08c311664f389c36e7bc717740f"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/diagnosing-bugs/SKILL.md",
+      "old_sha256": "8778ed54406ac7c591173f68ae79a530e8a6eda463f9188791400cdd993f42e3",
+      "new_path": "skills/arch/diagnosing-bugs/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8778ed54406ac7c591173f68ae79a530e8a6eda463f9188791400cdd993f42e3"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/diagnosing-bugs/agents/openai.yaml",
+      "old_sha256": "3e430dbe4334a87597488c060cb3dc3786bb00c9182877d6f5ec41f62490e90b",
+      "new_path": "skills/arch/diagnosing-bugs/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3e430dbe4334a87597488c060cb3dc3786bb00c9182877d6f5ec41f62490e90b"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/diagnosing-bugs/scripts/hitl-loop.template.sh",
+      "old_sha256": "35103539fc36873eea36074769ad454f9379d6fc8b2dc0e26ce987fd3bfe5503",
+      "new_path": "skills/arch/diagnosing-bugs/scripts/hitl-loop.template.sh",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "35103539fc36873eea36074769ad454f9379d6fc8b2dc0e26ce987fd3bfe5503"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/domain-modeling/ADR-FORMAT.md",
+      "old_sha256": "944c92aa790e8fbdc9199640b170979abb8a34ba8d0fe18c2a01a63bce140ca0",
+      "new_path": "skills/arch/domain-modeling/ADR-FORMAT.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "944c92aa790e8fbdc9199640b170979abb8a34ba8d0fe18c2a01a63bce140ca0"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "old_sha256": "21dcc40cdec8e151a829b98ab1517c1867bc444e3665134a98c6983411996801",
+      "new_path": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "21dcc40cdec8e151a829b98ab1517c1867bc444e3665134a98c6983411996801"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/domain-modeling/SKILL.md",
+      "old_sha256": "320f20a8c69ac2177b5a505f3479672d481a0523d4e782b386d0db0bc224b9fc",
+      "new_path": "skills/arch/domain-modeling/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "320f20a8c69ac2177b5a505f3479672d481a0523d4e782b386d0db0bc224b9fc"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/domain-modeling/agents/openai.yaml",
+      "old_sha256": "f6bf2aa996c6e6f53fdd0708e18a0d16a56aed8322cca59fedbe3c0d2c75f06b",
+      "new_path": "skills/arch/domain-modeling/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f6bf2aa996c6e6f53fdd0708e18a0d16a56aed8322cca59fedbe3c0d2c75f06b"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/improve-codebase-architecture/HTML-REPORT.md",
+      "old_sha256": "581e8bb5a521e46bbda8ca7e19b15948bed882187108092ebb90c62513b77528",
+      "new_path": "skills/arch/improve-codebase-architecture/HTML-REPORT.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "581e8bb5a521e46bbda8ca7e19b15948bed882187108092ebb90c62513b77528"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/improve-codebase-architecture/SKILL.md",
+      "old_sha256": "bb7cafd4b591a1cc2101730b251cf2f731aefdb7f05aff43d27e8cda6fe5283b",
+      "new_path": "skills/arch/improve-codebase-architecture/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "bb7cafd4b591a1cc2101730b251cf2f731aefdb7f05aff43d27e8cda6fe5283b"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/improve-codebase-architecture/agents/openai.yaml",
+      "old_sha256": "c8cb20f68ebf0edb4e497bc11ae5fcaa196004e661cd189015b04f4109ced7f1",
+      "new_path": "skills/arch/improve-codebase-architecture/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c8cb20f68ebf0edb4e497bc11ae5fcaa196004e661cd189015b04f4109ced7f1"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/receiving-code-review/SKILL.md",
+      "old_sha256": "5eaef373ed020a0cca682329d02a3c8cb4acd59c5f054a112f348652ad99512c",
+      "new_path": "skills/arch/receiving-code-review/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5eaef373ed020a0cca682329d02a3c8cb4acd59c5f054a112f348652ad99512c"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/tdd/SKILL.md",
+      "old_sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c",
+      "new_path": "skills/arch/tdd/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/tdd/agents/openai.yaml",
+      "old_sha256": "ea6f01cf1b8c06a4b0f5b649d74b1b8ce8685e72af1b38d70d877693e092af0b",
+      "new_path": "skills/arch/tdd/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ea6f01cf1b8c06a4b0f5b649d74b1b8ce8685e72af1b38d70d877693e092af0b"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/tdd/mocking.md",
+      "old_sha256": "3ceb807fdf4a47d6a93d4d9a891e5ba6d362a6247bd08adc451feebfc17361ef",
+      "new_path": "skills/arch/tdd/mocking.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3ceb807fdf4a47d6a93d4d9a891e5ba6d362a6247bd08adc451feebfc17361ef"
+    },
+    {
+      "old_path": "collection/agents/skills/arch/tdd/tests.md",
+      "old_sha256": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a",
+      "new_path": "skills/arch/tdd/tests.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a"
+    },
+    {
+      "old_path": "collection/agents/skills/crg/crg-debug-issue/SKILL.md",
+      "old_sha256": "01577f9a19f0636a6f81c59414c5a9aa4de76814c6c21d555aba70c8637a176b",
+      "new_path": "skills/crg/crg-debug-issue/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "01577f9a19f0636a6f81c59414c5a9aa4de76814c6c21d555aba70c8637a176b"
+    },
+    {
+      "old_path": "collection/agents/skills/crg/crg-explore-codebase/SKILL.md",
+      "old_sha256": "7e6170a80cbffab15776941106a599fa0064ce1802058f8232e2c2ec080a46fb",
+      "new_path": "skills/crg/crg-explore-codebase/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7e6170a80cbffab15776941106a599fa0064ce1802058f8232e2c2ec080a46fb"
+    },
+    {
+      "old_path": "collection/agents/skills/crg/crg-refactor-safely/SKILL.md",
+      "old_sha256": "ef93e2915086a04ec6beab757dd4140bccba4cf47d997b7560b20c019acdd3d4",
+      "new_path": "skills/crg/crg-refactor-safely/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ef93e2915086a04ec6beab757dd4140bccba4cf47d997b7560b20c019acdd3d4"
+    },
+    {
+      "old_path": "collection/agents/skills/crg/crg-review-changes/SKILL.md",
+      "old_sha256": "5c01719daaf262e5f687e58c8d07863629329f40ea2913eb4166c439de75941f",
+      "new_path": "skills/crg/crg-review-changes/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5c01719daaf262e5f687e58c8d07863629329f40ea2913eb4166c439de75941f"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/implement-spec/SKILL.md",
+      "old_sha256": "929d7bbac4601276ec84038ce4ed925592bb82bc56f576a0337b5cd60dfec4ba",
+      "new_path": "skills/deliver/implement-spec/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "929d7bbac4601276ec84038ce4ed925592bb82bc56f576a0337b5cd60dfec4ba"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/implement-spec/agents/openai.yaml",
+      "old_sha256": "fd41efb42c60c96320d6531be7e4bf15cbf5518cd652d57dff27ccffa46988e9",
+      "new_path": "skills/deliver/implement-spec/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fd41efb42c60c96320d6531be7e4bf15cbf5518cd652d57dff27ccffa46988e9"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/implement/SKILL.md",
+      "old_sha256": "1e7cdd434dc6b42c13f9b9b0bbc1f4176835084c6d6d1867ef9339c2e90ecc36",
+      "new_path": "skills/deliver/implement/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1e7cdd434dc6b42c13f9b9b0bbc1f4176835084c6d6d1867ef9339c2e90ecc36"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/implement/agents/openai.yaml",
+      "old_sha256": "8970a8596ade0c28ab427f41a4ea242d6bdf6186c59ebf55e1238dbecaab79dc",
+      "new_path": "skills/deliver/implement/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8970a8596ade0c28ab427f41a4ea242d6bdf6186c59ebf55e1238dbecaab79dc"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/spec-flow/SKILL.md",
+      "old_sha256": "5809c7a8c53b13d2bbcca2788c641c3dc56ebe670ed376059f323d8118675e57",
+      "new_path": "skills/deliver/spec-flow/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5809c7a8c53b13d2bbcca2788c641c3dc56ebe670ed376059f323d8118675e57"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/to-spec/SKILL.md",
+      "old_sha256": "4cdc224d25916ad2e1dd83b2ee1a10f881b7555632b2d860173712848babb137",
+      "new_path": "skills/deliver/to-spec/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4cdc224d25916ad2e1dd83b2ee1a10f881b7555632b2d860173712848babb137"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/to-spec/agents/openai.yaml",
+      "old_sha256": "1c5b4d1e3d8e52287ef19cc2742fdbbfae1914ac75d33af3e4c8174f08cc55bb",
+      "new_path": "skills/deliver/to-spec/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1c5b4d1e3d8e52287ef19cc2742fdbbfae1914ac75d33af3e4c8174f08cc55bb"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/to-tickets/SKILL.md",
+      "old_sha256": "918b36d4ff0e797eaead9bfdddabdfc0d3767d0f8f6a0e6c594ef014a0e0c06f",
+      "new_path": "skills/deliver/to-tickets/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "918b36d4ff0e797eaead9bfdddabdfc0d3767d0f8f6a0e6c594ef014a0e0c06f"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/to-tickets/agents/openai.yaml",
+      "old_sha256": "21bc6215fffcd7614e9f772bb1760e87cc5fc7dcc707e7d282bc9414267a6090",
+      "new_path": "skills/deliver/to-tickets/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "21bc6215fffcd7614e9f772bb1760e87cc5fc7dcc707e7d282bc9414267a6090"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/triage/AGENT-BRIEF.md",
+      "old_sha256": "7f5f87fed3033df1b06e083c480f3e847b1fbb0647746b8a4c6a50f9f26ef44f",
+      "new_path": "skills/deliver/triage/AGENT-BRIEF.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7f5f87fed3033df1b06e083c480f3e847b1fbb0647746b8a4c6a50f9f26ef44f"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/triage/OUT-OF-SCOPE.md",
+      "old_sha256": "1fbf9b432130c6380aa65813b55553cfda150309b27c595e183f8e335b8a190d",
+      "new_path": "skills/deliver/triage/OUT-OF-SCOPE.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1fbf9b432130c6380aa65813b55553cfda150309b27c595e183f8e335b8a190d"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/triage/SKILL.md",
+      "old_sha256": "8b4069926b2895ebda1065b4174dbbc605338ad627fc99da31ba1b2f3c67a06e",
+      "new_path": "skills/deliver/triage/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8b4069926b2895ebda1065b4174dbbc605338ad627fc99da31ba1b2f3c67a06e"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/triage/agents/openai.yaml",
+      "old_sha256": "2e683717720cf456d165d0bb1a68bb600d0b6a8ccb61841c172e50d26f95351c",
+      "new_path": "skills/deliver/triage/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "2e683717720cf456d165d0bb1a68bb600d0b6a8ccb61841c172e50d26f95351c"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/wayfinder/SKILL.md",
+      "old_sha256": "218c4337722a9311405144b7e48af7417643ac1dec2352bbf256cbd4f82a5cf2",
+      "new_path": "skills/deliver/wayfinder/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "218c4337722a9311405144b7e48af7417643ac1dec2352bbf256cbd4f82a5cf2"
+    },
+    {
+      "old_path": "collection/agents/skills/deliver/wayfinder/agents/openai.yaml",
+      "old_sha256": "88bc81a11a6d52ac67aeaa76b8b619e387020d47c5133a4dd4927fd15c4ad073",
+      "new_path": "skills/deliver/wayfinder/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "88bc81a11a6d52ac67aeaa76b8b619e387020d47c5133a4dd4927fd15c4ad073"
+    },
+    {
+      "old_path": "collection/agents/skills/design-pass/SKILL.md",
+      "old_sha256": "5e926be70e3d3c5c78063ebe02a2734fa5ee45f498b0a9c7d1e0d59ae62e69ff",
+      "new_path": "skills/design-pass/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5e926be70e3d3c5c78063ebe02a2734fa5ee45f498b0a9c7d1e0d59ae62e69ff"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/SKILL.md",
+      "old_sha256": "5183ae07f775e28afa6662c3292c7d6a9e71f19c6d86f41b1ccaeacdfc17fac2",
+      "new_path": "skills/entity-e2e-coverage/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5183ae07f775e28afa6662c3292c7d6a9e71f19c6d86f41b1ccaeacdfc17fac2"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/references/cases.json",
+      "old_sha256": "378311b56d18303d185873e27f1e72a6061e120a8b5c0afb00c014d96d980e47",
+      "new_path": "skills/entity-e2e-coverage/references/cases.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "378311b56d18303d185873e27f1e72a6061e120a8b5c0afb00c014d96d980e47"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/references/example-contract.json",
+      "old_sha256": "1f87acb4b2eda3e3b101a1b7e0358ce9d55bd6cad4df4b52c84f38d29acf1620",
+      "new_path": "skills/entity-e2e-coverage/references/example-contract.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1f87acb4b2eda3e3b101a1b7e0358ce9d55bd6cad4df4b52c84f38d29acf1620"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/references/example-report.json",
+      "old_sha256": "ff3a290bcf1948546341bc51d5b88dce5897ca19fc478bce1b922d783d1e402a",
+      "new_path": "skills/entity-e2e-coverage/references/example-report.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ff3a290bcf1948546341bc51d5b88dce5897ca19fc478bce1b922d783d1e402a"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/references/matrix.md",
+      "old_sha256": "648ab6d93481e8695a752b2b18d725b9dd21635c5ba52b1f1d38257539e79a9a",
+      "new_path": "skills/entity-e2e-coverage/references/matrix.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "648ab6d93481e8695a752b2b18d725b9dd21635c5ba52b1f1d38257539e79a9a"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/references/scoped-cases.json",
+      "old_sha256": "c969f5f662ad4e1566794cd2f3e4a2bb89aa1f741b1bcad3389178270de87d60",
+      "new_path": "skills/entity-e2e-coverage/references/scoped-cases.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c969f5f662ad4e1566794cd2f3e4a2bb89aa1f741b1bcad3389178270de87d60"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/references/testing-rules.md",
+      "old_sha256": "c82fe9da2a455ef45826765bd777e05dfe21c15250d89662b0729b7705487dfe",
+      "new_path": "skills/entity-e2e-coverage/references/testing-rules.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c82fe9da2a455ef45826765bd777e05dfe21c15250d89662b0729b7705487dfe"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/scripts/test_validate_matrix.py",
+      "old_sha256": "2f3255b0300df882a63bb2a045fa4aeeb52734d81914bb97bf057d11b7b5790f",
+      "new_path": "skills/entity-e2e-coverage/scripts/test_validate_matrix.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "2f3255b0300df882a63bb2a045fa4aeeb52734d81914bb97bf057d11b7b5790f"
+    },
+    {
+      "old_path": "collection/agents/skills/entity-e2e-coverage/scripts/validate_matrix.py",
+      "old_sha256": "f739885c2f0aec762164dd33f09af7fb0b95e0d01f010a66c7b95807ea2bed78",
+      "new_path": "skills/entity-e2e-coverage/scripts/validate_matrix.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f739885c2f0aec762164dd33f09af7fb0b95e0d01f010a66c7b95807ea2bed78"
+    },
+    {
+      "old_path": "collection/agents/skills/git/git-guardrails-claude-code/SKILL.md",
+      "old_sha256": "b4709281785acbfecf7dde8461e94a2a59cf5e94fe5b081b94fdd5853248cb8d",
+      "new_path": "skills/git/git-guardrails-claude-code/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b4709281785acbfecf7dde8461e94a2a59cf5e94fe5b081b94fdd5853248cb8d"
+    },
+    {
+      "old_path": "collection/agents/skills/git/git-guardrails-claude-code/agents/openai.yaml",
+      "old_sha256": "d53cd783fc0ac208dec9a4c267989284384785aab6422dccdaed42f9e40243ec",
+      "new_path": "skills/git/git-guardrails-claude-code/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "d53cd783fc0ac208dec9a4c267989284384785aab6422dccdaed42f9e40243ec"
+    },
+    {
+      "old_path": "collection/agents/skills/git/git-guardrails-claude-code/scripts/block-dangerous-git.sh",
+      "old_sha256": "fd4b58bea5853a6fc44a2c099500ec5353b07b9014f6cac3f552e16c614bcaf3",
+      "new_path": "skills/git/git-guardrails-claude-code/scripts/block-dangerous-git.sh",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fd4b58bea5853a6fc44a2c099500ec5353b07b9014f6cac3f552e16c614bcaf3"
+    },
+    {
+      "old_path": "collection/agents/skills/git/pr/CREDITS.md",
+      "old_sha256": "a7a087127665d7298a72280ef6e19c41ad8404523712a788c8dc3ab414bc2497",
+      "new_path": "skills/git/pr/CREDITS.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a7a087127665d7298a72280ef6e19c41ad8404523712a788c8dc3ab414bc2497"
+    },
+    {
+      "old_path": "collection/agents/skills/git/pr/SKILL.md",
+      "old_sha256": "87b313b80245008807efcdb3908d3a70f162ed55ea076c031185f7138f3d4c92",
+      "new_path": "skills/git/pr/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "87b313b80245008807efcdb3908d3a70f162ed55ea076c031185f7138f3d4c92"
+    },
+    {
+      "old_path": "collection/agents/skills/git/pr/agents/openai.yaml",
+      "old_sha256": "2295b586624db4ef546f3fd4695492f039d941a46d8a1593a702ce3ca511b8ad",
+      "new_path": "skills/git/pr/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "2295b586624db4ef546f3fd4695492f039d941a46d8a1593a702ce3ca511b8ad"
+    },
+    {
+      "old_path": "collection/agents/skills/git/resolving-merge-conflicts/SKILL.md",
+      "old_sha256": "dcfa55d6d1499649e2d16c6bab7118bc83e5edfc3ee3a376869d11c4bba706bf",
+      "new_path": "skills/git/resolving-merge-conflicts/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "dcfa55d6d1499649e2d16c6bab7118bc83e5edfc3ee3a376869d11c4bba706bf"
+    },
+    {
+      "old_path": "collection/agents/skills/git/setup-pre-commit/SKILL.md",
+      "old_sha256": "3a5ed5c3c50cda6df9c35b4c34b6c03e30132e611332ce11b6efd24ec881c9eb",
+      "new_path": "skills/git/setup-pre-commit/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3a5ed5c3c50cda6df9c35b4c34b6c03e30132e611332ce11b6efd24ec881c9eb"
+    },
+    {
+      "old_path": "collection/agents/skills/git/setup-pre-commit/agents/openai.yaml",
+      "old_sha256": "acf41db398c5c43afe504008bb7d615a97b6498b0f1f6c5b2395254c0bfb57d1",
+      "new_path": "skills/git/setup-pre-commit/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "acf41db398c5c43afe504008bb7d615a97b6498b0f1f6c5b2395254c0bfb57d1"
+    },
+    {
+      "old_path": "collection/agents/skills/graphify-local/SKILL.md",
+      "old_sha256": "eaa01e81610e837bd588cbb2075ebbd2ea6c5a3716dda7ec1529e2ca02ad36b0",
+      "new_path": "skills/graphify-local/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "eaa01e81610e837bd588cbb2075ebbd2ea6c5a3716dda7ec1529e2ca02ad36b0"
+    },
+    {
+      "old_path": "collection/agents/skills/interface-review/SKILL.md",
+      "old_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
+      "new_path": "skills/interface-review/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70"
+    },
+    {
+      "old_path": "collection/agents/skills/pattern-architecture-review/SKILL.md",
+      "old_sha256": "ea547aa56bd0af1ecadd26fb206134cc17f2a2dd8e8aea50ceaa6253b9a55966",
+      "new_path": "skills/pattern-architecture-review/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ea547aa56bd0af1ecadd26fb206134cc17f2a2dd8e8aea50ceaa6253b9a55966"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/acceptance-spec/SKILL.md",
+      "old_sha256": "ff7d07cca0c28980c58ee8ca83d0283830ea93a2c2a157a29b37e02a7874fed4",
+      "new_path": "skills/plan/acceptance-spec/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ff7d07cca0c28980c58ee8ca83d0283830ea93a2c2a157a29b37e02a7874fed4"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/ask-matt/PHASE-BOUNDARIES.md",
+      "old_sha256": "a8aa20158609ef39e2b308b6ba0660c91066838d07a867202e63a7744a88a3ed",
+      "new_path": "skills/plan/ask-matt/PHASE-BOUNDARIES.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a8aa20158609ef39e2b308b6ba0660c91066838d07a867202e63a7744a88a3ed"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/ask-matt/SKILL.md",
+      "old_sha256": "3322c8a6efca04a193a933093c7d7d0c2a802b1b87edd73b2a70212846aa48c0",
+      "new_path": "skills/plan/ask-matt/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3322c8a6efca04a193a933093c7d7d0c2a802b1b87edd73b2a70212846aa48c0"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/ask-matt/agents/openai.yaml",
+      "old_sha256": "bdffbc5a0a99ed1b6ef3253d251d755fd18162b9845972e380007f844b09b05c",
+      "new_path": "skills/plan/ask-matt/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "bdffbc5a0a99ed1b6ef3253d251d755fd18162b9845972e380007f844b09b05c"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/cto-agenda/SKILL.md",
+      "old_sha256": "6647a0d4c831fef9cf0613d469757b5cd6b4800d6c305ff5d27a0dc9e79fb234",
+      "new_path": "skills/plan/cto-agenda/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6647a0d4c831fef9cf0613d469757b5cd6b4800d6c305ff5d27a0dc9e79fb234"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/cto-research/SKILL.md",
+      "old_sha256": "b7cb8f3c8b3c369df2e8fc7e773313147ceda4666f9b4c1b5b713c42c7fea814",
+      "new_path": "skills/plan/cto-research/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b7cb8f3c8b3c369df2e8fc7e773313147ceda4666f9b4c1b5b713c42c7fea814"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/grill-me/SKILL.md",
+      "old_sha256": "59353f1fb13b77c720c2fa4b93144396fe9d2e9afc189e732173b08ddbf2af21",
+      "new_path": "skills/plan/grill-me/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "59353f1fb13b77c720c2fa4b93144396fe9d2e9afc189e732173b08ddbf2af21"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/grill-me/agents/openai.yaml",
+      "old_sha256": "c061e39c3e0f9d865fb1b97556d485704af2a8a58f4b8221a8917a5c2074a32b",
+      "new_path": "skills/plan/grill-me/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c061e39c3e0f9d865fb1b97556d485704af2a8a58f4b8221a8917a5c2074a32b"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/grill-with-docs/SKILL.md",
+      "old_sha256": "a2ec16b4d2c87c1e307b6148057a0bdb1b5d4b29e2be415a19d1e92c6009d270",
+      "new_path": "skills/plan/grill-with-docs/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a2ec16b4d2c87c1e307b6148057a0bdb1b5d4b29e2be415a19d1e92c6009d270"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/grill-with-docs/agents/openai.yaml",
+      "old_sha256": "94cd0ab161fb468a836349f5ed482ba58ce8e709a05c57ce533d739dbd35cca9",
+      "new_path": "skills/plan/grill-with-docs/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "94cd0ab161fb468a836349f5ed482ba58ce8e709a05c57ce533d739dbd35cca9"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/grilling/SKILL.md",
+      "old_sha256": "d5e2b6efa11cb7fabc5e170ff70a0f6052a29b29f25e4550ba2f4a905b375ed5",
+      "new_path": "skills/plan/grilling/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "d5e2b6efa11cb7fabc5e170ff70a0f6052a29b29f25e4550ba2f4a905b375ed5"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/grilling/agents/openai.yaml",
+      "old_sha256": "1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b",
+      "new_path": "skills/plan/grilling/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/plan-critique/SKILL.md",
+      "old_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
+      "new_path": "skills/plan/plan-critique/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/plan-defense/SKILL.md",
+      "old_sha256": "11d1d73ab06cbe44cd3aac4f45fb58a632f415ea89d24959d8234f27b018da6a",
+      "new_path": "skills/plan/plan-defense/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "11d1d73ab06cbe44cd3aac4f45fb58a632f415ea89d24959d8234f27b018da6a"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/to-questionnaire/SKILL.md",
+      "old_sha256": "7b55348a99e76fd11a1d18311fdc848c828e3b904250725fa577467b0d8c49eb",
+      "new_path": "skills/plan/to-questionnaire/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7b55348a99e76fd11a1d18311fdc848c828e3b904250725fa577467b0d8c49eb"
+    },
+    {
+      "old_path": "collection/agents/skills/plan/to-questionnaire/agents/openai.yaml",
+      "old_sha256": "9e8a06c38c8842eea8d4922cb9d1ead8e3ace647bab259b943c994a1b4742bc2",
+      "new_path": "skills/plan/to-questionnaire/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9e8a06c38c8842eea8d4922cb9d1ead8e3ace647bab259b943c994a1b4742bc2"
+    },
+    {
+      "old_path": "collection/agents/skills/pt/ponytail-audit/SKILL.md",
+      "old_sha256": "6a320e541f6db4f3a89e56275d4c2f095db77b39a4e4c9d996335bb8ab6087f7",
+      "new_path": "skills/pt/ponytail-audit/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6a320e541f6db4f3a89e56275d4c2f095db77b39a4e4c9d996335bb8ab6087f7"
+    },
+    {
+      "old_path": "collection/agents/skills/pt/ponytail-debt/SKILL.md",
+      "old_sha256": "6c4943f0fa7cb7db9bceb432560aed631c785a91e607ed414ebacf8a6dca5e55",
+      "new_path": "skills/pt/ponytail-debt/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6c4943f0fa7cb7db9bceb432560aed631c785a91e607ed414ebacf8a6dca5e55"
+    },
+    {
+      "old_path": "collection/agents/skills/pt/ponytail-gain/SKILL.md",
+      "old_sha256": "7d32eff3bbb571bf9f78899fb64eb195848015c493cfaa1df68184b48bfe0d38",
+      "new_path": "skills/pt/ponytail-gain/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7d32eff3bbb571bf9f78899fb64eb195848015c493cfaa1df68184b48bfe0d38"
+    },
+    {
+      "old_path": "collection/agents/skills/pt/ponytail-help/SKILL.md",
+      "old_sha256": "d276824909822db400e04ca12c868b8b2c913ef0bf0015700f980c7986233878",
+      "new_path": "skills/pt/ponytail-help/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "d276824909822db400e04ca12c868b8b2c913ef0bf0015700f980c7986233878"
+    },
+    {
+      "old_path": "collection/agents/skills/pt/ponytail-review/SKILL.md",
+      "old_sha256": "5bf501d4aeaabe1086ac32767a34bd0ed2029be219e816fd5c8f9f67cdb526de",
+      "new_path": "skills/pt/ponytail-review/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5bf501d4aeaabe1086ac32767a34bd0ed2029be219e816fd5c8f9f67cdb526de"
+    },
+    {
+      "old_path": "collection/agents/skills/pt/ponytail/SKILL.md",
+      "old_sha256": "70b69cf6bb9e6be4fe8b734bded40cfff09fbab010bb451660227c914a1858f2",
+      "new_path": "skills/pt/ponytail/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "70b69cf6bb9e6be4fe8b734bded40cfff09fbab010bb451660227c914a1858f2"
+    },
+    {
+      "old_path": "collection/agents/skills/reference-ui-reconstruction/SKILL.md",
+      "old_sha256": "ed6723c80f0d694cf670e2919b7321b4742b81340cde827783ba9760cf45b3c8",
+      "new_path": "skills/reference-ui-reconstruction/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ed6723c80f0d694cf670e2919b7321b4742b81340cde827783ba9760cf45b3c8"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/frontend-design/LICENSE.txt",
+      "old_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "new_path": "skills/ship/frontend-design/LICENSE.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/frontend-design/SKILL.md",
+      "old_sha256": "0bf4156e15de358351d8964a85cf38a67b518d79f678bd2cce41a2fbd4495450",
+      "new_path": "skills/ship/frontend-design/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0bf4156e15de358351d8964a85cf38a67b518d79f678bd2cce41a2fbd4495450"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/frontend-design/WRITING.md",
+      "old_sha256": "915e5c4d61768808c97eccf9bae86c219af5e46081a5b8de089d9a72719b8fee",
+      "new_path": "skills/ship/frontend-design/WRITING.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "915e5c4d61768808c97eccf9bae86c219af5e46081a5b8de089d9a72719b8fee"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/handoff/SKILL.md",
+      "old_sha256": "84c997d9036483928ab0af669b3837b3effcd6c33bdd27354baf5bb6c1571eb0",
+      "new_path": "skills/ship/handoff/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "84c997d9036483928ab0af669b3837b3effcd6c33bdd27354baf5bb6c1571eb0"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/handoff/agents/openai.yaml",
+      "old_sha256": "5c479fd562c691851690e8b18c8501045bef0943c10743d636b2fae26add1d28",
+      "new_path": "skills/ship/handoff/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5c479fd562c691851690e8b18c8501045bef0943c10743d636b2fae26add1d28"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/post-deploy-check/SKILL.md",
+      "old_sha256": "1c6219db3c8cad207cb73c2bfc6ba3d5f533daff70ea64504edf70f8bb597bea",
+      "new_path": "skills/ship/post-deploy-check/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1c6219db3c8cad207cb73c2bfc6ba3d5f533daff70ea64504edf70f8bb597bea"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/prototype/LOGIC.md",
+      "old_sha256": "f61c7d249e786a79ef289018901c348271e1798dd0b0bc5607b5c6f4d4a01ab9",
+      "new_path": "skills/ship/prototype/LOGIC.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f61c7d249e786a79ef289018901c348271e1798dd0b0bc5607b5c6f4d4a01ab9"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/prototype/SKILL.md",
+      "old_sha256": "1f3425ca3438c7215d80a1da7a06ebd67da62d0b60afb8fe0a862f1eea87422b",
+      "new_path": "skills/ship/prototype/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1f3425ca3438c7215d80a1da7a06ebd67da62d0b60afb8fe0a862f1eea87422b"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/prototype/UI.md",
+      "old_sha256": "53a33e2086647bea1e383f07d389734c702fb550e070e49cb3a44f543ca8d1f4",
+      "new_path": "skills/ship/prototype/UI.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "53a33e2086647bea1e383f07d389734c702fb550e070e49cb3a44f543ca8d1f4"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/prototype/agents/openai.yaml",
+      "old_sha256": "5af65e43ab41a350436697b81e27b7f848d36782043b73c322bb2c9fa9cc55dc",
+      "new_path": "skills/ship/prototype/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5af65e43ab41a350436697b81e27b7f848d36782043b73c322bb2c9fa9cc55dc"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/research/SKILL.md",
+      "old_sha256": "8d5010b11fb312123b4c7101cb141ce4f491b341138a8c4cd7f91fe99a4bf0c8",
+      "new_path": "skills/ship/research/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8d5010b11fb312123b4c7101cb141ce4f491b341138a8c4cd7f91fe99a4bf0c8"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/research/agents/openai.yaml",
+      "old_sha256": "9b4c470d63221c1f68f22df70b83e2f12401b317babe0d1b7b5f24a974474d0d",
+      "new_path": "skills/ship/research/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9b4c470d63221c1f68f22df70b83e2f12401b317babe0d1b7b5f24a974474d0d"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/retro/SKILL.md",
+      "old_sha256": "a43e5479151e1e05f35851c49b9e8eb3a9dca588f337511c988be5bec588b1d1",
+      "new_path": "skills/ship/retro/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a43e5479151e1e05f35851c49b9e8eb3a9dca588f337511c988be5bec588b1d1"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/retro/agents/openai.yaml",
+      "old_sha256": "cb6fb9d7e6b4be5975f41f6def1dd00a1255bad5d9b02696b124c924a8b8745c",
+      "new_path": "skills/ship/retro/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "cb6fb9d7e6b4be5975f41f6def1dd00a1255bad5d9b02696b124c924a8b8745c"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/ship-report/SKILL.md",
+      "old_sha256": "9627b7ab729a2fbc4615526cb419a2c49a0e08529e32a5a68b7981dda6dc0651",
+      "new_path": "skills/ship/ship-report/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9627b7ab729a2fbc4615526cb419a2c49a0e08529e32a5a68b7981dda6dc0651"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/teach/GLOSSARY-FORMAT.md",
+      "old_sha256": "9b99859ec28437668130d8f2ce5a342938970f8a1ed4fd38c3eab4f4b5fff210",
+      "new_path": "skills/ship/teach/GLOSSARY-FORMAT.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9b99859ec28437668130d8f2ce5a342938970f8a1ed4fd38c3eab4f4b5fff210"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/teach/LEARNING-RECORD-FORMAT.md",
+      "old_sha256": "701fa34b6748aa89e6c960ffb815257f481a7d77fb2900f9028f7edf3fdd6052",
+      "new_path": "skills/ship/teach/LEARNING-RECORD-FORMAT.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "701fa34b6748aa89e6c960ffb815257f481a7d77fb2900f9028f7edf3fdd6052"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/teach/MISSION-FORMAT.md",
+      "old_sha256": "8cacbb3c0644d3ae0ea4965564797099401a6930a23f7cf462918576587f2418",
+      "new_path": "skills/ship/teach/MISSION-FORMAT.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8cacbb3c0644d3ae0ea4965564797099401a6930a23f7cf462918576587f2418"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/teach/RESOURCES-FORMAT.md",
+      "old_sha256": "89dc01d0b6288108229eede0e4b7981ce2d6f3df4900b38dac405dd7f3c7ee09",
+      "new_path": "skills/ship/teach/RESOURCES-FORMAT.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "89dc01d0b6288108229eede0e4b7981ce2d6f3df4900b38dac405dd7f3c7ee09"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/teach/SKILL.md",
+      "old_sha256": "cc9095eb5cbc2d6ac943318501e3a35037577616a9361c14c183be400f34ffe2",
+      "new_path": "skills/ship/teach/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "cc9095eb5cbc2d6ac943318501e3a35037577616a9361c14c183be400f34ffe2"
+    },
+    {
+      "old_path": "collection/agents/skills/ship/teach/agents/openai.yaml",
+      "old_sha256": "5856f3ae8aec742f1499c640aecdd5f1d6af5fa210a7c6ec794de8263a6f733f",
+      "new_path": "skills/ship/teach/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5856f3ae8aec742f1499c640aecdd5f1d6af5fa210a7c6ec794de8263a6f733f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/LICENSE.txt",
+      "old_sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "new_path": "skills/synced/snapshot-01/canvas-design/LICENSE.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/SKILL.md",
+      "old_sha256": "7bebc4a2cf108c55c1e52bb96b1050dc1ab2f9492e9c2d43f1fe57f826728f4d",
+      "new_path": "skills/synced/snapshot-01/canvas-design/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7bebc4a2cf108c55c1e52bb96b1050dc1ab2f9492e9c2d43f1fe57f826728f4d"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/ArsenalSC-OFL.txt",
+      "old_sha256": "7a87a0c469fedc802e3acef550db9a728f621275984b46c6c51e731d7212520a",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/ArsenalSC-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7a87a0c469fedc802e3acef550db9a728f621275984b46c6c51e731d7212520a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/ArsenalSC-Regular.ttf",
+      "old_sha256": "65e6f89df58f68fd905b3add34a79dd6106aa3b3044df0dad9676fff53d504b9",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/ArsenalSC-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "65e6f89df58f68fd905b3add34a79dd6106aa3b3044df0dad9676fff53d504b9"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/BigShoulders-Bold.ttf",
+      "old_sha256": "b43bcd198b9fdf717dd42aa61a34dba32e01aceaeae659d689afd0ca52c37ea2",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/BigShoulders-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b43bcd198b9fdf717dd42aa61a34dba32e01aceaeae659d689afd0ca52c37ea2"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/BigShoulders-OFL.txt",
+      "old_sha256": "9ce6294be745093338c51e62d7efaddbf32b90ac9a7ffde8a12ce92e0413fe25",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/BigShoulders-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9ce6294be745093338c51e62d7efaddbf32b90ac9a7ffde8a12ce92e0413fe25"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/BigShoulders-Regular.ttf",
+      "old_sha256": "18a879fc71978a4447150705caf880a9da3860083c259fd29e6dc03057b6842a",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/BigShoulders-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "18a879fc71978a4447150705caf880a9da3860083c259fd29e6dc03057b6842a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Boldonse-OFL.txt",
+      "old_sha256": "f5fe122e06e26a0277b07d6f6d171a60156aef5fe138281538498cee767b6bd4",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Boldonse-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f5fe122e06e26a0277b07d6f6d171a60156aef5fe138281538498cee767b6bd4"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Boldonse-Regular.ttf",
+      "old_sha256": "cc2e540604565c0f90a7d8d46194a2f42fc9c45512cd2e39bf03b50eb68c35a4",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Boldonse-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "cc2e540604565c0f90a7d8d46194a2f42fc9c45512cd2e39bf03b50eb68c35a4"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/BricolageGrotesque-Bold.ttf",
+      "old_sha256": "a737b146fe0d77ffe8a86e3cd16700dd431d3b1e420d4fd80e142cd68a1cb50d",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/BricolageGrotesque-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a737b146fe0d77ffe8a86e3cd16700dd431d3b1e420d4fd80e142cd68a1cb50d"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/BricolageGrotesque-OFL.txt",
+      "old_sha256": "a093964b3ca71526ae129d0d5f39bc9dba905ae5ebeb72d741bb0d4ed2d5d5b0",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/BricolageGrotesque-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a093964b3ca71526ae129d0d5f39bc9dba905ae5ebeb72d741bb0d4ed2d5d5b0"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/BricolageGrotesque-Regular.ttf",
+      "old_sha256": "972a6d098c9867ae131d0ea99e221e63976b11a19d4b931c2c7ace525674e4f6",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/BricolageGrotesque-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "972a6d098c9867ae131d0ea99e221e63976b11a19d4b931c2c7ace525674e4f6"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-Bold.ttf",
+      "old_sha256": "48f191e38355c8db100eb3ce157c20f9302a3b9a37b44a660f77ecfce3986609",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "48f191e38355c8db100eb3ce157c20f9302a3b9a37b44a660f77ecfce3986609"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-Italic.ttf",
+      "old_sha256": "52318db3526b644e6efa60be0b3ca5a50e40fbe8bd026c261e0aa206f0772267",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-Italic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "52318db3526b644e6efa60be0b3ca5a50e40fbe8bd026c261e0aa206f0772267"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-OFL.txt",
+      "old_sha256": "fd2bc485bc16b876b09f97ab0a218092c0c78f533be0d7750aca9e9df9e3ab7b",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fd2bc485bc16b876b09f97ab0a218092c0c78f533be0d7750aca9e9df9e3ab7b"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-Regular.ttf",
+      "old_sha256": "48fad08cb1917a7b2f2c6fe5135d6c07743a6663cf7631ec4481108aaf081422",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/CrimsonPro-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "48fad08cb1917a7b2f2c6fe5135d6c07743a6663cf7631ec4481108aaf081422"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/DMMono-OFL.txt",
+      "old_sha256": "0f2c192cfa63e591f680392d1792ff06e52a76ef81f70841ccb0b36c11b61826",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/DMMono-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0f2c192cfa63e591f680392d1792ff06e52a76ef81f70841ccb0b36c11b61826"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/DMMono-Regular.ttf",
+      "old_sha256": "f98ada968dc3b6b2c08d3f5caaf266977df0bfe0929372b93df5a06cf2ace450",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/DMMono-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f98ada968dc3b6b2c08d3f5caaf266977df0bfe0929372b93df5a06cf2ace450"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/EricaOne-OFL.txt",
+      "old_sha256": "cb7900ec9382f84f51ec5c79b6cddd9c17892bc3a2e90bfb74d6d710bdabf5fd",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/EricaOne-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "cb7900ec9382f84f51ec5c79b6cddd9c17892bc3a2e90bfb74d6d710bdabf5fd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/EricaOne-Regular.ttf",
+      "old_sha256": "db1d89e80e33a8a01beaaac7a85df582857d24a43f1e181461aa7ff5d701476a",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/EricaOne-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "db1d89e80e33a8a01beaaac7a85df582857d24a43f1e181461aa7ff5d701476a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/GeistMono-Bold.ttf",
+      "old_sha256": "75c0828d5c1ee44b9ef9f4df577bf41595ec362e2ea3f1e558590c9e92c7949d",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/GeistMono-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "75c0828d5c1ee44b9ef9f4df577bf41595ec362e2ea3f1e558590c9e92c7949d"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/GeistMono-OFL.txt",
+      "old_sha256": "0acca17d633ecc7180aa12d8a60a95889d87a439cb83884597ff278046743dcb",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/GeistMono-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0acca17d633ecc7180aa12d8a60a95889d87a439cb83884597ff278046743dcb"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/GeistMono-Regular.ttf",
+      "old_sha256": "a55c1b51cda4afeab9e471e7947b85a20f7c8831d7e6b1470c1b7fbdc0f0f15e",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/GeistMono-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a55c1b51cda4afeab9e471e7947b85a20f7c8831d7e6b1470c1b7fbdc0f0f15e"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Gloock-OFL.txt",
+      "old_sha256": "e5a3c37f36d4484c7818fad6953828f74168cc1218421c913006c84fd4d14c14",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Gloock-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "e5a3c37f36d4484c7818fad6953828f74168cc1218421c913006c84fd4d14c14"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Gloock-Regular.ttf",
+      "old_sha256": "e86b4ce66dbd3f1f83eee8db99ec96e0da1128c3f53df0e9b3b7472025dfe960",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Gloock-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "e86b4ce66dbd3f1f83eee8db99ec96e0da1128c3f53df0e9b3b7472025dfe960"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexMono-Bold.ttf",
+      "old_sha256": "dbd2a2fb024579438d6400a84e57579bfd2dbe67c306c8fd9fde92a61e4f2eea",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexMono-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "dbd2a2fb024579438d6400a84e57579bfd2dbe67c306c8fd9fde92a61e4f2eea"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexMono-OFL.txt",
+      "old_sha256": "0fc74640fdcd67c036e1fced58d7e4478897a333cd92b981115a3e324337577f",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexMono-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0fc74640fdcd67c036e1fced58d7e4478897a333cd92b981115a3e324337577f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexMono-Regular.ttf",
+      "old_sha256": "ab08018ccd276b79fb2c636bb95b9c543598f9d50505fe92506fcb4dae7810cd",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexMono-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ab08018ccd276b79fb2c636bb95b9c543598f9d50505fe92506fcb4dae7810cd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-Bold.ttf",
+      "old_sha256": "b8d294e9b5c5a0940f167c3ced0f7ef2e3f57082ca3ff096ef30e86e26c1c159",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b8d294e9b5c5a0940f167c3ced0f7ef2e3f57082ca3ff096ef30e86e26c1c159"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-BoldItalic.ttf",
+      "old_sha256": "da64b75f4284f53e7b5c71fa190a35b8bf3494fe19f1804c81c3a53340bca570",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-BoldItalic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "da64b75f4284f53e7b5c71fa190a35b8bf3494fe19f1804c81c3a53340bca570"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-Italic.ttf",
+      "old_sha256": "b11f1048745e715a55c9d837b3f10226ca3d78867b7db7251ddad8f98dcf0f38",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-Italic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b11f1048745e715a55c9d837b3f10226ca3d78867b7db7251ddad8f98dcf0f38"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-Regular.ttf",
+      "old_sha256": "77cd233a2af8dc6b1022faea3bb3b01f3c75af68bcf530cb6aeb15982ff3dbb7",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/IBMPlexSerif-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "77cd233a2af8dc6b1022faea3bb3b01f3c75af68bcf530cb6aeb15982ff3dbb7"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-Bold.ttf",
+      "old_sha256": "444f85bf1c4b0e1ce1ca624f6be54bcd832207714ccaf4ea99ee531341683bdf",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "444f85bf1c4b0e1ce1ca624f6be54bcd832207714ccaf4ea99ee531341683bdf"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-BoldItalic.ttf",
+      "old_sha256": "3762f6cef95d6039489ad5ba5787d4c30f17a1ad01e9ac3c816ed69692722a68",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-BoldItalic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3762f6cef95d6039489ad5ba5787d4c30f17a1ad01e9ac3c816ed69692722a68"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-Italic.ttf",
+      "old_sha256": "78e85858e371b2cb4e18f617c10f0f937c0e12a0887ffee98555b24ed305b3a7",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-Italic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "78e85858e371b2cb4e18f617c10f0f937c0e12a0887ffee98555b24ed305b3a7"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-OFL.txt",
+      "old_sha256": "6c98bea402c5bfed70c42c0d6fcc6a31ea793979537d1becf4a5dae65a26a34f",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6c98bea402c5bfed70c42c0d6fcc6a31ea793979537d1becf4a5dae65a26a34f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-Regular.ttf",
+      "old_sha256": "a22cb26e48fd79bcb01bf2fc92d36785474dce36d9c544ab0a8868c2657c4a87",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSans-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a22cb26e48fd79bcb01bf2fc92d36785474dce36d9c544ab0a8868c2657c4a87"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSerif-Italic.ttf",
+      "old_sha256": "9c86e4d5a47b50224a2463a9eca8535835257c8e85c470c2c6b454b1af6f046e",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSerif-Italic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9c86e4d5a47b50224a2463a9eca8535835257c8e85c470c2c6b454b1af6f046e"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSerif-Regular.ttf",
+      "old_sha256": "56ac3be03ac3ba283196b3e77850ab2ffcf56cfb6fd3212c5620109a972f8c99",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/InstrumentSerif-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "56ac3be03ac3ba283196b3e77850ab2ffcf56cfb6fd3212c5620109a972f8c99"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Italiana-OFL.txt",
+      "old_sha256": "3edefd97c07108eb7151fa6ed58fc7ce79bb697fc1fc50a1da25398d54cdf588",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Italiana-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3edefd97c07108eb7151fa6ed58fc7ce79bb697fc1fc50a1da25398d54cdf588"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Italiana-Regular.ttf",
+      "old_sha256": "15c4dd6ab8cf4a29ba8826f65edcbe2f6c266c557d34d081f25072dfd5605fd2",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Italiana-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "15c4dd6ab8cf4a29ba8826f65edcbe2f6c266c557d34d081f25072dfd5605fd2"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/JetBrainsMono-Bold.ttf",
+      "old_sha256": "a2349098b9e45419e7bf0e2958d6c4937a049dded37387b08be725be4c7615f3",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/JetBrainsMono-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a2349098b9e45419e7bf0e2958d6c4937a049dded37387b08be725be4c7615f3"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/JetBrainsMono-OFL.txt",
+      "old_sha256": "4d9694c4844a13ea377458c3f98c90d2bf83d3c214612dcae2b7808406520708",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/JetBrainsMono-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4d9694c4844a13ea377458c3f98c90d2bf83d3c214612dcae2b7808406520708"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/JetBrainsMono-Regular.ttf",
+      "old_sha256": "b6b1ff4ddefe36d7f2a6174e1d001cab374e594519ee9049af028d577b64c5f5",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/JetBrainsMono-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b6b1ff4ddefe36d7f2a6174e1d001cab374e594519ee9049af028d577b64c5f5"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Jura-Light.ttf",
+      "old_sha256": "c891a381df056b2c4dfe85841e911bf45da0890fa21a7b2692cbe5ea1f505e1e",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Jura-Light.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c891a381df056b2c4dfe85841e911bf45da0890fa21a7b2692cbe5ea1f505e1e"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Jura-Medium.ttf",
+      "old_sha256": "c72965cb732a92872643819fd1734128238583cc36b116313859137a51d3368a",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Jura-Medium.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c72965cb732a92872643819fd1734128238583cc36b116313859137a51d3368a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Jura-OFL.txt",
+      "old_sha256": "707f27f18ff5c786e2b41f44873201b34c3a3694ca6ea4aa24cbb52cbd46fbc2",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Jura-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "707f27f18ff5c786e2b41f44873201b34c3a3694ca6ea4aa24cbb52cbd46fbc2"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/LibreBaskerville-OFL.txt",
+      "old_sha256": "3624eddd4c8f8a908130a417ae7cd089c9da69899c4e0ca1a5217d0a6fae16fd",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/LibreBaskerville-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3624eddd4c8f8a908130a417ae7cd089c9da69899c4e0ca1a5217d0a6fae16fd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/LibreBaskerville-Regular.ttf",
+      "old_sha256": "2101302538d9e88adb679031c04623e4578b5745e89566284fd2c508d79acae0",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/LibreBaskerville-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "2101302538d9e88adb679031c04623e4578b5745e89566284fd2c508d79acae0"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-Bold.ttf",
+      "old_sha256": "7d74015e950c2fb66519c7295b8155621d22200ae2ca2a4c6b43ce3c490cac87",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7d74015e950c2fb66519c7295b8155621d22200ae2ca2a4c6b43ce3c490cac87"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-BoldItalic.ttf",
+      "old_sha256": "152f87e71f5ddb60d5c57ecd9132807c947e65c42977193c9164e7c5a6690081",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-BoldItalic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "152f87e71f5ddb60d5c57ecd9132807c947e65c42977193c9164e7c5a6690081"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-Italic.ttf",
+      "old_sha256": "be627e595184e8afe521f08da0607eee613f1997d423bc8dadc5798995581377",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-Italic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "be627e595184e8afe521f08da0607eee613f1997d423bc8dadc5798995581377"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-OFL.txt",
+      "old_sha256": "41cf75bf229a1435b7df209ac7419622516eff7e8cab79260fb0fb9b1cc8ced2",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "41cf75bf229a1435b7df209ac7419622516eff7e8cab79260fb0fb9b1cc8ced2"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-Regular.ttf",
+      "old_sha256": "7ed00e7c9cdf16ab7e2fd2361fe45d4f0b61263cd60aae398b27b7ee08108827",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Lora-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7ed00e7c9cdf16ab7e2fd2361fe45d4f0b61263cd60aae398b27b7ee08108827"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/NationalPark-Bold.ttf",
+      "old_sha256": "69ac4c301c4a7233c6e602d12a92c54d7967b575f4449951c45ce773f7acff53",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/NationalPark-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "69ac4c301c4a7233c6e602d12a92c54d7967b575f4449951c45ce773f7acff53"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/NationalPark-OFL.txt",
+      "old_sha256": "29618a33c9871519e77e75f7db9df6ba894b9f2208d97975ba419d3f6e46d9f7",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/NationalPark-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "29618a33c9871519e77e75f7db9df6ba894b9f2208d97975ba419d3f6e46d9f7"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/NationalPark-Regular.ttf",
+      "old_sha256": "a477338b7e18308d476650dfe31235ef86a883572665e56ffb5fb80f82009b58",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/NationalPark-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a477338b7e18308d476650dfe31235ef86a883572665e56ffb5fb80f82009b58"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/NothingYouCouldDo-OFL.txt",
+      "old_sha256": "179d94a7a42ce98cc0ef2bfad604b77e9b0a9cc03e6a9ae8844844e3028d04b2",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/NothingYouCouldDo-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "179d94a7a42ce98cc0ef2bfad604b77e9b0a9cc03e6a9ae8844844e3028d04b2"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/NothingYouCouldDo-Regular.ttf",
+      "old_sha256": "d866f985896d3280f4fce72db7e17302c24a0c1fdb0699b6b5ed3af14f944d57",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/NothingYouCouldDo-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "d866f985896d3280f4fce72db7e17302c24a0c1fdb0699b6b5ed3af14f944d57"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Outfit-Bold.ttf",
+      "old_sha256": "6654b93d21301ec61887d3cedd6c11d9df1b1dfb63f9cf45ac7995f6e2235ab1",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Outfit-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6654b93d21301ec61887d3cedd6c11d9df1b1dfb63f9cf45ac7995f6e2235ab1"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Outfit-OFL.txt",
+      "old_sha256": "8fc6af31312082959cc8297b30e04d94ff457faecc9fb0aeeb8906bf448f20e6",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Outfit-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8fc6af31312082959cc8297b30e04d94ff457faecc9fb0aeeb8906bf448f20e6"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Outfit-Regular.ttf",
+      "old_sha256": "f24945365147c9e783e91d8649959b59be6b00c9ee4ecd2f6b33afbb2dd871fe",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Outfit-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f24945365147c9e783e91d8649959b59be6b00c9ee4ecd2f6b33afbb2dd871fe"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/PixelifySans-Medium.ttf",
+      "old_sha256": "38397504f71c122b03d234ea6f55118e3d5bdbddffd82bedddbd7755d3b3be82",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/PixelifySans-Medium.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "38397504f71c122b03d234ea6f55118e3d5bdbddffd82bedddbd7755d3b3be82"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/PixelifySans-OFL.txt",
+      "old_sha256": "34b5d28aebcb26adae3e1fb74842b5c6a3915fb721036ea2b3444f18954331dd",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/PixelifySans-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "34b5d28aebcb26adae3e1fb74842b5c6a3915fb721036ea2b3444f18954331dd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/PoiretOne-OFL.txt",
+      "old_sha256": "26f2bc9434e40e75d2378fd9a8125c16f5ee1d0e7bbdf14daabd7109f7d87a6d",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/PoiretOne-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "26f2bc9434e40e75d2378fd9a8125c16f5ee1d0e7bbdf14daabd7109f7d87a6d"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/PoiretOne-Regular.ttf",
+      "old_sha256": "9cf265b139648b36b6c0afdfeb0bf27f7e66db9a16094bc40f644d8da05bc318",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/PoiretOne-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9cf265b139648b36b6c0afdfeb0bf27f7e66db9a16094bc40f644d8da05bc318"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/RedHatMono-Bold.ttf",
+      "old_sha256": "7ef48353f4be5ddb90f000f6fad48f2b62b3e8c27d9818d8d45ff46c201065e0",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/RedHatMono-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7ef48353f4be5ddb90f000f6fad48f2b62b3e8c27d9818d8d45ff46c201065e0"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/RedHatMono-OFL.txt",
+      "old_sha256": "3f7ee3287416a0a1b2f90f4230306098268efa63504fa12d6436acd994a69b68",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/RedHatMono-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3f7ee3287416a0a1b2f90f4230306098268efa63504fa12d6436acd994a69b68"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/RedHatMono-Regular.ttf",
+      "old_sha256": "452fe826871b37539f5212b20c87cf30f82f58dd2741f1c96edd1dcbdc0db6b4",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/RedHatMono-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "452fe826871b37539f5212b20c87cf30f82f58dd2741f1c96edd1dcbdc0db6b4"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Silkscreen-OFL.txt",
+      "old_sha256": "b841352f14bfc3e79b872ede3c05aa49ba816218a53cb2a07c6624ccf38a2ea1",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Silkscreen-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b841352f14bfc3e79b872ede3c05aa49ba816218a53cb2a07c6624ccf38a2ea1"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Silkscreen-Regular.ttf",
+      "old_sha256": "49567408600809e25147e9225ac4f37f410e2df45a750696c45027531fb65f1b",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Silkscreen-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "49567408600809e25147e9225ac4f37f410e2df45a750696c45027531fb65f1b"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/SmoochSans-Medium.ttf",
+      "old_sha256": "dd76e6e77cce82f827a8654cd906e9ce58f3aaf78adda63c4a7f655b8ecb41f0",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/SmoochSans-Medium.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "dd76e6e77cce82f827a8654cd906e9ce58f3aaf78adda63c4a7f655b8ecb41f0"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/SmoochSans-OFL.txt",
+      "old_sha256": "ed57f8cd1429e35d68ad4b3edb44b142e2245467a2f537bf05044ee015447438",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/SmoochSans-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ed57f8cd1429e35d68ad4b3edb44b142e2245467a2f537bf05044ee015447438"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Tektur-Medium.ttf",
+      "old_sha256": "52bbe8c9b057b3d2da4eeace31a524b1ea26a1375ae34319cf6900ccc57a4c82",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Tektur-Medium.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "52bbe8c9b057b3d2da4eeace31a524b1ea26a1375ae34319cf6900ccc57a4c82"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Tektur-OFL.txt",
+      "old_sha256": "360ef927fe156e4c7d8d7b1900375594f7db95fc3e04c1f0ce8cbbc55bc76eb8",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Tektur-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "360ef927fe156e4c7d8d7b1900375594f7db95fc3e04c1f0ce8cbbc55bc76eb8"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/Tektur-Regular.ttf",
+      "old_sha256": "162e1b36c4718c5b051b36c971ad7e50d341944f35618f480422ebbe72988f98",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/Tektur-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "162e1b36c4718c5b051b36c971ad7e50d341944f35618f480422ebbe72988f98"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-Bold.ttf",
+      "old_sha256": "240d125fc9f8561363dc1ea3f513501253bd70942f41468f48f0b0cafb0c82e2",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-Bold.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "240d125fc9f8561363dc1ea3f513501253bd70942f41468f48f0b0cafb0c82e2"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-BoldItalic.ttf",
+      "old_sha256": "a5b2cad813df0aaa7d16621f2e93b5117c25e9bc788bc9a3ad218e9d6348ce34",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-BoldItalic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a5b2cad813df0aaa7d16621f2e93b5117c25e9bc788bc9a3ad218e9d6348ce34"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-Italic.ttf",
+      "old_sha256": "6b7f7002e0b0c8b261fe878658ef5551e3e59d9f6b609b04efb90dde1e2c1ada",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-Italic.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6b7f7002e0b0c8b261fe878658ef5551e3e59d9f6b609b04efb90dde1e2c1ada"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-OFL.txt",
+      "old_sha256": "4f8cbaf2a5494148a8064db9b5eb7c23a0f9098683244803b11c0eec857b81a9",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4f8cbaf2a5494148a8064db9b5eb7c23a0f9098683244803b11c0eec857b81a9"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-Regular.ttf",
+      "old_sha256": "e67985a843df0d3cdee51a3d0f329eb1774a344ad9ff0c9ab923751f1577e2a4",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/WorkSans-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "e67985a843df0d3cdee51a3d0f329eb1774a344ad9ff0c9ab923751f1577e2a4"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/YoungSerif-OFL.txt",
+      "old_sha256": "0f15fb928a39deedb71e9198dbeece4403f827561b0cdbcff450aacbcf772212",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/YoungSerif-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0f15fb928a39deedb71e9198dbeece4403f827561b0cdbcff450aacbcf772212"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/canvas-design/canvas-fonts/YoungSerif-Regular.ttf",
+      "old_sha256": "f8dc08f77abad753a00670af70756a8ace938e5c3f0b770f4f4c2071c4bd8fc6",
+      "new_path": "skills/synced/snapshot-01/canvas-design/canvas-fonts/YoungSerif-Regular.ttf",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f8dc08f77abad753a00670af70756a8ace938e5c3f0b770f4f4c2071c4bd8fc6"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/deep-research/SKILL.md",
+      "old_sha256": "46ae8d5a0b95efad0329ac287ea5248c19fbbe195d8270231c4a78ba6217c024",
+      "new_path": "skills/synced/snapshot-01/deep-research/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "46ae8d5a0b95efad0329ac287ea5248c19fbbe195d8270231c4a78ba6217c024"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "old_sha256": "832f4f7867e550cd211cdbeb05a58d2f590a9f626fa92fd0e66ea23544461731",
+      "new_path": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "832f4f7867e550cd211cdbeb05a58d2f590a9f626fa92fd0e66ea23544461731"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "old_sha256": "29a8c709c7714f89687495c0ff572ac686be2eb43df3c2a704abae2294686a11",
+      "new_path": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "29a8c709c7714f89687495c0ff572ac686be2eb43df3c2a704abae2294686a11"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/docs/SKILL.md",
+      "old_sha256": "98e4fb5934042152d57bc9cb8c0736d5d8e31c6c0122b13ff5836f4c2411fa3e",
+      "new_path": "skills/synced/snapshot-01/docs/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "98e4fb5934042152d57bc9cb8c0736d5d8e31c6c0122b13ff5836f4c2411fa3e"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/SKILL.md",
+      "old_sha256": "073e4f759b4aa054be72a4f5bb9d8f51d3df3f8e02149605cf5c5dad3412bc83",
+      "new_path": "skills/synced/snapshot-01/google-workspace/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "073e4f759b4aa054be72a4f5bb9d8f51d3df3f8e02149605cf5c5dad3412bc83"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/references/charts.md",
+      "old_sha256": "60af1c2fb7d673aec45664ce9bbced7c7e1bf7121ec91dc3b640f34d77167c34",
+      "new_path": "skills/synced/snapshot-01/google-workspace/references/charts.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "60af1c2fb7d673aec45664ce9bbced7c7e1bf7121ec91dc3b640f34d77167c34"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/references/docs.md",
+      "old_sha256": "1a0bc6a8cbd98590aaaf2afe295d7332b0019717e7aefb85234675059d2a5554",
+      "new_path": "skills/synced/snapshot-01/google-workspace/references/docs.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1a0bc6a8cbd98590aaaf2afe295d7332b0019717e7aefb85234675059d2a5554"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/references/sheets.md",
+      "old_sha256": "d29f5223f3cf5e1aed270df55d4ba750d92c587e56b5f10f6755e9afdc536de8",
+      "new_path": "skills/synced/snapshot-01/google-workspace/references/sheets.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "d29f5223f3cf5e1aed270df55d4ba750d92c587e56b5f10f6755e9afdc536de8"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/references/slides.md",
+      "old_sha256": "00ffa114f4e06815509e613a748f8f393481e0057a20b23114a646ffd6f2be59",
+      "new_path": "skills/synced/snapshot-01/google-workspace/references/slides.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "00ffa114f4e06815509e613a748f8f393481e0057a20b23114a646ffd6f2be59"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/scripts/docs_index.py",
+      "old_sha256": "735b8ed4e9c292d0e0cc0af46e7b5f054fbf0bd51148a6b3318de774a4299b96",
+      "new_path": "skills/synced/snapshot-01/google-workspace/scripts/docs_index.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "735b8ed4e9c292d0e0cc0af46e7b5f054fbf0bd51148a6b3318de774a4299b96"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/scripts/render_export.py",
+      "old_sha256": "a27468ad1d016cd58bcb33a2b619fd31cdeea59f214948ee937232fe4b6435ba",
+      "new_path": "skills/synced/snapshot-01/google-workspace/scripts/render_export.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a27468ad1d016cd58bcb33a2b619fd31cdeea59f214948ee937232fe4b6435ba"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/scripts/sheets_helper.py",
+      "old_sha256": "c6d92a87fae349b235becf6f7fad110e641b9de100a597fd26e023c3d2dacbf4",
+      "new_path": "skills/synced/snapshot-01/google-workspace/scripts/sheets_helper.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c6d92a87fae349b235becf6f7fad110e641b9de100a597fd26e023c3d2dacbf4"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/google-workspace/scripts/slides_helper.py",
+      "old_sha256": "40ed9169a005513347aacea800b2fda4860d7b9477e0db50dc9c46705eec1fc8",
+      "new_path": "skills/synced/snapshot-01/google-workspace/scripts/slides_helper.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "40ed9169a005513347aacea800b2fda4860d7b9477e0db50dc9c46705eec1fc8"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/import-memory/SKILL.md",
+      "old_sha256": "5179b0780b7025c93271c181636a23acc8d05cad3b20584639cbaf1cf9c3b07a",
+      "new_path": "skills/synced/snapshot-01/import-memory/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5179b0780b7025c93271c181636a23acc8d05cad3b20584639cbaf1cf9c3b07a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/morning/SKILL.md",
+      "old_sha256": "a7c4dbcb745799736991b027cceae39aae4880cc00ff43871ae5e87b38023bdd",
+      "new_path": "skills/synced/snapshot-01/morning/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a7c4dbcb745799736991b027cceae39aae4880cc00ff43871ae5e87b38023bdd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/morning/assets/fonts/Fraunces-OFL.txt",
+      "old_sha256": "0bc0daaa78b715774d4ad27d7f4ee8b436f48cef8e2f773531a8f22e27c06248",
+      "new_path": "skills/synced/snapshot-01/morning/assets/fonts/Fraunces-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0bc0daaa78b715774d4ad27d7f4ee8b436f48cef8e2f773531a8f22e27c06248"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/morning/assets/fonts/fraunces-latin-600-normal.woff2",
+      "old_sha256": "3a1de7711d147bad4422825045f87597fd77cca72e7c96d3b0a81735d00dda82",
+      "new_path": "skills/synced/snapshot-01/morning/assets/fonts/fraunces-latin-600-normal.woff2",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3a1de7711d147bad4422825045f87597fd77cca72e7c96d3b0a81735d00dda82"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/LICENSE.txt",
+      "old_sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "new_path": "skills/synced/snapshot-01/skill-creator/LICENSE.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/SKILL.md",
+      "old_sha256": "42765c880e446a83c85f7852fc77b43ecd46c76ca219d68051799ac7425e6943",
+      "new_path": "skills/synced/snapshot-01/skill-creator/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "42765c880e446a83c85f7852fc77b43ecd46c76ca219d68051799ac7425e6943"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/agents/analyzer.md",
+      "old_sha256": "bf68f4cac5a56c673a928c2e6d619586c5b93ea364026ab37547772cb45a663a",
+      "new_path": "skills/synced/snapshot-01/skill-creator/agents/analyzer.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "bf68f4cac5a56c673a928c2e6d619586c5b93ea364026ab37547772cb45a663a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/agents/comparator.md",
+      "old_sha256": "fe1fc9787c495d864c5d6eada47396478572325fde1b33a96d78bf4b849b7a3e",
+      "new_path": "skills/synced/snapshot-01/skill-creator/agents/comparator.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fe1fc9787c495d864c5d6eada47396478572325fde1b33a96d78bf4b849b7a3e"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/agents/grader.md",
+      "old_sha256": "57134da0c1a4eea33fbd74a1c9c44aa814f07d6bc64de303edb586f941e5d21a",
+      "new_path": "skills/synced/snapshot-01/skill-creator/agents/grader.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "57134da0c1a4eea33fbd74a1c9c44aa814f07d6bc64de303edb586f941e5d21a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/assets/eval_review.html",
+      "old_sha256": "ce477dcc74dc1c0d1d3352646a79167b5a63634e936b1019160025065974e452",
+      "new_path": "skills/synced/snapshot-01/skill-creator/assets/eval_review.html",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ce477dcc74dc1c0d1d3352646a79167b5a63634e936b1019160025065974e452"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/eval-viewer/generate_review.py",
+      "old_sha256": "fc9d1b9243fe5ab6012ebd579bd76d0035de1b79fd3b969de114defab26478fb",
+      "new_path": "skills/synced/snapshot-01/skill-creator/eval-viewer/generate_review.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fc9d1b9243fe5ab6012ebd579bd76d0035de1b79fd3b969de114defab26478fb"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/eval-viewer/viewer.html",
+      "old_sha256": "a53213426ee1100441d701a3a0d49cda7a842f992d2c36463f4d3cc0258575fa",
+      "new_path": "skills/synced/snapshot-01/skill-creator/eval-viewer/viewer.html",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a53213426ee1100441d701a3a0d49cda7a842f992d2c36463f4d3cc0258575fa"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/references/schemas.md",
+      "old_sha256": "8e8876180a8989b406a4d3edddf875b04cdfd5805cc8616686d552b11ce4455f",
+      "new_path": "skills/synced/snapshot-01/skill-creator/references/schemas.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8e8876180a8989b406a4d3edddf875b04cdfd5805cc8616686d552b11ce4455f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/__init__.py",
+      "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/__init__.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/aggregate_benchmark.py",
+      "old_sha256": "123ef128ea5ccc01a4b1ac212ef5567f21e9c13d3d240609780beeb3200c49aa",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/aggregate_benchmark.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "123ef128ea5ccc01a4b1ac212ef5567f21e9c13d3d240609780beeb3200c49aa"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/generate_report.py",
+      "old_sha256": "13df7118a3c50c83c4c3250a606d5f2b20b25a3d44cbc392b3d669ec75281453",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/generate_report.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "13df7118a3c50c83c4c3250a606d5f2b20b25a3d44cbc392b3d669ec75281453"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/improve_description.py",
+      "old_sha256": "87d864570220b699fac52da309d2d6efdb060647bfebc74f768128e646accf80",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/improve_description.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "87d864570220b699fac52da309d2d6efdb060647bfebc74f768128e646accf80"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/package_skill.py",
+      "old_sha256": "1a33059b0db1ef73375d46d513e5ea81369d2e8838c970597b0d52ddef8d1c0f",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/package_skill.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1a33059b0db1ef73375d46d513e5ea81369d2e8838c970597b0d52ddef8d1c0f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/quick_validate.py",
+      "old_sha256": "f65315971b2a723349234947062de2ffae76cad98884b7f441e453e6dbe01892",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/quick_validate.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f65315971b2a723349234947062de2ffae76cad98884b7f441e453e6dbe01892"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/run_eval.py",
+      "old_sha256": "43e3b8f80dbf69c343967ba77e268fae991d9fa3ed68b32a0ff02532cd48657f",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/run_eval.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "43e3b8f80dbf69c343967ba77e268fae991d9fa3ed68b32a0ff02532cd48657f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/run_loop.py",
+      "old_sha256": "7bd6f674203168520517eec94c55f493c0d154339b061b4d7c0f0dad187d0f21",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/run_loop.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7bd6f674203168520517eec94c55f493c0d154339b061b4d7c0f0dad187d0f21"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-01/skill-creator/scripts/utils.py",
+      "old_sha256": "3af8ae62c40c73ab712207436a0d9a981e845f25c5a7040229eb189cc8e45bb1",
+      "new_path": "skills/synced/snapshot-01/skill-creator/scripts/utils.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3af8ae62c40c73ab712207436a0d9a981e845f25c5a7040229eb189cc8e45bb1"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/docs/SKILL.md",
+      "old_sha256": "a8ada0a3a3978536d2177fbc2bea71aa06f28818d2adb3980dd6e434488835be",
+      "new_path": "skills/synced/snapshot-02/docs/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a8ada0a3a3978536d2177fbc2bea71aa06f28818d2adb3980dd6e434488835be"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/import-memory/SKILL.md",
+      "old_sha256": "5179b0780b7025c93271c181636a23acc8d05cad3b20584639cbaf1cf9c3b07a",
+      "new_path": "skills/synced/snapshot-02/import-memory/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5179b0780b7025c93271c181636a23acc8d05cad3b20584639cbaf1cf9c3b07a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/morning/SKILL.md",
+      "old_sha256": "a7c4dbcb745799736991b027cceae39aae4880cc00ff43871ae5e87b38023bdd",
+      "new_path": "skills/synced/snapshot-02/morning/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a7c4dbcb745799736991b027cceae39aae4880cc00ff43871ae5e87b38023bdd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/morning/assets/fonts/Fraunces-OFL.txt",
+      "old_sha256": "0bc0daaa78b715774d4ad27d7f4ee8b436f48cef8e2f773531a8f22e27c06248",
+      "new_path": "skills/synced/snapshot-02/morning/assets/fonts/Fraunces-OFL.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "0bc0daaa78b715774d4ad27d7f4ee8b436f48cef8e2f773531a8f22e27c06248"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/morning/assets/fonts/fraunces-latin-600-normal.woff2",
+      "old_sha256": "3a1de7711d147bad4422825045f87597fd77cca72e7c96d3b0a81735d00dda82",
+      "new_path": "skills/synced/snapshot-02/morning/assets/fonts/fraunces-latin-600-normal.woff2",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3a1de7711d147bad4422825045f87597fd77cca72e7c96d3b0a81735d00dda82"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/LICENSE.txt",
+      "old_sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "new_path": "skills/synced/snapshot-02/skill-creator/LICENSE.txt",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/SKILL.md",
+      "old_sha256": "42765c880e446a83c85f7852fc77b43ecd46c76ca219d68051799ac7425e6943",
+      "new_path": "skills/synced/snapshot-02/skill-creator/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "42765c880e446a83c85f7852fc77b43ecd46c76ca219d68051799ac7425e6943"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/agents/analyzer.md",
+      "old_sha256": "bf68f4cac5a56c673a928c2e6d619586c5b93ea364026ab37547772cb45a663a",
+      "new_path": "skills/synced/snapshot-02/skill-creator/agents/analyzer.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "bf68f4cac5a56c673a928c2e6d619586c5b93ea364026ab37547772cb45a663a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/agents/comparator.md",
+      "old_sha256": "fe1fc9787c495d864c5d6eada47396478572325fde1b33a96d78bf4b849b7a3e",
+      "new_path": "skills/synced/snapshot-02/skill-creator/agents/comparator.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fe1fc9787c495d864c5d6eada47396478572325fde1b33a96d78bf4b849b7a3e"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/agents/grader.md",
+      "old_sha256": "57134da0c1a4eea33fbd74a1c9c44aa814f07d6bc64de303edb586f941e5d21a",
+      "new_path": "skills/synced/snapshot-02/skill-creator/agents/grader.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "57134da0c1a4eea33fbd74a1c9c44aa814f07d6bc64de303edb586f941e5d21a"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/assets/eval_review.html",
+      "old_sha256": "ce477dcc74dc1c0d1d3352646a79167b5a63634e936b1019160025065974e452",
+      "new_path": "skills/synced/snapshot-02/skill-creator/assets/eval_review.html",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ce477dcc74dc1c0d1d3352646a79167b5a63634e936b1019160025065974e452"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/eval-viewer/generate_review.py",
+      "old_sha256": "fc9d1b9243fe5ab6012ebd579bd76d0035de1b79fd3b969de114defab26478fb",
+      "new_path": "skills/synced/snapshot-02/skill-creator/eval-viewer/generate_review.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "fc9d1b9243fe5ab6012ebd579bd76d0035de1b79fd3b969de114defab26478fb"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/eval-viewer/viewer.html",
+      "old_sha256": "a53213426ee1100441d701a3a0d49cda7a842f992d2c36463f4d3cc0258575fa",
+      "new_path": "skills/synced/snapshot-02/skill-creator/eval-viewer/viewer.html",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "a53213426ee1100441d701a3a0d49cda7a842f992d2c36463f4d3cc0258575fa"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/references/schemas.md",
+      "old_sha256": "8e8876180a8989b406a4d3edddf875b04cdfd5805cc8616686d552b11ce4455f",
+      "new_path": "skills/synced/snapshot-02/skill-creator/references/schemas.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "8e8876180a8989b406a4d3edddf875b04cdfd5805cc8616686d552b11ce4455f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/__init__.py",
+      "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/__init__.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/aggregate_benchmark.py",
+      "old_sha256": "123ef128ea5ccc01a4b1ac212ef5567f21e9c13d3d240609780beeb3200c49aa",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/aggregate_benchmark.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "123ef128ea5ccc01a4b1ac212ef5567f21e9c13d3d240609780beeb3200c49aa"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/generate_report.py",
+      "old_sha256": "13df7118a3c50c83c4c3250a606d5f2b20b25a3d44cbc392b3d669ec75281453",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/generate_report.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "13df7118a3c50c83c4c3250a606d5f2b20b25a3d44cbc392b3d669ec75281453"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/improve_description.py",
+      "old_sha256": "87d864570220b699fac52da309d2d6efdb060647bfebc74f768128e646accf80",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/improve_description.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "87d864570220b699fac52da309d2d6efdb060647bfebc74f768128e646accf80"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/package_skill.py",
+      "old_sha256": "1a33059b0db1ef73375d46d513e5ea81369d2e8838c970597b0d52ddef8d1c0f",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/package_skill.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "1a33059b0db1ef73375d46d513e5ea81369d2e8838c970597b0d52ddef8d1c0f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/quick_validate.py",
+      "old_sha256": "f65315971b2a723349234947062de2ffae76cad98884b7f441e453e6dbe01892",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/quick_validate.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f65315971b2a723349234947062de2ffae76cad98884b7f441e453e6dbe01892"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/run_eval.py",
+      "old_sha256": "43e3b8f80dbf69c343967ba77e268fae991d9fa3ed68b32a0ff02532cd48657f",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/run_eval.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "43e3b8f80dbf69c343967ba77e268fae991d9fa3ed68b32a0ff02532cd48657f"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/run_loop.py",
+      "old_sha256": "7bd6f674203168520517eec94c55f493c0d154339b061b4d7c0f0dad187d0f21",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/run_loop.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "7bd6f674203168520517eec94c55f493c0d154339b061b4d7c0f0dad187d0f21"
+    },
+    {
+      "old_path": "collection/agents/skills/synced/snapshot-02/skill-creator/scripts/utils.py",
+      "old_sha256": "3af8ae62c40c73ab712207436a0d9a981e845f25c5a7040229eb189cc8e45bb1",
+      "new_path": "skills/synced/snapshot-02/skill-creator/scripts/utils.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "3af8ae62c40c73ab712207436a0d9a981e845f25c5a7040229eb189cc8e45bb1"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/migrate-to-shoehorn/SKILL.md",
+      "old_sha256": "d3309f27b91d1d8819165df30231499a481c2b36722fc9a7fe4d1c450c8f8887",
+      "new_path": "skills/utils/migrate-to-shoehorn/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "d3309f27b91d1d8819165df30231499a481c2b36722fc9a7fe4d1c450c8f8887"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/migrate-to-shoehorn/agents/openai.yaml",
+      "old_sha256": "395c2db852e66a199f1cd07f7ed92d66cb6f0787460c5475926f1a5e778b699d",
+      "new_path": "skills/utils/migrate-to-shoehorn/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "395c2db852e66a199f1cd07f7ed92d66cb6f0787460c5475926f1a5e778b699d"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/repo-bootstrap/SKILL.md",
+      "old_sha256": "f23264994ee42ce507b32b287d2045a4b1ee9061f9927651fbfe9b54c99877d0",
+      "new_path": "skills/utils/repo-bootstrap/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "f23264994ee42ce507b32b287d2045a4b1ee9061f9927651fbfe9b54c99877d0"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/scaffold-exercises/SKILL.md",
+      "old_sha256": "86b0f92d683d2c8c205b24e3ff4540e163d478f251bab0eaf75e87c093b06df4",
+      "new_path": "skills/utils/scaffold-exercises/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "86b0f92d683d2c8c205b24e3ff4540e163d478f251bab0eaf75e87c093b06df4"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/scaffold-exercises/agents/openai.yaml",
+      "old_sha256": "525b33913340bea7947ad2de17f2a7c5fb94be543345fe80ae753b9a44ba601d",
+      "new_path": "skills/utils/scaffold-exercises/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "525b33913340bea7947ad2de17f2a7c5fb94be543345fe80ae753b9a44ba601d"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "old_sha256": "b75aa168109208d4fa603596baf05f59061d7cb1318ec7060dd0f625dfd6ef73",
+      "new_path": "skills/utils/setup-matt-pocock-skills/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b75aa168109208d4fa603596baf05f59061d7cb1318ec7060dd0f625dfd6ef73"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/setup-matt-pocock-skills/agents/openai.yaml",
+      "old_sha256": "9527de0110541c45712319025155aeab8dc7d77c6ed6e5e83271bab1851ab939",
+      "new_path": "skills/utils/setup-matt-pocock-skills/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "9527de0110541c45712319025155aeab8dc7d77c6ed6e5e83271bab1851ab939"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/setup-matt-pocock-skills/domain.md",
+      "old_sha256": "593a7042218689f1d24df89df14eaf0a20e19e0d0a7d479a01947ac78f0784b9",
+      "new_path": "skills/utils/setup-matt-pocock-skills/domain.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "593a7042218689f1d24df89df14eaf0a20e19e0d0a7d479a01947ac78f0784b9"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/setup-matt-pocock-skills/issue-tracker-github.md",
+      "old_sha256": "da619c7423506c905ceea62d4d71c955371c2f2c743aada92a01e3deffa93474",
+      "new_path": "skills/utils/setup-matt-pocock-skills/issue-tracker-github.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "da619c7423506c905ceea62d4d71c955371c2f2c743aada92a01e3deffa93474"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/setup-matt-pocock-skills/issue-tracker-gitlab.md",
+      "old_sha256": "ea175f73d193b3f55819c0ed9bbccf6ee0e70ad8f928e3d7607596c53380acd6",
+      "new_path": "skills/utils/setup-matt-pocock-skills/issue-tracker-gitlab.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "ea175f73d193b3f55819c0ed9bbccf6ee0e70ad8f928e3d7607596c53380acd6"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/setup-matt-pocock-skills/issue-tracker-local.md",
+      "old_sha256": "5c7dfc9829221214b15430895387b1e4a5ad2bca8942c645c00f944f3603c5e0",
+      "new_path": "skills/utils/setup-matt-pocock-skills/issue-tracker-local.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "5c7dfc9829221214b15430895387b1e4a5ad2bca8942c645c00f944f3603c5e0"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/setup-matt-pocock-skills/triage-labels.md",
+      "old_sha256": "4f53c9b40ce2651e3611aa090eaedbd6dbc9b71ef8c5f7e65eac0d8263190d0d",
+      "new_path": "skills/utils/setup-matt-pocock-skills/triage-labels.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4f53c9b40ce2651e3611aa090eaedbd6dbc9b71ef8c5f7e65eac0d8263190d0d"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/wait-what/SKILL.md",
+      "old_sha256": "762e6213f1e985e23ea9dbe0724662541b55c2fb9a9f5a716711f1da06be8885",
+      "new_path": "skills/utils/wait-what/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "762e6213f1e985e23ea9dbe0724662541b55c2fb9a9f5a716711f1da06be8885"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/wait-what/agents/openai.yaml",
+      "old_sha256": "b41faadf741d51e4ea184148b2d1854d93f947aaf754c7844f70a00f04194999",
+      "new_path": "skills/utils/wait-what/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b41faadf741d51e4ea184148b2d1854d93f947aaf754c7844f70a00f04194999"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/wizard/SKILL.md",
+      "old_sha256": "2bf24290c64aada0732e6c04cb3d920437dcbfe45184f7b3fe27a64597f14225",
+      "new_path": "skills/utils/wizard/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "2bf24290c64aada0732e6c04cb3d920437dcbfe45184f7b3fe27a64597f14225"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/wizard/agents/openai.yaml",
+      "old_sha256": "98f44d682d58e262f160dc59a8befc365e0aa65820dd0261864af26aa8e59d83",
+      "new_path": "skills/utils/wizard/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "98f44d682d58e262f160dc59a8befc365e0aa65820dd0261864af26aa8e59d83"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/wizard/template.sh",
+      "old_sha256": "6e1ee730bc94cc0aa428d41f1d1ca8e8d5fa4c77cf01c67321239a0870b28f23",
+      "new_path": "skills/utils/wizard/template.sh",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "6e1ee730bc94cc0aa428d41f1d1ca8e8d5fa4c77cf01c67321239a0870b28f23"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/writing-for-agents/SKILL-MECHANICS.md",
+      "old_sha256": "c768e6307c7c10728c401c213f2c4ba71c542127eeb7ad2956aabd15a0fa0059",
+      "new_path": "skills/utils/writing-for-agents/SKILL-MECHANICS.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "c768e6307c7c10728c401c213f2c4ba71c542127eeb7ad2956aabd15a0fa0059"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/writing-for-agents/SKILL.md",
+      "old_sha256": "4eb332441e49c1daae380efdcd938e8777bea7b2eefabe8e78fa71f833373735",
+      "new_path": "skills/utils/writing-for-agents/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "4eb332441e49c1daae380efdcd938e8777bea7b2eefabe8e78fa71f833373735"
+    },
+    {
+      "old_path": "collection/agents/skills/utils/writing-for-agents/agents/openai.yaml",
+      "old_sha256": "eacb24b2a618cfb81dacb0416f4fdd75ddf3a8060f8ddb99aae1b1e301907e4b",
+      "new_path": "skills/utils/writing-for-agents/agents/openai.yaml",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "eacb24b2a618cfb81dacb0416f4fdd75ddf3a8060f8ddb99aae1b1e301907e4b"
+    },
+    {
+      "old_path": "collection/agents/skills/ux-review/SKILL.md",
+      "old_sha256": "45ef25cee3b9e14bb3ea0760eeaf5cdc68740edda76773da85f8c720bc7c55e4",
+      "new_path": "skills/ux-review/SKILL.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "45ef25cee3b9e14bb3ea0760eeaf5cdc68740edda76773da85f8c720bc7c55e4"
+    },
+    {
+      "old_path": "collection/agents/skills/ux-review/references/rules.md",
+      "old_sha256": "86360cabff2457f170bc4c38d3a6c69859425f817f36e425c701b9e9455d19b6",
+      "new_path": "skills/ux-review/references/rules.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "86360cabff2457f170bc4c38d3a6c69859425f817f36e425c701b9e9455d19b6"
+    },
+    {
+      "old_path": "collection/manifest.json",
+      "old_sha256": "3f75e8fe3dbb9d0718236e5496337e9f5a1fe888fe37420c67c98f88a900a4de",
+      "new_path": "provenance/source-map.json",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "dbfce4181229f75ed6356319f9a8e48c5c2a1f5a2ba6c47533bef96e22862ef9"
+    },
+    {
+      "old_path": "docs/capabilities.md",
+      "old_sha256": "43b09d17edb10928d69ab4d5fcff16ae733afac14aaadd4f725c1b330f54b6ae",
+      "new_path": "docs/portable/capabilities.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "b2015de31b98ddcd9f54bfc30c6ddcfd8e00921777c540f62b99b59c1866ae28"
+    },
+    {
+      "old_path": "docs/crg.md",
+      "old_sha256": "b140ad42f9463310b84df10f3a2924daa5412154128dfe807ea128d3a87b9af6",
+      "new_path": "docs/portable/crg.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "7ea100c443861d2853fa35dabb6f9265ac1d9457ee3dea07673005ef00e20834"
+    },
+    {
+      "old_path": "docs/feature-lifecycle.md",
+      "old_sha256": "5444a3062031ae7cc9068d3fc1df7a8e0ddbad8213e3f58e5c5999995b683f51",
+      "new_path": "docs/portable/feature-lifecycle.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "9ebf986da745388b145aba8683654c7733ed49ef1bd3ce029922753f3e971c84"
+    },
+    {
+      "old_path": "docs/models.md",
+      "old_sha256": "f8e3cddf80202359150d0b3f2688732edc402c0dbad22c0d324ee08f9da48283",
+      "new_path": "docs/portable/models.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "8dc2ea5bb66314f62d54348593c9d27b991099ff38c6b98564b3dcf963b2b0aa"
+    },
+    {
+      "old_path": "docs/onboarding.md",
+      "old_sha256": "2db2e0c1e76afd6cd669be79e11a6cdf91ffc2291610169e1c857bcfc819c61c",
+      "new_path": "docs/portable/onboarding.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "0b42a9c8271c10d322ed3d3704ecaf5e42333ab018403f456843c1f0e190759e"
+    },
+    {
+      "old_path": "docs/portability-design.md",
+      "old_sha256": "d9c0108df3ebe7daa9470e50fea6eb121cdc41aecbd85d6b0c48104a0b63aac7",
+      "new_path": "docs/portability-design.md",
+      "action": "unchanged",
+      "transformations": [],
+      "new_sha256": "d9c0108df3ebe7daa9470e50fea6eb121cdc41aecbd85d6b0c48104a0b63aac7"
+    },
+    {
+      "old_path": "docs/review-handoff.md",
+      "old_sha256": "bfbad1394e28507e9de32f0993ca0f94ac905d2f08d52a7a2c6b3f932f3c4cb0",
+      "new_path": "docs/portable/review-handoff.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "8f25f908eb545d6ff19909812e11cb4442cdcfb90a7e4432e8bf8fbdc0cf67b2"
+    },
+    {
+      "old_path": "docs/skill-routing.md",
+      "old_sha256": "8f4fef109b51042beb8fe9e0e5c8c4f79d774441905a37502b9942ad76ac5b00",
+      "new_path": "docs/portable/skill-routing.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "f18421d3458bec2579c842aa629df80e040a97330ccdb947e8a9939a666ebb30"
+    },
+    {
+      "old_path": "docs/workflow.md",
+      "old_sha256": "7d8c69bd781f28f2fa52f9007202626d0c3efbb6e098efd93b2aa994a3963f96",
+      "new_path": "docs/portable/workflow.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "1945a7ebbbcd186e3e0c6e3920a3824d6a04c67cb8f52d1814145d0fcef2bd88"
+    },
+    {
+      "old_path": "onboarding/README.md",
+      "old_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
+      "new_path": "docs/onboarding-helper.md",
+      "action": "deduplicated-identical",
+      "transformations": [],
+      "new_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890"
+    },
+    {
+      "old_path": "onboarding/acceptance-template.md",
+      "old_sha256": "0e0b02b673578b3ee849238cbac447248666e7a1bc328aa5d9f0460339a83aad",
+      "new_path": "templates/acceptance-portable.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "f3be85ae9f143132cfc7bc1a11a4cb522e3b3065e0ca1437d0a0b7bb5e157080"
+    },
+    {
+      "old_path": "onboarding/change-protocol.md",
+      "old_sha256": "3afe8b183410dcf3f0290066ff7f86982e30c907ae65239980a23387c8498d5b",
+      "new_path": "docs/portable/change-protocol.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "a898f790e765251e08cd709209e39fd7aec0637355b1f3a6b39cf3ba62eeac2c"
+    },
+    {
+      "old_path": "onboarding/manifest.example.json",
+      "old_sha256": "53b686568a31b1004ee986315dbc4b70d839a4e0236cd41f27897fe6f172a0a2",
+      "new_path": "examples/onboarding/manifest.json",
+      "action": "deduplicated-identical",
+      "transformations": [],
+      "new_sha256": "53b686568a31b1004ee986315dbc4b70d839a4e0236cd41f27897fe6f172a0a2"
+    },
+    {
+      "old_path": "onboarding/preflight.py",
+      "old_sha256": "6cb368288d88124ef6aa108953e9689798575a77da0f534bd5dea0fe1a301fe7",
+      "new_path": "runtime/onboarding/preflight.py",
+      "action": "deduplicated-identical",
+      "transformations": [],
+      "new_sha256": "6cb368288d88124ef6aa108953e9689798575a77da0f534bd5dea0fe1a301fe7"
+    },
+    {
+      "old_path": "onboarding/test_preflight.py",
+      "old_sha256": "75fcbaa8e4dc964dd37f929281b8ec3e5f9e733defdf402cf726f70731c2ef9b",
+      "new_path": "tests/onboarding/test_preflight.py",
+      "action": "deduplicated-identical",
+      "transformations": [],
+      "new_sha256": "75fcbaa8e4dc964dd37f929281b8ec3e5f9e733defdf402cf726f70731c2ef9b"
+    },
+    {
+      "old_path": "release-manifest.json",
+      "old_sha256": "60b58d72b90fe9ab752bbf6011011aaeeb37c11dab52f3e7a6d2a7958b1ce310",
+      "new_path": "release-manifest.json",
+      "action": "regenerated-integrity-metadata",
+      "transformations": [
+        "Recomputed from current payload; self-referential hash omitted."
+      ],
+      "new_sha256": null
+    },
+    {
+      "old_path": "review/manifest.example.json",
+      "old_sha256": "bdeb442e899a43d2e22537b0321a9de1ddce1c3c5e62ecfe49e32a2e5064d099",
+      "new_path": "examples/review/manifest.json",
+      "action": "deduplicated-identical",
+      "transformations": [],
+      "new_sha256": "bdeb442e899a43d2e22537b0321a9de1ddce1c3c5e62ecfe49e32a2e5064d099"
+    },
+    {
+      "old_path": "review/response.example.json",
+      "old_sha256": "7850b3b9faa5cad0f1eee576f4db354dcc4feddc233c25cfb1a4530344f8ba7f",
+      "new_path": "examples/review/response.json",
+      "action": "deduplicated-identical",
+      "transformations": [],
+      "new_sha256": "7850b3b9faa5cad0f1eee576f4db354dcc4feddc233c25cfb1a4530344f8ba7f"
+    },
+    {
+      "old_path": "review/review_package.py",
+      "old_sha256": "d2a46d59cec77a7a089dd2ef414aa8655543aaf7c8d23a23b2af64a37f08adb0",
+      "new_path": "runtime/review/review_package.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "d2a46d59cec77a7a089dd2ef414aa8655543aaf7c8d23a23b2af64a37f08adb0"
+    },
+    {
+      "old_path": "review/test_review_package.py",
+      "old_sha256": "7cb51d695e6eb79f02020e254040efdcf0ac4430842ab38bf367fcc4a977e94c",
+      "new_path": "tests/review/test_review_package.py",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "c0ca2b8d2c4451b6827eb4a82fd193a87e4c71b3de6427464d84ca68b4b7ac51"
+    },
+    {
+      "old_path": "session-size/README.md",
+      "old_sha256": "9c47aac1ac4503cf2d31ff1e7ab5b376532ff4f23ec352e7a0011a8e0c682923",
+      "new_path": "docs/session-size.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "bfb51c1c365499ad6f2f4bb5590f4171dee0f3276e9d64acfa67017c177b2e76"
+    },
+    {
+      "old_path": "session-size/session_guard.py",
+      "old_sha256": "16bfb6b19123548647dc713890c448e97ce39e5e27c6ebfe64d91b6c7c0c0e47",
+      "new_path": "runtime/session-size/session_guard.py",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "16bfb6b19123548647dc713890c448e97ce39e5e27c6ebfe64d91b6c7c0c0e47"
+    },
+    {
+      "old_path": "session-size/test_session_guard.py",
+      "old_sha256": "a5fad242992b6cacf2a9187844b04f3ba7c7f5d64bdafc3dd73a8ff9db880977",
+      "new_path": "tests/session-size/test_session_guard.py",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "d8e4c52da77f12a98d89c15068db63a69b6779a7a295a933998602c0a0231c42"
+    },
+    {
+      "old_path": "skills/acceptance-spec/SKILL.md",
+      "old_sha256": "e8ba68ed42fcf2db97e4843c89a4cdc91348567589b5b5bd6ac3a41d6653ab71",
+      "new_path": "adapters/legacy-planning/acceptance-spec-portable.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "ceca38986a6f05a58697adeee71f3129ca651ae19077c08bae30140991c38d86"
+    },
+    {
+      "old_path": "skills/cto-research/SKILL.md",
+      "old_sha256": "49082ec81abe9ee5b006faa7ec7e1dc3d5088d105aaf8e8a9d031c242f9175d1",
+      "new_path": "adapters/legacy-planning/cto-research-portable.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "fb06f1eb35ebeb710015a756ea5722b75da49dc207769f4aa17d0bb45ff9fdde"
+    },
+    {
+      "old_path": "skills/graphify-local/SKILL.md",
+      "old_sha256": "eaa01e81610e837bd588cbb2075ebbd2ea6c5a3716dda7ec1529e2ca02ad36b0",
+      "new_path": "skills/graphify-local/SKILL.md",
+      "action": "deduplicated-identical",
+      "transformations": [],
+      "new_sha256": "eaa01e81610e837bd588cbb2075ebbd2ea6c5a3716dda7ec1529e2ca02ad36b0"
+    },
+    {
+      "old_path": "skills/plan-critique/SKILL.md",
+      "old_sha256": "93ae9804defd96736648a810cb2d6e520fd58fea3a272cc171422e30c050787e",
+      "new_path": "adapters/legacy-planning/plan-critique-portable.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "6708304a5a419c1161dad41db8137a036dac1acf56f7069b6a75f74bc124582c"
+    },
+    {
+      "old_path": "skills/plan-defense/SKILL.md",
+      "old_sha256": "d8eb50147659f75161b7e82f1528e65dc017357644e65528eb751557019f4ea9",
+      "new_path": "adapters/legacy-planning/plan-defense-portable.md",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "relative links and explicit package command paths remapped; instruction body retained"
+      ],
+      "new_sha256": "17b809b3ec7bf738e4e76110286a6ed8445e084e77f48990e593e768dadb287a"
+    },
+    {
+      "old_path": "source-provenance.json",
+      "old_sha256": "365be1541e249ed6940ac5fa2c2127132cb50c03627141e4bc13e5f4e66eb009",
+      "new_path": "provenance/starter-source.json",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "365be1541e249ed6940ac5fa2c2127132cb50c03627141e4bc13e5f4e66eb009"
+    },
+    {
+      "old_path": "templates/adapter.md",
+      "old_sha256": "b081143bf070383288dd7ebcbcd76b4d5f9c8b0841ca57e84e8bd1ecf0808c9d",
+      "new_path": "templates/adapter-portable.md",
+      "action": "moved",
+      "transformations": [],
+      "new_sha256": "b081143bf070383288dd7ebcbcd76b4d5f9c8b0841ca57e84e8bd1ecf0808c9d"
+    },
+    {
+      "old_path": "tools/kit.py",
+      "old_sha256": "3f364098f84aa18573e8602fb9dc12b2c3c95ada1ca8508022c39c594a57818b",
+      "new_path": "tools/kit.py",
+      "action": "updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "b9180866f14a4d4e950204425c9d72162825e60c09bcd1111dc46cd1b3f769e5"
+    },
+    {
+      "old_path": "tools/run_tests.py",
+      "old_sha256": "caaa9316353412d6a2cef24f63ec66f4e431521a9fed76cc5d4c092c9ba3c5cd",
+      "new_path": "tools/run_tests.py",
+      "action": "updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "de68a8a37d53c3659752a0d1753ba9824eea3f78cc511702a224f23e4107be9d"
+    },
+    {
+      "old_path": "tools/test_collection.py",
+      "old_sha256": "20274fb75b343db3ff8bd188fea613cf46be4642f7de8b7a7d4ba69300a62dce",
+      "new_path": "tests/collection/test_collection.py",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "98a1aa3b89f9228db264624995cebb2789f8f0911b401ce5b54e50b1f3ec2e6b"
+    },
+    {
+      "old_path": "tools/test_kit.py",
+      "old_sha256": "c7beb639de16d1c4e35aff3fc712547310472a22e8cede17de450645cc98a907",
+      "new_path": "tests/install/test_kit.py",
+      "action": "relocated-and-updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "61440d00263e10ebdfc81bf3a96ff9b99db63b12cb9328db67db68f825702093"
+    },
+    {
+      "old_path": "tools/verify_collection.py",
+      "old_sha256": "85e09295b994392f4eaaf7c580343284b20ec796a556575521b05113ed83f360",
+      "new_path": "tools/verify_collection.py",
+      "action": "updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "ca9d28dccec7a05cff743473969798bc9d7cf6b59e369a342af7b4a3680ed379"
+    },
+    {
+      "old_path": "tools/verify_release.py",
+      "old_sha256": "476524f8ca42860866a62a334e67e8686098418d640b93c35a8d7c32a1fc0af3",
+      "new_path": "tools/verify_release.py",
+      "action": "updated",
+      "transformations": [
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+      ],
+      "new_sha256": "449615ba4f794ae0f83961970b7a90d21d3922452ec721e461d7d2c218daef8a"
+    }
+  ]
+}

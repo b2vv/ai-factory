@@ -86,8 +86,18 @@ def payload(package, components):
     m = json.loads(raw)
     if m.get('schema_version') != 2: raise ValueError('unsupported release schema')
     names = m['components']
-    selected = sorted(set(['core'] + list(components)))
-    if not set(selected) <= set(names): raise ValueError('unknown component')
+    selected_set = set(); visiting = set()
+    def include(name):
+        if name not in names: raise ValueError('unknown component')
+        if name in visiting: raise ValueError('component dependency cycle')
+        if name in selected_set: return
+        visiting.add(name)
+        deps = names[name].get('dependencies', [])
+        if not isinstance(deps, list) or any(not isinstance(d, str) for d in deps): raise ValueError('invalid dependencies')
+        for dependency in deps: include(dependency)
+        visiting.remove(name); selected_set.add(name)
+    for name in ['core'] + list(components): include(name)
+    selected = sorted(selected_set)
     files = {}; all_names = set()
     for e in m['files']:
         name = e['path']; relative(name)
