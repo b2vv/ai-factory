@@ -1,5 +1,15 @@
 # AI Factory — full personal collection and portable tools
 
+## Почати тут
+
+- **[Усі 73 оригінальні скіли →](collection/agents/skills/)** — повна включена колекція з підкаталогами й допоміжними файлами.
+- **[Повний AI Factory plan →](collection/agents/ai-factory/ai-factory-plan.md)** — план, workflow, roadmap та пов’язані правила.
+- [Коренева папка `skills/`](skills/) містить лише **5 portable adapters**, а не всю колекцію.
+
+Облік охоплює 84 внутрішні визначення: 73 включено; 11 synced-наборів мають явну ліцензійну заборону копіювання поза сервісом і представлені лише в [manifest із причинами виключення](collection/manifest.json).
+
+---
+
 Full internal collection correction, version `0.3.1-candidate`. Start with the [full source collection](collection/README.md) and [complete AI Factory plan](collection/agents/ai-factory/ai-factory-plan.md). Inventory coverage is 84/84 shared definitions: 73 copied and 11 explicitly license-restricted provider dependencies. External symlink targets and project/system/plugin skill collections are excluded by the user’s clarified scope. See the exact boundaries and transformations in [collection manifest](collection/manifest.json).
 
 The following starter remains available as optional portable wrappers; it is not the complete canonical source collection.

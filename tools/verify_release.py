@@ -27,7 +27,7 @@ def verify(root):
             for link in re.findall(r'\]\(([^)]+)\)',text):
                 if '://' in link or link.startswith('#'):continue
                 target=(p.parent/link.split('#')[0]).resolve();links+=1
-                if root not in target.parents or not target.is_file():issues.append({'file':item['path'],'kind':'missing_or_escaping_link'})
+                if root not in target.parents or not (target.is_file() or target.is_dir()):issues.append({'file':item['path'],'kind':'missing_or_escaping_link'})
         if p.name=='SKILL.md':
             if not text.startswith('---\n'):issues.append({'file':item['path'],'kind':'missing_frontmatter'});continue
             header=text.split('---',2)[1]

@@ -77,7 +77,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "4220fa48af5501f49fb32efebb6e75e37d2037d75252fd98a5d99dd8d628ee11",
+      "sha256": "870d1fd43adeea277d0d3de3f561cc33e8614e5d6784f6d3b492293933a40b27",
       "component": "core"
     },
     {
@@ -1792,7 +1792,7 @@
     },
     {
       "path": "tools/verify_release.py",
-      "sha256": "6cedd547c6f349bd41c4295a32276ad2250303092d80ee84ef8e4fda1952fea5",
+      "sha256": "476524f8ca42860866a62a334e67e8686098418d640b93c35a8d7c32a1fc0af3",
       "component": "core"
     }
   ]
