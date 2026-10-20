@@ -209,6 +209,27 @@ def render(m, source, rules, db, reports):
     return doc
 
 
+def verify_tmpfs(tmpfs):
+    """Validate inspect scratch options, accepting reordered flags and byte/unit sizes."""
+    need(isinstance(tmpfs, dict) and set(tmpfs) == {'/tmp'}, 'unexpected scratch mounts')
+    value = tmpfs['/tmp']
+    need(isinstance(value, str), 'invalid scratch options')
+    options = [part.strip() for part in value.split(',')]
+    flags = set(); size = None
+    for option in options:
+        if option.startswith('size='):
+            need(size is None, 'duplicate scratch size')
+            match = re.fullmatch(r'size=([0-9]+)([kKmMgG]?)', option)
+            need(match is not None, 'invalid scratch size')
+            size = int(match[1]) * (1024 ** {'': 0, 'k': 1, 'm': 2, 'g': 3}[match[2].lower()])
+        else:
+            need(option in {'rw', 'noexec', 'nosuid', 'nodev'} and option not in flags,
+                 'unsafe or duplicate scratch option')
+            flags.add(option)
+    need({'rw', 'noexec', 'nosuid'} <= flags and size is not None and 0 < size <= 256 * 1024 * 1024,
+         'scratch must be noexec/nosuid and bounded to 256 MiB')
+
+
 def verify_container(obj, service, image_id):
     h, c = obj['HostConfig'], obj['Config']
     need(obj['Image'] == image_id and c['Image'] == service['image'], 'actual image mismatch')
@@ -231,7 +252,7 @@ def verify_container(obj, service, image_id):
          'actual bind mounts differ from approved resolved paths')
     need(all(v['Type'] == 'bind' or (v['Type'] == 'tmpfs' and v['Destination'] == '/tmp') for v in mounts),
          'unexpected volume mount')
-    need(set(h.get('Tmpfs', {})) == {'/tmp'}, 'unexpected scratch mounts')
+    verify_tmpfs(h.get('Tmpfs'))
 
 
 def classify(name, report, code, selected, root):

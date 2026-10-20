@@ -76,7 +76,8 @@ class Contracts(unittest.TestCase):
 
     def obj(self, service):
         return {'Image': 'sha256:local', 'HostConfig': {'NetworkMode': 'none', 'ReadonlyRootfs': True,
-                'CapDrop': ['ALL'], 'SecurityOpt': ['no-new-privileges:true'], 'Tmpfs': {'/tmp': 'rw,noexec,nosuid,size=256m'}},
+                'CapDrop': service.get('cap_drop', []), 'SecurityOpt': service.get('security_opt', []),
+                'Tmpfs': dict(v.split(':', 1) for v in service.get('tmpfs', []))},
                 'Config': {'Image': service['image'], 'User': service['user'], 'Entrypoint': service['entrypoint'],
                            'Cmd': service['command'], 'WorkingDir': '/src',
                            'Env': [k + '=' + v for k, v in service['environment'].items()]},
@@ -151,9 +152,61 @@ class Contracts(unittest.TestCase):
         (self.base / '.git').mkdir()
         with self.assertRaises(s.Blocked): u.initialize(self.base / 'other-store')
 
+    def assert_compose_security(self, service):
+        self.assertEqual(service.get('cap_drop'), ['ALL'])
+        self.assertEqual(service.get('security_opt'), ['no-new-privileges:true'])
+        # Template must keep the approved bound, independently of inspect fixtures.
+        self.assertEqual(service.get('tmpfs'), ['/tmp:rw,noexec,nosuid,size=256m'])
+
+    def test_compose_security_mutations_are_detected(self):
+        original = s.read_json(self.here / 'compose.yaml')
+        for name in original['services']:
+            for field, replacement in [('cap_drop', []), ('cap_drop', ['NET_RAW']),
+                                       ('security_opt', []), ('security_opt', ['seccomp=unconfined']),
+                                       ('tmpfs', []), ('tmpfs', ['/tmp:rw,exec,suid,size=4g'])]:
+                for remove in [False, True]:
+                    with self.subTest(service=name, field=field, remove=remove, value=replacement):
+                        changed = copy.deepcopy(original)
+                        if remove: changed['services'][name].pop(field)
+                        else: changed['services'][name][field] = replacement
+                        s.write_json(self.here / 'compose.yaml', changed)
+                        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services'][name]
+                        with self.assertRaises(AssertionError): self.assert_compose_security(service)
+                        with self.assertRaises(s.Blocked): s.verify_container(self.obj(service), service, 'sha256:local')
+        s.write_json(self.here / 'compose.yaml', original)
+
+    def test_actual_tmpfs_guards_for_scan_and_updater(self):
+        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services']['trivy']
+        bad = [None, {}, {'/tmp': None}, {'/tmp': ''}, {'/extra': 'rw,noexec,nosuid,size=256m'}]
+        for value in ['rw,exec,suid,size=4g', 'rw,nosuid,size=256m', 'rw,noexec,size=256m',
+                      'rw,noexec,nosuid', 'rw,noexec,nosuid,size=0', 'rw,noexec,nosuid,size=4g',
+                      'rw,noexec,nosuid,size=268435457', 'rw,noexec,nosuid,size=-1',
+                      'rw,noexec,nosuid,size=50%', 'rw,noexec,nosuid,size=1.5m',
+                      'rw,noexec,nosuid,size=256m,size=1m', 'rw,noexec,nosuid,exec,size=1m',
+                      'rw,noexec,nosuid,suid,size=1m', 'rw,noexec,nosuid,noexec,size=1m']:
+            bad.append({'/tmp': value})
+        good = [{'/tmp': value} for value in ['rw,noexec,nosuid,size=256m',
+                'nosuid,size=268435456,noexec,rw', ' rw, noexec,nosuid,nodev,size=256M ',
+                'rw,noexec,nosuid,size=262144k', 'rw,noexec,nosuid,size=1']]
+        for updater in [False, True]:
+            for accepted, cases in [(True, good), (False, bad)]:
+                for tmpfs in cases:
+                    with self.subTest(updater=updater, accepted=accepted, tmpfs=tmpfs):
+                        obj = self.obj(service); obj['HostConfig']['Tmpfs'] = tmpfs
+                        if updater:
+                            obj['HostConfig']['NetworkMode'] = 'bridge'
+                            obj['Mounts'] = [{'Type': 'bind', 'Source': str(self.store), 'Destination': '/cache', 'RW': True}]
+                            verify = lambda: u.verify_updater(obj, 'sha256:local', service['image'], self.store, service['command'])
+                        else:
+                            verify = lambda: s.verify_container(obj, service, 'sha256:local')
+                        if accepted: verify()
+                        else:
+                            with self.assertRaises(s.Blocked): verify()
+
     def test_compose_has_offline_readonly_contract(self):
         doc = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)
         for name, service in doc['services'].items():
+            self.assert_compose_security(service)
             self.assertEqual(service['network_mode'], 'none'); self.assertEqual(service['pull_policy'], 'never')
             self.assertTrue(service['read_only'])
             self.assertEqual([v['target'] for v in service['volumes'] if not v['read_only']], ['/reports'])

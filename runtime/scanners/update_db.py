@@ -91,8 +91,9 @@ def verify_updater(obj, image_id, image, cache, command):
     binds = [v for v in mounts if v['Type'] == 'bind']
     s.need(len(binds) == 1 and s.canonical(binds[0]['Source']) == cache and
            binds[0]['Destination'] == '/cache' and binds[0]['RW'], 'updater must mount only DB cache')
-    s.need(all(v['Type'] == 'bind' or (v['Type'] == 'tmpfs' and v['Destination'] == '/tmp') for v in mounts)
-           and set(h.get('Tmpfs', {})) == {'/tmp'}, 'unexpected updater volume')
+    s.need(all(v['Type'] == 'bind' or (v['Type'] == 'tmpfs' and v['Destination'] == '/tmp') for v in mounts),
+           'unexpected updater volume')
+    s.verify_tmpfs(h.get('Tmpfs'))
     env = dict(x.split('=', 1) for x in c.get('Env', []))
     expected = {'HOME': '/tmp', 'TRIVY_DISABLE_TELEMETRY': 'true'}
     s.need(all(env.get(k) == v for k, v in expected.items()) and set(env) <= set(expected) | s.SAFE_IMAGE_ENV,

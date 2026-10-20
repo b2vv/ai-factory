@@ -2872,9 +2872,10 @@
       "new_path": "tools/kit.py",
       "action": "updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "Corrective tracked-only regression: bounded tmpfs verification and root worktree Git metadata support; runtime NOT_RUN"
       ],
-      "new_sha256": "b9180866f14a4d4e950204425c9d72162825e60c09bcd1111dc46cd1b3f769e5"
+      "new_sha256": "b2a17e14fbad6e4a7ac3f454ce0f0e8c678c9286336fd32e2753573240766c41"
     },
     {
       "old_path": "tools/run_tests.py",
@@ -2903,11 +2904,12 @@
       "old_path": "tools/test_kit.py",
       "old_sha256": "c7beb639de16d1c4e35aff3fc712547310472a22e8cede17de450645cc98a907",
       "new_path": "tests/install/test_kit.py",
-      "action": "relocated-and-updated",
+      "action": "updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "Corrective tracked-only regression: bounded tmpfs verification and root worktree Git metadata support; runtime NOT_RUN"
       ],
-      "new_sha256": "61440d00263e10ebdfc81bf3a96ff9b99db63b12cb9328db67db68f825702093"
+      "new_sha256": "7a9fdf8e6a4c9fb11aa6589fbc3f5c9d0f3834ffd724f824557da5452c6d299f"
     },
     {
       "old_path": "tools/verify_collection.py",

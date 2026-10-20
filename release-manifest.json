@@ -386,7 +386,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "daffe981ba8de523650fbbb9a93fe60998ec885170809d13e434842177ed282d",
+      "sha256": "36c4268ae51d13d7b128c7d939bd0ecff6f40fb18e31bff22feee0e54591e550",
       "component": "core"
     },
     {
@@ -506,12 +506,12 @@
     },
     {
       "path": "runtime/scanners/scanner.py",
-      "sha256": "0eccd15c1d4040e145da90a2674f5cdc553b890143f802a7a09bd932d8aeb372",
+      "sha256": "08de23890739c42e36993acd863f3fa7a78d2f7ba8821e1d264c9425b9886a1b",
       "component": "scanners"
     },
     {
       "path": "runtime/scanners/update_db.py",
-      "sha256": "06d141bd8beb331fd121c7cbbcd02e7a57a3d2a653726f8cce7e1c8364adc48c",
+      "sha256": "726a4fd7916413d03864bd5c021b6ec363e3e8f96820f73be34a712c1853ee30",
       "component": "scanners"
     },
     {
@@ -1961,7 +1961,7 @@
     },
     {
       "path": "tests/install/test_kit.py",
-      "sha256": "61440d00263e10ebdfc81bf3a96ff9b99db63b12cb9328db67db68f825702093",
+      "sha256": "7a9fdf8e6a4c9fb11aa6589fbc3f5c9d0f3834ffd724f824557da5452c6d299f",
       "component": "core"
     },
     {
@@ -1991,7 +1991,7 @@
     },
     {
       "path": "tests/scanners/test_scanner.py",
-      "sha256": "d08d0fd4bcf626a196d376e254043d69dc733bce3ff4277b6d6c585f3125f118",
+      "sha256": "4c477c834cb2cffd33dc4e57de58406463fce2bc100be009bb13fdc707d90fc9",
       "component": "core"
     },
     {
@@ -2001,7 +2001,7 @@
     },
     {
       "path": "tools/kit.py",
-      "sha256": "b9180866f14a4d4e950204425c9d72162825e60c09bcd1111dc46cd1b3f769e5",
+      "sha256": "b2a17e14fbad6e4a7ac3f454ce0f0e8c678c9286336fd32e2753573240766c41",
       "component": "core"
     },
     {
