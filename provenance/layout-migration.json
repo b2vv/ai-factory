@@ -39,9 +39,10 @@
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
         "0.6 release evolution: critique protocol and refreshed provenance",
         "0.6.1 documentation hygiene and provenance",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Standalone unreleased scanner baseline and local tooling documentation; no runtime acceptance or product activation"
       ],
-      "new_sha256": "a99c18ecdffc291bdcd05d2c937c9d0880614c81e870aee7454c1e22fa9c0107"
+      "new_sha256": "638d8eb970c7580f2453489923e9c770d744a7addd42f597a8e95a3f74a1dc0d"
     },
     {
       "old_path": "README.md",
@@ -2883,9 +2884,10 @@
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Standalone unreleased scanner baseline and local tooling documentation; no runtime acceptance or product activation"
       ],
-      "new_sha256": "b3fb06c335d1a7a84afd293f9633170ada85d69b371d1f76e69e22ced6dc9a1f"
+      "new_sha256": "8d99e15bd26b8f6e0c380c057760ad2567d823482dda1f750e2fae2bc131837d"
     },
     {
       "old_path": "tools/test_collection.py",

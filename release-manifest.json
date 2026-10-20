@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "version": "0.7.0-candidate",
-  "status": "AUTHOR_VALIDATED_CANDIDATE",
+  "status": "SCANNER_BASELINE_IMPLEMENTED_RUNTIME_NOT_ACCEPTED",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
   "components": {
@@ -61,9 +61,16 @@
         "legacy-runtime"
       ],
       "compatibility_alias": "previous full source component"
+    },
+    "scanners": {
+      "required": false,
+      "dependencies": [
+        "core"
+      ],
+      "activation": "explicit runner only; shipped pins unresolved; real runtime acceptance NOT_RUN"
     }
   },
-  "independent_review": "PENDING existing-session identity",
+  "independent_review": "PENDING standalone repack review; prior bounded scanner code ACCEPT does not accept this delta",
   "host_acceptance": "NOT_TESTED; no global/project activation",
   "provenance_file": "provenance/source-map.json",
   "files": [
@@ -84,12 +91,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "a99c18ecdffc291bdcd05d2c937c9d0880614c81e870aee7454c1e22fa9c0107",
+      "sha256": "638d8eb970c7580f2453489923e9c770d744a7addd42f597a8e95a3f74a1dc0d",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "6096f0b3803218d8c0046a5425c1129629cdfb85d5c5a16a10ea72a64a419088",
+      "sha256": "8dc95b2bcffe8653b6320885ffaeaa97b6ebc072cd6a2830f0813ab46a657fbb",
       "component": "core"
     },
     {
@@ -153,13 +160,13 @@
       "component": "core"
     },
     {
-      "path": "ai-factory/onboarding/change-protocol.md",
-      "sha256": "cfd18d18725d0b8445219db207bc9f289ec82c0a6647f21e13fa45533128b39a",
+      "path": "ai-factory/onboarding.md",
+      "sha256": "16ce883d0ac1bf9904a86486958090a1fea2628e6d3141b129c49ed10682c6d7",
       "component": "core"
     },
     {
-      "path": "ai-factory/onboarding.md",
-      "sha256": "16ce883d0ac1bf9904a86486958090a1fea2628e6d3141b129c49ed10682c6d7",
+      "path": "ai-factory/onboarding/change-protocol.md",
+      "sha256": "cfd18d18725d0b8445219db207bc9f289ec82c0a6647f21e13fa45533128b39a",
       "component": "core"
     },
     {
@@ -343,6 +350,31 @@
       "component": "core"
     },
     {
+      "path": "examples/security/fixtures/clean/sample.js",
+      "sha256": "3d36b4e3c9f0501e34312c8b8035bd0e85b836b32051a0dc0d66f674ea553144",
+      "component": "scanners"
+    },
+    {
+      "path": "examples/security/fixtures/clean/sample.py",
+      "sha256": "638f95c9203125775531791bc46b60680a79a7752703358e33070729df6669ab",
+      "component": "scanners"
+    },
+    {
+      "path": "examples/security/fixtures/positive/sample.js",
+      "sha256": "795d1f102f9b256df94c146f8afa01c51a630709f3e2d8ae204fa853fffc6ef3",
+      "component": "scanners"
+    },
+    {
+      "path": "examples/security/fixtures/positive/sample.py",
+      "sha256": "14a6c15184c610aa8a38e3fcd99d880f0f7d9a4f19cec1e32e5b52724883990d",
+      "component": "scanners"
+    },
+    {
+      "path": "examples/security/scanner-profile.json",
+      "sha256": "f626214f977d1e70929a8a5efc46ec92cb818444be377eb8f6d29f5242b36065",
+      "component": "core"
+    },
+    {
       "path": "prompts/plan-critic.md",
       "sha256": "514e4c376c2551afe76e390c5779867ecf7f04ad2a552c97c2b4f713c43dcab6",
       "component": "core"
@@ -354,7 +386,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "592eef766b386053453384515a800ed840982da7afc7f7046b3169e8ffb168f6",
+      "sha256": "daffe981ba8de523650fbbb9a93fe60998ec885170809d13e434842177ed282d",
       "component": "core"
     },
     {
@@ -446,6 +478,41 @@
       "path": "runtime/review/review_package.py",
       "sha256": "d2a46d59cec77a7a089dd2ef414aa8655543aaf7c8d23a23b2af64a37f08adb0",
       "component": "review"
+    },
+    {
+      "path": "runtime/scanners/README.md",
+      "sha256": "2bb4084754f854366352bfe812c8afa94ae1c8c5372824bab03d6a92929bef3e",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/compose.yaml",
+      "sha256": "d266086fa97c0c942da5c9dea33404c5f8dc59fed9c302dd174043f8fd8c5ec2",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/config.example.json",
+      "sha256": "631f44392d68bd027dd54d2267c85fc0652231176daf400ebd3ecb1760356787",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/manifest.json",
+      "sha256": "c8476cb0b6215b367bfd26d2ea912d53d8f45ac7cd597c256b6e55c807f9393c",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/rules/baseline.json",
+      "sha256": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/scanner.py",
+      "sha256": "0eccd15c1d4040e145da90a2674f5cdc553b890143f802a7a09bd932d8aeb372",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/update_db.py",
+      "sha256": "06d141bd8beb331fd121c7cbbcd02e7a57a3d2a653726f8cce7e1c8364adc48c",
+      "component": "scanners"
     },
     {
       "path": "runtime/session-size/session_guard.py",
@@ -608,16 +675,6 @@
       "component": "skills"
     },
     {
-      "path": "skills/deliver/implement/SKILL.md",
-      "sha256": "1e7cdd434dc6b42c13f9b9b0bbc1f4176835084c6d6d1867ef9339c2e90ecc36",
-      "component": "skills"
-    },
-    {
-      "path": "skills/deliver/implement/agents/openai.yaml",
-      "sha256": "8970a8596ade0c28ab427f41a4ea242d6bdf6186c59ebf55e1238dbecaab79dc",
-      "component": "skills"
-    },
-    {
       "path": "skills/deliver/implement-spec/SKILL.md",
       "sha256": "929d7bbac4601276ec84038ce4ed925592bb82bc56f576a0337b5cd60dfec4ba",
       "component": "skills"
@@ -625,6 +682,16 @@
     {
       "path": "skills/deliver/implement-spec/agents/openai.yaml",
       "sha256": "fd41efb42c60c96320d6531be7e4bf15cbf5518cd652d57dff27ccffa46988e9",
+      "component": "skills"
+    },
+    {
+      "path": "skills/deliver/implement/SKILL.md",
+      "sha256": "1e7cdd434dc6b42c13f9b9b0bbc1f4176835084c6d6d1867ef9339c2e90ecc36",
+      "component": "skills"
+    },
+    {
+      "path": "skills/deliver/implement/agents/openai.yaml",
+      "sha256": "8970a8596ade0c28ab427f41a4ea242d6bdf6186c59ebf55e1238dbecaab79dc",
       "component": "skills"
     },
     {
@@ -888,11 +955,6 @@
       "component": "skills"
     },
     {
-      "path": "skills/pt/ponytail/SKILL.md",
-      "sha256": "70b69cf6bb9e6be4fe8b734bded40cfff09fbab010bb451660227c914a1858f2",
-      "component": "skills"
-    },
-    {
       "path": "skills/pt/ponytail-audit/SKILL.md",
       "sha256": "6a320e541f6db4f3a89e56275d4c2f095db77b39a4e4c9d996335bb8ab6087f7",
       "component": "skills"
@@ -915,6 +977,11 @@
     {
       "path": "skills/pt/ponytail-review/SKILL.md",
       "sha256": "5bf501d4aeaabe1086ac32767a34bd0ed2029be219e816fd5c8f9f67cdb526de",
+      "component": "skills"
+    },
+    {
+      "path": "skills/pt/ponytail/SKILL.md",
+      "sha256": "70b69cf6bb9e6be4fe8b734bded40cfff09fbab010bb451660227c914a1858f2",
       "component": "skills"
     },
     {
@@ -1923,6 +1990,11 @@
       "component": "core"
     },
     {
+      "path": "tests/scanners/test_scanner.py",
+      "sha256": "d08d0fd4bcf626a196d376e254043d69dc733bce3ff4277b6d6c585f3125f118",
+      "component": "core"
+    },
+    {
       "path": "tests/session-size/test_session_guard.py",
       "sha256": "d8e4c52da77f12a98d89c15068db63a69b6779a7a295a933998602c0a0231c42",
       "component": "core"
@@ -1934,7 +2006,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "b3fb06c335d1a7a84afd293f9633170ada85d69b371d1f76e69e22ced6dc9a1f",
+      "sha256": "8d99e15bd26b8f6e0c380c057760ad2567d823482dda1f750e2fae2bc131837d",
       "component": "core"
     },
     {

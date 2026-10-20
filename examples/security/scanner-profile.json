@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "IMPLEMENTED_BASELINE_RUNTIME_NOT_ACCEPTED",
+  "enabled": false,
+  "automatic_ci_enforcement": false,
+  "implementation": {
+    "runner": "runtime/scanners/scanner.py",
+    "compose": "runtime/scanners/compose.yaml",
+    "manifest": "runtime/scanners/manifest.json",
+    "db_updater": "runtime/scanners/update_db.py",
+    "documentation": "runtime/scanners/README.md",
+    "activation": "explicit only; shipped unresolved pins block before Docker",
+    "independent_review": "PENDING standalone repack review; prior bounded scanner code ACCEPT does not accept this delta",
+    "runtime_acceptance": "NOT_RUN"
+  },
+  "required_gate_fixture_design": [
+    {
+      "case": "positive",
+      "input": "harmless synthetic source matching an owned/permitted detection rule or static synthetic advisory fixture; never execute malicious sample",
+      "expect": "known finding observed and policy gate rejects; missing detection is FAIL",
+      "status": "NOT_RUN"
+    },
+    {
+      "case": "clean",
+      "input": "paired corrected synthetic input within declared coverage",
+      "expect": "scan completed, nonempty intended coverage, no policy violations, gate accepts",
+      "status": "NOT_RUN"
+    },
+    {
+      "case": "error",
+      "input": "controlled invalid config/unavailable required DB/read failure",
+      "expect": "ERROR/BLOCKED, never clean/PASS; distinguish from a policy finding",
+      "status": "NOT_RUN"
+    }
+  ],
+  "done_rule": "declaration validity and exit 0 are not security PASS; missing required fixture/runtime evidence blocks DONE"
+}

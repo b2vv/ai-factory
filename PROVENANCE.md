@@ -31,3 +31,7 @@ Documentation hygiene checklist, template prompts and forward-review scenarios a
 ## Release 0.7.0
 
 Selective authorized MIT adaptation from addyosmani/agent-skills aeac41d4d005999432bb7312f7ff06383a91d59d. Exact inputs, outputs and append-only original-skill adaptations are recorded in provenance/authorized-additions.json. Original 84-definition inventory remains intact, with one separate authorized added skill. No upstream executable code ran; new offline helper and fixtures are authored here. Existing entity coverage and grilling are unchanged.
+
+## Unreleased scanner baseline
+
+The scanner runner, DB updater, isolated Compose template, two direct-eval rules and synthetic fixtures are original additions for this owner-authorized task. No product source, external ruleset, image or database is bundled. Public CLI documentation informs argument selection; it does not establish image provenance or runtime compatibility. Engine/DB pins and their rights reviews remain unresolved and block execution. The original rules are for private owner-directed use; no public redistribution license is inferred. Independent review and real scanner acceptance remain pending.

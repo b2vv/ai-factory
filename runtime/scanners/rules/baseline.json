@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {
+      "id": "factory.javascript.direct-eval",
+      "languages": [
+        "javascript",
+        "typescript"
+      ],
+      "message": "Direct eval requires review; baseline rule, not complete security coverage.",
+      "severity": "WARNING",
+      "pattern": "eval($X)"
+    },
+    {
+      "id": "factory.python.direct-eval",
+      "languages": [
+        "python"
+      ],
+      "message": "Direct eval requires review; baseline rule, not complete security coverage.",
+      "severity": "WARNING",
+      "pattern": "eval($X)"
+    }
+  ]
+}
