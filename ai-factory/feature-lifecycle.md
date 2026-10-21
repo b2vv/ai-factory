@@ -11,13 +11,23 @@ reviewed: 2026-10-16
 
 Переносиме підключення та manifest — [onboarding.md](onboarding.md). Нормативне acceptance/contracts/ADR відокремлюй від фактичного коду/scripts за [правилом джерел](workflow.md#source-of-truth): код не виправдовує порушення контракту.
 
+Task branch та один writer у головному репозиторії — за [branch ownership contract](workflow.md#task-branches); runtime isolation окрема від Git isolation.
+
 ## Before code: explicit task readiness
 
 Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
 
+Security adoption залишається **PROPOSED**: [risk-triggered gates](../docs/guides/ai-assisted-onboarding.md#security-proposed) додаються до чинних acceptance лише за застосовними features і погодженим scope. До execution — provenance/permissions; до acceptance — actual artifact/runtime proof на final snapshot, scanner detection/clean/error fixtures та independent verdict. Copied-handler harness, exit 0 або merge не замінюють required runtime evidence. Це посилання не встановлює scanners, hooks/MCP чи новий tracker.
+
+На startup, після етапу та compaction/resume віднови [конкретний pending next action](review-handoff.md#pending-next-action) у чинному record: review_mode=existing_session або independent_subagent, writer/reviewer і зв’язок, prepared/sent/ACK/verdict, blocker/next check. Призначена додаткова сесія зберігається; за її відсутності обирається independent_subagent, без запуску самим вибором. Недоступний обраний runtime → BLOCKED, не тихий fallback. Виконуй лише applicable дозволену дію; файл не є доставкою, без потрібного final verdict немає DONE. Незмінені прийняті етапи не повторюються.
+
+Proposed security adoption route: [security adapter](../adapters/security/review.md) — security-impact → abuse invariants → actual code/config review → negative tests → final evidence/verdict in the existing task. It adds no discovered skill, reviewer, scanner or automatic execution. Required checks and final verdict must close before DONE; delivery states follow [review handoff](review-handoff.md#delivery-state).
+
 ## Startup: хто виконує критику, review та перевірки
 
-До роботи запиши у чинний primary record і покажи користувачу: мета → **новий субагент / наявна окрема сесія / НЕ ВИЗНАЧЕНО**, owner, точний session/agent reference якщо відомий, підстава поточного вибору, хто передає пакет, координація shared-resource checks. Явне доручення має пріоритет. Якщо вибір не задано й не можна однозначно вивести з поточного доручення — запитай до spawn/надсилання; незалежні safe inventory/planning дозволені. Не створюй дубль reviewer і не контактуй з іншою сесією без авторизації. Наявна сесія ≠ виконаний review. Авторські checks позначай окремо.
+Після clear/new startup/resume: bound pending → короткий task/checkpoint + «Продовжити?», чекати поточної відповіді без task/review/send; unbound → тиша. Згода лише для поточної сесії/задачі, permissions незмінні. Compaction уже погодженої активної задачі зберігає continuity без повторного питання; waiting confirmation не активує Stop-продовження.
+
+До роботи запиши у чинний primary record і покажи користувачу: мета → **новий субагент / наявна окрема сесія / НЕ ВИЗНАЧЕНО**, owner, точний session/agent reference якщо відомий, підстава поточного вибору, хто передає пакет, координація shared-resource checks. Явне доручення має пріоритет. Якщо обраний за контрактом режим має невідомі необхідні дані/дозвіл — уточни лише їх до spawn/надсилання; незалежні safe inventory/planning дозволені. Не створюй дубль reviewer і не контактуй з іншою сесією без авторизації. Наявна сесія ≠ виконаний review. Авторські checks позначай окремо.
 
 Пакет і verdict — за [review handoff](review-handoff.md): task/session IDs, root/base/HEAD, scoped dirty/untracked hashes та diff, pinned acceptance/contracts, raw evidence/commands/exits, constraints. Reviewer read-only, перевіряє джерела незалежно; тести зі shared side effects потребують координації. Findings: file:line + impact + verification. PASS прив'язаний до snapshot; після змін — пропорційний final-delta review. Missing response/evidence → NOT_TESTED/BLOCKED. Small лишає один primary record, без другого tracker.
 

@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "status": "IMPLEMENTED_BASELINE_RUNTIME_NOT_ACCEPTED",
+  "enabled": false,
+  "executor": null,
+  "automatic_ci_enforcement": false,
+  "prerequisites": {
+    "owner": null,
+    "allowed_scope_and_target_snapshot": null,
+    "execution_authorization": null,
+    "source_review": null,
+    "network": {
+      "mode": "UNRESOLVED",
+      "allowed_hosts": [],
+      "database_acquisition_and_cache": null,
+      "telemetry_policy": null
+    },
+    "credentials": "synthetic/no production credentials; no CI permission or credential changes",
+    "versions": "vetted immutable version/digest and provenance verification required; never floating latest",
+    "license": "engine, rules, DB and redistribution terms reviewed separately",
+    "coverage": "languages, targets, enabled scanners, exclusions with reasons/expiry, DB age limit and finding policy required"
+  },
+  "candidates": [
+    {
+      "name": "Semgrep Community Edition",
+      "purpose": "selected source rules",
+      "version": null,
+      "digest": null,
+      "provenance": null,
+      "rules_version": null,
+      "rules_license": null,
+      "status": "NOT_INSTALLED_NOT_TESTED"
+    },
+    {
+      "name": "Trivy",
+      "purpose": "explicitly selected dependency/image/config coverage",
+      "version": null,
+      "digest": null,
+      "provenance": null,
+      "database_timestamp": null,
+      "database_license": null,
+      "status": "NOT_INSTALLED_NOT_TESTED",
+      "exit_caution": "default exit 0 may include findings; inspect policy output and configure gate explicitly"
+    },
+    {
+      "name": "govulncheck",
+      "purpose": "optional Go-specific known-vulnerability lens, only when relevant",
+      "version": null,
+      "digest": null,
+      "provenance": null,
+      "database_timestamp": null,
+      "status": "OPTIONAL_NOT_INSTALLED_NOT_TESTED",
+      "exit_caution": "structured output modes can succeed despite findings; retain mode-specific evidence and static-analysis limitations"
+    }
+  ],
+  "required_gate_fixture_design": [
+    {
+      "case": "positive",
+      "input": "harmless synthetic source matching an owned/permitted detection rule or static synthetic advisory fixture; never execute malicious sample",
+      "expect": "known finding observed and policy gate rejects; missing detection is FAIL",
+      "status": "NOT_RUN"
+    },
+    {
+      "case": "clean",
+      "input": "paired corrected synthetic input within declared coverage",
+      "expect": "scan completed, nonempty intended coverage, no policy violations, gate accepts",
+      "status": "NOT_RUN"
+    },
+    {
+      "case": "error",
+      "input": "controlled invalid config/unavailable required DB/read failure",
+      "expect": "ERROR/BLOCKED, never clean/PASS; distinguish from a policy finding",
+      "status": "NOT_RUN"
+    }
+  ],
+  "evidence": [
+    "target hashes",
+    "engine version/digest/provenance",
+    "rules identifiers/version/license",
+    "DB timestamp and freshness limit",
+    "command and output mode",
+    "exit and structured findings",
+    "actual files/languages scanned",
+    "coverage/exclusions",
+    "fixture expected/observed result",
+    "owner and independent verdict"
+  ],
+  "done_rule": "declaration validity and exit 0 are not security PASS; missing required fixture/runtime evidence blocks DONE",
+  "implementation": {
+    "runner": "runtime/scanners/scanner.py",
+    "compose": "runtime/scanners/compose.yaml",
+    "manifest": "runtime/scanners/manifest.json",
+    "db_updater": "runtime/scanners/update_db.py",
+    "documentation": "runtime/scanners/README.md",
+    "activation": "explicit only; shipped unresolved pins block before Docker",
+    "independent_review": "PENDING",
+    "runtime_acceptance": "NOT_RUN"
+  }
+}

@@ -5,12 +5,14 @@
 | Поле | Фактичний шлях / правило / джерело |
 |---|---|
 | Root, HEAD, relevant dirty scope | ... |
+| Task branch / base / one writer | Main repository; [branch ownership](../ai-factory/workflow.md#task-branches); foreign/unknown WIP → STOP and coordinate, runtime isolation separately |
 | Instructions і precedence | ... |
 | Нормативні acceptance/contracts/ADR | ... |
 | Stack/architecture — зберегти | ... |
 | Primary task record; append-only progress | ... |
 | Small/full/resume triggers | ... |
-| Startup critique/review/verification routing | mode: subagent / existing-session / unresolved; owner; exact reference/pending; current authorization; delivery owner; shared-resource coordination |
+| Startup critique/review/verification routing | review_mode=existing_session / independent_subagent; assigned session retained; no additional session → independent_subagent; unavailable runtime → BLOCKED; selection alone does not launch review; owner; exact reference/pending; current authorization; delivery owner; shared-resource coordination |
+| Pending next action на startup/етап/resume | У чинному record: review_mode=existing_session або independent_subagent (незалежний контекст), writer/reviewer, чинний contact mechanism/delivery owner/authorization, action ID/owner, prepared/sent/acknowledged/verdict_received + evidence, blocker/next check; [контракт](../ai-factory/review-handoff.md#pending-next-action). При копіюванні заміни link на фактичне shared source. Без дубля review/resend; лише applicable дія; required final verdict перед DONE. |
 | Independent review / evidence / QA / archive | ...; package ID, root/base/HEAD, scoped diff/untracked hashes, pinned acceptance/contracts/evidence; raw reviewer response and final-delta verdict |
 | Required gates; applicability source; side effects | ... |
 | Local/shared skill paths; invocation/fallback | ... |
@@ -29,6 +31,8 @@ Small має один основний record із scope/acceptance, плано�
 Перед викликом потрібного скілу перевір точний файл і discovery: Codex `$name`, Claude `/name`; читання файла — fallback, не invocation proof. Pattern — за structural impact, включно test helpers; entity/scoped-filter proof і UI-copy layout — за acceptance. Один оркестратор, без запуску всіх skills.
 
 ## Migration / рішення
+
+Після clear/new startup/resume: bound pending → короткий task/checkpoint + «Продовжити?», чекати поточної відповіді без task/review/send; unbound → тиша. Згода лише для поточної сесії/задачі, permissions незмінні. Compaction уже погодженої активної задачі зберігає continuity без повторного питання; waiting confirmation не активує Stop-продовження.
 
 | Суперечність або прогалина | Мінімальна additive зміна | Власник/рішення | Перевірка та статус |
 |---|---|---|---|

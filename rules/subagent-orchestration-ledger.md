@@ -6,7 +6,7 @@ title: Subagent-orchestration — ledger + статус-протокол + brief
 
 > Дистиляція **методологічного ядра** зі скіла `subagent-driven-development` (obra/superpowers) — **без установки самого скіла** (він дублює наявний `implement` + orchestration-модель + `Workflow`-tool). Тут лише три переюзабельні патерни, яких бракує в ad-hoc оркестрації: **durable ledger**, **статус-протокол ескалації**, **brief-file handoff**. Джерело: `github.com/obra/superpowers/skills/subagent-driven-development`.
 >
-> Крос-проєктне доповнення до: memory `feedback_agent_orchestration_model` (tech-lead orchestrator + role-fleet + per-wave summary/handoff), `feedback_wave_reports_convention`, `feedback_delegate_large_tasks`. Для Claude Code накладається на нативний `Workflow`-tool (pipeline/parallel) і `Agent isolation:worktree`.
+> Крос-проєктне доповнення до: memory `feedback_agent_orchestration_model` (tech-lead orchestrator + role-fleet + per-wave summary/handoff), `feedback_wave_reports_convention`, `feedback_delegate_large_tasks`. Для Claude Code накладається на нативний `Workflow`-tool (pipeline/parallel) із [task branch та одним writer](../ai-factory/workflow.md#task-branches); `Agent isolation:worktree` не є default і потребує явного доручення.
 
 ---
 

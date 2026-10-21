@@ -3703,12 +3703,13 @@
       "source": "~/.agents/ai-factory/ai-factory-plan.md",
       "destination": "ai-factory/ai-factory-plan.md",
       "source_sha256": "38792d0770a46719fc3521bc239c3e7a67e80224507d3790884996b41f8fb5d4",
-      "sha256": "d85b99f053472c284790c59a8810336e25697d78ee046357dd05ea51adb1bfda",
+      "sha256": "961255d4718dc37ace525950293a5ca52cc3fda497ddf8036b54bd272668bb22",
       "source_mode": "0o644",
       "transformations": [
         "absolute shared-source Markdown links made relative",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged"
+        "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/ai-factory-plan.md"
@@ -3731,7 +3732,7 @@
       "source": "~/.agents/ai-factory/feature-lifecycle.md",
       "destination": "ai-factory/feature-lifecycle.md",
       "source_sha256": "c01ea920e05f3eb03357d024f3499ec728b4866ba11ddafb0cc8cdaeec3bfd06",
-      "sha256": "0649623e043ad1bc6ca6e799c1412922eaeb4b7149e9f84b86b4fa6077706b66",
+      "sha256": "c3f82ebdeff7f79ecd6c24137d80f79b30299e135d2a4fc3688b989ffa2e95e8",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
@@ -3739,7 +3740,11 @@
         "excluded external dependency link retained as project-local runtime reference, no payload",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
-        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
+        "Authored proposed security gate navigation; existing task record and final runtime evidence; no tool adoption",
+        "Proposed authored security adapter navigation and explicit review delivery/completion states; no runtime adoption",
+        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/feature-lifecycle.md"
@@ -3774,9 +3779,11 @@
       "source": "~/.agents/ai-factory/onboarding/README.md",
       "destination": "docs/onboarding-helper.md",
       "source_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
-      "sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
+      "sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Authored proposed security gate navigation; existing task record and final runtime evidence; no tool adoption"
+      ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/README.md"
     },
@@ -3797,11 +3804,13 @@
       "source": "~/.agents/ai-factory/onboarding/adapter-template.md",
       "destination": "templates/adapter-full.md",
       "source_sha256": "027f4b281853154d33a1779c495b713d6ab0729fd2035438fc993e19e7b32b66",
-      "sha256": "88742e4fd7a64ce377b5bacbf6261b72222a40912378083345e5436d212e77eb",
+      "sha256": "0ffab0ef59cbab76005e929bebd7c749d65ffd6627cd2bd0d11a45ca99930ede",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.6.1 documentation hygiene routing; original skills unchanged"
+        "0.6.1 documentation hygiene routing; original skills unchanged",
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
+        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/adapter-template.md"
@@ -3923,11 +3932,13 @@
       "source": "~/.agents/ai-factory/review-handoff.md",
       "destination": "ai-factory/review-handoff.md",
       "source_sha256": "d8dd6d8fbabac2e80f02a4525af328a6711b448ad756eee318af1b12fc5d8a6c",
-      "sha256": "25e72566492abac0096eff09b85cbe984b1955692f0cf20c4d88bb25096716fe",
+      "sha256": "a3ed135777e878d1fb3be57670220ec3a862a826f7ba4a189b891d65330a2c52",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.4 explicit path/example and test-import relocation; no policy merge"
+        "0.4 explicit path/example and test-import relocation; no policy merge",
+        "Proposed authored security adapter navigation and explicit review delivery/completion states; no runtime adoption",
+        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/review-handoff.md"
@@ -3936,12 +3947,13 @@
       "source": "~/.agents/ai-factory/roadmap.md",
       "destination": "ai-factory/roadmap.md",
       "source_sha256": "950c4e69053cd36d879e9033ef2f3b03da54c9cf33994f9b23ad56cd79dc9ab9",
-      "sha256": "2912e8ead873ea1a618c8e92299c6c055fd7f7eb5363855254b01d0a6b7b21a7",
+      "sha256": "2ead4263500e6f0453d14f4484e34060566978302470ad00138531dafc11bbc4",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/roadmap.md"
@@ -3999,13 +4011,14 @@
       "source": "~/.agents/ai-factory/workflow.md",
       "destination": "ai-factory/workflow.md",
       "source_sha256": "486bedd21354d25a766a1e7b8577d0ab5d055621e7ad0ce62ae8f7238be961b7",
-      "sha256": "0ca054e8551631b2dd840a33d9310a7aca397b3fdc8c5c2f460c713415d82156",
+      "sha256": "3d0be973bc34491370adad32c8fcb0e2abf825e6cf3d6efe3c22eec83e509c35",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
-        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/workflow.md"
@@ -4057,9 +4070,11 @@
       "source": "~/.agents/rules/subagent-orchestration-ledger.md",
       "destination": "rules/subagent-orchestration-ledger.md",
       "source_sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977",
-      "sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977",
+      "sha256": "60e7a91e747397663b223c69b728a401760c7db10aa836a4da78f365a9ecaf61",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained"
+      ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/rules/subagent-orchestration-ledger.md"
     },
@@ -7664,6 +7679,21 @@
     {
       "file": "docs/legacy/ai-factory-plan-entry.md",
       "target": "../../ai-factory/ai-factory-plan.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/feature-lifecycle.md",
+      "target": "../docs/guides/ai-assisted-onboarding.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/feature-lifecycle.md",
+      "target": "../adapters/security/review.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "ai-factory/review-handoff.md",
+      "target": "../adapters/security/review.md",
       "status": "RESOLVED"
     }
   ],

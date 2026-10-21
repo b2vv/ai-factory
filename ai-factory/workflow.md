@@ -5,6 +5,16 @@ reviewed: 2026-10-16
 
 [До точки входу](../docs/legacy/ai-factory-plan-entry.md) · [Статус](status.md#capabilities) · [Маршрути](workflow.md#routing) · [Задачі](roadmap.md#tasks) · [Практики репо](repo-evidence.md#repo-evidence) · [Історія](history.md#history)
 
+<a id="task-branches"></a>
+
+## Task branch у головному репозиторії
+
+Звичайний маршрут задачі — окрема task branch у головному репозиторії. Worktree, окремий clone або detached checkout не створюються автоматично; інший маршрут потребує явного доручення користувача. Це правило має пріоритет над історичними прикладами та defaults обраного скілу щодо Git isolation; локальні acceptance, архітектура й required gates зберігаються.
+
+У чинному task/plan запиши main repository root, task branch і base, поточні HEAD/index/dirty scope, одного активного writer та порядок передачі ownership. У shared working directory одночасно працює лише один writer; незалежне read-only дослідження допускається за стабільного snapshot. Перед зміною гілки перевір власника й стан дерева. За чужого або невідомого dirty/staged/untracked WIP не перемикай гілку. Не застосовуй stash/reset/clean/commit для звільнення дерева без окремого дозволу. За конфлікту зупини залежні дії й погодь порядок/межі роботи; не переходь мовчки на worktree чи clone. Не переривай процеси іншої сесії.
+
+Runtime/test isolation — окремий контракт: узгоджені ports, service/project identity, data volumes і heavy-gate slot. Він не означає Git worktree та не дозволяє destructive reset/seed спільних даних. Handoff передає актуальну branch ownership і snapshot; після зміни writer/гілки перевір тільки зачеплені докази. Ця норма не запускає гілку, commit, push, deploy чи інструменти сама.
+
 <a id="routing"></a>
 
 # Маршрути роботи, передача контексту та перевірки

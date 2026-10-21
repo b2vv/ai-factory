@@ -31,3 +31,15 @@ Documentation hygiene checklist, template prompts and forward-review scenarios a
 ## Release 0.7.0
 
 Selective authorized MIT adaptation from addyosmani/agent-skills aeac41d4d005999432bb7312f7ff06383a91d59d. Exact inputs, outputs and append-only original-skill adaptations are recorded in provenance/authorized-additions.json. Original 84-definition inventory remains intact, with one separate authorized added skill. No upstream executable code ran; new offline helper and fixtures are authored here. Existing entity coverage and grilling are unchanged.
+
+## Unreleased task-branch routing correction
+
+Owner-authorized authored workflow/template correction: task branches in the main repository, single writer and WIP guards, runtime isolation distinct from Git isolation. Source-map retains original hashes and records transformed documentation/rules. No upstream SKILL.md, immutable release cache or runtime implementation changed. Independent delta review and native behavior evaluation remain pending.
+
+## Proposed security reference adapter
+
+The security adapter and scanner declaration are authored workflow guidance derived from the owner's requirements and existing local lifecycle. Pinned official OpenAI/Trail of Bits references, exact inspection closure and their licenses are recorded in provenance/security-sources.json. No upstream skill bodies, logos, plugin metadata, hooks or executables are imported into this package. OpenAI selected skill licenses are Apache-2.0; Trail of Bits repository license is CC-BY-SA-4.0. Future direct reuse requires its own reviewed attribution/license/notice treatment. This proposal does not change the original 84-definition inventory, installed skill count or runtime behavior.
+
+## Unreleased scanner baseline
+
+The scanner runner, DB updater, isolated Compose template, two direct-eval rules and synthetic fixtures are original additions for this owner-authorized task. No product source, external ruleset, image or database is bundled. Public CLI documentation informs argument selection; it does not establish image provenance or runtime compatibility. Engine/DB pins and their rights reviews remain unresolved and block execution. The original rules are for private owner-directed use; no public redistribution license is inferred. Independent review and real scanner acceptance remain pending.

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "status": "IMPLEMENTED_NOT_RUNTIME_ACCEPTED",
+  "engines": {
+    "semgrep": {
+      "image": null,
+      "version": null,
+      "platform": null,
+      "provenance_review": "PENDING",
+      "review_evidence": null,
+      "license_review": "PENDING"
+    },
+    "trivy": {
+      "image": null,
+      "version": null,
+      "platform": null,
+      "provenance_review": "PENDING",
+      "review_evidence": null,
+      "license_review": "PENDING"
+    }
+  },
+  "rules": {
+    "scope": "Two original direct-eval rules only; no full security coverage claim",
+    "review": "ACCEPTED",
+    "provenance": "Authored for this task; no imported third-party rules",
+    "rights": "Private use in the owner-directed AI Factory toolkit; no public license inferred",
+    "files": {
+      "baseline.json": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91"
+    }
+  },
+  "db": {
+    "repository": null,
+    "schema": 2,
+    "max_age_hours": 24,
+    "license_review": "PENDING",
+    "review_evidence": null
+  },
+  "acceptance": {
+    "unit_static_mock": "See tests/scanners; author checks only, not runtime acceptance",
+    "real_scanners": "NOT_RUN",
+    "real_read_only_cache": "NOT_RUN",
+    "real_yarn_dev_coverage": "NOT_RUN",
+    "independent_review": "PENDING"
+  }
+}
