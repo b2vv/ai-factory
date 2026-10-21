@@ -481,12 +481,12 @@
     },
     {
       "path": "runtime/scanners/README.md",
-      "sha256": "2bb4084754f854366352bfe812c8afa94ae1c8c5372824bab03d6a92929bef3e",
+      "sha256": "1eab892c5ee9039cea1965083357d830381188cd0afa63c5d618e0f7d9eee848",
       "component": "scanners"
     },
     {
       "path": "runtime/scanners/compose.yaml",
-      "sha256": "d266086fa97c0c942da5c9dea33404c5f8dc59fed9c302dd174043f8fd8c5ec2",
+      "sha256": "f54e8da8194693e1ad9eb192c736e8ba0ec5b9ae11ff666d2937cefed37132c4",
       "component": "scanners"
     },
     {
@@ -506,7 +506,7 @@
     },
     {
       "path": "runtime/scanners/scanner.py",
-      "sha256": "08de23890739c42e36993acd863f3fa7a78d2f7ba8821e1d264c9425b9886a1b",
+      "sha256": "2377ee57376fb534c663eb7b340e44308c0067a69a9b42326947c279e34c5daa",
       "component": "scanners"
     },
     {
@@ -1991,7 +1991,7 @@
     },
     {
       "path": "tests/scanners/test_scanner.py",
-      "sha256": "4c477c834cb2cffd33dc4e57de58406463fce2bc100be009bb13fdc707d90fc9",
+      "sha256": "7d74b457103065cfce10ef473f55b4a265cd3fe4d7f1e6dd2d142f681df4e385",
       "component": "core"
     },
     {

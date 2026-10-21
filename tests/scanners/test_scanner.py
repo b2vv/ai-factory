@@ -245,6 +245,42 @@ class Contracts(unittest.TestCase):
         report['Results'] = []
         self.assertEqual(s.classify('trivy', report, 0, self.config['files'], self.root), 'ERROR')
 
+    def test_nested_rules_stage_exact_allowlist_and_baseline(self):
+        n = 'semgrep-rules/nested/synthetic.yaml'
+        p = self.here / 'rules' / n; p.parent.mkdir(parents=True)
+        p.write_text('rules: []\n')
+        self.m['rules']['files'][n] = s.sha(p)
+        (p.parent / 'unlisted.yaml').write_text('not selected')
+        out = self.base / 'staged'; out.mkdir()
+        s.stage_rules(self.m, out)
+        self.assertEqual(set(str(p.relative_to(out)) for p in out.rglob('*') if p.is_file()),
+                         set(self.m['rules']['files']))
+        self.assertEqual(s.rules_files(self.m, out), self.m['rules']['files'])
+        self.assertEqual((out / n).stat().st_mode & 0o777, 0o444)
+        command = s.render(self.m, self.root, out, self.snap, self.base)['services']['semgrep']['command']
+        self.assertEqual(command[command.index('--config') + 1], '/rules')
+        del self.m['rules']['files']['baseline.json']
+        self.assertEqual(s.rules_files(self.m), {n: s.sha(p)})
+
+    def test_rules_unsafe_paths_links_and_hashes_block(self):
+        for n in ('../outside.yaml', '/outside.yaml', 'other/rule.yaml',
+                  'semgrep-rules/../baseline.json', 'semgrep-rules/.hidden/a.yaml',
+                  'semgrep-rules/a.txt', 'semgrep-rules//a.yaml'):
+            with self.subTest(path=n):
+                m = copy.deepcopy(self.m); m['rules']['files'] = {n: 'a' * 64}
+                with self.assertRaises(s.Blocked): s.rules_files(m)
+        p = self.here / 'rules/semgrep-rules/a.yml'; p.parent.mkdir()
+        p.write_text('rules: []\n'); self.m['rules']['files'] = {'semgrep-rules/a.yml': s.sha(p)}
+        p.write_text('changed')
+        with self.assertRaises(s.Blocked): s.rules_files(self.m)
+        p.unlink(); p.symlink_to(self.here / 'rules/baseline.json')
+        with self.assertRaises(s.Blocked): s.rules_files(self.m)
+        p.unlink(); os.link(self.here / 'rules/baseline.json', p)
+        with self.assertRaises(s.Blocked): s.rules_files(self.m)
+        p.unlink(); p.parent.rmdir()
+        p.parent.symlink_to(self.root, target_is_directory=True)
+        with self.assertRaises(s.Blocked): s.rules_files(self.m)
+
     def test_rules_hash_change_blocks(self):
         (self.here / 'rules/baseline.json').write_text('{}')
         with self.assertRaises(s.Blocked): s.rules_files(self.m)

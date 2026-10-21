@@ -99,13 +99,33 @@ def load_manifest(path=HERE / 'manifest.json'):
     return m
 
 
-def rules_files(m):
+def rules_files(m, rules_dir=None):
+    root = canonical(rules_dir if rules_dir is not None else HERE / 'rules')
+    need(root.is_dir(), 'rules root must be directory')
     files = m['rules']['files']
-    need(files and set(files) == {'baseline.json'}, 'unexpected rules closure')
+    need(isinstance(files, dict) and 0 < len(files) <= 2000, 'explicit bounded rules allowlist required')
+    total = 0
     for n, h in files.items():
-        p = regular(HERE / 'rules' / n, MAX_FILE)
-        need(SHA.fullmatch(h) and sha(p) == h, 'rules hash mismatch')
+        need(isinstance(n, str), 'invalid rule path')
+        rel = Path(n)
+        need(not rel.is_absolute() and str(rel) == n and '..' not in rel.parts and
+             all(not part.startswith('.') for part in rel.parts), 'unsafe rule relative path')
+        need(n == 'baseline.json' or (len(rel.parts) > 1 and rel.parts[0] == 'semgrep-rules' and
+             rel.suffix in {'.yaml', '.yml', '.json'}), 'unexpected rules closure')
+        p = regular(root / rel, MAX_FILE)
+        total += p.stat().st_size
+        need(total <= MAX_TOTAL and isinstance(h, str) and SHA.fullmatch(h) and sha(p) == h,
+             'rules hash/size mismatch')
     return files
+
+
+def stage_rules(m, destination):
+    for n, h in rules_files(m).items():
+        dst = destination / n
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.write_bytes((HERE / 'rules' / n).read_bytes())
+        need(sha(dst) == h, 'rules changed during staging')
+        dst.chmod(0o444)
 
 
 def source_files(config):
@@ -324,9 +344,7 @@ def run_scan(config, m, socket):
             need(sha(src) == h, 'source changed before staging')
             dst = source / n; dst.parent.mkdir(parents=True, exist_ok=True)
             dst.write_bytes(src.read_bytes()); need(sha(dst) == h, 'source changed during staging'); dst.chmod(0o444)
-        for n, h in rules_files(m).items():
-            dst = rules / n; dst.write_bytes((HERE / 'rules' / n).read_bytes())
-            need(sha(dst) == h, 'rules changed during staging'); dst.chmod(0o444)
+        stage_rules(m, rules)
         doc = render(m, source, rules, db, reports)
         compose = work / 'compose.json'; write_json(compose, doc)
         write_json(reports / 'resolved-compose.json', doc)

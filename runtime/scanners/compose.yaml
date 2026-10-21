@@ -30,7 +30,7 @@
         "scan",
         "--disable-nosem",
         "--config",
-        "/rules/baseline.json",
+        "/rules",
         "--metrics",
         "off",
         "--disable-version-check",

@@ -14,6 +14,21 @@ They are a small baseline, not a comprehensive security ruleset. No external rul
 or `17e31e11` material is included. Authored for private owner-directed toolkit use; this
 adds no public license grant. Engine, rule reuse and DB rights are separate reviews.
 
+`manifest.json` rules.files keys are relative to `runtime/scanners/rules/`: the existing
+`baseline.json` and nested `semgrep-rules/**/*.yaml`, `.yml` or `.json` are accepted.
+Each selected file requires an exact SHA-256; traversal, hidden components, symlinks,
+hardlinks and other roots/extensions are rejected. Limits are 2,000 files, 10 MiB per
+file and 100 MiB total. Staging creates subdirectories and copies only this allowlist;
+unlisted files (including license documents) never become scanner configs. Required
+vendor notices remain in the package and release inventory. Compose mounts the staged
+root read-only at `/rules` and passes `--config /rules`, retaining baseline-only support.
+Adding directory content alone does not activate rules: the vendor step must update
+rules.files, scope/provenance/rights and review status together. Real engine support for
+the final rules remains a runtime acceptance gate.
+
+No external ruleset is selected or vendored by this change. Future rule additions
+require a separately reviewed source revision, file closure and applicable notices.
+
 Start with `config.example.json`: explicit root, per-file SHA-256 allowlist, fresh reports
 path, Factory DB store and immutable snapshot ID. This candidate supports JS/TS/Python
 source plus paired `package.json` / `yarn.lock`. It requires nonempty direct devDependencies
