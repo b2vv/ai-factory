@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "version": "0.7.0-candidate",
-  "status": "SCANNER_BASELINE_IMPLEMENTED_RUNTIME_NOT_ACCEPTED",
+  "version": "0.7.0-rc.1",
+  "status": "RELEASE_CANDIDATE_SCOPED_SCANNER_RUNTIME_ACCEPTED",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
   "components": {
@@ -67,10 +67,10 @@
       "dependencies": [
         "core"
       ],
-      "activation": "explicit runner only; shipped pins unresolved; real runtime acceptance NOT_RUN"
+      "activation": "explicit Docker-only runner; scoped private-use pins and macOS-host linux/amd64 runtime accepted; product activation separate"
     }
   },
-  "independent_review": "PENDING exact preservative integration review; prior scoped code/runtime evidence retained, not a release or full-backlog acceptance",
+  "independent_review": "Scanner milestone and preservative integration ACCEPTED; final 0.7.0-rc.1 release metadata/package review PENDING; not full-backlog acceptance",
   "host_acceptance": "NOT_TESTED; no global/project activation",
   "provenance_file": "provenance/source-map.json",
   "files": [
@@ -91,12 +91,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "170d6c07781989c83046ccd8cd9bbd645b25114527de3215fec42d8c60792522",
+      "sha256": "effd8360a994b6255a8255438d52c8a0f77bcb3831d2294676b8a72c2f65f114",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "8d2371c65dcfcd08130168bf22a1b5c9359afb8c80c5be8e0f745f2ff2412aa7",
+      "sha256": "6518b211ba649cd6f5a54bf81d3ab7d8fc075343afd8e2f823e7c1485ae221ed",
       "component": "core"
     },
     {
@@ -501,7 +501,7 @@
     },
     {
       "path": "runtime/scanners/README.md",
-      "sha256": "ef8003dea2f4c6b09db139386c5ac0a529cbea3f2cde5c77d25cad0f9868bb09",
+      "sha256": "75366722e3cf0f9656e540147b40189d55fce92ef115ae4627effa6e15558923",
       "component": "scanners"
     },
     {

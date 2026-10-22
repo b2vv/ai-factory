@@ -1,10 +1,10 @@
-# AI Factory — 0.7.0 candidate
+# AI Factory — 0.7.0-rc.1
 
 - **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
 - **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.
 - [Спільні правила](rules/) · [Runtime helpers](runtime/README.md) · [Явні policy adapters](adapters/README.md)
 
-Статус: author-validated candidate; незалежне review і native CLI discovery/activation не підтверджені. Структура не надає дозволу на installs, hooks, MCP, model changes чи product actions. Локальні project contracts і поточне доручення мають пріоритет.
+Статус: release candidate. Scanner milestone пройшов незалежне code/runtime review для Docker-only linux/amd64 запуску на macOS; це не прийняття всього backlog, native agent discovery чи постійної активації проєктів. Фінальний release-пакет потребує окремого hash-bound review перед tag/publication. Структура не надає дозволу на installs, hooks, MCP, model changes чи product actions. Локальні project contracts і поточне доручення мають пріоритет.
 
 ## Почати через AI: три сценарії
 
@@ -77,7 +77,7 @@ package target і залишати project config, task history та required ga
 
 Pin — точний commit обраного trusted source, release manifest/hash і component set,
 а не floating branch або `latest`. Приклад наявного exact pin:
-`c427bd807f250e8d4b7d9c42d9bc894d8f8dce71` (`0.7.0-candidate`); статус candidate не є
+`1e5411f12677c45fd67b0900c77eb418a214d065` (merged scanner milestone до release); статус candidate не є
 незалежним прийняттям усіх можливостей. Перед використанням перевірити конкретний
 release, потрібні hashes і [provenance](PROVENANCE.md). Hash із того самого невідомого
 архіву не автентифікує автора. Незакомічений checkout, зокрема scanner additions,

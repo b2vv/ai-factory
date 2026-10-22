@@ -1,8 +1,9 @@
 # Offline scanner candidate
 
-The legacy host-Python entrypoint has independently accepted scoped synthetic runtime evidence.
-The new Docker-only `scan.sh` entrypoint is a code candidate: independent code review and runtime
-acceptance remain pending. Neither result is a product scan, release or image-wide rights clearance.
+The legacy host-Python entrypoint and Docker-only `scan.sh` have independently accepted scoped
+synthetic runtime evidence. Docker-only is the selected operational route; its accepted scan,
+updater and synthetic NOOP evidence is for the tested macOS host with linux/amd64 containers.
+This does not establish full product security, native Linux host portability or image-wide rights clearance.
 The Compose template is rendered only after validation; no installer activates this package.
 
 ## Bounded coverage and inputs
@@ -53,7 +54,11 @@ commands or arbitrary Docker options; there are no installation or lifecycle scr
 Cargo or another product provides only its own config/root/lockfiles/reports and an AI
 Factory pin. Product-to-product inputs, caches, volumes or rule imports are forbidden.
 
-## Explicit commands, after prerequisites are closed
+## Retained host-Python reference (not the selected operational route)
+
+Use the Docker-only `scan.sh` commands below for current operation. The Python commands in this
+section and the DB section document retained implementation interfaces and historical fixtures;
+they are not instructions to install or run Python on the host for the selected integration.
 
 Use canonical absolute paths (on macOS, resolve `/tmp` to `/private/tmp`).
 
@@ -138,13 +143,13 @@ actual-inspect rejection and dev inventory guards. They do not invoke Docker or 
 Static paired source fixtures live in `examples/security/fixtures`; never execute them.
 Synthetic Yarn lock entries in tests prove wrapper behavior only, not Trivy parsing/detection.
 
-Still required before security acceptance: vetted image/version/platform/DB digest provenance
-and terms; real positive/clean/error runs for each engine; real Yarn production and dev-only
-vulnerability detection (including transitive dependencies); missing/corrupt/stale DB errors;
-actual mount/network/source-secret isolation; read-only cache success; immutable snapshot
-update/reuse; and independent review bound to the final diff. Choose dependency fixtures and
-expected advisories against the approved DB snapshot, without downloading/installing packages.
-No P6/revoke, product rollout, CI activation, stand changes or commit/push are included.
+Acceptance criteria include scoped image/version/platform/DB provenance and terms decisions,
+real positive/clean/error runs, Yarn production/dev/transitive coverage, invalid DB rejection,
+actual mount/network isolation, read-only cache, immutable snapshot update/reuse and independent
+review bound to final bytes. These were exercised for the accepted scanner milestone; fixture
+success is not whole-product security acceptance. Revalidate affected evidence when pins, rules,
+runtime code or inputs change. No P6/revoke, product rollout, CI activation or stand change follows
+automatically from this release.
 
 ## Scoped Semgrep CE fixture evidence
 
@@ -164,7 +169,7 @@ If Docker CLI cannot discover Compose with the isolated config, supply optional 
 
 No process timeout guarantees daemon cleanup after host crash/SIGKILL; reconcile exact task container/project before retry. Runtime acceptance used bounded external capture/deadlines; production command timeout remains per-command. Apply equivalent aggregate supervision for controlled unattended runs.
 
-## Docker-only candidate entrypoint
+## Docker-only operational entrypoint
 
 Host requirements: POSIX shell, Docker CLI, installed Compose executable and basic utilities
 id, dirname, mkdir, cp, cmp, sort, sed, awk, df, du, od, tr, sleep, kill, wait and cat.
@@ -198,5 +203,6 @@ A successful scan has result-pending-cleanup.json with engine evidence, result.j
 cleanup-aware status, entrypoint.exit and per-command separate stdout/stderr. Interrupted runs may
 only have entrypoint.exit/cleanup-state and partial receipts; these never constitute CLEAN.
 Source stages/reports are retained as private task artifacts, not recursively removed by cleanup.
-Only exact containers are removed. Native Linux host compatibility and this new entrypoint's
-actual stdlib/permission/Compose behavior remain NOT_TESTED until dedicated acceptance.
+Only exact containers are removed. Native Linux host behavior remains NOT_TESTED.
+Actual stdlib/permission/Compose behavior on the
+tested macOS host was independently accepted; new host discovery and product activation remain separate.
