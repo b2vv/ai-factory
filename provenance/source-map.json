@@ -4011,7 +4011,7 @@
       "source": "~/.agents/ai-factory/workflow.md",
       "destination": "ai-factory/workflow.md",
       "source_sha256": "486bedd21354d25a766a1e7b8577d0ab5d055621e7ad0ce62ae8f7238be961b7",
-      "sha256": "56aabf902b94f5a726c409ea0741b07efdcc75d236f1b2489291d80b55f1055d",
+      "sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4019,7 +4019,8 @@
         "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
         "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
-        "AF-12 explicit interview/architecture routing and non-enforcing evidence counts; original skill contracts and historical source hash retained"
+        "AF-12 explicit interview/architecture routing and non-enforcing evidence counts; original skill contracts and historical source hash retained",
+        "AF-13 owner-approved qualitative mandatory criteria; informational percentages, explicit blockers, no numeric cutoff; synthetic examples only"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/workflow.md"
