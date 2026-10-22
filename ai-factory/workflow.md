@@ -48,6 +48,28 @@ Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan:
 
 Перед викликом перевір discovery й доступність. Якщо локальний і глобальний скіли мають однакове ім’я, назви точний обраний шлях; не покладайся на випадкове вирішення колізії.
 
+### Вибір інтерв'ю та архітектурної перевірки
+
+Спочатку прочитай релевантні чинні джерела; питання власнику закривають невідомі рішення,
+а не замінюють доступний технічний пошук. Запиши обраний exact path, причину, джерела,
+очікуваний artifact і gate у наявному task record. Читання файла не є native invocation.
+
+| Ситуація | Маршрут | Вихід і gate |
+|---|---|---|
+| Невідомі або застарілі факти | Обмежене читання docs/code | Посилання на джерела й залишкові питання; саме читання не є domain modeling |
+| Інтерв'ю без зміни моделі домену | [grilling](../skills/plan/grilling/SKILL.md); [grill-me](../skills/plan/grill-me/SKILL.md) лише за явного вибору wrapper | Один interview, рішення/frontier і підтвердження спільного розуміння до залежних дій |
+| Нові терміни або зміна моделі домену | Явно обраний [grill-with-docs](../skills/plan/grill-with-docs/SKILL.md): grilling + [domain-modeling](../skills/arch/domain-modeling/SKILL.md) | Реальний glossary update для вирішених термінів; ADR за умовами обраного контракту, без повторного grilling |
+| Структурний архітектурний вплив | [pattern-architecture-review](../skills/pattern-architecture-review/SKILL.md) коли застосовний | Межі, альтернативи й findings з доказами; не вимога впровадити патерн |
+| Очевидна мала правка | Чинний small checkpoint | Обґрунтований N/A для зайвого interview/architecture review; сильніші локальні gates збережені |
+| Resume | Наявний checkpoint і докази | Повторно перевір лише змінені inputs/рішення; незмінені verdict зберігаються у своєму scope |
+
+`grill-me` і `grill-with-docs` забороняють implicit invocation; таблиця не змінює їхні
+SKILL/agent contracts і не дозволяє автоматичний запуск. Наявність файлів не доводить discovery.
+Якщо наводиш readiness/compliance counts, знаменник включає всі застосовні критерії, зокрема
+FAIL і NOT_RUN; чисельник — лише evidenced PASS. N/A має окреме пояснення. Blocker переважає
+будь-який відсоток; stale evidence не є PASS. Обов'язкові числові thresholds тут NOT_AGREED:
+ці counts не вводять нового enforcement і не підміняють acceptance або незалежний review.
+
 | Тригер | Куди звернутися | Власник / очікуваний результат |
 |---|---|---|
 | Невідомий стан налаштування | [repo-bootstrap](../skills/utils/repo-bootstrap/SKILL.md), лише перевірка | Агент дає інвентар; користувач погоджує потрібні зміни |
