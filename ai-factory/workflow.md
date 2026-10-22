@@ -67,8 +67,36 @@ Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan:
 SKILL/agent contracts і не дозволяє автоматичний запуск. Наявність файлів не доводить discovery.
 Якщо наводиш readiness/compliance counts, знаменник включає всі застосовні критерії, зокрема
 FAIL і NOT_RUN; чисельник — лише evidenced PASS. N/A має окреме пояснення. Blocker переважає
-будь-який відсоток; stale evidence не є PASS. Обов'язкові числові thresholds тут NOT_AGREED:
-ці counts не вводять нового enforcement і не підміняють acceptance або незалежний review.
+будь-який відсоток; stale evidence не є PASS. Числового cutoff немає: відсоток лише
+інформаційний і не підміняє acceptance або незалежний review.
+
+### Qualitative readiness: обов'язкові критерії та докази
+
+Owner-погоджена політика AF-13 (2026-10-22): незакритий обов'язковий критерій блокує
+залежний крок або завершення відповідного scope незалежно від відсотка. Не додавай
+довільного порога на кшталт 80% і не перенось блокер на незалежні задачі без залежності.
+
+У чинному checkpoint запиши для кожного критерію: ID, requirements чи architecture,
+mandatory/applicability з причиною, очікувану умову, evidence path/hash/date/scope,
+PASS/FAIL/NOT_RUN/N/A і явний blocker. Критерії беруться з applicable contracts та
+acceptance, а не вигадуються для красивого результату. Facts і owner decisions відділені;
+architecture obligation оцінюється лише там, де застосовна. N/A не скасовує обов'язкової
+вимоги без обґрунтованої незастосовності за її контрактом. Застарілий або чужий hash
+означає NOT_RUN для поточних bytes, а не PASS. Відсутнє вимірювання — NOT_RUN, не 0%.
+
+Інформаційний ratio: evidenced PASS / усі явно перелічені applicable критерії, включно
+з FAIL і NOT_RUN. N/A окремо з поясненням. За нульового знаменника показуй N/A, не 100%.
+Навіть усі PASS не замінюють required independent review чи інший локальний gate.
+
+| Синтетичний приклад | Counts | Рішення |
+|---|---|---|
+| Два актуальні PASS, один mandatory NOT_RUN; UI критерій N/A для docs-only | 2/3 (66.7%); N/A: 1 з причиною | BLOCKED залежний крок через missing evidence |
+| Дев'ять PASS, один mandatory FAIL | 9/10 (90%) | BLOCKED, високий ratio не закриває finding |
+| Колишній PASS має старий hash; другий критерій PASS | 1/2 (50%); stale → NOT_RUN | Звірити змінений scope, не повторювати незачеплене |
+| Критерії ще не визначено або не виміряно | NOT_RUN, ratio не обчислено | Спочатку встановити applicability/evidence |
+
+Це docs/checkpoint convention, не dashboard, автоматичний metric gate або доказ
+реальної readiness проєкту. Приклади синтетичні, не вимірювання продукту.
 
 | Тригер | Куди звернутися | Власник / очікуваний результат |
 |---|---|---|

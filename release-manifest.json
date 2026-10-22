@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.7.0-rc.1",
+  "version": "0.7.0-rc.2",
   "status": "RELEASE_CANDIDATE_SCOPED_SCANNER_RUNTIME_ACCEPTED",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -70,7 +70,7 @@
       "activation": "explicit Docker-only runner; scoped private-use pins and macOS-host linux/amd64 runtime accepted; product activation separate"
     }
   },
-  "independent_review": "Scanner milestone and preservative integration ACCEPTED; final 0.7.0-rc.1 release metadata/package review PENDING; not full-backlog acceptance",
+  "independent_review": "Scanner milestone and preservative integration ACCEPTED; AF12 routing and AF13 qualitative criteria ACCEPTED; final 0.7.0-rc.2 release metadata/package review PENDING; not full-backlog acceptance",
   "host_acceptance": "NOT_TESTED; no global/project activation",
   "provenance_file": "provenance/source-map.json",
   "files": [
@@ -96,7 +96,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "6518b211ba649cd6f5a54bf81d3ab7d8fc075343afd8e2f823e7c1485ae221ed",
+      "sha256": "40eaa5b1d2645b00af2703c5be240d4ad997ffca3a418c508db2ebc6277b6af7",
       "component": "core"
     },
     {
@@ -201,7 +201,7 @@
     },
     {
       "path": "ai-factory/workflow.md",
-      "sha256": "56aabf902b94f5a726c409ea0741b07efdcc75d236f1b2489291d80b55f1055d",
+      "sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d",
       "component": "core"
     },
     {
@@ -421,7 +421,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "a0e2896b54f6dee0344ad2719b40fe62d4aefa7c883fb693a6569fc37eaf7d22",
+      "sha256": "0158731b8a565fa79d101b7fe1370058897e0c3b24c5ac28ac854ff46e36483f",
       "component": "core"
     },
     {
