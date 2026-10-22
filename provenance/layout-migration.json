@@ -39,9 +39,12 @@
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
         "0.6 release evolution: critique protocol and refreshed provenance",
         "0.6.1 documentation hygiene and provenance",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Unreleased owner-authorized task-branch routing correction",
+        "Proposed authored security adoption documentation; source payload preserved",
+        "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending"
       ],
-      "new_sha256": "a99c18ecdffc291bdcd05d2c937c9d0880614c81e870aee7454c1e22fa9c0107"
+      "new_sha256": "170d6c07781989c83046ccd8cd9bbd645b25114527de3215fec42d8c60792522"
     },
     {
       "old_path": "README.md",
@@ -100,9 +103,10 @@
       "action": "relocated-and-updated",
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained",
-        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance"
+        "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
+        "Unreleased owner-authorized task-branch routing correction"
       ],
-      "new_sha256": "d85b99f053472c284790c59a8810336e25697d78ee046357dd05ea51adb1bfda"
+      "new_sha256": "961255d4718dc37ace525950293a5ca52cc3fda497ddf8036b54bd272668bb22"
     },
     {
       "old_path": "collection/agents/ai-factory/crg.md",
@@ -122,9 +126,13 @@
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Unreleased owner-authorized task-branch routing correction",
+        "AI-assisted onboarding documentation and accurate helper command paths",
+        "Proposed authored security adoption documentation; source payload preserved",
+        "Current authorized baseline and rebased security documentation hashes"
       ],
-      "new_sha256": "0649623e043ad1bc6ca6e799c1412922eaeb4b7149e9f84b86b4fa6077706b66"
+      "new_sha256": "c3f82ebdeff7f79ecd6c24137d80f79b30299e135d2a4fc3688b989ffa2e95e8"
     },
     {
       "old_path": "collection/agents/ai-factory/history.md",
@@ -162,8 +170,10 @@
       "old_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
       "new_path": "docs/onboarding-helper.md",
       "action": "moved",
-      "transformations": [],
-      "new_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890"
+      "transformations": [
+        "AI-assisted onboarding documentation and accurate helper command paths"
+      ],
+      "new_sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb"
     },
     {
       "old_path": "collection/agents/ai-factory/onboarding/acceptance-template.md",
@@ -183,9 +193,11 @@
       "action": "relocated-and-updated",
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained",
-        "0.6.1 documentation hygiene and provenance"
+        "0.6.1 documentation hygiene and provenance",
+        "Unreleased owner-authorized task-branch routing correction",
+        "Current authorized baseline and rebased security documentation hashes"
       ],
-      "new_sha256": "88742e4fd7a64ce377b5bacbf6261b72222a40912378083345e5436d212e77eb"
+      "new_sha256": "0ffab0ef59cbab76005e929bebd7c749d65ffd6627cd2bd0d11a45ca99930ede"
     },
     {
       "old_path": "collection/agents/ai-factory/onboarding/change-protocol.md",
@@ -237,9 +249,11 @@
       "new_path": "ai-factory/review-handoff.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "Proposed authored security adoption documentation; source payload preserved",
+        "Current authorized baseline and rebased security documentation hashes"
       ],
-      "new_sha256": "25e72566492abac0096eff09b85cbe984b1955692f0cf20c4d88bb25096716fe"
+      "new_sha256": "a3ed135777e878d1fb3be57670220ec3a862a826f7ba4a189b891d65330a2c52"
     },
     {
       "old_path": "collection/agents/ai-factory/review/manifest.example.json",
@@ -281,9 +295,10 @@
       "new_path": "ai-factory/roadmap.md",
       "action": "relocated-and-updated",
       "transformations": [
-        "relative links and explicit package command paths remapped; instruction body retained"
+        "relative links and explicit package command paths remapped; instruction body retained",
+        "Unreleased owner-authorized task-branch routing correction"
       ],
-      "new_sha256": "2912e8ead873ea1a618c8e92299c6c055fd7f7eb5363855254b01d0a6b7b21a7"
+      "new_sha256": "2ead4263500e6f0453d14f4484e34060566978302470ad00138531dafc11bbc4"
     },
     {
       "old_path": "collection/agents/ai-factory/session-size/README.md",
@@ -332,9 +347,10 @@
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Unreleased owner-authorized task-branch routing correction"
       ],
-      "new_sha256": "0ca054e8551631b2dd840a33d9310a7aca397b3fdc8c5c2f460c713415d82156"
+      "new_sha256": "3d0be973bc34491370adad32c8fcb0e2abf825e6cf3d6efe3c22eec83e509c35"
     },
     {
       "old_path": "collection/agents/obsidian-cheatsheet.md",
@@ -383,8 +399,10 @@
       "old_sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977",
       "new_path": "rules/subagent-orchestration-ledger.md",
       "action": "moved",
-      "transformations": [],
-      "new_sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977"
+      "transformations": [
+        "Unreleased owner-authorized task-branch routing correction"
+      ],
+      "new_sha256": "60e7a91e747397663b223c69b728a401760c7db10aa836a4da78f365a9ecaf61"
     },
     {
       "old_path": "collection/agents/rules/typescript-pocock-idioms.md",
@@ -2584,9 +2602,13 @@
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
         "0.6.1 documentation hygiene and provenance",
         "0.7.0 targeted adoption and exact provenance checks",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Unreleased owner-authorized task-branch routing correction",
+        "AI-assisted onboarding documentation and accurate helper command paths",
+        "Proposed authored security adoption documentation; source payload preserved",
+        "Current authorized baseline and rebased security documentation hashes"
       ],
-      "new_sha256": "bd224dc906ce934bdbfad6b33fc8c07247c3366d6723da3b6980760ea9466092"
+      "new_sha256": "0c21c4d2e16b77a2bd4732e885c2c0ec304fff3048b8edeadf33e74e337d155d"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -2682,8 +2704,10 @@
       "old_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
       "new_path": "docs/onboarding-helper.md",
       "action": "deduplicated-identical",
-      "transformations": [],
-      "new_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890"
+      "transformations": [
+        "AI-assisted onboarding documentation and accurate helper command paths"
+      ],
+      "new_sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb"
     },
     {
       "old_path": "onboarding/acceptance-template.md",
@@ -2862,8 +2886,11 @@
       "old_sha256": "b081143bf070383288dd7ebcbcd76b4d5f9c8b0841ca57e84e8bd1ecf0808c9d",
       "new_path": "templates/adapter-portable.md",
       "action": "moved",
-      "transformations": [],
-      "new_sha256": "b081143bf070383288dd7ebcbcd76b4d5f9c8b0841ca57e84e8bd1ecf0808c9d"
+      "transformations": [
+        "Unreleased owner-authorized task-branch routing correction",
+        "Current authorized baseline and rebased security documentation hashes"
+      ],
+      "new_sha256": "4053f76f64371825cf39b8d330186b90ee1073bdc1b83ff4367f6cc730552ad3"
     },
     {
       "old_path": "tools/kit.py",
@@ -2873,7 +2900,7 @@
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
       ],
-      "new_sha256": "b9180866f14a4d4e950204425c9d72162825e60c09bcd1111dc46cd1b3f769e5"
+      "new_sha256": "b2a17e14fbad6e4a7ac3f454ce0f0e8c678c9286336fd32e2753573240766c41"
     },
     {
       "old_path": "tools/run_tests.py",
@@ -2883,9 +2910,10 @@
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending"
       ],
-      "new_sha256": "b3fb06c335d1a7a84afd293f9633170ada85d69b371d1f76e69e22ced6dc9a1f"
+      "new_sha256": "8d99e15bd26b8f6e0c380c057760ad2567d823482dda1f750e2fae2bc131837d"
     },
     {
       "old_path": "tools/test_collection.py",
@@ -2905,7 +2933,7 @@
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
       ],
-      "new_sha256": "61440d00263e10ebdfc81bf3a96ff9b99db63b12cb9328db67db68f825702093"
+      "new_sha256": "7a9fdf8e6a4c9fb11aa6589fbc3f5c9d0f3834ffd724f824557da5452c6d299f"
     },
     {
       "old_path": "tools/verify_collection.py",

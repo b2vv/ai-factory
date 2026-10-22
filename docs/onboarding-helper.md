@@ -3,7 +3,7 @@
 Requires an already available Python 3.9+ and its standard library. No install step.
 The helper inventories declared paths and command metadata; it does not configure a repository.
 
-Prepare a non-secret manifest from `manifest.example.json` in the task workspace, without
+Prepare a non-secret manifest from [the example manifest](../examples/onboarding/manifest.json) in the task workspace, without
 writing to the target repository. Replace the example paths with its existing instructions,
 workflow and dependency files. A manifest is explicit input, not an overwrite or bootstrap
 instruction. A repository-owned manifest may be added later as part of an approved adapter.
@@ -57,8 +57,8 @@ operator; it cannot prove that a model followed the route.
 ## Isolated verification
 
 ```sh
-cd /path/to/helper
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_preflight.py
+cd /absolute/trusted/ai-factory
+PYTHONPATH=runtime/onboarding python3 -B -m unittest discover -s tests/onboarding -p 'test_*.py' -v
 ```
 
 Fixtures are generated in temporary directories: clean repo, existing partial rules, missing shared

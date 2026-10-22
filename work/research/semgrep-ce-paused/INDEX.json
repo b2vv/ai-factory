@@ -1,0 +1,212 @@
+{
+  "status": "EXPERIMENTAL_PAUSED_SUPERSEDED_NOT_EXECUTION_READY",
+  "count": 28,
+  "files": [
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/launcher.py",
+      "original_sha256": "8377c123f8cc227126b5a4f1cf668e41b7de061eb10e7d11baf70edc53e41401",
+      "destination": "latest-candidate/launcher.py",
+      "sanitized_sha256": "5c26165f0688c38a5b806c0f7b77f546265273644fc2a14739f78b46b36b4ebc",
+      "transformation": "task artifact prefix/socket placeholder only; original retained locally"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/watchdog.py",
+      "original_sha256": "39c941168b02930a19eb762e19db885a05f2d282dc1a4781485a67461f155411",
+      "destination": "latest-candidate/watchdog.py",
+      "sanitized_sha256": "abaf139438cb3ab92e71f5361648137c7013e22d6e1e4a46d8d5e8d52cf6da56",
+      "transformation": "task artifact prefix/socket placeholder only; original retained locally"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/bounded_command.py",
+      "original_sha256": "9513cb143aeb3f4727c379bf39e2e0867e5ef1a7bdc3f2bc1e9cea0ed49995e9",
+      "destination": "latest-candidate/bounded_command.py",
+      "sanitized_sha256": "9513cb143aeb3f4727c379bf39e2e0867e5ef1a7bdc3f2bc1e9cea0ed49995e9",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/disk_sample.py",
+      "original_sha256": "97c2a18392a448294d8c8097cffd3fae314846991603cabe9b8764823e6b9330",
+      "destination": "latest-candidate/disk_sample.py",
+      "sanitized_sha256": "97c2a18392a448294d8c8097cffd3fae314846991603cabe9b8764823e6b9330",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/build.sh",
+      "original_sha256": "fd7c6c1a5ecdba03414f31a300526871d4cba53ce691b50f5c37ae2c1d14620f",
+      "destination": "latest-candidate/build.sh",
+      "sanitized_sha256": "fd7c6c1a5ecdba03414f31a300526871d4cba53ce691b50f5c37ae2c1d14620f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/curl-shim",
+      "original_sha256": "6bcf75489052881187ad49d8d345bf18f4ee6ce1b89055904951f535642fe270",
+      "destination": "latest-candidate/curl-shim",
+      "sanitized_sha256": "6bcf75489052881187ad49d8d345bf18f4ee6ce1b89055904951f535642fe270",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/ledger.py",
+      "original_sha256": "2c1fe9e18eb0b84a413490c0d62232135ed5ebf81991e30c285c053aa6d8f0d8",
+      "destination": "latest-candidate/ledger.py",
+      "sanitized_sha256": "2c1fe9e18eb0b84a413490c0d62232135ed5ebf81991e30c285c053aa6d8f0d8",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/fix_curl.py",
+      "original_sha256": "c0c23ab1dccd9cd6abd4bd0bb408990815de2c6af0e2d15b2f755db3d3231296",
+      "destination": "latest-candidate/fix_curl.py",
+      "sanitized_sha256": "c0c23ab1dccd9cd6abd4bd0bb408990815de2c6af0e2d15b2f755db3d3231296",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/git-pins.txt",
+      "original_sha256": "c345252546a168e5ed2bf60845125f3c57fc564f44bc6f9f15ccfb9ddf143c6f",
+      "destination": "latest-candidate/git-pins.txt",
+      "sanitized_sha256": "c345252546a168e5ed2bf60845125f3c57fc564f44bc6f9f15ccfb9ddf143c6f",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/prepare_tar_fixture.py",
+      "original_sha256": "1991e4493e6bd05b11cc0dc1e9a1b6a1243b0c2e27c57516d6d0751800b7783b",
+      "destination": "latest-candidate/prepare_tar_fixture.py",
+      "sanitized_sha256": "1991e4493e6bd05b11cc0dc1e9a1b6a1243b0c2e27c57516d6d0751800b7783b",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_bounded_command.py",
+      "original_sha256": "eee91d2610d96853cd1f07535514150130eee7585668a5299596639975b90ccb",
+      "destination": "latest-candidate/test_bounded_command.py",
+      "sanitized_sha256": "eee91d2610d96853cd1f07535514150130eee7585668a5299596639975b90ccb",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_command_diagnostics.py",
+      "original_sha256": "f0134a99e02da122d4108a811f49a6d6a92454feea63abafe0e8dbb4ff409ddc",
+      "destination": "latest-candidate/test_command_diagnostics.py",
+      "sanitized_sha256": "f0134a99e02da122d4108a811f49a6d6a92454feea63abafe0e8dbb4ff409ddc",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_corrections.py",
+      "original_sha256": "bf82182859787afd85f52e1aa99bde0fa9c5ffa0bfde6011551366e4c38a62a1",
+      "destination": "latest-candidate/test_corrections.py",
+      "sanitized_sha256": "bf82182859787afd85f52e1aa99bde0fa9c5ffa0bfde6011551366e4c38a62a1",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_disk_resample.py",
+      "original_sha256": "5315306e4720149737cff341b0b2878b0f429792e8303958aca5f4d8805dad83",
+      "destination": "latest-candidate/test_disk_resample.py",
+      "sanitized_sha256": "5315306e4720149737cff341b0b2878b0f429792e8303958aca5f4d8805dad83",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_fix_curl.py",
+      "original_sha256": "a705f5850b5724c524c0694771c2458076b9e8ff95768c4f3d1b622731efef28",
+      "destination": "latest-candidate/test_fix_curl.py",
+      "sanitized_sha256": "a705f5850b5724c524c0694771c2458076b9e8ff95768c4f3d1b622731efef28",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_launcher.py",
+      "original_sha256": "45e28d4e97edba934431605e45205f36aaa12995e7e3c9107237952daab3b29d",
+      "destination": "latest-candidate/test_launcher.py",
+      "sanitized_sha256": "45e28d4e97edba934431605e45205f36aaa12995e7e3c9107237952daab3b29d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_log_capture.py",
+      "original_sha256": "9398cdf607e5e0965e68b1df34ca7dcf34fba82d322b74f115eb34a4b4414d14",
+      "destination": "latest-candidate/test_log_capture.py",
+      "sanitized_sha256": "9398cdf607e5e0965e68b1df34ca7dcf34fba82d322b74f115eb34a4b4414d14",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_persistence_gates.py",
+      "original_sha256": "d6ef6052a7cad3364ed4f37d07b2d72e1b65405428b8422fe519fd0348f08cc4",
+      "destination": "latest-candidate/test_persistence_gates.py",
+      "sanitized_sha256": "d6ef6052a7cad3364ed4f37d07b2d72e1b65405428b8422fe519fd0348f08cc4",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_stage_fixture.py",
+      "original_sha256": "0998b265fd1fb309dd2dac890406f095d376f06a433719488370b18f9edd90ec",
+      "destination": "latest-candidate/test_stage_fixture.py",
+      "sanitized_sha256": "0998b265fd1fb309dd2dac890406f095d376f06a433719488370b18f9edd90ec",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_success_gates.py",
+      "original_sha256": "4247f06c22eaf1b8a79cb14cf8b03af36b4a4cf9a91a0f1c3b3493e1a0713cf2",
+      "destination": "latest-candidate/test_success_gates.py",
+      "sanitized_sha256": "4247f06c22eaf1b8a79cb14cf8b03af36b4a4cf9a91a0f1c3b3493e1a0713cf2",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_tar_failure_capture.py",
+      "original_sha256": "c854c94cde01ba7d399517c780bd30e0d3e2eb2483ddfe99710ec21f85d38533",
+      "destination": "latest-candidate/test_tar_failure_capture.py",
+      "sanitized_sha256": "c854c94cde01ba7d399517c780bd30e0d3e2eb2483ddfe99710ec21f85d38533",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_tar_preflight_integration.py",
+      "original_sha256": "7a6d0948f33785e8f882f588271ab9d9cb40a0c547f4c27b94b32a9ed95f5b47",
+      "destination": "latest-candidate/test_tar_preflight_integration.py",
+      "sanitized_sha256": "7a6d0948f33785e8f882f588271ab9d9cb40a0c547f4c27b94b32a9ed95f5b47",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/test_watchdog.py",
+      "original_sha256": "e1573b3df61164673fd7c0d2eeae577c3ade83dfc9020ade2b3d1a97bd18d642",
+      "destination": "latest-candidate/test_watchdog.py",
+      "sanitized_sha256": "e1573b3df61164673fd7c0d2eeae577c3ade83dfc9020ade2b3d1a97bd18d642",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/official-image-ce-transition/preservation-index.json",
+      "original_sha256": "6dc70c1fbe58a6840902b4cc30cd4b7d3b0abbf21b5ceb2034f44a63864ca18b",
+      "destination": "transition/preservation-index.json",
+      "sanitized_sha256": "ce9c12329d29850e02c2772b26346e18abfe4905ee60534cf7093eff2c817040",
+      "transformation": "task artifact prefix/socket placeholder only; original retained locally"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/official-image-ce-transition/decision-and-proposal.md",
+      "original_sha256": "1a4502c9dc38a106312a5abab98d87af2c11d60441badfe1c8e3f42496751b73",
+      "destination": "transition/decision-and-proposal.md",
+      "sanitized_sha256": "1a4502c9dc38a106312a5abab98d87af2c11d60441badfe1c8e3f42496751b73",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/official-image-ce-transition/candidate-evidence.json",
+      "original_sha256": "1be83056f14db16844c1060102ecca73cb6efa47c37822722ecd97771dde5958",
+      "destination": "transition/candidate-evidence.json",
+      "sanitized_sha256": "463af9445f60982dfcf653280f10e24aa0d385d8a443ec31d812e7c7baa8504e",
+      "transformation": "task artifact prefix/socket placeholder only; original retained locally"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/official-image-ce-transition/compose-command-proposal.diff",
+      "original_sha256": "c5da56daaa758de5bd424d708d8d0036469000e6ae2028160a47a7d8b0b1a65d",
+      "destination": "transition/compose-command-proposal.diff",
+      "sanitized_sha256": "c5da56daaa758de5bd424d708d8d0036469000e6ae2028160a47a7d8b0b1a65d",
+      "transformation": "byte-identical"
+    },
+    {
+      "source_locator": "ai-factory-backlog/af-03/official-image-ce-transition/review-hashes.json",
+      "original_sha256": "19fb196ebaa60a0239bd6a8ca5cbf73a3c37ca71351f6c50eff87d26b3363b17",
+      "destination": "transition/review-hashes.json",
+      "sanitized_sha256": "19fb196ebaa60a0239bd6a8ca5cbf73a3c37ca71351f6c50eff87d26b3363b17",
+      "transformation": "byte-identical"
+    }
+  ],
+  "historical_hashes": "transition/review-hashes.json and preservation-index hashes describe original retained local artifacts, not this sanitized export; INDEX.json maps sanitized bytes",
+  "excluded": [
+    "source archives and extracted third-party sources",
+    "binary fixture (generator retained instead)",
+    "helper-before.fixture third-party source excerpt",
+    "image layers/config blobs and filesystem exports",
+    "DB snapshots/caches/dependencies",
+    "raw runtime logs, tokens, secrets, machine configuration",
+    "unrelated WIP and untracked files"
+  ]
+}

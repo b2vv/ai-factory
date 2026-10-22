@@ -20,6 +20,8 @@ scope: global ~/.agents; cargotrans-ui і dg; практики QnA backend (open
 
 Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
 
+Task branch та один writer у головному репозиторії — за [branch ownership contract](workflow.md#task-branches); runtime isolation окрема від Git isolation.
+
 ## Обери маршрут
 
 | Ситуація | Що зробити |

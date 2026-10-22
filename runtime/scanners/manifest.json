@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "status": "SCOPED_SYNTHETIC_RUNTIME_ACCEPTED_PRODUCTION_CLI_PENDING",
+  "engines": {
+    "semgrep": {
+      "image": "semgrep/semgrep@sha256:c47e426f7f0cfa19af6d7877560d0a7135f683b8090ad0efc97c4ec7810dc435",
+      "version": "1.181.0",
+      "platform": "linux/amd64",
+      "provenance_review": "ACCEPTED",
+      "review_evidence": "runtime-acceptance.json: scoped owner-approved private offline use; residuals retained, not image-wide license/source completeness",
+      "license_review": "ACCEPTED"
+    },
+    "trivy": {
+      "image": "aquasec/trivy@sha256:166061a4a15c64a94a3aab430659e2c166dc0815fbc54a222c6d56d64132f552",
+      "version": "0.76.0",
+      "platform": "linux/amd64",
+      "provenance_review": "ACCEPTED",
+      "review_evidence": "runtime-acceptance.json: scoped owner-approved private offline use; residuals retained, not image-wide license/source completeness",
+      "license_review": "ACCEPTED"
+    }
+  },
+  "rules": {
+    "scope": "Two original direct-eval rules only; no full security coverage claim",
+    "review": "ACCEPTED",
+    "provenance": "Authored for this task; no imported third-party rules",
+    "rights": "Private use in the owner-directed AI Factory toolkit; no public license inferred",
+    "files": {
+      "baseline.yaml": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91"
+    }
+  },
+  "db": {
+    "repository": "ghcr.io/aquasecurity/trivy-db@sha256:9424f2c6d595c5a5bb0d92b0ac5be225cbf7288f334b821da58c8a7657a2241f",
+    "schema": 2,
+    "max_age_hours": 24,
+    "license_review": "ACCEPTED",
+    "review_evidence": "runtime-acceptance.json: private local compiled DB use; redistribution not assessed"
+  },
+  "acceptance": {
+    "unit_static_mock": "See tests/scanners and final candidate test receipts",
+    "real_scanners": "ACCEPT_SCOPED_FIXTURE_ENVIRONMENT",
+    "real_read_only_cache": "ACCEPT_SCOPED_FIXTURE_ENVIRONMENT",
+    "real_yarn_dev_coverage": "ACCEPT_DIRECT_DEV_AND_TRANSITIVE_FIXTURES",
+    "independent_review": "runtime-acceptance.json; final production CLI gate pending"
+  }
+}
