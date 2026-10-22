@@ -110,8 +110,8 @@ def rules_files(m, rules_dir=None):
         rel = Path(n)
         need(not rel.is_absolute() and str(rel) == n and '..' not in rel.parts and
              all(not part.startswith('.') for part in rel.parts), 'unsafe rule relative path')
-        need(n == 'baseline.json' or (len(rel.parts) > 1 and rel.parts[0] == 'semgrep-rules' and
-             rel.suffix in {'.yaml', '.yml', '.json'}), 'unexpected rules closure')
+        need(n == 'baseline.yaml' or (len(rel.parts) > 1 and rel.parts[0] == 'semgrep-rules' and
+             rel.suffix in {'.yaml', '.yml'}), 'unexpected rules closure')
         p = regular(root / rel, MAX_FILE)
         total += p.stat().st_size
         need(total <= MAX_TOTAL and isinstance(h, str) and SHA.fullmatch(h) and sha(p) == h,

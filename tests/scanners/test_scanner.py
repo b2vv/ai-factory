@@ -69,6 +69,65 @@ class Contracts(unittest.TestCase):
         return {'results': [{'check_id': 'synthetic'}] if finding else [], 'errors': [],
                 'paths': {'scanned': ['/src/sample.js']}}
 
+    def test_official_image_service_env_exact_values(self):
+        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services']['semgrep']
+        expected = {'SEMGREP_IN_DOCKER': '1', 'SEMGREP_USER_AGENT_APPEND': 'Docker',
+                    'PYTHONIOENCODING': 'utf8', 'DOCKER_OTEL_RESOURCE_ATTRIBUTES': '',
+                    'DD_SERVICE': '', 'TSAN_OPTIONS': ''}
+        for key, value in expected.items():
+            self.assertEqual(service['environment'].get(key), value)
+        self.assertTrue(set(expected).isdisjoint(s.SAFE_IMAGE_ENV))
+        actual = self.obj(service)
+        actual['Config']['Env'] += ['PATH=/usr/bin', 'PYTHONUNBUFFERED=1']
+        s.verify_container(actual, service, 'sha256:local')
+        self.assertEqual(service['network_mode'], 'none')
+        self.assertEqual(service['environment']['SEMGREP_SEND_METRICS'], 'off')
+        self.assertEqual(service['environment']['SEMGREP_ENABLE_VERSION_CHECK'], '0')
+
+    def test_official_image_env_wrong_values_rejected(self):
+        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services']['semgrep']
+        wrong = {'SEMGREP_IN_DOCKER': '', 'SEMGREP_USER_AGENT_APPEND': 'host',
+                 'PYTHONIOENCODING': 'latin1', 'DOCKER_OTEL_RESOURCE_ATTRIBUTES': 'vcs.ref.head.name=release-1.181.0',
+                 'DD_SERVICE': 'semgrep-core', 'TSAN_OPTIONS': 'exitcode=0 report_signal_unsafe=0'}
+        for key, value in wrong.items():
+            with self.subTest(key=key):
+                actual = self.obj(service)
+                actual['Config']['Env'] = [x for x in actual['Config']['Env'] if not x.startswith(key + '=')]
+                actual['Config']['Env'].append(key + '=' + value)
+                with self.assertRaises(s.Blocked): s.verify_container(actual, service, 'sha256:local')
+
+    def test_official_image_env_missing_values_rejected(self):
+        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services']['semgrep']
+        for key in ('SEMGREP_IN_DOCKER', 'SEMGREP_USER_AGENT_APPEND', 'PYTHONIOENCODING',
+                    'DOCKER_OTEL_RESOURCE_ATTRIBUTES', 'DD_SERVICE', 'TSAN_OPTIONS'):
+            with self.subTest(key=key):
+                actual = self.obj(service)
+                actual['Config']['Env'] = [x for x in actual['Config']['Env'] if not x.startswith(key + '=')]
+                with self.assertRaises(s.Blocked): s.verify_container(actual, service, 'sha256:local')
+
+    def test_official_image_env_unrelated_extras_rejected(self):
+        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services']['semgrep']
+        for extra in ('SEMGREP_APP_TOKEN=synthetic', 'OTEL_EXPORTER_OTLP_ENDPOINT=http://invalid', 'UNRELATED='):
+            actual = self.obj(service); actual['Config']['Env'].append(extra)
+            with self.assertRaises(s.Blocked): s.verify_container(actual, service, 'sha256:local')
+
+    def test_ce_only_invocation_contract(self):
+        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services']['semgrep']
+        self.assertEqual(service['command'][:2], ['scan', '--oss-only'])
+        self.assertNotIn('--error', service['command'])
+        self.assertNotIn('--pro', service['command'])
+        self.assertEqual(service['command'][service['command'].index('--config') + 1], '/rules')
+
+    def test_actual_ce_argv_drift_rejected(self):
+        service = s.render(self.m, self.root, self.here / 'rules', self.snap, self.base)['services']['semgrep']
+        for mutation in ('remove-oss', 'pro', 'ci'):
+            actual = self.obj(service)
+            actual['Config']['Cmd'] = list(service['command'])
+            if mutation == 'remove-oss': actual['Config']['Cmd'].remove('--oss-only')
+            elif mutation == 'pro': actual['Config']['Cmd'].append('--pro')
+            else: actual['Config']['Cmd'][0] = 'ci'
+            with self.assertRaises(s.Blocked): s.verify_container(actual, service, 'sha256:local')
+
     def trivy(self, finding=False):
         return {'SchemaVersion': 2, 'Results': [{'Target': 'yarn.lock', 'Type': 'yarn',
                   'Packages': [{'Name': 'prod-synthetic', 'Version': '1.0.0'}, {'Name': 'dev-synthetic', 'Version': '1.0.0'}],
@@ -259,12 +318,12 @@ class Contracts(unittest.TestCase):
         self.assertEqual((out / n).stat().st_mode & 0o777, 0o444)
         command = s.render(self.m, self.root, out, self.snap, self.base)['services']['semgrep']['command']
         self.assertEqual(command[command.index('--config') + 1], '/rules')
-        del self.m['rules']['files']['baseline.json']
+        del self.m['rules']['files']['baseline.yaml']
         self.assertEqual(s.rules_files(self.m), {n: s.sha(p)})
 
     def test_rules_unsafe_paths_links_and_hashes_block(self):
         for n in ('../outside.yaml', '/outside.yaml', 'other/rule.yaml',
-                  'semgrep-rules/../baseline.json', 'semgrep-rules/.hidden/a.yaml',
+                  'semgrep-rules/../baseline.yaml', 'semgrep-rules/.hidden/a.yaml',
                   'semgrep-rules/a.txt', 'semgrep-rules//a.yaml'):
             with self.subTest(path=n):
                 m = copy.deepcopy(self.m); m['rules']['files'] = {n: 'a' * 64}
@@ -273,16 +332,40 @@ class Contracts(unittest.TestCase):
         p.write_text('rules: []\n'); self.m['rules']['files'] = {'semgrep-rules/a.yml': s.sha(p)}
         p.write_text('changed')
         with self.assertRaises(s.Blocked): s.rules_files(self.m)
-        p.unlink(); p.symlink_to(self.here / 'rules/baseline.json')
+        p.unlink(); p.symlink_to(self.here / 'rules/baseline.yaml')
         with self.assertRaises(s.Blocked): s.rules_files(self.m)
-        p.unlink(); os.link(self.here / 'rules/baseline.json', p)
+        p.unlink(); os.link(self.here / 'rules/baseline.yaml', p)
         with self.assertRaises(s.Blocked): s.rules_files(self.m)
         p.unlink(); p.parent.rmdir()
         p.parent.symlink_to(self.root, target_is_directory=True)
         with self.assertRaises(s.Blocked): s.rules_files(self.m)
 
+    def test_staged_rule_suffixes_are_discoverable(self):
+        for suffix in ('.yaml', '.yml'):
+            name = 'semgrep-rules/nested/rule' + suffix
+            path = self.here / 'rules' / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('rules: []\n')
+            self.m['rules']['files'][name] = s.sha(path)
+        out = self.base / 'discovery'; out.mkdir()
+        s.stage_rules(self.m, out)
+        staged = {str(p.relative_to(out)) for p in out.rglob('*') if p.is_file()}
+        discovered = {str(p.relative_to(out)) for p in out.rglob('*') if p.is_file() and p.suffix in ('.yaml', '.yml')}
+        self.assertEqual(staged, discovered)
+        self.assertEqual(discovered, set(self.m['rules']['files']))
+        self.assertEqual(json.loads((out / 'baseline.yaml').read_text())['rules'][0]['id'],
+                         json.loads((self.here / 'rules/baseline.yaml').read_text())['rules'][0]['id'])
+
+    def test_json_named_directory_rules_fail_closed(self):
+        for name in ('baseline.json', 'semgrep-rules/nested/rule.json'):
+            path = self.here / 'rules' / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('{"rules": []}')
+            m = copy.deepcopy(self.m); m['rules']['files'] = {name: s.sha(path)}
+            with self.assertRaises(s.Blocked): s.rules_files(m)
+
     def test_rules_hash_change_blocks(self):
-        (self.here / 'rules/baseline.json').write_text('{}')
+        (self.here / 'rules/baseline.yaml').write_text('{}')
         with self.assertRaises(s.Blocked): s.rules_files(self.m)
 
     def test_mock_full_scan_never_exposes_product_mount(self):

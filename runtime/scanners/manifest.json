@@ -25,7 +25,7 @@
     "provenance": "Authored for this task; no imported third-party rules",
     "rights": "Private use in the owner-directed AI Factory toolkit; no public license inferred",
     "files": {
-      "baseline.json": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91"
+      "baseline.yaml": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91"
     }
   },
   "db": {

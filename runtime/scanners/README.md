@@ -15,7 +15,7 @@ or `17e31e11` material is included. Authored for private owner-directed toolkit 
 adds no public license grant. Engine, rule reuse and DB rights are separate reviews.
 
 `manifest.json` rules.files keys are relative to `runtime/scanners/rules/`: the existing
-`baseline.json` and nested `semgrep-rules/**/*.yaml`, `.yml` or `.json` are accepted.
+`baseline.yaml` and nested `semgrep-rules/**/*.yaml` or `.yml` are accepted; `.json` filenames are rejected.
 Each selected file requires an exact SHA-256; traversal, hidden components, symlinks,
 hardlinks and other roots/extensions are rejected. Limits are 2,000 files, 10 MiB per
 file and 100 MiB total. Staging creates subdirectories and copies only this allowlist;
@@ -137,3 +137,11 @@ actual mount/network/source-secret isolation; read-only cache success; immutable
 update/reuse; and independent review bound to the final diff. Choose dependency fixtures and
 expected advisories against the approved DB snapshot, without downloading/installing packages.
 No P6/revoke, product rollout, CI activation, stand changes or commit/push are included.
+
+## Scoped Semgrep CE fixture evidence
+
+The official Semgrep 1.181.0 linux/amd64 candidate passed authored offline positive, clean, malformed-config and missing-config fixtures, plus version/help. See [runtime evidence](ce-runtime-evidence.json) for immutable evidence hashes and limits. This is CE-only invocation (`--oss-only`), not a CE-only image composition claim. Local directory rules use `.yaml`/`.yml`; the original two-rule baseline is renamed `baseline.yaml` without changing bytes. Existing consumers listing `.json` rules require a reviewed rename and hash-allowlist update; no automatic migration.
+
+Six image-specific environment values are explicit service values checked by the existing verifier. Context/encoding values are preserved exactly; three instrumentation settings are explicitly empty. Empty values do not establish instrumentation inactivity; network-none remains separate enforced isolation. Global SAFE_IMAGE_ENV is unchanged.
+
+The runtime manifest intentionally retains null engine pins and PENDING provenance/license gates. The existing schema cannot turn scoped CE runtime evidence into complete engine acceptance. This evidence sidecar records the verified candidate without weakening load_manifest. Trivy/DB/Yarn and product scans remain unaccepted. Three sampled image notices do not establish image-wide rights/source closure. No release or activation is authorized by this integration.

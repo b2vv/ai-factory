@@ -481,12 +481,17 @@
     },
     {
       "path": "runtime/scanners/README.md",
-      "sha256": "1eab892c5ee9039cea1965083357d830381188cd0afa63c5d618e0f7d9eee848",
+      "sha256": "7414bccafea12df4e6d0dcd3dbd3dee7f7e747fda057c8cef57e2a1aba5b452d",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/ce-runtime-evidence.json",
+      "sha256": "46e5d27ce23044adeb34997bfba87f533b22780c3f127b1bb070c9f620c066e3",
       "component": "scanners"
     },
     {
       "path": "runtime/scanners/compose.yaml",
-      "sha256": "f54e8da8194693e1ad9eb192c736e8ba0ec5b9ae11ff666d2937cefed37132c4",
+      "sha256": "c53c3420fca0c82b80d180564d0e1863ba8c3dc06237cdb4cd751b48accf82d0",
       "component": "scanners"
     },
     {
@@ -496,17 +501,17 @@
     },
     {
       "path": "runtime/scanners/manifest.json",
-      "sha256": "c8476cb0b6215b367bfd26d2ea912d53d8f45ac7cd597c256b6e55c807f9393c",
+      "sha256": "dd3be80f2f2cf30141a3b25abb4e836865df34844e90cc2c78cc1eb299075010",
       "component": "scanners"
     },
     {
-      "path": "runtime/scanners/rules/baseline.json",
+      "path": "runtime/scanners/rules/baseline.yaml",
       "sha256": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91",
       "component": "scanners"
     },
     {
       "path": "runtime/scanners/scanner.py",
-      "sha256": "2377ee57376fb534c663eb7b340e44308c0067a69a9b42326947c279e34c5daa",
+      "sha256": "a0915ae2c38e4807bb874650f56341b3d15a86b22492767a93d86c4fca849063",
       "component": "scanners"
     },
     {
@@ -1991,7 +1996,7 @@
     },
     {
       "path": "tests/scanners/test_scanner.py",
-      "sha256": "7d74b457103065cfce10ef473f55b4a265cd3fe4d7f1e6dd2d142f681df4e385",
+      "sha256": "8cea3cd8fa80d6608800c53e973ef7db8b58d5ecaf97ee87a67dd6f6ac31e628",
       "component": "core"
     },
     {
