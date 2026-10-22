@@ -38,6 +38,32 @@ class KitTests(unittest.TestCase):
         p=k.rollback_plan(self.root,tx)
         return k.rollback(self.root,tx,p.get('plan_id'))
 
+    def test_root_worktree_gitfile_is_excluded_without_following_target(self):
+        (self.src/'.git').write_text('gitdir: /nonexistent/private/git/worktrees/example\n')
+        _, files, _ = k.payload(self.src, [])
+        self.assertNotIn('.git', files)
+        self.assertIn('docs/a.md', files)
+
+    def test_gitfile_does_not_hide_other_or_nested_files(self):
+        (self.src/'.git').write_text('gitdir: ../metadata\n')
+        for name in ['extra.txt', '.git-other', 'docs/.git', 'docs/nested/.git/config']:
+            with self.subTest(name=name):
+                p = self.src/name; p.parent.mkdir(parents=True, exist_ok=True); p.write_text('unlisted')
+                with self.assertRaises(ValueError): k.payload(self.src, [])
+                p.unlink()
+
+    def test_invalid_root_gitfile_blocks(self):
+        p = self.src/'.git'
+        for value in ['unrelated file', 'gitdir: \n', 'gitdir: ../meta\nextra', 'gitdir: ../meta\x00']:
+            p.write_text(value)
+            with self.assertRaises(ValueError): k.payload(self.src, [])
+        p.unlink(); p.symlink_to(self.src/'docs/a.md')
+        with self.assertRaises(ValueError): k.payload(self.src, [])
+        p.unlink(); p.symlink_to(self.src/'docs', target_is_directory=True)
+        with self.assertRaises(ValueError): k.payload(self.src, [])
+        p.unlink(); os.link(self.src/'docs/a.md', p)
+        with self.assertRaises(ValueError): k.payload(self.src, [])
+
     def test_plan_no_writes_and_optional_selection(self):
         p=k.plan(self.src,self.root)
         self.assertFalse(self.root.exists());self.assertNotIn('optional/x.md',p['files'])

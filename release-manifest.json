@@ -70,7 +70,7 @@
       "activation": "explicit runner only; shipped pins unresolved; real runtime acceptance NOT_RUN"
     }
   },
-  "independent_review": "PENDING fresh scanner/security delta review; prior acceptance does not transfer",
+  "independent_review": "PENDING exact preservative integration review; prior scoped code/runtime evidence retained, not a release or full-backlog acceptance",
   "host_acceptance": "NOT_TESTED; no global/project activation",
   "provenance_file": "provenance/source-map.json",
   "files": [
@@ -96,7 +96,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "288eda14ec1d65e15ffd080e10fbb1bac0dd3443ed690184570887bf61d76960",
+      "sha256": "8d2371c65dcfcd08130168bf22a1b5c9359afb8c80c5be8e0f745f2ff2412aa7",
       "component": "core"
     },
     {
@@ -361,23 +361,23 @@
     },
     {
       "path": "examples/security/fixtures/clean/sample.js",
-      "component": "scanners",
-      "sha256": "3d36b4e3c9f0501e34312c8b8035bd0e85b836b32051a0dc0d66f674ea553144"
+      "sha256": "3d36b4e3c9f0501e34312c8b8035bd0e85b836b32051a0dc0d66f674ea553144",
+      "component": "scanners"
     },
     {
       "path": "examples/security/fixtures/clean/sample.py",
-      "component": "scanners",
-      "sha256": "638f95c9203125775531791bc46b60680a79a7752703358e33070729df6669ab"
+      "sha256": "638f95c9203125775531791bc46b60680a79a7752703358e33070729df6669ab",
+      "component": "scanners"
     },
     {
       "path": "examples/security/fixtures/positive/sample.js",
-      "component": "scanners",
-      "sha256": "795d1f102f9b256df94c146f8afa01c51a630709f3e2d8ae204fa853fffc6ef3"
+      "sha256": "795d1f102f9b256df94c146f8afa01c51a630709f3e2d8ae204fa853fffc6ef3",
+      "component": "scanners"
     },
     {
       "path": "examples/security/fixtures/positive/sample.py",
-      "component": "scanners",
-      "sha256": "14a6c15184c610aa8a38e3fcd99d880f0f7d9a4f19cec1e32e5b52724883990d"
+      "sha256": "14a6c15184c610aa8a38e3fcd99d880f0f7d9a4f19cec1e32e5b52724883990d",
+      "component": "scanners"
     },
     {
       "path": "examples/security/scanner-profile.json",
@@ -396,12 +396,17 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "5d5bd43b562d313d0fe5b216c68bc6a23e69400744dabc7775b4361bc7278b53",
+      "sha256": "b1be3203e16ab9f3b22a0aa763969cbf7fb9d72ed2e5424d4c42f6006f6c4c79",
       "component": "core"
     },
     {
       "path": "provenance/link-exceptions.json",
       "sha256": "5d3b6a2dc1b00bf3b5073ed7abde7c926a6bb2bc22c1aa59d049842c900d42eb",
+      "component": "core"
+    },
+    {
+      "path": "provenance/research-archive.json",
+      "sha256": "a30e1a8675101a741a9118075018eb8f6a98ba24cc866307ee1987bd1611cda9",
       "component": "core"
     },
     {
@@ -496,38 +501,68 @@
     },
     {
       "path": "runtime/scanners/README.md",
-      "component": "scanners",
-      "sha256": "eeb85a81ad30848a8db7f160013d1e12ea9ca4650a8aa415608c875515e41cca"
+      "sha256": "ef8003dea2f4c6b09db139386c5ac0a529cbea3f2cde5c77d25cad0f9868bb09",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/ce-runtime-evidence.json",
+      "sha256": "45d673594463b121dafd267908e7e3f0d317b750ea66e12a27f5e7da82a7f1c2",
+      "component": "scanners"
     },
     {
       "path": "runtime/scanners/compose.yaml",
-      "component": "scanners",
-      "sha256": "f54e8da8194693e1ad9eb192c736e8ba0ec5b9ae11ff666d2937cefed37132c4"
+      "sha256": "ddcfa20d56e7d17194513714acf90d4228a6af11ccea7f57d3db65116b995a30",
+      "component": "scanners"
     },
     {
       "path": "runtime/scanners/config.example.json",
-      "component": "scanners",
-      "sha256": "631f44392d68bd027dd54d2267c85fc0652231176daf400ebd3ecb1760356787"
+      "sha256": "631f44392d68bd027dd54d2267c85fc0652231176daf400ebd3ecb1760356787",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/container_control.sh",
+      "sha256": "5c70971e48b5a79f7c144ecdee0b702bc61e31e56fb7b6121cfb16f46a50e245",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/container_helper.py",
+      "sha256": "c63a7c1b4f97eed487204e7f7dd19d976b9cf611b314370dc9307324e9811abb",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/helper-image.json",
+      "sha256": "4623df8afb422ea272550616b98d409c9cf693bd05d8df3eb2b7c4d971ded43e",
+      "component": "scanners"
     },
     {
       "path": "runtime/scanners/manifest.json",
-      "component": "scanners",
-      "sha256": "c8476cb0b6215b367bfd26d2ea912d53d8f45ac7cd597c256b6e55c807f9393c"
+      "sha256": "fc7d9b1b9e9a3a15ae233277cb8dbce807d010891a50b203cb4db0fd7e1a73aa",
+      "component": "scanners"
     },
     {
-      "path": "runtime/scanners/rules/baseline.json",
-      "component": "scanners",
-      "sha256": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91"
+      "path": "runtime/scanners/rules/baseline.yaml",
+      "sha256": "1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/runtime-acceptance.json",
+      "sha256": "1422a6d26df52f01e1e0fb587374160ff6e6de441342e9b2b9ade888a12f7bdb",
+      "component": "scanners"
+    },
+    {
+      "path": "runtime/scanners/scan.sh",
+      "sha256": "1d3f72bb51c72b6fb939328478c2d8f2d40520eda179a47943acd8626a4a8da9",
+      "component": "scanners"
     },
     {
       "path": "runtime/scanners/scanner.py",
-      "component": "scanners",
-      "sha256": "2377ee57376fb534c663eb7b340e44308c0067a69a9b42326947c279e34c5daa"
+      "sha256": "3b85bae55b5119e9babffc41887ba9f2daaf7ca68f8c9379b75c2cd733acb41b",
+      "component": "scanners"
     },
     {
       "path": "runtime/scanners/update_db.py",
-      "component": "scanners",
-      "sha256": "726a4fd7916413d03864bd5c021b6ec363e3e8f96820f73be34a712c1853ee30"
+      "sha256": "da5c4a2df706738c937c19bfcefb2a975cc1e82196613120dbcb9c85b1717e85",
+      "component": "scanners"
     },
     {
       "path": "runtime/session-size/session_guard.py",
@@ -1976,7 +2011,7 @@
     },
     {
       "path": "tests/install/test_kit.py",
-      "sha256": "61440d00263e10ebdfc81bf3a96ff9b99db63b12cb9328db67db68f825702093",
+      "sha256": "7a9fdf8e6a4c9fb11aa6589fbc3f5c9d0f3834ffd724f824557da5452c6d299f",
       "component": "core"
     },
     {
@@ -2000,14 +2035,54 @@
       "component": "core"
     },
     {
+      "path": "tests/packaging/test_export.py",
+      "sha256": "db9ccd746bd2ab35c533cfca5d15a7b809d55b800171a7f90b54325a6e0722fa",
+      "component": "core"
+    },
+    {
       "path": "tests/review/test_review_package.py",
       "sha256": "c0ca2b8d2c4451b6827eb4a82fd193a87e4c71b3de6427464d84ca68b4b7ac51",
       "component": "core"
     },
     {
+      "path": "tests/scanners/test_bootstrap_null.py",
+      "sha256": "aceb37a98655262062e4ae040afd7827e6d985b37f5a88917c75bd90144907b8",
+      "component": "core"
+    },
+    {
+      "path": "tests/scanners/test_classification_artifact.py",
+      "sha256": "bc33c765699022972a302dd46b221d92bdb9d2caf1266fb3d21bdc3704717fe5",
+      "component": "core"
+    },
+    {
+      "path": "tests/scanners/test_container_control.py",
+      "sha256": "97331ff26415e39d32c40f1d2367256c87a1cd6eacada53a0f9fe6be457f9594",
+      "component": "core"
+    },
+    {
+      "path": "tests/scanners/test_container_helper.py",
+      "sha256": "cc69f6d47da035cfe4d0ba155d8c79f51c32ced63f79995a7d54d4ff7faedc7a",
+      "component": "core"
+    },
+    {
+      "path": "tests/scanners/test_docker_migration_regressions.py",
+      "sha256": "269e051a546823ea1e20a821a7350f8c7204c90efda7a069fac9d69f1e054c22",
+      "component": "core"
+    },
+    {
+      "path": "tests/scanners/test_log_driver.py",
+      "sha256": "03ddcdc7eac16763ffb73520678c8d345d6977367d41d952bbefc0e66ba22c59",
+      "component": "core"
+    },
+    {
       "path": "tests/scanners/test_scanner.py",
-      "component": "core",
-      "sha256": "7d74b457103065cfce10ef473f55b4a265cd3fe4d7f1e6dd2d142f681df4e385"
+      "sha256": "c731b7399e0aa0d9edcf057e94ccadf43f0813c2863d6b86a29d54f202279640",
+      "component": "core"
+    },
+    {
+      "path": "tests/scanners/test_updater_followup.py",
+      "sha256": "f872c64c0cc2ad645982a881345a59b02188f29f5462bfecf7c77efb7a9571a1",
+      "component": "core"
     },
     {
       "path": "tests/session-size/test_session_guard.py",
@@ -2015,8 +2090,13 @@
       "component": "core"
     },
     {
+      "path": "tools/export_release.py",
+      "sha256": "2e03d1255180ef455f97f5234a1f7cc0342d560a4b1bb9fddfab78416edee3f2",
+      "component": "core"
+    },
+    {
       "path": "tools/kit.py",
-      "sha256": "b9180866f14a4d4e950204425c9d72162825e60c09bcd1111dc46cd1b3f769e5",
+      "sha256": "b2a17e14fbad6e4a7ac3f454ce0f0e8c678c9286336fd32e2753573240766c41",
       "component": "core"
     },
     {

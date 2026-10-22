@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "scope": "Private offline use of exact linux/amd64 engines; authored fixtures only; no Cargo activation/product scan",
+  "owner_authorization": "Sentinel_2b26324d648c81919926bf3d950b6286; Sentinel_1b1fafdcc6008191857fc34154270480",
+  "semgrep_residuals": "Official mixed image used CE-only (--oss-only); private source/image correspondence incomplete; three notice samples not image-wide clearance; no blanket LGPL claim",
+  "trivy_terms": "Apache-2.0 source; scoped local cache use review accepted, not all advisory redistribution rights",
+  "rules": "two original direct-eval rules; incomplete security coverage",
+  "snapshot": "154860390ca57de43c45d9b1b1c2d092a180e2925eb669fd0bebf703564940bb",
+  "db_metadata_next_update": "2026-10-23T01:15:55Z; must revalidate freshness; no embedded DB",
+  "evidence": {
+    "trivy-db-update-run-v2": "7e49d39cedfb404453110812ded55a10893470f1cc499830aca02701fba13ffb",
+    "trivy-yarn-fixtures-run-v3": "32090f62ed360bab1720202fc8d739ea38d712fc022e8095f84667ec05dfce3a",
+    "combined-fixtures-run-v2": "a46b2254d2ae8008e10b0d709d137a0d05fedc7572aa9057d2e79e1ed90e006a",
+    "invalid-db-preflight-v1": "99eeb6d9c8e6c5892c86c32e06c6c19b59b99ee5d294271292f199d013170c2a"
+  },
+  "independent_runtime_review": {
+    "status": "ACCEPT_SCOPED_FIXTURE_ENVIRONMENT",
+    "sha256": "7a5f57db0b5449e9ef726ba8348c16515efcef459690ed7e03bb867d6be44625"
+  },
+  "release": "NOT_CREATED",
+  "product_scan": "NOT_RUN",
+  "compose": "Optional hash-pinned explicit installed executable staged into private task config; no global installation/account config read. Requires platform-compatible trusted local binary, not container architecture.",
+  "production_cli": "NOT_RUN: final pinned-plugin integration must be reviewed then tested without capture adapter",
+  "archive_review_sha256": "73e5ccaaf11880ee2fb49f7a2d548dad8a0f3e5055082b7d64c00fce7ae287ee"
+}

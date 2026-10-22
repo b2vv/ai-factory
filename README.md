@@ -154,10 +154,16 @@ pin metadata; збережи решту .ai/project/ та чинні локал�
 [Migration guide](docs/migration-0.4.md) пояснює exact paths, component selection, variants і перехід зі старої layout. [Installer contract](docs/portability-design.md) зберігає explicit plan, hash guards, backups і guarded rollback.
 
 ```sh
-python3 -B tools/verify_release.py --root "$PWD"
-python3 -B tools/run_tests.py --previous-release '/absolute/immutable/626fd68-release'
-python3 -B tools/kit.py plan --package "$PWD" --root '/absolute/dedicated/toolkit' --component collection --component planning --component review --component session-guard
+# Source checkout includes an exact, inert research archive; export only release files.
+# Choose a new destination outside this checkout. No archive scripts are executed.
+EXPORT_DIR="$(python3 -c 'from pathlib import Path; print(Path.cwd().parent / "ai-factory-release-export")')"
+python3 -B tools/export_release.py --root "$PWD" --destination "$EXPORT_DIR"
+python3 -B "$EXPORT_DIR/tools/verify_release.py" --root "$EXPORT_DIR"
+TOOLKIT_DIR="$(python3 -c 'from pathlib import Path; print(Path.cwd().parent / "ai-factory-toolkit-plan-only")')"
+python3 -B "$EXPORT_DIR/tools/kit.py" plan --package "$EXPORT_DIR" --root "$TOOLKIT_DIR" --component collection --component planning --component review --component session-guard
 ```
+
+Цей приклад виконує export, перевірку та read-only installer plan; не install. Destination export має бути новим, toolkit root — окремим dedicated каталогом. Для повного regression suite використайте `python3 -B "$EXPORT_DIR/tools/run_tests.py" --previous-release /absolute/path/to/verified-previous-release` лише після вибору реального immutable previous release. Placeholder не є готовою командою; archive scripts не запускати.
 
 `collection` — compatibility component, що включає повні skills та explicit legacy helpers; `skills` можна вибрати окремо. `graphify` містить єдиний canonical graphify skill, а `skills` залежить від нього. `planning` додає чотири **не-discovered adapter documents**, не новий SKILL tree. Installer розв’язує оголошені component dependencies, відхиляє cycles/unknown components; no network/tool installs/host registration.
 

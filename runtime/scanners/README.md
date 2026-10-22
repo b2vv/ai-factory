@@ -1,11 +1,9 @@
 # Offline scanner candidate
 
-Implemented locally; **real scanner acceptance NOT RUN; independent review PENDING**.
-The shipped manifest deliberately has no image/version/platform/DB provenance pins. Both
-validation and execution BLOCK before Docker until those fields have reviewed values.
-No fallback tag, registry rule fetching, image pull, product invocation or implicit update.
-The JSON-formatted `compose.yaml` is a template, not directly runnable Compose: the runner
-fills image pins and canonical mounts after validation. No installer activates it.
+The legacy host-Python entrypoint has independently accepted scoped synthetic runtime evidence.
+The new Docker-only `scan.sh` entrypoint is a code candidate: independent code review and runtime
+acceptance remain pending. Neither result is a product scan, release or image-wide rights clearance.
+The Compose template is rendered only after validation; no installer activates this package.
 
 ## Bounded coverage and inputs
 
@@ -14,14 +12,8 @@ They are a small baseline, not a comprehensive security ruleset. No external rul
 or `17e31e11` material is included. Authored for private owner-directed toolkit use; this
 adds no public license grant. Engine, rule reuse and DB rights are separate reviews.
 
-The canonical future vendor destination is `runtime/scanners/rules/semgrep-rules/`.
-The planned source is secscan semgrep-rules at owner-supplied pin `17e31e11`, with
-LGPL-2.1 + Commons Clause terms and internal-use scope; see
-`provenance/security-sources.json` from the package root. No vendor acceptance is claimed.
-Full revision, file closure and notices must be reviewed in the separate vendor change.
-
 `manifest.json` rules.files keys are relative to `runtime/scanners/rules/`: the existing
-`baseline.json` and nested `semgrep-rules/**/*.yaml`, `.yml` or `.json` are accepted.
+`baseline.yaml` and nested `semgrep-rules/**/*.yaml` or `.yml` are accepted; `.json` filenames are rejected.
 Each selected file requires an exact SHA-256; traversal, hidden components, symlinks,
 hardlinks and other roots/extensions are rejected. Limits are 2,000 files, 10 MiB per
 file and 100 MiB total. Staging creates subdirectories and copies only this allowlist;
@@ -31,6 +23,19 @@ root read-only at `/rules` and passes `--config /rules`, retaining baseline-only
 Adding directory content alone does not activate rules: the vendor step must update
 rules.files, scope/provenance/rights and review status together. Real engine support for
 the final rules remains a runtime acceptance gate.
+
+Canonical vendor intent is preserved as **PROPOSED, not selected or accepted**: the earlier
+owner-supplied short reference `17e31e11` and destination `rules/semgrep-rules/` remain recorded
+in `provenance/security-sources.json`. Upstream identity, full revision, selected file closure
+and applicable notices still require independent verification; the earlier stated terms are
+not an image-wide or ruleset-wide clearance. No external rule is activated by this integration.
+
+Compatibility: `baseline.json` is renamed to `baseline.yaml` with byte-identical contents
+(SHA-256 `1050ea7f9dbf17ef37b1b120b698516f6913b791693a53dac949dc1d924abf91`).
+Consumers must explicitly update filename allowlists; no silent Cargo or product migration.
+
+No external ruleset is selected or vendored by this change. Future rule additions
+require a separately reviewed source revision, file closure and applicable notices.
 
 Start with `config.example.json`: explicit root, per-file SHA-256 allowlist, fresh reports
 path, Factory DB store and immutable snapshot ID. This candidate supports JS/TS/Python
@@ -140,3 +145,58 @@ actual mount/network/source-secret isolation; read-only cache success; immutable
 update/reuse; and independent review bound to the final diff. Choose dependency fixtures and
 expected advisories against the approved DB snapshot, without downloading/installing packages.
 No P6/revoke, product rollout, CI activation, stand changes or commit/push are included.
+
+## Scoped Semgrep CE fixture evidence
+
+The official Semgrep 1.181.0 linux/amd64 candidate passed authored offline positive, clean, malformed-config and missing-config fixtures, plus version/help. See [runtime evidence](ce-runtime-evidence.json) for immutable evidence hashes and limits. This is CE-only invocation (`--oss-only`), not a CE-only image composition claim. Local directory rules use `.yaml`/`.yml`; the original two-rule baseline is renamed `baseline.yaml` without changing bytes. Existing consumers listing `.json` rules require a reviewed rename and hash-allowlist update; no automatic migration.
+
+Six image-specific environment values are explicit service values checked by the existing verifier. Context/encoding values are preserved exactly; three instrumentation settings are explicitly empty. Empty values do not establish instrumentation inactivity; network-none remains separate enforced isolation. Global SAFE_IMAGE_ENV is unchanged.
+
+The manifest contains exact scoped private-use image and DB pins. Refer to runtime-acceptance.json
+for historical host-runner evidence; it does not accept the Docker-only migration. Three Semgrep
+notice samples do not establish image-wide source/rights closure. Product rollout remains separate.
+
+## Scoped runtime and local Compose prerequisite
+
+Exact linux/amd64 image pins and private-use decisions are in manifest.json and runtime-acceptance.json. These are not a universal license/provenance clearance, full rule coverage, product scan or release. The immutable DB source is time-bound: an expired snapshot blocks; an update requires a newly reviewed immutable source, never a floating fallback. Factory DB stays outside Git; do not reuse another product's store. Updater scratch1GiB shares2GiB RAM; scan scratch stays256MiB. Both use2CPU/2GiB without extra swap/128PIDs.
+
+If Docker CLI cannot discover Compose with the isolated config, supply optional `compose_plugin` in the local scan config: `{ "path": "/absolute/trusted/local/docker-compose", "sha256": "exact SHA256 of that installed executable" }`. Owner selects trusted existing software; no installation or download is performed. Validate checks canonical regular executable and hash (max64MiB). Execution copies those verified bytes into its temporary Docker config, verifies them again, and removes them with the temporary task directory. No account Docker config or credentials are copied; no host/global settings change. Plugin runs on the host platform, while scanner containers remain linux/amd64. Omit when normal isolated CLI discovery works. An updated binary needs a new explicit hash.
+
+No process timeout guarantees daemon cleanup after host crash/SIGKILL; reconcile exact task container/project before retry. Runtime acceptance used bounded external capture/deadlines; production command timeout remains per-command. Apply equivalent aggregate supervision for controlled unattended runs.
+
+## Docker-only candidate entrypoint
+
+Host requirements: POSIX shell, Docker CLI, installed Compose executable and basic utilities
+id, dirname, mkdir, cp, cmp, sort, sed, awk, df, du, od, tr, sleep, kill, wait and cat.
+No host Python, native scanner, installation or global Docker configuration edit is needed.
+The helper and engines run linux/amd64. Supply canonical paths and an explicit hash of the trusted
+installed Compose binary; helper verifies that hash before scan orchestration. The installed plugin
+is invoked directly with DOCKER_HOST and an empty task Docker config, not an invented plugin flag.
+
+```sh
+sh runtime/scanners/scan.sh scan /absolute/config.json /absolute/new-run /absolute/docker.sock /absolute/docker-compose COMPOSE_SHA256
+sh runtime/scanners/scan.sh update-db /absolute/factory-store /absolute/new-update /absolute/docker.sock /absolute/docker-compose COMPOSE_SHA256
+```
+
+The run directory must be absent; config reports must equal that directory plus /reports.
+Use a nonroot host UID/GID; no automatic chown. Only explicit source files are mounted, each RO,
+then copied and hashed into isolated staging. Host shell rejects symlink ancestors; same-user hostile
+TOCTOU remains outside this best-effort check. No container receives Docker socket or host credentials.
+Every helper is created and inspected before start with literal image-specific env/security checks.
+The updater lease is atomic mkdir plus owner token; interrupted/uncertain update retains cache and
+lease for exact-resource reconciliation. Never remove a lease based only on age.
+
+600 seconds covers the operation, followed by one15-second cleanup budget. INT/TERM/HUP stops new
+work and reconciles exact intended names. SIGKILL/host crash cannot be handled; do not reuse a run
+until its names are reconciled. Outputs are capped per control command; source reports and disk
+accounting remain soft thresholds.2GiB per image and task export,2GiB per incoming DB cache,
+10GiB free reserve; no25GiB budget. Existing sealed DB and incoming1.64GiB copy coexist temporarily:
+this can require about3.28GiB total store storage. A runtime update with this coexistence requires
+reviewed explicit storage accounting; it is not a2GiB aggregate store claim.
+
+A successful scan has result-pending-cleanup.json with engine evidence, result.json with final
+cleanup-aware status, entrypoint.exit and per-command separate stdout/stderr. Interrupted runs may
+only have entrypoint.exit/cleanup-state and partial receipts; these never constitute CLEAN.
+Source stages/reports are retained as private task artifacts, not recursively removed by cleanup.
+Only exact containers are removed. Native Linux host compatibility and this new entrypoint's
+actual stdlib/permission/Compose behavior remain NOT_TESTED until dedicated acceptance.

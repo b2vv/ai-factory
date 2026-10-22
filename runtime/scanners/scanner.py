@@ -110,8 +110,8 @@ def rules_files(m, rules_dir=None):
         rel = Path(n)
         need(not rel.is_absolute() and str(rel) == n and '..' not in rel.parts and
              all(not part.startswith('.') for part in rel.parts), 'unsafe rule relative path')
-        need(n == 'baseline.json' or (len(rel.parts) > 1 and rel.parts[0] == 'semgrep-rules' and
-             rel.suffix in {'.yaml', '.yml', '.json'}), 'unexpected rules closure')
+        need(n == 'baseline.yaml' or (len(rel.parts) > 1 and rel.parts[0] == 'semgrep-rules' and
+             rel.suffix in {'.yaml', '.yml'}), 'unexpected rules closure')
         p = regular(root / rel, MAX_FILE)
         total += p.stat().st_size
         need(total <= MAX_TOTAL and isinstance(h, str) and SHA.fullmatch(h) and sha(p) == h,
@@ -205,8 +205,37 @@ def validate_snapshot(store, snapshot, m, now=None):
     return base, meta
 
 
+def compose_plugin(config):
+    """Optional explicit, hash-bound locally installed executable; never read account config."""
+    spec = config.get('compose_plugin')
+    if spec is None:
+        return None
+    need(isinstance(spec, dict) and set(spec) == {'path', 'sha256'}, 'invalid Compose plugin declaration')
+    path = regular(spec['path'], 64 * 1024 * 1024)
+    need(isinstance(spec['sha256'], str) and SHA.fullmatch(spec['sha256']) and
+         sha(path) == spec['sha256'] and os.access(path, os.X_OK), 'Compose plugin hash/permission mismatch')
+    return path, spec['sha256']
+
+
+def stage_compose_plugin(config, home):
+    pinned = compose_plugin(config)
+    if pinned is None:
+        return
+    path, expected = pinned
+    directory = home / 'cli-plugins'; directory.mkdir(mode=0o700)
+    target = directory / 'docker-compose'
+    data = path.read_bytes()
+    need(hashlib.sha256(data).hexdigest() == expected, 'Compose plugin changed during staging')
+    with target.open('xb') as stream:
+        stream.write(data)
+    need(sha(target) == expected, 'Compose plugin staging mismatch')
+    target.chmod(0o500)
+    write_json(home / 'config.json', {'cliPluginsExtraDirs': [str(directory)]})
+
+
 def prepare(config, m):
     root, selected, locks = source_files(config)
+    compose_plugin(config)
     reports = canonical(config['reports'], exists=False)
     need(not reports.exists() and reports.parent.is_dir(), 'fresh reports directory with existing parent required')
     store = store_root(config['db_store'])
@@ -229,7 +258,7 @@ def render(m, source, rules, db, reports):
     return doc
 
 
-def verify_tmpfs(tmpfs):
+def verify_tmpfs(tmpfs, *, max_bytes=256 * 1024 * 1024):
     """Validate inspect scratch options, accepting reordered flags and byte/unit sizes."""
     need(isinstance(tmpfs, dict) and set(tmpfs) == {'/tmp'}, 'unexpected scratch mounts')
     value = tmpfs['/tmp']
@@ -246,11 +275,13 @@ def verify_tmpfs(tmpfs):
             need(option in {'rw', 'noexec', 'nosuid', 'nodev'} and option not in flags,
                  'unsafe or duplicate scratch option')
             flags.add(option)
-    need({'rw', 'noexec', 'nosuid'} <= flags and size is not None and 0 < size <= 256 * 1024 * 1024,
-         'scratch must be noexec/nosuid and bounded to 256 MiB')
+    need({'rw', 'noexec', 'nosuid'} <= flags and size is not None and 0 < size <= max_bytes,
+         'scratch must be noexec/nosuid and within the caller size bound')
 
 
-def verify_container(obj, service, image_id):
+def verify_container(obj, service, image_id, *, path_identity=None):
+    # Default retains host filesystem checks; container helper injects lexical host identity only.
+    identify = canonical if path_identity is None else path_identity
     h, c = obj['HostConfig'], obj['Config']
     need(obj['Image'] == image_id and c['Image'] == service['image'], 'actual image mismatch')
     need(h['NetworkMode'] == 'none' and h['ReadonlyRootfs'] and not h.get('Privileged'), 'unsafe actual isolation')
@@ -259,16 +290,19 @@ def verify_container(obj, service, image_id):
     need(not h.get('Devices') and not h.get('DeviceRequests') and not h.get('VolumesFrom') and
          not h.get('PortBindings') and not h.get('PidMode') and not h.get('IpcMode', '').startswith(('host', 'container:')),
          'unexpected host sharing')
+    need(h.get('NanoCpus') == 2000000000 and h.get('Memory') == 2 * 1024**3 and
+         h.get('MemorySwap') == 2 * 1024**3 and h.get('PidsLimit') == 128,
+         'actual scan resource mismatch')
     need(c['User'] == service['user'] and c['Entrypoint'] == service['entrypoint'] and
          c['Cmd'] == service['command'] and c['WorkingDir'] == '/src', 'actual process mismatch')
     env = dict(x.split('=', 1) for x in c.get('Env', []))
     need(all(env.get(k) == v for k, v in service['environment'].items()) and
          set(env) <= set(service['environment']) | SAFE_IMAGE_ENV, 'unexpected container environment')
-    expected = {(str(canonical(v['source'])), v['target'], not v['read_only']) for v in service['volumes']}
+    expected = {(str(identify(v['source'])), v['target'], not v['read_only']) for v in service['volumes']}
     mounts = obj.get('Mounts', [])
     binds = [v for v in mounts if v['Type'] == 'bind']
     need(len(binds) == len(expected) and
-         {(str(canonical(v['Source'])), v['Destination'], v['RW']) for v in binds} == expected,
+         {(str(identify(v['Source'])), v['Destination'], v['RW']) for v in binds} == expected,
          'actual bind mounts differ from approved resolved paths')
     need(all(v['Type'] == 'bind' or (v['Type'] == 'tmpfs' and v['Destination'] == '/tmp') for v in mounts),
          'unexpected volume mount')
@@ -281,7 +315,11 @@ def classify(name, report, code, selected, root):
     if name == 'semgrep':
         if not isinstance(report.get('results'), list) or report.get('errors') != []:
             return 'ERROR'
-        scanned = report.get('paths', {}).get('scanned', [])
+        paths = report.get('paths')
+        if not isinstance(paths, dict): return 'ERROR'
+        scanned = paths.get('scanned')
+        if not isinstance(scanned, list) or any(not isinstance(p, str) for p in scanned): return 'ERROR'
+        if any(not isinstance(r, dict) or not isinstance(r.get('check_id'), str) or not r['check_id'] for r in report['results']): return 'ERROR'
         required = {n for n in selected if Path(n).suffix in SOURCE_EXT}
         normalized = {p.removeprefix('/src/').removeprefix('./') for p in scanned}
         if not required <= normalized:
@@ -339,6 +377,7 @@ def run_scan(config, m, socket):
         work = Path(temp).resolve()
         source, rules = work / 'source', work / 'rules'
         source.mkdir(); rules.mkdir(); (work / 'home').mkdir()
+        stage_compose_plugin(config, work / 'home')
         for n, h in selected.items():
             src = regular(root / n, MAX_FILE)
             need(sha(src) == h, 'source changed before staging')

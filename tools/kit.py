@@ -117,10 +117,18 @@ def payload(package, components):
     if set(declared) != expected: raise ValueError('checksum inventory mismatch')
     actual = set()
     for base, dirs, names_on_disk in os.walk(package, followlinks=False):
-        if Path(base)==package and '.git' in dirs: dirs.remove('.git')
+        if Path(base)==package and '.git' in dirs:
+            if (package/'.git').is_symlink(): raise ValueError('symlink in package')
+            dirs.remove('.git')
         for name in dirs + names_on_disk:
             p=Path(base)/name
             if p.is_symlink(): raise ValueError('symlink in package')
+            if Path(base) == package and name == '.git' and p.is_file():
+                # A worktree gitfile is metadata, never a payload or a path to traverse.
+                data = regular(p)
+                if not re.fullmatch(rb'gitdir: [^\x00\r\n]+\n?', data):
+                    raise ValueError('invalid root Git metadata file')
+                continue
             if p.is_file(): actual.add(str(p.relative_to(package)))
     if actual != expected | {'checksums.sha256'}: raise ValueError('unlisted package file')
     for name,h in declared.items():

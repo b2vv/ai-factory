@@ -20,7 +20,13 @@
       "environment": {
         "HOME": "/tmp",
         "SEMGREP_SEND_METRICS": "off",
-        "SEMGREP_ENABLE_VERSION_CHECK": "0"
+        "SEMGREP_ENABLE_VERSION_CHECK": "0",
+        "SEMGREP_IN_DOCKER": "1",
+        "SEMGREP_USER_AGENT_APPEND": "Docker",
+        "PYTHONIOENCODING": "utf8",
+        "DOCKER_OTEL_RESOURCE_ATTRIBUTES": "",
+        "DD_SERVICE": "",
+        "TSAN_OPTIONS": ""
       },
       "volumes": [],
       "entrypoint": [
@@ -28,6 +34,7 @@
       ],
       "command": [
         "scan",
+        "--oss-only",
         "--disable-nosem",
         "--config",
         "/rules",
@@ -39,7 +46,11 @@
         "--output",
         "/reports/semgrep.json",
         "/src"
-      ]
+      ],
+      "cpus": 2,
+      "mem_limit": "2g",
+      "memswap_limit": "2g",
+      "pids_limit": 128
     },
     "trivy": {
       "image": null,
@@ -89,7 +100,11 @@
         "--exit-code",
         "0",
         "/src"
-      ]
+      ],
+      "cpus": 2,
+      "mem_limit": "2g",
+      "memswap_limit": "2g",
+      "pids_limit": 128
     }
   }
 }
