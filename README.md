@@ -1,11 +1,10 @@
-# AI Factory — 0.7.0-rc.2
+# AI Factory — 0.7.0-rc.3
 
-Цей prerelease додає явну маршрутизацію interview/architecture skills та qualitative
-readiness: обов'язкові незакриті критерії блокують залежний крок, відсотки лише
-інформаційні, без числового cutoff. Scanner runtime і архів напрацювань незмінні
-від rc.1. Host hook migration лишається окремою незавершеною задачею; цей пакет
-не встановлює й не вимикає callbacks. Існуючі consumer pins оновлюються лише явним
-reviewed update; immutable rc.1 не підмінюється.
+This proposed prerelease adds an optional Docker-only session-guard package,
+focused regression tests and bounded-pilot closeout. It does not activate hooks
+or replace legacy monitoring. See [scope and limitations](docs/session-size-docker.md).
+Scanner runtime, immutable prior releases and consumer pins remain unchanged.
+Final exact package review is pending; no release has been published from this candidate.
 
 - **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
 - **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.

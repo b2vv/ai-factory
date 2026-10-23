@@ -29,3 +29,10 @@ Use `--host codex` for Codex. The five fields are nonempty strings <=1600 charac
 The `hook --host <host> --store <absolute-store>` command consumes bounded JSON stdin for SessionStart/UserPromptSubmit/PostToolUse/Stop. An explicit `AI_FACTORY_HANDOFF` environment pointer may request resume. Stop is advisory. No registration file or live hook is written by this kit. Before separate activation, verify the installed host's current event schema, exact command, trust requirements and state permissions; test with synthetic payloads. Native activation and live transcript/CLI behavior remain NOT_TESTED. Without hooks, use the manual commands above.
 
 Tests create disposable Git repositories and synthetic transcript-size files only. They do not launch an AI CLI or read a real transcript. No promise is made that a new host supports the same hook schema.
+
+## Separate Docker-only profile
+
+The optional [Docker session guard](session-size-docker.md) keeps host Python out
+of its entrypoint. It is explicitly enrolled and does not replace this profile or
+any existing registration. Read its narrower native evidence and Git ownership
+limitations before choosing it; installing either component activates neither.
