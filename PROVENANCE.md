@@ -43,3 +43,14 @@ The security adapter and scanner declaration are authored workflow guidance deri
 ## Scanner milestone and release candidate
 
 The scanner runner, DB updater, isolated Compose template, two direct-eval rules and synthetic fixtures are original additions for this owner-authorized task. No product source, external ruleset, image or database is bundled. Exact engine/DB pins and scoped private-use decisions are recorded in runtime/scanners/manifest.json. Independent Docker-only runtime evidence covers synthetic scan classifications, Yarn dependency coverage, isolation, updater and synthetic publication NOOP on the tested macOS host with linux/amd64 containers. Native Linux host portability is NOT_TESTED. Public CLI documentation and three Semgrep notice samples do not establish image-wide source/rights closure. The owner accepted the recorded residual provenance risk for private offline use; this is not redistribution clearance. The original rules are for private owner-directed use; no public redistribution license is inferred. Final release packaging and product integration have separate review gates.
+
+## Proposed 0.7.0-rc.3 session guard package
+
+The optional Docker shell/mapping/validation code and fault fixtures are authored
+for the owner-approved AF14–16 task, with diagnostic behavior derived from the
+preserved personal session guard. No host settings, transcripts, state stores,
+images, credentials or product sources are bundled. Historical source hashes are
+retained. The synthetic pilot's machine-specific Git trust exception is removed;
+no replacement trust grant is added. Earlier scoped native runtime evidence does
+not certify the changed packaged Git path or global activation. Final package
+review and any persistent enrollment/registration remain separate.

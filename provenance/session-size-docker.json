@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "status": "AUTHORED_OPTIONAL_PROFILE_FINAL_REVIEW_PENDING",
+  "native_pilot_review_sha256": "cbdb2a4bf804fdc1d8af04f5b82c891274a0a21d375b5131f8c391d94499988b",
+  "native_pilot_manifest_sha256": "3ee9c791aea9a258f013d44dc480fbeac72600cadc271a322cdd2891e8315649",
+  "files": [
+    {
+      "path": "runtime/session-size-docker/bind-session.sh",
+      "source": "owner-authored AF16 reviewed task candidate/bind-session.sh",
+      "source_sha256": "eac314d5191b30f955fa6e2baf0500d49ecf62da11ee5e653a15ba0093eb9d96",
+      "sha256": "eac314d5191b30f955fa6e2baf0500d49ecf62da11ee5e653a15ba0093eb9d96",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/dispatch.sh",
+      "source": "owner-authored AF16 reviewed task candidate/dispatch.sh",
+      "source_sha256": "85834e4c79ecc9d0d5db69cefd9d46535a6551bd4285682e4c90da845a2a4d5f",
+      "sha256": "85834e4c79ecc9d0d5db69cefd9d46535a6551bd4285682e4c90da845a2a4d5f",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/entry.py",
+      "source": "owner-authored AF16 reviewed task candidate/entry.py",
+      "source_sha256": "1e93f5cd37333649984ac43f411dd6dbbc9cc914786f931b1f805aa0254b0109",
+      "sha256": "1e93f5cd37333649984ac43f411dd6dbbc9cc914786f931b1f805aa0254b0109",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/guard.py",
+      "source": "owner-authored AF16 reviewed task candidate/guard.py",
+      "source_sha256": "a18776da514f0ea29388ce1d2394f0e0d1af2191777a9b5f915998f289b80fba",
+      "sha256": "0cf352a05c39129d691c2a4dfc99e15e157e11a5b0f2fbaef632daa49be6f41f",
+      "transformation": "Remove private synthetic root and safe.directory exception; preserve mapped cwd boundary; disable fsmonitor for all four metadata operations"
+    },
+    {
+      "path": "runtime/session-size-docker/mapping-lib.sh",
+      "source": "owner-authored AF16 reviewed task candidate/mapping-lib.sh",
+      "source_sha256": "e5b660cfa46d2835d4c35cf8a6975b4592d3ad44d363fb96feb2fba39959dac8",
+      "sha256": "e5b660cfa46d2835d4c35cf8a6975b4592d3ad44d363fb96feb2fba39959dac8",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/native-worker.sh",
+      "source": "owner-authored AF16 reviewed task candidate/native-worker.sh",
+      "source_sha256": "8eb8250a078721b03f10b1eb0617c8560e840e1fbdc1f1e5f8d7aa83a4c528e0",
+      "sha256": "8eb8250a078721b03f10b1eb0617c8560e840e1fbdc1f1e5f8d7aa83a4c528e0",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/native.sh",
+      "source": "owner-authored AF16 reviewed task candidate/native.sh",
+      "source_sha256": "e5ecece80064e38b73ff8a4141935c1f19051087a61963db2a90db9a030efc95",
+      "sha256": "e5ecece80064e38b73ff8a4141935c1f19051087a61963db2a90db9a030efc95",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/preflight.sh",
+      "source": "owner-authored AF16 reviewed task candidate/preflight.sh",
+      "source_sha256": "bafb12b358b4401f5b279f7c2006c9a9e3efd8381ae97119ab5a0cf7db357ada",
+      "sha256": "bafb12b358b4401f5b279f7c2006c9a9e3efd8381ae97119ab5a0cf7db357ada",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/session-key.py",
+      "source": "owner-authored AF16 reviewed task candidate/session-key.py",
+      "source_sha256": "9a6b8789cd65ba59d8555daa7df75389716f9d30c53f2951c5e3c01eadbd1792",
+      "sha256": "9a6b8789cd65ba59d8555daa7df75389716f9d30c53f2951c5e3c01eadbd1792",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/session-key.sh",
+      "source": "owner-authored AF16 reviewed task candidate/session-key.sh",
+      "source_sha256": "caf2588e1aaf0f8931033843df99cccd7165a9dc24613dfaf400227900ba2ea9",
+      "sha256": "caf2588e1aaf0f8931033843df99cccd7165a9dc24613dfaf400227900ba2ea9",
+      "transformation": "Byte-identical accepted runtime"
+    },
+    {
+      "path": "runtime/session-size-docker/validate.py",
+      "source": "owner-authored AF16 reviewed task candidate/validate.py",
+      "source_sha256": "16369eb669ef7eed07e91784aab9752ca5f02ef9f2e43b38da2c8cdd756e9bf5",
+      "sha256": "16369eb669ef7eed07e91784aab9752ca5f02ef9f2e43b38da2c8cdd756e9bf5",
+      "transformation": "Byte-identical accepted runtime"
+    }
+  ],
+  "limitations": [
+    "Prior native pilot used synthetic Git trust exception absent here",
+    "No global activation or unbound monitoring coverage",
+    "No transcript or host configuration bundled"
+  ]
+}

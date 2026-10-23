@@ -44,7 +44,7 @@
         "Proposed authored security adoption documentation; source payload preserved",
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending"
       ],
-      "new_sha256": "170d6c07781989c83046ccd8cd9bbd645b25114527de3215fec42d8c60792522"
+      "new_sha256": "6c7bc3404d75a7d3c38181c05789d60519ad1057a71a7b04da56fb98d2d85524"
     },
     {
       "old_path": "README.md",
@@ -350,7 +350,7 @@
         "0.7.0 targeted adoption and exact provenance checks",
         "Unreleased owner-authorized task-branch routing correction"
       ],
-      "new_sha256": "3d0be973bc34491370adad32c8fcb0e2abf825e6cf3d6efe3c22eec83e509c35"
+      "new_sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d"
     },
     {
       "old_path": "collection/agents/obsidian-cheatsheet.md",
@@ -2608,7 +2608,7 @@
         "Proposed authored security adoption documentation; source payload preserved",
         "Current authorized baseline and rebased security documentation hashes"
       ],
-      "new_sha256": "0c21c4d2e16b77a2bd4732e885c2c0ec304fff3048b8edeadf33e74e337d155d"
+      "new_sha256": "0158731b8a565fa79d101b7fe1370058897e0c3b24c5ac28ac854ff46e36483f"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -2805,7 +2805,7 @@
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained"
       ],
-      "new_sha256": "bfb51c1c365499ad6f2f4bb5590f4171dee0f3276e9d64acfa67017c177b2e76"
+      "new_sha256": "bea60b2744b105eb701841b64d7701aa7c48f37b8cf77d4ce81dce0a424f68bd"
     },
     {
       "old_path": "session-size/session_guard.py",
@@ -2913,7 +2913,7 @@
         "0.7.0 targeted adoption and exact provenance checks",
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending"
       ],
-      "new_sha256": "8d99e15bd26b8f6e0c380c057760ad2567d823482dda1f750e2fae2bc131837d"
+      "new_sha256": "edf360e39c0c2d0d584dfb65337d7c6f6e1df44a4d1967daf358863562d4a188"
     },
     {
       "old_path": "tools/test_collection.py",
