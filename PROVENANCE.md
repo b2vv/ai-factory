@@ -54,3 +54,7 @@ retained. The synthetic pilot's machine-specific Git trust exception is removed;
 no replacement trust grant is added. Earlier scoped native runtime evidence does
 not certify the changed packaged Git path or global activation. Final package
 review and any persistent enrollment/registration remain separate.
+
+## 0.7.0-rc.4 viewport coverage correction
+
+Owner-authorized authored shared UI viewport contract and focused routing corrections to design-pass, ux-review and interface-review. Four baseline viewport classes are separate from text enlargement and reflow; absent evidence is NOT_TESTED. Original source hashes and upstream append bytes are retained; adaptation hash boundaries reflect the edited base. The skill delta received independent ACCEPT before application; this rc.4 package and consumer pin delta require their own exact review. The rc.3 optional inactive session-guard package is preserved byte-for-byte. Native behavioral verification remains NOT_TESTED.

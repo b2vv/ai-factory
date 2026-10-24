@@ -42,9 +42,10 @@
         "0.7.0 targeted adoption and exact provenance checks",
         "Unreleased owner-authorized task-branch routing correction",
         "Proposed authored security adoption documentation; source payload preserved",
-        "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending"
+        "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending",
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
-      "new_sha256": "6c7bc3404d75a7d3c38181c05789d60519ad1057a71a7b04da56fb98d2d85524"
+      "new_sha256": "889f2bc3efed916752c4cd6144a64beae6987295d2b953ac023c2953d9afd7d1"
     },
     {
       "old_path": "README.md",
@@ -762,9 +763,10 @@
       "new_path": "skills/design-pass/SKILL.md",
       "action": "moved",
       "transformations": [
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
-      "new_sha256": "0059e1d4bf9fa85a4cfcb20618537591ea0f48e2c6ce957db3f766f638255ce6"
+      "new_sha256": "264655dfa9ae6d43441e5099309e5c9e46e89c39e857a8775ffa3c5ef31baf34"
     },
     {
       "old_path": "collection/agents/skills/entity-e2e-coverage/SKILL.md",
@@ -923,8 +925,10 @@
       "old_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
       "new_path": "skills/interface-review/SKILL.md",
       "action": "moved",
-      "transformations": [],
-      "new_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70"
+      "transformations": [
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
+      ],
+      "new_sha256": "771af98176b444f76162f9b7bd72910a8d230976e28a6fe464f29b71cb3aae18"
     },
     {
       "old_path": "collection/agents/skills/pattern-architecture-review/SKILL.md",
@@ -2581,8 +2585,10 @@
       "old_sha256": "45ef25cee3b9e14bb3ea0760eeaf5cdc68740edda76773da85f8c720bc7c55e4",
       "new_path": "skills/ux-review/SKILL.md",
       "action": "moved",
-      "transformations": [],
-      "new_sha256": "45ef25cee3b9e14bb3ea0760eeaf5cdc68740edda76773da85f8c720bc7c55e4"
+      "transformations": [
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
+      ],
+      "new_sha256": "f309be9c309cf5ca816d1bafe65c4bb13af8e91f8922638f64959aa007665914"
     },
     {
       "old_path": "collection/agents/skills/ux-review/references/rules.md",
@@ -2606,9 +2612,10 @@
         "Unreleased owner-authorized task-branch routing correction",
         "AI-assisted onboarding documentation and accurate helper command paths",
         "Proposed authored security adoption documentation; source payload preserved",
-        "Current authorized baseline and rebased security documentation hashes"
+        "Current authorized baseline and rebased security documentation hashes",
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
-      "new_sha256": "0158731b8a565fa79d101b7fe1370058897e0c3b24c5ac28ac854ff46e36483f"
+      "new_sha256": "91212d1c833da28baf83b97349268934dc205b7abe01e9adcecc37643c5cdd05"
     },
     {
       "old_path": "docs/capabilities.md",

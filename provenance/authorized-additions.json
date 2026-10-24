@@ -84,10 +84,10 @@
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "5e926be70e3d3c5c78063ebe02a2734fa5ee45f498b0a9c7d1e0d59ae62e69ff",
+      "before_sha256": "baba5bc34b530a2e41a61d96f3cf8f824ddb9b470a1393c9fb9f748890142450",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "0059e1d4bf9fa85a4cfcb20618537591ea0f48e2c6ce957db3f766f638255ce6"
+      "after_sha256": "264655dfa9ae6d43441e5099309e5c9e46e89c39e857a8775ffa3c5ef31baf34"
     },
     {
       "destination": "skills/plan/plan-critique/SKILL.md",

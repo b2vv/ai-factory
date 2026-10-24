@@ -1,10 +1,12 @@
-# AI Factory — 0.7.0-rc.3
+# AI Factory — 0.7.0-rc.4
 
-This proposed prerelease adds an optional Docker-only session-guard package,
-focused regression tests and bounded-pilot closeout. It does not activate hooks
-or replace legacy monitoring. See [scope and limitations](docs/session-size-docker.md).
-Scanner runtime, immutable prior releases and consumer pins remain unchanged.
-Final exact package review is pending; no release has been published from this candidate.
+This prerelease corrects shared UI viewport coverage: phone, tablet portrait, tablet
+landscape and desktop at 100%, with inspected evidence per applicable surface.
+Text enlargement and reflow remain separate checks. The optional inactive Docker
+session-guard package from rc.3 is retained without runtime or activation changes.
+Package validation does not certify native UI compliance or hook execution.
+Inherited session-guard timing fixtures did not complete reliably in the tested
+Docker harness; this release makes no new runtime acceptance claim.
 
 - **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
 - **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.
