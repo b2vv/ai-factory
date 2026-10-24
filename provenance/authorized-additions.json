@@ -79,6 +79,11 @@
       "destination": "skills/plan/plan-critique/LICENSE.addyosmani",
       "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7",
       "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/arch/code-review/references/behavior-coverage.md",
+      "sha256": "dd17e16ae44d14075dbe1569aeb7761a6f68b949eb839ee9f9dadba918970f50",
+      "kind": "Owner-authorized authored generic review coverage reference; distinct from upstream MIT adaptation; see PROVENANCE.md"
     }
   ],
   "adaptations": [

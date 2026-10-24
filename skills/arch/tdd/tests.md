@@ -60,7 +60,7 @@ test("createUser makes user retrievable", async () => {
 });
 ```
 
-**Tautological tests**: Expected value restates the implementation, so the test passes by construction.
+**Tautological tests**: Expected value restates the implementation: the correlated oracle can reproduce the same mistake and provides weak independent evidence.
 
 ```typescript
 // BAD: Expected value is recomputed the way the code computes it

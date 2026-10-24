@@ -57,6 +57,16 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
+### Required behavior-coverage check
+
+Before dispatch, read [behavior coverage](references/behavior-coverage.md) in full.
+For changed guards, filters, serializers and invariants, apply its individual
+mutation and CI-running coverage requirements to the pinned scope. Assign one
+coordinated runner in an authorized disposable copy; give both reviewers this
+reference and the pinned evidence, with Standards assessing test requirements and
+Spec assessing whether tests discriminate the requested behavior. Reviewer source
+remains read-only. Missing execution evidence stays BLOCKED/NOT_TESTED.
+
 ### 4. Spawn both sub-agents in parallel
 
 **Standards sub-agent prompt** should include:
@@ -76,6 +86,8 @@ If the spec is missing, skip the Spec sub-agent and note this in the final repor
 ### 5. Aggregate
 
 Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings, because the two axes are deliberately separate (see _Why two axes_).
+
+Include the behavior-coverage inventory/evidence and remaining gaps without merging the two axes.
 
 End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
 

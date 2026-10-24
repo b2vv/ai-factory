@@ -58,3 +58,21 @@ review and any persistent enrollment/registration remain separate.
 ## 0.7.0-rc.4 viewport coverage correction
 
 Owner-authorized authored shared UI viewport contract and focused routing corrections to design-pass, ux-review and interface-review. Four baseline viewport classes are separate from text enlargement and reflow; absent evidence is NOT_TESTED. Original source hashes and upstream append bytes are retained; adaptation hash boundaries reflect the edited base. The skill delta received independent ACCEPT before application; this rc.4 package and consumer pin delta require their own exact review. The rc.3 optional inactive session-guard package is preserved byte-for-byte. Native behavioral verification remains NOT_TESTED.
+
+## 0.7.0-rc.5 review coverage correction
+
+Owner-authorized generic adaptation of the owner's two project review feedback
+notes, review-mutate-every-guard.md and
+review-ci-conditional-test-needs-plain-dup.md. The new behavior-coverage reference
+and mandatory code-review/TDD routes preserve their coverage intent without
+copying project source, incident details, session identifiers or machine paths.
+This authored addition is distinct from the MIT upstream adaptations recorded in
+authorized-additions.json; no third-party license or public redistribution grant
+is inferred. Original memory files and existing source hashes are retained.
+Package checks do not prove native skill discovery or behavioral compliance.
+
+Full-skill semantic critique accepted the scope with five clarifications: conditional
+CI-gap coverage, evidence-based survivor classification, inverse mutations for
+deleted constructs, authorized-author refactoring and correlated-oracle wording.
+These authored clarifications retain original source hashes and private-use
+provenance limits; no original project memory or runtime code is modified.

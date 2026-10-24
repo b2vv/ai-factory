@@ -43,9 +43,10 @@
         "Unreleased owner-authorized task-branch routing correction",
         "Proposed authored security adoption documentation; source payload preserved",
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending",
-        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved",
+        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained."
       ],
-      "new_sha256": "889f2bc3efed916752c4cd6144a64beae6987295d2b953ac023c2953d9afd7d1"
+      "new_sha256": "dad5a3f733d888a33e555590a058cdcb01e349450912aba8786ca21bb710b1ed"
     },
     {
       "old_path": "README.md",
@@ -441,9 +442,11 @@
       "old_path": "collection/agents/skills/arch/code-review/SKILL.md",
       "old_sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1",
       "new_path": "skills/arch/code-review/SKILL.md",
-      "action": "moved",
-      "transformations": [],
-      "new_sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1"
+      "action": "updated",
+      "transformations": [
+        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained."
+      ],
+      "new_sha256": "79b3bc354ebbef41ba39c2d927ac2b4910dbf4e32f8e65e8778b981f061fa92d"
     },
     {
       "old_path": "collection/agents/skills/arch/code-review/agents/openai.yaml",
@@ -577,9 +580,11 @@
       "old_path": "collection/agents/skills/arch/tdd/SKILL.md",
       "old_sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c",
       "new_path": "skills/arch/tdd/SKILL.md",
-      "action": "moved",
-      "transformations": [],
-      "new_sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c"
+      "action": "updated",
+      "transformations": [
+        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained."
+      ],
+      "new_sha256": "d02a74d590cc4d7b437a95efeee3bf762fb95a8a2494b934ae0bc3085a78a620"
     },
     {
       "old_path": "collection/agents/skills/arch/tdd/agents/openai.yaml",
@@ -601,9 +606,11 @@
       "old_path": "collection/agents/skills/arch/tdd/tests.md",
       "old_sha256": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a",
       "new_path": "skills/arch/tdd/tests.md",
-      "action": "moved",
-      "transformations": [],
-      "new_sha256": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a"
+      "action": "updated",
+      "transformations": [
+        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained."
+      ],
+      "new_sha256": "401c2e24f786f0fdac098bc91c0024cc9c87da2f47fa461a8c14fd68916a2630"
     },
     {
       "old_path": "collection/agents/skills/crg/crg-debug-issue/SKILL.md",
@@ -2602,7 +2609,7 @@
       "old_path": "collection/manifest.json",
       "old_sha256": "3f75e8fe3dbb9d0718236e5496337e9f5a1fe888fe37420c67c98f88a900a4de",
       "new_path": "provenance/source-map.json",
-      "action": "relocated-and-updated",
+      "action": "updated",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
@@ -2613,9 +2620,10 @@
         "AI-assisted onboarding documentation and accurate helper command paths",
         "Proposed authored security adoption documentation; source payload preserved",
         "Current authorized baseline and rebased security documentation hashes",
-        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved",
+        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained."
       ],
-      "new_sha256": "91212d1c833da28baf83b97349268934dc205b7abe01e9adcecc37643c5cdd05"
+      "new_sha256": "1cb373370da09c2dca25400af5bb30f1571f7d7e997af8c46c94d968869d963b"
     },
     {
       "old_path": "docs/capabilities.md",
