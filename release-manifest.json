@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.7.0-rc.4",
+  "version": "0.7.0-rc.5",
   "status": "RELEASE_CANDIDATE_SCOPED_SCANNER_RUNTIME_ACCEPTED",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -102,12 +102,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "889f2bc3efed916752c4cd6144a64beae6987295d2b953ac023c2953d9afd7d1",
+      "sha256": "dad5a3f733d888a33e555590a058cdcb01e349450912aba8786ca21bb710b1ed",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "5ab4de1a6955f11b06d896a14ad614be3372533cf2033c6ef14376e0f9cdac48",
+      "sha256": "cb229d095911c3fe72f76404a374f66e7fcefaba0dfef35d013c8489ec2b7090",
       "component": "core"
     },
     {
@@ -407,12 +407,12 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "22368ab6ab4f9e7e3d166b107f233bb8cabb98a94b5c98ff3a6c85b232ef1f79",
+      "sha256": "8c4a23c2b008522b0ce2f964ea5e24eeb9fa6cb603ea224d30f63e76a229a508",
       "component": "core"
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "85a464d23b6faf9c7ff0689d0c45efda87ea4a8959cdf8242d44df1b9e94b6d0",
+      "sha256": "fbf986b5685648feeefe46b767b83efbe2165a7d917b54130fb3968198379ddc",
       "component": "core"
     },
     {
@@ -442,7 +442,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "91212d1c833da28baf83b97349268934dc205b7abe01e9adcecc37643c5cdd05",
+      "sha256": "1cb373370da09c2dca25400af5bb30f1571f7d7e997af8c46c94d968869d963b",
       "component": "core"
     },
     {
@@ -657,12 +657,17 @@
     },
     {
       "path": "skills/arch/code-review/SKILL.md",
-      "sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1",
+      "sha256": "79b3bc354ebbef41ba39c2d927ac2b4910dbf4e32f8e65e8778b981f061fa92d",
       "component": "skills"
     },
     {
       "path": "skills/arch/code-review/agents/openai.yaml",
       "sha256": "8229ca854e11dc8e6aef2131ee03f31fb1561cf905fab9ccc325180cf3331352",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/behavior-coverage.md",
+      "sha256": "dd17e16ae44d14075dbe1569aeb7761a6f68b949eb839ee9f9dadba918970f50",
       "component": "skills"
     },
     {
@@ -742,7 +747,7 @@
     },
     {
       "path": "skills/arch/tdd/SKILL.md",
-      "sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c",
+      "sha256": "d02a74d590cc4d7b437a95efeee3bf762fb95a8a2494b934ae0bc3085a78a620",
       "component": "skills"
     },
     {
@@ -757,7 +762,7 @@
     },
     {
       "path": "skills/arch/tdd/tests.md",
-      "sha256": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a",
+      "sha256": "401c2e24f786f0fdac098bc91c0024cc9c87da2f47fa461a8c14fd68916a2630",
       "component": "skills"
     },
     {

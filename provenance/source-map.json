@@ -996,9 +996,11 @@
       "source": "~/.agents/skills/arch/code-review/SKILL.md",
       "destination": "skills/arch/code-review/SKILL.md",
       "source_sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1",
-      "sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1",
+      "sha256": "79b3bc354ebbef41ba39c2d927ac2b4910dbf4e32f8e65e8778b981f061fa92d",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/code-review/SKILL.md"
     },
@@ -1168,9 +1170,12 @@
       "source": "~/.agents/skills/arch/tdd/SKILL.md",
       "destination": "skills/arch/tdd/SKILL.md",
       "source_sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c",
-      "sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c",
+      "sha256": "d02a74d590cc4d7b437a95efeee3bf762fb95a8a2494b934ae0bc3085a78a620",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved.",
+        "Owner-authorized rc.5 semantic critique clarifications: conditional CI coverage, author-owned refactoring and correlated-oracle evidence."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/tdd/SKILL.md"
     },
@@ -1198,9 +1203,11 @@
       "source": "~/.agents/skills/arch/tdd/tests.md",
       "destination": "skills/arch/tdd/tests.md",
       "source_sha256": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a",
-      "sha256": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a",
+      "sha256": "401c2e24f786f0fdac098bc91c0024cc9c87da2f47fa461a8c14fd68916a2630",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized rc.5 semantic critique clarifications: conditional CI coverage, author-owned refactoring and correlated-oracle evidence."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/tdd/tests.md"
     },

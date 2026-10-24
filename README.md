@@ -1,12 +1,17 @@
-# AI Factory — 0.7.0-rc.4
+# AI Factory — 0.7.0-rc.5
 
-This prerelease corrects shared UI viewport coverage: phone, tablet portrait, tablet
-landscape and desktop at 100%, with inspected evidence per applicable surface.
-Text enlargement and reflow remain separate checks. The optional inactive Docker
-session-guard package from rc.3 is retained without runtime or activation changes.
-Package validation does not certify native UI compliance or hook execution.
-Inherited session-guard timing fixtures did not complete reliably in the tested
-Docker harness; this release makes no new runtime acceptance claim.
+This prerelease strengthens code-review and TDD coverage guidance: individual
+mutations of changed and deleted behavioral constructs, honest survivor
+classification, and plain CI-running tests when service-only coverage skips in CI.
+Evidenced real CI execution satisfies that specific gap; stronger local rules remain.
+Reviewers recommend refactors; authorized authors implement and resubmit the delta.
+Correlated test oracles are described as weak evidence rather than infallible matches.
+
+The rc.4 four-viewport UI contract, separate text enlargement/reflow checks and
+optional inactive rc.3 Docker session-guard package remain unchanged. Package
+validation does not certify native skill/UI compliance or hook execution. Inherited
+session-guard timing fixtures did not complete reliably in the tested Docker
+harness; this release makes no new runtime acceptance claim.
 
 - **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
 - **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.
