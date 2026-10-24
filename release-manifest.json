@@ -91,7 +91,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "effd8360a994b6255a8255438d52c8a0f77bcb3831d2294676b8a72c2f65f114",
+      "sha256": "6912b706aab6669f44f175f1c3c10904b549bc64ceb6c8f5faa32ae3366e57c1",
       "component": "core"
     },
     {
@@ -391,12 +391,12 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "62701c9c0b354340e142b8bf9bd8e23479ec3dd0230d19b5e8c8d52cf20f9fe5",
+      "sha256": "22368ab6ab4f9e7e3d166b107f233bb8cabb98a94b5c98ff3a6c85b232ef1f79",
       "component": "core"
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "b1be3203e16ab9f3b22a0aa763969cbf7fb9d72ed2e5424d4c42f6006f6c4c79",
+      "sha256": "b839c2b289548babb9ff112900b9351ab93e9931df2ef3170cf728bf129ecacf",
       "component": "core"
     },
     {
@@ -421,7 +421,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "0158731b8a565fa79d101b7fe1370058897e0c3b24c5ac28ac854ff46e36483f",
+      "sha256": "91212d1c833da28baf83b97349268934dc205b7abe01e9adcecc37643c5cdd05",
       "component": "core"
     },
     {
@@ -806,12 +806,17 @@
     },
     {
       "path": "skills/design-pass/SKILL.md",
-      "sha256": "0059e1d4bf9fa85a4cfcb20618537591ea0f48e2c6ce957db3f766f638255ce6",
+      "sha256": "264655dfa9ae6d43441e5099309e5c9e46e89c39e857a8775ffa3c5ef31baf34",
       "component": "skills"
     },
     {
       "path": "skills/design-pass/references/browser-state-evidence.md",
       "sha256": "a57e6c8b2ccc2e3d326b351f4cdfe65fb3c388018515cc62bfa8a2e6b2eb388e",
+      "component": "skills"
+    },
+    {
+      "path": "skills/design-pass/references/viewport-coverage.md",
+      "sha256": "f11b42f76cbe6b873b681202417c2a0ebbe4d1774e329fd9ffbb9b91fcf64882",
       "component": "skills"
     },
     {
@@ -911,7 +916,7 @@
     },
     {
       "path": "skills/interface-review/SKILL.md",
-      "sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
+      "sha256": "771af98176b444f76162f9b7bd72910a8d230976e28a6fe464f29b71cb3aae18",
       "component": "skills"
     },
     {
@@ -1951,7 +1956,7 @@
     },
     {
       "path": "skills/ux-review/SKILL.md",
-      "sha256": "45ef25cee3b9e14bb3ea0760eeaf5cdc68740edda76773da85f8c720bc7c55e4",
+      "sha256": "f309be9c309cf5ca816d1bafe65c4bb13af8e91f8922638f64959aa007665914",
       "component": "skills"
     },
     {

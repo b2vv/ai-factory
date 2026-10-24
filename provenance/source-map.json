@@ -1398,11 +1398,12 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "0059e1d4bf9fa85a4cfcb20618537591ea0f48e2c6ce957db3f766f638255ce6",
+      "sha256": "264655dfa9ae6d43441e5099309e5c9e46e89c39e857a8775ffa3c5ef31baf34",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
+        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24"
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1603,9 +1604,11 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
+      "sha256": "771af98176b444f76162f9b7bd72910a8d230976e28a6fe464f29b71cb3aae18",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24"
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"
     },
@@ -3681,10 +3684,11 @@
       "source": "~/.agents/skills/ux-review/SKILL.md",
       "destination": "skills/ux-review/SKILL.md",
       "source_sha256": "af2e4fddf30ce8465f332de91d1f4360dfe140e474e1027d92f10e557a5f5462",
-      "sha256": "45ef25cee3b9e14bb3ea0760eeaf5cdc68740edda76773da85f8c720bc7c55e4",
+      "sha256": "f309be9c309cf5ca816d1bafe65c4bb13af8e91f8922638f64959aa007665914",
       "source_mode": "0o644",
       "transformations": [
-        "source/alias local links mapped to included portable destination"
+        "source/alias local links mapped to included portable destination",
+        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24"
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/SKILL.md"
@@ -4135,6 +4139,15 @@
       ],
       "category": "legacy-plan-entry",
       "previous_release_destination": "collection/agents/ai-factory-plan.md"
+    },
+    {
+      "source": "~/.agents/skills/design-pass/references/viewport-coverage.md",
+      "destination": "skills/design-pass/references/viewport-coverage.md",
+      "source_sha256": "f11b42f76cbe6b873b681202417c2a0ebbe4d1774e329fd9ffbb9b91fcf64882",
+      "sha256": "f11b42f76cbe6b873b681202417c2a0ebbe4d1774e329fd9ffbb9b91fcf64882",
+      "transformations": [],
+      "source_mode": "0o644",
+      "category": "owner-authored-ui-reference"
     }
   ],
   "aliases": [
@@ -7696,6 +7709,21 @@
     {
       "file": "ai-factory/review-handoff.md",
       "target": "../adapters/security/review.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/ux-review/SKILL.md",
+      "target": "../design-pass/references/viewport-coverage.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/design-pass/SKILL.md",
+      "target": "references/viewport-coverage.md",
+      "status": "RESOLVED"
+    },
+    {
+      "file": "skills/interface-review/SKILL.md",
+      "target": "../design-pass/references/viewport-coverage.md",
       "status": "RESOLVED"
     }
   ],
