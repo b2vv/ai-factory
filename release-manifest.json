@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.7.0-rc.2",
+  "version": "0.7.0-rc.4",
   "status": "RELEASE_CANDIDATE_SCOPED_SCANNER_RUNTIME_ACCEPTED",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -68,9 +68,20 @@
         "core"
       ],
       "activation": "explicit Docker-only runner; scoped private-use pins and macOS-host linux/amd64 runtime accepted; product activation separate"
+    },
+    "session-guard-docker": {
+      "required": false,
+      "dependencies": [
+        "core"
+      ],
+      "activation": "explicit enrolled-session/manual Docker shell; no registration or Git trust",
+      "runtime": [
+        "POSIX shell/basic utilities",
+        "Docker CLI/daemon with cached pinned linux/amd64 images"
+      ]
     }
   },
-  "independent_review": "Scanner milestone and preservative integration ACCEPTED; AF12 routing and AF13 qualitative criteria ACCEPTED; final 0.7.0-rc.2 release metadata/package review PENDING; not full-backlog acceptance",
+  "independent_review": "AF14/15 and bounded AF16 native pilot ACCEPTED in their exact scopes; stricter packaged Git behavior and final rc3 integration/package review PENDING; global activation NOT_RUN",
   "host_acceptance": "NOT_TESTED; no global/project activation",
   "provenance_file": "provenance/source-map.json",
   "files": [
@@ -91,12 +102,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "6912b706aab6669f44f175f1c3c10904b549bc64ceb6c8f5faa32ae3366e57c1",
+      "sha256": "889f2bc3efed916752c4cd6144a64beae6987295d2b953ac023c2953d9afd7d1",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "40eaa5b1d2645b00af2703c5be240d4ad997ffca3a418c508db2ebc6277b6af7",
+      "sha256": "5ab4de1a6955f11b06d896a14ad614be3372533cf2033c6ef14376e0f9cdac48",
       "component": "core"
     },
     {
@@ -300,8 +311,13 @@
       "component": "core"
     },
     {
+      "path": "docs/session-size-docker.md",
+      "component": "core",
+      "sha256": "d5dc8f69a361bd59e41e0168ca1a7267caa38cf9c0842d1e3996a0507b1cd087"
+    },
+    {
       "path": "docs/session-size.md",
-      "sha256": "bfb51c1c365499ad6f2f4bb5590f4171dee0f3276e9d64acfa67017c177b2e76",
+      "sha256": "bea60b2744b105eb701841b64d7701aa7c48f37b8cf77d4ce81dce0a424f68bd",
       "component": "core"
     },
     {
@@ -396,7 +412,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "b839c2b289548babb9ff112900b9351ab93e9931df2ef3170cf728bf129ecacf",
+      "sha256": "85a464d23b6faf9c7ff0689d0c45efda87ea4a8959cdf8242d44df1b9e94b6d0",
       "component": "core"
     },
     {
@@ -413,6 +429,11 @@
       "path": "provenance/security-sources.json",
       "sha256": "833acc0e4489861161d1e5e798ab05421ad276373a02c0be366f21e8d4d89856",
       "component": "core"
+    },
+    {
+      "path": "provenance/session-size-docker.json",
+      "component": "core",
+      "sha256": "8c7fa9e7657ceeec99fc92c27347afa781c6043d16ce9f599ef647d129efa0c5"
     },
     {
       "path": "provenance/skill-registry.json",
@@ -563,6 +584,61 @@
       "path": "runtime/scanners/update_db.py",
       "sha256": "da5c4a2df706738c937c19bfcefb2a975cc1e82196613120dbcb9c85b1717e85",
       "component": "scanners"
+    },
+    {
+      "path": "runtime/session-size-docker/bind-session.sh",
+      "component": "session-guard-docker",
+      "sha256": "eac314d5191b30f955fa6e2baf0500d49ecf62da11ee5e653a15ba0093eb9d96"
+    },
+    {
+      "path": "runtime/session-size-docker/dispatch.sh",
+      "component": "session-guard-docker",
+      "sha256": "85834e4c79ecc9d0d5db69cefd9d46535a6551bd4285682e4c90da845a2a4d5f"
+    },
+    {
+      "path": "runtime/session-size-docker/entry.py",
+      "component": "session-guard-docker",
+      "sha256": "1e93f5cd37333649984ac43f411dd6dbbc9cc914786f931b1f805aa0254b0109"
+    },
+    {
+      "path": "runtime/session-size-docker/guard.py",
+      "component": "session-guard-docker",
+      "sha256": "0cf352a05c39129d691c2a4dfc99e15e157e11a5b0f2fbaef632daa49be6f41f"
+    },
+    {
+      "path": "runtime/session-size-docker/mapping-lib.sh",
+      "component": "session-guard-docker",
+      "sha256": "e5b660cfa46d2835d4c35cf8a6975b4592d3ad44d363fb96feb2fba39959dac8"
+    },
+    {
+      "path": "runtime/session-size-docker/native-worker.sh",
+      "component": "session-guard-docker",
+      "sha256": "8eb8250a078721b03f10b1eb0617c8560e840e1fbdc1f1e5f8d7aa83a4c528e0"
+    },
+    {
+      "path": "runtime/session-size-docker/native.sh",
+      "component": "session-guard-docker",
+      "sha256": "e5ecece80064e38b73ff8a4141935c1f19051087a61963db2a90db9a030efc95"
+    },
+    {
+      "path": "runtime/session-size-docker/preflight.sh",
+      "component": "session-guard-docker",
+      "sha256": "bafb12b358b4401f5b279f7c2006c9a9e3efd8381ae97119ab5a0cf7db357ada"
+    },
+    {
+      "path": "runtime/session-size-docker/session-key.py",
+      "component": "session-guard-docker",
+      "sha256": "9a6b8789cd65ba59d8555daa7df75389716f9d30c53f2951c5e3c01eadbd1792"
+    },
+    {
+      "path": "runtime/session-size-docker/session-key.sh",
+      "component": "session-guard-docker",
+      "sha256": "caf2588e1aaf0f8931033843df99cccd7165a9dc24613dfaf400227900ba2ea9"
+    },
+    {
+      "path": "runtime/session-size-docker/validate.py",
+      "component": "session-guard-docker",
+      "sha256": "16369eb669ef7eed07e91784aab9752ca5f02ef9f2e43b38da2c8cdd756e9bf5"
     },
     {
       "path": "runtime/session-size/session_guard.py",
@@ -2090,6 +2166,46 @@
       "component": "core"
     },
     {
+      "path": "tests/session-size-docker/fake_docker.py",
+      "component": "core",
+      "sha256": "df2e174820ee21e0e58afe070dec04dddceb8d09fa27bba490ea3d66f4d2b686"
+    },
+    {
+      "path": "tests/session-size-docker/fake_selector.py",
+      "component": "core",
+      "sha256": "4ee8e6b302edb0e86a6275d25259c18f76a880f7f96d8aa193fcdbd2a3ea6556"
+    },
+    {
+      "path": "tests/session-size-docker/test_candidate.py",
+      "component": "core",
+      "sha256": "c077a7fe8cd89e29a89b2b7c8c4055403c63ba9352bdf32cd8e0cc9f8a3190d8"
+    },
+    {
+      "path": "tests/session-size-docker/test_enrolled.py",
+      "component": "core",
+      "sha256": "42c39940203bd1ec99a4a0b77c9a530632bd94e73b155b840cda6c795106c736"
+    },
+    {
+      "path": "tests/session-size-docker/test_git_scope.py",
+      "component": "core",
+      "sha256": "ad7fd62e8bb59ef917c1f82c43bfd6cb88417001815922b99a94147ef56a008a"
+    },
+    {
+      "path": "tests/session-size-docker/test_guidance.py",
+      "component": "core",
+      "sha256": "d40ab5f0d770b7f5578cf0c35758c9ee7c2b7e1c0a243bcff5395d4d3f7b2ac9"
+    },
+    {
+      "path": "tests/session-size-docker/test_layout.py",
+      "component": "core",
+      "sha256": "f09f0a10dde5c25ae499fbe33996e1b53f75cf997a0106165d52c37481064f61"
+    },
+    {
+      "path": "tests/session-size-docker/test_native.py",
+      "component": "core",
+      "sha256": "f0e5660d37564a9aa5244794248bc8f60d39369ef726aafe18086d5cf1a34a73"
+    },
+    {
       "path": "tests/session-size/test_session_guard.py",
       "sha256": "d8e4c52da77f12a98d89c15068db63a69b6779a7a295a933998602c0a0231c42",
       "component": "core"
@@ -2106,7 +2222,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "8d99e15bd26b8f6e0c380c057760ad2567d823482dda1f750e2fae2bc131837d",
+      "sha256": "edf360e39c0c2d0d584dfb65337d7c6f6e1df44a4d1967daf358863562d4a188",
       "component": "core"
     },
     {

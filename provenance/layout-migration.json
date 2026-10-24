@@ -43,9 +43,9 @@
         "Unreleased owner-authorized task-branch routing correction",
         "Proposed authored security adoption documentation; source payload preserved",
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending",
-        "Owner-authorized viewport coverage correction, 2026-10-24"
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
-      "new_sha256": "6912b706aab6669f44f175f1c3c10904b549bc64ceb6c8f5faa32ae3366e57c1"
+      "new_sha256": "889f2bc3efed916752c4cd6144a64beae6987295d2b953ac023c2953d9afd7d1"
     },
     {
       "old_path": "README.md",
@@ -349,8 +349,7 @@
         "relative links and explicit package command paths remapped; instruction body retained",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
         "0.7.0 targeted adoption and exact provenance checks",
-        "Unreleased owner-authorized task-branch routing correction",
-        "Owner-authorized viewport coverage correction, 2026-10-24"
+        "Unreleased owner-authorized task-branch routing correction"
       ],
       "new_sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d"
     },
@@ -765,7 +764,7 @@
       "action": "moved",
       "transformations": [
         "0.7.0 targeted adoption and exact provenance checks",
-        "Owner-authorized viewport coverage correction, 2026-10-24"
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
       "new_sha256": "264655dfa9ae6d43441e5099309e5c9e46e89c39e857a8775ffa3c5ef31baf34"
     },
@@ -927,7 +926,7 @@
       "new_path": "skills/interface-review/SKILL.md",
       "action": "moved",
       "transformations": [
-        "Owner-authorized viewport coverage correction, 2026-10-24"
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
       "new_sha256": "771af98176b444f76162f9b7bd72910a8d230976e28a6fe464f29b71cb3aae18"
     },
@@ -2587,7 +2586,7 @@
       "new_path": "skills/ux-review/SKILL.md",
       "action": "moved",
       "transformations": [
-        "Owner-authorized viewport coverage correction, 2026-10-24"
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
       "new_sha256": "f309be9c309cf5ca816d1bafe65c4bb13af8e91f8922638f64959aa007665914"
     },
@@ -2614,7 +2613,7 @@
         "AI-assisted onboarding documentation and accurate helper command paths",
         "Proposed authored security adoption documentation; source payload preserved",
         "Current authorized baseline and rebased security documentation hashes",
-        "Owner-authorized viewport coverage correction, 2026-10-24"
+        "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved"
       ],
       "new_sha256": "91212d1c833da28baf83b97349268934dc205b7abe01e9adcecc37643c5cdd05"
     },
@@ -2813,7 +2812,7 @@
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained"
       ],
-      "new_sha256": "bfb51c1c365499ad6f2f4bb5590f4171dee0f3276e9d64acfa67017c177b2e76"
+      "new_sha256": "bea60b2744b105eb701841b64d7701aa7c48f37b8cf77d4ce81dce0a424f68bd"
     },
     {
       "old_path": "session-size/session_guard.py",
@@ -2921,7 +2920,7 @@
         "0.7.0 targeted adoption and exact provenance checks",
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending"
       ],
-      "new_sha256": "8d99e15bd26b8f6e0c380c057760ad2567d823482dda1f750e2fae2bc131837d"
+      "new_sha256": "edf360e39c0c2d0d584dfb65337d7c6f6e1df44a4d1967daf358863562d4a188"
     },
     {
       "old_path": "tools/test_collection.py",
