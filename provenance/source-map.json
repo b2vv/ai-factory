@@ -3790,10 +3790,11 @@
       "source": "~/.agents/ai-factory/onboarding/README.md",
       "destination": "docs/onboarding-helper.md",
       "source_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
-      "sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb",
+      "sha256": "33afa99b8d538d7f86ac42ffa509e3fb34e998b7eae8cbba082c9d33929d4eec",
       "source_mode": "0o644",
       "transformations": [
-        "Authored proposed security gate navigation; existing task record and final runtime evidence; no tool adoption"
+        "Authored proposed security gate navigation; existing task record and final runtime evidence; no tool adoption",
+        "Authored optional cross-host offline discovery evidence documentation; native discovery remains NOT_TESTED"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/README.md"
@@ -4022,7 +4023,7 @@
       "source": "~/.agents/ai-factory/workflow.md",
       "destination": "ai-factory/workflow.md",
       "source_sha256": "486bedd21354d25a766a1e7b8577d0ab5d055621e7ad0ce62ae8f7238be961b7",
-      "sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d",
+      "sha256": "a579ea49c63f9079848009f3400acbb216bf499bde07e0a8e379f3f93aa42d68",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4031,7 +4032,8 @@
         "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
         "AF-12 explicit interview/architecture routing and non-enforcing evidence counts; original skill contracts and historical source hash retained",
-        "AF-13 owner-approved qualitative mandatory criteria; informational percentages, explicit blockers, no numeric cutoff; synthetic examples only"
+        "AF-13 owner-approved qualitative mandatory criteria; informational percentages, explicit blockers, no numeric cutoff; synthetic examples only",
+        "Owner-authorized optional language reference navigation; existing skill bodies and core authority unchanged"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/workflow.md"

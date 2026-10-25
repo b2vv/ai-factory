@@ -102,7 +102,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "dad5a3f733d888a33e555590a058cdcb01e349450912aba8786ca21bb710b1ed",
+      "sha256": "e3777dfb7f311281a531cd587622eef3854b354807f28bc6c4971f4961df9653",
       "component": "core"
     },
     {
@@ -212,7 +212,7 @@
     },
     {
       "path": "ai-factory/workflow.md",
-      "sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d",
+      "sha256": "a579ea49c63f9079848009f3400acbb216bf499bde07e0a8e379f3f93aa42d68",
       "component": "core"
     },
     {
@@ -257,7 +257,7 @@
     },
     {
       "path": "docs/onboarding-helper.md",
-      "sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb",
+      "sha256": "33afa99b8d538d7f86ac42ffa509e3fb34e998b7eae8cbba082c9d33929d4eec",
       "component": "core"
     },
     {
@@ -407,12 +407,17 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "8c4a23c2b008522b0ce2f964ea5e24eeb9fa6cb603ea224d30f63e76a229a508",
+      "sha256": "9075e63ee22e8a4668d7e6e372448caeed818f853c5a08741ea1f10d772e182f",
+      "component": "core"
+    },
+    {
+      "path": "provenance/language-reference-origins.json",
+      "sha256": "952555f0ed7f5b542c5c01112c63e2dc1eae243d081cbd942e563be4fec79047",
       "component": "core"
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "fbf986b5685648feeefe46b767b83efbe2165a7d917b54130fb3968198379ddc",
+      "sha256": "ca34180a94f6cf279096ce7f21fc62415a23f679517e5c7e3d1a0b495b1629e2",
       "component": "core"
     },
     {
@@ -442,7 +447,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "1cb373370da09c2dca25400af5bb30f1571f7d7e997af8c46c94d968869d963b",
+      "sha256": "ab7c5c24e99f1f0607523945415b850e00de636b37165679bcbce582ffe14db5",
       "component": "core"
     },
     {
@@ -509,6 +514,11 @@
       "path": "runtime/legacy/session-size/session_guard.py",
       "sha256": "fa57563c529cd4ec685e6f6fe6a1f93bada386263218ed8cead6f7907dc27e37",
       "component": "legacy-runtime"
+    },
+    {
+      "path": "runtime/onboarding/discovery_check.py",
+      "sha256": "90cdfa6da517a6ad389a750277345175f5a330b1ca8a32041d473962e6694c1e",
+      "component": "core"
     },
     {
       "path": "runtime/onboarding/preflight.py",
@@ -668,6 +678,56 @@
     {
       "path": "skills/arch/code-review/references/behavior-coverage.md",
       "sha256": "dd17e16ae44d14075dbe1569aeb7761a6f68b949eb839ee9f9dadba918970f50",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/frameworks/django.md",
+      "sha256": "a796265a41e2b2c161bd8cbb26fc9465e214d7b7ae005a1506c885f1dafda2ad",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/frameworks/fastapi.md",
+      "sha256": "1c1d08717cea77a31f81be71344baebdfbef8ae9787137e0d4770b2164b8e7c9",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/frameworks/laravel.md",
+      "sha256": "83a25b5889d5a6b3515ccd1e151d8f8558926978e342437e60c96617f926986e",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/frameworks/react.md",
+      "sha256": "e09ad7fff8f6acf07d0025dc9faed6c49b5a5becc9a81d6b3d478c2613f2b4b0",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/go.md",
+      "sha256": "b0db2d674402ecb99c260fc99f39dd1afac2a03fa2410d20e1cfa273c1c6d9fd",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/index.md",
+      "sha256": "90df11938d6430f43f349dd529e90e650fa4fcecee325f558bbc00aac9859044",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/php.md",
+      "sha256": "54f5860c99fdb53fd6814b02c35bff35a69582c4761abc1f19281f59e82c98b6",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/python.md",
+      "sha256": "ad0fa778377b822bcad71e37f5ae5ed4cf077f2fd92acb0c6a03a940c4a43d14",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/rust.md",
+      "sha256": "c76ef283d245ebd3e16cfd3f790046804885411424403d885459f492a7fa470b",
+      "component": "skills"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/typescript.md",
+      "sha256": "8cca261c747670906d0b0e3967fd2ff6c37ef9c7c9a8b479a881d060f217e73c",
       "component": "skills"
     },
     {
@@ -2081,6 +2141,11 @@
       "component": "core"
     },
     {
+      "path": "tests/collection/test_language_references.py",
+      "sha256": "b95ad0cb270915e9b89b595f489655fb03eeb56e80a1c3ddff045016aa81446b",
+      "component": "core"
+    },
+    {
       "path": "tests/collection/test_layout_integrity.py",
       "sha256": "6aa8cc88c415df110f728398a4b95ac2b709c9ea6e154a792828a015bd820cd4",
       "component": "core"
@@ -2113,6 +2178,11 @@
     {
       "path": "tests/legacy-session/test_session_guard.py",
       "sha256": "dfe101ba9e14461badd6b7ab774d23a52a62e1bdc0e3677e0265fb4c73f0cbaf",
+      "component": "core"
+    },
+    {
+      "path": "tests/onboarding/test_discovery_check.py",
+      "sha256": "dc626e95de8059578bdc1dcb3678c76d64568b8461404889a8a20715746dcf66",
       "component": "core"
     },
     {

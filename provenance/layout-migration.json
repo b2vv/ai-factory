@@ -44,9 +44,11 @@
         "Proposed authored security adoption documentation; source payload preserved",
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending",
         "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved",
-        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained."
+        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained.",
+        "Authored cross-host offline discovery checker provenance; original hashes preserved",
+        "Owner-authorized language references provenance/navigation; original identity and hashes preserved"
       ],
-      "new_sha256": "dad5a3f733d888a33e555590a058cdcb01e349450912aba8786ca21bb710b1ed"
+      "new_sha256": "e3777dfb7f311281a531cd587622eef3854b354807f28bc6c4971f4961df9653"
     },
     {
       "old_path": "README.md",
@@ -173,9 +175,10 @@
       "new_path": "docs/onboarding-helper.md",
       "action": "moved",
       "transformations": [
-        "AI-assisted onboarding documentation and accurate helper command paths"
+        "AI-assisted onboarding documentation and accurate helper command paths",
+        "Authored optional cross-host offline discovery evidence documentation; native discovery remains NOT_TESTED"
       ],
-      "new_sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb"
+      "new_sha256": "33afa99b8d538d7f86ac42ffa509e3fb34e998b7eae8cbba082c9d33929d4eec"
     },
     {
       "old_path": "collection/agents/ai-factory/onboarding/acceptance-template.md",
@@ -350,9 +353,10 @@
         "relative links and explicit package command paths remapped; instruction body retained",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
         "0.7.0 targeted adoption and exact provenance checks",
-        "Unreleased owner-authorized task-branch routing correction"
+        "Unreleased owner-authorized task-branch routing correction",
+        "Owner-authorized language references provenance/navigation; original identity and hashes preserved"
       ],
-      "new_sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d"
+      "new_sha256": "a579ea49c63f9079848009f3400acbb216bf499bde07e0a8e379f3f93aa42d68"
     },
     {
       "old_path": "collection/agents/obsidian-cheatsheet.md",
@@ -2621,9 +2625,11 @@
         "Proposed authored security adoption documentation; source payload preserved",
         "Current authorized baseline and rebased security documentation hashes",
         "0.7.0-rc.4 owner-authorized UI coverage correction; rc.3 preserved",
-        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained."
+        "0.7.0-rc.5 owner-authorized review coverage guidance and metadata; historical source hashes retained.",
+        "Authored cross-host offline discovery checker provenance; original hashes preserved",
+        "Owner-authorized language references provenance/navigation; original identity and hashes preserved"
       ],
-      "new_sha256": "1cb373370da09c2dca25400af5bb30f1571f7d7e997af8c46c94d968869d963b"
+      "new_sha256": "ab7c5c24e99f1f0607523945415b850e00de636b37165679bcbce582ffe14db5"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -2720,9 +2726,10 @@
       "new_path": "docs/onboarding-helper.md",
       "action": "deduplicated-identical",
       "transformations": [
-        "AI-assisted onboarding documentation and accurate helper command paths"
+        "AI-assisted onboarding documentation and accurate helper command paths",
+        "Authored optional cross-host offline discovery evidence documentation; native discovery remains NOT_TESTED"
       ],
-      "new_sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb"
+      "new_sha256": "33afa99b8d538d7f86ac42ffa509e3fb34e998b7eae8cbba082c9d33929d4eec"
     },
     {
       "old_path": "onboarding/acceptance-template.md",
