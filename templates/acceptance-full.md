@@ -1,4 +1,3 @@
-<a id="acceptance-підключення-ai-factory"></a>
 
 # AI Factory integration acceptance
 

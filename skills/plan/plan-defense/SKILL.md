@@ -3,7 +3,6 @@ name: plan-defense
 description: Makes a plan defend itself against five fixed questions — malformed input, dependency failure, race and repeated invocation, empty and boundary data, rollback — with every answer pointing to a line in the plan. Use as the last gate before splitting into tasks or implementation, or on triggers "захист плану", "plan defense", "а що буде якщо" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-<a id="plan-defense--пять-питань-на-які-план-відповідає-рядком"></a>
 
 # plan-defense — five questions answered by a line in the plan
 
@@ -13,7 +12,6 @@ this skill checks **what is missing from it** — against a fixed list.
 A defense is accepted only as **a line in the plan**. An answer in chat closes nothing: the next
 agent will read the plan, not this conversation. Every closed question therefore ends with a file edit.
 
-<a id="питання"></a>
 
 ## Questions
 
@@ -30,7 +28,6 @@ Run all five, in order. For each, ask whether the plan contains a place that ans
 5. **Rollback.** The change was shipped and caused harm. Where does the plan say how to return — and whether anything
    irreversible (data migration, external effect) cannot be undone by rollback?
 
-<a id="форма-відповіді"></a>
 
 ## Answer format
 
@@ -47,7 +44,6 @@ A gap closes in one of two ways, both requiring a plan edit:
 - **narrow the scope** with an explicit line “case X is out of scope because <reason>” — the question is then closed
   deliberately rather than forgotten.
 
-<a id="завершення"></a>
 
 ## Completion
 

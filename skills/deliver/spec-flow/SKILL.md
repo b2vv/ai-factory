@@ -3,7 +3,6 @@ name: spec-flow
 description: Takes a substantial feature through the SDD cycle — spec → gate → plan → gate → tasks → implement → verify — with durable repository artifacts; delegates gates, tests and review to specialist skills. Use for a new subsystem, new slice, public API change or cross-cutting change, or on triggers "spec-flow", "фіча за SDD", "заспецифікуй фічу" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-<a id="spec-flow--тонкий-sdd-оркестратор"></a>
 
 # spec-flow — a thin SDD orchestrator
 
@@ -17,7 +16,6 @@ Source of truth: code + **repository manifest** (`.claude/standards.md`,
 format: `~/.agents/rules/repo-standards-manifest.md`). The manifest supplies everything repository-specific:
 threshold, placement, branches, artifacts home, constitution.
 
-<a id="0-прочитати-маніфест"></a>
 
 ## 0. Read the manifest
 
@@ -35,21 +33,18 @@ Below the threshold the cycle does not activate: use a lightweight inline plan; 
    and its fallback are described in the repository's `CLAUDE.local.md`; if unavailable, maintain the live note
    in the artifacts home as `_wip-<topic>.md` and warn the user.
 
-<a id="2-specify--specmd-що--чому"></a>
 
 ## 2. specify → `spec.md` (WHAT / WHY)
 
 Sections: **Problem** · **User scenarios** · **Acceptance criteria** · **Out of scope** ·
 **Open questions**. Intent only — stack, files and architecture arrive at step 4.
 
-<a id="3-gate-1--спільне-розуміння"></a>
 
 ## 3. GATE 1 — shared understanding
 
 Delegate `grilling` on `spec.md`. Move to the plan after user confirmation.
 Record decisions in the live note, not just in chat.
 
-<a id="4-plan--planmd-як"></a>
 
 ## 4. plan → `plan.md` (HOW)
 
@@ -62,7 +57,6 @@ Record decisions in the live note, not just in chat.
 - Acceptance scenarios: delegate `acceptance-spec`; the table goes in `plan.md` **before** tasks.
 - `plan.md` **absorbs** the future report's plan section.
 
-<a id="5-gate-2--критика-й-захист"></a>
 
 ## 5. GATE 2 — critique and defense
 
@@ -94,21 +88,18 @@ comes from the manifest's `## Артефакти` (literal heading reference). D
 If there are more than a few tasks or they run in parallel, maintain a durable ledger
 (`~/.agents/rules/subagent-orchestration-ledger.md`).
 
-<a id="7-implement--делегувати-tdd"></a>
 
 ## 7. implement → delegate `tdd`
 
 Task by task, red-green-refactor. Update checkboxes in `tasks.md`. Decisions → live note;
 each subagent writes its own separate working file under `~/.agents/AGENTS.md`; the coordinator consolidates results and links into the live note. Parallel subagents do not write to a shared file.
 
-<a id="8-verify--делегувати-code-review"></a>
 
 ## 8. verify → delegate `code-review`
 
 On the branch diff. The global skill takes its criteria from the manifest. Fix findings one at a time, each
 with a test (`receiving-code-review`).
 
-<a id="9-wrap--делегувати-ship-report"></a>
 
 ## 9. wrap → delegate `ship-report`
 
@@ -117,7 +108,6 @@ in the report; the plan already exists.
 
 ---
 
-<a id="делегування--не-переписуємо"></a>
 
 ## Delegation — do NOT rewrite
 
@@ -134,7 +124,6 @@ in the report; the plan already exists.
 Skill unavailable → for a role that does not require independence, perform available work inline and **record in the live note** that delegation failed. For an independent gate, inline self-checking cannot replace review: engage an available independent reviewer under the role rules or mark the gate BLOCKED and do not proceed.
 Silent substitution makes the cycle irreproducible: the next run will not know one gate differed.
 
-<a id="завершення"></a>
 
 ## Completion
 

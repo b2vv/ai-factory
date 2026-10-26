@@ -139,17 +139,17 @@
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "677e7d8cf377bfeb0fe67220bb332717907223f6d7ac8cc6a906e1ab21387eba",
+      "before_sha256": "665170181aaf0412c5c53ce117d0c2bba5a7bec087475be886247cca6da469ac",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "c30fa82e4c2834d18e928a0521dfa8f9407af0316ebc00e5f18c4ccf7abb654e"
+      "after_sha256": "264e87dd2651551a9901f549dcbc30c28ba77ac31c95b85e58e2be319f736864"
     },
     {
       "destination": "skills/plan/plan-critique/SKILL.md",
-      "before_sha256": "767b4f8a4cdd7213c2adffc9a64f6cf7fe2eed2a2b812a11e2550b278ff15f63",
+      "before_sha256": "18af9252e763326c8bc5f096f1fe01c8d34c1fd94e904f479ea79dd3c894f1e7",
       "append": "\n## Clean critic input\n\nGive the selected independent critic the exact artifact, accepted contract, scoped snapshot and raw supporting evidence. Keep the author's proposed verdict, persuasive summary and private reasoning out of the initial packet; preserve relevant factual constraints and raw prior findings. Classify findings as actionable, contract misunderstanding, accepted tradeoff or unsupported, with evidence for each disposition. This refines the existing four-lens/local reviewer route; it does not authorize duplicate reviewers, a different model, paid API fallback or an automatic review loop. Missing authorized execution remains BLOCKED.\n\nAdaptation source: [doubt-driven-development](https://github.com/addyosmani/agent-skills/blob/aeac41d4d005999432bb7312f7ff06383a91d59d/skills/doubt-driven-development/SKILL.md), MIT; [license](LICENSE.addyosmani).\n",
       "append_sha256": "7676726786e091c623a32c41ab4b0b5c8fbed16ebab3a3836513d70a5cd35ff0",
-      "after_sha256": "ea347435529f790bce6e134e4242aa7a46abf22f60982e37af02379406465ad2"
+      "after_sha256": "e8323990106a6387c7478016ebf6f3b1efb406bdd862c8e2fdfeb3b12db6ce28"
     }
   ],
   "execution": "No upstream scripts, installers, hooks or fenced code executed."

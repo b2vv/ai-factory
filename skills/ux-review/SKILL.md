@@ -3,7 +3,6 @@ name: ux-review
 description: 'Audits an interface against cited UX best-practice rules: Nielsen heuristics, Laws of UX, UX-related WCAG 2.2 criteria, and patterns for forms / tables / states / navigation / copy / touch targets / cognitive load. Takes a screen, flow or prototype and returns RANKED violations, each with a source and an observable check. About usability, not whether it looks AI-generated (anti-slop-design) or exact mockup reconstruction (design-pass). Use to check/critique UX of a screen, flow, prototype or redesign, define UX acceptance criteria or gate interface readiness. Compatibility trigger aliases: "ux-review", "ux-аудит", "перевір UX", "ux lint", "прожар UX", "usability review", "юзабіліті".'
 ---
 
-<a id="ux-review--аудит-ux-проти-цитованих-правил"></a>
 
 # ux-review — UX audit against cited rules
 
@@ -18,7 +17,6 @@ Rules live in [`references/rules.md`](references/rules.md), each in the format
 **HOW TO CHECK field is mandatory**: a rule without a way to check it on this screen is a hypothesis dressed as
 a rule and cannot support a gate. Do not report a rule you cannot check on the artifact.
 
-<a id="коли-застосовувати"></a>
 
 ## When to apply
 
@@ -26,7 +24,6 @@ UX review or audit of a specific screen / flow / prototype / redesign; defining 
 a final interface-readiness gate before delivery. Not palette/typography selection (that is
 `frontend-design`) or pixel parity with a mockup (that is `design-pass`).
 
-<a id="порядок"></a>
 
 ## Procedure
 
@@ -59,7 +56,6 @@ Before ranking, record the target accessibility level from project requirements;
    - **fix**: a specific change.
    End with a short summary of `pass` results and explicitly skipped categories.
 
-<a id="режим-гейта-pre-flight-готовності"></a>
 
 ## Gate mode (readiness pre-flight)
 
@@ -67,13 +63,11 @@ As in `anti-slop-design`, the interface is not “ready” until the blocker+maj
 item is a dated limitation explicitly accepted by the user (magnitude or mechanism, not “we will fix it later”).
 Run against a screenshot/live screen, not from memory; if you could not capture it, say so honestly.
 
-<a id="режим-ревю-дифу--pr"></a>
 
 ## Diff / PR review mode
 
 For UI regression review of a branch or PR, take the changed screens/components (diff), identify affected rules and run them against the base branch (before/after). Look specifically for **regressions** introduced by the change (broken state/contrast/focus/responsiveness/copy), not all existing screen debt. A new finding is a regression in this diff; record debt outside the diff separately rather than mixing it with regressions.
 
-<a id="пріоритет-коли-шари-сперечаються"></a>
 
 ## Priority when layers disagree
 
@@ -84,7 +78,6 @@ project decision, not a violation). The skill rule applies where the project is 
 (e.g. WCAG minimum touch target 24px vs Apple HIG 44px), name both thresholds and the applicable context;
 do not pretend there is a single number.
 
-<a id="чесність"></a>
 
 ## Honesty
 

@@ -3,7 +3,6 @@ name: interface-review
 description: 'Orchestrates a complete interface review — combines the VISUAL gate (anti-slop-design: machine-generated visual cliches) and USABILITY audit (ux-review: Nielsen heuristics, Laws of UX, WCAG 2.2 UX criteria, forms/tables/states/nav/copy/touch/cognitive), plus the project layer and, when available, a11y conformance and copywriting. Merged, deduplicated, ranked findings + one gate. The review counterpart of design-pass (which is for building). Use for a FULL review/audit of a screen, flow, prototype or PR in one pass rather than one lens. Triggers: "interface-review", "повне рев''ю інтерфейсу", "full interface review", "прожар екран/флоу", "аудит UI" (Ukrainian phrases retained as compatibility aliases).'
 ---
 
-<a id="interface-review--оркестратор-повного-ревю-інтерфейсу"></a>
 
 # interface-review — complete interface review orchestrator
 
@@ -12,14 +11,12 @@ anti-slop gate), `interface-review` combines **review**: visual gate + usability
 + a11y/copy when available) into one merged, deduplicated, ranked report. Each axis uses its existing
 skill — this supplies only sequence and **merge**, so several lenses do not count one defect repeatedly.
 
-<a id="коли-застосовувати"></a>
 
 ## When to use
 
 Full review/audit of a screen, flow, prototype or PR; the final interface “readiness” gate. For one
 lens, invoke the corresponding skill directly (`ux-review` for usability, `anti-slop-design` for appearance).
 
-<a id="порядок"></a>
 
 ## Sequence
 
@@ -51,7 +48,6 @@ lens, invoke the corresponding skill directly (`ux-review` for usability, `anti-
    - **One observed defect = one finding** under the most specific lens; do NOT add severities.
    - Rank together (blocker / major / minor), most severe first.
 
-<a id="звіт-і-гейт"></a>
 
 ## Report and gate
 
@@ -59,7 +55,6 @@ One ranked list. Each finding: lens+rule · what was observed and where (evidenc
 Gate (as in the lenses): the interface is not “ready” until blocker+major is empty **or** each is a dated limitation explicitly
 accepted by the user (magnitude/mechanism). Run on a screenshot/live screen, not from memory.
 
-<a id="режим-дифу--pr"></a>
 
 ## Diff / PR mode
 

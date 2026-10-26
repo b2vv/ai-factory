@@ -5,7 +5,6 @@ description: Describes a feature as observable product behavior — scenario, pr
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.
 
-<a id="acceptance-spec--фіча-як-спостережувана-поведінка"></a>
 # acceptance-spec — a feature as observable behavior
 
 A scenario table written **before** code and kept in the plan. Unit tests verify
@@ -16,7 +15,6 @@ the internal implementation; this table records what is visible **externally** �
 on screen, in a response, in a file. Internal state, a private field or a function call do not belong here;
 they belong at the unit level.
 
-<a id="1-збери-сценарії"></a>
 ## 1. Collect scenarios
 
 Take the plan (or specification) and list scenarios in three groups — **all three are mandatory**:
@@ -28,7 +26,6 @@ Take the plan (or specification) and list scenarios in three groups — **all th
 Groups 2–3 overlap with `plan-defense` questions. This is not duplication: that checks
 **whether the plan considered it**; this records **exactly how it appears to the user**.
 
-<a id="2-заповни-таблицю"></a>
 ## 2. Fill in the table
 
 | # | Scenario | Precondition | User action | Expected observable result | Verification method |
@@ -44,7 +41,6 @@ Rules:
   A “manual” row is allowed, but then it **remains in the report permanently** as a manual step.
 - One row = one scenario. Split two expectations in one row into two rows.
 
-<a id="3-привяжи-до-роботи"></a>
 ## 3. Link it to the work
 
 - Put the table in the plan file (the “Acceptance scenarios” section) **before** task breakdown.
@@ -52,7 +48,6 @@ Rules:
 - Rows without an existing test become separate test-writing tasks — and under the
   local TDD contract (if applicable), those tests are written **first**. This package does not require a separate tdd skill.
 
-<a id="4-завершення"></a>
 ## 4. Completion
 
 The skill is complete when **all** of these hold:

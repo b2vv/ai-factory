@@ -1,13 +1,11 @@
 > Runtime examples below use `$KIT` as an explicitly selected absolute root of this release; `$PREVIOUS_RELEASE` is the immutable prior release when testing upgrades. This path update does not activate or change helper behavior.
 
-<a id="підключення-ai-factory-до-іншого-репозиторію"></a>
 # Connecting AI Factory to another repository
 
 [Main entry](../docs/legacy/ai-factory-plan-entry.md) · [Lifecycle](feature-lifecycle.md) · [Sources of truth](workflow.md#source-of-truth)
 
 The goal is to add a compatible route to the existing process and verify it against scenarios real for the repository. This is not a guarantee against every surprise. There is no automatic rollout, installs, permissions, MCP registration/build, hooks, model defaults or external writing. Preserve the stack, architecture and existing tracker. For a new repository, missing contracts remain explicitly undefined; a template does not invent them.
 
-<a id="один-стартовий-запит"></a>
 ## One starting request
 
 > Connect AI Factory to `<repo-root>` under `~/.agents/ai-factory/onboarding.md`: inventory → manifest → safe preflight → minimal additive adapter → acceptance report. Preserve existing workflow, stack, ADRs and required gates. A documentation adapter and pointers are authorized within this onboarding; do not change the product, config/hooks/permissions/models or run installs/dev/CI/deploy/MCP refresh. Before writing, show the diff, backup/hashguards; a repeat run must be NOOP for an unchanged adapter. Leave unclear policy decisions BLOCKED with an owner; finish with independent review and a fresh forward-test, distinguishing fixtures from runtime evidence.
@@ -16,9 +14,8 @@ If only an audit was requested, do not perform adaptation. If minimal changes ar
 
 ## Startup routing
 
-Before inventory, record the required critique/review/verification route under [review-handoff](review-handoff.md#перед-початком-роботи): a new subagent or an existing separate session, owner/reference, current selection rationale and handoff. Clarify an undefined selection before spawn/send, not before safe investigation. The independent reviewer receives a pinned package; repeated handoff does not create a new reviewer.
+Before inventory, record the required critique/review/verification route under [review-handoff](review-handoff.md#before-starting-work): a new subagent or an existing separate session, owner/reference, current selection rationale and handoff. Clarify an undefined selection before spawn/send, not before safe investigation. The independent reviewer receives a pinned package; repeated handoff does not create a new reviewer.
 
-<a id="швидкий-початок"></a>
 ## Quick start
 
 1. Choose the exact root; read-only, verify HEAD/status, ancestor/nested instructions in scope, current work/spec/ADR and owners. Do not read `.env`, credentials or config values. With multiple candidates, resolve the root before writing.
@@ -40,7 +37,6 @@ The helper only reads explicitly listed files; JSON result goes to stdout. It ru
 
 7. Before acceptance, check Obsidian under the [synchronization step](#obsidian-sync): real shared target, currency and authorization scope. Record authorized synchronization or explicit PENDING/fallback in the same report; a symlink is not write permission.
 
-<a id="checklist-адаптації"></a>
 ## Adaptation checklist
 
 Before changes, inspect the [documentation hygiene matrix](documentation-hygiene.md): logical/physical entrypoints, README/standards, hook effects, local/CI/browser coverage, task/handoff and ADR currency. This refines the existing inventory without a new tracker or transplanting another product's rules.
@@ -57,7 +53,6 @@ Before changes, inspect the [documentation hygiene matrix](documentation-hygiene
 
 <a id="checks"></a>
 
-<a id="applicability-перевірок"></a>
 ## Check applicability
 
 This matrix helps justify the set but does not cancel explicit local required gates. For each: requirement source → impact → command/scenario and side effects → verdict/evidence. Reducing a required gate stays BLOCKED until a specific owner decision; the proposal must name the saving and lost protection.
@@ -74,7 +69,6 @@ This matrix helps justify the set but does not cancel explicit local required ga
 
 Execution failure: BLOCKED + exact reason or an already authorized execution mechanism. There is no universal “outside sandbox” requirement. An old PASS does not carry over to changed scope; unchanged scope needs no ritual repetition of all checks unless the local contract explicitly requires it.
 
-<a id="рівні-підтвердження"></a>
 ## Levels of confirmation
 
 | Level | Evidence |
@@ -87,7 +81,6 @@ Execution failure: BLOCKED + exact reason or an already authorized execution mec
 
 The helper never promotes detected to configured/behavior-tested itself. The manifest is inventory input, not a readiness certificate; semantic conflicts, model bindings and actual diff impact require a human/agent.
 
-<a id="перевірка-перед-повторним-використанням"></a>
 ## Verification before reuse
 
 Isolated fixtures do not change repositories:
@@ -113,7 +106,6 @@ Fill the final result using the [acceptance template](../templates/acceptance-fu
 
 <a id="obsidian-sync"></a>
 
-<a id="obsidian-перевірка-та-погоджена-синхронізація"></a>
 ## Obsidian: verification and agreed synchronization
 
 1. If the project uses Obsidian/Shared, find the actual vault and resolved target of its Shared link. Check the target of each involved vault; do not infer sharing from the name `4 - Shared`. If the target is the same, there is one canonical note too. No Obsidian in scope → N/A with a reason, without creating a vault/integration.

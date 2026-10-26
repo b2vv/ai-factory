@@ -19,7 +19,6 @@ harness; this release makes no new runtime acceptance claim.
 
 Status: release candidate. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The final release package requires a separate hash-bound review before tagging/publication. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.
 
-<a id="що-адаптовано-з-ecc"></a>
 ## What was adapted from ECC
 
 These are selective, independently authored adaptations of ideas following a source audit of
@@ -74,7 +73,6 @@ HEAD/WIP preservation is not reported as PASS. This is a dated report, not a liv
 native activation proof or permission to repeat the rollout. This docs delta does not
 change any of those pins or review verdicts.
 
-<a id="почати-через-ai-три-сценарії"></a>
 ## Getting started with AI: three scenarios
 
 This repository contains workflow, skills, templates and offline helpers; it does not install Codex/Claude itself, the project's language, MCP/graph servers or models. Local helpers need no additional SaaS; AI access remains subject to your existing account/license, not a promise of free model calls.
@@ -93,7 +91,6 @@ Minimum requirements for helpers: Python **3.9+**, a POSIX filesystem; Git is re
 
 Tasks use a [task branch in the main repo](ai-factory/workflow.md#task-branches), with one writer and no automatic per-task worktree/clone. Foreign/unknown dirty WIP → STOP and coordinate; no stash/reset/commit to clear the tree. Runtime/test isolation is separate. Obtaining trusted AI Factory source for a new machine for the first time is not creating a per-task product clone.
 
-<a id="ai-factory-як-локальний-tooling-агента-в-проєкті"></a>
 ## AI Factory as project-local agent tooling
 
 Factory can be organized as local tooling: pinned workflow/skills separate from
@@ -121,7 +118,6 @@ configure an entrypoint supported by their particular agent, or start each time 
 humans is not necessarily read automatically by an agent. Native skill invocation and explicit
 file reading are different evidence; neither pointer guarantees compliance with the rules.
 
-<a id="що-реалізовано-а-що-потрібно-перевірити"></a>
 ### What is implemented and what needs verification
 
 The [current installer](docs/portability-design.md), `tools/kit.py`, uses an explicit dedicated
@@ -163,7 +159,6 @@ the installed subset; subset metadata does not make it a full release. A new rel
 is obtained and applied only through an explicit update with diff review, backup and preservation
 checks, without automatically overwriting local settings.
 
-<a id="промпт-1--перевірити-й-безпечно-підключити-локально"></a>
 ### Prompt 1 — inspect and safely connect local tooling
 
 ```text
@@ -184,7 +179,6 @@ local preservation and repeat NOOP. Do not run product tools/scanners,
 dependency installs or hooks/MCP, or change permissions or model defaults.
 ```
 
-<a id="промпт-2--почати-або-продовжити-задачу"></a>
 ### Prompt 2 — start or resume a task
 
 ```text
@@ -199,7 +193,6 @@ A missing shared file/required review means a specific BLOCKED, not an invented 
 Do not update core/pin/config or run a scanner merely because you read the workflow.
 ```
 
-<a id="промпт-3--перевірено-оновити-package"></a>
 ### Prompt 3 — perform a verified package update
 
 ```text
@@ -217,14 +210,12 @@ or an unmanaged collision mean BLOCKED; no force/reset/untrack. Return the recei
 checks, limitations and next action; no product rollout/scans/commit/push.
 ```
 
-<a id="один-файл--одна-роль"></a>
 ## One file — one role
 
 `skills/` contains originals, not abbreviated portable replacements. `ai-factory/` is the full source plan. `docs/portable/` and `adapters/legacy-planning/` are explicitly separate inherited portable profiles; their behavioral differences are not silently merged. `runtime/legacy/` preserves original helper behavior, while portable review/session helpers have hardened Git reads and an explicit store. Tests for both variants live in `tests/`.
 
 84 internal source definitions accounted for: 73 included, 11 synced sets have an explicit outside-Service copy restriction and remain only in the [provenance inventory](provenance/source-map.json). External symlink targets and `b2b*` are not added. [Origins and notices](PROVENANCE.md).
 
-<a id="безпечне-використання-та-оновлення"></a>
 ## Safe use and updates
 
 The [migration guide](docs/migration-0.4.md) explains exact paths, component selection, variants and migration from the old layout. The [installer contract](docs/portability-design.md) retains explicit planning, hash guards, backups and guarded rollback.

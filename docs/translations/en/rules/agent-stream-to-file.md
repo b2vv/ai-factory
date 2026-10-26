@@ -2,7 +2,7 @@
 title: Agent stream-to-file — every agent writes its progress to its own file so a failure does not erase its work
 ---
 
-> **Historical English translation — authored derivative.** Original: [rules/agent-stream-to-file.md](../../../../rules/agent-stream-to-file.md). Original SHA256: `4b35270e78dc9bfdf2ff849cfeca28266649e40dc380c0e2ef2aaa0c6110a7e0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Original-language compatibility anchors and literal protocol tokens remain where required.
+> **Historical English translation — authored derivative.** Original: [rules/agent-stream-to-file.md](../../../../rules/agent-stream-to-file.md). Original SHA256: `4b35270e78dc9bfdf2ff849cfeca28266649e40dc380c0e2ef2aaa0c6110a7e0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
 
 # 🧵 Agent stream-to-file
 
@@ -11,7 +11,6 @@ Applies to the `Agent` tool, `Workflow` `agent()` and any manual orchestration.
 
 ---
 
-<a id="1-навіщо--і-чому-наявного-транскрипту-не-досить"></a>
 ## 1. Why — and why the existing transcript is not enough
 
 Claude Code **already** writes each subagent's full JSONL transcript to
@@ -44,7 +43,6 @@ to no rule. If it only works when someone remembers to read it, it does not work
 
 ---
 
-<a id="2-правило"></a>
 ## 2. The rule
 
 **Every dispatch carries the path to a working file and requires writing to it during the work, not at the end.**
@@ -86,7 +84,6 @@ a recommendation but a consequence of having no locking.
 
 ---
 
-<a id="3-що-робить-оркестратор"></a>
 ## 3. What the orchestrator does
 
 1. **Creates the path before dispatch** (the directory must exist) and puts it in the prompt.
@@ -103,7 +100,6 @@ a recommendation but a consequence of having no locking.
 
 ---
 
-<a id="4-кому-це-найпотрібніше"></a>
 ## 4. Who needs this most
 
 Roles that keep their result **in their head until the final message** lose the most:
@@ -116,7 +112,6 @@ their intermediate state is already on disk.
 
 ---
 
-<a id="5-межі"></a>
 ## 5. Limits
 
 - **The guarantee begins with the first flush, not with launch.** Observed: an agent died on an API error
@@ -132,7 +127,6 @@ their intermediate state is already on disk.
 - Do not try to read `<session-tmp>/tasks/<agentId>.output` instead — its size is the very reason
   this rule exists.
 
-<a id="-повязане"></a>
 ## 🔗 Related
 
 - [[multi-model-roles]] §3 — `null` = lens did not run; retry once on another tier.

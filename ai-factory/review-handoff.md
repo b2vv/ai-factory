@@ -1,18 +1,15 @@
 > Runtime examples below use `$KIT` as an explicitly selected absolute root of this release; `$PREVIOUS_RELEASE` is the immutable prior release when testing upgrades. This path update does not activate or change helper behavior.
 
-<a id="startup-routing-та-передача-на-незалежний-review"></a>
 # Startup routing and handoff to independent review
 
 This contract supplements the current workflow; it creates no additional tracker or orchestrator. Small retains one primary task record; insert the fields below there. An evidence bundle is a derived snapshot for review, not a second plan. Local standards, gates and owner decisions remain in force.
 
-<a id="перед-початком-роботи"></a>
 ## Before starting work
 
 In the current primary record, write the review goal, `review_mode=existing_session` for an already assigned additional session or `review_mode=independent_subagent` if there is no additional session; writer/reviewer reference (pending until authorized spawn), selection rationale, current contact mechanism, delivery owner, authorization source and coordination of shared-resource checks. The owner's explicit choice takes precedence. Do not ask again about an already determined route; mark genuinely unknown required information BLOCKED with an owner for clarification.
 
 Selecting the mode does not start review/security or authorize new external sessions. Existing-session uses the already assigned reviewer without duplication; independent-subagent is a separate context under current authorization, with its reference recorded after launch. Author self-review is not independent review. Selected runtime unavailable → BLOCKED, without silent fallback or PASS. After compaction/resume, restore the saved mode and pending action rather than choosing anew. A confirmed route does not mean review completed; report author checks separately.
 
-<a id="пакет-передачі"></a>
 ## Handoff package
 
 Minimal self-contained package in the existing evidence location:
@@ -30,7 +27,6 @@ One pair `package ID + assigned reviewer reference` has one handoff in the curre
 
 <a id="pending-next-action"></a>
 
-<a id="наступна-дія-яку-не-можна-втратити"></a>
 ## The next action that must not be lost
 
 After `/clear`, a new startup or resume, a valid pending record is only a reason to briefly show task/checkpoint and ask “Continue?”. Do not execute task/review/send until the user's current response; Stop must not force continuation during this wait. An explicit new user request to continue this exact task may serve as confirmation. After confirmation, applicable authorized steps proceed without another question at every gate; permissions do not expand. Consent from another or previous session does not carry over.
@@ -60,26 +56,22 @@ Before send, record intent/attempt for the action ID; afterward, record the actu
 Resume starts with the specific pending action and verification of the relevant snapshot. Unchanged accepted stages are not repeated; a material delta reopens only affected gates under the local contract. Before compaction/ending the current turn, save the current block. WAITING/BLOCKED permits ending a turn with an honest status and next check, but not declaring the task DONE. DONE is possible only after all applicable local gates and the required final verdict on the final snapshot; if review is N/A, a local rationale is required, not a new waiver.
 
 <a id="delivery-state"></a>
-<a id="delivery-state-та-security-завершення"></a>
 ## Delivery state and security completion
 
 The single transport contract is `prepared` → `sent` → `acknowledged` → `verdict_received` in the existing pending-action record above. For historical security reports, `PREPARED`, `SENT`, `VERDICT_RECEIVED` are aliases for the corresponding lowercase states; `AWAITING_DELIVERY` is a WAITING reason with a delivery owner/next action, not a separate transport state. Legacy `delivered` means `sent` only with delivery evidence; `responded` means `verdict_received` only with a valid response from the required reviewer to this snapshot. ACK is not acceptance; a full valid verdict may also confirm ACK. This documentation delta does not change runtime schemas/helpers.
 
 DONE is blocked by any unresolved applicable required check or required independent final verdict. Missing runtime proof leaves VERIFICATION_INCOMPLETE; missing verdict leaves REVIEW_PENDING: these are reporting outcomes, not transport states. N/A needs an applicability reason; changing a required requirement needs an explicit owner decision. An aggregate build/fixture/merge does not replace a required row. This is an instruction contract, not automatic CI enforcement. For scoped security work — [proposed adapter](../adapters/security/review.md).
 
-<a id="контракт-reviewer"></a>
 ## Reviewer contract
 
 The reviewer works independently: reads pinned acceptance/contracts, diff and source snapshots, verifies the live root/snapshot before and after review, assesses scope sufficiency and relevant untracked files. The author's summary is navigation only. Read-only by default: no source/config/index changes. A locally authorized review artifact may be written only in the designated evidence location. A need for a test does not authorize reset/seed/install or shared-environment access; first agree the operation, owner, slot and side effects. Distinguish the reviewer's own checks from accepted pinned raw author evidence.
 
 Each finding: `file:line`, specific consequence, evidence/reproduction or verification method, blocking/nonblocking, confidence. Verdict: reviewer reference, package/snapshot ID, checked scope/axes, findings, checks/evidence and limitation. An absent/empty/incomplete response means **review NOT_TESTED, required gate BLOCKED**. The author does not present self-review as an independent PASS. Helper structural validation does not prove human/agent independence or the truth of its declarations.
 
-<a id="зміни-після-review"></a>
 ## Changes after review
 
 PASS applies only to the reviewed snapshot/scope. After fixes, prepare a final delta against the reviewed snapshot; the reviewer determines affected criteria/checks and gives a verdict on the final package ID. Unchanged evidence may be explicitly accepted if inputs have not changed. Do not repeat the entire gate for an irrelevant edit unless the local contract requires it. Do not carry an old PASS over to changed acceptance/diff/untracked files. A base/HEAD change requires provenance verification, not automatically repeating all tests. The reviewer separately confirms expanded/narrowed scope; new relevant files must be included.
 
-<a id="опційний-stdlib-helper"></a>
 ## Optional stdlib helper
 
 [review_package.py](../runtime/legacy/review/review_package.py) works on a Git repo with HEAD and UTF-8 text files: at most 100 scope files, 1 MB/file, 8 MB of unique blobs. It runs no repo commands/tests/CLI/MCP; only read-only Git queries. No install, network, dispatch, hooks or permission changes. Symlink paths, secret-like names/content and configurations are rejected; this is defense in depth, not a universal secret scanner. Use canonical paths (on macOS `/private/...` instead of symlink `/tmp` for a fixture).

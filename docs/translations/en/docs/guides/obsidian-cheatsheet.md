@@ -4,7 +4,7 @@ scope: multi-project local setup
 розкладка: ~/vaults for notes, ~/dev for repositories
 ---
 
-> **Historical English translation — authored derivative.** Original: [docs/guides/obsidian-cheatsheet.md](../../../../guides/obsidian-cheatsheet.md). Original SHA256: `c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The sealed original remains unchanged; the in-repository historical document has a separately recorded local-project reference cleanup. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Original-language compatibility anchors and literal protocol tokens remain where required.
+> **Historical English translation — authored derivative.** Original: [docs/guides/obsidian-cheatsheet.md](../../../../guides/obsidian-cheatsheet.md). Original SHA256: `c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The sealed original remains unchanged; the in-repository historical document has a separately recorded local-project reference cleanup. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
 
 # Runbook: Obsidian (local) + Claude Code + code-review-graph
 
@@ -14,7 +14,6 @@ The original frontmatter key `розкладка` means layout and is retained a
 
 ---
 
-<a id="0-ключові-принципи-чому-саме-так"></a>
 ## 0. Key principles (why this design)
 
 - **Obsidian is local-first by default.** A vault is a directory of `.md` files; synchronization does not enable itself. Keep the vault outside iCloud/Dropbox/OneDrive/GDrive.
@@ -27,7 +26,6 @@ The original frontmatter key `розкладка` means layout and is retained a
 
 ---
 
-<a id="1-розкладка-на-диску"></a>
 ## 1. Disk layout
 
 ```
@@ -51,7 +49,6 @@ The original frontmatter key `розкладка` means layout and is retained a
 
 ---
 
-<a id="2-створення-структури--symlink-глобальної-зони"></a>
 ## 2. Create the structure + symlink the global area
 
 ```bash
@@ -65,7 +62,6 @@ ln -s ~/vaults/global ~/vaults/project-b/_global
 
 Afterward, the graph, search and `[[_global/patterns/fsd]]` work natively in every project vault.
 
-<a id="нюанс-з-obsidian"></a>
 ### The `.obsidian` detail
 
 The symlink also brings `global/.obsidian` into the project vault. Functionally, Obsidian ignores it
@@ -80,7 +76,6 @@ ln -s ~/vaults/global/prompts  ~/vaults/cassiopeia/_prompts
 ln -s ~/vaults/global/patterns ~/vaults/cassiopeia/_patterns
 ```
 
-<a id="бекап-без-хмари"></a>
 ### Backup without the cloud
 
 ```bash
@@ -90,7 +85,6 @@ cd ~/vaults/global && git init && git add -A && git commit -m "init global vault
 
 ---
 
-<a id="3-obsidian-mcp--по-порту-на-кожен-project-vault"></a>
 ## 3. Obsidian MCP — one port per project vault
 
 In **each** project vault separately:
@@ -115,7 +109,6 @@ In **each** project vault separately:
 
 ---
 
-<a id="4-привязка-до-claude-code-scope-на-репо"></a>
 ## 4. Bind to Claude Code (repository scope)
 
 Run from the relevant repository directory so the configuration lands in this project's local scope
@@ -151,7 +144,6 @@ claude mcp remove obsidian
 
 ---
 
-<a id="5-code-review-graph--окремий-граф-на-репо"></a>
 ## 5. code-review-graph — a separate graph per repository
 
 An independent axis, per-repo. Requirements: Python 3.10+ (preferably `uv`).
@@ -184,7 +176,6 @@ crg-daemon logs --repo cass -f
 
 ---
 
-<a id="6-підсумкова-карта"></a>
 ## 6. Summary map
 
 | Component          | cassiopeia                | project-b                | scope        |
@@ -199,7 +190,6 @@ projects are isolated; Claude Code in each repository sees exactly its own vault
 
 ---
 
-<a id="7-чек-ліст-запуску-нового-проєкту"></a>
 ## 7. New-project startup checklist
 
 1. `mkdir -p ~/vaults/<proj>` → `ln -s ~/vaults/global ~/vaults/<proj>/_global`
@@ -212,7 +202,6 @@ projects are isolated; Claude Code in each repository sees exactly its own vault
 
 ---
 
-<a id="8-відкриті-опції-не-реалізовано"></a>
 ## 8. Open options (not implemented)
 
 - A hook that deterministically fails a Claude Code session if it starts in a repository without the matching Obsidian MCP (in the spirit of PreToolUse exit code 2).

@@ -2,7 +2,7 @@
 title: Multi-model roles — which model tier serves each pipeline role
 ---
 
-> **Historical English translation — authored derivative.** Original: [rules/multi-model-roles.md](../../../../rules/multi-model-roles.md). Original SHA256: `908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Original-language compatibility anchors and literal protocol tokens remain where required.
+> **Historical English translation — authored derivative.** Original: [rules/multi-model-roles.md](../../../../rules/multi-model-roles.md). Original SHA256: `908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
 
 # 🎛️ Multi-model roles
 
@@ -10,7 +10,6 @@ Cross-project rule: how to distribute pipeline roles (research → planning → 
 implementation → review → report) across models. Applies to `Agent(model:)`, `Workflow` `opts.model`
 and `opts.effort`.
 
-<a id="0-хто-і-коли-це-читає"></a>
 ## 0. Who reads this and when
 
 The **orchestrator** — the session spawning subagents — reads this before the first `Agent`/`Workflow`.
@@ -20,7 +19,6 @@ externally (by the session), not by this rule.
 
 ---
 
-<a id="1-що-реально-доступно"></a>
 ## 1. What is actually available
 
 **Inside Claude Code, choosing a model means choosing a Claude tier.** The `Agent` tool accepts
@@ -43,7 +41,6 @@ not a step in this pipeline: when this rule is read, the machine may have no oth
 
 ---
 
-<a id="2-розкладка-ролей"></a>
 ## 2. Role allocation
 
 | Pipeline role                                               | Tier                                           | Why                                                                           |
@@ -62,7 +59,6 @@ The cells deliberately omit `effort` — see §1: `Agent` cannot pass it. When t
 The number of pipeline tasks (zero, one, many) does not change the tier: the table applies **per role**,
 not per task — zero tasks means the role is simply not invoked; one task follows the same rows as N.
 
-<a id="21-коли-потрібного-тіра-немає"></a>
 ### 2.1 When the required tier is unavailable
 
 Tier names are retired, and an account may not have `fable`. Substitution order for a verdict role:
@@ -77,7 +73,6 @@ deterministic transformation without judgment → “Mechanics”. If the mappin
 (this rule's default) and state the reason in the report (`роль поза таблицею: <назва>`, meaning
 “role outside the table: <name>”), rather than saying nothing.
 
-<a id="22-критика-чотири-лінзи-дорогим-тіром--найдорожчий-рядок-конвеєра"></a>
 ### 2.2 Critique: four lenses on an expensive tier — the pipeline's most expensive row
 
 `plan-critique` multiplies cost by four: one run = four subagents. An expensive tier is especially
@@ -139,7 +134,6 @@ out to be the largest contributor, the critique tier is irrelevant and session h
 
 ---
 
-<a id="3-правило-незалежності"></a>
 ## 3. Independence rule
 
 The main point is not “a more expensive model is better” but **different eyes at different steps**.
@@ -182,7 +176,6 @@ The main point is not “a more expensive model is better” but **different eye
 
 ---
 
-<a id="4-коли-тір-не-має-значення"></a>
 ## 4. When tier does not matter
 
 Do not spend `opus` on a step with a **verifiable completion criterion** that requires no judgment:
@@ -190,7 +183,6 @@ running gates, filling a fixed table, updating a file header. A cheap tier with 
 yields the same result. Be careful at the boundary: a fixed answer **form** does not imply a
 deterministic **verdict** (see the “Plan defense” row in §2).
 
-<a id="5-захист-plan-defense"></a>
 ## 5. Defense (plan-defense)
 
 | # | Question | Covered by | Verdict |
@@ -201,7 +193,6 @@ deterministic **verdict** (see the “Plan defense” row in §2).
 | 4 | Empty and boundary data | §2 “The number of pipeline tasks (zero, one, many) does not change the tier” (zero/one task); §3 “If only one tier is available” (single tier); §3 “If the author's tier is unknown (resume, …)” (entering midway through the pipeline); §3 “…otherwise, after compaction between DONE and review, the answer is absent exactly when it is needed” (compaction mid-pipeline) | covered |
 | 5 | Rollback | §3 “Rollback of tier selection” (rerun on assigned tier, new `dispatched` row, token and committed-code sunk costs, git rollback outside this rule) | covered |
 
-<a id="-повязане"></a>
 ## 🔗 Related
 
 - `~/.agents/rules/subagent-orchestration-ledger.md` — ledger + 4 statuses for parallel work

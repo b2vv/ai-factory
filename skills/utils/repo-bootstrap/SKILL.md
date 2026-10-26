@@ -3,7 +3,6 @@ name: repo-bootstrap
 description: Checks what a repository lacks for the pipeline — standards manifest, briefing, contract pointers, persistence channel, artifacts home, machine gates — and creates missing items on command without inventing content. Use for a new or unfamiliar repository, when connecting a project to the pipeline, or on triggers "ініціалізуй репо", "чого бракує в репо", "repo bootstrap", "налаштуй проєкт" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-<a id="repo-bootstrap--інвентар-того-що-репо-має-мати"></a>
 
 # repo-bootstrap — inventory of what a repository needs
 
@@ -16,7 +15,6 @@ creates missing ones.
 
 For portable onboarding of an existing/partial repository, use the [onboarding checklist](../../../ai-factory/onboarding.md) and its read-only helper. This refines the inventory below; it adds no orchestrator. Table paths are search candidates, not a requirement to migrate the existing structure: the manifest records actual instructions/workflow/standards/artifacts and shared skill root. `detected` does not mean `configured` or `behavior-tested`; file existence does not verify runtime behavior.
 
-<a id="головне-правило-не-вигадувати-вміст"></a>
 
 ## Main rule: do not invent content
 
@@ -32,7 +30,6 @@ Questions for a **person** (which documents count as standards, pipeline thresho
 PR target) must not be guessed: either ask or leave `TODO: <the exact question>`. A placeholder naming
 an unresolved issue works better than confident invention.
 
-<a id="дві-гілки"></a>
 
 ## Two modes
 
@@ -45,7 +42,6 @@ propose the edit. A separately authorized adaptation phase may apply a targeted 
 
 The skill is **idempotent**: a second run on the same repository creates nothing new.
 
-<a id="інвентар"></a>
 
 ## Inventory
 
@@ -70,7 +66,6 @@ Row 5а has its own trap: a directory named `archive/` may already exist at the 
 **something completely different** — removed legacy code, not closed tasks (as in dg). Same name, different things:
 check what it contains before recording it as the task archive. The row identifier `5а` is retained compatibility data.
 
-<a id="порядок"></a>
 
 ## Sequence
 
@@ -85,7 +80,6 @@ check what it contains before recording it as the task archive. The row identifi
    manifest first because the others refer to it.
 5. **Pointers last** — update the contract file once targets exist.
 
-<a id="завершення"></a>
 
 ## Completion
 

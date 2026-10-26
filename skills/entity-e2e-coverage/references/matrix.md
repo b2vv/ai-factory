@@ -1,10 +1,8 @@
-<a id="матриця-й-перевірка-звіту"></a>
 
 # Matrix and report validation
 
 A human-readable table in the current plan is sufficient; JSON is needed only for the validator. Create the baseline before testing, reconcile it with the original QA/spec and give it to the reviewer separately from the report. The validator cannot recover a QA ID removed from the baseline itself; the reviewer checks the source.
 
-<a id="формат"></a>
 
 ## Format
 
@@ -27,7 +25,6 @@ python3 ~/.agents/skills/entity-e2e-coverage/scripts/test_validate_matrix.py
 
 Exit 0: bookkeeping complete for the supplied baseline. Exit 1: malformed/incomplete/FAIL/BLOCKED or suspicious inconsistency; reasons are in JSON. `browser_execution_proven` is always false. The script does not open artifacts, compare the DOM, run a browser, infer expected/observed correctness from text or verify metadata truthfulness. Matching but fabricated metadata will pass; review the actual test/trace and independent source.
 
-<a id="реалістичний-приклад"></a>
 
 ## Realistic example
 
@@ -37,7 +34,6 @@ For dates, separately record whether `2026-10-17` is a calendar date without a t
 
 Cases A–E contain different reports for the depot workflow, suitable for independent review without live-environment access. They include create→edit without view evidence, a complete cycle, edit-only UI with documented N/A, an unavailable required view and a lost QA field. The test script checks expected verdicts; do not present synthetic complete as product PASS.
 
-<a id="умовні-поля-для-filters--keyboard--visual"></a>
 
 ## Conditional fields for filters / keyboard / visual
 

@@ -3,25 +3,22 @@ title: "History of the concept and previous measurements"
 reviewed: 2026-10-16
 ---
 
-> **Historical English translation — authored derivative.** Original: [ai-factory/history.md](../../../../ai-factory/history.md). Original SHA256: `d7520cdbe02175d651383dbe6c1e2ab756fa584357e096b5b42b279a0b752cdf`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Original-language compatibility anchors and literal protocol tokens remain where required.
+> **Historical English translation — authored derivative.** Original: [ai-factory/history.md](../../../../ai-factory/history.md). Original SHA256: `d7520cdbe02175d651383dbe6c1e2ab756fa584357e096b5b42b279a0b752cdf`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
 
 [Entry point](../../../legacy/ai-factory-plan-entry.md) · [Status](../../../../ai-factory/status.md#capabilities) · [Routes](../../../../ai-factory/workflow.md#routing) · [Tasks](../../../../ai-factory/roadmap.md#tasks) · [Repository practices](../../../../ai-factory/repo-evidence.md#repo-evidence) · [History](#history)
 
 <a id="history"></a>
 
-<a id="історія-задуму-та-попередніх-вимірів"></a>
 # History of the concept and previous measurements
 
 These are historical records, not current commands or statuses. Current capabilities are described only in the [status registry](../../../../ai-factory/status.md#capabilities). Old “missing” claims, ✅ marks, and numbers below do not carry over to the current state without fresh verification.
 
-<a id="1-історичний-розбір-треду-2026-08-25"></a>
 ## 1. Historical analysis of the thread (2026-08-25)
 
 Below, “Present/Missing” describe the original motivation. The current global state is in the status.md registry; repo-specific claims need fresh verification.
 
 The thread has 12 stages. Each below: **essence → what covers it here → what is missing**.
 
-<a id="11-deep-cto-research-перед-кодом"></a>
 ### 1.1 Deep CTO research before code
 Essence: the agent understands the product, codebase, patterns, infrastructure, dependencies, and risks;
 nobody implements before understanding.
@@ -34,7 +31,6 @@ nobody implements before understanding.
   a `path:line` requirement for every claim, and a **staleness gate** (file older than N commits → reread).
   A staleness precedent already exists: `~/vaults/cargotrans-ui/tools/kb-staleness.mjs`.
 
-<a id="12-план-як-детальний-документ-75-часу"></a>
 ### 1.2 The plan as a detailed document (75% of the time)
 Essence: not a task list, but what/where we change, which services, side effects, migration, and how we test.
 
@@ -43,7 +39,6 @@ Essence: not a task list, but what/where we change, which services, side effects
 - **Missing:** (a) dg has none at all; (b) the plan section has no mandatory
   **side effects / migration / rollback** fields — half of what the thread calls a “painstakingly perfected plan.”
 
-<a id="13-план-критикує-сам-себе-ai-slop-дірки-зайва-складність-edge-cases"></a>
 ### 1.3 The plan critiques itself (AI-slop, gaps, excess complexity, edge cases)
 - **Present:** `grilling` (global skill) + GATE 1/GATE 2 in spec-flow.
 - **Missing:** critique currently has **one voice and one lens**. The thread describes *separate agents for separate
@@ -51,11 +46,9 @@ Essence: not a task list, but what/where we change, which services, side effects
   excess complexity / uncovered edge cases), each returning a structured verdict,
   followed by synthesis. This is exactly what available delegation tools can implement; `Workflow` is not a guaranteed dependency.
 
-<a id="14-різні-моделі-для-різних-ролей"></a>
 ### 1.4 Different models for different roles
 The idea is to separate author, researcher, and independent reviewer. Specific model names, APIs, and available providers depend on the agent and current session; do not treat the old tier matrix as a verified configuration. A cross-vendor process is optional E4.4, with a file brief and verifiable result, if tools are available and use is authorized. Different models alone do not prove context independence.
 
-<a id="15-плани-захищають-перед-імплементацією"></a>
 ### 1.5 Plans are defended before implementation
 Essence: scrutinize the details — what if the user does this? what if the data is malformed? what if the service fails? how do we roll back?
 
@@ -65,7 +58,6 @@ Essence: scrutinize the details — what if the user does this? what if the data
   where every question must be closed with a **link to a plan line**, otherwise the gate is red.
   This is cheaper and more repeatable than manual grilling.
 
-<a id="16-ai-cto-ріже-роботу-на-команди-та-спринти"></a>
 ### 1.6 AI CTO splits work into teams and sprints
 - **Present:** `~/.agents/rules/subagent-orchestration-ledger.md` — durable ledger, a 4-status
   protocol (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED), brief-file handoff.
@@ -73,7 +65,6 @@ Essence: scrutinize the details — what if the user does this? what if the data
 - **Missing:** the rule lives in `~/.agents/rules/`, but **no repository contract refers to it**
   (neither cargotrans's `AGENT.md` nor dg's `AGENTS.md`). In practice, it therefore has no effect.
 
-<a id="17-тести-плануються-до-коду-детерміністично-на-рівні-продукту"></a>
 ### 1.7 Tests are planned before code, deterministically, at product level
 Essence: not just units testing internal implementation — what the user sees, does, what should happen, and what counts as correct.
 
@@ -83,7 +74,6 @@ Essence: not just units testing internal implementation — what the user sees, 
   `scenario | precondition | user action | expected observable result | how verified (e2e/unit/manually)`.
   Without it, “tested” remains a judgment rather than a fact.
 
-<a id="18-тестове-середовище-як-prod-агент-проходить-фічу-як-юзер-контрольований-доступ-до-логівсервісівread-only-бд-дії-трекаються"></a>
 ### 1.8 A prod-like test environment; the agent walks through the feature as a user; controlled access to logs/services/read-only databases; actions are tracked
 - **Present:** playwright configurations in both repositories; dg has a demo-app and `compare:nodes` (visual comparison).
   Browser-tool availability must be established in the current session.
@@ -92,7 +82,6 @@ Essence: not just units testing internal implementation — what the user sees, 
   Honestly: the read-only database item for a frontend repository (cargotrans-ui) and an embed-SDK (dg) is
   **not applicable**; it concerns a backend service. I am not adding it to the tasks.
 
-<a id="19-execution-550-паралельних-pr"></a>
 ### 1.9 Execution: 5–50 parallel PRs
 - **Present:** native `Agent isolation:"worktree"`, `Workflow` with `pipeline`/`parallel`,
   `.claude/worktrees/` as a starting point.
@@ -101,7 +90,6 @@ Essence: not just units testing internal implementation — what the user sees, 
   make sense only when the feature splits into genuinely independent slices; for an FSD repository,
   3–8 is realistic, not 50. The thread's numbers are marketing; the mechanism is not.
 
-<a id="110-незалежні-ai-ревюєри-на-github-ревюєр-не-знає-як-писався-код"></a>
 ### 1.10 Independent AI reviewers on GitHub; the reviewer does not know how the code was written
 - **Present:** local `review` (cargotrans-ui) — strong because it enumerates standards rather than guessing.
 - **Missing:** (a) dg has no equivalent at all; (b) no **PR reviewer in CI** reads task+plan+diff
@@ -109,21 +97,18 @@ Essence: not just units testing internal implementation — what the user sees, 
   needs a fresh context without authorship history; this may be a separate process or an appropriately isolated subagent. Running on GitHub alone does not guarantee this.
   For dg this is feasible: `b2vv/dg` is on GitHub, and `gh` is already used (`docs/agents/issue-tracker.md`).
 
-<a id="111-звіт-замість-полотна-що-зроблено-які-сценарії-протестовані-що-неочевидного-знайшли-скріни-проходка-по-flow-ризики"></a>
 ### 1.11 A report instead of a wall of text: what was done, scenarios tested, non-obvious findings, screenshots, flow walkthrough, risks
 - **Present:** the `reports/<topic>/` convention (cargotrans-ui, ~30 directories) + Report/Session templates in Obsidian
   + the live-note rule in `CLAUDE.local.md` (incremental flush — after an actual context loss).
 - **Missing:** `ship-report` — a skill with the thread's **fixed 6 sections**, where “screenshots” and “user-flow
   walkthrough” are not optional. Currently the report structure differs slightly each time.
 
-<a id="112-post-deploy-ключові-тести-на-prod-логи-інтеграції-фінальний-апдейт"></a>
 ### 1.12 Post-deploy: key tests on prod, logs, integrations, final update
 - **Original gap, later partially closed according to E5's record.** For dg, the idea is to run smoke on
   the GitHub Pages demo after `pages.yml`. For cargotrans-ui — smoke on the production URL after deployment.
 
 ---
 
-<a id="2-reality-check-по-треду-принципи-не-метрики"></a>
 ## 2. Reality-check of the thread (principles, not metrics)
 
 To avoid building the plan on advertising:
@@ -136,7 +121,6 @@ To avoid building the plan on advertising:
   cargotrans-ui's `review` skill); otherwise it is noise rather than quality.
 
 ---
-<a id="51-історичний-запис-виміру-2026-08-25"></a>
 ## 5.1 Historical measurement record (2026-08-25)
 
 Preserved as the origin of decisions. “Missing” statuses and implementation criticisms below are not a current audit: global has already changed; see status.md. The cited numbers and results were not reproduced on 2026-10-14.
@@ -156,7 +140,6 @@ plan (`cargotrans-ui/work/plans/range-ux-from-trebble2.md`).
 | E1.7 `multi-model-roles` | ✅ | `~/.agents/rules/multi-model-roles.md` |
 | E2.1, E2.2, E2.4, E2.5 | ❌ | `spec-flow` calls only `grilling`; no ledger pointer in `AGENT.md`; `.claude/worktrees/` is empty |
 
-<a id="що-показав-бойовий-прогін--і-чого-в-плані-немає"></a>
 ### What the real-world run revealed — and what the plan lacks
 
 **1. E2.2 is the costliest unfinished item, proven by execution.** The gates exist, but `spec-flow`
@@ -188,10 +171,8 @@ not run.” The DoD should add: the skill **writes** the header so the gate work
 
 <a id="ci-history"></a>
 
-<a id="історичні-записи-e4e5-з-попереднього-реєстру"></a>
 ## Historical E4/E5 records from the previous registry
 
-<a id="e4--незалежне-ai-ревю-на-pr--p2"></a>
 ### E4 · Independent AI review on PRs  (P2)
 
 The thread's key point: the reviewer **does not know** how the code was written — a separate process, clean context.

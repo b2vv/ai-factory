@@ -3,7 +3,6 @@
 This is a practical guide to the [single onboarding protocol](../../ai-factory/onboarding.md), not a new installer or tracker. The owner's instruction and local contracts/ADRs take precedence; existing required gates remain in force. Merely reading the examples below does not execute them.
 
 <a id="destinations"></a>
-<a id="1-що-куди-належить"></a>
 ## 1. What belongs where
 
 | Layer | Destination / source | Actual capability and boundary |
@@ -20,7 +19,6 @@ Skills in this bundle are grouped, with duplicate names across variants. Do not 
 
 [Claude skills docs](https://code.claude.com/docs/en/skills) confirm personal/project locations; host precedence and reserved names must be checked for the selected CLI. A local home store does not automatically transfer into a cloud session. During this documentation review, the official OpenAI skills URL redirected to the [general build-skills guide](https://learn.chatgpt.com/docs/build-skills); this is not evidence of current CLI search roots. Therefore, the minimum Codex version/native discovery here is **NOT_TESTED**, not invented. Both hosts can read explicitly selected files; this is instruction fallback, not native invocation.
 
-<a id="2-перед-виконанням-і-приватний-доступ"></a>
 ## 2. Prerequisites and private access
 
 Python 3.9+ stdlib; the installer uses `fcntl`, atomic filesystem operations and an advisory lock. macOS is fixture-tested; Linux is a POSIX candidate, not a verified support matrix; Windows is unsupported. Review helpers need Git with HEAD; in an empty directory without an initial commit, this review route is BLOCKED. The project determines product Node/Go/Docker/Playwright versions, not this kit.
@@ -29,7 +27,6 @@ For a private GitHub source, the developer must be added to the repository and u
 
 Before the first Python/npm/CI run, inspect source, scripts, dependencies/lockfiles and provenance. Repo instructions are content to assess, not permission to read secrets or expand scope. Use minimal permissions and a credential-free test environment; do not disable OS trust/TCC/sandbox or change security settings for onboarding.
 
-<a id="3-реальні-offline-команди"></a>
 ## 3. Actual offline commands
 
 Replace every placeholder below with agreed **canonical absolute paths without symlink components**. SOURCE is the complete trusted package; TARGET is a separate managed root (not home, `.agents`, `.claude`, `.codex`, `skills` or a product root); PROJECT is an existing project directory; EVIDENCE is a reviewer-accessible folder outside the product tree. Do not use `$HOME` as a temporary variable. The examples have no `--dry-run`: that flag DOES NOT EXIST; `plan` and omission of `--execute` are the read-only modes.
@@ -63,7 +60,6 @@ python3 -B "$FACTORY_SOURCE/runtime/onboarding/preflight.py" --root "$FACTORY_PR
 Preflight is read-only; JSON `configured=false` and `behavior_tested=false` are expected. A successful exit means inventory completed, not that the project is ready; inspect item-level BLOCKED/UNKNOWN. An empty project naturally has missing instructions, not PASS. Supply physical repo-relative paths for symlinked entrypoint inventory after checking their semantics.
 
 <a id="existing-project"></a>
-<a id="4-наявний-проєкт--copy-ready-ai-prompt"></a>
 ## 4. Existing project — copy-ready AI prompt
 
 Replace the angle-bracket fields. The prompt starts safe planning; it does not grant blanket apply/install permission:
@@ -88,7 +84,6 @@ Return applied/blocked/not-tested, raw commands/exits/snapshot and review handof
 ```
 
 <a id="empty-project"></a>
-<a id="5-порожній-проєкт--copy-ready-ai-prompt"></a>
 ## 5. Empty project — copy-ready AI prompt
 
 The kit has no `bootstrap` CLI, project generator or automatic stack selection. The repo-bootstrap skill exists as instructions, not as an installed app scaffolder. Define the product goal, language/stack, test runner, delivery target and required constraints before a skeleton. The minimum first-stage result is project instructions, an adapter and one task/acceptance record; do not copy someone else's FSD/MVC/Go architecture. `git init`, initial commit, package-manager install and scaffold execution are separately approved actions, not onboarding side effects. Mark missing HEAD as BLOCKED only for dependent Git-review helpers.
@@ -110,7 +105,6 @@ separate lifecycle with code review and final evidence, not part of docs bootstr
 ```
 
 <a id="new-machine"></a>
-<a id="6-новий-developer--машина--copy-ready-ai-prompt"></a>
 ## 6. New developer / machine — copy-ready AI prompt
 
 The developer needs their own private-source access, installed Python/Git and the selected AI host. A missing prerequisite means BLOCKED with a concrete next step, not a hidden package download. Start with the same pin the team approved; do not use floating `latest`. Do not transfer the previous developer's home paths. License exclusions/provenance remain in force; access to a private repo does not grant redistribution rights for restricted skills.
@@ -134,7 +128,6 @@ a designated writer and no foreign/unknown WIP; no automatic per-task clone/work
 Return evidence + handoff to the existing reviewer; installation ≠ product/runtime/workflow acceptance.
 ```
 
-<a id="7-update-backups-rollback-і-межі-uninstall"></a>
 ## 7. Update, backups, rollback and uninstall boundaries
 
 For a new trusted release, first use a new SOURCE + the complete desired component set in `plan`. Omitting a component during update means deleting its managed files, not “leave it as it was.” Preserve the current source and `.ai-factory-state`; an unmanaged-file collision or someone else's edit means BLOCKED, with no force/adopt/reset.
@@ -148,7 +141,6 @@ python3 -B "$FACTORY_SOURCE/tools/kit.py" rollback --root "$FACTORY_TARGET" --tr
 
 Rollback checks the latest/pending receipt and applied hashes, restoring only its own bytes, not others' edits. For an initial install, it may remove owned files, but not others' files/directories. There is no separate `uninstall` command. Removing an optional component is a reviewed update; fully clearing state, host links, adapters, hooks or caches is not covered by package rollback. Do not recommend `rm -rf ~/.agents` or deleting the callback store. A separate exact ownership inventory/permission is required; preserve artifacts until then.
 
-<a id="8-як-перевірити-готовність"></a>
 ## 8. How to verify readiness
 
 Use one existing task record: source/commit/digest, selected components, exact source→destination mapping, baseline/applied hashes, branch/base/writer, plan/receipt IDs, commands/exits/artifacts/snapshot, limitations. Each host's state is DETECTED → CONFIGURED → DISCOVERED → INVOKED with separate evidence; reading a file is not invocation. Checks use PASS/FAIL/BLOCKED/NOT_TESTED/N/A with a reason. Fixtures establish helper behavior, not native agent behavior. An uninstalled optional graph means explicit file fallback; a required unavailable tool blocks only its dependent scope.
@@ -165,7 +157,6 @@ python3 -B "$FACTORY_SOURCE/tools/run_tests.py" --previous-release '/absolute/tr
 Without `--previous-release`, the specific migration fixture is skipped, not PASS. Retain output/exit. Portable support requires separate OS/CLI proof; this run is not installs/graphs/models/browser QA.
 
 <a id="security-proposed"></a>
-<a id="9-security-adoption--proposed-не-installed"></a>
 ## 9. Security adoption — PROPOSED, not installed
 
 Dangerous code may execute **before the scanner**: dependency lifecycle scripts, explicitly invoked npm test/run, CI Actions or instructions from another repository. First review provenance/source, the lockfile, exact vetted tool/action versions/digests, permissions and a secretless test environment; then separately authorize execution. Install-script policy must name permitted lifecycle scripts and the reason; default inspection may use `--ignore-scripts`, but this is **not a sandbox** and does not block explicitly invoked `npm test`/`npm run`. Sources: [npm ci](https://docs.npmjs.com/cli/commands/npm-ci/), [GitHub secure use](https://docs.github.com/en/actions/reference/security/secure-use). Review Actions as code with runner access; pin verified immutable revisions and minimal token permissions, with no automated settings changes by this guide.
@@ -177,7 +168,6 @@ Dangerous code may execute **before the scanner**: dependency lifecycle scripts,
 
 This shortlist is not exhaustive security coverage. Tool installation, database download/update, network mode, findings policy and permissions remain unspecified until a separate proposal. Nothing is installed, no registry/marketplace is connected; no additional SaaS required. Zero scanner findings do not prove the absence of vulnerabilities; first-party scripts, actions, secrets handling and dependency provenance also require review. The research below refines the proposal; any rollout requires a separate bounded instruction in the current task record.
 
-<a id="risk-triggered-gates-у-чинному-lifecycle"></a>
 ### Risk-triggered gates in the current lifecycle
 
 This is a proposal for the next bounded adoption, not an automatically enabled policy. In the existing task/acceptance record, write only applicable trigger → expected behavior → actual check/artifact → owner → status. No corresponding feature means N/A with a reason; missing required evidence means NOT_TESTED/BLOCKED. No new tracker or identical heavy checklist for every repo is needed.
@@ -193,12 +183,10 @@ This is a proposal for the next bounded adoption, not an automatically enabled p
 | Resource/cost amplification | Define request bytes, batch/array/page limits, queues/concurrency/timeouts and downstream cost budget for the feature. For Go, `ParseMultipartForm(maxMemory)` limits memory file parts and writes the rest to disk; this is NOT a total upload cap. A separate total-body limit is required, for example reviewed `MaxBytesReader` placement. No production load testing. [OWASP API4](https://api-security.owasp.org/editions/2023/en/0xa4-unrestricted-resource-consumption/), [Go net/http](https://pkg.go.dev/net/http) |
 | Errors/logs/traces and incident recovery | Verify redaction of credentials, session IDs and sensitive payloads in actual error/log/trace outputs; define the owner for patch, revoke and rollback, and evidence access/retention boundaries. Supply sanitized artifacts without secrets for review. [Logging](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) |
 
-<a id="scanner-gate-потребує-власної-перевірки"></a>
 ### The scanner gate needs its own verification
 
 Before adoption in a CI/local gate, three harmless fixtures are required: a known positive detection with the expected policy failure, a clean case with PASS, and a tool/config/DB error with ERROR/BLOCKED, not “clean.” Record version/digest, rule-set/version/license, DB timestamp, target snapshot, enabled scanners, coverage/exclusions, output format, findings policy and commands/exits. Verify that the wrapper/CI itself preserves and interprets findings; exit 0 alone is not PASS. [Trivy default exit](https://www.trivy.dev/docs/dev/guide/configuration/others/) can be 0 even with findings. For Go only as a stack-specific candidate: [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) also has output modes with success exit despite findings and documented static-analysis limits. This is not permission to install/run another scanner.
 
-<a id="final-evidence-та-межі-заяв-про-завершення"></a>
 ### Final evidence and boundaries of completion claims
 
 Verify the actual built artifact/handler/runtime on the final snapshot; a copied-handler harness may establish narrow logic but does not replace the real production route. Required CSP/browser interaction, throw path, SSR cancellation/abort, auth/proxy/cache boundaries need separate observable acceptance rows with raw sanitized evidence. Unit/build/merge do not close unverified runtime rows. After a delta, identify invalidated checks and hand the final snapshot to the current independent reviewer; `prepared`/`sent`/`acknowledged` is not `verdict_received`/ACCEPTED. Missing required rows leave VERIFICATION_INCOMPLETE even after merge.

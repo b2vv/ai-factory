@@ -9,14 +9,12 @@ Alongside `~/.agents/skills/` (skills) and `~/.agents/*-cheatsheet.md` (cheat sh
 - **Here** — rules shared by ALL projects (TS idioms, general architectural principles…).
 - **Project-specific** rules remain in the repo (`<repo>/.ai/rules/*.mdc`, `docs/agent/`).
 
-<a id="доступ-з-obsidian"></a>
 
 ## Access from Obsidian
 This directory is **symlinked** into the global vault: `~/vaults/global/rules → ~/.agents/rules`.
 It is therefore visible in every project vault as `4 - Shared/rules/` and exposed through Obsidian MCP.
 Edit files **here** (the physical source); Obsidian displays them through the symlink.
 
-<a id="файли"></a>
 
 ## Files
 - [`typescript-pocock-idioms.md`](typescript-pocock-idioms.md) — Matt Pocock / TotalTypeScript idioms (a distillation).
@@ -34,7 +32,6 @@ Edit files **here** (the physical source); Obsidian displays them through the sy
 
 > Adding a new shared rule → put its `.md` here; it will appear in Obsidian automatically through the symlink.
 
-<a id="як-правило-доходить-до-застосування"></a>
 
 ## How a rule reaches execution
 

@@ -974,11 +974,12 @@
       "source": "~/.agents/skills/anti-slop-design/SKILL.md",
       "destination": "skills/anti-slop-design/SKILL.md",
       "source_sha256": "feeaa8863d5e41439dd574a10bf23d1ec08d09d679822c9cb2c905553396f571",
-      "sha256": "30b435735135e9932e7eca10f99e37012ef08f8ed13f93ff2b751d558b12f38a",
+      "sha256": "79bb55e04736785bdc2e52dc4edcbeb435ed0c263edd22f192b2d891a71aa550",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/anti-slop-design/SKILL.md"
@@ -1321,10 +1322,11 @@
       "source": "~/.agents/skills/deliver/spec-flow/SKILL.md",
       "destination": "skills/deliver/spec-flow/SKILL.md",
       "source_sha256": "5809c7a8c53b13d2bbcca2788c641c3dc56ebe670ed376059f323d8118675e57",
-      "sha256": "9513c3fe270dd3dadfb327a078cc0adb703841bd5f0224da780eaeb078f3ec97",
+      "sha256": "18b9dfe1a3bc99a9e531a65246a59ed32641884bc885b0ea85681fa69ac79ccf",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/spec-flow/SKILL.md"
@@ -1441,13 +1443,14 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "c30fa82e4c2834d18e928a0521dfa8f9407af0316ebc00e5f18c4ccf7abb654e",
+      "sha256": "264e87dd2651551a9901f549dcbc30c28ba77ac31c95b85e58e2be319f736864",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1456,10 +1459,11 @@
       "source": "~/.agents/skills/entity-e2e-coverage/SKILL.md",
       "destination": "skills/entity-e2e-coverage/SKILL.md",
       "source_sha256": "5183ae07f775e28afa6662c3292c7d6a9e71f19c6d86f41b1ccaeacdfc17fac2",
-      "sha256": "eb4e05ecf446cbbcf87fa1b48b42ada906931e7e6bf7c8aa901d673168ef0c32",
+      "sha256": "192e48d25309c8f8d5d30190beae917408e46cebe622008ac86a7ce40507c603",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/SKILL.md"
@@ -1498,10 +1502,11 @@
       "source": "~/.agents/skills/entity-e2e-coverage/references/matrix.md",
       "destination": "skills/entity-e2e-coverage/references/matrix.md",
       "source_sha256": "648ab6d93481e8695a752b2b18d725b9dd21635c5ba52b1f1d38257539e79a9a",
-      "sha256": "94348a1ac21e84fad82d8e404dd99799fe959f05af9bed61815f554d87feaedb",
+      "sha256": "7a19b54979c16106bb75b78ce99e76c5370840524bdfdc0a35ad1a23da6cc116",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/references/matrix.md"
@@ -1520,12 +1525,13 @@
       "source": "~/.agents/skills/entity-e2e-coverage/references/testing-rules.md",
       "destination": "skills/entity-e2e-coverage/references/testing-rules.md",
       "source_sha256": "32117fd6caa2f4f0d3901210737df250553902511894f082c8a75038d6326523",
-      "sha256": "b3005971178abeb238edcd9c56b275f586ca05b2894a9c4f610667a30d7762c0",
+      "sha256": "aa6308ff8dd05b912c4f76c8a5c7fe0ff94ad30a5b1d028ce5dfe6b081d4468a",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/references/testing-rules.md"
@@ -1662,11 +1668,12 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "40bee6d91d5721738737b68ec8e4638c8ba339783ba2caef4984f681f7f9c77e",
+      "sha256": "a15f85159093600fd6151e924fb605666b8c24e962c9f81b93011ef632180ec4",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"
@@ -1675,10 +1682,11 @@
       "source": "~/.agents/skills/pattern-architecture-review/SKILL.md",
       "destination": "skills/pattern-architecture-review/SKILL.md",
       "source_sha256": "ea547aa56bd0af1ecadd26fb206134cc17f2a2dd8e8aea50ceaa6253b9a55966",
-      "sha256": "00737ab24eb9e121b44083cbd3009ba92da6ee3f0cbfc10b43d8d2e0429287d2",
+      "sha256": "010dd2712ea5040bc11f7b756a2f465aa810eeb56816fe9edaa4ee56f587fa56",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pattern-architecture-review/SKILL.md"
@@ -1687,10 +1695,11 @@
       "source": "~/.agents/skills/plan/acceptance-spec/SKILL.md",
       "destination": "skills/plan/acceptance-spec/SKILL.md",
       "source_sha256": "ff7d07cca0c28980c58ee8ca83d0283830ea93a2c2a157a29b37e02a7874fed4",
-      "sha256": "c7fc1efcebd856f3a5cc9e0c1717b8f1cf82ea1de3a1e88de62c1658da84a64b",
+      "sha256": "ca50e57454b1ebd51b8987591de6b40dc5ed18770af5ba4d10eef556e30424aa",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/acceptance-spec/SKILL.md"
@@ -1731,10 +1740,11 @@
       "source": "~/.agents/skills/plan/cto-agenda/SKILL.md",
       "destination": "skills/plan/cto-agenda/SKILL.md",
       "source_sha256": "6647a0d4c831fef9cf0613d469757b5cd6b4800d6c305ff5d27a0dc9e79fb234",
-      "sha256": "e2046c8539ba0e6de8676a4946c2d95c95d9a723ee8bfe84c4ad4cdc3dc192c5",
+      "sha256": "e6272cb4a21d118d05541a1d55dab619b787d3e279bd70b6cd31f641da323e40",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/cto-agenda/SKILL.md"
@@ -1743,10 +1753,11 @@
       "source": "~/.agents/skills/plan/cto-research/SKILL.md",
       "destination": "skills/plan/cto-research/SKILL.md",
       "source_sha256": "b7cb8f3c8b3c369df2e8fc7e773313147ceda4666f9b4c1b5b713c42c7fea814",
-      "sha256": "ef24e940adbaf13802902599f88f16ee00b9af2e4a474b65ac5d085bbc4f1623",
+      "sha256": "68d2b981b06afce7134128dcc5a5f7903409ee55e7a68f0350928923492881e5",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/cto-research/SKILL.md"
@@ -1821,11 +1832,12 @@
       "source": "~/.agents/skills/plan/plan-critique/SKILL.md",
       "destination": "skills/plan/plan-critique/SKILL.md",
       "source_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
-      "sha256": "ea347435529f790bce6e134e4242aa7a46abf22f60982e37af02379406465ad2",
+      "sha256": "e8323990106a6387c7478016ebf6f3b1efb406bdd862c8e2fdfeb3b12db6ce28",
       "source_mode": "0o644",
       "transformations": [
         "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/plan-critique/SKILL.md"
@@ -1834,10 +1846,11 @@
       "source": "~/.agents/skills/plan/plan-defense/SKILL.md",
       "destination": "skills/plan/plan-defense/SKILL.md",
       "source_sha256": "11d1d73ab06cbe44cd3aac4f45fb58a632f415ea89d24959d8234f27b018da6a",
-      "sha256": "a4f7b9a55a873047db2cc57298080e1b63e70fc26d4ed862f1d0cd2a7c2af9f3",
+      "sha256": "bbfd8dac25c17be31d6277c447e007aae09a3077da2a2818ecbce81a8995d141",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/plan-defense/SKILL.md"
@@ -2006,10 +2019,11 @@
       "source": "~/.agents/skills/ship/post-deploy-check/SKILL.md",
       "destination": "skills/ship/post-deploy-check/SKILL.md",
       "source_sha256": "1c6219db3c8cad207cb73c2bfc6ba3d5f533daff70ea64504edf70f8bb597bea",
-      "sha256": "1dc7192777bc13ed2cfe2bb26f2d694175a251079f34083881c13bb3e224c677",
+      "sha256": "50b0ecd2821588fe9a8cdd6159ce5fab56f0721dc14bc8b092fea25528de53af",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/post-deploy-check/SKILL.md"
@@ -2104,10 +2118,11 @@
       "source": "~/.agents/skills/ship/ship-report/SKILL.md",
       "destination": "skills/ship/ship-report/SKILL.md",
       "source_sha256": "9627b7ab729a2fbc4615526cb419a2c49a0e08529e32a5a68b7981dda6dc0651",
-      "sha256": "9c5606305aebbd398d56a753a5c53965b321f2b01c7b2b41bab12fe830fcc9f8",
+      "sha256": "f47f749aa9b24fee8546bfd811c3246b781dc385db6c2a468b544d88621fd61d",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/ship-report/SKILL.md"
@@ -3613,10 +3628,11 @@
       "source": "~/.agents/skills/utils/repo-bootstrap/SKILL.md",
       "destination": "skills/utils/repo-bootstrap/SKILL.md",
       "source_sha256": "f23264994ee42ce507b32b287d2045a4b1ee9061f9927651fbfe9b54c99877d0",
-      "sha256": "635aa7d84eeaee8541dafbf158d4f1612a7b9ba3511f5128a72d045a564d5d9b",
+      "sha256": "1349eab9a25cd9db9859390330f6f4cbe544f8e09ff1456ef098abfeef9fb78b",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/repo-bootstrap/SKILL.md"
@@ -3806,12 +3822,13 @@
       "source": "~/.agents/skills/ux-review/SKILL.md",
       "destination": "skills/ux-review/SKILL.md",
       "source_sha256": "af2e4fddf30ce8465f332de91d1f4360dfe140e474e1027d92f10e557a5f5462",
-      "sha256": "30b3cac8a3957f249cfbd56e19e6658ab39aeb399c06e46fece3912f40785be6",
+      "sha256": "ed121a0e57e2ec85a7fbe67201445366e0e51959741d2d61690dd986835a24a6",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/SKILL.md"
@@ -3820,10 +3837,11 @@
       "source": "~/.agents/skills/ux-review/references/rules.md",
       "destination": "skills/ux-review/references/rules.md",
       "source_sha256": "86360cabff2457f170bc4c38d3a6c69859425f817f36e425c701b9e9455d19b6",
-      "sha256": "6758e9ba854d216bb1d19617daa3bc4012251c55cab253e51f5108a7979b0645",
+      "sha256": "eddc2da58eabfef0cf65cc5aa5cf6031906c14a27bc8c31d4a6782ac61ebc234",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/references/rules.md"
@@ -3832,14 +3850,15 @@
       "source": "~/.agents/ai-factory/ai-factory-plan.md",
       "destination": "ai-factory/ai-factory-plan.md",
       "source_sha256": "38792d0770a46719fc3521bc239c3e7a67e80224507d3790884996b41f8fb5d4",
-      "sha256": "6fb45dd999978372b172872fd7682c8b8f9fc5c02c486d413d207507bb23c45f",
+      "sha256": "7af05303aa72a801c01ca5e9e16255897686aab85f9eee78c871d3d75de8166a",
       "source_mode": "0o644",
       "transformations": [
         "absolute shared-source Markdown links made relative",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/ai-factory-plan.md"
@@ -3848,14 +3867,15 @@
       "source": "~/.agents/ai-factory/crg.md",
       "destination": "ai-factory/crg.md",
       "source_sha256": "ff093a451960dc7e925d597780edbd07fbd63b024ea6aa1b4b23837cc0fd1ba4",
-      "sha256": "c09092aa902e551906f79e085c9cacb9ff1995439b65bf44da508b88cffdfb0c",
+      "sha256": "7c371ac34405a6f09cef56be4950e04631af002869e568f575897587c051da41",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/crg.md"
@@ -3864,7 +3884,7 @@
       "source": "~/.agents/ai-factory/feature-lifecycle.md",
       "destination": "ai-factory/feature-lifecycle.md",
       "source_sha256": "c01ea920e05f3eb03357d024f3499ec728b4866ba11ddafb0cc8cdaeec3bfd06",
-      "sha256": "35ce2cc6bc16d95c27f20296209bf3a395717e2d803ba71674c9d34c5021673e",
+      "sha256": "f0a5063ca35e690ade5733ac8dfc3ca59a856350c9c61b5e91d776468d7a4758",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
@@ -3878,7 +3898,8 @@
         "Proposed authored security adapter navigation and explicit review delivery/completion states; no runtime adoption",
         "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/feature-lifecycle.md"
@@ -3900,12 +3921,13 @@
       "source": "~/.agents/ai-factory/models.md",
       "destination": "ai-factory/models.md",
       "source_sha256": "c6be2aecf00624d04155b0ecc3fff34501518faa1e771da7850ecee462fc5878",
-      "sha256": "c58d9d766c6c0361e371b008336966ec3d8004140615d26081b7c7f0aa673179",
+      "sha256": "44784eeef678b26c33e4b6c9776d1b436df5be89bf818853d05371ac6d98c9a8",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/models.md"
@@ -3927,12 +3949,13 @@
       "source": "~/.agents/ai-factory/onboarding/acceptance-template.md",
       "destination": "templates/acceptance-full.md",
       "source_sha256": "9c7c4cc0b3d809c1a9b96c88f7560f1cbe0b1de14ff3bcea4ac2629c91f4841f",
-      "sha256": "6e3a5ee9a70cf0c67523a67ccf615abbca105165465032754661f4b5470dbc12",
+      "sha256": "a1dbde842e097aa064d009a1bf098a4781f2abf1fa3bbef980b891b7f4136209",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.6.1 documentation hygiene routing; original skills unchanged",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/acceptance-template.md"
@@ -3941,14 +3964,15 @@
       "source": "~/.agents/ai-factory/onboarding/adapter-template.md",
       "destination": "templates/adapter-full.md",
       "source_sha256": "027f4b281853154d33a1779c495b713d6ab0729fd2035438fc993e19e7b32b66",
-      "sha256": "7f65a5e3130bfc0642392b4f59443ba40cbd66326bd4313493f08dde5e63f4a3",
+      "sha256": "d749a70679bf1119cb9b3faa4823f2e5e9190dc7d17a3ca5f8180e1b84a38bb3",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.6.1 documentation hygiene routing; original skills unchanged",
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
         "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/adapter-template.md"
@@ -3957,11 +3981,12 @@
       "source": "~/.agents/ai-factory/onboarding/change-protocol.md",
       "destination": "ai-factory/onboarding/change-protocol.md",
       "source_sha256": "3e9a2f5e676c8e215a1ab550a799139f4f07d800799325e01a101fadf309530a",
-      "sha256": "25d489463380d53651d16120fd4ee1551b17fec83199aa64797d55a43d135808",
+      "sha256": "19c0e51d44f318840357fee0da21563eace9499ba1a51d22f6a328f53d5a0c17",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/change-protocol.md"
@@ -4000,14 +4025,15 @@
       "source": "~/.agents/ai-factory/onboarding.md",
       "destination": "ai-factory/onboarding.md",
       "source_sha256": "447bd78eeefc80a962204299a8cc81e2d4cadd85ac6f280fc9b8b834ef3f104b",
-      "sha256": "d01f5d0e512897466b2f3c4e77cbcc4e93f22e3ecbbce70a5a252046cfc4ba45",
+      "sha256": "5fcf831d1c47b6517c32457a96b2fe0060c5921b9ed715212ef76f9becced1e8",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.4 explicit path/example and test-import relocation; no policy merge",
         "0.6.1 documentation hygiene routing; original skills unchanged",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding.md"
@@ -4073,14 +4099,15 @@
       "source": "~/.agents/ai-factory/review-handoff.md",
       "destination": "ai-factory/review-handoff.md",
       "source_sha256": "d8dd6d8fbabac2e80f02a4525af328a6711b448ad756eee318af1b12fc5d8a6c",
-      "sha256": "57048b2880d0afda592710bfafb153ff94c1dbcf0b97f904443741857f114813",
+      "sha256": "d0393a01acb207feae9f112df726e7813c79ac20445713b55a92961af4d20740",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.4 explicit path/example and test-import relocation; no policy merge",
         "Proposed authored security adapter navigation and explicit review delivery/completion states; no runtime adoption",
         "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/review-handoff.md"
@@ -4089,7 +4116,7 @@
       "source": "~/.agents/ai-factory/roadmap.md",
       "destination": "ai-factory/roadmap.md",
       "source_sha256": "950c4e69053cd36d879e9033ef2f3b03da54c9cf33994f9b23ad56cd79dc9ab9",
-      "sha256": "72f690b0a4b3a0eb7c7d4d4f24680d1dde8207137cab83784160d1b7e8e1495d",
+      "sha256": "b3ec939f1e95c21d60c449bd59b9ca8bf43d672f9ddeb6320a2c87f12660b341",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
@@ -4097,7 +4124,8 @@
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/roadmap.md"
@@ -4141,14 +4169,15 @@
       "source": "~/.agents/ai-factory/status.md",
       "destination": "ai-factory/status.md",
       "source_sha256": "528af2ca15f09be2097e3218a6073b5814bf57e1a42a3bc37f955ee7a398a63d",
-      "sha256": "704bf0fcf929b6ea9cb031dadcf65ee6e6a293fd2befedd09e41863462a2fe8d",
+      "sha256": "33c79369248f5934810ed0f55c7f97baa8e6f95fd5760d48ffc5cc02f034a573",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/status.md"
@@ -4157,7 +4186,7 @@
       "source": "~/.agents/ai-factory/workflow.md",
       "destination": "ai-factory/workflow.md",
       "source_sha256": "486bedd21354d25a766a1e7b8577d0ab5d055621e7ad0ce62ae8f7238be961b7",
-      "sha256": "fd6009e489be2defee7804c5b9eb26f86bf2f06102bfe260382be17562999ebb",
+      "sha256": "af757510334827fde624a18e31194e13d46f170b3c6288c329fa4ae7c3eb52e3",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4168,7 +4197,8 @@
         "AF-12 explicit interview/architecture routing and non-enforcing evidence counts; original skill contracts and historical source hash retained",
         "AF-13 owner-approved qualitative mandatory criteria; informational percentages, explicit blockers, no numeric cutoff; synthetic examples only",
         "Owner-authorized optional language reference navigation; existing skill bodies and core authority unchanged",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/workflow.md"
@@ -4177,12 +4207,13 @@
       "source": "~/.agents/rules/README.md",
       "destination": "rules/README.md",
       "source_sha256": "645b0ee343fa2d9ab8184854c78a589dc9a1b65ee7b5f36ff3da1f2a73e892eb",
-      "sha256": "97460996a0534546208b48ae8951a75f9f0ca22bb46b0efd445c0c6d79b34129",
+      "sha256": "934bed423df7cc3ccb9ce49312e152e33e50a62b4d53f261c2bfd26df3541948",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/rules/README.md"
@@ -4221,11 +4252,12 @@
       "source": "~/.agents/rules/subagent-orchestration-ledger.md",
       "destination": "rules/subagent-orchestration-ledger.md",
       "source_sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977",
-      "sha256": "09dcbdfdb2e3ab783ce2dc2a7906eecc018ac64ec623218a786233b418f66cd8",
+      "sha256": "03626da3bc9480b4a51c5837bba1c675366f408de23e6a685ef66f9bedba0af2",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/rules/subagent-orchestration-ledger.md"
@@ -4244,12 +4276,13 @@
       "source": "~/.agents/AGENTS.md",
       "destination": "rules/agent-entry.md",
       "source_sha256": "b7dffab20ba9d6cc341173912fe192e4df217023a922299f338b3407b915b4fa",
-      "sha256": "5b1a772fbdc6fe04e1e5307ec1096b04f1caf54e35ce2edca7cca088f0091933",
+      "sha256": "8fba1330a804e830e7ee6c25f6043be8d7f928dd72624f99883134d607376975",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "category": "canonical-instructions-and-guides",
       "previous_release_destination": "collection/agents/AGENTS.md"
@@ -4294,9 +4327,10 @@
       "source": "~/.agents/skills/design-pass/references/viewport-coverage.md",
       "destination": "skills/design-pass/references/viewport-coverage.md",
       "source_sha256": "f11b42f76cbe6b873b681202417c2a0ebbe4d1774e329fd9ffbb9b91fcf64882",
-      "sha256": "acd275de5fe493507af9d50283cfcb406325a0a82a001cca3a87b3dee401f300",
+      "sha256": "dba1e9c2f15b0cded329b9dfa4e337a2479bf0b4995d8225ab786f344ed42428",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
       ],
       "source_mode": "0o644",
       "category": "owner-authored-ui-reference"

@@ -3,7 +3,6 @@ name: acceptance-spec
 description: Describes a feature as observable product behavior — scenario, precondition, user action, expected result, verification method — before any code is written. Use when planning a feature and recording how it should work for the user, or on triggers "acceptance", "приймальні критерії", "сценарії тестування" (retained Ukrainian compatibility aliases).
 ---
 
-<a id="acceptance-spec--фіча-як-спостережувана-поведінка"></a>
 
 # acceptance-spec — a feature as observable behavior
 
@@ -15,7 +14,6 @@ the internal implementation; this table records what is visible **from outside**
 on screen, in a response, in a file. Internal state, a private field, a function call do not belong here;
 they belong at the unit level.
 
-<a id="1-збери-сценарії"></a>
 
 ## 1. Collect scenarios
 
@@ -28,7 +26,6 @@ Take the plan (or spec) and list scenarios in three groups — **all three are m
 Groups 2–3 overlap with `plan-defense` questions. This is not duplication: that checks
 **whether the plan considered it**; this checks **exactly what the user experiences**.
 
-<a id="2-заповни-таблицю"></a>
 
 ## 2. Fill in the table
 
@@ -45,7 +42,6 @@ Rules for filling it in:
   A “manual” row is allowed, but then it **stays in the report permanently** as a manual step.
 - One row = one scenario. Split two expectations in one row into two rows.
 
-<a id="3-привяжи-до-роботи"></a>
 
 ## 3. Connect it to the work
 
@@ -54,7 +50,6 @@ Rules for filling it in:
 - Rows without an existing test become separate test-writing tasks — and under
   `tdd` those tests are written **first**.
 
-<a id="4-завершення"></a>
 
 ## 4. Completion
 

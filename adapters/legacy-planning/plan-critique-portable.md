@@ -5,7 +5,6 @@ description: Critiques a completed plan through four independent lenses — AI-s
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.
 
-<a id="plan-critique--чотири-лінзи-по-плану"></a>
 # plan-critique — four lenses on a plan
 
 The gate between “the plan is written” and “we execute the plan.” It differs from `grilling`: `grilling`
@@ -15,13 +14,11 @@ questions **you**, while this skill reads **the plan** and returns findings.
 the others. One reading “for everything bad” yields one finding and a sense of completion; four narrow
 readings yield four different ones.
 
-<a id="1-підготуй-матеріал"></a>
 ## 1. Prepare the material
 
 Input: a plan file (`plan.md`, `spec.md`, task). Plus context without which the lenses are blind:
 the repo briefing (`cto-research`), repo standards, existing mechanisms the plan could reuse.
 
-<a id="2-прожени-чотири-лінзи-паралельно"></a>
 ## 2. Run four lenses in parallel
 
 Each lens is a **separate independent reviewer with a clean context through the agreed route**, seeing the plan and context but not
@@ -48,7 +45,6 @@ weight:  blocking | non-blocking
 **Blocking** = this part of the plan leads to a wrong result or rework.
 **Non-blocking** = costs extra, but the result will be correct.
 
-<a id="лінза-що-не-повернулась"></a>
 ### A lens that did not return
 
 A subagent may fail on infrastructure, be skipped or return `null`. This is **not** “clean” —
@@ -61,7 +57,6 @@ it is a lens that did not run, and silence makes it look exactly like a clean re
 
 Roles and availability: [models](../../docs/portable/models.md); route: [review handoff](../../docs/portable/review-handoff.md). Do not launch new subagents without an agreed route; existing separate contexts are acceptable. The author's context is not an independent lens.
 
-<a id="3-зведи"></a>
 ## 3. Consolidate
 
 - Collapse duplicates across lenses into one finding, preserving how many lenses saw it
@@ -69,7 +64,6 @@ Roles and availability: [models](../../docs/portable/models.md); route: [review 
 - Sort blocking findings first.
 - Turn each blocking finding into a plan correction — and name the changed line.
 
-<a id="4-завершення"></a>
 ## 4. Completion
 
 The skill is complete when **all** of these hold:

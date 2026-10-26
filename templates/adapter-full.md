@@ -1,4 +1,3 @@
-<a id="ai-factory--адаптер-наявного-workflow"></a>
 
 # AI Factory — existing workflow adapter
 
@@ -32,7 +31,6 @@ Small has one primary record containing scope/acceptance, plan, journal and resu
 
 Before invoking a required skill, check its exact file and discovery: Codex `$name`, Claude `/name`; reading a file is a fallback, not invocation proof. Pattern — according to structural impact, including test helpers; entity/scoped-filter proof and UI-copy layout — according to acceptance. One orchestrator, without launching all skills.
 
-<a id="migration--рішення"></a>
 
 ## Migration / decisions
 
@@ -44,7 +42,6 @@ After clear/new startup/resume: bound pending → short task/checkpoint + “Con
 
 Lowering a required gate: state the time saved and protection lost, with a link to the decision; without it, the gate remains. RED/GREEN is bug proof; mutation has separate evidence. Blocked execution means BLOCKED or an authorized mechanism, without bypassing the sandbox.
 
-<a id="приймання-підключення"></a>
 
 ## Integration acceptance
 

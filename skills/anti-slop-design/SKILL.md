@@ -4,7 +4,6 @@ description: 'A concrete catalog of frontend design AI tells (typography, color,
 license: Adapted from leonxlnx/taste-skill (MIT); see Provenance.
 ---
 
-<a id="anti-slop-design--каталог-ai-tells--гейт"></a>
 
 # anti-slop-design — AI-tell catalog + gate
 
@@ -14,7 +13,6 @@ These are **facts and a gate**, not a method. The method—when to branch (page 
 
 ---
 
-<a id="0-design-read--один-рядок-до-коду"></a>
 
 ## 0. Design read — one line BEFORE code
 
@@ -28,7 +26,6 @@ The audience chooses the aesthetic, not your taste. If the brief is unambiguous,
 
 ---
 
-<a id="1-три-дилси"></a>
 
 ## 1. Three dials
 
@@ -52,13 +49,11 @@ The dials are variables referenced throughout the rest. Do not invent aliases (`
 
 ---
 
-<a id="2-каталог-ai-tells-bias-correction"></a>
 
 ## 2. AI-tell catalog (bias correction)
 
 Every rule has an **override path**. Avoid by default; override when the brand/brief explicitly requests it.
 
-<a id="21-типографіка"></a>
 
 ### 2.1 Typography
 
@@ -67,7 +62,6 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 - **Headline emphasis** uses italic/bold in the SAME font, not a random serif word inserted into sans (or vice versa). Mixed emphasis is amateurish.
 - **Italic descender clearance:** an italic word with `y g j p q` at `leading-none` clips descenders; use at least `leading-[1.1]` + `pb-1`.
 
-<a id="22-колір"></a>
 
 ### 2.2 Color
 
@@ -76,7 +70,6 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 - **Consistency lock:** use the chosen accent across the ENTIRE page. A warm-gray page does not get a blue CTA in section 7. One palette per project, without switching between warm↔cool grays.
 - **Premium-consumer ban** (the second most common tell): for cookware/wellness/artisan/luxury, the LLM default is beige/cream + brass/clay/oxblood + espresso. **Banned as a default reach.** Rotate instead: Cold Luxury (silver/chrome/smoke), Forest (green/bone/amber), Black-and-Tan, Cobalt+Cream, Terracotta+Slate, or pure monochrome + one pop. Do not use the same warm-craft palette twice in a row. _Override:_ the brand explicitly names these colors.
 
-<a id="23-лейаут"></a>
 
 ### 2.3 Layout
 
@@ -85,7 +78,6 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 - **Eyebrow cap (mechanical):** the number of `uppercase tracking` microlabels above headings ≤ ceil(sections / 3). The hero counts as 1.
 - **Section-layout variety:** for 8 sections, at least 4 different layout families.
 
-<a id="24-матеріальність-і-декор"></a>
 
 ### 2.4 Materiality and decoration
 
@@ -94,7 +86,6 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 - **One corner-radius system** across the entire screen.
 - **Banned decorative slop** (default off; only with a real semantic reason): version footers on marketing (`v1.4.2`, `Build 0048`, `last sync 4s ago`), scroll cues (`Scroll ↓`), section-number eyebrows (`00 / INDEX`, `06 · how it works`), decorative strips at the bottom of the hero (`BRAND. MOTION. SPATIAL.`), fake photo-credit captions (`Field study no. 12 · Ines Caetano`), pills/labels over images, decorative dots, locale/city/weather strips without a global-context reason.
 
-<a id="25-копірайт-і-чесність-доказу"></a>
 
 ### 2.5 Copy and honest evidence
 
@@ -102,7 +93,6 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 - **No fabricated evidence.** Do not invent client logos, testimonials, metrics or “Trusted by”. Mark demo content with a user-visible label (`sample`, `example`, `demo`). An HTML comment alone is not visible labeling. Do not support a production claim with another AI-generated page.
 - **A realistic mock ≠ fraud:** unique avatars/dates instead of identical ones are fine for avoiding a templated look, but this concerns demo plausibility, not forging real identities.
 
-<a id="26-моушн"></a>
 
 ### 2.6 Motion
 
@@ -112,7 +102,6 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 - **No `window.addEventListener('scroll')`**: only `useScroll()` / ScrollTrigger / IntersectionObserver / CSS scroll-driven. `useEffect` animations require strict cleanup.
 - **Spring, not linear** for microinteractions (e.g. `type:"spring", stiffness:100, damping:20`).
 
-<a id="27-вивід-і-залежності"></a>
 
 ### 2.7 Output and dependencies
 
@@ -121,7 +110,6 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 
 ---
 
-<a id="3-pre-flight-гейт-перед-готово"></a>
 
 ## 3. Pre-flight gate (before “done”)
 
@@ -146,7 +134,6 @@ Mechanical, not eyeballed. A failed box means not done.
 
 ---
 
-<a id="4-у-проєкті-факти-проєкту-перемагають-ці-дефолти"></a>
 
 ## 4. In a project: project facts override these defaults
 

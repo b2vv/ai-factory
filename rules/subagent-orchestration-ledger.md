@@ -2,7 +2,6 @@
 title: Subagent-orchestration — ledger + status protocol + brief-file handoff
 ---
 
-<a id="-subagent-orchestration-ledger-4-статуси-brief-файли"></a>
 
 # 🧩 Subagent-orchestration: ledger, 4 statuses, brief files
 
@@ -12,7 +11,6 @@ title: Subagent-orchestration — ledger + status protocol + brief-file handoff
 
 ---
 
-<a id="коли-застосовувати"></a>
 
 ## When to apply
 
@@ -20,7 +18,6 @@ You are executing a plan with **multiple independent tasks** through subagents i
 
 ---
 
-<a id="1-durable-ledger-progress-файл"></a>
 
 ## 1. Durable ledger (progress file)
 
@@ -46,7 +43,6 @@ One durable note that survives context compaction and session reset.
 
 ---
 
-<a id="2-статус-протокол-implementerа-4-коди--реакція-controllerа"></a>
 
 ## 2. Implementer status protocol (4 codes → controller response)
 
@@ -61,7 +57,6 @@ Each implementer finishes with **one of 4 statuses**; each triggers a specific r
 
 ---
 
-<a id="3-brief-file-handoff-артефакти-як-файли-не-інлайн-текст"></a>
 
 ## 3. Brief-file handoff (artifacts as files, not inline text)
 
@@ -78,7 +73,6 @@ To keep dispatch prompts thin and resilient to compaction, pass **file paths**, 
 
 ---
 
-<a id="антипатерни"></a>
 
 ## Antipatterns
 

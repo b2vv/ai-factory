@@ -1,4 +1,3 @@
-<a id="ux-review--руллсет-цитовані-ux-правила"></a>
 
 # ux-review — ruleset (cited UX rules)
 
@@ -42,7 +41,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [law] Zeigarnik Effect — unfinished tasks are remembered better → violation: no progress indicator/checklist for a multistep flow → https://lawsofux.com/zeigarnik-effect/
 [law] Von Restorff (Isolation) Effect — a distinct element is remembered → violation: multiple “primary” CTAs compete; the primary action is not visually distinguished → https://lawsofux.com/von-restorff-effect/
 
-<a id="3-wcag-22-ux-дотичні-sc"></a>
 
 ## 3. WCAG 2.2 (UX-related SC)
 [wcag] 2.5.8 Target Size (Min) AA — targets ≥24×24 CSS px or sufficient spacing → violation: a <24px click target without a spacing/inline/UA/essential exception → https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
@@ -62,7 +60,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [wcag] 3.3.8 Accessible Authentication (Min) AA — no cognitive test for login → violation: password paste prohibited; puzzle CAPTCHA without an alternative → https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html
 [wcag] 2.5.7 Dragging Movements AA — a single-pointer alternative to dragging → violation: reorder/slider only by dragging, without a click alternative → https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html
 
-<a id="4-форми"></a>
 
 ## 4. Forms
 [form] One thing per page — one question/decision per page (group only where research supports it) → violation: a long multisection form where focus is lost → https://design-system.service.gov.uk/patterns/question-pages/
@@ -76,7 +73,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [form] Destructive confirmation — destructive/financial/legal actions reversible, checked or confirmed → violation: one-click delete/pay without confirm/undo → https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html
 [form] Logical grouping — group related fields (proximity/common region) → violation: chaotic field order; a label closer to another field → https://lawsofux.com/proximity/
 
-<a id="5-таблиці--списки-даних"></a>
 
 ## 5. Tables / data lists
 [table] Numeric right-align — numbers right-aligned, preferably tabular/monospaced digits → violation: left-aligned numbers make place values hard to compare → https://www.nngroup.com/articles/data-tables/
@@ -89,7 +85,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [table] Narrow-screen strategy — on narrow screens: horizontal scroll with a sticky column (identifier + actions) or stacked cards, without clipping → violation: the table breaks the layout/is clipped; actions disappear during horizontal scrolling → https://www.nngroup.com/articles/mobile-tables/
 [table] Empty/zero state — an empty table explains what will be here and offers an action → violation: emptiness without explanation (loading? error?) → https://www.nngroup.com/articles/empty-state-interface-design/
 
-<a id="6-навігація--ia"></a>
 
 ## 6. Navigation / IA
 [nav] Single primary nav — one primary navigation, stable across screens → violation: competing navigation systems or navigation changing order → https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html
@@ -97,7 +92,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [nav] Breadcrumbs for depth — breadcrumbs in deep hierarchies → violation: a deep section with no path back through levels → https://www.nngroup.com/articles/breadcrumbs/
 [nav] Consistent identification — identical actions have identical labels/icons → violation: “Delete” is sometimes a button, sometimes a trash icon, sometimes “Remove” → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
 
-<a id="7-зворотний-звязок-і-стани"></a>
 
 ## 7. Feedback and states
 [state] Loading threshold — <1s nothing; 1–10s spinner/skeleton; >10s progress bar with % and cancellation → violation: a spinner for <1s (flickering) or a blank screen for >10s → https://www.nngroup.com/articles/response-times-3-important-limits/
@@ -107,7 +101,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [state] Success + undo — confirm success; provide undo for destructive actions → violation: silent success; deletion without “Undo” → https://www.nngroup.com/articles/ten-usability-heuristics/
 [state] Progress indicator >10s — long operations with percentage progress and a time estimate → violation: an endless spinner for a long operation → https://www.nngroup.com/articles/progress-indicators/
 
-<a id="8-контент--мікрокопі"></a>
 
 ## 8. Content / microcopy
 [copy] Action-oriented buttons — button label = action/outcome (verb) → violation: “OK/Submit/Yes” instead of “Save changes/Delete course” → https://www.nngroup.com/articles/ten-usability-heuristics/
@@ -115,7 +108,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [copy] Consistent terminology — one term per concept throughout the product → violation: “course/program/class” used as synonyms → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
 [copy] Predictability — label/action fulfills its promise → violation: “Save” also publishes; a link leads elsewhere → https://lawsofux.com/jakobs-law/
 
-<a id="9-мобтачреспонсив"></a>
 
 ## 9. Mobile/touch/responsive
 [mobile] Touch target — ≥44×44 pt (Apple HIG) / ≥48×48 dp (Material); WCAG min 24px / AAA 44px: name the applicable threshold → violation: a 24px icon button as the primary touch action → https://developer.apple.com/design/human-interface-guidelines/accessibility ; https://m3.material.io/foundations/designing/structure
@@ -123,7 +115,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [mobile] No 2D scroll (Reflow) — content without horizontal scrolling at 400% (320 CSS px), except exceptions (tables/maps) → violation: a wide block breaks the viewport → https://www.w3.org/WAI/WCAG22/Understanding/reflow.html
 [mobile] Resize text 200% — text readable when enlarged to 200% without loss/overlap → violation: clipping/overlapping at 200% text → https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html
 
-<a id="10-когнітивне-навантаження"></a>
 
 ## 10. Cognitive load
 [cog] Progressive disclosure — show only what is needed now, reveal the rest on demand → violation: all options/fields on one screen at once → https://www.nngroup.com/articles/progressive-disclosure/
@@ -131,7 +122,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 [cog] Recognition over recall — recognition instead of recall (visible options, recents, autofill) → violation: users must remember a code/name from another screen → https://www.nngroup.com/articles/ten-usability-heuristics/
 [cog] Chunking 5±2 — group into blocks of ~5±2, not long ungrouped lists → violation: a menu/form with 15 equal items without groups → https://lawsofux.com/millers-law/
 
-<a id="11-стани-інтерактивних-контролів"></a>
 
 ## 11. Interactive control states
 [states] Interaction-state matrix — each interactive control defines and visually distinguishes rest / hover / active(pressed) / focus / disabled / loading → violation: hover=rest; no pressed feedback; disabled indistinguishable from active; loading without indication → https://m3.material.io/foundations/interaction/states/overview
@@ -141,7 +131,6 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 
 ---
 
-<a id="найавторитетніші-джерела-для-цитування"></a>
 
 ## Most authoritative sources (for citation)
 - NN/g 10 Usability Heuristics — https://www.nngroup.com/articles/ten-usability-heuristics/

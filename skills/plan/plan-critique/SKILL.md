@@ -3,7 +3,6 @@ name: plan-critique
 description: Critiques a completed plan through four independent lenses — AI-slop, logical gaps, unnecessary complexity, uncovered edge cases — and consolidates findings into blocking / non-blocking. Use as a gate after writing a plan or spec, before splitting into tasks, or on triggers "критика плану", "прожар план", "plan critique" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-<a id="plan-critique--чотири-лінзи-по-плану"></a>
 
 # plan-critique — four lenses on a plan
 
@@ -14,14 +13,12 @@ The gate between “plan written” and “execute the plan”. It differs from 
 the rest. One reading “for everything bad” yields one finding and a feeling of completion; four narrow
 readings yield four different ones.
 
-<a id="1-підготуй-матеріал"></a>
 
 ## 1. Prepare the material
 
 Input: the plan file (`plan.md`, `spec.md`, task). Add the context without which the lenses are blind:
 repository briefing (`cto-research`), repository standards, existing mechanisms the plan could reuse.
 
-<a id="2-прожени-чотири-лінзи-паралельно"></a>
 
 ## 2. Run four lenses in parallel
 
@@ -49,7 +46,6 @@ weight:  blocking | non-blocking
 **Blocking** = this point in the plan leads to an incorrect result or rework.
 **Non-blocking** = costs extra, but the result will be correct.
 
-<a id="лінза-що-не-повернулась"></a>
 
 ### A lens that did not return
 
@@ -64,7 +60,6 @@ it is a lens that did not run, and silence makes it look exactly like a clean re
 Tier and lens independence: `~/.agents/rules/multi-model-roles.md` §3. A fresh subagent is mandatory:
 `fork` inherits the plan author's context and model, so it does not count as a lens.
 
-<a id="3-зведи"></a>
 
 ## 3. Consolidate
 
@@ -73,7 +68,6 @@ Tier and lens independence: `~/.agents/rules/multi-model-roles.md` §3. A fresh 
 - Sort blocking first.
 - Turn each blocking finding into a plan edit — and name the changed line.
 
-<a id="4-завершення"></a>
 
 ## 4. Completion
 

@@ -3,16 +3,14 @@ title: "ADR and workflow: QnA and generic-ui sources"
 reviewed: 2026-10-16
 ---
 
-> **Historical English translation — authored derivative.** Original: [ai-factory/repo-evidence.md](../../../../ai-factory/repo-evidence.md). Original SHA256: `1dc7347146630f15d4b0fff6a3878b21f0787006494be0d26c96a49f3585116c`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The sealed original remains unchanged; the in-repository historical document has a separately recorded local-project reference cleanup. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Original-language compatibility anchors and literal protocol tokens remain where required.
+> **Historical English translation — authored derivative.** Original: [ai-factory/repo-evidence.md](../../../../ai-factory/repo-evidence.md). Original SHA256: `1dc7347146630f15d4b0fff6a3878b21f0787006494be0d26c96a49f3585116c`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The sealed original remains unchanged; the in-repository historical document has a separately recorded local-project reference cleanup. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
 
 [Entry point](../../../legacy/ai-factory-plan-entry.md) · [Status](../../../../ai-factory/status.md#capabilities) · [Routes](../../../../ai-factory/workflow.md#routing) · [Tasks](../../../../ai-factory/roadmap.md#tasks) · [Repository practices](#repo-evidence) · [History](../../../../ai-factory/history.md#history)
 
 <a id="repo-evidence"></a>
 
-<a id="adr-і-workflow-джерела-qna-та-generic-ui"></a>
 # ADR and workflow: QnA and generic-ui sources
 
-<a id="71-джерела-й-межі-висновку"></a>
 ### 7.1 Sources and limits of the conclusion
 
 The `work/` directories inside two repositories were examined. Source names and line numbers below are historical attributions; unavailable local-project link targets have been removed without claiming current access or revalidation:
@@ -24,7 +22,6 @@ In both, `CLAUDE.md` refers to `AGENTS.md`. Below, **rules**, **existing example
 
 <a id="adr-gates"></a>
 
-<a id="72-коли-потрібен-adr-а-коли-достатньо-іншого-запису"></a>
 ### 7.2 When an ADR is needed and when another record suffices
 
 **Confirmed common rule in these two projects:** a candidate must meet all four criteria — hard to reverse; the decision is not obvious without context; there is a real rejected alternative with a reason; the record changes the reader's/agent's future actions. Sources: QnA PRINCIPLES.md:44, generic-ui constitution.md:89. This describes local contracts, not an already established global requirement for all repositories.
@@ -37,7 +34,6 @@ Practical candidates from the sources:
 
 **An ADR is not automatically required** for every task, TODO, deferred cleanup, obvious edit, or implementation recap. If even one criterion fails, put a short “why” in the owning document/comment or omit the record. Correcting a stale fact in an existing ADR is not a new decision: in QnA this is a separate mandatory freshness check that does not repeat the four criteria (PRINCIPLES.md:116). Changing the decision itself or the reason for rejecting an alternative requires a new decision, not a silent rewrite of the old one.
 
-<a id="73-хто-запускає-етапи-і-як-повязані-артефакти"></a>
 ### 7.3 Who initiates stages and how artifacts relate
 
 | Question | QnA backend | generic-ui |
@@ -56,7 +52,6 @@ Table sources: QnA work/README.md:9, work-reviewer.md:32, design/README.md:12, a
 
 <a id="repo-skills"></a>
 
-<a id="74-які-скіли-справді-підключені"></a>
 ### 7.4 Which skills are actually connected
 
 **QnA — existing local file** .claude/skills/work/SKILL.md:1. It follows `work/README.md` rather than replacing it:
@@ -75,7 +70,6 @@ There are, however, prompt skills directly connected through specs/README.md:22:
 
 Invoke them with an explicit request to read the file; frontmatter alone does not confirm a slash command. Global `spec-flow`, `plan-critique`, or `design-pass` can be proposed here as supporting lenses, but do not claim they are already automatically integrated into these local processes.
 
-<a id="75-приклади-й-виявлені-розбіжності"></a>
 ### 7.5 Examples and identified discrepancies
 
 - **QnA, observed example:** work/038-message-feedback/plan.md:3 links ticket, base, and design, and explicitly explains a different branch name as the operator's decision. review.md:119 separates fact corrections in ADR 0002/0013 from the promote list:158 for the new rewind invariant; ADR 0032 exists on disk. This proves an artifact relationship, not landing or a repeated gate run.

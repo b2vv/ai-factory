@@ -7,12 +7,10 @@ reviewed: 2026-10-16
 
 <a id="tasks"></a>
 
-<a id="черга-розвитку-та-критерії-приймання"></a>
 # Development queue and acceptance criteria
 
 These are tasks and target criteria, not an instruction to execute them all. Current status lives only in [status.md](status.md#capabilities). First inspect the target repo: do not recreate what is already implemented. Repository commands/ports below are task context; verify their currency before execution.
 
-<a id="3-авторство-й-оцінювання-скілів"></a>
 ## 3. Skill authoring and evaluation
 
 The current name is [writing-for-agents](../skills/utils/writing-for-agents/SKILL.md); `writing-great-skills` is historical. Use the rubric for structure, progressive disclosure and verifiable completion criteria. The global skill already exists; there is no need to duplicate it in every repo merely for availability.
@@ -23,7 +21,6 @@ E1.8 remains an eval-loop proposal: check triggering, output content and behavio
 
 ---
 
-<a id="4-запроєктована-структура-obsidian-для-dg"></a>
 ## 4. Proposed Obsidian structure for dg
 
 Vault/Shared state and verification limits are in [status.md](status.md#capabilities). The target E0 layout below is preserved, not a repeated inventory.
@@ -46,7 +43,6 @@ Layout of `~/vaults/diagram-hierarchy/`:
 
 ---
 
-<a id="5-реєстр-задач-і-критерії-приймання"></a>
 ## 5. Task registry and acceptance criteria
 
 IDs are preserved. Execution and evidence are recorded in status.md; old E4/E5 results were moved to history.md.
@@ -54,7 +50,6 @@ IDs are preserved. Execution and evidence are recorded in status.md; old E4/E5 r
 Notation: **[me]** — I can do it in-session; **[you]** — hands-on GUI/browser work is needed.
 Priority: **P0** unblocks the rest; **P3** is optional.
 
-<a id="e0--obsidian-для-dg--vault-diagram-hierarchy--p0"></a>
 ### E0 · Obsidian for dg — vault `diagram-hierarchy`  (P0)
 
 | # | Task | Who | DoD |
@@ -71,7 +66,6 @@ Priority: **P0** unblocks the rest; **P3** is optional.
 | E0.10 | Update `~/.agents/obsidian-cheatsheet.md` §3 — table row `diagram-hierarchy / 27143` | me | ports table is current |
 | E0.11 | Seed `1 - Notes/Domain/`: `_how-it-works.md`, `_domain-moc.md`, `_gotchas.md`, `_glossary.md` — from `CTO-RESEARCH.md` + `SPEC.md`, with `path:line` | me | 4 files, every claim has a source |
 
-<a id="e1--глобальний-шар-скіли-пайплайна--p0p1"></a>
 ### E1 · Global layer: pipeline skills  (P0–P1)
 
 Home is `~/.agents/skills/<категорія>/<name>/SKILL.md` or a separate root directory; exact paths are in status.md. The compatibility path placeholder `<категорія>` means category. Shared contains reference cards updated separately, not executable copies.
@@ -90,7 +84,6 @@ Home is `~/.agents/skills/<категорія>/<name>/SKILL.md` or a separate ro
 | E1.10 | `repo-bootstrap` — 11-item inventory (manifest, briefing, contract pointers, `CLAUDE.local.md`, artifact home, tasks/debt/archive, gates, tracker, CRG, vault, agenda), two branches (check / initialization), idempotent; **does not invent content** — `⚠️ missing` instead of a plausible standard, `TODO:` instead of deciding for a person | P0 | produces a state table in an unfamiliar repo; a second dg/cargotrans run creates nothing new |
 | E1.9 | `cto-agenda` — **what to do next**: candidates from six listed sources (tasks/issues, debt, briefing risks, unchecked boxes, skipped tests and `TODO`, product forks) → **unblocks × reversibility** axes → **one** next move + why not the others. Home is `work/AGENDA.md`, rebuilt, not appended | P0 | all 6 sources examined with candidate counts; each candidate has a source or `⚠️ no source` label; name one move and reject 2–3 alternatives |
 
-<a id="e2--cargotrans-ui--доростити-наявний-конвеєр--p1"></a>
 ### E2 · cargotrans-ui — extend the existing pipeline  (P1)
 
 The goal is minimal additions to the existing process after checking its state, not rebuilding it.
@@ -106,7 +99,6 @@ The goal is minimal additions to the existing process after checking its state, 
 | E2.7 | Playwright user-flow run with **screenshots in the report artifact** (`.env.playwright.local` exists) | Current desktop/mobile screenshots with viewport dimensions actually inspected; main scenario, states and keyboard exercised; defects fixed and rechecked. Evidence and PASS/FAIL/BLOCKED/N/A in the report; do not count human verification without a result |
 | E2.8 | `post-deploy-check` on the cargotrans production URL | checklist exists and has been run once |
 
-<a id="e3--dg--підняти-базу-конвеєра--p1"></a>
 ### E3 · dg — establish the pipeline foundation  (P1)
 
 The initial record says dg had only CRG wrappers; the repo's current state was not checked. Order matters: review criteria first, orchestrator second.
@@ -120,7 +112,6 @@ The initial record says dg had only CRG wrappers; the repo's current state was n
 | E3.5 | “Pipeline” section in `AGENTS.md`: research → plan → critique → defense → tests-first → implement → review → report → post-deploy, with skill links | one agent entry point |
 | E3.6 | `acceptance-spec` for live P0 (`work/tasks/T78-post-t77-critique.md`) as a format pilot | scenario table exists, every row has a verification method |
 
-<a id="e4--незалежне-ai-ревю-на-pr-p2"></a>
 ### E4 · Independent AI review on PRs (P2)
 
 | # | Task | DoD |
@@ -140,7 +131,6 @@ The initial record says dg had only CRG wrappers; the repo's current state was n
 
 Exact old commands, parameters, figures and limitations are retained in [E4/E5 history](history.md#ci-history); they are not a current verification.
 
-<a id="6-наступний-порядок-після-актуалізації"></a>
 ## 6. Next sequence after updating the inventory
 
 1. Before implementing any E0/E2/E3/E4/E5, inspect the specific target repository and compare its state with the criteria; for ADR and local workflow use [repo practices](repo-evidence.md#repo-evidence). Do not recreate what already exists; local skill copies may differ from global.

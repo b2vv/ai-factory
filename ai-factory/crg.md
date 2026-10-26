@@ -9,7 +9,6 @@ reviewed: 2026-10-16
 
 `tirth8205/code-review-graph` 2.3.6 is installed locally through pipx; executable `~/.local/bin/code-review-graph`. [Upstream](https://github.com/tirth8205/code-review-graph). Four skills live in `~/.agents/skills/crg/*/SKILL.md`; the Claude mirror does not guarantee host discovery. CRG is structural context, not a compiler, runtime trace or independent reviewer.
 
-<a id="перевірений-transport-і-schema"></a>
 ## Verified transport and schema
 
 2026-10-16 UTC: `code-review-graph serve --repo <absolute-root>` successfully completes initialize/tools/list over standard MCP stdio; returns 30 tools. After the owner reported an update, executable/package metadata and a new stdio subprocess were rechecked: the local version is still 2.3.6, with unchanged schema and fixture regressions. This task did not update the package. No `--auto-watch`, HTTP, embeddings, installations or new credentials. The host prefix may differ; use the actual tools/list, not short `next_tool_suggestions` from the server response.
@@ -29,7 +28,6 @@ Important 2.3.6 arguments:
 
 A negative fixture test confirmed: an extra `detail_level` in minimal-context is rejected with a validation error. Do not mechanically add it to every tool.
 
-<a id="freshness-перед-довірою"></a>
 ## Freshness before trust
 
 1. Record absolute root, branch, HEAD, scope diff and relevant untracked files. Pass `repo_root` explicitly to every repo-scoped tool. For dirty scope use the verified `base="HEAD"`; for a PR use its real base, not an arbitrary `HEAD~1`.
@@ -39,7 +37,6 @@ A negative fixture test confirmed: an extra `detail_level` in minimal-context is
 
 Fixture 2.3.6 showed: before update an old caller is returned without a freshness warning; incremental update does not include a new untracked rename target; even a full build on a Git repository skips untracked files. After staging **only in the synthetic fixture**, update found the new function and its impact. Do not stage user files for indexing. For untracked scope, use direct reading/tests or a separately agreed refresh that explicitly includes those files.
 
-<a id="відновлення-без-зміни-source"></a>
 ## Recovery without changing source
 
 Preserve a consistent SQLite backup before updating; for WAL use the SQLite backup API/a consistent checkpoint, not a copy of only `graph.db` during writes. Do not use `immutable=1` with a live WAL/journal; read-only inventory without WAL requires checking file stability during reading.
@@ -48,7 +45,6 @@ The inspected `build_or_update_graph_tool` 2.3.6 implementation performs local p
 
 After refresh, repeat root/revision/hash/coverage and relevant query proofs; retain counts/errors/limitations. One targeted recovery and one recheck; another failure → BLOCKED + file-based fallback. If another session is actively changing the working tree, do not call the check a stable snapshot.
 
-<a id="host-discovery-стан-перевірки"></a>
 ## Host discovery: verification status
 
 - 2026-10-16, after explicit owner permission: Codex user config has `crg-courses-read`, `crg-cassiopeia-read`, `crg-cargo-read`; the CLI parser shows enabled for all three. Cargo Claude local config has `crg-cargo-read`; `claude mcp get` confirmed Connected. Earlier Claude Courses/Cassiopeia registrations were unchanged.
@@ -56,7 +52,6 @@ After refresh, repeat root/revision/hash/coverage and relevant query proofs; ret
 - New entries do not start watch, build, embed or refactor/apply. `--repo` sets the default root, not filesystem isolation: `repo_root` can be overridden. Codex entries are user-level, available beyond the respective cwd; names record their purpose. Query tools may open/migrate the derived SQLite DB — this is not an OS read-only sandbox. Registration verification performed only initialize/list and a rejected call on an isolated fixture, without queries/rebuilds of active graphs.
 - Current host sessions may need a new launch/reload of MCP discovery; a new model turn with these tools was not tested. Evidence: `crg-allowlist-preflight.json`, `crg-allowlist-postflight.json`, `crg-registration-applied.json` in the task working directory. Config backups with mode 0600: `mcp-config-backups/20261016T234627Z/`. Unrelated config values, credentials, model defaults and other permissions were preserved.
 
-<a id="історичні-обмеження-доказів-2026-10-16"></a>
 ## Historical evidence limitations (2026-10-16)
 
 The current concise status is maintained in [status.md](status.md#capabilities). During the work, other sessions changed the original HEAD/graphs, so active DBs were not replaced. Inventory at that time (not current state): Courses metadata had already been updated by external work to c2970173, but current HEAD was 8019b64d; the graph had only 166 files, with 124 hash mismatches. The Cargo graph was then 2026-08-22/beta versus stage; 556 mismatches and 17 deleted entries. Cassiopeia with matching HEAD had 281 mismatches and 93 deleted entries. Time/HEAD alone do not prove freshness.
@@ -69,7 +64,6 @@ Exact counts/revisions, backups and raw proofs: `~/Documents/Codex/2026-10-16/ta
 
 <a id="cargo-active-snapshot"></a>
 
-<a id="cargo-завершений-active-refresh--snapshot-2026-10-17"></a>
 ## Cargo: completed active refresh — snapshot 2026-10-17
 
 This record supersedes the previous stale status **for Cargo only**. Historical checkout `cargotrans-ui` (local root omitted), branch `stage`, HEAD `137e19df20b32f8a33f76c5a08090c2f8ef0c3bf`. The authorized refresh completed; the source snapshot and git index remained unchanged. Persisted graph: **1212 files, 6882 nodes, 65619 edges**; 1212 hash matches, **0 mismatch, 0 deleted, 0 foreign roots**, SQLite integrity OK; no parse errors/warnings. A consistent SQLite backup was saved before refresh.

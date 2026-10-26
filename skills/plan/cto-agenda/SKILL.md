@@ -3,7 +3,6 @@ name: cto-agenda
 description: Proposes what to do next — a ranked list of candidates collected from recorded repository sources, and one recommended next move with an explanation of why not the others. Use when P0 is closed and the queue is empty, when choosing between directions, when asked "що далі", "що брати в роботу", "склади беклог" (retained Ukrainian compatibility aliases), or on the trigger "cto agenda".
 ---
 
-<a id="cto-agenda--що-робити-далі"></a>
 
 # cto-agenda — what to do next
 
@@ -14,7 +13,6 @@ Answers one question: **what is the next move**.
 other moves available. A list without a selected move pushes the work back onto the person;
 the skill ends with **one** move.
 
-<a id="1-опертись-на-брифінг"></a>
 
 ## 1. Start from the briefing
 
@@ -22,7 +20,6 @@ Candidates come from the repository briefing, not impressions. If there is no br
 run `cto-research` first, then return here. State the commit underlying the agenda: when the briefing
 was rewritten, the old choice of move may have expired with it.
 
-<a id="2-зібрати-кандидатів-із-перелічених-джерел"></a>
 
 ## 2. Collect candidates from the listed sources
 
@@ -46,7 +43,6 @@ heading, retained as a literal compatibility reference), and completed work is a
 done — so read the archive only to **filter out**: a candidate already present there is removed from the agenda
 with a note identifying what closed it.
 
-<a id="3-розкласти-по-двох-осях"></a>
 
 ## 3. Classify on two axes
 
@@ -59,7 +55,6 @@ Instead of “high / medium / low”, use two dimensions that actually distingui
 Irreversible moves require more evidence **before** starting; reversible ones can be tried as an experiment.
 A move that unblocks nothing and is expensive to undo is a candidate for “not now”; say so explicitly.
 
-<a id="4-відокремити-рішення-людини"></a>
 
 ## 4. Separate human decisions
 
@@ -68,7 +63,6 @@ question · options · cost of each · **recommendation with a reason**.
 
 The agent recommends; the person chooses. Disguising a choice as a task is making a decision silently.
 
-<a id="5-назвати-хід"></a>
 
 ## 5. Name the move
 
@@ -78,7 +72,6 @@ a line explaining what tipped the balance. Otherwise the recommendation cannot b
 The move then goes to `spec-flow` (for a substantial feature) or `to-tickets` (for a set of small items).
 The agenda itself writes no code.
 
-<a id="6-дім-агенди"></a>
 
 ## 6. Where the agenda lives
 
@@ -86,7 +79,6 @@ One file per repository: `work/AGENDA.md` (or a “Queue” section if the repos
 The agenda is **rebuilt**, not appended to — an ever-growing backlog stops being a choice.
 Moves completed since the last agenda remain as “done: <move> → <commit/PR>”.
 
-<a id="7-завершення"></a>
 
 ## 7. Completion
 

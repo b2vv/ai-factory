@@ -15,7 +15,6 @@ This is manual role allocation within the existing workflow, not an installed ro
 
 Send high risk directly to Escalation, without requiring a failed cheap pass first. If Escalation authored the solution/code, the verdict needs another reviewer; self-review does not become independent through a new role name. A model does not replace compiler/lint/tests, browser interaction or human acceptance.
 
-<a id="bindings-і-рівень-підтвердження"></a>
 ## Bindings and confirmation level
 
 Determine bindings anew for the specific host/session, regardless of provider. A role name does not specify a model ID. Old cache snapshots and configured defaults are historical candidates, not the current catalog or entitlement. The Codex app/dot/other executor catalog does not transfer to local Codex CLI or Claude Code.
@@ -33,7 +32,6 @@ For Helper, Coder, Escalation/reviewer, record candidate status (catalog unknown
 
 The [preflight schema](../onboarding-helper.md) validates only submitted inventory and session identity, not evidence authenticity or entitlement. `VALIDATED_DECLARATION` does not mean a model binding executed. No model API probes, automatic switching, config writes or permissions bypass to fill in the table. An existing independent reviewer may perform authorized work; if a required tier/reviewer is unavailable, that specific gate is BLOCKED, not self-review PASS. There is no need to assign all three roles to a small task.
 
-<a id="ліміти-роботи"></a>
 ## Work limits
 
 - Helper: one narrow task; up to 5 targeted search/tool steps and approximately 800 summary tokens. After one refined retry, hand over findings and the blocker. These limits are a starting budget, not a truth criterion.
@@ -42,14 +40,12 @@ The [preflight schema](../onboarding-helper.md) validates only submitted invento
 - Context: pass the contract, exact files/lines, diff and results, not the whole chat, repo archive or full graph dump. Handoff guideline ≤1500 tokens plus links; split a large scope before dispatch. Do not shorten evidence merely to fit the limit.
 - After two cycles without progress or before compaction, record the journal and specific next step. Do not guess money/quotas; there is no automatic cost routing.
 
-<a id="crg-і-мінімальний-handoff"></a>
 ## CRG and minimum handoff
 
 Before graph-assisted work: [CRG freshness/coverage](crg.md). For stale/missing/untracked scope, do not conclude “no callers,” “dead code,” or “zero impact”; switch to `rg`, current files, language tools and tests. Model size/cost does not fix stale context.
 
 In the existing plan/journal, record: role + actual model/effort/host; goal/acceptance and boundaries; repo/root/branch/HEAD + dirty/untracked scope; authoritative instructions; CRG status and exact queries/limits; changed files; commands/results PASS/FAIL/BLOCKED/N/A; decision/blocker; next executor and one action. The reviewer receives these artifacts without the author's chat history. No new mandatory journal is needed.
 
-<a id="докази-доступності"></a>
 ## Availability evidence
 
 Keep a secret-free catalog/session reference and date in the current task record. Config/cache may be considered only as the corresponding source type, without reading credentials or calling an old cache the current catalog. Discovery, entitlement, budget and invocation have separate evidence. This documentation update performed no model API or CLI probes and changed no defaults.

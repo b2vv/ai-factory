@@ -1,13 +1,11 @@
 > Optional retained portable profile; the full canonical plan is in `ai-factory/`. This profile does not replace original skill contracts or authorize automatic activation.
 
-<a id="additive-зміна-повтор-і-guarded-restore"></a>
 # Additive change, repeat and guarded restore
 
 [Entry](onboarding.md) · [Acceptance](../../templates/acceptance-portable.md)
 
 This is a protocol for an already-authorized writer, not an automatic apply command. Preflight remains read-only. Receipt/backup/diff files are stored in the task workspace, not in an additional repo tracker. Repeating uses the same canonical adapter and entry marker/path.
 
-<a id="перед-записом"></a>
 ## Before writing
 
 1. Inventory identifies one existing authoritative entry and task workflow. If an adapter/pointer already exists, read it; do not add another directory, block or rule copy. Check semantic duplicates manually; an exact hash does not find them by itself.
@@ -16,7 +14,6 @@ This is a protocol for an already-authorized writer, not an automatic apply comm
 4. Inspect the full diff and independent review. Before each write, recheck existence/type/parent paths and baseline SHA. Any change means BLOCKED for that file, not force overwrite. The short apply needs an agreed window without a concurrent writer: a hashguard is not an OS-lock. Preserve existing file permissions. Write only reviewed bytes, then verify applied SHA and mark the receipt applied.
 5. After applying, check links/anchors, adapter compatibility and the receipt. `adapter_files` in the manifest contains canonical destinations and desired SHA: preflight must return NOOP for matching bytes. Different bytes → BLOCKED/reviewed merge, not automatic reapply. Do not treat NOOP as semantic acceptance or runtime PASS.
 
-<a id="restore-лише-власного-застосованого-diff"></a>
 ## Restore only your own applied diff
 
 Restore requires an instruction in the current scope; having a backup does not itself direct rollback. Do not use git reset/checkout/clean or a full repo snapshot.

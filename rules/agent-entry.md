@@ -1,4 +1,3 @@
-<a id="agentsmd--точка-входу-до-agents"></a>
 
 # AGENTS.md — entry point for `~/.agents`
 
@@ -10,7 +9,6 @@ and `~/vaults/global/rules` points to `~/.agents/rules`. An edit through any mir
 
 ---
 
-<a id="що-де-лежить"></a>
 
 ## Where things live
 
@@ -24,14 +22,12 @@ and `~/vaults/global/rules` points to `~/.agents/rules`. An edit through any mir
 
 ---
 
-<a id="-правила-які-мусять-спрацювати-до-завантаження-будь-якого-скіла"></a>
 
 ## 🔴 Rules that must take effect **before** loading any skill
 
 The other rules in `rules/` arrive through skills — a skill loads, reads the rule, and applies it.
 The following does **not work** that way: it is needed when no skill has been invoked yet.
 
-<a id="1-сабагент-пише-хід-у-власний-файл"></a>
 
 ### 1. A subagent writes progress to its own file
 
@@ -53,7 +49,6 @@ Does not apply to trivial one-step agents.
 applied**, because its only channel was skills, while agents were launched directly. The full rule,
 with evidence from two series of agent deaths: [`rules/agent-stream-to-file.md`](agent-stream-to-file.md).
 
-<a id="2-мовчазний-агент--не-чистий-агент"></a>
 
 ### 2. A silent agent is not a clean agent
 
@@ -63,7 +58,6 @@ complete its work, and it cannot be counted as clean: count launched versus retu
 
 ---
 
-<a id="як-додавати-правило"></a>
 
 ## How to add a rule
 

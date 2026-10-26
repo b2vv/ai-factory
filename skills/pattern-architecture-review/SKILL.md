@@ -7,7 +7,6 @@ description: Analyzes code for appropriate GoF patterns and KISS, DRY, SOLID, Cl
 
 Perform an evidence-based review of selected code or a codebase for appropriate GoF patterns and KISS, DRY, SOLID, Clean Code and Clean Architecture principles. By default, review only reads code and produces recommendations; change nothing until the user separately requests implementation.
 
-<a id="1-визнач-межі-й-контекст"></a>
 
 ## 1. Establish boundaries and context
 
@@ -18,7 +17,6 @@ Perform an evidence-based review of selected code or a codebase for appropriate 
 
 **Done when:** the review area is bounded and important project constraints are known.
 
-<a id="2-знайди-реальну-причину-для-зміни"></a>
 
 ## 2. Find a real reason to change
 
@@ -35,13 +33,11 @@ Do not call ordinary complexity a “smell” without explaining its cost. Do no
 
 **Done when:** every subsequent recommendation rests on a concrete code finding.
 
-<a id="3-оціни-відповідні-шаблони-gof"></a>
 
 ## 3. Assess appropriate GoF patterns
 
 Use the catalog of 23 classic GoF patterns as candidates, not a mandatory refactoring list. Consider only patterns whose purpose matches the observed pressure. For each problem, compare the best few options, a simple pattern-free solution and leaving the current code unchanged.
 
-<a id="оцінка-придатності"></a>
 
 ### Fit assessment
 
@@ -66,7 +62,6 @@ Explain differences between patterns easily confused in this situation. For exam
 
 **Done when:** relevant options are compared for every problem and the winning pattern or simple solution is explained.
 
-<a id="4-застосуй-окрему-лінзу-kiss-dry-і-solid"></a>
 
 ## 4. Apply a separate KISS, DRY and SOLID lens
 
@@ -84,7 +79,6 @@ For each violation, cite a code location and concrete cost: extra changes, fragi
 
 **Done when:** every KISS/DRY/SOLID signal has evidence, a consequence and a minimal useful next step.
 
-<a id="5-перевір-clean-code-та-clean-architecture-окремо"></a>
 
 ## 5. Check Clean Code and Clean Architecture separately
 
@@ -113,13 +107,11 @@ Do not demand layers, interfaces, DI containers or ports for every call. Propose
 
 **Done when:** Clean Code and Clean Architecture recommendations are separate from GoF and KISS/DRY/SOLID and have local evidence.
 
-<a id="6-видай-короткий-звіт"></a>
 
 ## 6. Deliver a concise report
 
 Lead with the conclusion and count of significant findings. Then use this format:
 
-<a id="знахідка-коротка-назва"></a>
 
 ### Finding: <short name>
 - **Evidence:** `path/to/file.ext:line` — a concrete observation.
@@ -132,7 +124,6 @@ Lead with the conclusion and count of significant findings. Then use this format
 
 Give **KISS / DRY / SOLID**, **Clean Code** and **Clean Architecture** separate sections. Each contains only substantiated findings or a brief statement that no significant problems were found. Rank next steps by impact and effort. Do not overwhelm the user with all 23 patterns.
 
-<a id="межі-й-повязані-скіли"></a>
 
 ## Boundaries and related skills
 

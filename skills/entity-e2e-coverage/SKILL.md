@@ -7,7 +7,6 @@ description: "Plans and checks E2E coverage of entity fields and QA findings wit
 
 The goal is to preserve every required QA expectation and verify it on the correct surface. This is a narrow coverage contract, not a test runner or a guarantee of no bugs.
 
-<a id="до-тестування"></a>
 
 ## Before testing
 
@@ -15,7 +14,6 @@ The goal is to preserve every required QA expectation and verify it on the corre
 2. In the existing plan/test artifact, create a matrix: **QA requirement ID + source → entity field → deterministic expected value/format/permitted transform → surface + state → action → assertion → evidence**. Separate the requirements baseline from results; reconcile the IDs with the original QA source, not just existing tests.
 3. Take expectations from the spec/QA/an independent fixture. Not from the current UI or mechanically from the API response that this same test must verify. An ambiguous format needs a contract, not an assumption.
 
-<a id="окремі-зобовязання"></a>
 
 ## Separate obligations
 
@@ -31,13 +29,11 @@ Not every row is needed for every task. An absent/inapplicable surface or an out
 
 For required fields, distinguish label from ID, date-only from instant/timezone/locale, false from empty, null from an empty string, and a nested reference from its display label. Check a specified permitted transform explicitly; do not normalize arbitrarily and hide a defect. Choose fixture values that make the error visible.
 
-<a id="умовні-сценарії"></a>
 
 ## Conditional scenarios
 
-If acceptance covers filters or a keyboard action, apply the [scoped rules](references/testing-rules.md#scoped-перевірки-та-завершення): matching/nonmatching for every declared entity type × surface, and browser key input with the expected UI effect. Controls/URL/API do not replace list results; submit dispatch does not replace a key. Do not add these requirements to ordinary CRUD outside scope.
+If acceptance covers filters or a keyboard action, apply the [scoped rules](references/testing-rules.md#scoped-checks-and-completion): matching/nonmatching for every declared entity type × surface, and browser key input with the expected UI effect. Controls/URL/API do not replace list results; submit dispatch does not replace a key. Do not add these requirements to ordinary CRUD outside scope.
 
-<a id="виконання-та-завершення"></a>
 
 ## Execution and completion
 
@@ -47,7 +43,7 @@ Row evidence: an actual run ID, tested revision **and diff fingerprint** (includ
 
 The report preserves every QA ID, field and required surface/state. PASS requires its own executed assertion; FAIL/BLOCKED leave the gate open. Skip/xfail are not PASS. Removing/weakening a row, changing a requirement, updating a snapshot or changing a test requires an explicit diff, reason and review under the local process; changing acceptance requires its owner's decision. Do not rewrite expected to fit actual. A fixed QA finding is closed by rerunning its specific scenario.
 
-Before completion, reconcile the summary, plan checklist and evidence with the final revision/diff and actually checked entities/states/assertions. Incomplete means PARTIAL/BLOCKED; inapplicable means N/A with a reason. Keep useful temporary regression specs until migration, coverage reconciliation and a targeted run of the permanent suite; see [testing-rules](references/testing-rules.md#scoped-перевірки-та-завершення). Do not redo a completed task because of an identical handoff with unchanged inputs; first check status and existing evidence. Do not attribute repetition to automation without evidence.
+Before completion, reconcile the summary, plan checklist and evidence with the final revision/diff and actually checked entities/states/assertions. Incomplete means PARTIAL/BLOCKED; inapplicable means N/A with a reason. Keep useful temporary regression specs until migration, coverage reconciliation and a targeted run of the permanent suite; see [testing-rules](references/testing-rules.md#scoped-checks-and-completion). Do not redo a completed task because of an identical handoff with unchanged inputs; first check status and existing evidence. Do not attribute repetition to automation without evidence.
 
 This matrix refines existing acceptance/report artifacts rather than duplicating them. [acceptance-spec](../plan/acceptance-spec/SKILL.md) defines behavior; this skill checks field × surface × state; [interface-review](../interface-review/SKILL.md) assesses UX/appearance and does not replace data assertions. Execute through the current runner or an authorized browser, without depending on another project's webdev stack.
 

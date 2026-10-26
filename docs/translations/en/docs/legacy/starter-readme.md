@@ -1,10 +1,9 @@
-> **Historical English translation — authored derivative.** Original: [docs/legacy/starter-readme.md](../../../../legacy/starter-readme.md). Original SHA256: `6329060b1357c88ca744fb691a44dc28912b85a941b0c1507fbccb7154a8c7b4`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Original-language compatibility anchors and literal protocol tokens remain where required.
+> **Historical English translation — authored derivative.** Original: [docs/legacy/starter-readme.md](../../../../legacy/starter-readme.md). Original SHA256: `6329060b1357c88ca744fb691a44dc28912b85a941b0c1507fbccb7154a8c7b4`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
 
 > Retained documentation from release 626fd68. Historical layout/status statements below are preserved for provenance; current paths and commands are in the root README and migration guide.
 
 # AI Factory — full personal collection and portable tools
 
-<a id="почати-тут"></a>
 ## Start here
 
 - **[All 73 original skills →](../../../../../skills)** — the full included collection with subdirectories and supporting files.

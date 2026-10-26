@@ -1,10 +1,8 @@
-<a id="правила-тестування-сутностей"></a>
 
 # Entity testing rules
 
 Checked against local sources on 2026-10-17. This is a narrow reference: read the general rules and only your repository-specific section; reread the applicable original before running anything. The current local contract takes precedence over practices imported from another repository. Commands in sources are not authorization to run them. No external manuals were used.
 
-<a id="загальні-інваріанти-цього-скілу"></a>
 
 ## General invariants of this skill
 
@@ -17,7 +15,6 @@ Checked against local sources on 2026-10-17. This is a narrow reference: read th
 - **Do not silently weaken a gate.** Skip/xfail/did-not-run, snapshot updates, assertion replacement, QA row removal or expected changes require visible analysis. Changing product acceptance is the owner's decision, not an adaptation to a bug. Sources: [ship-report §2](../../ship/ship-report/SKILL.md), Cargo FIXTURES “did not run” below. A snapshot is a reviewed expectation, not automatic new truth after a failure.
 - **Execution evidence.** An actual run, revision/diff, entity/fixture, environment and specific assertions/artifacts are required. A test plan, successful build or unchecked screenshot does not close a row. Sources: [design-pass §5](../../design-pass/SKILL.md), [ship-report §2, §5](../../ship/ship-report/SKILL.md). The validator checks metadata; the reviewer checks evidence truthfulness.
 
-<a id="scoped-перевірки-та-завершення"></a>
 
 ## Scoped checks and completion
 

@@ -1,11 +1,9 @@
 > Optional retained portable profile; the full canonical plan is in `ai-factory/`. This profile does not replace original skill contracts or authorize automatic activation.
 
-<a id="startup-routing-та-передача-на-незалежний-review"></a>
 # Startup routing and handoff to independent review
 
 This contract supplements the current workflow; it creates neither another tracker nor an orchestrator. Small keeps one primary task record; insert the fields below into it. The evidence bundle is a derived snapshot for verification, not a second plan. Local standards, gates and owner decisions remain in force.
 
-<a id="перед-початком-роботи"></a>
 ## Before starting work
 
 For each required critique/review/verification, the session records and shows the user:
@@ -16,7 +14,6 @@ The user's explicit choice takes precedence. If the current instruction unambigu
 
 For `new subagent`, append the returned ID to the same record after authorized spawn; for `existing session`, do not guess an ID from a similar name. Permission to choose a method does not automatically authorize messaging another session: explicit delivery instruction is needed, or the user performs it. Do not create a duplicate reviewer when one is already assigned; do not duplicate handoff through a repeated request. Label ordinary author verification separately as author checks, not independent review.
 
-<a id="пакет-передачі"></a>
 ## Handoff package
 
 Minimum self-contained package in the existing evidence location:
@@ -31,19 +28,16 @@ Do not copy .env/credentials/config secrets, transcripts or full irrelevant logs
 
 One `package ID + assigned reviewer reference` pair has one handoff in the current record. Repeating the same package is NOOP, not another message or spawn. The helper sends nothing and does not manage sessions.
 
-<a id="контракт-reviewer"></a>
 ## Reviewer contract
 
 The reviewer works independently: reads pinned acceptance/contracts, diff and source snapshots themselves, checks the live root/snapshot before and after verification, and assesses scope sufficiency and relevant untracked files. The author's summary is navigation only. Read-only by default: no source/config/index changes. A permitted local review artifact may be written only to the designated evidence location. Needing a test does not authorize reset/seed/install or shared test-environment access; first agree on the operation, owner, slot and side effects. Distinguish the reviewer's own checks from accepted pinned raw author evidence.
 
 Each finding: `file:line`, concrete consequence, evidence/reproduction or verification method, blocking/nonblocking, confidence. Verdict: reviewer reference, package/snapshot ID, checked scope/axes, findings, checks/evidence and limitation. Missing/empty/incomplete response means **review NOT_TESTED, required gate BLOCKED**. The author does not present self-review as independent PASS. Helper structural validation does not prove a person's/agent's independence or the truth of their declarations.
 
-<a id="зміни-після-review"></a>
 ## Changes after review
 
 PASS applies only to the checked snapshot/scope. After fixes, produce a final delta from the reviewed snapshot; the reviewer identifies affected criteria/checks and gives a verdict on the final package ID. Unchanged evidence may be explicitly accepted if its inputs did not change. Do not repeat the entire gate for an irrelevant edit unless the local contract requires it. Do not carry old PASS onto changed acceptance/diff/untracked files. A base/HEAD change requires provenance reconciliation, not automatic repetition of every test. The reviewer separately confirms expanded/narrowed scope; new relevant files must be included.
 
-<a id="опційний-stdlib-helper"></a>
 ## Optional stdlib helper
 
 [review_package.py](../../runtime/review/review_package.py) works on a Git repo with HEAD and UTF-8 text files: at most 100 scope files, 1 MB/file, 8 MB of unique blobs. It runs no repo commands/tests/CLI/MCP; only read-only Git queries. No install, network, dispatch, hooks or permission changes. Symlink paths, secret-like names/content and configurations are rejected; this is defense in depth, not a universal secret scanner. Use canonical paths (on macOS `/private/...` instead of symlink `/tmp` for a fixture).

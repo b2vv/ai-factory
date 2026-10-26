@@ -5,7 +5,6 @@ description: Makes a plan defend itself against five fixed questions — malform
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.
 
-<a id="plan-defense--пять-питань-на-які-план-відповідає-рядком"></a>
 # plan-defense — five questions the plan answers with a line
 
 The last gate before execution. `plan-critique` looks for **what is wrong with the plan**;
@@ -14,7 +13,6 @@ this skill checks **what the plan is missing** — and the list of missing conce
 A defense is accepted only through **a plan line**. A chat answer closes nothing: the next
 agent will read the plan, not this conversation. Every closed question therefore ends with a file edit.
 
-<a id="питання"></a>
 ## Questions
 
 Run all five, in order. For each: does the plan contain a place that answers it?
@@ -30,7 +28,6 @@ Run all five, in order. For each: does the plan contain a place that answers it?
 5. **Rollback.** The change was rolled out and caused harm. Where does the plan say how to return — and whether
    anything is irreversible (data migration, external effect) and will not be undone by rollback?
 
-<a id="форма-відповіді"></a>
 ## Answer format
 
 One table, five rows, in the plan file:
@@ -46,7 +43,6 @@ A gap is closed in one of two ways, both edits to the plan:
 - **narrow scope** with an explicit line “case X is out of scope because <reason>” — the question is then closed
   consciously rather than forgotten.
 
-<a id="завершення"></a>
 ## Completion
 
 The skill is complete when **all** of these hold:

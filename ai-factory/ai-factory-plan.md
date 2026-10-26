@@ -6,7 +6,6 @@ status: roadmap — not an automatic start of work
 scope: global ~/.agents; cargotrans-ui and dg; QnA backend (openai-qna) and generic-ui practices
 ---
 
-<a id="ai-factory-з-чого-почати"></a>
 # AI factory: where to start
 
 The goal is to take an agreed task from understanding and planning to a verified result while preserving decisions and context. This is navigation and a development plan: current repository instructions and the user's request determine the work. A link to this file alone does not authorize executing the entire queue, changing configuration or deploying the system.
@@ -23,7 +22,6 @@ Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan:
 
 A task branch and one writer in the main repository follow the [branch ownership contract](workflow.md#task-branches); runtime isolation is separate from Git isolation.
 
-<a id="обери-маршрут"></a>
 ## Choose a route
 
 | Situation | What to do |
@@ -35,7 +33,6 @@ A task branch and one writer in the main repository follow the [branch ownership
 
 The detailed [skill and ADR map](workflow.md#skill-map) names triggers, owners and outputs. Codex CLI: `$назва` or `/skills`; Claude Code: `/назва`. Before invoking, verify the exact file and tool availability; the same name does not guarantee the same skill.
 
-<a id="навігація"></a>
 ## Navigation
 
 | File | When to read |
@@ -49,7 +46,6 @@ The detailed [skill and ADR map](workflow.md#skill-map) names triggers, owners a
 | [repo-evidence.md](repo-evidence.md#repo-evidence) | QnA/generic-ui sources and differences, examples, contradictions, local rules |
 | [history.md](history.md#history) | Origin of the idea and old measurements; not current status |
 
-<a id="передача-й-завершення"></a>
 ## Handoff and completion
 
 Pass the goal, scope, sources, revision/dirty state, decisions, checks, blockers and next step in the **existing** plan/journal — [short contract](workflow.md#handoff). A project ADR lives in the repository; Obsidian contains a link/overview, not a second original.
@@ -60,7 +56,6 @@ The next step is to choose one project, inspect its process read-only and propos
 
 Canonical directory: `~/.agents/ai-factory/`. The old `~/.agents/ai-factory-plan.md` is only a symlink to this file. Absolute navigation links here support opening through either path; subfiles link to each other relatively.
 
-<a id="розмір-сесії-та-явний-handoff"></a>
 ## Session size and explicit handoff
 
 [Session-size helper](../docs/legacy/session-size.md): 4 MB preparation, 5 MB soft threshold, an atomic checkpoint and explicit ID for a new session. This is not a hard cap or automatic model launch.

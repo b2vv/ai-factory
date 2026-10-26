@@ -3,7 +3,6 @@ name: cto-research
 description: Builds or updates the single pre-implementation briefing — product, codebase and seams, infrastructure, dependencies, risks — with every claim linked to a primary source. Use before planning a substantial feature, when starting in an unfamiliar repository, when the current briefing is stale, or on triggers "cto research", "брифінг", "розберись у продукті" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-<a id="cto-research--брифінг-перед-імплементацією"></a>
 
 # cto-research — the pre-implementation briefing
 
@@ -13,7 +12,6 @@ The briefing is a **cache** of primary sources, not independent truth. Every cla
 reference; when cache and source disagree, the source governs and the cache is rewritten to match.
 This is the single rule from which the rest of the skill follows.
 
-<a id="1-знайди-дім-брифінгу"></a>
 
 ## 1. Find the briefing's home
 
@@ -22,7 +20,6 @@ First read applicable `AGENT.md` / `AGENTS.md` / `CLAUDE.md`: if they point to a
 
 **One briefing per repository.** A second file beside the first creates two diverging caches.
 
-<a id="2-гейт-свіжості-перший-крок-коли-файл-уже-є"></a>
 
 ## 2. Freshness gate (the first step when the file exists)
 
@@ -38,7 +35,6 @@ Read the header: date + base commit. Compare with `git log --oneline <base>..HEA
 State how many commits have passed and what in them affected the briefing — that is the evidence that the gate ran.
 The header is the gate's only carrier, so a run without it cannot finish.
 
-<a id="3-збери-по-пяти-осях"></a>
 
 ## 3. Research five axes
 
@@ -55,7 +51,6 @@ Research each axis in primary sources (code, workflow files, lockfiles, `git log
 5. **Risks** — recorded debt/criticism, deliberate incompleteness, most fragile areas.
    Sources: `tech-debt/`, `tasks/`, anchor comments in code.
 
-<a id="4-напиши-брифінг"></a>
 
 ## 4. Write the briefing
 
@@ -74,7 +69,6 @@ Writing rules:
 - Use tables instead of paragraphs for “question → answer → source” relationships.
 - The header contains date and base commit (`git rev-parse --short HEAD`) — they drive the freshness gate.
 
-<a id="5-завершення"></a>
 
 ## 5. Completion
 

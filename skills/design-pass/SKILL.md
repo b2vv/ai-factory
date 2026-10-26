@@ -3,13 +3,11 @@ name: design-pass
 description: 'Creates or improves UI from project constraints and a design plan through browser verification and fixes. Use for sites, screens and user journeys, including from a screenshot or Figma mockup. Compatibility trigger aliases: "дизайн-пари", "зроби по-дизайнерськи", "зроби як на макеті". For an audit without changes, use interface-review.'
 ---
 
-<a id="design-pass--дизайн-реалізація-перевірка"></a>
 
 # design-pass — design, implementation, verification
 
 The result is an interface with clear hierarchy, a complete primary journey and verification evidence. A successful build confirms compilation, not design or UX quality. Scale the process to the change: for one button, check its context and states; for a new screen, the entire journey. Do not expand a small task into a product redesign.
 
-<a id="1-спочатку-поточний-проєкт"></a>
 
 ## 1. Start with the current project
 
@@ -23,7 +21,6 @@ Before choosing a style or implementing, read applicable `AGENTS.md` and `CLAUDE
 
 The absence of a local skill **does not mean** design axes are open: check the implementation and adjacent screens. Do not import Tailwind, light/dark, dark-only, palettes or components from another project. Do not add a theme, font or library merely to satisfy a global default.
 
-<a id="2-бриф-референс-і-план"></a>
 
 ## 2. Brief, reference and plan
 
@@ -35,7 +32,6 @@ Name the artifact type (`page` / `system`), audience, primary task, change bound
 
 Briefly record the plan and acceptance criteria before coding. For large work, use the repository's established note format; for small work, a message is sufficient, without extra files.
 
-<a id="3-пріоритет-і-межі-загальних-правил"></a>
 
 ## 3. Priority and limits of general rules
 
@@ -45,7 +41,6 @@ In this process, helper-skill rules about specific fonts, accent counts, themes,
 
 At the same time, a reference's appearance or a project rule does not prove accessibility or functionality. Do not mark an identified problem `pass` merely because of its origin. Do not invent testimonials, clients, metrics or successful checks.
 
-<a id="4-реалізуй-завершений-зріз"></a>
 
 ## 4. Implement a complete slice
 
@@ -64,7 +59,6 @@ Before delivery, read and apply the [shared viewport contract](references/viewpo
 
 This is a baseline check of changed UI, not WCAG certification. For specific criteria and sources, use applicable sections of the [ux-review rules](../ux-review/references/rules.md), considering conformance level and exceptions. Do not claim full conformance from a screenshot or one automated scan.
 
-<a id="5-браузер--знахідки--виправлення--повторна-перевірка"></a>
 
 ## 5. Browser → findings → fixes → recheck
 
@@ -81,7 +75,6 @@ For the final pass, apply [interface-review](../interface-review/SKILL.md): visu
 
 If a tool, launch, data or access is blocked, perform available independent checks and name the exact reason and next step. Report static analysis, build and tests separately from browser checks. Inability to inspect does not undo the implementation, but leaves visual verification blocked.
 
-<a id="6-done-і-передача"></a>
 
 ## 6. Done and handoff
 
@@ -97,7 +90,6 @@ At the end, briefly report what changed and why; which screens/journeys/viewport
 
 Reconcile the summary and plan checklist with evidence for the final revision/diff: old PASS does not close a new UI delta. If acceptance requires a keyboard action, check the required key through browser input and the expected UI effect; this is a simulated browser key, not physical manual QA or unit dispatch of submit. Do not redo a completed task solely because of an identical handoff with unchanged inputs; do not attribute repetition to automation without evidence.
 
-<a id="використання-в-терміналі"></a>
 
 ## Terminal usage
 

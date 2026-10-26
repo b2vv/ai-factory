@@ -450,6 +450,74 @@ class CompleteVerificationTests(unittest.TestCase):
             self.corrupt('frozen.py','changed')
             self.assertIn('frozen_file_changed:frozen.py',self.result()['issues'])
 
+    def test_anchor_full_verifier_composition_and_current_tree_guard(self):
+        import difflib,copy
+        old=(self.root/'doc.md').read_text()
+        current=old.replace('<a id="огляд"></a>\n','').replace('#огляд)','#review)')
+        prior=copy.deepcopy(self.records[0]['preserved_literals'])
+        contracts={}
+        def install(text):
+            hunks=[{'start':j1,'end':j2,'before':old[i1:i2],'after':text[j1:j2]}
+                   for tag,i1,i2,j1,j2 in difflib.SequenceMatcher(a=old,b=text,autojunk=False).get_opcodes() if tag!='equal']
+            row={'path':'doc.md','pre_anchor_sha256':v.digest(old.encode()),'current_sha256':v.digest(text.encode()),
+                 'removed_ids':[{'old_id':'огляд','new_id':'review','binding':'Review'}],
+                 'changed_targets':[{'old_target':'#огляд','new_target':'#review','count':1}],
+                 'banner_changes':[],'hunks':hunks,
+                 'removed_preserved_literals':[{'index':i,'record':r} for i,r in enumerate(prior)],
+                 'pre_literals_sha256':v.canonical_records_digest(prior),'current_literals_sha256':v.canonical_records_digest([])}
+            contracts['doc.md']=row
+            self.records[0]['preserved_literals']=[]
+            self.corrupt('doc.md',text)
+            provenance=json.loads((self.root/'provenance/english-translations.json').read_text())
+            provenance['anchor_migration']={'pre_anchor_commit':v.ANCHOR_COMMIT,'pre_anchor_manifest_sha256':v.ANCHOR_MANIFEST,
+                                           'files':[{k:x for k,x in row.items() if k!='hunks'}]}
+            (self.root/'provenance/english-translations.json').write_text(json.dumps(provenance))
+            self.seal(self.root)
+        excluded=[n for n in self.before if n.endswith('.md') and n!='doc.md']+[self.history]
+        with patch.object(v,'ANCHOR_FILES',contracts),patch.object(v,'MAINTAINED_MARKDOWN',['doc.md']),patch.object(v,'ANCHOR_EXCLUDED_MARKDOWN',excluded):
+            install(current)
+            self.assertEqual(self.result()['status'],'PASS',self.result()['issues'])
+            # Even a self-consistent inverse/provenance contract cannot turn a bad
+            # actual destination into a successful current navigation proof.
+            install(current.replace('#review)','#missing)'))
+            self.assertEqual(self.result()['status'],'FAIL')
+            install(current)
+            self.records[0]['preserved_literals']=prior;self.save_records();self.seal(self.root)
+            self.assertEqual(self.result()['status'],'FAIL')
+            install(current)
+            self.corrupt('frozen.py','changed')
+            self.assertIn('frozen_file_changed:frozen.py',self.result()['issues'])
+
+    def test_anchor_declared_literal_in_body_passes_but_native_heading_fails(self):
+        import difflib,copy
+        old=(self.root/'doc.md').read_text();prior=copy.deepcopy(self.records[0]['preserved_literals'])
+        current=old.replace('<a id="огляд"></a>\n','').replace('#огляд)','#review)')
+        contracts={}
+        def install(text):
+            hunks=[{'start':j1,'end':j2,'before':old[i1:i2],'after':text[j1:j2]}
+                   for tag,i1,i2,j1,j2 in difflib.SequenceMatcher(a=old,b=text,autojunk=False).get_opcodes() if tag!='equal']
+            retained=[prior[1]]  # The exact original literal survives as body data.
+            row={'path':'doc.md','pre_anchor_sha256':v.digest(old.encode()),'current_sha256':v.digest(text.encode()),
+                 'removed_ids':[{'old_id':'огляд','new_id':'review','binding':'Review'}],
+                 'changed_targets':[{'old_target':'#огляд','new_target':'#review','count':1}],
+                 'banner_changes':[],'heading_changes':[],'hunks':hunks,
+                 'removed_preserved_literals':[{'index':0,'record':prior[0]}],
+                 'pre_literals_sha256':v.canonical_records_digest(prior),'current_literals_sha256':v.canonical_records_digest(retained)}
+            contracts['doc.md']=row;self.records[0]['preserved_literals']=retained
+            self.corrupt('doc.md',text)
+            provenance=json.loads((self.root/'provenance/english-translations.json').read_text())
+            provenance['anchor_migration']={'pre_anchor_commit':v.ANCHOR_COMMIT,'pre_anchor_manifest_sha256':v.ANCHOR_MANIFEST,
+                                           'files':[{k:x for k,x in row.items() if k!='hunks'}]}
+            (self.root/'provenance/english-translations.json').write_text(json.dumps(provenance));self.seal(self.root)
+        excluded=[n for n in self.before if n.endswith('.md') and n!='doc.md']+[self.history]
+        with patch.object(v,'ANCHOR_FILES',contracts),patch.object(v,'MAINTAINED_MARKDOWN',['doc.md']),patch.object(v,'ANCHOR_EXCLUDED_MARKDOWN',excluded):
+            install(current+'\nOriginal fragment literal: `огляд`\n')
+            self.assertEqual(self.result()['status'],'PASS',self.result()['issues'])
+            install(current+'\n## Example `огляд`\n')
+            # Pins, inverse, current declared literals and payload all agree; only
+            # the current navigation location changes this permitted data to an ID.
+            self.assertEqual(self.result()['status'],'FAIL')
+
     def test_cli_exit_receipt_uses_real_verifier(self):
         import contextlib,io
         args=['verify_translation','--root',str(self.root),'--baseline',str(self.base)]
@@ -482,7 +550,7 @@ Each mutant disables one enforcement statement without changing fixtures or expe
     def test_cleanup_enforcement_has_attributable_full_tree_mutation_kill(self):
         import inspect
         source=inspect.getsource(v.verify);original=v.verify
-        statement='structural_data = cleanup_content_proof(before, data)'
+        statement='structural_data = cleanup_content_proof(before, anchor_restored)'
         self.assertEqual(source.count(statement),1)
         mutant=source.replace(statement,'structural_data = dict(data)')
         try:
@@ -493,6 +561,44 @@ Each mutant disables one enforcement statement without changing fixtures or expe
             self.assertEqual(result.errors,[],'Mutation must fail a mapped assertion, not crash')
         finally:
             v.verify=original
+
+    def test_anchor_full_tree_enforcement_has_attributable_mutation_kills(self):
+        import inspect
+        source=inspect.getsource(v.verify);original=v.verify
+        cases=[('anchor_restored = anchor_content_proof(data)','anchor_restored = dict(data)'),
+               ('current_tree_navigation_proof(data)','pass  # disabled current navigation'),
+               ('restored_literals = anchor_provenance_proof(data, provenance)','restored_literals = {}')]
+        for statement,replacement in cases:
+            with self.subTest(statement=statement):
+                self.assertEqual(source.count(statement),1)
+                try:
+                    exec(compile(source.replace(statement,replacement),'<synthetic-anchor-enforcement-mutation>','exec'),v.__dict__)
+                    result=unittest.TestResult()
+                    CompleteVerificationTests('test_anchor_full_verifier_composition_and_current_tree_guard').run(result)
+                    self.assertGreater(len(result.failures),0,'SURVIVED: '+statement)
+                    self.assertEqual(result.errors,[],'Mutation must fail a mapped assertion, not crash')
+                finally:
+                    v.verify=original
+
+    def test_current_ID_policy_and_resolution_have_independent_full_tree_mutation_kills(self):
+        import inspect
+        cases=[('current_navigation',
+                lambda source:source.replace('CYRILLIC.search(', '(lambda _value: False)('),
+                'test_anchor_declared_literal_in_body_passes_but_native_heading_fails'),
+               ('current_tree_navigation_proof',
+                lambda source:source.replace('if fragment not in target_ids:', 'if False:  # disabled resolution'),
+                'test_anchor_full_verifier_composition_and_current_tree_guard')]
+        for name,mutate,test_name in cases:
+            original=getattr(v,name);source=inspect.getsource(original);changed=mutate(source)
+            with self.subTest(guard=name):
+                self.assertNotEqual(source,changed)
+                try:
+                    exec(compile(changed,'<independent-navigation-policy-mutation>','exec'),v.__dict__)
+                    result=unittest.TestResult();CompleteVerificationTests(test_name).run(result)
+                    self.assertGreater(len(result.failures),0,'SURVIVED: '+name)
+                    self.assertEqual(result.errors,[],'Independent guard must fail intended assertion, not crash')
+                finally:
+                    setattr(v,name,original)
 
     def test_full_tree_guards_have_attributable_mutation_kills(self):
         import inspect
@@ -623,7 +729,8 @@ class CleanupProofTests(unittest.TestCase):
     """Exact reviewed cleanup is an additional proof, never a legacy-test replacement."""
     def current_content(self):
         root = MODULE.parents[1]
-        return {n:(root/n).read_bytes() for n in v.CLEANUP_FILES}
+        return {n:(v.restore_anchor(n,(root/n).read_bytes()) if n in v.ANCHOR_FILES else (root/n).read_bytes())
+                for n in v.CLEANUP_FILES}
 
     def test_all_nine_fixed_content_hashes_and_reconstruction(self):
         data = self.current_content()
@@ -762,6 +869,156 @@ class CleanupProofTests(unittest.TestCase):
         changed=dict(data);obj=json.loads(data[path]);obj['policy']='weakened';changed[path]=json.dumps(obj).encode()
         with patch.object(v,'CLEANUP_FILES',{'doc.md':{}}),patch.object(v,'CLEANUP_METADATA',contracts),self.assertRaisesRegex(ValueError,'link exceptions bytes mismatch'):
             v.cleanup_metadata_proof(before,changed)
+
+
+class AnchorNavigationTests(unittest.TestCase):
+    def test_native_heading_code_literals_are_real_IDs(self):
+        for heading in ['## `Мірник`','## ` /команда ` — English label','## Cyrillic `слово`']:
+            with self.subTest(heading=heading),self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
+                v.current_navigation(heading)
+        self.assertIn('english-heading',v.current_navigation('## English heading')[0])
+
+    def test_finding_angle_placeholder_regression(self):
+        self.assertEqual(v.headings('### Finding: <short name>'),['finding'])
+        self.assertIn('finding',v.current_navigation('### Finding: <short name>')[0])
+
+    def test_raw_entity_and_percent_encoded_IDs_refused(self):
+        for value in ['огляд','&#1086;&#1075;&#1083;&#1103;&#1076;','%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4']:
+            with self.subTest(value=value),self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
+                v.current_navigation('<a id="'+value+'"></a>')
+        with self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
+            v.current_navigation('<section id="огляд">Text</section>')
+        for heading in ['# &#1086;&#1075;&#1083;&#1103;&#1076;','# `%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4`']:
+            with self.subTest(heading=heading),self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
+                v.current_navigation(heading)
+
+    def test_code_comments_do_not_create_navigation(self):
+        text='```html\n<a id="огляд"></a>\n```\n<!-- <a id="огляд"></a> -->\n`<a id="огляд"></a>`\n# English'
+        self.assertEqual(v.current_navigation(text)[0],{'english'})
+
+    def test_unsupported_active_navigation_fails_closed(self):
+        for text in ['[label]: #heading\n[label]', '<a href="#heading">label</a>',
+                     'Setext heading\n==============', 'Setext heading\n--------------']:
+            with self.subTest(text=text),self.assertRaisesRegex(ValueError,'unsupported active'):
+                v.current_navigation(text)
+
+    def test_frontmatter_and_horizontal_rules_are_not_setext(self):
+        text='---\nname: fixture\n---\n# Heading\n\n---\n\nText'
+        self.assertEqual(v.current_navigation(text)[0],{'heading'})
+        self.assertEqual(v.current_navigation(text.replace('\n','\r\n'))[0],{'heading'})
+
+    def test_duplicate_heading_suffix_and_explicit_collision(self):
+        self.assertEqual(v.current_navigation('# Same\n# Same')[0],{'same','same-1'})
+        for text in ['# Same\n<a id="same"></a>', '<a id="x"></a>\n<div id="x"></div>']:
+            with self.subTest(text=text),self.assertRaisesRegex(ValueError,'current anchor collision'):
+                v.current_navigation(text)
+
+    def nav(self,data):
+        with patch.object(v,'ANCHOR_FILES',{'a.md':{'removed_ids':[]}}),patch.object(v,'MAINTAINED_MARKDOWN',['a.md','b.md']),patch.object(v,'ANCHOR_EXCLUDED_MARKDOWN',[]):
+            return v.current_tree_navigation_proof(data)
+
+    def test_actual_cross_file_fragment_resolution(self):
+        data={'a.md':b'# A\n[b](b.md#target)','b.md':b'# Target'}
+        self.nav(data)
+        for target in ['b.md#missing','missing.md#target','b.md#Target']:
+            bad=dict(data);bad['a.md']=('# A\n[b]('+target+')').encode()
+            with self.subTest(target=target),self.assertRaisesRegex(ValueError,'current fragment'):
+                self.nav(bad)
+
+    def test_current_fragment_cyrillic_and_encodings_refused(self):
+        for fragment in ['огляд','%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4','&#1086;&#1075;&#1083;&#1103;&#1076;']:
+            data={'a.md':('# A\n[b](b.md#'+fragment+')').encode(),'b.md':b'# Target'}
+            with self.subTest(fragment=fragment),self.assertRaisesRegex(ValueError,'Cyrillic current internal fragment'):
+                self.nav(data)
+
+    def test_missing_or_extra_maintained_file_refused(self):
+        for data in [{'a.md':b'# A'},{'a.md':b'# A','b.md':b'# B','c.md':b'# C'}]:
+            with self.subTest(paths=list(data)),self.assertRaisesRegex(ValueError,'maintained Markdown inventory'):
+                self.nav(data)
+
+    def test_actual_tree_not_reconstructed_target_tree(self):
+        data={'a.md':b'# A\n[b](b.md#old)','b.md':b'# New'}
+        with self.assertRaisesRegex(ValueError,'current fragment unresolved'):
+            self.nav(data)
+        self.nav({'a.md':b'# A\n[b](b.md#new)','b.md':b'# New'})
+
+    def test_malformed_navigation_escapes_refused(self):
+        for value in ['bad%GG','bad%','%FF']:
+            with self.subTest(value=value),self.assertRaises((ValueError,UnicodeError)):
+                v.navigation_decode(value)
+
+
+class AnchorContractTests(unittest.TestCase):
+    def fixture(self):
+        old='<a id="огляд"></a>\n# Review\n'
+        new='# Review\n'
+        literal={'text':'<a id="огляд"></a>','reason':'Original compatibility heading'}
+        row={'path':'doc.md','pre_anchor_sha256':v.digest(old.encode()),'current_sha256':v.digest(new.encode()),
+             'removed_ids':[{'old_id':'огляд','new_id':'review','binding':'Review'}],
+             'changed_targets':[],'banner_changes':[],
+             'hunks':[{'start':0,'end':0,'before':'<a id="огляд"></a>\n','after':''}],
+             'removed_preserved_literals':[{'index':0,'record':literal}],
+             'pre_literals_sha256':v.canonical_records_digest([literal]),
+             'current_literals_sha256':v.canonical_records_digest([])}
+        data={'doc.md':new.encode()}
+        provenance={'records':[{'path':'doc.md','preserved_literals':[]}],
+                    'anchor_migration':{'pre_anchor_commit':v.ANCHOR_COMMIT,'pre_anchor_manifest_sha256':v.ANCHOR_MANIFEST,
+                                        'files':[{k:x for k,x in row.items() if k!='hunks'}]}}
+        return old,data,row,provenance
+
+    def test_exact_inverse_and_source_bound_literal_reconstruction(self):
+        old,data,row,provenance=self.fixture()
+        with patch.object(v,'ANCHOR_FILES',{'doc.md':row}):
+            self.assertEqual(v.anchor_content_proof(data)['doc.md'],old.encode())
+            self.assertEqual(v.anchor_provenance_proof(data,provenance)['doc.md'],[row['removed_preserved_literals'][0]['record']])
+
+    def test_current_prose_public_link_command_and_anchor_mutations_refused(self):
+        old,data,row,provenance=self.fixture()
+        for content in ['# Altered\n', '# Review\n[extra](https://example.test)', '# Review\n`danger`', old]:
+            with patch.object(v,'ANCHOR_FILES',{'doc.md':row}),self.subTest(content=content),self.assertRaisesRegex(ValueError,'anchor current bytes mismatch'):
+                v.anchor_content_proof({'doc.md':content.encode()})
+
+    def test_missing_mapped_file_refused(self):
+        old,data,row,provenance=self.fixture()
+        with patch.object(v,'ANCHOR_FILES',{'doc.md':row,'second.md':row}),self.assertRaisesRegex(ValueError,'missing mapped file'):
+            v.anchor_content_proof(data)
+
+    def test_wrong_preanchor_pin_and_operation_refused(self):
+        import copy
+        old,data,row,provenance=self.fixture()
+        for field,value in [('pre_anchor_sha256','0'*64),('hunks',[{'start':0,'end':0,'before':'wrong','after':'unexpected'}])]:
+            changed=copy.deepcopy(row);changed[field]=value
+            with patch.object(v,'ANCHOR_FILES',{'doc.md':changed}),self.subTest(field=field),self.assertRaisesRegex(ValueError,'anchor pre-source|anchor operation'):
+                v.anchor_content_proof(data)
+
+    def test_provenance_cannot_define_its_own_migration(self):
+        import copy
+        old,data,row,provenance=self.fixture()
+        for mutate in [lambda p:p['anchor_migration'].update(pre_anchor_commit='0'*40),
+                       lambda p:p['anchor_migration']['files'][0]['removed_ids'].clear(),
+                       lambda p:p.pop('anchor_migration')]:
+            changed=copy.deepcopy(provenance);mutate(changed)
+            with patch.object(v,'ANCHOR_FILES',{'doc.md':row}),self.assertRaisesRegex(ValueError,'anchor provenance contract'):
+                v.anchor_provenance_proof(data,changed)
+
+    def test_stale_extra_or_changed_current_literal_refused(self):
+        import copy
+        old,data,row,provenance=self.fixture()
+        for literals in [[row['removed_preserved_literals'][0]['record']],[{'text':'new','reason':'invented'}]]:
+            changed=copy.deepcopy(provenance);changed['records'][0]['preserved_literals']=literals
+            with patch.object(v,'ANCHOR_FILES',{'doc.md':row}),self.assertRaisesRegex(ValueError,'current literal inventory'):
+                v.anchor_provenance_proof(data,changed)
+
+    def test_original_literal_digest_checked_independently(self):
+        old,data,row,provenance=self.fixture();row['pre_literals_sha256']='0'*64
+        provenance['anchor_migration']['files'][0]['pre_literals_sha256']='0'*64
+        with patch.object(v,'ANCHOR_FILES',{'doc.md':row}),self.assertRaisesRegex(ValueError,'original literal inventory'):
+            v.anchor_provenance_proof(data,provenance)
+
+    def test_out_of_range_literal_index_refused(self):
+        old,data,row,provenance=self.fixture();row['removed_preserved_literals'][0]['index']=2
+        with patch.object(v,'ANCHOR_FILES',{'doc.md':row}),self.assertRaisesRegex(ValueError,'literal removal index'):
+            v.anchor_provenance_proof(data,provenance)
 
 
 if __name__ == '__main__':

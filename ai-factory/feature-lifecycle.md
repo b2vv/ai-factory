@@ -3,7 +3,6 @@ title: "Feature lifecycle — route through existing skills"
 reviewed: 2026-10-16
 ---
 
-<a id="від-запиту-до-готовності-фічі"></a>
 # From request to feature readiness
 
 [Entry](../docs/legacy/ai-factory-plan-entry.md) · [Workflow](workflow.md) · [Roles and limits](models.md) · [CRG](crg.md)
@@ -24,7 +23,6 @@ At startup, after a stage and after compaction/resume, restore the [specific pen
 
 Proposed security adoption route: [security adapter](../adapters/security/review.md) — security-impact → abuse invariants → actual code/config review → negative tests → final evidence/verdict in the existing task. It adds no discovered skill, reviewer, scanner or automatic execution. Required checks and final verdict must close before DONE; delivery states follow [review handoff](review-handoff.md#delivery-state).
 
-<a id="startup-хто-виконує-критику-review-та-перевірки"></a>
 ## Startup: who performs critique, review and checks
 
 After clear/new startup/resume: bound pending → brief task/checkpoint + “Continue?”, await the current response without task/review/send; unbound → silence. Consent applies only to the current session/task; permissions stay unchanged. Compaction of an already approved active task preserves continuity without another question; waiting for confirmation does not activate Stop-driven continuation.
@@ -33,7 +31,6 @@ Before work, record in the current primary record and show the user: goal → **
 
 Package and verdict follow [review handoff](review-handoff.md): task/session IDs, root/base/HEAD, scoped dirty/untracked hashes and diff, pinned acceptance/contracts, raw evidence/commands/exits, constraints. The reviewer is read-only and independently checks sources; tests with shared side effects require coordination. Findings: file:line + impact + verification. PASS is snapshot-bound; after changes, use proportional final-delta review. Missing response/evidence → NOT_TESTED/BLOCKED. Small retains one primary record, without a second tracker.
 
-<a id="вибір-маршруту"></a>
 ## Route selection
 
 - **Small:** clear local scope → short acceptance → necessary context → one completed slice → appropriate checks → local independent review → brief report/next state. For small, one primary task record holds scope/acceptance, plan, append-only progress and outcome; separate independent review and raw evidence only as required by gates. Do not duplicate this in four documents. The plan may be in the existing task or message if the repository permits; do not automatically migrate existing tasks. No mandatory new directory, ADR, grilling or fan-out.
@@ -42,17 +39,14 @@ Package and verdict follow [review handoff](review-handoff.md): task/session IDs
 
 Roles: [Helper, Coder, Escalation/reviewer](models.md). Helper gathers evidence read-only; Coder owns authorized changes and artifacts; the reviewer works in an independent fresh context. Model candidates do not mean verified runtime access; Claude binding remains **UNBOUND** until separately checked. The human owner makes product decisions and designated local QA/landing decisions.
 
-<a id="як-викликати"></a>
 ## How to invoke
 
 Pairs below are **Codex CLI / Claude Code**. First check discovery and the exact linked SKILL.md; Codex also has `/skills`. A symlink or file on disk does not prove discovery. If local and global names collide, explicitly state the path and read the needed file; this is an instruction fallback, not proof of a successful slash command. Do not invent MCP/Agent APIs; the actual schema and authorized mechanisms determine execution.
 
 Run the selected skill with its own gates, not just its name in the journal. `cto-research` may write a briefing, `spec-flow` may create workflow artifacts, `ship-report` may duplicate a report to available Obsidian; these are not Helper read-only actions or automatic authorization for external writing. If only local action is needed, use the current local contract and honestly call it a local report, not full execution of another skill.
 
-<a id="етапи"></a>
 ## Stages
 
-<a id="1-scope-й-acceptance"></a>
 ### 1. Scope and acceptance
 
 - **Input / when:** request and current task; always, with depth based on risk.
@@ -61,7 +55,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** boundaries and non-goals; observable happy/boundary/failure scenarios, verification method; reason a group does not apply. Do not invent requirements from implementation.
 - **Gate → next:** behavior is sufficiently defined; if grilling is selected, its confirmation of shared understanding is required before action. Next 2; an unknown that changes the result means BLOCKED for the dependent part.
 
-<a id="2-дослідження-та-свіжість-контексту"></a>
 ### 2. Research and context freshness
 
 - **Input / when:** scope, root/branch/base/HEAD, dirty and untracked files; check currency each time, with deep research only for unknowns.
@@ -70,7 +63,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** affected boundaries, implementation, ADRs, reuse, risks and unknowns with links.
 - **Gate → next:** under the [CRG contract](crg.md), verify hashes/coverage, not only HEAD/time; untracked files are not guaranteed to be indexed. For a stale/missing graph, use file search and explicit evidence limits; zero impact, especially for Go, does not prove no impact. Refresh needs separate write authorization and writer coordination; this route does not start it automatically. Next 3 or small slice 6.
 
-<a id="3-spec-і-план"></a>
 ### 3. Spec and plan
 
 - **Input / when:** acceptance and evidence; full route or a local requirement. Small uses a compact plan in the current artifact.
@@ -79,7 +71,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** what/why, tasks with files, dependencies and acceptance IDs, checks, side effects, migration/rollback or justified N/A.
 - **Gate → next:** local planning requirements; for spec-flow, GATE 1 and GATE 2 (critique + defense + constitution) are mandatory. plan-critique means all four independent lenses; one self-check is not its PASS. plan-defense covers invalid input, dependency failure, race/repeat, boundaries and rollback with evidence in the plan. Missing reviewer/mandatory manifest → BLOCKED for that process, not hidden bootstrap. Next 4/5/6 as applicable.
 
-<a id="4-умовний-adr"></a>
 ### 4. Conditional ADR
 
 - **Input / when:** architectural decision, new dependency/boundary/convention, change to an accepted decision; under the local threshold, not for every feature.
@@ -96,7 +87,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** composition/state plan, component reuse, desktop/mobile criteria, keyboard/focus, error/recovery, zoom/reflow and reduced motion where applicable.
 - **Gate → next:** local constraints defined before code; implementation and browser proof complete through 6–7. Do not import a generic stack/theme/font. Without actual render/interaction the UI gate is BLOCKED; a build does not close it.
 
-<a id="6-реалізація"></a>
 ### 6. Implementation
 
 - **Input / when:** agreed scope/plan, necessary decisions, acceptance; for authorized implementation.
@@ -105,7 +95,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** one completed vertical slice, behavioral tests and updated journal.
 - **Gate → next:** global tdd requires seams agreed with the user before writing tests; do not ask again about what is already agreed. Its cycle is one red → minimal green at a time; refactoring belongs to review, not a mass batch of imagined tests up front. A local skill with the same name may have another contract — record the exact path. Next 7.
 
-<a id="7-перевірки-й-browser-qa"></a>
 ### 7. Checks and browser QA
 
 - **Input / when:** current diff and acceptance; select the set using the [applicability matrix](onboarding.md#checks) and explicit local gates. Reducing a mandatory gate needs its owner's decision; small alone is not a waiver. RED→GREEN proves defect reproduction/fix; mutation separately introduces a controlled change and checks detection by tests, with its own evidence. Sandbox failure means BLOCKED or an explicitly authorized execution mechanism, not a universal command to run outside the sandbox.
@@ -114,7 +103,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** command/scenario, SHA+dirty scope, exit/verdict, evidence; for UI, actually inspected frames with viewport and performed interactions, repeated after fixes.
 - **Gate → next:** all mandatory applicable checks PASS. FAIL → 6; unavailable execution/unauthorized side effect → BLOCKED with the exact required step. Do not substitute a green overall status for skipped CI/E2E. Next 8.
 
-<a id="8-незалежне-ревю"></a>
 ### 8. Independent review
 
 - **Input / when:** pinned diff/base/HEAD, relevant untracked files, contract and evidence; before readiness under the local gate, mandatory for a risky feature.
@@ -124,7 +112,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** raw findings with file:line, evidence, confidence and blocking status; separate verdict for the required axes.
 - **Gate → next:** no open blocking findings; missing/empty reviewer → BLOCKED, not clean review. Do not invent a spec; mark absence skipped/BLOCKED depending on the contract. Next 9 if findings, otherwise 10.
 
-<a id="9-виправлення-й-повторний-gate"></a>
 ### 9. Fixes and repeated gate
 
 - **Input / when:** findings; only when present.
@@ -133,7 +120,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** each finding → fix+verification or evidenced disagreement/accepted owner decision; no unconditional execution of advice.
 - **Gate → next:** first clarify unclear related findings under the skill contract. Repeat affected 7–8 on the new diff. Under the [limits](models.md): no more than two fruitless fixes of one check without new evidence; reviewer initial + one fixes pass; null — one retry. Then escalation/BLOCKED, not automatic PASS. Scope change returns to 1–3 through the contract owner. Closed → 10.
 
-<a id="10-документація-handoff-і-readiness-for-landing"></a>
 ### 10. Documentation, handoff and readiness for landing
 
 - **Input / when:** verified diff or honest blocker; session completion/pause.
@@ -142,7 +128,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 - **Result:** what changed, acceptance verdicts, actual checks, open risks/blockers, decisions/ADRs, root/branch/SHA/dirty, next action and owner under the [handoff contract](workflow.md#handoff). Do not invent an acceptance table afterward as though it had been agreed beforehand.
 - **Gate → next:** name ready for review/QA/landing precisely. This is not permission to commit, push, merge or deploy. Pending human QA is not done; moving/archiving only under local procedure. After landing/post-deploy, checks run only under a separate applicable request.
 
-<a id="адаптація-до-трьох-репозиторіїв"></a>
 ## Adaptation to three repositories
 
 | Repository | What to preserve | Special gates |
@@ -153,7 +138,6 @@ Run the selected skill with its own gates, not just its name in the journal. `ct
 
 **Courses:** Makefile `make check` (line 165) and `make e2e-local` (106) include `e2e-reset`: stopping compose and deleting postgres/redis/media volumes, including dev data of the same compose project (107–128). `drain-queue` (151–156) deletes media/asr queue keys and requires an exclusive heavy-gate session. `check-generated` (159–164) generates files first. This is not a read-only smoke test. Before running, current explicit authorization with understanding of data loss, a verified compose project and absence of competing writers are required; without these the required gate is BLOCKED. Do not bypass a mandatory gate with a smaller command or call that command the full check. In Cassiopeia also inspect pretest:E2E side effects before running; in Cargo skipped E2E does not confirm browser QA.
 
-<a id="відновлення-з-середини"></a>
 ## Resuming from the middle
 
 0. An identical handoff with unchanged inputs does not reopen a completed task: verify status and return the existing result. Do not attribute repetition to automation without evidence.

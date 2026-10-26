@@ -1,4 +1,3 @@
-<a id="viewport-coverage--спільний-контракт-ui"></a>
 
 # Viewport coverage — shared UI contract
 
@@ -17,7 +16,6 @@ For each applicable surface × class, retain in the existing plan/report: route/
 
 Retain checks at an intermediate width near a changed breakpoint and for applicable states/interactions: open/active, loading/empty/error/recovery, keyboard/focus, overflow and long text. Check them where the change can have an effect; one default screenshot does not cover these states. After a fix, repeat the affected viewports/states at the final revision.
 
-<a id="масштаб-і-доступність--окремі-перевірки"></a>
 
 ## Scaling and accessibility — separate checks
 

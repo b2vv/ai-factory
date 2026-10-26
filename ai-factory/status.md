@@ -7,7 +7,6 @@ reviewed: 2026-10-16
 
 <a id="capabilities"></a>
 
-<a id="поточний-статус-можливостей-і-джерела"></a>
 # Current capability status and sources
 
 The initial status concerns evidence collected on 2026-10-14 and 2026-10-16; Cargo snapshot and onboarding clarifications from 2026-10-17 are listed separately; this refactoring is not a new runtime audit. “Source exists” ≠ “integrated in a specific repository” ≠ “verified on a task.” “Not verified” does not mean “absent.” After a new pilot, update the corresponding row here; do not create a second table in the roadmap or Shared.
@@ -24,12 +23,10 @@ Local skills, their resources, and Shared references were checked. The dg/cargot
 | Cheat sheet | [skills-cheatsheet.md](../docs/guides/skills-cheatsheet.md); updated together with Shared, but behavior is defined by the corresponding SKILL.md |
 A separate narrow CRG pass on 2026-10-16 UTC supplemented this initial audit: live stdio/schema, host discovery, a fixture, and isolated source snapshots were checked; source/active graph replacement, CI/deploy, and model API were not run. Details: [CRG](crg.md); manual model candidates: [models.md](models.md).
 
-<a id="переносиме-підключення"></a>
 ## Portable onboarding
 
 [Onboarding](onboarding.md) contains a checklist, manifest, and read-only helper. Its local fixtures and independent forward-review check the bounded onboarding contract, not runtime Claude/Codex discovery, hooks, MCP, or model access. A file/symlink is only detected; configured and behavior-tested require separate evidence. Unverified bindings remain unresolved.
 
-<a id="єдиний-реєстр"></a>
 ## Single registry
 
 | Capability / ID | Source exists | Integrated in repository | Verified on a task | Evidence and date / limit |
@@ -56,7 +53,6 @@ A separate narrow CRG pass on 2026-10-16 UTC supplemented this initial audit: li
 | E4: PR review in CI | Historical workflow record exists; not checked now | Not verified; historically the job was skipped without a secret | No new PR run conducted | [Historical E4 records](history.md#ci-history) |
 | E5: post-deploy | Historical scripts/workflow records exist; not checked now | Not verified | Historical dg smoke; cargo flows did not pass then; no new runs | [Historical E5 records](history.md#ci-history) |
 
-<a id="оновлення-доказів"></a>
 ## Updating evidence
 
 Record the repository, path/revision and dirty state, date, and the command actually run or artifact inspected. Code/contract changes after verification may require rechecking; an old PASS does not carry over automatically. Use PASS / FAIL / BLOCKED / N/A with a rationale for checks; do not substitute these verdicts for presence/integration states.

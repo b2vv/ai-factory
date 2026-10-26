@@ -5,7 +5,6 @@ description: Builds or updates the single pre-implementation briefing — produc
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.
 
-<a id="cto-research--брифінг-перед-імплементацією"></a>
 # cto-research — a pre-implementation briefing
 
 One file the agent reads **before** the plan. Not a ticket or an ADR.
@@ -14,7 +13,6 @@ The briefing is a **cache** of primary sources, not an independent truth. Every 
 source link; when the descriptive cache and primary source disagree, correct the cache. Code does not override an accepted contract; escalate normative contradictions to the owner.
 This is the single rule from which the rest of the skill follows.
 
-<a id="1-знайди-дім-брифінгу"></a>
 ## 1. Find the briefing's home
 
 First read applicable `AGENT.md` / `AGENTS.md` / `CLAUDE.md`: if they point to a briefing, use that path. Otherwise search `work/CTO-RESEARCH.md` → `CONTEXT.md` → `docs/CONTEXT.md` and verify it is actually a briefing before updating. Do not rewrite an instruction file as a briefing; an existing explicitly designated briefing section may be updated while preserving the rest. If none exists, within the permitted write scope propose/create `work/CTO-RESEARCH.md`
@@ -22,7 +20,6 @@ First read applicable `AGENT.md` / `AGENTS.md` / `CLAUDE.md`: if they point to a
 
 **One briefing per repo.** A second file alongside the first creates two diverging caches.
 
-<a id="2-гейт-свіжості-перший-крок-коли-файл-уже-є"></a>
 ## 2. Freshness gate (the first step when the file exists)
 
 Read the header: date + base commit. Compare with `git log --oneline <base>..HEAD`. Also inspect `git status --short`, staged/unstaged diffs and relevant untracked files: uncommitted work can change the briefing without new commits. If the base is missing or does not resolve, the gate is unverified — rebuild the briefing. Relevant local changes require updating the affected sections and noting in the header that it includes uncommitted state.
@@ -37,7 +34,6 @@ Read the header: date + base commit. Compare with `git log --oneline <base>..HEA
 State how many commits have elapsed and which affected the briefing — that is the evidence that the gate ran.
 The header is the sole carrier of this gate, so a run without it is not complete.
 
-<a id="3-збери-по-пяти-осях"></a>
 ## 3. Research five axes
 
 Investigate each axis in its primary source (code, workflow files, lockfiles, `git log`), not a retelling.
@@ -53,7 +49,6 @@ Investigate each axis in its primary source (code, workflow files, lockfiles, `g
 5. **Risks** — recorded debt/criticism, intentionally unfinished work, the most fragile areas.
    Sources: `tech-debt/`, `tasks/`, anchor comments in code.
 
-<a id="4-напиши-брифінг"></a>
 ## 4. Write the briefing
 
 The section order is fixed:
@@ -71,7 +66,6 @@ Writing rules:
 - Use tables instead of paragraphs for “question → answer → source” pairs.
 - The header contains the date and base commit (`git rev-parse --short HEAD`) — these drive the freshness gate.
 
-<a id="5-завершення"></a>
 ## 5. Completion
 
 The skill is complete when **all** of these hold:

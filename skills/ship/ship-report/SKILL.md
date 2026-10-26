@@ -3,7 +3,6 @@ name: ship-report
 description: Writes the final feature report in six fixed sections — done, tested scenarios, non-obvious findings, screenshots, user-flow walkthrough, risks and limitations — as a delta from the plan. Use at feature or task completion, before deployment, when a report rather than a wall of text is needed, or on triggers "ship report", "звіт по фічі", "підсумуй роботу" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-<a id="ship-report--звіт-який-читають-замість-диффа"></a>
 
 # ship-report — the report people read instead of the diff
 
@@ -13,7 +12,6 @@ The feature's final artifact. Not a retelling of work, but the basis for a deplo
 the plan promised. The plan is already written and sits nearby; restating it in the report creates a second copy
 that will diverge. If it matched the plan, say that in one line and move on.
 
-<a id="дім"></a>
 
 ## Home
 
@@ -23,21 +21,18 @@ Put the report **there too**, beside the plan, and duplicate it as a Report note
 **One report per feature.** Append Post-deploy to this same file (`post-deploy-check`),
 not a new one — otherwise the feature's history scatters across files nobody reconnects.
 
-<a id="шість-секцій"></a>
 
 ## Six sections
 
 The order is fixed. Fill a section without content with “not applicable because <reason>” —
 do not delete it. An empty section is visible; a deleted one looks as though it was never needed.
 
-<a id="1-що-зроблено"></a>
 
 ### 1. What was done
 
 Steps with files and results. Compress what matched the plan into one line referencing
 the plan section. Expand only **deviations**: what was done differently and why.
 
-<a id="2-протестовані-сценарії"></a>
 
 ### 2. Tested scenarios
 
@@ -50,7 +45,6 @@ the expectation was silently rewritten to fit the actual result makes the whole 
 If there is no table in the plan (the feature proceeded without `acceptance-spec`), say so explicitly and list what
 you checked, rather than creating a retrospective table tailored to known results.
 
-<a id="3-неочевидне"></a>
 
 ### 3. Non-obvious findings
 
@@ -61,14 +55,12 @@ Every finding has an anchor (`path:line`, commit, test name).
 If nothing non-obvious happened, say so. That is a normal result for a small feature
 and suspicious for a large one.
 
-<a id="4-скріни"></a>
 
 ### 4. Screenshots
 
 For visible changes — before/after. For invisible ones (SDK, worker, schema) — “not applicable because the change
 has no on-screen manifestation”.
 
-<a id="5-проходка-по-user-flow"></a>
 
 ### 5. User-flow walkthrough
 
@@ -77,14 +69,12 @@ a real user will take. One end-to-end walkthrough, not a list of checked functio
 
 State whether it was performed manually or by an e2e run, and exactly how.
 
-<a id="6-ризики-й-обмеження"></a>
 
 ### 6. Risks and limitations
 
 What remains uncovered; where it may break; what was deliberately excluded from scope (with a reason). Debt created
 by this feature is named here, not left in someone's head.
 
-<a id="завершення"></a>
 
 ## Completion
 

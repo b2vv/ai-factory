@@ -7,7 +7,6 @@ reviewed: 2026-10-16
 
 <a id="task-branches"></a>
 
-<a id="task-branch-у-головному-репозиторії"></a>
 ## Task branch in the main repository
 
 The normal task route is a separate task branch in the main repository. A worktree, separate clone or detached checkout is not created automatically; another route requires an explicit user instruction. This rule takes precedence over historical examples and the selected skill's defaults for Git isolation; local acceptance, architecture and required gates remain in place.
@@ -18,7 +17,6 @@ Runtime/test isolation is a separate contract: agreed ports, service/project ide
 
 <a id="routing"></a>
 
-<a id="маршрути-роботи-передача-контексту-та-перевірки"></a>
 # Work routes, context handoff and checks
 
 This is an agreed process selection scheme, not a new executable skill. Current repository instructions and the user's request determine actions. A project that is already configured does not need another bootstrap.
@@ -29,14 +27,12 @@ Practical [feature lifecycle navigation](feature-lifecycle.md) connects stages t
 
 Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
 
-<a id="startup-хто-виконує-критику-review-та-перевірки"></a>
 ## Startup: who performs critique, review and checks
 
 Before work, record in the current primary record and show the user: purpose → **new subagent / existing separate session / UNDETERMINED**, owner, exact session/agent reference if known, rationale for the current choice, who delivers the package, and coordination of shared-resource checks. An explicit instruction takes precedence. If the choice is not specified and cannot be unambiguously inferred from the current request, ask before spawning/sending; independent safe inventory/planning is allowed. Do not create a duplicate reviewer or contact another session without authorization. An existing session ≠ a completed review. Label authorial checks separately.
 
 The package and verdict follow [review handoff](review-handoff.md): task/session IDs, root/base/HEAD, scoped dirty/untracked hashes and diff, pinned acceptance/contracts, raw evidence/commands/exits, constraints. The reviewer is read-only and verifies sources independently; tests with shared side effects require coordination. Findings: file:line + impact + verification. PASS is bound to a snapshot; after changes, perform a proportional final-delta review. Missing response/evidence → NOT_TESTED/BLOCKED. Small keeps one primary record, without a second tracker.
 
-<a id="вхід-у-проєкт"></a>
 ## Entering a project
 
 | Situation | First step | Continuation |
@@ -48,12 +44,10 @@ The package and verdict follow [review handoff](review-handoff.md): task/session
 
 <a id="skill-map"></a>
 
-<a id="карта-скілів-і-adr"></a>
 ## Skill and ADR map
 
 Before invocation, check discovery and availability. If local and global skills share a name, identify the exact selected path; do not rely on accidental collision resolution.
 
-<a id="вибір-інтервю-та-архітектурної-перевірки"></a>
 ### Selecting an interview and architecture check
 
 First read the relevant current sources; questions to the owner resolve unknown decisions,
@@ -76,7 +70,6 @@ FAIL and NOT_RUN; the numerator includes only evidenced PASS. N/A has a separate
 any percentage; stale evidence is not PASS. There is no numerical cutoff: the percentage is only
 informational and does not replace acceptance or independent review.
 
-<a id="qualitative-readiness-обовязкові-критерії-та-докази"></a>
 ### Qualitative readiness: mandatory criteria and evidence
 
 Owner-approved AF-13 policy (2026-10-22): an unresolved mandatory criterion blocks
@@ -121,7 +114,6 @@ of actual project readiness. The examples are synthetic, not product measurement
 
 <a id="source-of-truth"></a>
 
-<a id="джерела-істини"></a>
 ## Sources of truth
 
 Separate normative and descriptive material. Acceptance and accepted contracts/ADRs define required behavior; code/scripts show the actual implementation and available commands. Code can disprove a stale descriptive note, but does not legitimize a bug or cancel acceptance. Record a conflict with both sources and its impact; the contract owner decides within the request's scope. A request to fix a bug according to an unambiguous accepted contract already permits restoring that rule; code deviation alone does not require new approval. A new decision is needed for conflicting/unclear rules or a proposed contract change; until then, the dependent part is BLOCKED and independent authorized work continues. The user's scope and current runtime permissions bound every route.
@@ -132,7 +124,6 @@ Repository instructions and the selected SKILL.md define current requirements; S
 
 <a id="handoff"></a>
 
-<a id="мінімальна-передача-контексту"></a>
 ## Minimal context handoff
 
 Use the project's existing plan/journal/ledger. No new mandatory file is needed. Before handoff or session completion, add:
@@ -149,14 +140,12 @@ Use the project's existing plan/journal/ledger. No new mandatory file is needed.
 
 The recipient first reads these artifacts and checks tree currency, rather than repeating all reconnaissance. A new reviewer receives the contract and evidence without the author's chat history; raw findings remain accessible. Parallel executors have separate journals and write boundaries. After a failure, read the journal first; no response is not success. When scope/decisions change, update the contract through its owner; when code changes after PASS, repeat affected checks.
 
-<a id="три-ролі-та-crg"></a>
 ### Three roles and CRG
 
 For the current manual route, use [Helper / Coder / Escalation-reviewer](models.md): one role per necessary step, an explicit binding, bounded retries and independent review context. This is not an automatic router or permission for new paid access; local gates remain in effect.
 
 CRG provides context candidates, not a verdict. Before trusting the graph, check [root/branch/revision, hashes and coverage](crg.md), including untracked files; after unsuccessful bounded recovery, work through files and deterministic checks. Build/test/browser QA is not replaced by a graph score or a model's opinion.
 
-<a id="виклики-й-доступність-інструментів"></a>
 ### Invocation and tool availability
 
 - Codex CLI: `$назва` or selection via `/skills`; Claude Code: `/назва`. For example, `$design-pass` / `/design-pass`.
@@ -166,7 +155,6 @@ CRG provides context candidates, not a verdict. Before trusting the graph, check
 
 <a id="ui"></a>
 
-<a id="ui-критерії-готовності"></a>
 ## UI: readiness criteria
 
 [design-pass](../skills/design-pass/SKILL.md): project rules and local design skill → tokens/components/themes/scenarios → reference if needed → plan → implementation → browser → fixes → rechecking. A particular project's stack, palette, fonts and constraints do not become global.
@@ -175,7 +163,6 @@ Check hierarchy, responsiveness, applicable states, keyboard/focus/contrast, red
 
 Report build, static analysis and tests separately from inspecting rendering and interaction. For each check: PASS / FAIL / BLOCKED / N/A, method and evidence; N/A needs a reason. A screenshot that was created but not inspected does not prove visual quality. Rechecking is required after a fix. An unfulfilled key gate means “implemented, verification incomplete”, not unconditional “done”.
 
-<a id="інтеграція-adr-перевірок-у-наступні-задачі"></a>
 ## Integrating ADR checks into subsequent tasks
 
 This is the agreed documentation direction; integration into a specific repository remains a separate task after its audit. No new global skill has been created.
