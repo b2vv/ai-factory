@@ -1,76 +1,88 @@
 ---
-title: Subagent-orchestration — ledger + статус-протокол + brief-file handoff
+title: Subagent-orchestration — ledger + status protocol + brief-file handoff
 ---
 
-# 🧩 Subagent-orchestration: ledger, 4 статуси, brief-файли
+<a id="-subagent-orchestration-ledger-4-статуси-brief-файли"></a>
 
-> Дистиляція **методологічного ядра** зі скіла `subagent-driven-development` (obra/superpowers) — **без установки самого скіла** (він дублює наявний `implement` + orchestration-модель + `Workflow`-tool). Тут лише три переюзабельні патерни, яких бракує в ad-hoc оркестрації: **durable ledger**, **статус-протокол ескалації**, **brief-file handoff**. Джерело: `github.com/obra/superpowers/skills/subagent-driven-development`.
+# 🧩 Subagent-orchestration: ledger, 4 statuses, brief files
+
+> A distillation of the **methodological core** of the `subagent-driven-development` skill (obra/superpowers) — **without installing the skill itself** (it duplicates the existing `implement` + orchestration model + `Workflow` tool). Only three reusable patterns missing from ad-hoc orchestration are included here: **durable ledger**, **escalation status protocol**, **brief-file handoff**. Source: `github.com/obra/superpowers/skills/subagent-driven-development`.
 >
-> Крос-проєктне доповнення до: memory `feedback_agent_orchestration_model` (tech-lead orchestrator + role-fleet + per-wave summary/handoff), `feedback_wave_reports_convention`, `feedback_delegate_large_tasks`. Для Claude Code накладається на нативний `Workflow`-tool (pipeline/parallel) із [task branch та одним writer](../ai-factory/workflow.md#task-branches); `Agent isolation:worktree` не є default і потребує явного доручення.
+> A cross-project addition to: memory `feedback_agent_orchestration_model` (tech-lead orchestrator + role-fleet + per-wave summary/handoff), `feedback_wave_reports_convention`, `feedback_delegate_large_tasks`. For Claude Code, it layers onto the native `Workflow` tool (pipeline/parallel) with [a task branch and one writer](../ai-factory/workflow.md#task-branches); `Agent isolation:worktree` is not the default and requires an explicit instruction.
 
 ---
 
-## Коли застосовувати
+<a id="коли-застосовувати"></a>
 
-Виконуєш план із **кількох незалежних задач** через саб-агентів в одній сесії (controller + implementer-fleet), і потрібна **надійна відновлюваність після компакції контексту** + **керована ескалація блокерів** замість «silent retry».
+## When to apply
+
+You are executing a plan with **multiple independent tasks** through subagents in one session (controller + implementer-fleet), and need **reliable recovery after context compaction** + **controlled blocker escalation** instead of “silent retry”.
 
 ---
 
-## 1. Durable ledger (progress-файл)
+<a id="1-durable-ledger-progress-файл"></a>
 
-Одна durable-нотатка, що переживає компакцію контексту й reset сесії.
+## 1. Durable ledger (progress file)
 
-- **Розташування:** `<repo>/.superpowers/sdd/progress.md` (або будь-який git-ignored шлях у репо; для цього стеку — краще `reports/<topic>/wave-NN/progress.md`, щоб лягало в наявну wave-reports-конвенцію).
-- **На старті** — читай ledger: задачі, позначені complete, **НЕ** перевідправляй; resume з першої непозначеної.
-- **Коли задачу відправив** — дописуй рядок **одразу**, не чекаючи рев'ю:
+One durable note that survives context compaction and session reset.
+
+- **Location:** `<repo>/.superpowers/sdd/progress.md` (or any git-ignored path in the repo; for this stack, prefer `reports/<topic>/wave-NN/progress.md` to fit the existing wave-reports convention).
+- **At startup** — read the ledger: **DO NOT** redispatch tasks marked complete; resume from the first unmarked task.
+- **When you dispatch a task** — append a line **immediately**, without waiting for review:
   ```
   Task N: dispatched (model=<тір>)
   ```
-  Тір імплементера потрібен **раніше** за завершення — у момент, коли вибираєш тір рев'юєра
-  ([[multi-model-roles]] §3: «рев'ю іншим тіром»). Якщо компакція трапиться між DONE і
-  диспатчем рев'ю, у ledger уже є відповідь; у пам'яті оркестратора — ні.
-- **Коли задача пройшла рев'ю** — дописуй рядок:
+  The implementer's tier is needed **before** completion — when choosing the reviewer's tier
+  ([[multi-model-roles]] §3: “review by a different tier”). If compaction occurs between DONE and
+  review dispatch, the answer is already in the ledger; it is not in the orchestrator's memory.
+- **When the task passes review** — append a line:
   ```
   Task N: complete (commits <base7>..<head7>, review clean, model=<тір>, reviewer=<тір>)
   ```
-  Обидва тіри в одному рядку роблять правило перевірюваним постфактум, а не лише в моменті.
-- **Після відновлення сесії** — довіряй **ledger + `git log`**, а не пам'яті/переказу.
+  The `<тір>` placeholder means tier. Both tiers on one line make the rule verifiable after the fact, not only at the time.
+- **After restoring a session** — trust **the ledger + `git log`**, not memory/a retelling.
 
-> Зв'язок зі стеком: `Workflow`-tool має власний `resumeFromRunId` (кеш agent()-викликів) — ledger потрібен для **ручної** оркестрації (Agent-tool у циклі) або як людино-читний журнал поверх Workflow-журналу.
+> Connection to the stack: the `Workflow` tool has its own `resumeFromRunId` (a cache of agent() calls) — the ledger is needed for **manual** orchestration (Agent-tool in a loop) or as a human-readable journal over the Workflow journal.
 
 ---
 
-## 2. Статус-протокол implementer'а (4 коди → реакція controller'а)
+<a id="2-статус-протокол-implementerа-4-коди--реакція-controllerа"></a>
 
-Кожен implementer завершує **одним із 4 статусів**; кожен тригерить конкретну реакцію — **ніколи не ігноруй ескалацію й не змушуй ту саму модель ретраїти без змін**.
+## 2. Implementer status protocol (4 codes → controller response)
 
-| Статус | Значення | Реакція controller'а |
+Each implementer finishes with **one of 4 statuses**; each triggers a specific response — **never ignore escalation or force the same model to retry without changes**.
+
+| Status | Meaning | Controller response |
 |---|---|---|
-| **DONE** | Робота завершена | Збери review-package → відправ task-reviewer'а |
-| **DONE_WITH_CONCERNS** | Завершено, але implementer має сумніви | Прочитай concerns ПЕРШ ніж рухатись. Про коректність/скоуп — усунь до рев'ю; спостереження («файл розростається») — занотуй і йди на рев'ю |
-| **NEEDS_CONTEXT** | Бракує інформації, якої не дали | Додай відсутній контекст → перевідправ |
-| **BLOCKED** | Не може завершити | Оціни блокер. Не ігноруй, не форсуй той самий ретрай без змін |
+| **DONE** | Work completed | Assemble the review-package → dispatch the task-reviewer |
+| **DONE_WITH_CONCERNS** | Completed, but the implementer has concerns | Read the concerns BEFORE proceeding. Correctness/scope concerns — resolve before review; observations (“the file is growing”) — record and proceed to review |
+| **NEEDS_CONTEXT** | Required information was not provided | Add the missing context → redispatch |
+| **BLOCKED** | Cannot complete | Assess the blocker. Do not ignore it or force the same retry without changes |
 
 ---
 
-## 3. Brief-file handoff (артефакти як файли, не інлайн-текст)
+<a id="3-brief-file-handoff-артефакти-як-файли-не-інлайн-текст"></a>
 
-Щоб dispatch-промти лишались тонкими й переживали компакцію — передавай **шляхи до файлів**, а не вставлений текст.
+## 3. Brief-file handoff (artifacts as files, not inline text)
 
-**Dispatch-промт має містити:**
-1. один рядок — де ця задача в проєкті;
-2. **шлях до brief'а**, поданий як «read this first — це твої вимоги, з точними значеннями verbatim»;
-3. інтерфейси/рішення з попередніх задач, яких brief знати не може;
-4. твоє розв'язання будь-якої неоднозначності, яку ти помітив у brief'і;
-5. шлях до report-файлу + report-контракт (що і куди implementer запише).
+To keep dispatch prompts thin and resilient to compaction, pass **file paths**, not pasted text.
 
-> Для цього стеку: brief/report-файли клади під `reports/<topic>/wave-NN/` (наявна конвенція). У `Workflow`-tool те саме досягається `schema`-поверненнями + файлами в session-dir; для Agent-tool — явні шляхи.
+**The dispatch prompt must contain:**
+1. one line describing where this task fits in the project;
+2. **the brief path**, introduced as “read this first — these are your requirements, with exact values verbatim”;
+3. interfaces/decisions from previous tasks that the brief cannot know;
+4. your resolution of any ambiguity you noticed in the brief;
+5. the report-file path + report contract (what the implementer will write and where).
+
+> For this stack: put brief/report files under `reports/<topic>/wave-NN/` (the existing convention). In the `Workflow` tool, the same is achieved with `schema` returns + files in the session-dir; for Agent-tool, use explicit paths.
 
 ---
 
-## Антипатерни
+<a id="антипатерни"></a>
 
-- ❌ Тримати прогрес лише в контексті → компакція = re-run завершених задач. Веди ledger.
-- ❌ Вставляти повні вимоги інлайн у dispatch → роздування контексту controller'а. Передавай шлях до brief'а.
-- ❌ Форсувати retry BLOCKED тим самим агентом без зміни вхідних → та сама поразка. Зміни контекст або ескалюй людині.
-- ❌ Плутати з установкою скіла-дубля: це **нотатка-патерн**, `implement`/`Workflow` лишаються основним інструментом оркестрації.
+## Antipatterns
+
+- ❌ Keeping progress only in context → compaction = re-running completed tasks. Maintain a ledger.
+- ❌ Pasting full requirements inline into dispatch → bloated controller context. Pass the brief path.
+- ❌ Forcing a BLOCKED retry by the same agent without changed inputs → the same failure. Change the context or escalate to a human.
+- ❌ Confusing this with installing a duplicate skill: this is a **pattern note**; `implement`/`Workflow` remain the primary orchestration tools.

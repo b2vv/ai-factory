@@ -84,22 +84,72 @@
       "destination": "skills/arch/code-review/references/behavior-coverage.md",
       "sha256": "dd17e16ae44d14075dbe1569aeb7761a6f68b949eb839ee9f9dadba918970f50",
       "kind": "Owner-authorized authored generic review coverage reference; distinct from upstream MIT adaptation; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/django.md",
+      "sha256": "a796265a41e2b2c161bd8cbb26fc9465e214d7b7ae005a1506c885f1dafda2ad",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/fastapi.md",
+      "sha256": "1c1d08717cea77a31f81be71344baebdfbef8ae9787137e0d4770b2164b8e7c9",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/laravel.md",
+      "sha256": "83a25b5889d5a6b3515ccd1e151d8f8558926978e342437e60c96617f926986e",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/react.md",
+      "sha256": "e09ad7fff8f6acf07d0025dc9faed6c49b5a5becc9a81d6b3d478c2613f2b4b0",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/go.md",
+      "sha256": "b0db2d674402ecb99c260fc99f39dd1afac2a03fa2410d20e1cfa273c1c6d9fd",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/index.md",
+      "sha256": "90df11938d6430f43f349dd529e90e650fa4fcecee325f558bbc00aac9859044",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/php.md",
+      "sha256": "54f5860c99fdb53fd6814b02c35bff35a69582c4761abc1f19281f59e82c98b6",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/python.md",
+      "sha256": "ad0fa778377b822bcad71e37f5ae5ed4cf077f2fd92acb0c6a03a940c4a43d14",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/rust.md",
+      "sha256": "c76ef283d245ebd3e16cfd3f790046804885411424403d885459f492a7fa470b",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/typescript.md",
+      "sha256": "8cca261c747670906d0b0e3967fd2ff6c37ef9c7c9a8b479a881d060f217e73c",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
     }
   ],
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "baba5bc34b530a2e41a61d96f3cf8f824ddb9b470a1393c9fb9f748890142450",
+      "before_sha256": "677e7d8cf377bfeb0fe67220bb332717907223f6d7ac8cc6a906e1ab21387eba",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "264655dfa9ae6d43441e5099309e5c9e46e89c39e857a8775ffa3c5ef31baf34"
+      "after_sha256": "c30fa82e4c2834d18e928a0521dfa8f9407af0316ebc00e5f18c4ccf7abb654e"
     },
     {
       "destination": "skills/plan/plan-critique/SKILL.md",
-      "before_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
+      "before_sha256": "767b4f8a4cdd7213c2adffc9a64f6cf7fe2eed2a2b812a11e2550b278ff15f63",
       "append": "\n## Clean critic input\n\nGive the selected independent critic the exact artifact, accepted contract, scoped snapshot and raw supporting evidence. Keep the author's proposed verdict, persuasive summary and private reasoning out of the initial packet; preserve relevant factual constraints and raw prior findings. Classify findings as actionable, contract misunderstanding, accepted tradeoff or unsupported, with evidence for each disposition. This refines the existing four-lens/local reviewer route; it does not authorize duplicate reviewers, a different model, paid API fallback or an automatic review loop. Missing authorized execution remains BLOCKED.\n\nAdaptation source: [doubt-driven-development](https://github.com/addyosmani/agent-skills/blob/aeac41d4d005999432bb7312f7ff06383a91d59d/skills/doubt-driven-development/SKILL.md), MIT; [license](LICENSE.addyosmani).\n",
       "append_sha256": "7676726786e091c623a32c41ab4b0b5c8fbed16ebab3a3836513d70a5cd35ff0",
-      "after_sha256": "2da18d121267b4ad53b248e6d61f7bfe4b8bd03d0cedce2819bb759ede38b840"
+      "after_sha256": "ea347435529f790bce6e134e4242aa7a46abf22f60982e37af02379406465ad2"
     }
   ],
   "execution": "No upstream scripts, installers, hooks or fenced code executed."

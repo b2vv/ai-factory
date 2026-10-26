@@ -1,6 +1,6 @@
 ---
 name: implement-spec
-description: "Реалізує в коді результат /to-spec і /to-tickets."
+description: "Implements the output of /to-spec and /to-tickets in code."
 disable-model-invocation: true
 ---
 

@@ -1,79 +1,99 @@
 ---
 name: ship-report
-description: Пише фінальний звіт по фічі за шістьма фіксованими секціями — зроблено, протестовані сценарії, неочевидні знахідки, скріни, проходка по user flow, ризики й обмеження — як дельту до плану. Використовуйте на завершенні фічі чи задачі, перед деплоєм, коли треба «звіт замість полотна тексту», або на тригери "ship report", "звіт по фічі", "підсумуй роботу".
+description: Writes the final feature report in six fixed sections — done, tested scenarios, non-obvious findings, screenshots, user-flow walkthrough, risks and limitations — as a delta from the plan. Use at feature or task completion, before deployment, when a report rather than a wall of text is needed, or on triggers "ship report", "звіт по фічі", "підсумуй роботу" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-# ship-report — звіт, який читають замість диффа
+<a id="ship-report--звіт-який-читають-замість-диффа"></a>
 
-Фінальний артефакт фічі. Не переказ роботи, а те, з чого приймається рішення про деплой.
+# ship-report — the report people read instead of the diff
 
-**Дельта** — провідне слово: звіт розповідає, чим **фактичне** відрізняється від того, що
-обіцяв план. План уже написаний і лежить поруч; переказ його вмісту у звіті — друга копія,
-що розійдеться з першою. Збіглося з планом — так і пиши одним рядком, і йди далі.
+The feature's final artifact. Not a retelling of work, but the basis for a deployment decision.
 
-## Дім
+**Delta** is the key word: the report explains how **actual results** differ from what
+the plan promised. The plan is already written and sits nearby; restating it in the report creates a second copy
+that will diverge. If it matched the plan, say that in one line and move on.
 
-`plan.md` уже лежить у домі артефактів репо (`.claude/standards.md` → `## Артефакти`).
-Звіт лягає **туди ж**, поруч із планом, і дублюється Report-нотою в Obsidian, якщо канал живий.
+<a id="дім"></a>
 
-**Один звіт на фічу.** Post-deploy дописується в цей самий файл (`post-deploy-check`),
-а не в новий — інакше історія фічі розсипається на файли, які ніхто не зшиває.
+## Home
 
-## Шість секцій
+`plan.md` already lives in the repository's artifacts home (`.claude/standards.md` → `## Артефакти`, the retained literal heading reference).
+Put the report **there too**, beside the plan, and duplicate it as a Report note in Obsidian if the channel is live.
 
-Порядок фіксований. Секція без вмісту заповнюється рядком «не застосовно, бо <причина>» —
-не видаляється. Порожня секція видима; видалена виглядає як така, що й не потрібна була.
+**One report per feature.** Append Post-deploy to this same file (`post-deploy-check`),
+not a new one — otherwise the feature's history scatters across files nobody reconnects.
 
-### 1. Що зроблено
+<a id="шість-секцій"></a>
 
-Кроки з файлами й результатом. Те, що збіглося з планом, — одним рядком-посиланням на
-секцію плану. Розгортай лише **відхилення**: що зробили інакше й чому.
+## Six sections
 
-### 2. Протестовані сценарії
+The order is fixed. Fill a section without content with “not applicable because <reason>” —
+do not delete it. An empty section is visible; a deleted one looks as though it was never needed.
 
-**Це не проза.** Візьми таблицю `acceptance-spec` із плану й додай до неї два стовпчики:
-**фактичний результат** і **вердикт** (збіглося / розійшлося / не перевірено).
+<a id="1-що-зроблено"></a>
 
-Рядок «не перевірено» дозволений і цінний — він показує межу перевіреного. Рядок, у якому
-очікуване тихо переписали під фактичне, робить усю таблицю декоративною.
+### 1. What was done
 
-Немає таблиці в плані (фіча йшла без `acceptance-spec`) — скажи це прямо й перелічи, що
-перевіряв, замість того щоб зібрати таблицю заднім числом під уже відомий результат.
+Steps with files and results. Compress what matched the plan into one line referencing
+the plan section. Expand only **deviations**: what was done differently and why.
 
-### 3. Неочевидне
+<a id="2-протестовані-сценарії"></a>
 
-Те, заради чого звіт читають уважно: що з'ясувалось по дорозі й чого ніхто не очікував —
-розбіжність документа з кодом, залежність, про яку не знали, поведінка на межі.
-Кожна знахідка з якорем (`path:line`, коміт, ім'я тесту).
+### 2. Tested scenarios
 
-Нічого неочевидного не траплялось — так і напиши. Це нормальний результат для дрібної фічі
-й підозрілий для великої.
+**This is not prose.** Take the plan's `acceptance-spec` table and add two columns:
+**actual result** and **verdict** (matched / differed / not checked).
 
-### 4. Скріни
+A “not checked” row is allowed and valuable — it shows the boundary of verification. A row where
+the expectation was silently rewritten to fit the actual result makes the whole table decorative.
 
-Для видимих змін — до/після. Для невидимих (SDK, воркер, схема) — «не застосовно, бо зміна
-не має екранного вияву».
+If there is no table in the plan (the feature proceeded without `acceptance-spec`), say so explicitly and list what
+you checked, rather than creating a retrospective table tailored to known results.
 
-### 5. Проходка по user flow
+<a id="3-неочевидне"></a>
 
-Що робить людина, крок за кроком, і що вона бачить на кожному кроці — рівно тим шляхом,
-яким піде реальний користувач. Не перелік перевірених функцій, а один наскрізний прохід.
+### 3. Non-obvious findings
 
-Проходили руками чи прогоном e2e — скажи чим саме.
+What makes the report worth reading closely: discoveries made along the way that nobody expected —
+a discrepancy between documentation and code, an unknown dependency, behavior at a boundary.
+Every finding has an anchor (`path:line`, commit, test name).
 
-### 6. Ризики й обмеження
+If nothing non-obvious happened, say so. That is a normal result for a small feature
+and suspicious for a large one.
 
-Що не закрито; де може зламатись; що свідомо винесене за скоуп (з причиною). Борг, створений
-цією фічею, називається тут, а не лишається в голові.
+<a id="4-скріни"></a>
 
-## Завершення
+### 4. Screenshots
 
-Скіл завершено, коли виконано **все**:
+For visible changes — before/after. For invisible ones (SDK, worker, schema) — “not applicable because the change
+has no on-screen manifestation”.
 
-- [ ] Шість секцій на місці; жодна не видалена, порожні мають «не застосовно, бо…».
-- [ ] Кожен рядок приймальної таблиці має фактичний результат і вердикт; назване число
-      рядків «не перевірено».
-- [ ] Секція 1 — дельта: збіги згорнуті в посилання, розгорнуті лише відхилення.
-- [ ] Кожна знахідка §3 має якір.
-- [ ] Звіт лежить у домі артефактів поруч із планом; секція Post-deploy лишена порожньою
-      під майбутній `post-deploy-check`.
+<a id="5-проходка-по-user-flow"></a>
+
+### 5. User-flow walkthrough
+
+What the person does, step by step, and sees at each step — exactly the path
+a real user will take. One end-to-end walkthrough, not a list of checked functions.
+
+State whether it was performed manually or by an e2e run, and exactly how.
+
+<a id="6-ризики-й-обмеження"></a>
+
+### 6. Risks and limitations
+
+What remains uncovered; where it may break; what was deliberately excluded from scope (with a reason). Debt created
+by this feature is named here, not left in someone's head.
+
+<a id="завершення"></a>
+
+## Completion
+
+The skill is complete when **all** of the following hold:
+
+- [ ] All six sections exist; none deleted, empty ones say “not applicable because…”.
+- [ ] Every acceptance-table row has an actual result and a verdict; state the number of
+      “not checked” rows.
+- [ ] Section 1 is a delta: matches compressed into references, only deviations expanded.
+- [ ] Every §3 finding has an anchor.
+- [ ] The report lives in the artifacts home beside the plan; the Post-deploy section is left empty
+      for the future `post-deploy-check`.

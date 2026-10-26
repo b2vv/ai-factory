@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Перевіряє зміни від фіксованої точки (коміт, гілка, тег чи merge-base) за двома осями: Стандарти (чи відповідає код задокументованим стандартам репозиторію?) і Специфікація (чи відповідає код тому, що просив вихідний issue чи spec?). Запускає обидва огляди паралельно в саб-агентах і показує результат поруч. Використовуйте, коли користувач хоче переглянути гілку, PR, незавершені зміни, або каже \"review since X\"."
+description: "Reviews changes since a fixed point (commit, branch, tag or merge-base) along two axes: Standards (does the code meet the repository's documented standards?) and Specification (does the code match what the original issue or spec requested?). Runs both reviews in parallel sub-agents and presents the results side by side. Use when the user wants to review a branch, PR or work-in-progress changes, or says \"review since X\"."
 ---
 
 Two-axis review of the requested committed, staged, or working-tree changes:

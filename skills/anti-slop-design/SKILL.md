@@ -1,40 +1,46 @@
 ---
 name: anti-slop-design
-description: 'Конкретний каталог AI-tells фронтенд-дизайну (типографіка, колір, лейаут, декор, копірайт, моушн) + три дилси + механічний pre-flight-гейт, щоб інтерфейс не читався як шаблон. Факти-пара до методного `frontend-design`. Використовуйте, коли будуєте/рефакторите вигляд лендінга, порталу, застосунку чи екрана; коли просять «щоб не виглядало як AI / не шаблонно / anti-slop»; коли треба перевірити готовий екран на кліше. Тригери: "anti-slop", "не як AI", "taste", "прожар дизайн", "design tells".'
+description: 'A concrete catalog of frontend design AI tells (typography, color, layout, decoration, copy, motion), three dials and a mechanical pre-flight gate to keep an interface from looking templated. The factual companion to the methodological `frontend-design`. Use when building/refactoring the appearance of a landing page, portal, application or screen; when asked to avoid an AI-generated/templated look; or to check a finished screen for clichés. Compatibility trigger aliases: "щоб не виглядало як AI / не шаблонно / anti-slop", "anti-slop", "не як AI", "taste", "прожар дизайн", "design tells".'
 license: Adapted from leonxlnx/taste-skill (MIT); see Provenance.
 ---
 
-# anti-slop-design — каталог AI-tells + гейт
+<a id="anti-slop-design--каталог-ai-tells--гейт"></a>
 
-Це **факти й гейт**, не метод. Метод — коли branch (page vs system), що вже вирішено, де ризик — у [`frontend-design`](../ship/frontend-design/SKILL.md). Цей скіл дає конкретику, якою той метод міряють: перелік машинних кліше й механічну перевірку перед «готово».
+# anti-slop-design — AI-tell catalog + gate
 
-**Нічого тут не спрацьовує автоматично.** Спершу читаєш бриф, тоді витягуєш лише те, що пасує. Правило без контексту — теж slop.
+These are **facts and a gate**, not a method. The method—when to branch (page vs system), what is already decided, where the risk lies—is in [`frontend-design`](../ship/frontend-design/SKILL.md). This skill supplies concrete criteria for that method: a list of machine clichés and a mechanical check before “done”.
 
----
-
-## 0. Design read — один рядок ДО коду
-
-Перш ніж торкатись коду, назви вголос одним рядком, що ти будуєш:
-
-> **«Читаю це як: `<тип сторінки>` для `<аудиторії>`, мовою `<вайб>`, з ухилом у `<дизайн-система / естетика>`.»**
-
-Аудиторія обирає естетику, не твій смак. Якщо бриф однозначний — **не питай**, просто оголоси read і працюй. Якщо read справді роздвоюється — **одне** уточнення, не допит.
-
-**Anti-default дисципліна.** Не тягнись рефлекторно до: AI-purple градієнтів, центрованого hero над темним mesh, трьох рівних фіче-карток, глобального glassmorphism, нескінченних мікроанімацій усюди, `Inter + slate-900`. Це і є дефолти LLM. Дотягуйся далі — свідомо, від design read.
+**Nothing here triggers automatically.** First read the brief, then extract only what fits. A rule without context is slop too.
 
 ---
 
-## 1. Три дилси
+<a id="0-design-read--один-рядок-до-коду"></a>
 
-Після read вистав три числа (1–10). Кожне рішення по лейауту/моушну/щільності гейтиться ними.
+## 0. Design read — one line BEFORE code
 
-- **`DESIGN_VARIANCE`** — 1 = ідеальна симетрія, 10 = артовий хаос
-- **`MOTION_INTENSITY`** — 1 = статика, 10 = кінематографічна фізика
-- **`VISUAL_DENSITY`** — 1 = галерея/повітря, 10 = кокпіт/дані
+Before touching code, state in one line what you are building:
 
-**Baseline `8 / 6 / 4`** — лише поки read не переважив. Інференс:
+> **“I read this as: `<page type>` for `<audience>`, in a `<vibe>` voice, leaning toward `<design system / aesthetic>`.”**
 
-| Сигнал у брифі                                          | VARIANCE | MOTION | DENSITY |
+The audience chooses the aesthetic, not your taste. If the brief is unambiguous, **do not ask**: announce the read and work. If the read genuinely splits, ask **one** clarifying question, not an interrogation.
+
+**Anti-default discipline.** Do not reflexively reach for AI-purple gradients, a centered hero over a dark mesh, three equal feature cards, global glassmorphism, endless microanimations everywhere, or `Inter + slate-900`. These are LLM defaults. Reach further deliberately, based on the design read.
+
+---
+
+<a id="1-три-дилси"></a>
+
+## 1. Three dials
+
+After the read, set three numbers (1–10). Gate every layout/motion/density decision against them.
+
+- **`DESIGN_VARIANCE`** — 1 = perfect symmetry, 10 = artistic chaos
+- **`MOTION_INTENSITY`** — 1 = static, 10 = cinematic physics
+- **`VISUAL_DENSITY`** — 1 = gallery/air, 10 = cockpit/data
+
+**Baseline `8 / 6 / 4`** applies only until the read overrides it. Inference:
+
+| Signal in the brief                                    | VARIANCE | MOTION | DENSITY |
 | ------------------------------------------------------- | -------- | ------ | ------- |
 | minimalist / clean / calm / editorial / Linear-style    | 5–6      | 3–4    | 2–3     |
 | premium consumer / Apple-y / luxury / brand             | 7–8      | 5–7    | 3–4     |
@@ -42,96 +48,116 @@ license: Adapted from leonxlnx/taste-skill (MIT); see Provenance.
 | landing / portfolio / marketing (default)               | 7–9      | 6–8    | 3–5     |
 | trust-first / public-sector / regulated / a11y-critical | 3–4      | 2–3    | 4–5     |
 
-Дилси — це змінні, на які посилається решта. Не вигадуй аліасів (`LAYOUT_VARIANCE`, `ANIM_LEVEL`).
+The dials are variables referenced throughout the rest. Do not invent aliases (`LAYOUT_VARIANCE`, `ANIM_LEVEL`).
 
 ---
 
-## 2. Каталог AI-tells (bias correction)
+<a id="2-каталог-ai-tells-bias-correction"></a>
 
-Кожне правило має **override-шлях**. Дефолт — уникати; override — коли бренд/бриф прямо просить.
+## 2. AI-tell catalog (bias correction)
 
-### 2.1 Типографіка
+Every rule has an **override path**. Avoid by default; override when the brand/brief explicitly requests it.
 
-- **Inter — не дефолт.** Спершу `Geist`, `Outfit`, `Cabinet Grotesk`, `Satoshi`, або доречний бренд-шрифт. _Override:_ Inter ок для neutral/Linear-style або public-sector/a11y.
-- **Serif — дуже не дефолт.** «Відчувається креативно/преміум» — НЕ причина. «Креативний бриф = serif» — найпоширеніший AI-tell. _Override:_ лише коли бренд явно називає serif, або естетика справді editorial/luxury/heritage І ти можеш пояснити, чому саме цей serif. **Заборонені як дефолт:** `Fraunces`, `Instrument_Serif`.
-- **Емфаза в заголовку** — italic/bold ТОГО САМОГО шрифту, не вкидання випадкового serif-слова в sans (і навпаки). Мішана емфаза — аматорство.
-- **Italic descender clearance:** italic-слово з `y g j p q` при `leading-none` обрізає хвіст — мінімум `leading-[1.1]` + `pb-1`.
+<a id="21-типографіка"></a>
 
-### 2.2 Колір
+### 2.1 Typography
 
-- **Максимум 1 акцент.** Насиченість < 80% за дефолтом.
-- **LILA-правило:** «AI Purple / blue glow» — не дефолт. Нейтральна база (Zinc/Slate/Stone) + один високо-контрастний акцент (Emerald, Electric Blue, Deep Rose, Burnt Orange). _Override:_ бренд просить фіолет — прийми, але з інтентом, не generic-градієнт.
-- **Consistency lock:** обраний акцент — на ВСЮ сторінку. Теплосіра сторінка не отримує синій CTA у секції 7. Одна палітра на проєкт — без стрибків теплих↔холодних сірих.
-- **Premium-consumer ban** (другий за частотою tell): для cookware/wellness/artisan/luxury дефолт LLM — beige/cream + brass/clay/oxblood + espresso. **Заборонено як дефолт-reach.** Ротуй натомість: Cold Luxury (silver/chrome/smoke), Forest (green/bone/amber), Black-and-Tan, Cobalt+Cream, Terracotta+Slate, чи pure monochrome + один pop. Не постав ту саму warm-craft палітру двічі поспіль. _Override:_ бренд явно називає ці кольори.
+- **Inter is not the default.** First consider `Geist`, `Outfit`, `Cabinet Grotesk`, `Satoshi`, or an appropriate brand font. _Override:_ Inter is fine for neutral/Linear-style or public-sector/a11y.
+- **Serif is emphatically not the default.** “Feels creative/premium” is NOT a reason. “Creative brief = serif” is the most common AI tell. _Override:_ only when the brand explicitly names serif, or the aesthetic is genuinely editorial/luxury/heritage AND you can explain why this particular serif. **Banned as defaults:** `Fraunces`, `Instrument_Serif`.
+- **Headline emphasis** uses italic/bold in the SAME font, not a random serif word inserted into sans (or vice versa). Mixed emphasis is amateurish.
+- **Italic descender clearance:** an italic word with `y g j p q` at `leading-none` clips descenders; use at least `leading-[1.1]` + `pb-1`.
 
-### 2.3 Лейаут
+<a id="22-колір"></a>
 
-- **Anti-center:** при `DESIGN_VARIANCE > 4` центрований hero уникають — split 50/50, ліво-текст/право-асет, асиметричний whitespace, scroll-pin. _Override:_ editorial/manifesto/launch, де сам меседж і є дизайн.
-- **Zigzag cap:** не 3+ поспіль секції з тим самим image+text-split.
-- **Eyebrow cap (механічно):** кількість `uppercase tracking` мікролейблів над заголовками ≤ ceil(секцій / 3). Hero рахується як 1.
-- **Section-layout variety:** на 8 секцій — щонайменше 4 різні лейаут-родини.
+### 2.2 Color
 
-### 2.4 Матеріальність і декор
+- **At most 1 accent.** Saturation < 80% by default.
+- **LILA rule:** “AI Purple / blue glow” is not the default. A neutral base (Zinc/Slate/Stone) + one high-contrast accent (Emerald, Electric Blue, Deep Rose, Burnt Orange). _Override:_ accept a brand's request for purple, but with intent, not a generic gradient.
+- **Consistency lock:** use the chosen accent across the ENTIRE page. A warm-gray page does not get a blue CTA in section 7. One palette per project, without switching between warm↔cool grays.
+- **Premium-consumer ban** (the second most common tell): for cookware/wellness/artisan/luxury, the LLM default is beige/cream + brass/clay/oxblood + espresso. **Banned as a default reach.** Rotate instead: Cold Luxury (silver/chrome/smoke), Forest (green/bone/amber), Black-and-Tan, Cobalt+Cream, Terracotta+Slate, or pure monochrome + one pop. Do not use the same warm-craft palette twice in a row. _Override:_ the brand explicitly names these colors.
 
-- **Картки — лише коли elevation несе реальну ієрархію.** Інакше групуй `border-t`/`divide-y`/повітрям.
-- **Тінь тонуй у колір фону** — жодних чисто-чорних drop-shadow на світлому.
-- **Один corner-radius-система** на весь екран.
-- **Забанений декор-slop** (default off, лише з реальним семантичним приводом): version-футери на marketing (`v1.4.2`, `Build 0048`, `last sync 4s ago`), scroll-cues (`Scroll ↓`), секційна нумерація-eyebrow (`00 / INDEX`, `06 · how it works`), декор-стрічка внизу hero (`BRAND. MOTION. SPATIAL.`), фейкові photo-credit-підписи (`Field study no. 12 · Ines Caetano`), pill/label поверх картинок, decorative dots, locale/city/weather-стрічки без глобального приводу.
+<a id="23-лейаут"></a>
 
-### 2.5 Копірайт і чесність доказу
+### 2.3 Layout
 
-- **Плоска, конкретна мова.** Забанені кліше: «Elevate», «Seamless», «Unleash», «Next-Gen», «Game-changer», «Delve», «Tapestry», «In the world of…». Sentence case у заголовках, не Title Case. Без «Oops!»-помилок і пасиву.
-- **Жодного вигаданого доказу.** Не малюй фейкові логотипи-клієнтів, відгуки, метрики, «Trusted by». Демо-контент маркуй видимим для користувача підписом (`sample`, `example`, `демо`). HTML-коментар сам по собі не є видимим маркуванням. Не підпирай продакшн-claim іншою AI-згенерованою сторінкою.
-- **Реалістичний мок ≠ фрод:** унікальні аватари/дати замість однакових — ок для «не шаблонно», але це про демо-правдоподібність, не про підробку справжніх ідентичностей.
+- **Anti-center:** at `DESIGN_VARIANCE > 4`, avoid a centered hero; use split 50/50, left text/right asset, asymmetric whitespace, scroll-pin. _Override:_ editorial/manifesto/launch, where the message itself is the design.
+- **Zigzag cap:** no 3+ consecutive sections with the same image+text split.
+- **Eyebrow cap (mechanical):** the number of `uppercase tracking` microlabels above headings ≤ ceil(sections / 3). The hero counts as 1.
+- **Section-layout variety:** for 8 sections, at least 4 different layout families.
 
-### 2.6 Моушн
+<a id="24-матеріальність-і-декор"></a>
 
-- **Motion motivated (обовʼязково):** перед будь-якою анімацією — «що вона комунікує?». Валідно: ієрархія / сторітелінг / фідбек / зміна стану. Невалідно: «виглядає круто». GSAP усюди бо доступний — аматорство.
-- **Motion claimed = motion shown:** якщо `MOTION_INTENSITY > 4`, сторінка мусить реально рухатись (entry на hero, scroll-reveal ключових секцій, hover-фізика CTA). Статика з заявленим `7` — зламано. Не тягнеш робочий моушн у скоупі — опусти дил до 3 і віддай чистий статичний.
-- **`prefers-reduced-motion`** враховуй для всіх застосовних анімацій незалежно від дилу: прибери або спрости несуттєвий рух, зберігши зрозумілий feedback.
-- **Ніякого `window.addEventListener('scroll')`** — лише `useScroll()` / ScrollTrigger / IntersectionObserver / CSS scroll-driven. `useEffect`-анімації — зі строгим cleanup.
-- **Spring, не linear** для мікроінтеракцій (напр. `type:"spring", stiffness:100, damping:20`).
+### 2.4 Materiality and decoration
 
-### 2.7 Вивід і залежності
+- **Cards only when elevation conveys real hierarchy.** Otherwise group with `border-t`/`divide-y`/space.
+- **Tint shadows to the background color**: no pure-black drop shadows on light backgrounds.
+- **One corner-radius system** across the entire screen.
+- **Banned decorative slop** (default off; only with a real semantic reason): version footers on marketing (`v1.4.2`, `Build 0048`, `last sync 4s ago`), scroll cues (`Scroll ↓`), section-number eyebrows (`00 / INDEX`, `06 · how it works`), decorative strips at the bottom of the hero (`BRAND. MOTION. SPATIAL.`), fake photo-credit captions (`Field study no. 12 · Ines Caetano`), pills/labels over images, decorative dots, locale/city/weather strips without a global-context reason.
 
-- **Без плейсхолдерів:** жодних `// TODO: add actual code`, `...`, «rest stays the same». Повна робоча імплементація.
-- **Dependency verification:** перед імпортом бібліотеки — перевір `package.json`; немає — спершу видай команду встановлення, не припускай наявність.
+<a id="25-копірайт-і-чесність-доказу"></a>
 
----
+### 2.5 Copy and honest evidence
 
-## 3. Pre-flight гейт (перед «готово»)
+- **Plain, concrete language.** Banned clichés: “Elevate”, “Seamless”, “Unleash”, “Next-Gen”, “Game-changer”, “Delve”, “Tapestry”, “In the world of…”. Sentence case in headings, not Title Case. No “Oops!” errors or passive voice.
+- **No fabricated evidence.** Do not invent client logos, testimonials, metrics or “Trusted by”. Mark demo content with a user-visible label (`sample`, `example`, `demo`). An HTML comment alone is not visible labeling. Do not support a production claim with another AI-generated page.
+- **A realistic mock ≠ fraud:** unique avatars/dates instead of identical ones are fine for avoiding a templated look, but this concerns demo plausibility, not forging real identities.
 
-Механічний, не на око. Провалений бокс = не готово.
+<a id="26-моушн"></a>
 
-- [ ] **Design read** оголошено (§0)?
-- [ ] **Дилси** явні й обґрунтовані брифом, не мовчазний baseline?
-- [ ] **ZERO em-dash (`—`)** будь-де на екрані (заголовки, pills, body, цитати, атрибуція, alt)?
-- [ ] **Theme lock** — одна тема на весь екран, жодна секція не флипає в інверсію посеред?
-- [ ] **Color lock** — один акцент однаково у всіх секціях? **Shape lock** — один radius?
-- [ ] **CTA-контраст** WCAG AA 4.5:1, лейбл не переноситься на 2 рядки на десктопі, немає двох CTA з тим самим інтентом?
-- [ ] **Serif / premium-palette** — якщо вжито, не забанене-як-дефолт (або з явним брендовим виправданням, і відмінне від попереднього проєкту)?
-- [ ] **Eyebrow count ≤ ceil(секцій/3)**; немає section-numbering-eyebrows, decoration-стрічки, scroll-cues, version-футерів, фейкових photo-credit?
-- [ ] **Реальні картинки** (gen-tool → seed → явний placeholder-слот), без div-фейк-скріншотів і hand-rolled декор-SVG?
-- [ ] **Copy self-audit** — кожен видимий рядок перечитано, без зламаних/галюцинованих фраз; жодного вигаданого доказу?
-- [ ] **Motion motivated** (кожна анімація виправдана одним реченням) та **claimed = shown**?
-- [ ] **Reduced-motion** перевірено для всіх застосовних анімацій; без `scroll`-лістенера; `useEffect`-cleanup є?
-- [ ] **Mobile collapse** явний; висота не обрізає контент чи дії при зміні viewport, появі клавіатури або збільшенні тексту? Full-height використовуй лише за потреби макета, засобами поточного стеку.
-- [ ] **Empty / loading / error** стани надані?
-- [ ] **Іконки** з дозволеної бібліотеки (Phosphor / Tabler / Radix / Lucide), не hand-rolled paths?
-- [ ] **Без плейсхолдерів / TODO**; залежності перевірені?
+### 2.6 Motion
+
+- **Motion motivated (mandatory):** before any animation, ask “what does it communicate?”. Valid: hierarchy / storytelling / feedback / state change. Invalid: “looks cool”. GSAP everywhere because it is available is amateurish.
+- **Motion claimed = motion shown:** if `MOTION_INTENSITY > 4`, the page must actually move (hero entry, key-section scroll reveal, CTA hover physics). Static output claiming `7` is broken. If working motion is beyond scope, lower the dial to 3 and deliver a clean static result.
+- Honor **`prefers-reduced-motion`** for all applicable animations regardless of the dial: remove or simplify nonessential motion while preserving clear feedback.
+- **No `window.addEventListener('scroll')`**: only `useScroll()` / ScrollTrigger / IntersectionObserver / CSS scroll-driven. `useEffect` animations require strict cleanup.
+- **Spring, not linear** for microinteractions (e.g. `type:"spring", stiffness:100, damping:20`).
+
+<a id="27-вивід-і-залежності"></a>
+
+### 2.7 Output and dependencies
+
+- **No placeholders:** no `// TODO: add actual code`, `...`, “rest stays the same”. A complete working implementation.
+- **Dependency verification:** before importing a library, check `package.json`; if absent, first provide the installation command rather than assuming availability.
 
 ---
 
-## 4. У проєкті: факти проєкту перемагають ці дефолти
+<a id="3-pre-flight-гейт-перед-готово"></a>
 
-Цей каталог — **generic**. Усередині реального продукту більшість осей уже витрачено (див. `frontend-design` §2 «знайди, що вже вирішено»):
+## 3. Pre-flight gate (before “done”)
 
-- **Токени, шрифт, палітра, radius** визначені в темі проєкту — не відкривай їх; тут «Inter — не дефолт» і «LILA-правило» **поступаються** канонічній палітрі проєкту.
-- **Механізм тем** (напр. `[data-theme]` замість `dark:`) і **стайл-ідіома** (напр. `clsx` замість `tv()`) — беруться з проєкту, не звідси. Перевіряй лише підтримувані проєктом теми в його механізмі; цей скіл не вимагає додавати light/dark чи dark-only режим.
-- **Стек-специфіка** (RAC-примітиви, `text-p13/p14` = розмір, заборона raw `<input>`, dedup-first по інвентарю) живе в **локальному скілі проєкту**, а не тут.
+Mechanical, not eyeballed. A failed box means not done.
 
-Правило: тут — те, що true для будь-якого фронту; усе стек-залежне виноситься в проєктний скіл, який **розширює** цей і `frontend-design`.
+- [ ] **Design read** announced (§0)?
+- [ ] **Dials** explicit and justified by the brief, not a silent baseline?
+- [ ] **ZERO em-dash (`—`)** anywhere on screen (headings, pills, body, quotes, attribution, alt)?
+- [ ] **Theme lock**: one theme across the screen, no section flipping into inversion midway?
+- [ ] **Color lock**: one accent used consistently in all sections? **Shape lock**: one radius?
+- [ ] **CTA contrast** WCAG AA 4.5:1, label does not wrap to 2 lines on desktop, no two CTAs with the same intent?
+- [ ] **Serif / premium palette**: if used, not banned-as-default (or explicitly justified by the brand and different from the previous project)?
+- [ ] **Eyebrow count ≤ ceil(sections/3)**; no section-numbering eyebrows, decorative strips, scroll cues, version footers or fake photo credits?
+- [ ] **Real images** (gen-tool → seed → explicit placeholder slot), no div-based fake screenshots or hand-rolled decorative SVG?
+- [ ] **Copy self-audit**: every visible line reread, no broken/hallucinated phrases; no fabricated evidence?
+- [ ] **Motion motivated** (each animation justified in one sentence) and **claimed = shown**?
+- [ ] **Reduced motion** checked for all applicable animations; no `scroll` listener; `useEffect` cleanup present?
+- [ ] **Mobile collapse** explicit; height does not clip content or actions when the viewport changes, the keyboard appears or text is enlarged? Use full-height only when the layout needs it, with the current stack's tools.
+- [ ] **Empty / loading / error** states provided?
+- [ ] **Icons** from an allowed library (Phosphor / Tabler / Radix / Lucide), not hand-rolled paths?
+- [ ] **No placeholders / TODO**; dependencies checked?
 
 ---
 
-**Provenance.** Дистильовано (не копія) з `leonxlnx/taste-skill` v1 + v2 (MIT), 2026-09-29: три дилси, каталог tells (Inter/serif/LILA/premium-palette/декор), motion-motivated, truth-and-proof, output-completeness, pre-flight. Метод свідомо НЕ дублюється — він у [`frontend-design`](../ship/frontend-design/SKILL.md); стек-факти — у проєктному скілі. Пара запускається через [`design-pass`](../design-pass/SKILL.md).
+<a id="4-у-проєкті-факти-проєкту-перемагають-ці-дефолти"></a>
+
+## 4. In a project: project facts override these defaults
+
+This catalog is **generic**. Within a real product, most axes are already decided (see `frontend-design` §2, “find what is already decided”):
+
+- **Tokens, font, palette, radius** are defined in the project theme; do not reopen them. Here, “Inter is not the default” and the “LILA rule” **yield** to the canonical project palette.
+- **Theme mechanism** (e.g. `[data-theme]` instead of `dark:`) and **styling idiom** (e.g. `clsx` instead of `tv()`) come from the project, not here. Check only themes supported by the project through its mechanism; this skill does not require adding light/dark or dark-only mode.
+- **Stack specifics** (RAC primitives, `text-p13/p14` = size, a ban on raw `<input>`, inventory-first deduplication) belong in the **local project skill**, not here.
+
+Rule: this contains what is true for any frontend; everything stack-dependent belongs in a project skill that **extends** this and `frontend-design`.
+
+---
+
+**Provenance.** Distilled (not copied) from `leonxlnx/taste-skill` v1 + v2 (MIT), 2026-09-29: three dials, tell catalog (Inter/serif/LILA/premium-palette/decoration), motion-motivated, truth-and-proof, output-completeness, pre-flight. The method is intentionally NOT duplicated: it lives in [`frontend-design`](../ship/frontend-design/SKILL.md); stack facts belong in the project skill. The pair runs through [`design-pass`](../design-pass/SKILL.md).

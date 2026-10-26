@@ -1,78 +1,90 @@
 ---
 name: plan-critique
-description: Прожарює готовий план чотирма незалежними лінзами — AI-slop, логічні діри, надлишкова складність, непокриті edge cases — і зводить знахідки в blocking / non-blocking. Використовуйте як гейт після написання плану чи спеки, перед розбивкою на таски, або на тригери "критика плану", "прожар план", "plan critique".
+description: Critiques a completed plan through four independent lenses — AI-slop, logical gaps, unnecessary complexity, uncovered edge cases — and consolidates findings into blocking / non-blocking. Use as a gate after writing a plan or spec, before splitting into tasks, or on triggers "критика плану", "прожар план", "plan critique" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-# plan-critique — чотири лінзи по плану
+<a id="plan-critique--чотири-лінзи-по-плану"></a>
 
-Гейт між «план написано» і «план виконуємо». Відрізняється від `grilling` тим, що
-`grilling` питає **тебе**, а цей скіл читає **план** і повертає знахідки.
+# plan-critique — four lenses on a plan
 
-**Лінза** — тут провідне поняття: чотири незалежні читання того самого тексту, кожне сліпе до
-решти. Одне читання «на все погане» дає одну знахідку й відчуття завершеності; чотири вузькі
-дають чотири різні.
+The gate between “plan written” and “execute the plan”. It differs from `grilling`: `grilling` asks
+**you**, while this skill reads **the plan** and returns findings.
 
-## 1. Підготуй матеріал
+**Lens** is the central concept: four independent readings of the same text, each blind to
+the rest. One reading “for everything bad” yields one finding and a feeling of completion; four narrow
+readings yield four different ones.
 
-На вході — файл плану (`plan.md`, `spec.md`, таск). Плюс контекст, без якого лінзи сліпі:
-брифінг репо (`cto-research`), стандарти репо, наявні механізми, які план міг би переюзати.
+<a id="1-підготуй-матеріал"></a>
 
-## 2. Прожени чотири лінзи паралельно
+## 1. Prepare the material
 
-Кожна лінза — **окремий сабагент з чистим контекстом**, який бачить план і контекст, але не
-бачить висновків інших лінз. (Коли користувач увімкнув оркестрацію — той самий фан-аут через
-`Workflow`; поведінка однакова.)
+Input: the plan file (`plan.md`, `spec.md`, task). Add the context without which the lenses are blind:
+repository briefing (`cto-research`), repository standards, existing mechanisms the plan could reuse.
 
-| Лінза | Що шукає |
+<a id="2-прожени-чотири-лінзи-паралельно"></a>
+
+## 2. Run four lenses in parallel
+
+Each lens is **a separate subagent with clean context**, seeing the plan and context but not
+the other lenses' conclusions. (When the user enabled orchestration, use the same fan-out through
+`Workflow`; behavior is identical.)
+
+| Lens | What it looks for |
 |---|---|
-| **AI-slop** | правдоподібний наповнювач: вигадані абстракції під один виклик, церемонія без користувача, кроки, що переказують очевидне, «на майбутнє» без замовника на це майбутнє |
-| **Логічні діри** | кроки, що не випливають з попередніх: непроставлені передумови, стан, який ніхто не встановлює, хибний порядок, розрив між «зробили X» і «тому працює Y» |
-| **Надлишкова складність** | те саме меншою кількістю рухів: новий механізм там, де є наявний (reuse-first), шар без другого клієнта, конфіг під єдиний випадок |
-| **Edge cases** | порожні / граничні / дублікатні дані, повторний і паралельний виклик, відмова залежності, часткове застосування посеред кроку |
+| **AI-slop** | plausible filler: invented abstractions for one call, ceremony without a user, steps restating the obvious, “for the future” without anyone requesting that future |
+| **Logical gaps** | steps that do not follow from earlier ones: unstated prerequisites, state nobody establishes, wrong ordering, a gap between “we did X” and “therefore Y works” |
+| **Unnecessary complexity** | the same result with fewer moves: a new mechanism where one exists (reuse-first), a layer without a second client, configuration for a single case |
+| **Edge cases** | empty / boundary / duplicate data, repeated and concurrent invocation, dependency failure, partial application midway through a step |
 
-Кожна знахідка повертається у фіксованій формі:
+Each finding returns in a fixed format:
 
 ```
-[лінза] <заголовок>
-де:      <секція або рядок плану>
-чому:    <що конкретно зламається або що коштує зайвого>
-що зробити: <правка в план — не в код>
-вага:    blocking | non-blocking
+[lens] <title>
+where:   <plan section or line>
+why:     <what specifically will break or cost extra>
+action:  <change to the plan — not the code>
+weight:  blocking | non-blocking
 ```
 
-**Blocking** = план у цьому місці веде до неправильного результату або до переробки.
-**Non-blocking** = коштує зайвого, але результат вийде правильний.
+**Blocking** = this point in the plan leads to an incorrect result or rework.
+**Non-blocking** = costs extra, but the result will be correct.
 
-### Лінза, що не повернулась
+<a id="лінза-що-не-повернулась"></a>
 
-Сабагент може впасти на інфраструктурі, бути скіпнутим або повернути `null`. Це **не** «чисто» —
-це лінза, яка не бігла, і мовчки вона виглядає точно як чиста.
+### A lens that did not return
 
-1. Перерахуй повернуті вердикти проти запущених лінз **числом**: `4 запущено / N повернулось`.
-   Розбіжність називається вголос до того, як зводити знахідки.
-2. Одна спроба перезапуску на іншому тірі, з тим самим чистим контекстом.
-3. Знову порожньо → **гейт червоний**, і в підсумку названо, якої саме лінзи бракує.
+A subagent may fail due to infrastructure, be skipped, or return `null`. This is **not** “clean” —
+it is a lens that did not run, and silence makes it look exactly like a clean result.
 
-Тір і незалежність лінз — `~/.agents/rules/multi-model-roles.md` §3. Свіжий сабагент обов'язковий:
-`fork` успадкує контекст і модель автора плану, тож лінзою не рахується.
+1. Count returned verdicts against launched lenses **numerically**: `4 launched / N returned`.
+   State the discrepancy before consolidating findings.
+2. One retry on another tier, with the same clean context.
+3. Empty again → **gate red**, and the summary names the missing lens.
 
-## 3. Зведи
+Tier and lens independence: `~/.agents/rules/multi-model-roles.md` §3. A fresh subagent is mandatory:
+`fork` inherits the plan author's context and model, so it does not count as a lens.
 
-- Схлопни дублікати між лінзами в одну знахідку, зберігши, скільки лінз її бачили
-  (знахідка з двох лінз важить більше за дві окремі).
-- Відсортуй: blocking спершу.
-- Кожен blocking проведи в правку плану — і назви рядок, який змінився.
+<a id="3-зведи"></a>
 
-## 4. Завершення
+## 3. Consolidate
 
-Скіл завершено, коли виконано **все**:
+- Collapse duplicates across lenses into one finding, retaining how many lenses saw it
+  (a finding from two lenses carries more weight than two separate ones).
+- Sort blocking first.
+- Turn each blocking finding into a plan edit — and name the changed line.
 
-- [ ] Названо число `запущено / повернулось`. Розбіжність відпрацьована за «лінзою, що не
-      повернулась»: або перезапуск дав вердикт, або гейт червоний з іменем лінзи.
-- [ ] Кожна лінза, що повернулась, дала ≥1 знахідку або явне «чисто, бо <що саме перевірено>».
-- [ ] Кожна знахідка має вагу.
-- [ ] Кожен blocking або внесений у план, або записаний як свідомо прийнятий — з причиною.
-- [ ] Назване підсумкове число: скільки blocking лишилося відкритими (нуль → план готовий до `plan-defense`).
+<a id="4-завершення"></a>
+
+## 4. Completion
+
+The skill is complete when **all** of the following hold:
+
+- [ ] State the `launched / returned` count. Handle discrepancies using “a lens that did not
+      return”: either retry produced a verdict, or the gate is red with the lens named.
+- [ ] Every returned lens supplied ≥1 finding or an explicit “clean, because <what exactly was checked>”.
+- [ ] Every finding has a weight.
+- [ ] Every blocking finding is either incorporated into the plan or recorded as deliberately accepted — with a reason.
+- [ ] State the final count of open blocking findings (zero → plan ready for `plan-defense`).
 
 ## Clean critic input
 

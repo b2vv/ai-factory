@@ -1,61 +1,66 @@
 ---
-title: "AI factory — точка входу та план розвитку"
+title: "AI factory — entry point and development plan"
 date: 2026-08-25
 reviewed: 2026-10-16
-status: roadmap — не автоматичний запуск робіт
-scope: global ~/.agents; cargotrans-ui і dg; практики QnA backend (openai-qna) та generic-ui
+status: roadmap — not an automatic start of work
+scope: global ~/.agents; cargotrans-ui and dg; QnA backend (openai-qna) and generic-ui practices
 ---
 
-# AI factory: з чого почати
+<a id="ai-factory-з-чого-почати"></a>
+# AI factory: where to start
 
-Мета — провести погоджену задачу від розуміння й плану до перевіреного результату, зберігши рішення та контекст. Це навігація й план розвитку: чинні інструкції репо та доручення користувача визначають роботу. Саме посилання на цей файл не дозволяє виконати всю чергу, змінити конфігурацію чи розгорнути систему.
+The goal is to take an agreed task from understanding and planning to a verified result while preserving decisions and context. This is navigation and a development plan: current repository instructions and the user's request determine the work. A link to this file alone does not authorize executing the entire queue, changing configuration or deploying the system.
 
 <a id="start"></a>
 
-Для підключення іншого репозиторію почни з [onboarding.md](onboarding.md): read-only preflight, локальний manifest, additive adapter і перевірка маршрутизації. Це єдина інструкція підключення; інші файли нижче — довідники.
+To connect another repository, start with [onboarding.md](onboarding.md): read-only preflight, a local manifest, an additive adapter and routing verification. This is the single onboarding instruction; the other files below are references.
 
-Перед роботою визнач [виконавця критики/review та пакет передачі](review-handoff.md): новий субагент чи наявна окрема сесія, owner/reference; за невизначеності запитай до spawn/надсилання.
+Before work, identify the [critique/review executor and handoff package](review-handoff.md): a new subagent or an existing separate session, owner/reference; if uncertain, ask before spawning/sending.
 
 ## Before code: explicit task readiness
 
 Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
 
-Task branch та один writer у головному репозиторії — за [branch ownership contract](workflow.md#task-branches); runtime isolation окрема від Git isolation.
+A task branch and one writer in the main repository follow the [branch ownership contract](workflow.md#task-branches); runtime isolation is separate from Git isolation.
 
-## Обери маршрут
+<a id="обери-маршрут"></a>
+## Choose a route
 
-| Ситуація | Що зробити |
+| Situation | What to do |
 |---|---|
-| У проєкті вже є workflow | Прочитати локальні інструкції/work-протокол; використати їх без повторного bootstrap |
-| Проєкт частково налаштовано | repo-bootstrap лише в режимі перевірки → показати прогалини й мінімальні зміни → погодити перед записом |
-| Мала очевидна правка | Локальні правила, обмежений scope й доречні перевірки; повний pipeline лише за потребою |
-| Значна або ризикова зміна | Локальний процес; за його відсутності погодити маршрут із планом, acceptance, незалежним review та доказами |
+| The project already has a workflow | Read local instructions/work protocol; use them without repeating bootstrap |
+| The project is partly configured | repo-bootstrap in check mode only → show gaps and minimal changes → agree before writing |
+| Small obvious change | Local rules, bounded scope and appropriate checks; the full pipeline only when needed |
+| Significant or risky change | Local process; if absent, agree a route with a plan, acceptance, independent review and evidence |
 
-Детальна [карта скілів і ADR](workflow.md#skill-map) називає тригери, власників і виходи. Codex CLI: `$назва` або `/skills`; Claude Code: `/назва`. Перед викликом перевір точний файл і доступність інструментів; однакова назва не гарантує однакового скілу.
+The detailed [skill and ADR map](workflow.md#skill-map) names triggers, owners and outputs. Codex CLI: `$назва` or `/skills`; Claude Code: `/назва`. Before invoking, verify the exact file and tool availability; the same name does not guarantee the same skill.
 
-## Навігація
+<a id="навігація"></a>
+## Navigation
 
-| Файл | Коли читати |
+| File | When to read |
 |---|---|
-| [status.md](status.md#capabilities) | Що існує, що інтегровано й що справді перевірено; єдиний поточний статус |
-| [workflow.md](workflow.md#routing) | Вибір процесу, ADR/skill маршрути, джерела істини, handoff, UI та перевірки |
-| [feature-lifecycle.md](feature-lifecycle.md) | Практичний малий/повний lifecycle: скіли, власники, gates, resume й адаптація трьох репо |
-| [models.md](models.md) | Helper / Coder / Escalation-reviewer: bindings, ескалація, бюджет контексту й ручний fallback |
-| [crg.md](crg.md) | CRG: schema, свіжість, coverage, локальне відновлення та межі перевіреного |
-| [roadmap.md](roadmap.md#tasks) | Задачі E0–E5, критерії приймання, наступний порядок; це не список команд для негайного запуску |
-| [repo-evidence.md](repo-evidence.md#repo-evidence) | Джерела й відмінності QnA/generic-ui, приклади, суперечності, локальні правила |
-| [history.md](history.md#history) | Походження задуму й старі виміри; не поточний статус |
+| [status.md](status.md#capabilities) | What exists, what is integrated and what was actually verified; the single current status |
+| [workflow.md](workflow.md#routing) | Process selection, ADR/skill routes, sources of truth, handoff, UI and checks |
+| [feature-lifecycle.md](feature-lifecycle.md) | Practical small/full lifecycle: skills, owners, gates, resume and adaptation to three repositories |
+| [models.md](models.md) | Helper / Coder / Escalation-reviewer: bindings, escalation, context budget and manual fallback |
+| [crg.md](crg.md) | CRG: schema, freshness, coverage, local recovery and verification limits |
+| [roadmap.md](roadmap.md#tasks) | E0–E5 tasks, acceptance criteria and next sequence; not a command list for immediate execution |
+| [repo-evidence.md](repo-evidence.md#repo-evidence) | QnA/generic-ui sources and differences, examples, contradictions, local rules |
+| [history.md](history.md#history) | Origin of the idea and old measurements; not current status |
 
-## Передача й завершення
+<a id="передача-й-завершення"></a>
+## Handoff and completion
 
-Передавай ціль, scope, джерела, ревізію/dirty state, рішення, перевірки, блокери та наступний крок у **наявному** plan/journal — [короткий контракт](workflow.md#handoff). Проєктний ADR живе в репо; Obsidian містить посилання/огляд, не другий оригінал.
+Pass the goal, scope, sources, revision/dirty state, decisions, checks, blockers and next step in the **existing** plan/journal — [short contract](workflow.md#handoff). A project ADR lives in the repository; Obsidian contains a link/overview, not a second original.
 
-Кожна застосовна перевірка має PASS / FAIL / BLOCKED / N/A і доказ. Build не доводить UI-якість; потрібні перегляд рендеру й взаємодія за [UI-критеріями](workflow.md#ui). Наявність скілу не доводить його застосування.
+Every applicable check has PASS / FAIL / BLOCKED / N/A and evidence. A build does not prove UI quality; rendered inspection and interaction are required under the [UI criteria](workflow.md#ui). A skill's presence does not prove its use.
 
-Наступний крок — вибрати один проєкт, read-only звірити його процес і запропонувати мінімальні прогалини; реальний пілот запускається окремим дорученням. Цим рефакторингом змінено лише документацію: скіли, репозиторії, Shared і конфігурації не змінювалися, пілот/eval/CI/deploy не запускалися.
+The next step is to choose one project, inspect its process read-only and propose minimal gaps; a real pilot starts under a separate request. This refactoring changed documentation only: skills, repositories, Shared and configurations were unchanged; no pilot/eval/CI/deploy was run.
 
-Канонічна директорія: `~/.agents/ai-factory/`. Старий `~/.agents/ai-factory-plan.md` — лише симлінк на цей файл. Абсолютні навігаційні посилання тут підтримують відкриття через обидва шляхи; підфайли посилаються один на одного відносно.
+Canonical directory: `~/.agents/ai-factory/`. The old `~/.agents/ai-factory-plan.md` is only a symlink to this file. Absolute navigation links here support opening through either path; subfiles link to each other relatively.
 
-## Розмір сесії та явний handoff
+<a id="розмір-сесії-та-явний-handoff"></a>
+## Session size and explicit handoff
 
-[Session-size helper](../docs/legacy/session-size.md): 4 MB preparation, 5 MB soft threshold, атомарний checkpoint та явний ID для нової сесії. Це не hard cap і не автоматичний запуск моделі.
+[Session-size helper](../docs/legacy/session-size.md): 4 MB preparation, 5 MB soft threshold, an atomic checkpoint and explicit ID for a new session. This is not a hard cap or automatic model launch.

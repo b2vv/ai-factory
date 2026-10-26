@@ -974,10 +974,11 @@
       "source": "~/.agents/skills/anti-slop-design/SKILL.md",
       "destination": "skills/anti-slop-design/SKILL.md",
       "source_sha256": "feeaa8863d5e41439dd574a10bf23d1ec08d09d679822c9cb2c905553396f571",
-      "sha256": "605ced0506c7f3e8f18ee0b48a4749148b0f430164c48a2faa66cf02b2e156b1",
+      "sha256": "30b435735135e9932e7eca10f99e37012ef08f8ed13f93ff2b751d558b12f38a",
       "source_mode": "0o644",
       "transformations": [
-        "source/alias local links mapped to included portable destination"
+        "source/alias local links mapped to included portable destination",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/anti-slop-design/SKILL.md"
@@ -986,9 +987,11 @@
       "source": "~/.agents/skills/arch/caveman/SKILL.md",
       "destination": "skills/arch/caveman/SKILL.md",
       "source_sha256": "08c8bc7fa34e845859792257bc520ee42e13f796e1c5dd07888c365143420ce9",
-      "sha256": "08c8bc7fa34e845859792257bc520ee42e13f796e1c5dd07888c365143420ce9",
+      "sha256": "4761e27e1287ebd719078e90ba731370d0b20196dc57bb1246b6178c0fbcaf93",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/caveman/SKILL.md"
     },
@@ -996,10 +999,11 @@
       "source": "~/.agents/skills/arch/code-review/SKILL.md",
       "destination": "skills/arch/code-review/SKILL.md",
       "source_sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1",
-      "sha256": "79b3bc354ebbef41ba39c2d927ac2b4910dbf4e32f8e65e8778b981f061fa92d",
+      "sha256": "6bed3919cbe8412448ef29241d8c53394152df07f13a801ce8109c9579aa30c2",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved."
+        "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved.",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/code-review/SKILL.md"
@@ -1038,9 +1042,11 @@
       "source": "~/.agents/skills/arch/codebase-design/SKILL.md",
       "destination": "skills/arch/codebase-design/SKILL.md",
       "source_sha256": "25d4efdb9957cdfc1eeb6a7d754c1cb1673be4c72591bda4ed1c18d875380574",
-      "sha256": "25d4efdb9957cdfc1eeb6a7d754c1cb1673be4c72591bda4ed1c18d875380574",
+      "sha256": "bfde3ab0149c669368bdfdcbdd2fb30416417bcc78d7067638aa8fae6fe48d4a",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/codebase-design/SKILL.md"
     },
@@ -1058,9 +1064,11 @@
       "source": "~/.agents/skills/arch/diagnosing-bugs/SKILL.md",
       "destination": "skills/arch/diagnosing-bugs/SKILL.md",
       "source_sha256": "8778ed54406ac7c591173f68ae79a530e8a6eda463f9188791400cdd993f42e3",
-      "sha256": "8778ed54406ac7c591173f68ae79a530e8a6eda463f9188791400cdd993f42e3",
+      "sha256": "133929fc3dbcd862f6fed739cf85dde8d2e2f19908ffa2f96161a0e11a219190",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/diagnosing-bugs/SKILL.md"
     },
@@ -1108,10 +1116,11 @@
       "source": "~/.agents/skills/arch/domain-modeling/SKILL.md",
       "destination": "skills/arch/domain-modeling/SKILL.md",
       "source_sha256": "59fe6a51fe1abb4dfaab72bb7ef13f7a4b32689e28ddb8e52cf8f9b9451f987c",
-      "sha256": "320f20a8c69ac2177b5a505f3479672d481a0523d4e782b386d0db0bc224b9fc",
+      "sha256": "d0ffb27dc0c9c4fe77ad87e3baa052f58ede46d8c61296cc74d1670100029f10",
       "source_mode": "0o644",
       "transformations": [
-        "source/alias local links mapped to included portable destination"
+        "source/alias local links mapped to included portable destination",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/domain-modeling/SKILL.md"
@@ -1140,9 +1149,11 @@
       "source": "~/.agents/skills/arch/improve-codebase-architecture/SKILL.md",
       "destination": "skills/arch/improve-codebase-architecture/SKILL.md",
       "source_sha256": "bb7cafd4b591a1cc2101730b251cf2f731aefdb7f05aff43d27e8cda6fe5283b",
-      "sha256": "bb7cafd4b591a1cc2101730b251cf2f731aefdb7f05aff43d27e8cda6fe5283b",
+      "sha256": "36d7b3ae01eea1ef194022944a9c917bd4131ff6131f44ffdc8d48a52de0d9f7",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/improve-codebase-architecture/SKILL.md"
     },
@@ -1160,9 +1171,11 @@
       "source": "~/.agents/skills/arch/receiving-code-review/SKILL.md",
       "destination": "skills/arch/receiving-code-review/SKILL.md",
       "source_sha256": "5eaef373ed020a0cca682329d02a3c8cb4acd59c5f054a112f348652ad99512c",
-      "sha256": "5eaef373ed020a0cca682329d02a3c8cb4acd59c5f054a112f348652ad99512c",
+      "sha256": "4e40b918b6280e0c157b3a6eb0e969306ea675258ae053a069ae5b79c8d5f3b3",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/receiving-code-review/SKILL.md"
     },
@@ -1170,11 +1183,12 @@
       "source": "~/.agents/skills/arch/tdd/SKILL.md",
       "destination": "skills/arch/tdd/SKILL.md",
       "source_sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c",
-      "sha256": "d02a74d590cc4d7b437a95efeee3bf762fb95a8a2494b934ae0bc3085a78a620",
+      "sha256": "5c71c5c56776ae3df4221ca298e21cd7487baa01f3e88138c142eff5649a2b49",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved.",
-        "Owner-authorized rc.5 semantic critique clarifications: conditional CI coverage, author-owned refactoring and correlated-oracle evidence."
+        "Owner-authorized rc.5 semantic critique clarifications: conditional CI coverage, author-owned refactoring and correlated-oracle evidence.",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/tdd/SKILL.md"
@@ -1215,9 +1229,11 @@
       "source": "~/.agents/skills/crg/crg-debug-issue/SKILL.md",
       "destination": "skills/crg/crg-debug-issue/SKILL.md",
       "source_sha256": "01577f9a19f0636a6f81c59414c5a9aa4de76814c6c21d555aba70c8637a176b",
-      "sha256": "01577f9a19f0636a6f81c59414c5a9aa4de76814c6c21d555aba70c8637a176b",
+      "sha256": "8540a14927ad0651cfa447ae1796015b167473b120962c2197722eb6091ceb5f",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/crg/crg-debug-issue/SKILL.md"
     },
@@ -1225,9 +1241,11 @@
       "source": "~/.agents/skills/crg/crg-explore-codebase/SKILL.md",
       "destination": "skills/crg/crg-explore-codebase/SKILL.md",
       "source_sha256": "7e6170a80cbffab15776941106a599fa0064ce1802058f8232e2c2ec080a46fb",
-      "sha256": "7e6170a80cbffab15776941106a599fa0064ce1802058f8232e2c2ec080a46fb",
+      "sha256": "bdd0ff176ef58033c0fad3df0d3d22a68aed943da05d8fccb4623ee963565cad",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/crg/crg-explore-codebase/SKILL.md"
     },
@@ -1235,9 +1253,11 @@
       "source": "~/.agents/skills/crg/crg-refactor-safely/SKILL.md",
       "destination": "skills/crg/crg-refactor-safely/SKILL.md",
       "source_sha256": "ef93e2915086a04ec6beab757dd4140bccba4cf47d997b7560b20c019acdd3d4",
-      "sha256": "ef93e2915086a04ec6beab757dd4140bccba4cf47d997b7560b20c019acdd3d4",
+      "sha256": "364dd6b3248e07d75af5462f3b234e17a25def616d57b3532ba6302111b88201",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/crg/crg-refactor-safely/SKILL.md"
     },
@@ -1245,9 +1265,11 @@
       "source": "~/.agents/skills/crg/crg-review-changes/SKILL.md",
       "destination": "skills/crg/crg-review-changes/SKILL.md",
       "source_sha256": "5c01719daaf262e5f687e58c8d07863629329f40ea2913eb4166c439de75941f",
-      "sha256": "5c01719daaf262e5f687e58c8d07863629329f40ea2913eb4166c439de75941f",
+      "sha256": "f201b2c9820ce7bf2af70cdf9736119892389c3870dcb910567a46094eda8206",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/crg/crg-review-changes/SKILL.md"
     },
@@ -1255,9 +1277,11 @@
       "source": "~/.agents/skills/deliver/implement-spec/SKILL.md",
       "destination": "skills/deliver/implement-spec/SKILL.md",
       "source_sha256": "929d7bbac4601276ec84038ce4ed925592bb82bc56f576a0337b5cd60dfec4ba",
-      "sha256": "929d7bbac4601276ec84038ce4ed925592bb82bc56f576a0337b5cd60dfec4ba",
+      "sha256": "16d7aec4ed0c7750aa4078ea288882cbdbd86303e5b8d12976a5794e5dd8d9a6",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/implement-spec/SKILL.md"
     },
@@ -1275,9 +1299,11 @@
       "source": "~/.agents/skills/deliver/implement/SKILL.md",
       "destination": "skills/deliver/implement/SKILL.md",
       "source_sha256": "1e7cdd434dc6b42c13f9b9b0bbc1f4176835084c6d6d1867ef9339c2e90ecc36",
-      "sha256": "1e7cdd434dc6b42c13f9b9b0bbc1f4176835084c6d6d1867ef9339c2e90ecc36",
+      "sha256": "2b53019b9af42a4082bb2fc5399ae874fb4ccaaea3019ecafc9cd2439e5a1b0f",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/implement/SKILL.md"
     },
@@ -1295,9 +1321,11 @@
       "source": "~/.agents/skills/deliver/spec-flow/SKILL.md",
       "destination": "skills/deliver/spec-flow/SKILL.md",
       "source_sha256": "5809c7a8c53b13d2bbcca2788c641c3dc56ebe670ed376059f323d8118675e57",
-      "sha256": "5809c7a8c53b13d2bbcca2788c641c3dc56ebe670ed376059f323d8118675e57",
+      "sha256": "9513c3fe270dd3dadfb327a078cc0adb703841bd5f0224da780eaeb078f3ec97",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/spec-flow/SKILL.md"
     },
@@ -1305,9 +1333,11 @@
       "source": "~/.agents/skills/deliver/to-spec/SKILL.md",
       "destination": "skills/deliver/to-spec/SKILL.md",
       "source_sha256": "4cdc224d25916ad2e1dd83b2ee1a10f881b7555632b2d860173712848babb137",
-      "sha256": "4cdc224d25916ad2e1dd83b2ee1a10f881b7555632b2d860173712848babb137",
+      "sha256": "5b576e36648dbe782c8e14e8c9e5636f2f83b2124e5bfbfe50141e57d6e3c32d",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/to-spec/SKILL.md"
     },
@@ -1325,9 +1355,11 @@
       "source": "~/.agents/skills/deliver/to-tickets/SKILL.md",
       "destination": "skills/deliver/to-tickets/SKILL.md",
       "source_sha256": "918b36d4ff0e797eaead9bfdddabdfc0d3767d0f8f6a0e6c594ef014a0e0c06f",
-      "sha256": "918b36d4ff0e797eaead9bfdddabdfc0d3767d0f8f6a0e6c594ef014a0e0c06f",
+      "sha256": "a7564b4c3fc0347d810b9be601625ed26febf20e95613159d0a3300fedb1faeb",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/to-tickets/SKILL.md"
     },
@@ -1365,9 +1397,11 @@
       "source": "~/.agents/skills/deliver/triage/SKILL.md",
       "destination": "skills/deliver/triage/SKILL.md",
       "source_sha256": "8b4069926b2895ebda1065b4174dbbc605338ad627fc99da31ba1b2f3c67a06e",
-      "sha256": "8b4069926b2895ebda1065b4174dbbc605338ad627fc99da31ba1b2f3c67a06e",
+      "sha256": "cad353ba7050f8a0a3a5a915a0f56362a8caacbedc7b3601c34ab6f029c9a29a",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/triage/SKILL.md"
     },
@@ -1385,9 +1419,11 @@
       "source": "~/.agents/skills/deliver/wayfinder/SKILL.md",
       "destination": "skills/deliver/wayfinder/SKILL.md",
       "source_sha256": "218c4337722a9311405144b7e48af7417643ac1dec2352bbf256cbd4f82a5cf2",
-      "sha256": "218c4337722a9311405144b7e48af7417643ac1dec2352bbf256cbd4f82a5cf2",
+      "sha256": "1bfbbf2693b243b397f043cb5f43285156dfca3e23718ee1aa2e6d848bdc2921",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/wayfinder/SKILL.md"
     },
@@ -1405,12 +1441,13 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "264655dfa9ae6d43441e5099309e5c9e46e89c39e857a8775ffa3c5ef31baf34",
+      "sha256": "c30fa82e4c2834d18e928a0521dfa8f9407af0316ebc00e5f18c4ccf7abb654e",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
-        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24"
+        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1419,9 +1456,11 @@
       "source": "~/.agents/skills/entity-e2e-coverage/SKILL.md",
       "destination": "skills/entity-e2e-coverage/SKILL.md",
       "source_sha256": "5183ae07f775e28afa6662c3292c7d6a9e71f19c6d86f41b1ccaeacdfc17fac2",
-      "sha256": "5183ae07f775e28afa6662c3292c7d6a9e71f19c6d86f41b1ccaeacdfc17fac2",
+      "sha256": "eb4e05ecf446cbbcf87fa1b48b42ada906931e7e6bf7c8aa901d673168ef0c32",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/SKILL.md"
     },
@@ -1459,9 +1498,11 @@
       "source": "~/.agents/skills/entity-e2e-coverage/references/matrix.md",
       "destination": "skills/entity-e2e-coverage/references/matrix.md",
       "source_sha256": "648ab6d93481e8695a752b2b18d725b9dd21635c5ba52b1f1d38257539e79a9a",
-      "sha256": "648ab6d93481e8695a752b2b18d725b9dd21635c5ba52b1f1d38257539e79a9a",
+      "sha256": "94348a1ac21e84fad82d8e404dd99799fe959f05af9bed61815f554d87feaedb",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/references/matrix.md"
     },
@@ -1479,10 +1520,12 @@
       "source": "~/.agents/skills/entity-e2e-coverage/references/testing-rules.md",
       "destination": "skills/entity-e2e-coverage/references/testing-rules.md",
       "source_sha256": "32117fd6caa2f4f0d3901210737df250553902511894f082c8a75038d6326523",
-      "sha256": "c82fe9da2a455ef45826765bd777e05dfe21c15250d89662b0729b7705487dfe",
+      "sha256": "b3005971178abeb238edcd9c56b275f586ca05b2894a9c4f610667a30d7762c0",
       "source_mode": "0o644",
       "transformations": [
-        "home path and machine identifiers normalized"
+        "home path and machine identifiers normalized",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/references/testing-rules.md"
@@ -1511,9 +1554,11 @@
       "source": "~/.agents/skills/git/git-guardrails-claude-code/SKILL.md",
       "destination": "skills/git/git-guardrails-claude-code/SKILL.md",
       "source_sha256": "b4709281785acbfecf7dde8461e94a2a59cf5e94fe5b081b94fdd5853248cb8d",
-      "sha256": "b4709281785acbfecf7dde8461e94a2a59cf5e94fe5b081b94fdd5853248cb8d",
+      "sha256": "f15702323ac7ee1658d2d22516eed98a4e8c27b61ea02b643f0de08cc8462159",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/git/git-guardrails-claude-code/SKILL.md"
     },
@@ -1551,9 +1596,11 @@
       "source": "~/.agents/skills/git/pr/SKILL.md",
       "destination": "skills/git/pr/SKILL.md",
       "source_sha256": "87b313b80245008807efcdb3908d3a70f162ed55ea076c031185f7138f3d4c92",
-      "sha256": "87b313b80245008807efcdb3908d3a70f162ed55ea076c031185f7138f3d4c92",
+      "sha256": "212c19e5b8ddabf4640df9d163947093cd1ac3d2cba336d3b5c67adb1e436cab",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/git/pr/SKILL.md"
     },
@@ -1571,9 +1618,11 @@
       "source": "~/.agents/skills/git/resolving-merge-conflicts/SKILL.md",
       "destination": "skills/git/resolving-merge-conflicts/SKILL.md",
       "source_sha256": "dcfa55d6d1499649e2d16c6bab7118bc83e5edfc3ee3a376869d11c4bba706bf",
-      "sha256": "dcfa55d6d1499649e2d16c6bab7118bc83e5edfc3ee3a376869d11c4bba706bf",
+      "sha256": "00bf12b59c601ef741fe1ef291f29bef88b017506b407dbd5af6dedfdf95dfc9",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/git/resolving-merge-conflicts/SKILL.md"
     },
@@ -1581,9 +1630,11 @@
       "source": "~/.agents/skills/git/setup-pre-commit/SKILL.md",
       "destination": "skills/git/setup-pre-commit/SKILL.md",
       "source_sha256": "3a5ed5c3c50cda6df9c35b4c34b6c03e30132e611332ce11b6efd24ec881c9eb",
-      "sha256": "3a5ed5c3c50cda6df9c35b4c34b6c03e30132e611332ce11b6efd24ec881c9eb",
+      "sha256": "b81ef3ff639c7a38a7439b9daba214a17ff4656bb37346a10cd1b5eea300a70d",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/git/setup-pre-commit/SKILL.md"
     },
@@ -1611,10 +1662,11 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "771af98176b444f76162f9b7bd72910a8d230976e28a6fe464f29b71cb3aae18",
+      "sha256": "40bee6d91d5721738737b68ec8e4638c8ba339783ba2caef4984f681f7f9c77e",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24"
+        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"
@@ -1623,9 +1675,11 @@
       "source": "~/.agents/skills/pattern-architecture-review/SKILL.md",
       "destination": "skills/pattern-architecture-review/SKILL.md",
       "source_sha256": "ea547aa56bd0af1ecadd26fb206134cc17f2a2dd8e8aea50ceaa6253b9a55966",
-      "sha256": "ea547aa56bd0af1ecadd26fb206134cc17f2a2dd8e8aea50ceaa6253b9a55966",
+      "sha256": "00737ab24eb9e121b44083cbd3009ba92da6ee3f0cbfc10b43d8d2e0429287d2",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pattern-architecture-review/SKILL.md"
     },
@@ -1633,9 +1687,11 @@
       "source": "~/.agents/skills/plan/acceptance-spec/SKILL.md",
       "destination": "skills/plan/acceptance-spec/SKILL.md",
       "source_sha256": "ff7d07cca0c28980c58ee8ca83d0283830ea93a2c2a157a29b37e02a7874fed4",
-      "sha256": "ff7d07cca0c28980c58ee8ca83d0283830ea93a2c2a157a29b37e02a7874fed4",
+      "sha256": "c7fc1efcebd856f3a5cc9e0c1717b8f1cf82ea1de3a1e88de62c1658da84a64b",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/acceptance-spec/SKILL.md"
     },
@@ -1653,9 +1709,11 @@
       "source": "~/.agents/skills/plan/ask-matt/SKILL.md",
       "destination": "skills/plan/ask-matt/SKILL.md",
       "source_sha256": "3322c8a6efca04a193a933093c7d7d0c2a802b1b87edd73b2a70212846aa48c0",
-      "sha256": "3322c8a6efca04a193a933093c7d7d0c2a802b1b87edd73b2a70212846aa48c0",
+      "sha256": "96b705c32262f80890ea4fd6804ded74d6ef088fa64eed0beb226652f9859c96",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/ask-matt/SKILL.md"
     },
@@ -1673,9 +1731,11 @@
       "source": "~/.agents/skills/plan/cto-agenda/SKILL.md",
       "destination": "skills/plan/cto-agenda/SKILL.md",
       "source_sha256": "6647a0d4c831fef9cf0613d469757b5cd6b4800d6c305ff5d27a0dc9e79fb234",
-      "sha256": "6647a0d4c831fef9cf0613d469757b5cd6b4800d6c305ff5d27a0dc9e79fb234",
+      "sha256": "e2046c8539ba0e6de8676a4946c2d95c95d9a723ee8bfe84c4ad4cdc3dc192c5",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/cto-agenda/SKILL.md"
     },
@@ -1683,9 +1743,11 @@
       "source": "~/.agents/skills/plan/cto-research/SKILL.md",
       "destination": "skills/plan/cto-research/SKILL.md",
       "source_sha256": "b7cb8f3c8b3c369df2e8fc7e773313147ceda4666f9b4c1b5b713c42c7fea814",
-      "sha256": "b7cb8f3c8b3c369df2e8fc7e773313147ceda4666f9b4c1b5b713c42c7fea814",
+      "sha256": "ef24e940adbaf13802902599f88f16ee00b9af2e4a474b65ac5d085bbc4f1623",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/cto-research/SKILL.md"
     },
@@ -1693,9 +1755,11 @@
       "source": "~/.agents/skills/plan/grill-me/SKILL.md",
       "destination": "skills/plan/grill-me/SKILL.md",
       "source_sha256": "59353f1fb13b77c720c2fa4b93144396fe9d2e9afc189e732173b08ddbf2af21",
-      "sha256": "59353f1fb13b77c720c2fa4b93144396fe9d2e9afc189e732173b08ddbf2af21",
+      "sha256": "4e8f065fc86fed2316c5ac4f15bc8e3fb34416ef4b1828111337a2762f034ccd",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/grill-me/SKILL.md"
     },
@@ -1713,9 +1777,11 @@
       "source": "~/.agents/skills/plan/grill-with-docs/SKILL.md",
       "destination": "skills/plan/grill-with-docs/SKILL.md",
       "source_sha256": "a2ec16b4d2c87c1e307b6148057a0bdb1b5d4b29e2be415a19d1e92c6009d270",
-      "sha256": "a2ec16b4d2c87c1e307b6148057a0bdb1b5d4b29e2be415a19d1e92c6009d270",
+      "sha256": "413c007928c999cd523b475da63f2d956971ca46d92a8f167e0e3fdc4ef73d6a",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/grill-with-docs/SKILL.md"
     },
@@ -1733,9 +1799,11 @@
       "source": "~/.agents/skills/plan/grilling/SKILL.md",
       "destination": "skills/plan/grilling/SKILL.md",
       "source_sha256": "d5e2b6efa11cb7fabc5e170ff70a0f6052a29b29f25e4550ba2f4a905b375ed5",
-      "sha256": "d5e2b6efa11cb7fabc5e170ff70a0f6052a29b29f25e4550ba2f4a905b375ed5",
+      "sha256": "f4e662f1042b586b8896032ead7ff8a60d17d9a809df4ff598d41ae2efe4597f",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/grilling/SKILL.md"
     },
@@ -1753,10 +1821,11 @@
       "source": "~/.agents/skills/plan/plan-critique/SKILL.md",
       "destination": "skills/plan/plan-critique/SKILL.md",
       "source_sha256": "f8e4ba1ef80aca0f05dd7500cd6057fdd8e6fbb9c87ae559722a43e9cb5c1777",
-      "sha256": "2da18d121267b4ad53b248e6d61f7bfe4b8bd03d0cedce2819bb759ede38b840",
+      "sha256": "ea347435529f790bce6e134e4242aa7a46abf22f60982e37af02379406465ad2",
       "source_mode": "0o644",
       "transformations": [
-        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/plan-critique/SKILL.md"
@@ -1765,9 +1834,11 @@
       "source": "~/.agents/skills/plan/plan-defense/SKILL.md",
       "destination": "skills/plan/plan-defense/SKILL.md",
       "source_sha256": "11d1d73ab06cbe44cd3aac4f45fb58a632f415ea89d24959d8234f27b018da6a",
-      "sha256": "11d1d73ab06cbe44cd3aac4f45fb58a632f415ea89d24959d8234f27b018da6a",
+      "sha256": "a4f7b9a55a873047db2cc57298080e1b63e70fc26d4ed862f1d0cd2a7c2af9f3",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/plan-defense/SKILL.md"
     },
@@ -1775,9 +1846,11 @@
       "source": "~/.agents/skills/plan/to-questionnaire/SKILL.md",
       "destination": "skills/plan/to-questionnaire/SKILL.md",
       "source_sha256": "7b55348a99e76fd11a1d18311fdc848c828e3b904250725fa577467b0d8c49eb",
-      "sha256": "7b55348a99e76fd11a1d18311fdc848c828e3b904250725fa577467b0d8c49eb",
+      "sha256": "63e0f4faea08089f716c970c1eb095b403e87ce761c617517c136963bbca8d48",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/to-questionnaire/SKILL.md"
     },
@@ -1795,9 +1868,11 @@
       "source": "~/.agents/skills/pt/ponytail-audit/SKILL.md",
       "destination": "skills/pt/ponytail-audit/SKILL.md",
       "source_sha256": "6a320e541f6db4f3a89e56275d4c2f095db77b39a4e4c9d996335bb8ab6087f7",
-      "sha256": "6a320e541f6db4f3a89e56275d4c2f095db77b39a4e4c9d996335bb8ab6087f7",
+      "sha256": "de547672795a9867e101e835f48fe581aab05222daba58e2e86a497353357e5d",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pt/ponytail-audit/SKILL.md"
     },
@@ -1805,9 +1880,11 @@
       "source": "~/.agents/skills/pt/ponytail-debt/SKILL.md",
       "destination": "skills/pt/ponytail-debt/SKILL.md",
       "source_sha256": "6c4943f0fa7cb7db9bceb432560aed631c785a91e607ed414ebacf8a6dca5e55",
-      "sha256": "6c4943f0fa7cb7db9bceb432560aed631c785a91e607ed414ebacf8a6dca5e55",
+      "sha256": "7baa1a07c2891f3dd61b64d347281b081b88d00cb46450a65192d05447a9ce7a",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pt/ponytail-debt/SKILL.md"
     },
@@ -1815,9 +1892,11 @@
       "source": "~/.agents/skills/pt/ponytail-gain/SKILL.md",
       "destination": "skills/pt/ponytail-gain/SKILL.md",
       "source_sha256": "7d32eff3bbb571bf9f78899fb64eb195848015c493cfaa1df68184b48bfe0d38",
-      "sha256": "7d32eff3bbb571bf9f78899fb64eb195848015c493cfaa1df68184b48bfe0d38",
+      "sha256": "f54f3a68b9ff52970e2c29e109084ad1e2ac5affdfa93689c6b657e6b25182fd",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pt/ponytail-gain/SKILL.md"
     },
@@ -1825,9 +1904,11 @@
       "source": "~/.agents/skills/pt/ponytail-help/SKILL.md",
       "destination": "skills/pt/ponytail-help/SKILL.md",
       "source_sha256": "d276824909822db400e04ca12c868b8b2c913ef0bf0015700f980c7986233878",
-      "sha256": "d276824909822db400e04ca12c868b8b2c913ef0bf0015700f980c7986233878",
+      "sha256": "7c06a141478320592edaa0a6795dcfae97fd5023ebb0b14ecb6bd2fbb27721ef",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pt/ponytail-help/SKILL.md"
     },
@@ -1835,9 +1916,11 @@
       "source": "~/.agents/skills/pt/ponytail-review/SKILL.md",
       "destination": "skills/pt/ponytail-review/SKILL.md",
       "source_sha256": "5bf501d4aeaabe1086ac32767a34bd0ed2029be219e816fd5c8f9f67cdb526de",
-      "sha256": "5bf501d4aeaabe1086ac32767a34bd0ed2029be219e816fd5c8f9f67cdb526de",
+      "sha256": "863cc5f1de5f4c08b9498fd4d2a36f91027b8f1d59af4b0d39baa2abec2b4319",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pt/ponytail-review/SKILL.md"
     },
@@ -1845,9 +1928,11 @@
       "source": "~/.agents/skills/pt/ponytail/SKILL.md",
       "destination": "skills/pt/ponytail/SKILL.md",
       "source_sha256": "70b69cf6bb9e6be4fe8b734bded40cfff09fbab010bb451660227c914a1858f2",
-      "sha256": "70b69cf6bb9e6be4fe8b734bded40cfff09fbab010bb451660227c914a1858f2",
+      "sha256": "f821bf2bdd6dca55d8b3da9aa4442b0016880252a91e74f1a32b60b26923cf32",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pt/ponytail/SKILL.md"
     },
@@ -1855,9 +1940,11 @@
       "source": "~/.agents/skills/reference-ui-reconstruction/SKILL.md",
       "destination": "skills/reference-ui-reconstruction/SKILL.md",
       "source_sha256": "ed6723c80f0d694cf670e2919b7321b4742b81340cde827783ba9760cf45b3c8",
-      "sha256": "ed6723c80f0d694cf670e2919b7321b4742b81340cde827783ba9760cf45b3c8",
+      "sha256": "0a0cd190e5982bb6a999aa754a75ab6a1f282d3adef58ba1af00f9cb8b21e6f5",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/reference-ui-reconstruction/SKILL.md"
     },
@@ -1875,9 +1962,11 @@
       "source": "~/.agents/skills/ship/frontend-design/SKILL.md",
       "destination": "skills/ship/frontend-design/SKILL.md",
       "source_sha256": "0bf4156e15de358351d8964a85cf38a67b518d79f678bd2cce41a2fbd4495450",
-      "sha256": "0bf4156e15de358351d8964a85cf38a67b518d79f678bd2cce41a2fbd4495450",
+      "sha256": "f37eb8eeb2b01f778aced9805cc72f162beac57c15c157b346c4ee73148c3bdd",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/frontend-design/SKILL.md"
     },
@@ -1895,9 +1984,11 @@
       "source": "~/.agents/skills/ship/handoff/SKILL.md",
       "destination": "skills/ship/handoff/SKILL.md",
       "source_sha256": "84c997d9036483928ab0af669b3837b3effcd6c33bdd27354baf5bb6c1571eb0",
-      "sha256": "84c997d9036483928ab0af669b3837b3effcd6c33bdd27354baf5bb6c1571eb0",
+      "sha256": "ab8d02d9ec5ec6287b428e151f63a730b63c4715765d694859e55bbfef304c4e",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/handoff/SKILL.md"
     },
@@ -1915,9 +2006,11 @@
       "source": "~/.agents/skills/ship/post-deploy-check/SKILL.md",
       "destination": "skills/ship/post-deploy-check/SKILL.md",
       "source_sha256": "1c6219db3c8cad207cb73c2bfc6ba3d5f533daff70ea64504edf70f8bb597bea",
-      "sha256": "1c6219db3c8cad207cb73c2bfc6ba3d5f533daff70ea64504edf70f8bb597bea",
+      "sha256": "1dc7192777bc13ed2cfe2bb26f2d694175a251079f34083881c13bb3e224c677",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/post-deploy-check/SKILL.md"
     },
@@ -1935,9 +2028,11 @@
       "source": "~/.agents/skills/ship/prototype/SKILL.md",
       "destination": "skills/ship/prototype/SKILL.md",
       "source_sha256": "1f3425ca3438c7215d80a1da7a06ebd67da62d0b60afb8fe0a862f1eea87422b",
-      "sha256": "1f3425ca3438c7215d80a1da7a06ebd67da62d0b60afb8fe0a862f1eea87422b",
+      "sha256": "8c3164ed77409baee0037c70c46d9529c83b6bfba20953d1e8fe78af36c83942",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/prototype/SKILL.md"
     },
@@ -1965,9 +2060,11 @@
       "source": "~/.agents/skills/ship/research/SKILL.md",
       "destination": "skills/ship/research/SKILL.md",
       "source_sha256": "8d5010b11fb312123b4c7101cb141ce4f491b341138a8c4cd7f91fe99a4bf0c8",
-      "sha256": "8d5010b11fb312123b4c7101cb141ce4f491b341138a8c4cd7f91fe99a4bf0c8",
+      "sha256": "b01c1e59c056599be605b130a3b895a49a5e1cf6bb63e3c2deb3dba7729450ed",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/research/SKILL.md"
     },
@@ -1985,9 +2082,11 @@
       "source": "~/.agents/skills/ship/retro/SKILL.md",
       "destination": "skills/ship/retro/SKILL.md",
       "source_sha256": "a43e5479151e1e05f35851c49b9e8eb3a9dca588f337511c988be5bec588b1d1",
-      "sha256": "a43e5479151e1e05f35851c49b9e8eb3a9dca588f337511c988be5bec588b1d1",
+      "sha256": "f28cd46daa254bf2e5478b78ff7b094f99e8e6511938d47543232b6022cd0079",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/retro/SKILL.md"
     },
@@ -2005,9 +2104,11 @@
       "source": "~/.agents/skills/ship/ship-report/SKILL.md",
       "destination": "skills/ship/ship-report/SKILL.md",
       "source_sha256": "9627b7ab729a2fbc4615526cb419a2c49a0e08529e32a5a68b7981dda6dc0651",
-      "sha256": "9627b7ab729a2fbc4615526cb419a2c49a0e08529e32a5a68b7981dda6dc0651",
+      "sha256": "9c5606305aebbd398d56a753a5c53965b321f2b01c7b2b41bab12fe830fcc9f8",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/ship-report/SKILL.md"
     },
@@ -2057,10 +2158,11 @@
       "source": "~/.agents/skills/ship/teach/SKILL.md",
       "destination": "skills/ship/teach/SKILL.md",
       "source_sha256": "0e83e9b4343332b375d50aba920fa561839fa57ca059c76f10f990621ca711fe",
-      "sha256": "cc9095eb5cbc2d6ac943318501e3a35037577616a9361c14c183be400f34ffe2",
+      "sha256": "14793d1648c36c1c4bfac04ffeb80db245ee6db76bba1291301fbd9a758e7c7b",
       "source_mode": "0o644",
       "transformations": [
-        "source/alias local links mapped to included portable destination"
+        "source/alias local links mapped to included portable destination",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/teach/SKILL.md"
@@ -3489,9 +3591,11 @@
       "source": "~/.agents/skills/utils/migrate-to-shoehorn/SKILL.md",
       "destination": "skills/utils/migrate-to-shoehorn/SKILL.md",
       "source_sha256": "d3309f27b91d1d8819165df30231499a481c2b36722fc9a7fe4d1c450c8f8887",
-      "sha256": "d3309f27b91d1d8819165df30231499a481c2b36722fc9a7fe4d1c450c8f8887",
+      "sha256": "89a1bb70d06670f43fc0d60555303cff9389fd2249cb55675ecba78a50c7d132",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/migrate-to-shoehorn/SKILL.md"
     },
@@ -3509,9 +3613,11 @@
       "source": "~/.agents/skills/utils/repo-bootstrap/SKILL.md",
       "destination": "skills/utils/repo-bootstrap/SKILL.md",
       "source_sha256": "f23264994ee42ce507b32b287d2045a4b1ee9061f9927651fbfe9b54c99877d0",
-      "sha256": "f23264994ee42ce507b32b287d2045a4b1ee9061f9927651fbfe9b54c99877d0",
+      "sha256": "635aa7d84eeaee8541dafbf158d4f1612a7b9ba3511f5128a72d045a564d5d9b",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/repo-bootstrap/SKILL.md"
     },
@@ -3519,9 +3625,11 @@
       "source": "~/.agents/skills/utils/scaffold-exercises/SKILL.md",
       "destination": "skills/utils/scaffold-exercises/SKILL.md",
       "source_sha256": "86b0f92d683d2c8c205b24e3ff4540e163d478f251bab0eaf75e87c093b06df4",
-      "sha256": "86b0f92d683d2c8c205b24e3ff4540e163d478f251bab0eaf75e87c093b06df4",
+      "sha256": "c9f45e905539baaf18f8a11bac032669c7e8dc324373792608172917efe51930",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/scaffold-exercises/SKILL.md"
     },
@@ -3539,10 +3647,11 @@
       "source": "~/.agents/skills/utils/setup-matt-pocock-skills/SKILL.md",
       "destination": "skills/utils/setup-matt-pocock-skills/SKILL.md",
       "source_sha256": "0dea4da9ccfff31bc222584c1f128788a722a3d5d79e393498e2fef466dbb132",
-      "sha256": "b75aa168109208d4fa603596baf05f59061d7cb1318ec7060dd0f625dfd6ef73",
+      "sha256": "4cfdd962683842fac09531782f26533c14ed8bdb3d8dfb059a2ca4b89ca3cdd0",
       "source_mode": "0o644",
       "transformations": [
-        "source/alias local links mapped to included portable destination"
+        "source/alias local links mapped to included portable destination",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/setup-matt-pocock-skills/SKILL.md"
@@ -3611,9 +3720,11 @@
       "source": "~/.agents/skills/utils/wait-what/SKILL.md",
       "destination": "skills/utils/wait-what/SKILL.md",
       "source_sha256": "762e6213f1e985e23ea9dbe0724662541b55c2fb9a9f5a716711f1da06be8885",
-      "sha256": "762e6213f1e985e23ea9dbe0724662541b55c2fb9a9f5a716711f1da06be8885",
+      "sha256": "7e4a33656a31e96a22f60287a5cd5622e399449c5ee4585e5a3aecc53de7fe86",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/wait-what/SKILL.md"
     },
@@ -3631,9 +3742,11 @@
       "source": "~/.agents/skills/utils/wizard/SKILL.md",
       "destination": "skills/utils/wizard/SKILL.md",
       "source_sha256": "2bf24290c64aada0732e6c04cb3d920437dcbfe45184f7b3fe27a64597f14225",
-      "sha256": "2bf24290c64aada0732e6c04cb3d920437dcbfe45184f7b3fe27a64597f14225",
+      "sha256": "cbc331b68576590fd24bdddbfc9eba2c3d6d5f541df4acfc2dfdffab87abed1b",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/wizard/SKILL.md"
     },
@@ -3671,9 +3784,11 @@
       "source": "~/.agents/skills/utils/writing-for-agents/SKILL.md",
       "destination": "skills/utils/writing-for-agents/SKILL.md",
       "source_sha256": "4eb332441e49c1daae380efdcd938e8777bea7b2eefabe8e78fa71f833373735",
-      "sha256": "4eb332441e49c1daae380efdcd938e8777bea7b2eefabe8e78fa71f833373735",
+      "sha256": "cdbf094ff6921a0147ec25fc1ee70d6d38f161bb03472dddc7119b1e0fa335fe",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/writing-for-agents/SKILL.md"
     },
@@ -3691,11 +3806,12 @@
       "source": "~/.agents/skills/ux-review/SKILL.md",
       "destination": "skills/ux-review/SKILL.md",
       "source_sha256": "af2e4fddf30ce8465f332de91d1f4360dfe140e474e1027d92f10e557a5f5462",
-      "sha256": "f309be9c309cf5ca816d1bafe65c4bb13af8e91f8922638f64959aa007665914",
+      "sha256": "30b3cac8a3957f249cfbd56e19e6658ab39aeb399c06e46fece3912f40785be6",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24"
+        "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/SKILL.md"
@@ -3704,9 +3820,11 @@
       "source": "~/.agents/skills/ux-review/references/rules.md",
       "destination": "skills/ux-review/references/rules.md",
       "source_sha256": "86360cabff2457f170bc4c38d3a6c69859425f817f36e425c701b9e9455d19b6",
-      "sha256": "86360cabff2457f170bc4c38d3a6c69859425f817f36e425c701b9e9455d19b6",
+      "sha256": "6758e9ba854d216bb1d19617daa3bc4012251c55cab253e51f5108a7979b0645",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/references/rules.md"
     },
@@ -3714,13 +3832,14 @@
       "source": "~/.agents/ai-factory/ai-factory-plan.md",
       "destination": "ai-factory/ai-factory-plan.md",
       "source_sha256": "38792d0770a46719fc3521bc239c3e7a67e80224507d3790884996b41f8fb5d4",
-      "sha256": "961255d4718dc37ace525950293a5ca52cc3fda497ddf8036b54bd272668bb22",
+      "sha256": "6fb45dd999978372b172872fd7682c8b8f9fc5c02c486d413d207507bb23c45f",
       "source_mode": "0o644",
       "transformations": [
         "absolute shared-source Markdown links made relative",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.5 task pre-code checkpoint navigation/protocol; original skill bodies unchanged",
-        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained"
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/ai-factory-plan.md"
@@ -3729,12 +3848,14 @@
       "source": "~/.agents/ai-factory/crg.md",
       "destination": "ai-factory/crg.md",
       "source_sha256": "ff093a451960dc7e925d597780edbd07fbd63b024ea6aa1b4b23837cc0fd1ba4",
-      "sha256": "bec10ca22900408cec62250bbb18f4c15c3365271cfd239c4a92ac02b59de064",
+      "sha256": "c09092aa902e551906f79e085c9cacb9ff1995439b65bf44da508b88cffdfb0c",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/crg.md"
@@ -3743,7 +3864,7 @@
       "source": "~/.agents/ai-factory/feature-lifecycle.md",
       "destination": "ai-factory/feature-lifecycle.md",
       "source_sha256": "c01ea920e05f3eb03357d024f3499ec728b4866ba11ddafb0cc8cdaeec3bfd06",
-      "sha256": "c3f82ebdeff7f79ecd6c24137d80f79b30299e135d2a4fc3688b989ffa2e95e8",
+      "sha256": "35ce2cc6bc16d95c27f20296209bf3a395717e2d803ba71674c9d34c5021673e",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
@@ -3755,7 +3876,9 @@
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
         "Authored proposed security gate navigation; existing task record and final runtime evidence; no tool adoption",
         "Proposed authored security adapter navigation and explicit review delivery/completion states; no runtime adoption",
-        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states"
+        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/feature-lifecycle.md"
@@ -3777,11 +3900,12 @@
       "source": "~/.agents/ai-factory/models.md",
       "destination": "ai-factory/models.md",
       "source_sha256": "c6be2aecf00624d04155b0ecc3fff34501518faa1e771da7850ecee462fc5878",
-      "sha256": "c8f251577d27f8dbce6a7a4eda32c48617560758be4a0ad068c7d232ad2da3e7",
+      "sha256": "c58d9d766c6c0361e371b008336966ec3d8004140615d26081b7c7f0aa673179",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/models.md"
@@ -3790,10 +3914,11 @@
       "source": "~/.agents/ai-factory/onboarding/README.md",
       "destination": "docs/onboarding-helper.md",
       "source_sha256": "289809c462735b857aee58925b99e5bf20cf71d571d946fe70a8a7b1437d1890",
-      "sha256": "84c5f82ddd231e33ec278b755d760f901de40b392bd7ac2f5df1142efe9bc8eb",
+      "sha256": "33afa99b8d538d7f86ac42ffa509e3fb34e998b7eae8cbba082c9d33929d4eec",
       "source_mode": "0o644",
       "transformations": [
-        "Authored proposed security gate navigation; existing task record and final runtime evidence; no tool adoption"
+        "Authored proposed security gate navigation; existing task record and final runtime evidence; no tool adoption",
+        "Authored optional cross-host offline discovery evidence documentation; native discovery remains NOT_TESTED"
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/README.md"
@@ -3802,11 +3927,12 @@
       "source": "~/.agents/ai-factory/onboarding/acceptance-template.md",
       "destination": "templates/acceptance-full.md",
       "source_sha256": "9c7c4cc0b3d809c1a9b96c88f7560f1cbe0b1de14ff3bcea4ac2629c91f4841f",
-      "sha256": "3e506d139eb803242c355781cffd779b3ee729be481566760e403a9caa325887",
+      "sha256": "6e3a5ee9a70cf0c67523a67ccf615abbca105165465032754661f4b5470dbc12",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.6.1 documentation hygiene routing; original skills unchanged"
+        "0.6.1 documentation hygiene routing; original skills unchanged",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/acceptance-template.md"
@@ -3815,13 +3941,14 @@
       "source": "~/.agents/ai-factory/onboarding/adapter-template.md",
       "destination": "templates/adapter-full.md",
       "source_sha256": "027f4b281853154d33a1779c495b713d6ab0729fd2035438fc993e19e7b32b66",
-      "sha256": "0ffab0ef59cbab76005e929bebd7c749d65ffd6627cd2bd0d11a45ca99930ede",
+      "sha256": "7f65a5e3130bfc0642392b4f59443ba40cbd66326bd4313493f08dde5e63f4a3",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.6.1 documentation hygiene routing; original skills unchanged",
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
-        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states"
+        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/adapter-template.md"
@@ -3830,10 +3957,11 @@
       "source": "~/.agents/ai-factory/onboarding/change-protocol.md",
       "destination": "ai-factory/onboarding/change-protocol.md",
       "source_sha256": "3e9a2f5e676c8e215a1ab550a799139f4f07d800799325e01a101fadf309530a",
-      "sha256": "cfd18d18725d0b8445219db207bc9f289ec82c0a6647f21e13fa45533128b39a",
+      "sha256": "25d489463380d53651d16120fd4ee1551b17fec83199aa64797d55a43d135808",
       "source_mode": "0o644",
       "transformations": [
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding/change-protocol.md"
@@ -3872,13 +4000,14 @@
       "source": "~/.agents/ai-factory/onboarding.md",
       "destination": "ai-factory/onboarding.md",
       "source_sha256": "447bd78eeefc80a962204299a8cc81e2d4cadd85ac6f280fc9b8b834ef3f104b",
-      "sha256": "16ce883d0ac1bf9904a86486958090a1fea2628e6d3141b129c49ed10682c6d7",
+      "sha256": "d01f5d0e512897466b2f3c4e77cbcc4e93f22e3ecbbce70a5a252046cfc4ba45",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.4 explicit path/example and test-import relocation; no policy merge",
-        "0.6.1 documentation hygiene routing; original skills unchanged"
+        "0.6.1 documentation hygiene routing; original skills unchanged",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding.md"
@@ -3887,12 +4016,13 @@
       "source": "~/.agents/ai-factory/repo-evidence.md",
       "destination": "ai-factory/repo-evidence.md",
       "source_sha256": "1a37c97260e914065455bde87875e2e2835038e294b36dd1a2536d68f824868e",
-      "sha256": "1dc7347146630f15d4b0fff6a3878b21f0787006494be0d26c96a49f3585116c",
+      "sha256": "66f21a694d2043e3aee1e4b10e216ab5b0251517f58fb355fa8fb5368e0e1bbe",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/repo-evidence.md"
@@ -3943,13 +4073,14 @@
       "source": "~/.agents/ai-factory/review-handoff.md",
       "destination": "ai-factory/review-handoff.md",
       "source_sha256": "d8dd6d8fbabac2e80f02a4525af328a6711b448ad756eee318af1b12fc5d8a6c",
-      "sha256": "a3ed135777e878d1fb3be57670220ec3a862a826f7ba4a189b891d65330a2c52",
+      "sha256": "57048b2880d0afda592710bfafb153ff94c1dbcf0b97f904443741857f114813",
       "source_mode": "0o644",
       "transformations": [
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "0.4 explicit path/example and test-import relocation; no policy merge",
         "Proposed authored security adapter navigation and explicit review delivery/completion states; no runtime adoption",
-        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states"
+        "Current authorized reminder/resume baseline preserved; security candidate rebased with canonical delivery states",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/review-handoff.md"
@@ -3958,13 +4089,15 @@
       "source": "~/.agents/ai-factory/roadmap.md",
       "destination": "ai-factory/roadmap.md",
       "source_sha256": "950c4e69053cd36d879e9033ef2f3b03da54c9cf33994f9b23ad56cd79dc9ab9",
-      "sha256": "2ead4263500e6f0453d14f4484e34060566978302470ad00138531dafc11bbc4",
+      "sha256": "72f690b0a4b3a0eb7c7d4d4f24680d1dde8207137cab83784160d1b7e8e1495d",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained"
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/roadmap.md"
@@ -4008,12 +4141,14 @@
       "source": "~/.agents/ai-factory/status.md",
       "destination": "ai-factory/status.md",
       "source_sha256": "528af2ca15f09be2097e3218a6073b5814bf57e1a42a3bc37f955ee7a398a63d",
-      "sha256": "30e82f97199f7d51b33a4677031240a8ba3e98b88d6e25dcf4d7e6f48ed8e9f6",
+      "sha256": "704bf0fcf929b6ea9cb031dadcf65ee6e6a293fd2befedd09e41863462a2fe8d",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
-        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance"
+        "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/status.md"
@@ -4022,7 +4157,7 @@
       "source": "~/.agents/ai-factory/workflow.md",
       "destination": "ai-factory/workflow.md",
       "source_sha256": "486bedd21354d25a766a1e7b8577d0ab5d055621e7ad0ce62ae8f7238be961b7",
-      "sha256": "5b95c6a25a466cbb4bbbc988eb211051bb428e25dd12daf734544b687129e95d",
+      "sha256": "fd6009e489be2defee7804c5b9eb26f86bf2f06102bfe260382be17562999ebb",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4031,7 +4166,9 @@
         "0.7.0 selective authorized constraint/browser/critic adaptation; see authorized-additions provenance",
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
         "AF-12 explicit interview/architecture routing and non-enforcing evidence counts; original skill contracts and historical source hash retained",
-        "AF-13 owner-approved qualitative mandatory criteria; informational percentages, explicit blockers, no numeric cutoff; synthetic examples only"
+        "AF-13 owner-approved qualitative mandatory criteria; informational percentages, explicit blockers, no numeric cutoff; synthetic examples only",
+        "Owner-authorized optional language reference navigation; existing skill bodies and core authority unchanged",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/workflow.md"
@@ -4040,11 +4177,12 @@
       "source": "~/.agents/rules/README.md",
       "destination": "rules/README.md",
       "source_sha256": "645b0ee343fa2d9ab8184854c78a589dc9a1b65ee7b5f36ff3da1f2a73e892eb",
-      "sha256": "d9200b675e715989f96f1699b7c50a57a313005269d4b5929df91b8ea9333ccc",
+      "sha256": "97460996a0534546208b48ae8951a75f9f0ca22bb46b0efd445c0c6d79b34129",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/rules/README.md"
@@ -4083,10 +4221,11 @@
       "source": "~/.agents/rules/subagent-orchestration-ledger.md",
       "destination": "rules/subagent-orchestration-ledger.md",
       "source_sha256": "5113848b7fd159ac78e0dc47a04c1fe35a42f9a2e3b27517f9cbe3bbaef56977",
-      "sha256": "60e7a91e747397663b223c69b728a401760c7db10aa836a4da78f365a9ecaf61",
+      "sha256": "09dcbdfdb2e3ab783ce2dc2a7906eecc018ac64ec623218a786233b418f66cd8",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained"
+        "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/rules/subagent-orchestration-ledger.md"
@@ -4105,11 +4244,12 @@
       "source": "~/.agents/AGENTS.md",
       "destination": "rules/agent-entry.md",
       "source_sha256": "b7dffab20ba9d6cc341173912fe192e4df217023a922299f338b3407b915b4fa",
-      "sha256": "b0f4fd7eb84fb502f2744b71a34c4331805222002d9d15d0ca543a78c219c8b3",
+      "sha256": "5b1a772fbdc6fe04e1e5307ec1096b04f1caf54e35ce2edca7cca088f0091933",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "canonical-instructions-and-guides",
       "previous_release_destination": "collection/agents/AGENTS.md"
@@ -4128,9 +4268,11 @@
       "source": "~/.agents/obsidian-cheatsheet.md",
       "destination": "docs/guides/obsidian-cheatsheet.md",
       "source_sha256": "c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0",
-      "sha256": "c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0",
+      "sha256": "e653eb2119b93dd4a7a4b686111d8b2a570c3d17ea29d683989a7b76e6688977",
       "source_mode": "0o644",
-      "transformations": [],
+      "transformations": [
+        "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations."
+      ],
       "category": "canonical-instructions-and-guides",
       "previous_release_destination": "collection/agents/obsidian-cheatsheet.md"
     },
@@ -4138,11 +4280,12 @@
       "source": "~/.agents/ai-factory/ai-factory-plan.md",
       "destination": "docs/legacy/ai-factory-plan-entry.md",
       "source_sha256": "38792d0770a46719fc3521bc239c3e7a67e80224507d3790884996b41f8fb5d4",
-      "sha256": "d83984fef0a79373f95b5c84fda5a7d680df9bce46b526353a0b116951d529a7",
+      "sha256": "2cbeb839c76c498a0baa15b2d109f3e1a6ddaefd8296e99f4481dda424f8157e",
       "source_mode": "0o644",
       "transformations": [
         "legacy symlink represented by explicit canonical redirect",
-        "0.4 layout relocation: package links/test imports updated; see layout migration map"
+        "0.4 layout relocation: package links/test imports updated; see layout migration map",
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
       ],
       "category": "legacy-plan-entry",
       "previous_release_destination": "collection/agents/ai-factory-plan.md"
@@ -4151,8 +4294,10 @@
       "source": "~/.agents/skills/design-pass/references/viewport-coverage.md",
       "destination": "skills/design-pass/references/viewport-coverage.md",
       "source_sha256": "f11b42f76cbe6b873b681202417c2a0ebbe4d1774e329fd9ffbb9b91fcf64882",
-      "sha256": "f11b42f76cbe6b873b681202417c2a0ebbe4d1774e329fd9ffbb9b91fcf64882",
-      "transformations": [],
+      "sha256": "acd275de5fe493507af9d50283cfcb406325a0a82a001cca3a87b3dee401f300",
+      "transformations": [
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+      ],
       "source_mode": "0o644",
       "category": "owner-authored-ui-reference"
     }
@@ -6290,11 +6435,6 @@
     },
     {
       "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0008-a-wait-must-watch-the-thing-that-varies.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
       "target": "../../plan/acceptance-spec/SKILL.md",
       "status": "RESOLVED"
     },
@@ -6312,51 +6452,6 @@
       "file": "skills/entity-e2e-coverage/references/testing-rules.md",
       "target": "../../ship/ship-report/SKILL.md",
       "status": "RESOLVED"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/docs/agent/22-testing-strategy.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/docs/adr/0071-e2e-shared-session-and-new-spec-construction-rules.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0008-a-wait-must-watch-the-thing-that-varies.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/docs/adr/0014-running-tests-gates-stands-live-telemetry.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/tests/FIXTURES.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/cargo/cargotrans-ui/work/qa/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/courses/docs/development/testing.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "skills/entity-e2e-coverage/references/testing-rules.md",
-      "target": "~/projects/courses/Makefile",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
     },
     {
       "file": "skills/git/git-guardrails-claude-code/SKILL.md",
@@ -6885,36 +6980,6 @@
     },
     {
       "file": "ai-factory/feature-lifecycle.md",
-      "target": "~/projects/cassiopeia/cassiopeia-admin-ui/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/feature-lifecycle.md",
-      "target": "~/projects/cargo/cargotrans-ui/work/rules/task-workflow.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/feature-lifecycle.md",
-      "target": "~/projects/cargo/cargotrans-ui/.claude/skills/review/SKILL.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/feature-lifecycle.md",
-      "target": "~/projects/cargo/cargotrans-ui/work/qa/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/feature-lifecycle.md",
-      "target": "~/projects/courses/work/tasks.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/feature-lifecycle.md",
-      "target": "~/projects/courses/Makefile",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/feature-lifecycle.md",
       "target": "status.md",
       "status": "RESOLVED"
     },
@@ -7102,146 +7167,6 @@
       "file": "ai-factory/repo-evidence.md",
       "target": "history.md",
       "status": "RESOLVED"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/AGENTS.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/PRINCIPLES.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/constitution.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/lib/chat/docs/adr/0026-citation-replay-fold-is-a-cross-repo-contract.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/lib/chat/docs/adr/0032-rewind-surviving-events.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/constitution.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/PRINCIPLES.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/agents/work-reviewer.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/design/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/adr-format.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/skills/work/SKILL.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/README.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/validate-spec.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/analyze-specs.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/specs/prompts/pre-qa-review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/plan.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/002-keda-scaling/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/003-jobs-heartbeat-research/plan.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/generic-ui/work/004-navigate-message-feedback/plan.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/docs/adr-format.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/work/038-message-feedback/review.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/repo-evidence.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/skills/work/SKILL.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
     },
     {
       "file": "ai-factory/repo-evidence.md",
@@ -7451,11 +7376,6 @@
     {
       "file": "ai-factory/status.md",
       "target": "../../.codex/skills/.system/skill-creator/SKILL.md",
-      "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
-    },
-    {
-      "file": "ai-factory/status.md",
-      "target": "../../projects/b2bsoft/genericui/openai-qna/.claude/skills/work/SKILL.md",
       "status": "DOCUMENTED_EXTERNAL_OR_TEMPLATE"
     },
     {

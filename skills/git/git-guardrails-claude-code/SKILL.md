@@ -1,6 +1,6 @@
 ---
 name: git-guardrails-claude-code
-description: Налаштування хуків Claude Code для блокування небезпечних git-команд (push, reset --hard, clean, branch -D тощо) до їх виконання. Використовуйте, коли користувач хоче запобігти руйнівним git-операціям, додати git-хуки безпеки або заблокувати git push/reset у Claude Code.
+description: "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before execution. Use when the user wants to prevent destructive git operations, add safety git hooks or block git push/reset in Claude Code."
 ---
 
 # Setup Git Guardrails

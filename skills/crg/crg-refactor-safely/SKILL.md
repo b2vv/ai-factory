@@ -1,6 +1,6 @@
 ---
 name: crg-refactor-safely
-description: "Планування рефакторингу через локальний CRG: impact, rename preview і кандидати dead code; зміни лише в дозволеному scope."
+description: "Plan refactoring through the local CRG: impact, rename preview and dead-code candidates; changes only within the authorized scope."
 ---
 
 ## Runtime contract

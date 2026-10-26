@@ -1,46 +1,54 @@
 ---
 name: entity-e2e-coverage
-description: "Планує й перевіряє E2E покриття полів сутності та QA findings без підміни read-only view перевіркою edit. Використовуй для entity create/view/edit/update та scoped list-filter сценаріїв, їхніх тестів або аудиту покриття; не для загального візуального рев’ю."
+description: "Plans and checks E2E coverage of entity fields and QA findings without substituting an edit check for a read-only view. Use for entity create/view/edit/update and scoped list-filter scenarios, their tests or coverage audits; not for general visual review."
 ---
 
 # Entity E2E coverage
 
-Мета — зберегти кожне потрібне QA-очікування і перевірити його на правильній поверхні. Це вузький контракт покриття, не тестовий runner і не гарантія відсутності багів.
+The goal is to preserve every required QA expectation and verify it on the correct surface. This is a narrow coverage contract, not a test runner or a guarantee of no bugs.
 
-## До тестування
+<a id="до-тестування"></a>
 
-1. Прочитай [testing-rules](references/testing-rules.md): загальні інваріанти та лише розділ поточного репо; звір оригінальні локальні правила, scope, acceptance і всі релевантні QA findings. Знайди реальні surfaces: read-only сторінка, drawer, preview, list cell, edit form. Одна URL може мати різні режими. Не вигадуй view-сторінку й не розширюй задачу до всього CRUD.
-2. У наявному plan/test artifact створи матрицю: **QA requirement ID + source → entity field → deterministic expected value/format/permitted transform → surface + state → action → assertion → evidence**. Відокрем baseline вимог від результатів; звір перелік IDs з оригінальним QA джерелом, а не лише з наявними тестами.
-3. Очікування бери зі spec/QA/незалежної fixture. Не з поточного UI або механічно з API-відповіді, яку цей самий тест має перевірити. Для неоднозначного формату потрібен контракт, не припущення.
+## Before testing
 
-## Окремі зобов’язання
+1. Read [testing-rules](references/testing-rules.md): the general invariants and only the current repository's section; check the original local rules, scope, acceptance and all relevant QA findings. Locate the actual surfaces: read-only page, drawer, preview, list cell, edit form. One URL may have different modes. Do not invent a view page or expand the task to all CRUD.
+2. In the existing plan/test artifact, create a matrix: **QA requirement ID + source → entity field → deterministic expected value/format/permitted transform → surface + state → action → assertion → evidence**. Separate the requirements baseline from results; reconcile the IDs with the original QA source, not just existing tests.
+3. Take expectations from the spec/QA/an independent fixture. Not from the current UI or mechanically from the API response that this same test must verify. An ambiguous format needs a contract, not an assumption.
 
-Кожне застосовне зобов’язання має власний рядок та assertion:
+<a id="окремі-зобовязання"></a>
 
-- **Create persistence:** створена саме тестова сутність і збережені потрібні дані; успішний toast або local form state цього не доводить. Перевір повторне читання після завершення save, за потреби без client cache. API/DB може бути додатковим persistence-доказом.
-- **Read-only view після create:** відкрий реальну read surface; перевір видимі значення/формати потрібних полів, зокрема дані з QA finding. Edit input, API/DB і screenshot без перевірки очікуваного не заміняють цей рядок.
-- **Edit prefill:** окремо відкрий edit і перевір початкові значення, selected options та потрібні незмінені поля. Read-only view не доводить правильність prefill.
-- **Save update:** змінюй поля на відмінні значення, що проходять контрактну нормалізацію як відмінні; перевір збереження, а не лише введений текст.
-- **View після update/reload:** після save окремо перевір потрібні змінені й незмінені поля на read surface та після reload/reopen за контрактом. Старий create/view доказ не закриває новий стан.
+## Separate obligations
 
-Не всі рядки потрібні кожній задачі. Відсутня/непридатна surface або дія поза scope — **N/A з джерелом і причиною**. Якщо spec вимагає view, а доступ/реалізація відсутні — **BLOCKED** (або FAIL для доведеного дефекту), не N/A. List cell може бути read surface лише для тих полів/станів, які вона реально показує і які приймає контракт.
+Each applicable obligation has its own row and assertion:
 
-Для потрібних полів розрізняй label та ID, date-only й instant/timezone/locale, false й empty, null й порожній рядок, nested reference та його display label. Заданий дозволений transform перевіряється явно; не нормалізуй довільно, приховуючи дефект. Обирай fixture значення, на яких помилку видно.
+- **Create persistence:** the actual test entity was created and the required data saved; a success toast or local form state does not prove this. Check a reread after save completes, bypassing the client cache if necessary. API/DB can provide additional persistence evidence.
+- **Read-only view after create:** open the actual read surface; check the visible values/formats of required fields, including data from the QA finding. An edit input, API/DB and a screenshot without checking the expectation do not replace this row.
+- **Edit prefill:** open edit separately and check initial values, selected options and required unchanged fields. A read-only view does not prove correct prefill.
+- **Save update:** change fields to distinct values that remain distinct under contractual normalization; check persistence, not just the entered text.
+- **View after update/reload:** after save, separately check required changed and unchanged fields on the read surface and after reload/reopen according to the contract. Old create/view evidence does not cover the new state.
 
-## Умовні сценарії
+Not every row is needed for every task. An absent/inapplicable surface or an out-of-scope action is **N/A with a source and reason**. If the spec requires a view but access/implementation is missing, use **BLOCKED** (or FAIL for a proven defect), not N/A. A list cell can be a read surface only for fields/states it actually displays and that the contract accepts.
 
-Якщо acceptance охоплює фільтри або keyboard action, застосуй [scoped правила](references/testing-rules.md#scoped-перевірки-та-завершення): matching/nonmatching на кожному заявленому entity type × surface та browser key input з очікуваним UI-effect. Controls/URL/API не заміняють результати списку, submit dispatch — клавішу. Не додавай ці вимоги звичайному CRUD поза scope.
+For required fields, distinguish label from ID, date-only from instant/timezone/locale, false from empty, null from an empty string, and a nested reference from its display label. Check a specified permitted transform explicitly; do not normalize arbitrarily and hide a defect. Choose fixture values that make the error visible.
 
-## Виконання та завершення
+<a id="умовні-сценарії"></a>
 
-Працюй лише з тестовими даними в дозволеному середовищі. Перед mutation перевір чинний дозвіл і side effects команд; cleanup лише власних fixtures. Скіл не дозволяє reset спільних даних, deploy, установки чи нові MCP. Зокрема Courses `make check`/`make e2e-local` можуть видаляти dev volumes — не запускай як автоматичну передумову.
+## Conditional scenarios
 
-Доказ рядка: фактичний run ID, tested revision **і diff fingerprint** (включно з relevant dirty/untracked), test/assertion locator, artifact/trace або ручний запис із реально спостереженим результатом. Запиши fixture/entity identity, середовище й реалізовану перевірку; план або написаний, але не виконаний тест — не PASS. Після зміни коду повтори зачеплені assertions; старі докази не переносити мовчки.
+If acceptance covers filters or a keyboard action, apply the [scoped rules](references/testing-rules.md#scoped-перевірки-та-завершення): matching/nonmatching for every declared entity type × surface, and browser key input with the expected UI effect. Controls/URL/API do not replace list results; submit dispatch does not replace a key. Do not add these requirements to ordinary CRUD outside scope.
 
-Звіт зберігає кожен QA ID, field і required surface/state. PASS лише за власним виконаним assertion; FAIL/BLOCKED залишають gate відкритим. Skip/xfail — не PASS. Видалення/послаблення рядка, зміна requirement, snapshot update або тесту мають явний diff, причину та review за локальним процесом; зміна acceptance потребує рішення його власника. Не переписуй expected під отримане. Виправлений QA finding закривається повтором його конкретного сценарію.
+<a id="виконання-та-завершення"></a>
 
-Перед завершенням узгодь summary, plan checklist і evidence з фінальними revision/diff та фактично перевіреними entities/states/assertions. Неповне — PARTIAL/BLOCKED, незастосовне — N/A з причиною. Тимчасові корисні regression specs зберігай до переносу, звірки покриття й targeted run постійного suite; деталі — [testing-rules](references/testing-rules.md#scoped-перевірки-та-завершення). Завершену задачу не перевиконуй через ідентичний handoff без зміни inputs; спочатку звір статус та наявні докази. Не приписуй повтор автоматизації без доказів.
+## Execution and completion
 
-Ця матриця деталізує наявний acceptance/report, не дублює їх. [acceptance-spec](../plan/acceptance-spec/SKILL.md) визначає поведінку; цей скіл перевіряє field × surface × state; [interface-review](../interface-review/SKILL.md) оцінює UX/вигляд і не заміняє дані assertions. Виконання — чинним runner або дозволеним браузером, без прив’язки до чужого webdev-стеку.
+Use only test data in an authorized environment. Before a mutation, check current authorization and command side effects; clean up only your own fixtures. The skill does not authorize shared-data resets, deployment, installations or new MCPs. In particular, Courses `make check`/`make e2e-local` can delete development volumes: do not run them as an automatic prerequisite.
 
-За потреби машинної перевірки читай [формат і приклади](references/matrix.md), використовуй [validator](scripts/validate_matrix.py). Він перевіряє узгодженість baseline/report і evidence metadata, **не доводить, що браузер виконав assertions**, і не знаходить вимоги, не внесені в baseline. Незалежний reviewer звіряє джерела та фактичні artifacts.
+Row evidence: an actual run ID, tested revision **and diff fingerprint** (including relevant dirty/untracked files), test/assertion locator, artifact/trace or a manual record with the actually observed result. Record fixture/entity identity, environment and the implemented check; a plan or a written but unexecuted test is not PASS. After code changes, rerun affected assertions; do not silently carry over old evidence.
+
+The report preserves every QA ID, field and required surface/state. PASS requires its own executed assertion; FAIL/BLOCKED leave the gate open. Skip/xfail are not PASS. Removing/weakening a row, changing a requirement, updating a snapshot or changing a test requires an explicit diff, reason and review under the local process; changing acceptance requires its owner's decision. Do not rewrite expected to fit actual. A fixed QA finding is closed by rerunning its specific scenario.
+
+Before completion, reconcile the summary, plan checklist and evidence with the final revision/diff and actually checked entities/states/assertions. Incomplete means PARTIAL/BLOCKED; inapplicable means N/A with a reason. Keep useful temporary regression specs until migration, coverage reconciliation and a targeted run of the permanent suite; see [testing-rules](references/testing-rules.md#scoped-перевірки-та-завершення). Do not redo a completed task because of an identical handoff with unchanged inputs; first check status and existing evidence. Do not attribute repetition to automation without evidence.
+
+This matrix refines existing acceptance/report artifacts rather than duplicating them. [acceptance-spec](../plan/acceptance-spec/SKILL.md) defines behavior; this skill checks field × surface × state; [interface-review](../interface-review/SKILL.md) assesses UX/appearance and does not replace data assertions. Execute through the current runner or an authorized browser, without depending on another project's webdev stack.
+
+When machine validation is needed, read the [format and examples](references/matrix.md) and use the [validator](scripts/validate_matrix.py). It checks baseline/report consistency and evidence metadata, **does not prove that the browser executed assertions**, and cannot find requirements omitted from the baseline. An independent reviewer checks sources and actual artifacts.

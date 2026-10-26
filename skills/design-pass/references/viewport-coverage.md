@@ -1,24 +1,28 @@
-# Viewport coverage — спільний контракт UI
+<a id="viewport-coverage--спільний-контракт-ui"></a>
 
-Прочитай цей контракт перед збором доказів у design-pass, ux-review або interface-review. Для кожної застосовної зміненої/аудитованої поверхні (екран, діалог, панель чи компонент у його контексті) перевір усі чотири класи при **100% browser zoom і звичайному розмірі тексту**:
+# Viewport coverage — shared UI contract
 
-| Клас | Default viewport, CSS px |
+Read this contract before collecting evidence in design-pass, ux-review or interface-review. For each applicable changed/audited surface (screen, dialog, panel or component in context), check all four classes at **100% browser zoom and normal text size**:
+
+| Class | Default viewport, CSS px |
 | --- | --- |
 | Phone | 390 × 844 |
 | Tablet portrait | 768 × 1024 |
 | Tablet landscape | 1024 × 768 |
 | Desktop | 1440 × 900 |
 
-Це відтворювані defaults, не перелік фізичних пристроїв. Проєкт може задавати інші підтримувані розміри: запиши джерело, точні CSS width × height і відповідність кожному класу до перевірки. Інший розмір не дозволяє мовчки пропустити клас чи орієнтацію. Якщо проєкт явно не підтримує клас, наведи чинний contract/owner decision і вплив; лише тоді N/A з причиною. Брак часу, інструмента або доказу не є N/A. Не розширюй малу зміну до всього продукту.
+These are reproducible defaults, not a list of physical devices. A project may specify other supported sizes: record the source, exact CSS width × height and mapping to each class before checking. A different size does not permit silently skipping a class or orientation. If the project explicitly does not support a class, cite the current contract/owner decision and impact; only then use N/A with a reason. Lack of time, tooling or evidence is not N/A. Do not expand a small change to the entire product.
 
-Для кожної застосовної поверхні × класу збережи в наявному plan/report: route/surface, роль і стан/fixture, revision та relevant dirty scope, фактичні CSS width × height, browser zoom і спосіб масштабування тексту, очікуваний/фактичний результат, шлях/ID актуального screenshot та підтвердження, що його реально переглянуто. Переглянь також контент нижче першого екрана. Сам файл screenshot без перегляду не є доказом. Screenshot доводить вигляд; виконані дії й результати сценарію записуй окремо.
+For each applicable surface × class, retain in the existing plan/report: route/surface, role and state/fixture, revision and relevant dirty scope, actual CSS width × height, browser zoom and text-scaling method, expected/actual result, path/ID of the current screenshot and confirmation that it was actually inspected. Also inspect content below the first screen. A screenshot file without inspection is not evidence. A screenshot proves appearance; record performed actions and scenario results separately.
 
-Збережи перевірку проміжної ширини біля зміненого breakpoint та застосовних станів/взаємодій: open/active, loading/empty/error/recovery, keyboard/focus, переповнення і довгий текст. Перевіряй їх там, де зміна може впливати; один default screenshot не закриває ці стани. Після виправлення повтори зачеплені viewport/стани на фінальній revision.
+Retain checks at an intermediate width near a changed breakpoint and for applicable states/interactions: open/active, loading/empty/error/recovery, keyboard/focus, overflow and long text. Check them where the change can have an effect; one default screenshot does not cover these states. After a fix, repeat the affected viewports/states at the final revision.
 
-## Масштаб і доступність — окремі перевірки
+<a id="масштаб-і-доступність--окремі-перевірки"></a>
 
-- **200% text enlargement:** перевір читабельність і відсутність втрати тексту/дій; запиши фактичний метод. CSS `font-size: 200%` — симуляція збільшення тексту, не фактичний browser zoom і не повний доказ масштабування всього тексту (зокрема px-sized descendants).
-- **Reflow:** окремо перевір вузький viewport 320 CSS px або фактичний 400% browser zoom з еквівалентною CSS-шириною, зазначивши початкові/кінцеві розміри й застосовні винятки для двовимірного контенту. Не називай resize viewport чи CSS font-size фактичним browser zoom.
-- Якщо acceptance вимагає саме browser zoom, потрібен доказ реального zoom; CSS-симуляція його не закриває. Жодна zoom/text/reflow перевірка не заміняє чотири baseline viewport, і baseline viewport не заміняють accessibility checks. Axe/build/unit PASS не доводить візуальне покриття.
+## Scaling and accessibility — separate checks
 
-Статус кожного рядка: **PASS / FAIL / NOT_TESTED / N/A**. Без актуального переглянутого доказу — **NOT_TESTED** із причиною та наступним кроком. Недоступний required check додатково блокує gate (**BLOCKED**); його не можна зарахувати PASS. Задокументоване обмеження не стає прийнятим без явного owner decision. Застосовні required рядки з FAIL або NOT_TESTED виключають безумовне «готово й перевірено».
+- **200% text enlargement:** check readability and absence of lost text/actions; record the actual method. CSS `font-size: 200%` simulates text enlargement; it is not actual browser zoom or full evidence of scaling all text (including px-sized descendants).
+- **Reflow:** separately check a narrow 320 CSS px viewport or actual 400% browser zoom with equivalent CSS width, stating initial/final dimensions and applicable exceptions for two-dimensional content. Do not call viewport resizing or CSS font-size actual browser zoom.
+- If acceptance specifically requires browser zoom, evidence of real zoom is required; CSS simulation does not cover it. No zoom/text/reflow check replaces the four baseline viewports, and baseline viewports do not replace accessibility checks. Axe/build/unit PASS does not establish visual coverage.
+
+Each row's status: **PASS / FAIL / NOT_TESTED / N/A**. Without current inspected evidence — **NOT_TESTED** with a reason and next step. An unavailable required check also blocks the gate (**BLOCKED**); it cannot count as PASS. A documented limitation is not accepted without an explicit owner decision. Applicable required rows with FAIL or NOT_TESTED rule out an unconditional “done and verified”.

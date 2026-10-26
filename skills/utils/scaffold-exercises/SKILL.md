@@ -1,6 +1,6 @@
 ---
 name: scaffold-exercises
-description: Створення структури директорій для вправ із секціями, задачами, рішеннями та поясненнями, що проходять лінтинг. Використовуйте, коли користувач хоче згенерувати каркас вправ, створити заготовки вправ або налаштувати нову секцію курсу.
+description: "Create a directory structure for exercises with sections, problems, solutions and explanations that pass linting. Use when the user wants to generate an exercise scaffold, create exercise stubs or set up a new course section."
 ---
 
 # Scaffold Exercises

@@ -95,9 +95,9 @@ cd ~/vaults/global && git init && git add -A && git commit -m "init global vault
 
 | Vault               | HTTP порт | Репо                        |
 |---------------------|-----------|-----------------------------|
-| cassiopeia          | 27123     | `~/projects/cassiopeia/…`   |
-| cargotrans-ui       | 27133     | `~/projects/cargo/cargotrans-ui` |
-| diagram-hierarchy   | 27143     | `~/projects/dg`             |
+| cassiopeia          | 27123     | `cassiopeia`   |
+| cargotrans-ui       | 27133     | `cargotrans-ui` |
+| diagram-hierarchy   | 27143     | `dg`             |
 
 > 27124 зайнятий HTTPS-сервером плагіна vault-а cassiopeia — наступний вільний крок сітки `+10`.
 

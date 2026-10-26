@@ -1,6 +1,6 @@
 ---
 name: triage
-description: Проводить issue та зовнішні PR через машину станів ролей тріажу — категоризує, перевіряє, за потреби гриль-опитує і пише брифи, готові для агента.
+description: "Takes issues and external PRs through the triage-role state machine: categorizes, verifies, grills when needed and writes agent-ready briefs."
 disable-model-invocation: true
 ---
 

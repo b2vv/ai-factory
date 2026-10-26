@@ -1,6 +1,6 @@
 ---
 name: grilling
-description: "Безжальне опитування користувача про план, рішення чи ідею. Використовуйте, коли користувач хоче перевірити своє мислення на міцність або вживає будь-які тригерні фрази на кшталт \"grill\"."
+description: "Relentlessly question the user about a plan, decision or idea. Use when the user wants to stress-test their thinking or uses trigger phrases such as \"grill\"."
 ---
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.

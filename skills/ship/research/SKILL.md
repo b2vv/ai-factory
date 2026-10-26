@@ -1,6 +1,6 @@
 ---
 name: research
-description: Досліджує питання за надійними першоджерелами і фіксує висновки у Markdown-файлі репозиторію. Використовуйте, коли користувач хоче дослідити тему, зібрати факти з документації чи API, або делегувати рутинне читання фоновому агенту.
+description: "Researches a question using reliable primary sources and records findings in a repository Markdown file. Use when the user wants to research a topic, gather facts from documentation or APIs, or delegate routine reading to a background agent."
 ---
 
 Spin up a **background agent** to do the research, so you keep working while it reads.

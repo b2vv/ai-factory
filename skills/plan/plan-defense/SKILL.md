@@ -1,51 +1,59 @@
 ---
 name: plan-defense
-description: Змушує план захиститися п'ятьма фіксованими питаннями — кривий інпут, відмова залежності, гонка й повторний виклик, порожні та граничні дані, rollback — де кожна відповідь мусить вказувати на рядок плану. Використовуйте як останній гейт перед розбивкою на таски чи імплементацією, або на тригери "захист плану", "plan defense", "а що буде якщо".
+description: Makes a plan defend itself against five fixed questions — malformed input, dependency failure, race and repeated invocation, empty and boundary data, rollback — with every answer pointing to a line in the plan. Use as the last gate before splitting into tasks or implementation, or on triggers "захист плану", "plan defense", "а що буде якщо" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-# plan-defense — п'ять питань, на які план відповідає рядком
+<a id="plan-defense--пять-питань-на-які-план-відповідає-рядком"></a>
 
-Останній гейт перед виконанням. `plan-critique` шукає, **що в плані не так**;
-цей скіл перевіряє, **чого в плані бракує** — і перелік того, чого бракує, фіксований.
+# plan-defense — five questions answered by a line in the plan
 
-Захист приймається лише **рядком плану**. Відповідь у чаті нічого не закриває: наступний
-агент читатиме план, а не цю розмову. Тому кожне закрите питання закінчується правкою файлу.
+The last gate before execution. `plan-critique` looks for **what is wrong in the plan**;
+this skill checks **what is missing from it** — against a fixed list.
 
-## Питання
+A defense is accepted only as **a line in the plan**. An answer in chat closes nothing: the next
+agent will read the plan, not this conversation. Every closed question therefore ends with a file edit.
 
-Прожени всі п'ять, у порядку. Для кожного: чи є в плані місце, яке на нього відповідає.
+<a id="питання"></a>
 
-1. **Кривий інпут.** Дані прийшли не тієї форми, не того типу, з відсутнім полем, з полем
-   поза очікуваним діапазоном. Де план каже, що станеться, і що побачить користувач.
-2. **Відмова залежності.** Зовнішній сервіс, воркер, WASM-модуль, мережа — не відповів, відповів
-   помилкою, відповів повільно. Де план каже, як система деградує.
-3. **Гонка й повторний виклик.** Користувач клікнув двічі, дві вкладки, запит обігнав попередній,
-   той самий крок виконався двічі. Де план каже, чому результат лишається один.
-4. **Порожні та граничні дані.** Нуль елементів, один елемент, максимум, дублікати, найглибша
-   вкладеність. Де план каже, що показується й що не ламається.
-5. **Rollback.** Зміну викотили, вона зашкодила. Де план каже, як повернутись — і чи є щось
-   незворотне (міграція даних, зовнішній ефект), що rollback не відкотить.
+## Questions
 
-## Форма відповіді
+Run all five, in order. For each, ask whether the plan contains a place that answers it.
 
-Одна таблиця, п'ять рядків, у файл плану:
+1. **Malformed input.** Data has the wrong shape or type, a missing field, or a field
+   outside the expected range. Where does the plan say what happens and what the user sees?
+2. **Dependency failure.** An external service, worker, WASM module, or network does not respond,
+   returns an error, or responds slowly. Where does the plan say how the system degrades?
+3. **Race and repeated invocation.** The user clicked twice, two tabs, a request overtook an earlier one,
+   the same step ran twice. Where does the plan say why the result remains single?
+4. **Empty and boundary data.** Zero elements, one element, the maximum, duplicates, deepest
+   nesting. Where does the plan say what is displayed and what does not break?
+5. **Rollback.** The change was shipped and caused harm. Where does the plan say how to return — and whether anything
+   irreversible (data migration, external effect) cannot be undone by rollback?
 
-| # | Питання | Закрито рядком | Вердикт |
+<a id="форма-відповіді"></a>
+
+## Answer format
+
+One table, five rows, in the plan file:
+
+| # | Question | Closed by line | Verdict |
 |---|---|---|---|
-| 1 | кривий інпут | `plan.md §4, крок 2` | закрито |
-| 5 | rollback | — | **дірка** |
+| 1 | malformed input | `plan.md §4, step 2` | closed |
+| 5 | rollback | — | **gap** |
 
-Дірка закривається одним із двох способів, обидва — правка плану:
+A gap closes in one of two ways, both requiring a plan edit:
 
-- **дописати** в план поведінку, якої бракувало;
-- **звузити скоуп** явним рядком «випадок X поза скоупом, бо <причина>» — тоді питання закрите
-  свідомо, а не забуте.
+- **add** the missing behavior to the plan;
+- **narrow the scope** with an explicit line “case X is out of scope because <reason>” — the question is then closed
+  deliberately rather than forgotten.
 
-## Завершення
+<a id="завершення"></a>
 
-Скіл завершено, коли виконано **все**:
+## Completion
 
-- [ ] Таблиця з п'яти рядків лежить у файлі плану.
-- [ ] Кожен рядок несе або посилання на рядок плану, або явне «поза скоупом, бо…».
-- [ ] Назване число дірок, що лишилися. **Нуль → гейт зелений**, план іде в таски.
-      Будь-яке інше число → гейт червоний, і сказано, який саме рядок таблиці його тримає.
+The skill is complete when **all** of the following hold:
+
+- [ ] The five-row table is in the plan file.
+- [ ] Every row has either a reference to a plan line or an explicit “out of scope because…”.
+- [ ] State the number of remaining gaps. **Zero → gate green**, the plan moves into tasks.
+      Any other number → gate red, naming the exact table row keeping it red.

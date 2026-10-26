@@ -1,6 +1,6 @@
 ---
 name: pr
-description: "Використовуйте, коли пишете опис (body) для PR."
+description: "Use when writing the body of a PR."
 metadata:
   credits:
     skill: show-me

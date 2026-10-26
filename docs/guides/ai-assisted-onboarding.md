@@ -1,35 +1,38 @@
 # AI-assisted onboarding: package → host → project → evidence
 
-Це практичний guide до [єдиного onboarding protocol](../../ai-factory/onboarding.md), не новий installer або tracker. Доручення власника й локальні contracts/ADR мають пріоритет; наявні required gates не скасовуються. Приклади нижче не виконуються самим читанням.
+This is a practical guide to the [single onboarding protocol](../../ai-factory/onboarding.md), not a new installer or tracker. The owner's instruction and local contracts/ADRs take precedence; existing required gates remain in force. Merely reading the examples below does not execute them.
 
 <a id="destinations"></a>
-## 1. Що куди належить
+<a id="1-що-куди-належить"></a>
+## 1. What belongs where
 
-| Шар | Destination / джерело | Реальна можливість і межа |
+| Layer | Destination / source | Actual capability and boundary |
 |---|---|---|
-| Trusted source | Повний release/checkout у погодженому окремому root | Звірити commit/provenance, source і manifest; `verify_release.py`. Не міняти immutable release у місці |
-| Managed package | Наприклад `~/project-data/ai-factory-kit`, canonical absolute path | `tools/kit.py` plan/install/update/rollback. State/backups/receipts у `.ai-factory-state`. Це не host discovery |
-| Shared host store | `~/.agents/skills`; workflow/rules можуть мати окремі pointers у `~/.agents` | Конвенція поточного набору, не ціль managed installer. Exact immutable package paths також придатні для file fallback. Окремого host publisher нема |
-| Claude Code | Personal `~/.claude/skills/<name>/SKILL.md`, project `.claude/skills/<name>/SKILL.md` | Selected mapping після collision/provenance review, не копіювання всіх synced variants. Наявну symlink topology не замінювати автоматично |
-| Codex | Обрані shared skills та локальні `AGENTS.md`/adapter | Перевірити actual discovery саме встановленого CLI; наявність `.agents/skills` сама по собі не сертифікує invocation. Без native discovery — exact-file fallback |
-| Project adapter | Наявний project-owned doc + pointers із entry files | Templates пропонують контент, `preflight.py` лише читає manifest. Потрібний scoped manual/AI edit, не auto-bootstrap |
-| Optional runtimes | Python helpers у package; graph/MCP executables окремо | Skill Graphify/CRG не встановлює server, DB, language runtime чи hook. Models/entitlement — host-specific, не частина package |
+| Trusted source | Complete release/checkout in an agreed separate root | Verify commit/provenance, source and manifest; `verify_release.py`. Do not modify an immutable release in place |
+| Managed package | For example `~/project-data/ai-factory-kit`, canonical absolute path | `tools/kit.py` plan/install/update/rollback. State/backups/receipts in `.ai-factory-state`. This is not host discovery |
+| Shared host store | `~/.agents/skills`; workflow/rules may have separate pointers in `~/.agents` | A convention of the current collection, not a managed installer target. Exact immutable package paths also work for file fallback. No separate host publisher exists |
+| Claude Code | Personal `~/.claude/skills/<name>/SKILL.md`, project `.claude/skills/<name>/SKILL.md` | Selected mapping after collision/provenance review, not copying all synced variants. Do not automatically replace existing symlink topology |
+| Codex | Selected shared skills and local `AGENTS.md`/adapter | Verify actual discovery by the installed CLI; the presence of `.agents/skills` alone does not certify invocation. Without native discovery, use exact-file fallback |
+| Project adapter | Existing project-owned document + pointers from entry files | Templates suggest content; `preflight.py` only reads the manifest. A scoped manual/AI edit is needed, not auto-bootstrap |
+| Optional runtimes | Python helpers in the package; graph/MCP executables separately | The Graphify/CRG skill does not install a server, DB, language runtime or hook. Models/entitlement are host-specific, not part of the package |
 
-У цьому bundle skills згруповані, є однакові names у variants. Не flatten/copy усі 73 originals у discovery root. Спочатку вибрати exact `SKILL.md`, прочитати references, визначити destination/name й перевірити collision. Installer відхиляє symlinks у source/destination; легітимний host symlink не означає, що його можна передати installer. Для preflight вказувати canonical physical paths, не обходити path guard.
+Skills in this bundle are grouped, with duplicate names across variants. Do not flatten/copy all 73 originals into a discovery root. First select the exact `SKILL.md`, read its references, identify the destination/name and check for collisions. The installer rejects symlinks in source/destination; a legitimate host symlink does not mean it can be passed to the installer. Use canonical physical paths for preflight; do not bypass the path guard.
 
-[Claude skills docs](https://code.claude.com/docs/en/skills) підтверджують personal/project locations; host precedence й reserved names потрібно перевіряти для обраного CLI. Локальний home store не переноситься автоматично в cloud session. Official OpenAI skills URL під час цього documentation review перенаправив на [загальний build-skills guide](https://learn.chatgpt.com/docs/build-skills); це не доказ current CLI search roots. Тому мінімальна Codex version/native discovery тут **NOT_TESTED**, не вигадана. Обидва hosts можуть читати явно вибрані файли; це instruction fallback, не native invocation.
+[Claude skills docs](https://code.claude.com/docs/en/skills) confirm personal/project locations; host precedence and reserved names must be checked for the selected CLI. A local home store does not automatically transfer into a cloud session. During this documentation review, the official OpenAI skills URL redirected to the [general build-skills guide](https://learn.chatgpt.com/docs/build-skills); this is not evidence of current CLI search roots. Therefore, the minimum Codex version/native discovery here is **NOT_TESTED**, not invented. Both hosts can read explicitly selected files; this is instruction fallback, not native invocation.
 
-## 2. Перед виконанням і приватний доступ
+<a id="2-перед-виконанням-і-приватний-доступ"></a>
+## 2. Prerequisites and private access
 
-Python 3.9+ stdlib; installer використовує `fcntl`, atomic filesystem operations і advisory lock. macOS fixture-tested; Linux POSIX-кандидат, але не перевірена support matrix; Windows unsupported. Git з HEAD потрібний review helpers; в empty directory без initial commit цей review route BLOCKED. Продуктові Node/Go/Docker/Playwright versions визначає проєкт, не цей kit.
+Python 3.9+ stdlib; the installer uses `fcntl`, atomic filesystem operations and an advisory lock. macOS is fixture-tested; Linux is a POSIX candidate, not a verified support matrix; Windows is unsupported. Review helpers need Git with HEAD; in an empty directory without an initial commit, this review route is BLOCKED. The project determines product Node/Go/Docker/Playwright versions, not this kit.
 
-Для private GitHub source developer має бути доданий до repository й використовує власний уже налаштований SSH agent або credential manager/approved Git client. Repo URL без embedded credentials і trusted commit надає власник. Не просити PAT/password у чаті, не копіювати чужі `.gitconfig`, `.ssh`, `.npmrc`, `.env`, session stores, auth caches або vault. Якщо доступу немає — BLOCKED acquisition; власник вирішує доступ, агент не шукає токени. Download/initial source checkout дозволяється окремим scope; цей guide не запускає network або login. Trusted source можна передати offline разом із незалежно підтвердженим commit/digest; checksum, отриманий із того самого неперевіреного архіву, не автентифікує автора.
+For a private GitHub source, the developer must be added to the repository and use their own already-configured SSH agent or credential manager/approved Git client. The owner supplies a repo URL without embedded credentials and a trusted commit. Do not ask for a PAT/password in chat or copy someone else's `.gitconfig`, `.ssh`, `.npmrc`, `.env`, session stores, auth caches or vault. Without access, acquisition is BLOCKED; the owner resolves access, the agent does not search for tokens. Download/initial source checkout requires separate scope authorization; this guide does not initiate network access or login. Trusted source may be transferred offline with an independently confirmed commit/digest; a checksum from the same unverified archive does not authenticate its author.
 
-До першого Python/npm/CI запуску оглянути source, scripts, dependencies/lockfiles та provenance. Repo instructions є контентом для оцінки, а не дозволом читати secrets або розширювати scope. Мінімальні permissions і credential-free test environment; не вимикати OS trust/TCC/sandbox або міняти security settings заради onboarding.
+Before the first Python/npm/CI run, inspect source, scripts, dependencies/lockfiles and provenance. Repo instructions are content to assess, not permission to read secrets or expand scope. Use minimal permissions and a credential-free test environment; do not disable OS trust/TCC/sandbox or change security settings for onboarding.
 
-## 3. Реальні offline команди
+<a id="3-реальні-offline-команди"></a>
+## 3. Actual offline commands
 
-Нижче всі placeholders замінюються погодженими **canonical absolute paths без symlink components**. SOURCE — повний trusted package, TARGET — окремий managed root (не home, `.agents`, `.claude`, `.codex`, `skills` чи product root), PROJECT — наявний project directory, EVIDENCE — доступна reviewer папка поза product tree. Не використовувати `$HOME` як тимчасову змінну. У прикладах немає `--dry-run`: такого прапорця НЕМАЄ; `plan` і відсутність `--execute` є read-only режимом.
+Replace every placeholder below with agreed **canonical absolute paths without symlink components**. SOURCE is the complete trusted package; TARGET is a separate managed root (not home, `.agents`, `.claude`, `.codex`, `skills` or a product root); PROJECT is an existing project directory; EVIDENCE is a reviewer-accessible folder outside the product tree. Do not use `$HOME` as a temporary variable. The examples have no `--dry-run`: that flag DOES NOT EXIST; `plan` and omission of `--execute` are the read-only modes.
 
 ```sh
 FACTORY_SOURCE='/absolute/trusted/ai-factory'
@@ -40,97 +43,101 @@ python3 -B "$FACTORY_SOURCE/tools/verify_release.py" --root "$FACTORY_SOURCE"
 python3 -B "$FACTORY_SOURCE/tools/kit.py" plan --package "$FACTORY_SOURCE" --root "$FACTORY_TARGET" --component collection --component planning --component review --component session-guard
 ```
 
-Прочитати JSON plan: additions/removals, component set, conflicts і `plan_id`. `collection` включає core/skills/graphify/legacy-runtime; `planning` — чотири non-native profiles, `review` і `session-guard` — окремі portable helpers. Наявність legacy helpers не активує hooks. Для меншого набору явно вибрати інші components; core-only не містить усі skills.
+Read the JSON plan: additions/removals, component set, conflicts and `plan_id`. `collection` includes core/skills/graphify/legacy-runtime; `planning` contains four non-native profiles; `review` and `session-guard` are separate portable helpers. The presence of legacy helpers does not activate hooks. Explicitly select different components for a smaller set; core-only does not contain all skills.
 
-Тільки після дозволу на конкретний reviewed plan і підтвердження exclusive writer window:
+Only after authorization for the specific reviewed plan and confirmation of an exclusive writer window:
 
 ```sh
 python3 -B "$FACTORY_SOURCE/tools/kit.py" install --package "$FACTORY_SOURCE" --root "$FACTORY_TARGET" --component collection --component planning --component review --component session-guard --execute --exclusive-window --plan-id '<reviewed-plan-id>'
 python3 -B "$FACTORY_SOURCE/tools/kit.py" plan --package "$FACTORY_SOURCE" --root "$FACTORY_TARGET" --component collection --component planning --component review --component session-guard
 ```
 
-Повторний plan має дати `NOOP`. Зберегти returned transaction ID, plan, exit і source commit/hash. `--exclusive-window` — твердження про координацію, не автоматична міжсесійна гарантія. Apply не атомарний на всі файли: partial failure залишає receipt/pending transaction; не видаляти state вручну.
+The repeated plan must return `NOOP`. Retain the returned transaction ID, plan, exit and source commit/hash. `--exclusive-window` is a coordination assertion, not an automatic cross-session guarantee. Apply is not atomic across all files: partial failure leaves a receipt/pending transaction; do not delete state manually.
 
-[Приклад manifest](../../examples/onboarding/manifest.json) — валідна відправна точка, не результат inventory. Для existing repo заповнити фактичні instruction/workflow/command paths; optional skills не оголошувати required лише через їх наявність. `preflight.py` не виявляє всі семантичні конфлікти автоматично. Скопіювати/adapt manifest у погоджену evidence-папку, потім:
+The [manifest example](../../examples/onboarding/manifest.json) is a valid starting point, not an inventory result. For an existing repo, fill in actual instruction/workflow/command paths; do not declare optional skills required merely because they exist. `preflight.py` does not automatically detect every semantic conflict. Copy/adapt the manifest into the agreed evidence folder, then:
 
 ```sh
 python3 -B "$FACTORY_SOURCE/runtime/onboarding/preflight.py" --root "$FACTORY_PROJECT" --manifest "$FACTORY_MANIFEST" --shared-skill-root "$FACTORY_TARGET/skills"
 ```
 
-Preflight read-only; JSON `configured=false` і `behavior_tested=false` очікувані. Успішний exit означає виконаний inventory, не готовий проєкт; перевірити item-level BLOCKED/UNKNOWN. Empty project закономірно має missing instructions, не PASS. Symlinked entrypoints inventory задавати physical repo-relative paths після перевірки їхньої семантики.
+Preflight is read-only; JSON `configured=false` and `behavior_tested=false` are expected. A successful exit means inventory completed, not that the project is ready; inspect item-level BLOCKED/UNKNOWN. An empty project naturally has missing instructions, not PASS. Supply physical repo-relative paths for symlinked entrypoint inventory after checking their semantics.
 
 <a id="existing-project"></a>
-## 4. Наявний проєкт — copy-ready AI prompt
+<a id="4-наявний-проєкт--copy-ready-ai-prompt"></a>
+## 4. Existing project — copy-ready AI prompt
 
-Замінити поля в кутових дужках. Prompt починає safe planning, не дає blanket apply/install дозволу:
+Replace the angle-bracket fields. The prompt starts safe planning; it does not grant blanket apply/install permission:
 
 ```text
-Підключи AI Factory до існуючого <PROJECT_ROOT>, не змінюючи стек, архітектуру чи продукт.
+Connect AI Factory to the existing <PROJECT_ROOT> without changing the stack, architecture or product.
 Trusted complete source: <FACTORY_SOURCE + COMMIT/DIGEST>; managed destination: <FACTORY_TARGET>;
-evidence root: <EVIDENCE>; чинний reviewer: <REFERENCE або UNRESOLVED>.
-Прочитай README, docs/guides/ai-assisted-onboarding.md та ai-factory/onboarding.md.
-Спочатку read-only: source/provenance/scripts, AGENTS/CLAUDE, local skills, tasks/ADR/gates,
-HEAD/index/dirty ownership і фактичні host versions/discovery. Не читати secrets/session logs.
-Звір release; зроби kit plan (не вигадуй --dry-run), manifest/preflight та мінімальний adapter diff.
-Покажи exact targets, selected components/skill mappings, side effects, conflicts, backups,
-перевірки й rollback. Існуючі global skills/symlinks зберегти. Native publisher тут відсутній:
-selected host mapping лише як окремий reviewed diff, exact-file fallback допустимий.
-Після явного дозволу застосуй тільки погоджений package plan/adapter delta; runtime tools,
-graph DB, hooks/MCP/models/permissions, dependencies і product tests не встановлювати/не запускати.
-Task branch у main repo тільки за погодженого writer і WIP; foreign/unknown WIP → STOP,
-не stash/reset/commit і не fallback у worktree/clone. Збережи чинного reviewer, без дубля/контакту без дозволу.
-Перевір hashes/links, repeat NOOP; native invocation тільки окремим дозволеним нешкідливим probe.
-Поверни applied/blocked/not-tested, raw commands/exits/snapshot і review handoff, не fake PASS.
+evidence root: <EVIDENCE>; current reviewer: <REFERENCE or UNRESOLVED>.
+Read README, docs/guides/ai-assisted-onboarding.md and ai-factory/onboarding.md.
+Start read-only: source/provenance/scripts, AGENTS/CLAUDE, local skills, tasks/ADRs/gates,
+HEAD/index/dirty ownership and actual host versions/discovery. Do not read secrets/session logs.
+Verify the release; create a kit plan (do not invent --dry-run), manifest/preflight and minimal adapter diff.
+Show exact targets, selected components/skill mappings, side effects, conflicts, backups,
+checks and rollback. Preserve existing global skills/symlinks. There is no native publisher here:
+selected host mapping only as a separate reviewed diff; exact-file fallback is acceptable.
+After explicit permission, apply only the agreed package plan/adapter delta; do not install/run runtime tools,
+graph DB, hooks/MCP/models/permissions, dependencies or product tests.
+Task branch in the main repo only with an agreed writer and WIP; foreign/unknown WIP → STOP,
+no stash/reset/commit and no worktree/clone fallback. Keep the current reviewer; no duplication/contact without permission.
+Check hashes/links, repeat NOOP; native invocation only through a separately authorized harmless probe.
+Return applied/blocked/not-tested, raw commands/exits/snapshot and review handoff, not a fake PASS.
 ```
 
 <a id="empty-project"></a>
-## 5. Порожній проєкт — copy-ready AI prompt
+<a id="5-порожній-проєкт--copy-ready-ai-prompt"></a>
+## 5. Empty project — copy-ready AI prompt
 
-Kit не містить `bootstrap` CLI, project generator або автоматичного вибору стеку. Repo-bootstrap skill існує як instructions, не як installed app scaffolder. Визначити product goal, мову/stack, тестовий runner, delivery target і required constraints до skeleton. Мінімальний результат першого етапу — project instructions, adapter і один task/acceptance record; не копіювати чужу FSD/MVC/Go архітектуру. `git init`, initial commit, package-manager install і scaffold execution — окремо погоджені дії, не побічний ефект onboarding. Відсутність HEAD позначити BLOCKED лише для залежних Git-review helpers.
+The kit has no `bootstrap` CLI, project generator or automatic stack selection. The repo-bootstrap skill exists as instructions, not as an installed app scaffolder. Define the product goal, language/stack, test runner, delivery target and required constraints before a skeleton. The minimum first-stage result is project instructions, an adapter and one task/acceptance record; do not copy someone else's FSD/MVC/Go architecture. `git init`, initial commit, package-manager install and scaffold execution are separately approved actions, not onboarding side effects. Mark missing HEAD as BLOCKED only for dependent Git-review helpers.
 
 ```text
-Підготуй AI Factory workflow для порожнього <PROJECT_ROOT>.
+Prepare an AI Factory workflow for the empty <PROJECT_ROOT>.
 Trusted source <FACTORY_SOURCE + COMMIT/DIGEST>, managed root <FACTORY_TARGET>, evidence <EVIDENCE>.
-Спочатку перевір, що директорія справді порожня/ким володіє WIP, і прочитай onboarding guide.
-Мета продукту: <GOAL>; вже погоджений стек/обмеження: <VALUES або UNKNOWN>.
-Не вибирай framework чи hosting за замовчуванням. Уточни лише рішення, що блокують scope/acceptance.
-Зроби read-only package plan + empty-project preflight, запропонуй мінімальні AGENTS/CLAUDE pointers,
-project adapter, task/acceptance record і доречні tests/QA; не створюй другий tracker.
-Покажи exact diff/commands/backups/rollback; після окремого apply дозволу запиши лише ці docs
-і погоджений package plan. Не запускай scaffold/install/devserver, не роби git init/commit/push
-без відповідного доручення. Task branch/one writer; немає HEAD → явний review-helper BLOCKED.
-Збережи існуючого reviewer або познач UNRESOLVED. Не називай missing tests/CLI discovery PASS.
-Після застосування перевір files/links/NOOP; перший маленький product slice і runtime proof —
-окремий lifecycle із code review та final evidence, не частина docs bootstrap.
+First verify that the directory is actually empty/who owns WIP, and read the onboarding guide.
+Product goal: <GOAL>; already agreed stack/constraints: <VALUES or UNKNOWN>.
+Do not select a framework or hosting by default. Clarify only decisions blocking scope/acceptance.
+Create a read-only package plan + empty-project preflight; propose minimal AGENTS/CLAUDE pointers,
+project adapter, task/acceptance record and suitable tests/QA; do not create a second tracker.
+Show exact diff/commands/backups/rollback; after separate apply permission, write only these docs
+and the agreed package plan. Do not run scaffold/install/devserver or perform git init/commit/push
+without the corresponding instruction. Task branch/one writer; no HEAD → explicit review-helper BLOCKED.
+Keep the existing reviewer or mark UNRESOLVED. Do not call missing tests/CLI discovery PASS.
+After applying, check files/links/NOOP; the first small product slice and runtime proof are a
+separate lifecycle with code review and final evidence, not part of docs bootstrap.
 ```
 
 <a id="new-machine"></a>
-## 6. Новий developer / машина — copy-ready AI prompt
+<a id="6-новий-developer--машина--copy-ready-ai-prompt"></a>
+## 6. New developer / machine — copy-ready AI prompt
 
-Потрібні власний доступ до private source, встановлений Python/Git та обраний AI host. Відсутній prerequisite → BLOCKED із конкретним next step, не прихований package download. Pin спочатку той самий, що погодив team; не використовувати floating `latest`. Home paths попереднього developer не переносити. Ліцензійні exclusions/provenance залишаються чинними; доступ до приватного repo не дає права redistribute restricted skills.
+The developer needs their own private-source access, installed Python/Git and the selected AI host. A missing prerequisite means BLOCKED with a concrete next step, not a hidden package download. Start with the same pin the team approved; do not use floating `latest`. Do not transfer the previous developer's home paths. License exclusions/provenance remain in force; access to a private repo does not grant redistribution rights for restricted skills.
 
 ```text
-Налаштуй план перенесення AI Factory на цю машину для <DEVELOPER/TEAM>.
+Prepare a plan to move AI Factory to this machine for <DEVELOPER/TEAM>.
 OS/host: <OS + Codex/Claude CLI>; trusted private source/commit: <SOURCE>; dedicated managed
-root: <TARGET>; project: <PROJECT>; evidence: <EVIDENCE>; reviewer: <REFERENCE або UNRESOLVED>.
-Спочатку read-only перевір Python/Git/host versions, platform limits і наявні ~/.agents/skills,
-~/.claude/skills mappings, не читаючи credentials. Auth налаштовує сам developer через власний
-approved client; не проси токени в чаті й не копіюй чужі home/settings/session stores.
-Якщо source ще недоступний, BLOCKED acquisition; не запускай network/auth без дозволу.
-Після source inspection/commit/hash verification зроби kit plan для dedicated root та inventory
-project adapter. Не install прямо в ~/.agents: native host publisher відсутній; запропонуй
-selected skill mapping або exact-file fallback, покажи collisions і backup/restore boundaries.
-Після дозволу застосуй тільки reviewed plan/diff, перевір repeat NOOP і збережи transaction.
-Не міняй system permissions, hooks/MCP/models і не встановлюй graph/scanners/marketplace/SaaS.
-Linux познач NOT_TESTED, Windows UNSUPPORTED для kit; не обіцяй parity без окремого proof.
-Запиши per-host detected/configured/discovered/invoked окремо. Перший task branch у main repo —
-лише за визначеного writer і без foreign/unknown WIP; жодного автоматичного per-task clone/worktree.
-Поверни evidence + наявному reviewer handoff; installation ≠ product/runtime/workflow acceptance.
+root: <TARGET>; project: <PROJECT>; evidence: <EVIDENCE>; reviewer: <REFERENCE or UNRESOLVED>.
+First inspect Python/Git/host versions, platform limits and existing ~/.agents/skills,
+~/.claude/skills mappings read-only, without reading credentials. The developer configures auth using their own
+approved client; do not ask for tokens in chat or copy someone else's home/settings/session stores.
+If source is unavailable, acquisition is BLOCKED; do not initiate network/auth without permission.
+After source inspection/commit/hash verification, create a kit plan for the dedicated root and inventory
+the project adapter. Do not install directly into ~/.agents: there is no native host publisher; propose
+selected skill mapping or exact-file fallback, show collisions and backup/restore boundaries.
+After permission, apply only the reviewed plan/diff, check repeat NOOP and retain the transaction.
+Do not change system permissions, hooks/MCP/models or install graph/scanners/marketplace/SaaS.
+Mark Linux NOT_TESTED and Windows UNSUPPORTED for the kit; do not promise parity without separate proof.
+Record per-host detected/configured/discovered/invoked separately. The first task branch in the main repo requires
+a designated writer and no foreign/unknown WIP; no automatic per-task clone/worktree.
+Return evidence + handoff to the existing reviewer; installation ≠ product/runtime/workflow acceptance.
 ```
 
-## 7. Update, backups, rollback і межі uninstall
+<a id="7-update-backups-rollback-і-межі-uninstall"></a>
+## 7. Update, backups, rollback and uninstall boundaries
 
-Для нового trusted release — спочатку новий SOURCE + повний бажаний component set у `plan`. Пропущений component на update означає видалення його managed files; це не «залишити як було». Зберегти current source та `.ai-factory-state`; unmanaged file collision або чужа правка → BLOCKED, без force/adopt/reset.
+For a new trusted release, first use a new SOURCE + the complete desired component set in `plan`. Omitting a component during update means deleting its managed files, not “leave it as it was.” Preserve the current source and `.ai-factory-state`; an unmanaged-file collision or someone else's edit means BLOCKED, with no force/adopt/reset.
 
 ```sh
 python3 -B "$FACTORY_SOURCE/tools/kit.py" update --package "$FACTORY_SOURCE" --root "$FACTORY_TARGET" --component collection --component planning --component review --component session-guard
@@ -139,58 +146,63 @@ python3 -B "$FACTORY_SOURCE/tools/kit.py" rollback --root "$FACTORY_TARGET" --tr
 python3 -B "$FACTORY_SOURCE/tools/kit.py" rollback --root "$FACTORY_TARGET" --transaction '<transaction-id>' --execute --exclusive-window --plan-id '<rollback-plan-id>'
 ```
 
-Rollback перевіряє latest/pending receipt і applied hashes, відновлює лише власні bytes, не чужі edits. Для initial install може прибрати owned files, але не чужі файли/директорії. Окремої `uninstall` команди немає. Видалення optional component — reviewed update; повне очищення state, host links, adapters, hooks чи caches не покривається rollback пакета. Не радити `rm -rf ~/.agents` чи видалення callback store. Потрібний окремий exact ownership inventory/дозвіл; до цього зберігати artifacts.
+Rollback checks the latest/pending receipt and applied hashes, restoring only its own bytes, not others' edits. For an initial install, it may remove owned files, but not others' files/directories. There is no separate `uninstall` command. Removing an optional component is a reviewed update; fully clearing state, host links, adapters, hooks or caches is not covered by package rollback. Do not recommend `rm -rf ~/.agents` or deleting the callback store. A separate exact ownership inventory/permission is required; preserve artifacts until then.
 
-## 8. Як перевірити готовність
+<a id="8-як-перевірити-готовність"></a>
+## 8. How to verify readiness
 
-Один existing task record: source/commit/digest, selected components, exact source→destination mapping, baseline/applied hashes, branch/base/writer, plan/receipt IDs, commands/exits/artifacts/snapshot, limitations. Стан кожного host: DETECTED → CONFIGURED → DISCOVERED → INVOKED із окремим доказом; file reading не invocation. Для перевірок PASS/FAIL/BLOCKED/NOT_TESTED/N/A з причиною. Fixtures доводять helpers, не native agent behavior. Не встановлений optional graph → явний file fallback; потрібний unavailable tool блокує лише залежний scope.
+Use one existing task record: source/commit/digest, selected components, exact source→destination mapping, baseline/applied hashes, branch/base/writer, plan/receipt IDs, commands/exits/artifacts/snapshot, limitations. Each host's state is DETECTED → CONFIGURED → DISCOVERED → INVOKED with separate evidence; reading a file is not invocation. Checks use PASS/FAIL/BLOCKED/NOT_TESTED/N/A with a reason. Fixtures establish helper behavior, not native agent behavior. An uninstalled optional graph means explicit file fallback; a required unavailable tool blocks only its dependent scope.
 
-Чинний [lifecycle](../../ai-factory/feature-lifecycle.md): proportional grilling → scoped impact/checkpoint → required bound critique/defense → implementation → observable verification → independent final review → durable handoff. Агрегатний build або merge не заміняє acceptance rows. Один task branch/one writer; незалежний reviewer отримує snapshot і не дублюється. Delivery state відділяти від verdict: `prepared` / `sent` / `acknowledged` / `verdict_received` за [єдиним контрактом](../../ai-factory/review-handoff.md#delivery-state); ACK не є PASS, `AWAITING_DELIVERY` — лише історична назва причини очікування. Не чекати випадкового нагадування власника: автор готує фінальний пакет і використовує вже дозволений reviewer route; коли manual relay — явно називає його next action. `sent` або exit 0 не є отриманим ACCEPTED. За незакритих required proofs звіт лишається VERIFICATION_INCOMPLETE/REVIEW_PENDING, навіть якщо продукт merged.
+The current [lifecycle](../../ai-factory/feature-lifecycle.md): proportional grilling → scoped impact/checkpoint → required bound critique/defense → implementation → observable verification → independent final review → durable handoff. An aggregate build or merge does not replace acceptance rows. One task branch/one writer; the independent reviewer receives a snapshot and is not duplicated. Separate delivery state from verdict: `prepared` / `sent` / `acknowledged` / `verdict_received` under the [single contract](../../ai-factory/review-handoff.md#delivery-state); ACK is not PASS, and `AWAITING_DELIVERY` is only a historical name for the waiting reason. Do not wait for an incidental owner reminder: the author prepares the final package and uses the already-authorized reviewer route; with manual relay, explicitly name its next action. `sent` or exit 0 is not a received ACCEPTED verdict. With outstanding required proofs, the report remains VERIFICATION_INCOMPLETE/REVIEW_PENDING even if the product is merged.
 
-Безпечна перевірка самого trusted package (тільки disposable fixtures, не user projects):
+Safe verification of the trusted package itself (disposable fixtures only, not user projects):
 
 ```sh
 python3 -B "$FACTORY_SOURCE/tools/verify_release.py" --root "$FACTORY_SOURCE"
 python3 -B "$FACTORY_SOURCE/tools/run_tests.py" --previous-release '/absolute/trusted/previous-release'
 ```
 
-Без `--previous-release` конкретний migration fixture буде skipped, не PASS. Зберегти output/exit. Гарантія portable support потребує окремого OS/CLI proof; цей запуск не installs/graphs/models/browser QA.
+Without `--previous-release`, the specific migration fixture is skipped, not PASS. Retain output/exit. Portable support requires separate OS/CLI proof; this run is not installs/graphs/models/browser QA.
 
 <a id="security-proposed"></a>
-## 9. Security adoption — PROPOSED, не installed
+<a id="9-security-adoption--proposed-не-installed"></a>
+## 9. Security adoption — PROPOSED, not installed
 
-Небезпечний код може виконатися **до scanner**: dependency lifecycle scripts, явно викликані npm test/run, CI Actions або інструкції з чужого repository. Спочатку provenance/source review, reviewed lockfile, exact vetted tool/action versions/digests, permissions і secretless test environment; потім окремо дозволене виконання. Install-script policy має назвати дозволені lifecycle scripts та причину; default inspection може використати `--ignore-scripts`, але це **не sandbox** і не блокує явно викликані `npm test`/`npm run`. Джерела: [npm ci](https://docs.npmjs.com/cli/commands/npm-ci/), [GitHub secure use](https://docs.github.com/en/actions/reference/security/secure-use). Actions перевіряти як код із доступом до runner; pin verified immutable revisions і мінімальні token permissions, без automated settings changes цим guide.
+Dangerous code may execute **before the scanner**: dependency lifecycle scripts, explicitly invoked npm test/run, CI Actions or instructions from another repository. First review provenance/source, the lockfile, exact vetted tool/action versions/digests, permissions and a secretless test environment; then separately authorize execution. Install-script policy must name permitted lifecycle scripts and the reason; default inspection may use `--ignore-scripts`, but this is **not a sandbox** and does not block explicitly invoked `npm test`/`npm run`. Sources: [npm ci](https://docs.npmjs.com/cli/commands/npm-ci/), [GitHub secure use](https://docs.github.com/en/actions/reference/security/secure-use). Review Actions as code with runner access; pin verified immutable revisions and minimal token permissions, with no automated settings changes by this guide.
 
-| Кандидат попереднього research | Статус / boundary перед adoption |
+| Candidate from earlier research | Status / boundary before adoption |
 |---|---|
-| Semgrep Community Edition / власні правила | PROPOSED. Engine і registry rules мають різні умови. [Rules license](https://semgrep.dev/legal/rules-license/) треба перевірити перед redistribution; не vendor чужі registry rules у Factory. Власні правила/дозволені references — окремий reviewed scope |
-| Trivy | PROPOSED. [Official supply-chain advisory March 2026](https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23) показує потребу перевірки provenance й конкретного vetted version/digest; не доводить current unsafe або ураження цього користувача. Не pin навмання `latest` чи стару «safe» версію |
+| Semgrep Community Edition / custom rules | PROPOSED. The engine and registry rules have different terms. Check the [rules license](https://semgrep.dev/legal/rules-license/) before redistribution; do not vendor others' registry rules into Factory. Custom rules/permitted references are a separate reviewed scope |
+| Trivy | PROPOSED. The [official supply-chain advisory March 2026](https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23) demonstrates the need to check provenance and a specific vetted version/digest; it does not establish current unsafety or compromise of this user. Do not arbitrarily pin `latest` or an old “safe” version |
 
-Цей shortlist не exhaustive security coverage. Tool install, database download/update, network mode, findings policy й permissions залишаються невизначеними до окремого proposal. Нічого не встановлено, registry/marketplace не підключено; no additional SaaS required. Scanner zero findings не доводить відсутність вразливостей; first-party scripts, actions, secrets handling і dependency provenance теж потребують перевірки. Research нижче уточнює proposal; будь-який rollout потребує окремого bounded доручення у чинному task record.
+This shortlist is not exhaustive security coverage. Tool installation, database download/update, network mode, findings policy and permissions remain unspecified until a separate proposal. Nothing is installed, no registry/marketplace is connected; no additional SaaS required. Zero scanner findings do not prove the absence of vulnerabilities; first-party scripts, actions, secrets handling and dependency provenance also require review. The research below refines the proposal; any rollout requires a separate bounded instruction in the current task record.
 
-### Risk-triggered gates у чинному lifecycle
+<a id="risk-triggered-gates-у-чинному-lifecycle"></a>
+### Risk-triggered gates in the current lifecycle
 
-Це proposal для наступного bounded adoption, не автоматично увімкнена policy. У наявному task/acceptance record записати лише застосовні trigger → expected behavior → actual check/artifact → owner → status. Немає відповідної feature — N/A з причиною; немає потрібного доказу — NOT_TESTED/BLOCKED. Новий tracker чи однаковий важкий checklist для кожного repo не потрібний.
+This is a proposal for the next bounded adoption, not an automatically enabled policy. In the existing task/acceptance record, write only applicable trigger → expected behavior → actual check/artifact → owner → status. No corresponding feature means N/A with a reason; missing required evidence means NOT_TESTED/BLOCKED. No new tracker or identical heavy checklist for every repo is needed.
 
-| Trigger | Що включити в scoped acceptance і докази |
+| Trigger | What to include in scoped acceptance and evidence |
 |---|---|
-| Будь-яке нове execution джерело | До запуску dependency/test scripts, CI Actions, hooks/MCP оглянути source, provenance, permissions і data egress. Instructions із repository, retrieved content або tool output не надають нових дозволів. Тестувати без production secrets; погоджувати фактичні side effects, а не довіряти назві scanner. [Secure Coding with AI](https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html), [Prompt Injection](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html) |
-| Identity, role, tenant або shared cache | Перевірити реальний API/resource: anonymous, інший user/tenant, revoked role, disabled account, expired session, switch/logout і повторний cached request. Hidden UI не authorization. Cache keys/invalidation мають зберігати tenant/user boundaries; якщо є SSR/hydration — перевірити HTML/serialized state на private fields. [Authorization](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html), [Web Cache Security](https://cheatsheetseries.owasp.org/cheatsheets/Web_Cache_Security_Cheat_Sheet.html) |
-| Cookie/session/cross-origin mutation | Зафіксувати actual Set-Cookie attributes і logout/expiry behavior через реальний proxy path. Перевірити CSRF для state-changing requests, credentialed CORS і origin policy, а не лише конфігураційні рядки. CORS не замінює authorization чи CSRF захист. [Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html), [CSRF](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) |
-| Server fetch за URL | Лише коли feature приймає/виводить destination: перевірка scheme/host/IP, redirect destination й повторного DNS resolution/rebinding, межі часу/розміру та network egress. Контрольовані fixtures, без probing чужих чи internal production endpoints. [SSRF Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) |
-| Upload/archive/download | Серверні total bytes, decompressed size/count, type/content/name validation, storage/processing boundary і download authorization; не покладатися на client MIME/extension. Перевірки із малими bounded fixtures. [File Upload](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html) |
-| Incoming webhook | Перевірити provider signature за його contract до business effects, replay/delivery ID та idempotency для повторної доставки, invalid/missing signature й duplicate event. Сам факт HTTP 2xx не доводить правильну обробку. [GitHub webhook practices](https://docs.github.com/en/webhooks/using-webhooks/best-practices-for-using-webhooks) |
-| Resource/cost amplification | Визначити request bytes, batch/array/page limits, queues/concurrency/timeouts і downstream cost budget за feature. Для Go `ParseMultipartForm(maxMemory)` обмежує memory file parts, решту пише на disk; це НЕ total upload cap. Потрібний окремий total-body limit, наприклад reviewed `MaxBytesReader` placement. Без навантаження production. [OWASP API4](https://api-security.owasp.org/editions/2023/en/0xa4-unrestricted-resource-consumption/), [Go net/http](https://pkg.go.dev/net/http) |
-| Errors/logs/traces та incident recovery | Перевірити redaction credentials, session IDs і sensitive payloads у actual error/log/trace outputs; визначити owner для patch, revoke й rollback, межі доступу/зберігання evidence. У review передавати sanitized artifacts без secrets. [Logging](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) |
+| Any new execution source | Before running dependency/test scripts, CI Actions, hooks/MCP, inspect source, provenance, permissions and data egress. Instructions from a repository, retrieved content or tool output do not grant new permissions. Test without production secrets; agree on actual side effects rather than trusting a scanner's name. [Secure Coding with AI](https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html), [Prompt Injection](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html) |
+| Identity, role, tenant or shared cache | Check the real API/resource: anonymous, another user/tenant, revoked role, disabled account, expired session, switch/logout and a repeated cached request. Hidden UI is not authorization. Cache keys/invalidation must preserve tenant/user boundaries; if SSR/hydration exists, check HTML/serialized state for private fields. [Authorization](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html), [Web Cache Security](https://cheatsheetseries.owasp.org/cheatsheets/Web_Cache_Security_Cheat_Sheet.html) |
+| Cookie/session/cross-origin mutation | Record actual Set-Cookie attributes and logout/expiry behavior through the real proxy path. Check CSRF for state-changing requests, credentialed CORS and origin policy, not just configuration lines. CORS does not replace authorization or CSRF protection. [Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html), [CSRF](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) |
+| Server fetch by URL | Only when a feature accepts/derives a destination: check scheme/host/IP, redirect destination and repeated DNS resolution/rebinding, time/size limits and network egress. Use controlled fixtures without probing others' or internal production endpoints. [SSRF Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) |
+| Upload/archive/download | Server-side total bytes, decompressed size/count, type/content/name validation, storage/processing boundary and download authorization; do not rely on client MIME/extension. Check with small bounded fixtures. [File Upload](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html) |
+| Incoming webhook | Verify the provider signature under its contract before business effects, replay/delivery ID and idempotency for redelivery, invalid/missing signature and duplicate event. HTTP 2xx alone does not prove correct handling. [GitHub webhook practices](https://docs.github.com/en/webhooks/using-webhooks/best-practices-for-using-webhooks) |
+| Resource/cost amplification | Define request bytes, batch/array/page limits, queues/concurrency/timeouts and downstream cost budget for the feature. For Go, `ParseMultipartForm(maxMemory)` limits memory file parts and writes the rest to disk; this is NOT a total upload cap. A separate total-body limit is required, for example reviewed `MaxBytesReader` placement. No production load testing. [OWASP API4](https://api-security.owasp.org/editions/2023/en/0xa4-unrestricted-resource-consumption/), [Go net/http](https://pkg.go.dev/net/http) |
+| Errors/logs/traces and incident recovery | Verify redaction of credentials, session IDs and sensitive payloads in actual error/log/trace outputs; define the owner for patch, revoke and rollback, and evidence access/retention boundaries. Supply sanitized artifacts without secrets for review. [Logging](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) |
 
-### Scanner gate потребує власної перевірки
+<a id="scanner-gate-потребує-власної-перевірки"></a>
+### The scanner gate needs its own verification
 
-Перед adoption у CI/local gate потрібні три harmless fixtures: відомий позитивний detection із очікуваним policy failure, clean case із PASS, та tool/config/DB error із ERROR/BLOCKED, не «чисто». Записувати version/digest, rule-set/version/license, DB timestamp, target snapshot, enabled scanners, coverage/exclusions, output format, findings policy й commands/exits. Перевірити, що саме wrapper/CI зберігає і трактує findings; exit 0 сам по собі не PASS. [Trivy default exit](https://www.trivy.dev/docs/dev/guide/configuration/others/) може бути 0 навіть за findings. Для Go лише як stack-specific кандидат: [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) також має output modes із success exit за findings та documented static-analysis limits. Це не дозвіл встановити/запустити ще один scanner.
+Before adoption in a CI/local gate, three harmless fixtures are required: a known positive detection with the expected policy failure, a clean case with PASS, and a tool/config/DB error with ERROR/BLOCKED, not “clean.” Record version/digest, rule-set/version/license, DB timestamp, target snapshot, enabled scanners, coverage/exclusions, output format, findings policy and commands/exits. Verify that the wrapper/CI itself preserves and interprets findings; exit 0 alone is not PASS. [Trivy default exit](https://www.trivy.dev/docs/dev/guide/configuration/others/) can be 0 even with findings. For Go only as a stack-specific candidate: [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) also has output modes with success exit despite findings and documented static-analysis limits. This is not permission to install/run another scanner.
 
-### Final evidence та межі заяв про завершення
+<a id="final-evidence-та-межі-заяв-про-завершення"></a>
+### Final evidence and boundaries of completion claims
 
-Перевіряти actual built artifact/handler/runtime на фінальному snapshot; copied-handler harness може підтвердити вузьку логіку, але не підміняє реальний production route. Для потрібних CSP/browser interaction, throw path, SSR cancellation/abort, auth/proxy/cache boundaries — окремі observable acceptance rows із raw sanitized evidence. Unit/build/merge не закривають неперевірені runtime rows. Після delta визначити invalidated checks і передати чинному independent reviewer final snapshot; `prepared`/`sent`/`acknowledged` не є `verdict_received`/ACCEPTED. Пропущені required rows залишають VERIFICATION_INCOMPLETE навіть після merge.
+Verify the actual built artifact/handler/runtime on the final snapshot; a copied-handler harness may establish narrow logic but does not replace the real production route. Required CSP/browser interaction, throw path, SSR cancellation/abort, auth/proxy/cache boundaries need separate observable acceptance rows with raw sanitized evidence. Unit/build/merge do not close unverified runtime rows. After a delta, identify invalidated checks and hand the final snapshot to the current independent reviewer; `prepared`/`sent`/`acknowledged` is not `verdict_received`/ACCEPTED. Missing required rows leave VERIFICATION_INCOMPLETE even after merge.
 
-Adoption sequence: у чинному плані погодити лише застосовні gates та власника → окремим bounded scope перевірити scanner provenance/policy/fixtures → отримати actual runtime evidence для першого малого slice → independent final-delta verdict. Destructive DAST, нові permissions, paid tools, network integrations або rollout не дозволяються цим документом.
+Adoption sequence: agree on only applicable gates and their owner in the current plan → verify scanner provenance/policy/fixtures in a separate bounded scope → obtain actual runtime evidence for the first small slice → independent final-delta verdict. This document does not authorize destructive DAST, new permissions, paid tools, network integrations or rollout.
 
 Review-only adoption proposal: [thin security adapter](../../adapters/security/review.md), [pinned upstream sources](../../provenance/security-sources.json), [declarative scanner profile](../../examples/security/scanner-profile.json). These references do not imply installation, native invocation or a working security gate.

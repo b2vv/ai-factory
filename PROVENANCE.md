@@ -76,3 +76,23 @@ CI-gap coverage, evidence-based survivor classification, inverse mutations for
 deleted constructs, authorized-author refactoring and correlated-oracle wording.
 These authored clarifications retain original source hashes and private-use
 provenance limits; no original project memory or runtime code is modified.
+
+## Unreleased cross-host discovery evidence checker
+
+The optional offline checker and synthetic fixtures are authored additions informed by a
+read-only comparison with ECC commit `90606c8315ee09cafc303515c5f33024db6b9882`:
+`scripts/lib/context-profile-native-discovery.js` and
+`scripts/lib/context-profile-native.js` (native response validation). No upstream source
+body, hook, plugin registration, executable, fixture corpus or dependency is copied.
+ECC's repository license at that pin is MIT; direct substantial reuse would require its
+copyright/license notice. This conceptual adaptation does not grant a new redistribution
+license to the inherited Factory collection.
+
+The shared selected-subset comparison accepts a Factory-authored declared inventory for
+Claude/Codex, or the documented Codex result shape as unverified supplied data. It does not
+probe hosts or certify native parity; native Claude and Cursor input adapters are unsupported.
+Existing preflight, global copies, session monitoring, permissions and consumer pins are unchanged.
+
+## Owner-authored language references
+
+Ten optional review/testing references preserve the existing core authority and all SKILL.md bodies. TypeScript uses sanitized user-designated Cassiopeia rule intent; ECC is a pinned conceptual audit input, not a copied implementation. Per-file sources, digests and adaptation limits are recorded in [language origins](provenance/language-reference-origins.json). New files are first-party authorized additions distinct from upstream MIT adaptations. No project code/private source, host configuration or runtime recipe was imported; native activation and consumer execution remain NOT_TESTED.

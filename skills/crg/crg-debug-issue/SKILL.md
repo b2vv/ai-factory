@@ -1,6 +1,6 @@
 ---
 name: crg-debug-issue
-description: "Локалізація дефекту через CRG callers/callees та impact із перевіркою свіжості й підтвердженням у поточних файлах."
+description: "Locate a defect through CRG callers/callees and impact, checking freshness and confirming findings in the current files."
 ---
 
 ## Runtime contract

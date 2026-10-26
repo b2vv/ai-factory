@@ -1,6 +1,6 @@
 ---
 name: grill-with-docs
-description: Безжальне інтерв'ю, що загострює план чи дизайн і паралельно створює документацію (ADR та глосарій).
+description: "A relentless interview that sharpens a plan or design while creating documentation (ADRs and a glossary)."
 disable-model-invocation: true
 ---
 

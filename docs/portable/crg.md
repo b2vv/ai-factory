@@ -4,20 +4,21 @@
 
 CRG is not required by this kit. No server, graph, registration or binary is bundled. The behavior notes below originated from local CRG 2.3.6 fixtures; they are version-specific limitations, not new-machine PASS. Verify the installed tool schema before querying. Graph queries may write derived database metadata; use an authorized location.
 
-## Freshness перед довірою
+<a id="freshness-перед-довірою"></a>
+## Freshness before trust
 
-1. Записати absolute root, branch, HEAD, scope diff і релевантні untracked. Передавати `repo_root` явно у кожен repo-scoped tool. Для dirty scope використовувати перевірений `base="HEAD"`; для PR — його реальну базу, не випадковий `HEAD~1`.
-2. Звірити metadata graph (`git_branch`, `git_head_sha`, `last_updated`, `postprocess_level`) та hashes поточних scope-файлів. Сам збіг HEAD/дати не достатній: граф може містити старі/видалені файли й пропускати інші.
-3. Звірити coverage: чи є потрібні файли/символи; окремо untracked, generated, ignored, unsupported languages, dynamic/framework entrypoints. Кількість файлів — лише сигнал, не відсоток семантичної коректності.
-4. Підтвердити принаймні один релевантний import/caller і його file:line на диску. Graph edge/impact/flow — кандидат; порожній результат на неповному графі означає BLOCKED для висновку, не «безпечний код».
+1. Record absolute root, branch, HEAD, scope diff and relevant untracked files. Pass `repo_root` explicitly to every repo-scoped tool. For dirty scope, use verified `base="HEAD"`; for a PR, use its actual base, not an arbitrary `HEAD~1`.
+2. Check graph metadata (`git_branch`, `git_head_sha`, `last_updated`, `postprocess_level`) and current scope-file hashes. Matching HEAD/date alone is insufficient: the graph may contain stale/deleted files and omit others.
+3. Check coverage: whether required files/symbols exist; separately assess untracked, generated, ignored, unsupported languages and dynamic/framework entrypoints. File counts are only a signal, not a percentage of semantic correctness.
+4. Confirm at least one relevant import/caller and its file:line on disk. A graph edge/impact/flow is a candidate; an empty result on an incomplete graph means BLOCKED for the conclusion, not “safe code.”
 
-Fixture 2.3.6 показав: до update старий caller повертається без freshness warning; incremental update не включає новий untracked rename target; навіть full build на Git-репо пропускає untracked. Після staging **лише у синтетичному fixture** update знайшов нову функцію та її impact. Не stage користувацькі файли заради індексації. Для untracked scope — пряме читання/тести або окремо погоджений refresh, який явно включає ці файли.
+Fixture 2.3.6 showed: before update, an old caller returns without a freshness warning; incremental update omits a new untracked rename target; even a full build in a Git repo omits untracked files. After staging **only in the synthetic fixture**, update found the new function and its impact. Do not stage user files for indexing. For untracked scope, use direct reading/tests or a separately agreed refresh that explicitly includes those files.
 
-## Відновлення без зміни source
+<a id="відновлення-без-зміни-source"></a>
+## Recovery without source changes
 
-Збережи узгоджену SQLite backup перед оновленням; для WAL використовуй SQLite backup API/узгоджений checkpoint, не копію одного `graph.db` під час запису. Не використовуй `immutable=1` при живому WAL/journal; read-only inventory без WAL потребує перевірки стабільності файла під час читання.
+Keep a consistent SQLite backup before updating; for WAL, use the SQLite backup API/a coordinated checkpoint, not a copy of just `graph.db` during writes. Do not use `immutable=1` with a live WAL/journal; read-only inventory without WAL needs a file-stability check during reading.
 
-Оглянута реалізація `build_or_update_graph_tool` 2.3.6 виконує локальний parse, SQLite, FTS/flows/communities, не embeddings/API. `full_rebuild=true, postprocess="full", recurse_submodules=false` доречне лише після авторизації, backup і перевірки списку source-кандидатів. Не читати .env/credentials; не запускати install/init/watch/wiki/embed. Не змінювати `.gitignore`, git index, security controls або registry як побічний «ремонт».
+The inspected `build_or_update_graph_tool` 2.3.6 implementation performs local parsing, SQLite, FTS/flows/communities, not embeddings/API. `full_rebuild=true, postprocess="full", recurse_submodules=false` is appropriate only after authorization, backup and checking the candidate source list. Do not read .env/credentials; do not run install/init/watch/wiki/embed. Do not change `.gitignore`, git index, security controls or registry as an incidental “repair.”
 
-Після refresh повторити root/revision/hash/coverage і релевантні query proofs; зберегти counts/errors/limitations. Один цільовий recovery і одна повторна перевірка; повторна невдача → BLOCKED + file-based fallback. Якщо робоче дерево активно змінюється іншою сесією, не називати перевірку стабільним snapshot.
-
+After refresh, repeat root/revision/hash/coverage and relevant query proofs; retain counts/errors/limitations. One targeted recovery and one recheck; another failure → BLOCKED + file-based fallback. If another session actively changes the working tree, do not call the check a stable snapshot.

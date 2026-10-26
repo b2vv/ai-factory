@@ -1,6 +1,6 @@
 ---
 name: retro
-description: "Проводить ретроспективу сесії кодування."
+description: "Runs a retrospective of the coding session."
 disable-model-invocation: true
 ---
 

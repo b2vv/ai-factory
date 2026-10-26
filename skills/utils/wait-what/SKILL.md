@@ -1,6 +1,6 @@
 ---
 name: wait-what
-description: "Стоп. Останнє повідомлення не дійшло: переформулюй його."
+description: "Stop. The last message did not get across: rephrase it."
 disable-model-invocation: true
 ---
 

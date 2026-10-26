@@ -379,32 +379,32 @@ def event_locked(store, host, payload, pointer=None):
 def handoff_diagnostic(exc):
     # Fixed messages, except bounded sanitized diagnostics from the Git wrapper.
     known = {
-        'handoff already consumed by another session': 'CHECKPOINT_CLAIMED_BY_OTHER: цей checkpoint уже належить іншій сесії. Звірити exact ID чи обрати інший? Не переносити claim і не продовжувати автоматично.',
-        'partial resume state; manual reconciliation required': 'CLAIM_STATE_MISMATCH: claim і session state не узгоджені; потрібна ручна звірка exact checkpoint. Не очищати markers.',
-        'explicit handoff ID required': 'INVALID_CHECKPOINT_ID: потрібен explicit checkpoint ID; не обирати latest.',
-        'host/session required': 'MISSING_HOST_SESSION: hook payload не містить чинної host/session identity.',
-        'handoff incomplete': 'INCOMPLETE_CHECKPOINT: потрібен завершений exact checkpoint.',
-        'handoff expired or future dated': 'CHECKPOINT_TIME_INVALID: час checkpoint поза дозволеним вікном; потрібна ручна звірка.',
-        'root/branch/HEAD/dirty snapshot mismatch; reconcile manually': 'SNAPSHOT_MISMATCH: root/branch/HEAD/dirty змінились; звірити exact checkpoint, без автоматичного продовження.',
-        'fresh session required; same-session resume refused': 'SOURCE_SESSION_REFUSED: source session не може спожити власний checkpoint.',
-        'maximum handoff chain reached; manual reconciliation required': 'CHAIN_LIMIT: потрібна ручна звірка; не скидати depth.',
-        'missing or oversized state': 'STATE_UNAVAILABLE: exact state відсутній або завеликий.',
-        'symlink path refused': 'UNSAFE_STATE_PATH: symlink state path заборонено.',
-        'store must be private (0700) and owned by current user': 'STATE_PERMISSIONS: store має бути приватним і належати поточному користувачу.',
-        'hook payload too large; checkpoint manually': 'PAYLOAD_TOO_LARGE: потрібен ручний checkpoint.',
+        'handoff already consumed by another session': 'CHECKPOINT_CLAIMED_BY_OTHER: this checkpoint already belongs to another session. Verify the exact ID or choose another? Do not transfer the claim or continue automatically.',
+        'partial resume state; manual reconciliation required': 'CLAIM_STATE_MISMATCH: the claim and session state do not agree; manually reconcile the exact checkpoint. Do not clear markers.',
+        'explicit handoff ID required': 'INVALID_CHECKPOINT_ID: an explicit checkpoint ID is required; do not select latest.',
+        'host/session required': 'MISSING_HOST_SESSION: the hook payload does not contain a valid host/session identity.',
+        'handoff incomplete': 'INCOMPLETE_CHECKPOINT: a completed exact checkpoint is required.',
+        'handoff expired or future dated': 'CHECKPOINT_TIME_INVALID: the checkpoint time is outside the allowed window; manual reconciliation is required.',
+        'root/branch/HEAD/dirty snapshot mismatch; reconcile manually': 'SNAPSHOT_MISMATCH: root/branch/HEAD/dirty have changed; reconcile the exact checkpoint without continuing automatically.',
+        'fresh session required; same-session resume refused': 'SOURCE_SESSION_REFUSED: the source session cannot consume its own checkpoint.',
+        'maximum handoff chain reached; manual reconciliation required': 'CHAIN_LIMIT: manual reconciliation is required; do not reset depth.',
+        'missing or oversized state': 'STATE_UNAVAILABLE: the exact state is missing or oversized.',
+        'symlink path refused': 'UNSAFE_STATE_PATH: a symlink state path is forbidden.',
+        'store must be private (0700) and owned by current user': 'STATE_PERMISSIONS: the store must be private and owned by the current user.',
+        'hook payload too large; checkpoint manually': 'PAYLOAD_TOO_LARGE: a manual checkpoint is required.',
     }
     if isinstance(exc, SnapshotCheckFailed):
-        reason = 'SNAPSHOT_CHECK_FAILED: перевірка repository snapshot не завершилась. ' + str(exc)
+        reason = 'SNAPSHOT_CHECK_FAILED: repository snapshot verification did not complete. ' + str(exc)
     elif isinstance(exc, json.JSONDecodeError):
-        reason = 'MALFORMED_JSON: hook payload або exact state має невалідний JSON; звірити формат без виведення вмісту.'
+        reason = 'MALFORMED_JSON: the hook payload or exact state contains invalid JSON; verify the format without displaying the contents.'
     elif isinstance(exc, ValueError):
-        reason = known.get(str(exc), 'INVALID_HANDOFF_DATA: validation відхилила payload/state; звірити exact ID і metadata без виведення приватного вмісту.')
+        reason = known.get(str(exc), 'INVALID_HANDOFF_DATA: validation rejected the payload/state; verify the exact ID and metadata without displaying private contents.')
     elif isinstance(exc, (KeyError, TypeError)):
-        reason = 'MALFORMED_SCHEMA: у payload/state відсутні або некоректні required fields.'
+        reason = 'MALFORMED_SCHEMA: required fields in the payload/state are missing or invalid.'
     elif isinstance(exc, OSError):
-        reason = 'STATE_IO: exact state недоступний; не обходити permissions.'
+        reason = 'STATE_IO: the exact state is unavailable; do not bypass permissions.'
     else:
-        reason = 'SNAPSHOT_CHECK_FAILED: перевірка repository snapshot не завершилась.'
+        reason = 'SNAPSHOT_CHECK_FAILED: repository snapshot verification did not complete.'
     return 'AI Factory handoff BLOCKED: ' + reason
 
 

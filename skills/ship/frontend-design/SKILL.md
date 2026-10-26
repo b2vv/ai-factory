@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Візуальний дизайн інтерфейсу — щоб він читався як зроблений навмисно, а не як шаблон. Використовуйте, коли користувач будує чи переробляє вигляд веб-системи, порталу, застосунку, сайту чи окремого екрана; коли просить «щоб не виглядало як AI»; коли питання про палітру, типографіку, щільність або дизайн-напрямок.
+description: "Visual interface design so it reads as intentional rather than templated. Use when the user builds or reworks the appearance of a web system, portal, app, site or individual screen; asks that it not look AI-generated; or asks about palette, typography, density or design direction. Ukrainian compatibility trigger aliases: \"щоб не виглядало як AI\"."
 license: Complete terms in LICENSE.txt
 ---
 

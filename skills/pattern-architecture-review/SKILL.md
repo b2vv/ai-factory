@@ -1,124 +1,142 @@
 ---
 name: pattern-architecture-review
-description: Аналізує код на доречні шаблони GoF, принципи KISS, DRY, SOLID, Clean Code та Clean Architecture. Використовуй цей скіл для архітектурного рев’ю, пошуку design pattern або перевірки простоти, дублювання, відповідальностей і залежностей. Підкріплюй знахідки кодом і оцінюй відповідність GoF-кандидатів; не нав'язуй патерн, якщо простіше рішення краще.
+description: Analyzes code for appropriate GoF patterns and KISS, DRY, SOLID, Clean Code and Clean Architecture principles. Use this skill for architectural review, finding a design pattern, or checking simplicity, duplication, responsibilities and dependencies. Support findings with code and assess GoF candidate fit; do not impose a pattern when a simpler solution is better.
 ---
 
 # Pattern & Architecture Review
 
-Проведи доказове рев’ю вибраного коду або кодової бази на відповідні шаблони GoF та принципи KISS, DRY, SOLID, Clean Code і Clean Architecture. Рев’ю за замовчуванням лише читає код і формує рекомендації; нічого не змінюй, доки користувач окремо не попросить імплементацію.
+Perform an evidence-based review of selected code or a codebase for appropriate GoF patterns and KISS, DRY, SOLID, Clean Code and Clean Architecture principles. By default, review only reads code and produces recommendations; change nothing until the user separately requests implementation.
 
-## 1. Визнач межі й контекст
+<a id="1-визнач-межі-й-контекст"></a>
 
-- Уточни ціль рев’ю з запиту: файли, модуль, diff або репозиторій. Якщо межі не вказані, почни з релевантної ділянки, а не скануй усе без потреби.
-- Визнач мови, фреймворк і локальні домовленості. Перевір інструкції репозиторію, наявні архітектурні документи, `GLOSSARY.md` та ADR-и, якщо вони існують.
-- Переглянь виклики, залежності й тести навколо підозрілої ділянки. Не виводь потребу в патерні з одного класу чи назви.
-- Якщо бракує контексту для твердої рекомендації, познач це й знизь упевненість.
+## 1. Establish boundaries and context
 
-**Готово, коли:** окреслено ділянку рев’ю та відомі важливі обмеження проєкту.
+- Clarify the review target from the request: files, module, diff or repository. If unspecified, begin with the relevant area rather than scanning everything unnecessarily.
+- Identify languages, framework and local conventions. Check repository instructions, existing architecture documents, `GLOSSARY.md` and ADRs if present.
+- Inspect calls, dependencies and tests around the suspect area. Do not infer a need for a pattern from one class or name.
+- If context is insufficient for a firm recommendation, state that and lower confidence.
 
-## 2. Знайди реальну причину для зміни
+**Done when:** the review area is bounded and important project constraints are known.
 
-Шукай конкретний тиск на код: повторювану логіку, розростання умов, нестабільні залежності, розкидані побічні ефекти, зміни в багатьох місцях для однієї поведінки, складність тестування чи порушений напрямок залежностей.
+<a id="2-знайди-реальну-причину-для-зміни"></a>
 
-Для кожної знахідки зафіксуй:
+## 2. Find a real reason to change
 
-- точне місце в коді (файл і рядки);
-- спостережувану проблему та її наслідок для змін, тестів або розуміння;
-- повторюваний сценарій чи варіацію, якщо саме вона виправдовує абстракцію;
-- контекст, якого не вдалося перевірити.
+Look for concrete pressure on code: repeated logic, growing conditionals, unstable dependencies, scattered side effects, changes in many places for one behavior, difficulty testing, or reversed dependency direction.
 
-Не називай звичайну складність «smell» без пояснення її вартості. Не трактуй однаковий синтаксис як доказ спільної відповідальності: об’єднуй код лише тоді, коли він виражає одну змінну концепцію.
+For every finding, record:
 
-**Готово, коли:** кожна подальша рекомендація спирається на конкретну знахідку в коді.
+- the exact code location (file and lines);
+- the observed problem and its consequence for changes, tests or understanding;
+- the recurring scenario or variation, when that justifies the abstraction;
+- context that could not be verified.
 
-## 3. Оціни відповідні шаблони GoF
+Do not call ordinary complexity a “smell” without explaining its cost. Do not treat matching syntax as proof of shared responsibility: combine code only when it expresses one changing concept.
 
-Використовуй каталог 23 класичних шаблонів GoF як набір кандидатів, а не як перелік обов’язкових рефакторингів. Розглядай лише ті шаблони, чия мета відповідає знайденому тиску. Для кожної проблеми порівняй найкращі кілька варіантів, просте рішення без патерну та збереження поточного коду.
+**Done when:** every subsequent recommendation rests on a concrete code finding.
 
-### Оцінка придатності
+<a id="3-оціни-відповідні-шаблони-gof"></a>
 
-Для кожного названого шаблону постав чотири оцінки від 0 до 5 і обчисли зважений бал як відсоток:
+## 3. Assess appropriate GoF patterns
 
-| Критерій | Вага | Що оцінюється |
+Use the catalog of 23 classic GoF patterns as candidates, not a mandatory refactoring list. Consider only patterns whose purpose matches the observed pressure. For each problem, compare the best few options, a simple pattern-free solution and leaving the current code unchanged.
+
+<a id="оцінка-придатності"></a>
+
+### Fit assessment
+
+Give each named pattern four scores from 0 to 5 and compute the weighted percentage:
+
+| Criterion | Weight | What is assessed |
 |---|---:|---|
-| Відповідність проблемі | 35% | Наскільки точно намір шаблону відповідає доведеній проблемі |
-| Реальність варіації | 25% | Чи ізолює шаблон зміну, яка вже трапляється або прямо очікується |
-| Виграш у межах і тестованості | 20% | Чи спрощує залежності, локальність змін або тестування |
-| Вартість і складність | 20% | Чи виправдовує виграш додаткові типи, зв’язки й точки входу |
+| Problem fit | 35% | How precisely the pattern's intent matches the demonstrated problem |
+| Reality of variation | 25% | Whether the pattern isolates a change already occurring or directly expected |
+| Boundary and testability gains | 20% | Whether it simplifies dependencies, change locality or testing |
+| Cost and complexity | 20% | Whether the gain justifies extra types, relationships and entry points |
 
-Формула: `Σ (оцінка критерію / 5 × вага)`; результат округли до цілого відсотка. Оцінка є пояснюваною оцінкою відповідності, а не статистичною імовірністю. Бали різних шаблонів незалежні й не мусять давати 100% у сумі.
+Formula: `Σ (criterion score / 5 × weight)`; round to a whole percentage. This is an explainable fit estimate, not a statistical probability. Pattern scores are independent and need not sum to 100%.
 
-- Дай кожному балу коротке обґрунтування з посиланням на знайдені докази.
-- Окремо вкажи впевненість в аналізі (`висока`, `середня`, `низька`), залежно від повноти контексту. Не підміняй нею відсоток придатності.
-- Оціни альтернативу без патерну за тією ж шкалою, коли вона реалістична. Якщо вона проста й достатня, рекомендуй її.
-- Орієнтир для висновку: `80–100%` — сильний кандидат; `60–79%` — умовний кандидат, потрібна явна умова застосування; `<60%` — не рекомендувати до впровадження. Якщо всі шаблони мають низьку оцінку, скажи прямо, що GoF-патерн тут не потрібен.
-- Не обіцяй майбутню гнучкість без конкретного сценарію зміни. Не вигадуй майбутні вимоги, щоб підняти бал.
+- Give every score a short justification linked to the evidence found.
+- Separately state analysis confidence (`high`, `medium`, `low`), based on context completeness. Do not substitute it for the fit percentage.
+- Score the pattern-free alternative on the same scale when realistic. If simple and sufficient, recommend it.
+- Interpretation guide: `80–100%` — strong candidate; `60–79%` — conditional candidate requiring an explicit applicability condition; `<60%` — do not recommend implementation. If every pattern scores low, state plainly that no GoF pattern is needed here.
+- Do not promise future flexibility without a concrete change scenario. Do not invent future requirements to raise the score.
 
-Поясни різницю між призначенням шаблонів, що легко сплутати в цій ситуації. Наприклад, `Strategy` ізолює взаємозамінний алгоритм, `State` моделює поведінку залежно від стану, а `Factory Method` делегує створення продукту. Називай GoF-шаблон лише тоді, коли його структура та намір справді відповідають коду; не переклеюй назву на звичайну функцію чи залежність.
+Explain differences between patterns easily confused in this situation. For example, `Strategy` isolates an interchangeable algorithm, `State` models behavior according to state, and `Factory Method` delegates product creation. Name a GoF pattern only when its structure and intent actually match the code; do not relabel an ordinary function or dependency.
 
-**Готово, коли:** для кожної проблеми порівняно доречні варіанти й пояснено, чому перемагає конкретний шаблон або просте рішення.
+**Done when:** relevant options are compared for every problem and the winning pattern or simple solution is explained.
 
-## 4. Застосуй окрему лінзу KISS, DRY і SOLID
+<a id="4-застосуй-окрему-лінзу-kiss-dry-і-solid"></a>
 
-Оціни кожен принцип самостійно й назви його у звіті. Принцип — це запитання до конкретного коду, а не ярлик для будь-якого стилістичного вподобання.
+## 4. Apply a separate KISS, DRY and SOLID lens
 
-- **KISS:** чи є простіший варіант, який так само покриває реальні вимоги? Порівняй його з поточним рішенням і покажи ціну зайвих абстракцій, рівнів або конфігурації.
-- **DRY:** чи дублюється одне правило або знання, зміна якого має залишатися узгодженою? Однаковий код із різними причинами змін не об'єднуй автоматично.
-- **SRP:** чи має модуль більше ніж одну незалежну причину змін? Не трактуй це як вимогу «один метод на клас».
-- **OCP:** чи змушує реальний, повторюваний сценарій додавати варіант через редагування багатьох стабільних гілок? Не вимагай розширення через наслідування за замовчуванням.
-- **LSP:** чи можна підставити реалізацію замість її контракту без порушення очікуваної поведінки, передумов, постумов або інваріантів?
-- **ISP:** чи змушений конкретний клієнт залежати від операцій, яких він не використовує? Діли інтерфейс лише за наявності такого клієнта.
-- **DIP:** чи залежать високорівневі правила від конкретної зовнішньої деталі там, де справді потрібен шов зміни або тестування? Не створюй інтерфейс лише для формального виконання принципу.
+Evaluate each principle independently and name it in the report. A principle is a question about concrete code, not a label for any stylistic preference.
 
-Для кожного порушення наведи місце в коді й конкретну ціну: зайві зміни, крихкі тести, прихована поведінка, повторні виправлення чи ускладнене читання. Якщо принцип дотримано або питання не має практичного наслідку, не додавай знахідку. Пов'язану рекомендацію не дублюй під кількома принципами: познач основний принцип і згадай інші як перетин.
+- **KISS:** is there a simpler option that covers the real requirements equally well? Compare it with the current solution and show the cost of extra abstractions, layers or configuration.
+- **DRY:** is one rule or piece of knowledge duplicated whose changes must remain consistent? Do not automatically combine identical code with different reasons to change.
+- **SRP:** does a module have more than one independent reason to change? Do not interpret this as “one method per class”.
+- **OCP:** does a real recurring scenario force adding a variant by editing many stable branches? Do not require extension through inheritance by default.
+- **LSP:** can an implementation substitute for its contract without violating expected behavior, preconditions, postconditions or invariants?
+- **ISP:** must a particular client depend on operations it does not use? Split the interface only when such a client exists.
+- **DIP:** do high-level rules depend on a concrete external detail where a genuine change or testing seam is needed? Do not create an interface just to satisfy the principle formally.
 
-**Готово, коли:** кожен знайдений сигнал KISS/DRY/SOLID має доказ, наслідок і мінімальний корисний наступний крок.
+For each violation, cite a code location and concrete cost: extra changes, fragile tests, hidden behavior, repeated fixes or harder reading. If a principle holds or the question has no practical consequence, add no finding. Do not duplicate a related recommendation under several principles: name the main principle and mention the others as overlap.
 
-## 5. Перевір Clean Code та Clean Architecture окремо
+**Done when:** every KISS/DRY/SOLID signal has evidence, a consequence and a minimal useful next step.
+
+<a id="5-перевір-clean-code-та-clean-architecture-окремо"></a>
+
+## 5. Check Clean Code and Clean Architecture separately
 
 ### Clean Code
 
-Фіксуй порушення лише там, де вони створюють помітну ціну. Перевіряй, зокрема:
+Record violations only where they create noticeable cost. In particular, check:
 
-- назви, що приховують намір або відповідальність;
-- змішування обчислень, оркестрації та побічних ефектів;
-- неявні залежності, неясну обробку помилок і нечитабельний контроль потоку;
-- відсутність тестів на важливу поведінку або надмірно крихкі тести.
+- names that hide intent or responsibility;
+- mixing computation, orchestration and side effects;
+- implicit dependencies, unclear error handling and unreadable control flow;
+- missing tests for important behavior or overly fragile tests.
 
-Не дублюй тут висновки лінзи SRP. Фіксуй окремі проблеми читабельності й підтримки, яких та лінза не охоплює.
+Do not repeat SRP-lens conclusions here. Record distinct readability and maintainability problems that lens does not cover.
 
 ### Clean Architecture
 
-Перевір напрямок залежностей і реальні межі, а не назви папок:
+Check dependency direction and real boundaries, not folder names:
 
-- чи залежать доменні правила або сценарії використання від фреймворку, бази даних, мережі чи UI;
-- чи йдуть залежності від зовнішніх деталей до внутрішніх правил;
-- чи відділені політики від механізмів там, де зміни мають бути незалежними;
-- чи перетинають межі дані, придатні для внутрішнього шару, без витоку фреймворк-типів;
-- чи є інтерфейс/порт корисним швом для реальної варіації або тестування.
+- whether domain rules or use cases depend on a framework, database, network or UI;
+- whether dependencies point from external details toward internal rules;
+- whether policies and mechanisms are separated where changes must be independent;
+- whether data crossing boundaries suits the inner layer without leaking framework types;
+- whether an interface/port is a useful seam for real variation or testing.
 
-Не вимагай шарів, інтерфейсів, DI-контейнерів або портів для кожного виклику. Пропонуй межу, лише якщо вона ізолює незалежну політику, зміну чи зовнішню деталь. Звіряйся з уже задокументованими рішеннями проєкту.
+Do not demand layers, interfaces, DI containers or ports for every call. Propose a boundary only when it isolates independent policy, change or an external detail. Check the project's already documented decisions.
 
-**Готово, коли:** рекомендації Clean Code та Clean Architecture відокремлені від GoF і KISS/DRY/SOLID та мають локальні докази.
+**Done when:** Clean Code and Clean Architecture recommendations are separate from GoF and KISS/DRY/SOLID and have local evidence.
 
-## 6. Видай короткий звіт
+<a id="6-видай-короткий-звіт"></a>
 
-Спершу подай висновок і кількість значущих знахідок. Далі використовуй формат:
+## 6. Deliver a concise report
 
-### Знахідка: <коротка назва>
-- **Доказ:** `path/to/file.ext:line` — конкретне спостереження.
-- **Проблема:** що це ускладнює.
-- **GoF-кандидати:** назва й відсоток придатності для кожного доречного варіанта; оцінки критеріїв і короткі пояснення.
-- **Принципи:** KISS / DRY / SOLID, якщо є релевантний доказ; інакше не додавай цей рядок.
-- **Простіша альтернатива:** бал і пояснення, якщо доречно.
-- **Рекомендація:** найкращий наступний крок і умова, за якої його варто робити.
-- **Впевненість:** висока / середня / низька, з причиною.
+Lead with the conclusion and count of significant findings. Then use this format:
 
-Окремими секціями подай **KISS / DRY / SOLID**, **Clean Code** і **Clean Architecture**. У кожній покажи лише обґрунтовані знахідки або коротко зазнач, що істотних проблем не виявлено. Ранжуй наступні кроки за наслідком і зусиллям. Не завалюй користувача каталогом усіх 23 шаблонів.
+<a id="знахідка-коротка-назва"></a>
 
-## Межі й пов’язані скіли
+### Finding: <short name>
+- **Evidence:** `path/to/file.ext:line` — a concrete observation.
+- **Problem:** what this makes harder.
+- **GoF candidates:** name and fit percentage for each relevant option; criterion scores and brief explanations.
+- **Principles:** KISS / DRY / SOLID if relevant evidence exists; otherwise omit this row.
+- **Simpler alternative:** score and explanation when appropriate.
+- **Recommendation:** best next step and the condition under which it is worthwhile.
+- **Confidence:** high / medium / low, with a reason.
 
-- Рев’ю не змінює код і не додає залежностей без окремого прохання.
-- Для глибокого аудиту можливостей поглиблення модулів передай задачу до `$improve-codebase-architecture`.
-- Для розробки форми інтерфейсу модуля використовуй лексику `$codebase-design`.
-- Для рев’ю diff-у на відповідність вимогам чи стандартам використовуй `$code-review`.
+Give **KISS / DRY / SOLID**, **Clean Code** and **Clean Architecture** separate sections. Each contains only substantiated findings or a brief statement that no significant problems were found. Rank next steps by impact and effort. Do not overwhelm the user with all 23 patterns.
+
+<a id="межі-й-повязані-скіли"></a>
+
+## Boundaries and related skills
+
+- Review changes no code and adds no dependencies without a separate request.
+- For a deeper audit of module-deepening opportunities, hand off to `$improve-codebase-architecture`.
+- For designing a module interface's shape, use `$codebase-design` terminology.
+- For reviewing a diff against requirements or standards, use `$code-review`.

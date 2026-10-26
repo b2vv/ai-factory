@@ -99,3 +99,104 @@ Declare each host/session once. Use evidence references without secret values. F
 exercise independent discovery/native tools, both hosts' identical file fallback, unknown/missing
 models and cross-session rejection, plus repeated additive planning with a concurrent edit preserved.
 No fixture establishes real CLI discovery, invocation, entitlement, MCP or model-runtime PASS.
+
+## Optional cross-host discovery evidence check
+
+[`discovery_check.py`](../runtime/onboarding/discovery_check.py) compares explicitly selected
+file skills against a supplied JSON record. It is separate from preflight: it never launches
+an agent, reads host configuration, registers skills, follows paths inside JSON, or upgrades
+preflight declarations. Manual comparison remains a valid alternative.
+
+| Client | Portable declaration format | Native-format input parser | Live discovery / invocation |
+|---|---|---|---|
+| Codex | Supported by synthetic fixtures | `skills/list` result shape below; capture unverified | NOT_TESTED; no probe |
+| Claude | Supported by synthetic fixtures | UNSUPPORTED; declaration is not native CLI output | NOT_TESTED; no probe |
+| Cursor | UNSUPPORTED | UNSUPPORTED | UNKNOWN current installation; inherited host pointer only |
+
+The [onboarding guide](guides/ai-assisted-onboarding.md) documents Codex/Claude routes.
+The inherited [agent entry](../rules/agent-entry.md) mentions Cursor; this does not certify
+its current loader. Other clients are unsupported by this checker. There is no host parity claim.
+
+### Inputs
+
+```sh
+python3 -B /path/to/discovery_check.py \
+  --expected /absolute/task/expected.json --response /absolute/task/response.json
+```
+
+Use an already permitted execution environment; this example grants no host execution or
+installation permission. Both input files must be explicit canonical absolute POSIX paths,
+regular files with no symlink ancestor, UTF-8 JSON, at most 1 MiB each. Concurrent modification
+is unsupported; checks are not an OS sandbox. JSON duplicate keys, excessive nesting (>32),
+invalid Unicode and malformed required fields are rejected. No source text or paths are echoed.
+
+Expected JSON has **exactly** these fields (the digest placeholder must be replaced with the
+SHA256 of the exact response bytes, including its newline):
+
+```json
+{
+  "schema_version": 1,
+  "profile": "declared-skill-inventory-v1",
+  "provider": "claude",
+  "method": "declared-inventory",
+  "response_sha256": "<64 lowercase hexadecimal characters>",
+  "cwd": "/fixture/project",
+  "skills": [{"name":"огляд","path":"/fixture/skills/review/SKILL.md","enabled":true}]
+}
+```
+
+Portable declaration response, authored by an operator, **not** a native Claude API:
+
+```json
+{"schema_version":1,"provider":"claude","cwd":"/fixture/project","skills":[{"name":"огляд","path":"/fixture/skills/review/SKILL.md","enabled":true}]}
+```
+
+For Codex declarations use `provider: "codex"` in both documents. Portable response keys are
+exact; entries allow only `name`, `path`, `enabled` and optional string `description`.
+The evidence class is `DECLARED_INVENTORY` for either client.
+
+For an independently captured Codex `skills/list` **result object**, choose provider `codex`,
+profile `codex-skills-list-result-v1`, method `skills/list`:
+
+```json
+{"data":[{"cwd":"/fixture/project","errors":[],"skills":[{"name":"огляд","path":"/fixture/skills/review/SKILL.md","enabled":true}]}]}
+```
+
+This is not the surrounding JSON-RPC envelope or a transcript. Exactly one row must match
+the expected cwd and have an empty `errors` list. Extra descriptive fields are ignored and
+never printed. `pluginId`, if present, must be null or a string up to 512 characters; a selected
+item's nonempty pluginId is unsupported. Unrelated plugin items may be counted as extras.
+Evidence class is `NATIVE_FORMAT_UNVERIFIED_CAPTURE`, not authenticated native evidence.
+No CLI version support is inferred from this synthetic parser contract.
+
+Both profiles share selected-subset comparison. Expected selection has 1–100 unique names
+and unique paths; response has 0–1000 entries. Names are exact, case-sensitive Unicode,
+1–512 characters; expected names containing `:` are unsupported. Skill paths are absolute
+normalized POSIX paths ending `/SKILL.md`, at most 4096 characters; cwd is similarly normalized
+and not `/`. No control characters, empty/dot/dot-dot path components or trailing separators.
+`enabled` is a boolean, not 0/1; expected enabled must be true. Paths are compared, never opened.
+Selection is not isolation: unrelated names are counted, not rejected as unwanted activation.
+
+### Results and limits
+
+- `RESPONSE_MATCH` / exit 0: every selected name occurs once at its expected enabled path.
+- `MISMATCH` / exit 1: missing, disabled, duplicate selected name or wrong path.
+- `BLOCKED` / exit 1: malformed/unsupported input, wrong cwd/provider/digest, selected plugin,
+  unavailable file or unsafe input path. BLOCKED takes precedence over matching.
+
+Output contains fixed issue codes, input digests and counts, provider/profile and evidence class.
+Unavailable digests are null; counts remain null until full structural validation. Repeated identical
+bytes yield identical output. Unknown provider/profile combinations never fall back. Errors are
+sanitized in stdout and stderr; help is static text. Hashes bind bytes, not capture authenticity.
+
+**Every result retains `native_discovery=NOT_TESTED`, `invocation=NOT_TESTED`,
+`behavior_tested=false`.** A forged but internally consistent declaration can match. Authenticity,
+current host state, installed skill bytes, referenced-resource closure, actual invocation and
+behavior need separate permitted verification. Retain capture command/exit, CLI version/executable
+digest, root/date and source hashes in the existing task record when actual capture is authorized;
+the checker neither obtains nor authenticates that evidence. Never submit private transcripts.
+
+Tests in `tests/onboarding/test_discovery_check.py` cover both declaration providers, Codex-shaped
+input, Unicode, failure paths and bounded file reads. No-write fixture inventories, reviewed read
+call sites, fail-on-attempt I/O/process/network spies and their canaries have distinct limited
+claims; they do not prove universal containment. No live host or model is exercised.

@@ -1,6 +1,6 @@
 ---
 name: to-spec
-description: Перетворює поточну розмову на специфікацію (spec) і публікує її в трекер задач проєкту — без інтерв'ю, лише синтез того, що вже обговорено.
+description: "Turns the current conversation into a specification (spec) and publishes it to the project's issue tracker — no interview, only synthesis of what has already been discussed."
 disable-model-invocation: true
 ---
 

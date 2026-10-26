@@ -1,46 +1,52 @@
 > Optional retained portable profile; the full canonical plan is in `ai-factory/`. This profile does not replace original skill contracts or authorize automatic activation.
 
-# Startup routing та передача на незалежний review
+<a id="startup-routing-та-передача-на-незалежний-review"></a>
+# Startup routing and handoff to independent review
 
-Цей контракт доповнює чинний workflow, не створює ще одного tracker або оркестратора. Small зберігає один primary task record; поля нижче вставляються в нього. Evidence bundle — похідний snapshot для перевірки, не другий план. Локальні standards, gates та owner-рішення зберігаються.
+This contract supplements the current workflow; it creates neither another tracker nor an orchestrator. Small keeps one primary task record; insert the fields below into it. The evidence bundle is a derived snapshot for verification, not a second plan. Local standards, gates and owner decisions remain in force.
 
-## Перед початком роботи
+<a id="перед-початком-роботи"></a>
+## Before starting work
 
-Сесія записує й показує користувачу для кожної потрібної критики/review/verification:
+For each required critique/review/verification, the session records and shows the user:
 
-> Перевірки/критика/review: `<мета>` → `<новий субагент | наявна окрема сесія | НЕ ВИЗНАЧЕНО>`; власник `<ім’я/роль>`; session/agent reference `<точний ID або pending>`; підстава вибору `<поточне доручення/відповідь користувача>`; хто передає пакет `<власник>`; доступ до спільного стенда `<не потрібен | узгоджений слот/власник | BLOCKED>`.
+> Checks/critique/review: `<goal>` → `<new subagent | existing separate session | UNRESOLVED>`; owner `<name/role>`; session/agent reference `<exact ID or pending>`; selection basis `<current instruction/user response>`; package delivery owner `<owner>`; shared test environment access `<not needed | agreed slot/owner | BLOCKED>`.
 
-Явний вибір користувача має пріоритет. Якщо маршрут однозначно заданий поточним дорученням — зафіксуй його без повторного питання. Інакше запитай **до spawn або надсилання**: «Для `<мета>` запускати нового субагента чи використати окрему наявну сесію? Якщо наявну — яка точна назва/ID і хто передає пакет?» Без відповіді маршрут лишається НЕ ВИЗНАЧЕНО; незалежні safe inventory/planning можуть тривати. Не підставляй субагента за таймаутом. Наявність сесії не є виконаним review.
+The user's explicit choice takes precedence. If the current instruction unambiguously defines the route, record it without asking again. Otherwise ask **before spawning or sending**: “For `<goal>`, should I launch a new subagent or use an existing separate session? If existing, what is the exact name/ID and who delivers the package?” Without an answer, the route remains UNRESOLVED; independent safe inventory/planning may continue. Do not substitute a subagent after a timeout. A session's existence is not completed review.
 
-Для `новий субагент` після дозволеного spawn допиши отриманий ID у той самий record; для `наявна сесія` не вгадуй ID за схожою назвою. Дозвіл вибрати спосіб не означає автоматичний дозвіл надсилати повідомлення іншій сесії: потрібне явне доручення на передачу або її виконує користувач. Не створюй дубль reviewer, якщо він уже призначений; не дублюй handoff через повторний запит. Звичайні авторські перевірки позначай окремо як author checks, не як незалежний review.
+For `new subagent`, append the returned ID to the same record after authorized spawn; for `existing session`, do not guess an ID from a similar name. Permission to choose a method does not automatically authorize messaging another session: explicit delivery instruction is needed, or the user performs it. Do not create a duplicate reviewer when one is already assigned; do not duplicate handoff through a repeated request. Label ordinary author verification separately as author checks, not independent review.
 
-## Пакет передачі
+<a id="пакет-передачі"></a>
+## Handoff package
 
-Мінімальний self-contained package у наявному evidence-місці:
+Minimum self-contained package in the existing evidence location:
 
-- task ID, author session ID, обраний маршрут/власник/reviewer reference та статус передачі `prepared/delivered/responded` у primary record;
-- точний repo/root, branch, resolved base commit, HEAD; явний file scope із tracked dirty та relevant untracked, SHA-256 поточних і базових bytes, точний diff;
-- acceptance та relevant contracts: точний шлях + SHA-256 + snapshot копія потрібного документа (або самодостатній витяг із provenance); не лише переказ автора;
-- evidence: команда/сценарій, exit code, PASS/FAIL/BLOCKED/NOT_TESTED/N/A, scope/revision, сирий artifact/hash, limitation; непрогнане не стає PASS;
-- constraints, non-goals, дозволи, ресурсні обмеження, unresolved decisions, наступний власник.
+- task ID, author session ID, selected route/owner/reviewer reference and delivery status `prepared/delivered/responded` in the primary record;
+- exact repo/root, branch, resolved base commit, HEAD; explicit file scope with tracked dirty and relevant untracked files, SHA-256 of current and baseline bytes, exact diff;
+- acceptance and relevant contracts: exact path + SHA-256 + snapshot copy of the required document (or a self-contained extract with provenance), not just the author's summary;
+- evidence: command/scenario, exit code, PASS/FAIL/BLOCKED/NOT_TESTED/N/A, scope/revision, raw artifact/hash, limitation; unrun checks do not become PASS;
+- constraints, non-goals, permissions, resource limits, unresolved decisions, next owner.
 
-Не копіюй .env/credentials/config secrets, transcript або повні нерелевантні логи. За неможливості безпечно передати джерело — назви відсутній доказ і BLOCKED залежний gate. Для external shared документації використовуй явні paths; для коду scope не розширюється автоматично.
+Do not copy .env/credentials/config secrets, transcripts or full irrelevant logs. If a source cannot be safely delivered, name the missing evidence and mark the dependent gate BLOCKED. Use explicit paths for external shared documentation; code scope does not expand automatically.
 
-Одна пара `package ID + призначений reviewer reference` має один handoff у чинному record. Повтор того самого пакета — NOOP, а не нове повідомлення чи spawn. Helper нічого не надсилає й не керує сесіями.
+One `package ID + assigned reviewer reference` pair has one handoff in the current record. Repeating the same package is NOOP, not another message or spawn. The helper sends nothing and does not manage sessions.
 
-## Контракт reviewer
+<a id="контракт-reviewer"></a>
+## Reviewer contract
 
-Reviewer працює незалежно: сам читає pinned acceptance/contracts, diff і source snapshots, звіряє живий root/snapshot до та після перевірки, оцінює достатність scope й relevant untracked. Summary автора — лише навігація. Read-only за замовчуванням: source/config/index не змінює. Локальний дозволений review artifact можна записати лише у визначене evidence-місце. Потреба тесту не дозволяє reset/seed/install або доступ до спільного стенда; спочатку узгодити операцію, власника, слот і side effects. Окремо позначити власні checks та прийняті pinned raw evidence автора.
+The reviewer works independently: reads pinned acceptance/contracts, diff and source snapshots themselves, checks the live root/snapshot before and after verification, and assesses scope sufficiency and relevant untracked files. The author's summary is navigation only. Read-only by default: no source/config/index changes. A permitted local review artifact may be written only to the designated evidence location. Needing a test does not authorize reset/seed/install or shared test-environment access; first agree on the operation, owner, slot and side effects. Distinguish the reviewer's own checks from accepted pinned raw author evidence.
 
-Кожен finding: `file:line`, конкретний наслідок, доказ/спосіб відтворення чи перевірки, blocking/nonblocking, confidence. Verdict: reviewer reference, package/snapshot ID, checked scope/axes, findings, checks/evidence й limitation. Відсутня/порожня/незавершена відповідь означає **review NOT_TESTED, required gate BLOCKED**. Автор не видає self-review за незалежний PASS. Структурна валідація helper не доводить незалежності людини/агента чи істинності її декларацій.
+Each finding: `file:line`, concrete consequence, evidence/reproduction or verification method, blocking/nonblocking, confidence. Verdict: reviewer reference, package/snapshot ID, checked scope/axes, findings, checks/evidence and limitation. Missing/empty/incomplete response means **review NOT_TESTED, required gate BLOCKED**. The author does not present self-review as independent PASS. Helper structural validation does not prove a person's/agent's independence or the truth of their declarations.
 
-## Зміни після review
+<a id="зміни-після-review"></a>
+## Changes after review
 
-PASS стосується тільки перевіреного snapshot/scope. Після виправлень сформуй final delta до reviewed snapshot; reviewer визначає зачеплені criteria/checks та дає verdict на фінальний package ID. Unchanged evidence можна явно прийняти, якщо inputs не змінилися. Не повторюй весь gate для нерелевантної правки, якщо локальний контракт цього не вимагає. Не перенось старий PASS на змінені acceptance/diff/untracked. Зміна base/HEAD потребує звірки provenance, а не автоматичного повтору всіх тестів. Розширений/звужений scope reviewer підтверджує окремо; нові релевантні файли мають бути включені.
+PASS applies only to the checked snapshot/scope. After fixes, produce a final delta from the reviewed snapshot; the reviewer identifies affected criteria/checks and gives a verdict on the final package ID. Unchanged evidence may be explicitly accepted if its inputs did not change. Do not repeat the entire gate for an irrelevant edit unless the local contract requires it. Do not carry old PASS onto changed acceptance/diff/untracked files. A base/HEAD change requires provenance reconciliation, not automatic repetition of every test. The reviewer separately confirms expanded/narrowed scope; new relevant files must be included.
 
-## Опційний stdlib helper
+<a id="опційний-stdlib-helper"></a>
+## Optional stdlib helper
 
-[review_package.py](../../runtime/review/review_package.py) працює на Git repo з HEAD, UTF-8 текстовими файлами: максимум 100 scope files, 1 MB/file, 8 MB унікальних blobs. Не запускає repo commands/tests/CLI/MCP; лише read-only Git queries. Немає install, network, dispatch, hooks або permission changes. Symlink paths, секретоподібні назви/вміст і конфігурації відхиляються; це defense in depth, не універсальний secret scanner. Використовуй canonical paths (на macOS `/private/...` замість symlink `/tmp` для fixture).
+[review_package.py](../../runtime/review/review_package.py) works on a Git repo with HEAD and UTF-8 text files: at most 100 scope files, 1 MB/file, 8 MB of unique blobs. It runs no repo commands/tests/CLI/MCP; only read-only Git queries. No install, network, dispatch, hooks or permission changes. Symlink paths, secret-like names/content and configurations are rejected; this is defense in depth, not a universal secret scanner. Use canonical paths (on macOS `/private/...` instead of symlink `/tmp` for a fixture).
 
 ```sh
 python3 "$KIT"/review/review_package.py route manifest.json
@@ -49,8 +55,8 @@ python3 "$KIT"/review/review_package.py assess /absolute/package-ID --response r
 python3 "$KIT"/review/review_package.py delta /absolute/old-ID /absolute/new-ID
 ```
 
-[Manifest приклад](../../examples/review/manifest.json) і [response приклад](../../examples/review/response.json) — форми, не готові approvals чи PASS. Заміни paths/IDs і declarations фактичними. Пакет містить `package.json` та `objects/<SHA256>`; відкрий diff blob і source/reference blobs за manifest. Metadata/package ID й кожен blob перевіряються при load; повтор capture незміненого scope — той самий ID/NOOP. Два проходи collection відхиляють спостережені конкурентні правки; вони не блокують writer після capture, тому freshness перевіряється повторно перед verdict/застосуванням. Snapshot — explicit file scope, не повний repo audit; ignored/out-of-scope файли не охоплено автоматично. Нерелевантні зміни поза scope не інвалідують його.
+The [manifest example](../../examples/review/manifest.json) and [response example](../../examples/review/response.json) are forms, not ready approvals or PASS. Replace paths/IDs and declarations with actual ones. The package contains `package.json` and `objects/<SHA256>`; open the diff blob and source/reference blobs through the manifest. Metadata/package ID and every blob are checked on load; repeated capture of unchanged scope yields the same ID/NOOP. Two collection passes reject observed concurrent edits; they do not lock the writer after capture, so recheck freshness before verdict/apply. A snapshot is explicit file scope, not a full repo audit; ignored/out-of-scope files are not automatically covered. Irrelevant changes outside scope do not invalidate it.
 
-`assess` перевіряє цілісність, current scope/reference/evidence hashes, маршрут, response identity/coverage та required check declarations. Це **структурний статус**, не створений інструментом review. Порожній response, missing evidence, чужий reviewer або stale package блокуються. Непідтримуваний формат — ручний еквівалент з тими самими полями й чесним NOT_TESTED, не встановлення нових tools.
+`assess` checks integrity, current scope/reference/evidence hashes, route, response identity/coverage and required check declarations. This is a **structural status**, not a tool-created review. Empty response, missing evidence, wrong reviewer or stale package are blocked. Unsupported format means a manual equivalent with the same fields and honest NOT_TESTED, not installing new tools.
 
-Тести: `python3 -B "$KIT"/review/test_review_package.py`; усі Git fixtures disposable. Живі чужі сесії/CLI/стенд не використовуються для симуляції.
+Tests: `python3 -B "$KIT"/review/test_review_package.py`; all Git fixtures are disposable. Other live sessions/CLI/test environments are not used for simulation.

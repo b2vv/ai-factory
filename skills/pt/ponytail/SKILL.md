@@ -1,15 +1,6 @@
 ---
 name: ponytail
-description: >
-  Режим лінивого сеньйора: змушує брати найпростіше рішення, яке справді працює.
-  Спершу питання, чи ця робота взагалі потрібна (YAGNI), тоді те, що вже є в кодовій
-  базі, тоді stdlib, тоді нативна можливість платформи, тоді вже встановлена
-  залежність — і лише потім власний код. Три рівні: lite, full (типовий), ultra.
-  Використовуйте на будь-якій задачі з кодом — писати, додавати, рефакторити, фіксити,
-  рев'ювити, вибирати бібліотеку чи залежність — або на тригери "ponytail", "be lazy",
-  "lazy mode", "yagni", "найпростіше рішення", "менше коду", "не переускладнюй",
-  а також коли скаржаться на over-engineering, boilerplate чи зайві залежності.
-  Не для некодових задач (проза, переклад, загальні знання, підсумки).
+description: "Lazy senior mode: requires the simplest solution that actually works. First ask whether this work is needed at all (YAGNI), then consider what already exists in the codebase, then stdlib, then a native platform capability, then an already installed dependency — and only then custom code. Three levels: lite, full (default), ultra. Use for any coding task — writing, adding, refactoring, fixing, reviewing, choosing a library or dependency — or on triggers \"ponytail\", \"be lazy\", \"lazy mode\", \"yagni\", or when the user asks for the simplest solution, less code or no overcomplication, or complains about over-engineering, boilerplate or unnecessary dependencies. Not for non-coding tasks (prose, translation, general knowledge, summaries). Ukrainian compatibility trigger aliases: \"найпростіше рішення\", \"менше коду\", \"не переускладнюй\"."
 argument-hint: "[lite|full|ultra]"
 license: MIT
 ---

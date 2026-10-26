@@ -1,123 +1,145 @@
 ---
 name: spec-flow
-description: Проводить значущу фічу через SDD-цикл — spec → гейт → plan → гейт → tasks → implement → verify — з durable-артефактами в репо; делегує гейти, тести й рев'ю профільним скілам. Використовуйте на новій підсистемі, новому слайсі, зміні публічного API чи крос-зрізовій зміні, або на тригери "spec-flow", "фіча за SDD", "заспецифікуй фічу".
+description: Takes a substantial feature through the SDD cycle — spec → gate → plan → gate → tasks → implement → verify — with durable repository artifacts; delegates gates, tests and review to specialist skills. Use for a new subsystem, new slice, public API change or cross-cutting change, or on triggers "spec-flow", "фіча за SDD", "заспецифікуй фічу" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-# spec-flow — тонкий SDD-оркестратор
+<a id="spec-flow--тонкий-sdd-оркестратор"></a>
 
-Метод spec-kit **без** офіційного тулу. Не переписує наявні скіли — **оркеструє** їх.
+# spec-flow — a thin SDD orchestrator
 
-**Тонкий** — провідне слово: кожну роль, для якої існує скіл, цей скіл делегує; власного
-в ньому лише послідовність і гейти. Роль, виконана тут інлайн замість делегування, —
-дублювання, яке розійдеться з оригіналом.
+The spec-kit method **without** the official tool. Does not rewrite existing skills — **orchestrates** them.
 
-Джерело правди — код + **маніфест репо** (`.claude/standards.md`,
-формат — `~/.agents/rules/repo-standards-manifest.md`). Маніфест дає все репо-специфічне:
-поріг, розміщення, гілки, дім артефактів, конституцію.
+**Thin** is the key word: it delegates every role for which a skill exists; it owns only
+sequence and gates. Performing a role inline here instead of delegating creates
+duplication that will diverge from the original.
 
-## 0. Прочитати маніфест
+Source of truth: code + **repository manifest** (`.claude/standards.md`,
+format: `~/.agents/rules/repo-standards-manifest.md`). The manifest supplies everything repository-specific:
+threshold, placement, branches, artifacts home, constitution.
 
-Першим ділом — `.claude/standards.md`. Немає → скажи це і збери його (формат у правилі вище);
-поки його немає, поріг і конституція нижче не мають значень, і це називається вголос.
+<a id="0-прочитати-маніфест"></a>
 
-**Поріг** береться з маніфесту (`## Поріг пайплайна`) — він структурний, а не на судження.
-Нижче порога цикл не вмикається: там легкий інлайн-план, і тертя пайплайна не окупиться.
+## 0. Read the manifest
+
+First: `.claude/standards.md`. If absent, say so and assemble it (format in the rule above);
+until it exists, the threshold and constitution below have no values, and this must be stated.
+
+The **threshold** comes from the manifest (`## Поріг пайплайна`, retained literal heading reference) — it is structural, not discretionary.
+Below the threshold the cycle does not activate: use a lightweight inline plan; pipeline friction would not pay off.
 
 ## 1. Setup
 
-1. Гілка й ціль PR — за `## Гілки й PR` маніфесту.
-2. Дім артефактів — за `## Артефакти`: сюди ляжуть `spec.md`, `plan.md`, `tasks.md`.
-3. **Жива нота** — план одразу, розвилки інкрементально (flush рано й часто). Persist-канал
-   і його fallback описані в `CLAUDE.local.md` репо; канал недоступний → веди живу ноту
-   в домі артефактів як `_wip-<topic>.md` і попередь користувача.
+1. Branch and PR target follow the manifest's `## Гілки й PR` (literal heading reference).
+2. Artifacts home follows `## Артефакти` (literal heading reference): `spec.md`, `plan.md`, `tasks.md` go here.
+3. **Live note** — plan immediately, decisions incrementally (flush early and often). The persistence channel
+   and its fallback are described in the repository's `CLAUDE.local.md`; if unavailable, maintain the live note
+   in the artifacts home as `_wip-<topic>.md` and warn the user.
 
-## 2. specify → `spec.md` (ЩО / ЧОМУ)
+<a id="2-specify--specmd-що--чому"></a>
 
-Секції: **Проблема** · **Користувацькі сценарії** · **Acceptance criteria** · **Out of scope** ·
-**Відкриті питання**. Лише намір — стек, файли й архітектура з'являться на кроці 4.
+## 2. specify → `spec.md` (WHAT / WHY)
 
-## 3. GATE 1 — спільне розуміння
+Sections: **Problem** · **User scenarios** · **Acceptance criteria** · **Out of scope** ·
+**Open questions**. Intent only — stack, files and architecture arrive at step 4.
 
-Делегуй `grilling` на `spec.md`. Перехід до плану — після підтвердження користувачем.
-Рішення фіксуй у живу ноту, не лише в чат.
+<a id="3-gate-1--спільне-розуміння"></a>
 
-## 4. plan → `plan.md` (ЯК)
+## 3. GATE 1 — shared understanding
 
-- **Розміщення** за `## Розміщення` маніфесту.
-- **Reuse-first**: звір із індексом переюзу репо (якщо є) і з код-графом. Перелічи, що
-  **переюзуємо**, що **нове**, і **чому** існуюче не підійшло.
-- **Сайд-ефекти · план міграції · rollback** — три обов'язкові підсекції. План без них
-  на GATE 2 не проходить.
-- Проведи **конституцію** з маніфесту (`## Конституція`).
-- Приймальні сценарії — делегуй `acceptance-spec`; таблиця лягає в `plan.md` **до** тасків.
-- `plan.md` **поглинає** план-секцію майбутнього звіту.
+Delegate `grilling` on `spec.md`. Move to the plan after user confirmation.
+Record decisions in the live note, not just in chat.
 
-## 5. GATE 2 — критика й захист
+<a id="4-plan--planmd-як"></a>
 
-Три перевірки, усі три обов'язкові (дві делеговані та одна інлайн):
+## 4. plan → `plan.md` (HOW)
 
-| Що | Кому | Червоний гейт, якщо |
+- **Placement** follows the manifest's `## Розміщення` (literal heading reference).
+- **Reuse-first**: check the repository's reuse index (if present) and code graph. List what
+  we **reuse**, what is **new**, and **why** existing options did not fit.
+- **Side effects · migration plan · rollback** — three mandatory subsections. A plan without them
+  does not pass GATE 2.
+- Apply the manifest's **constitution** (`## Конституція`, literal heading reference).
+- Acceptance scenarios: delegate `acceptance-spec`; the table goes in `plan.md` **before** tasks.
+- `plan.md` **absorbs** the future report's plan section.
+
+<a id="5-gate-2--критика-й-захист"></a>
+
+## 5. GATE 2 — critique and defense
+
+Three checks, all mandatory (two delegated and one inline):
+
+| What | Who | Red gate if |
 |---|---|---|
-| Критика плану | `plan-critique` | лишились відкриті blocking, або лінза не повернулась |
-| Захист плану | `plan-defense` | у таблиці 5 питань є незакритий рядок |
-| Конституція | інлайн, за маніфестом | будь-яке порушення |
+| Plan critique | `plan-critique` | open blocking findings remain, or a lens did not return |
+| Plan defense | `plan-defense` | the five-question table has an unclosed row |
+| Constitution | inline, per manifest | any violation |
 
-Вердикт по плану виносить **не той**, хто його писав — свіжий сабагент, чистий контекст
-(`~/.agents/rules/multi-model-roles.md` §3). Червоний гейт зупиняє перехід до тасків.
+The plan verdict comes from **someone other than its author** — a fresh subagent with clean context
+(`~/.agents/rules/multi-model-roles.md` §3). A red gate blocks progression to tasks.
 
 ## 6. tasks → `tasks.md` + `work/`
 
-Кожен таск: **атомарний**, з явними файлами, **верифіковний** (є критерій «готово»),
-у порядку залежностей, з посиланням на рядки приймальної таблиці, які він закриває.
-Незалежні познач `[P]`.
+Each task: **atomic**, with explicit files, **verifiable** (a “done” criterion exists),
+in dependency order, referencing the acceptance-table rows it covers.
+Mark independent ones `[P]`.
 
-**Задачі живуть у `work/`, а не в чаті.** Розкладку цього репо — імена тек і куди що переїжджає —
-дає `## Артефакти` маніфесту. Дві речі виконуй незалежно від імен:
+**Tasks live in `work/`, not chat.** This repository's layout — directory names and where items move —
+comes from the manifest's `## Артефакти` (literal heading reference). Do two things regardless of names:
 
-- Задача, що **почалась**, змінює стан явно: або переїздом у теку «в роботі», або статусом
-  у самому файлі, якщо окремої теки немає. Інакше «почато» від «не почато» не відрізнити.
-- Задача, що **закрилась**, переїздить в архів **вказівником** (що зроблено, яким PR/комітом,
-  де результат) — не копією і не видаленням. Видалена задача забирає слід рішення.
+- A task that **starts** changes state explicitly: either moves to an “in progress” directory or gets a status
+  in its file if no separate directory exists. Otherwise “started” and “not started” are indistinguishable.
+- A task that **closes** moves to the archive **as a pointer** (what was done, which PR/commit,
+  where the result is) — not a copy or deletion. Deleting a task removes the decision trail.
 
-Тасків більше кількох, або вони йдуть паралельно — веди durable ledger
+If there are more than a few tasks or they run in parallel, maintain a durable ledger
 (`~/.agents/rules/subagent-orchestration-ledger.md`).
 
-## 7. implement → делегувати `tdd`
+<a id="7-implement--делегувати-tdd"></a>
 
-Таск за таском, red-green-refactor. Оновлюй чекбокси в `tasks.md`. Розвилки → жива нота;
-кожен субагент пише у власний окремий робочий файл за `~/.agents/AGENTS.md`; координатор зводить результати й посилання в живу ноту. Паралельні субагенти не пишуть у спільний файл.
+## 7. implement → delegate `tdd`
 
-## 8. verify → делегувати `code-review`
+Task by task, red-green-refactor. Update checkboxes in `tasks.md`. Decisions → live note;
+each subagent writes its own separate working file under `~/.agents/AGENTS.md`; the coordinator consolidates results and links into the live note. Parallel subagents do not write to a shared file.
 
-На діф гілки. Мірник глобальний скіл візьме з маніфесту. Виправляй по одному, кожне —
-з тестом (`receiving-code-review`).
+<a id="8-verify--делегувати-code-review"></a>
 
-## 9. wrap → делегувати `ship-report`
+## 8. verify → delegate `code-review`
 
-Звіт — **дельта**: що реально сталось і чим це відрізняється від `plan.md`. Другий план у звіті
-не пишеться, план уже є.
+On the branch diff. The global skill takes its criteria from the manifest. Fix findings one at a time, each
+with a test (`receiving-code-review`).
+
+<a id="9-wrap--делегувати-ship-report"></a>
+
+## 9. wrap → delegate `ship-report`
+
+The report is a **delta**: what actually happened and how it differs from `plan.md`. Do not write a second plan
+in the report; the plan already exists.
 
 ---
 
-## Делегування — НЕ переписуємо
+<a id="делегування--не-переписуємо"></a>
 
-| Роль | Скіл |
+## Delegation — do NOT rewrite
+
+| Role | Skill |
 |---|---|
-| Гейт спільного розуміння | `grilling` |
-| Критика плану | `plan-critique` |
-| Захист плану | `plan-defense` |
-| Приймальні сценарії | `acceptance-spec` |
+| Shared-understanding gate | `grilling` |
+| Plan critique | `plan-critique` |
+| Plan defense | `plan-defense` |
+| Acceptance scenarios | `acceptance-spec` |
 | Implement | `tdd` |
 | Verify | `code-review` → `receiving-code-review` |
-| Звіт | `ship-report` |
+| Report | `ship-report` |
 
-Скіл недоступний → для ролі, що не вимагає незалежності, виконай доступну роботу інлайн і **познач у живій ноті**, що делегація не спрацювала. Для незалежного гейта інлайн-самоперевірка не замінює рев'ю: залучи доступного незалежного рев'юера за правилами ролей або познач гейт BLOCKED і не переходь далі.
-Мовчазна заміна робить цикл невідтворюваним: наступний прогін не знатиме, що один гейт був іншим.
+Skill unavailable → for a role that does not require independence, perform available work inline and **record in the live note** that delegation failed. For an independent gate, inline self-checking cannot replace review: engage an available independent reviewer under the role rules or mark the gate BLOCKED and do not proceed.
+Silent substitution makes the cycle irreproducible: the next run will not know one gate differed.
 
-## Завершення
+<a id="завершення"></a>
 
-- [ ] Поріг перевірено за маніфестом і названо, спрацював він чи ні.
-- [ ] `spec.md`, `plan.md`, `tasks.md` у домі артефактів.
-- [ ] Обидва гейти пройдені делегуванням; для кожного названо вердикт і хто його виносив.
-- [ ] Кожен таск закриває названі рядки приймальної таблиці.
-- [ ] Звіт існує і є дельтою до плану.
+## Completion
+
+- [ ] Check the threshold against the manifest and state whether it triggered.
+- [ ] `spec.md`, `plan.md`, `tasks.md` are in the artifacts home.
+- [ ] Both gates passed through delegation; state each verdict and its reviewer.
+- [ ] Each task covers named acceptance-table rows.
+- [ ] A report exists and is a delta from the plan.

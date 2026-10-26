@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/django.md",
+      "sha256": "a796265a41e2b2c161bd8cbb26fc9465e214d7b7ae005a1506c885f1dafda2ad",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/django-patterns/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/django-tdd/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/django-celery/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/fastapi.md",
+      "sha256": "1c1d08717cea77a31f81be71344baebdfbef8ae9787137e0d4770b2164b8e7c9",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/fastapi-patterns/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/laravel.md",
+      "sha256": "83a25b5889d5a6b3515ccd1e151d8f8558926978e342437e60c96617f926986e",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/laravel-patterns/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/laravel-tdd/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/react.md",
+      "sha256": "e09ad7fff8f6acf07d0025dc9faed6c49b5a5becc9a81d6b3d478c2613f2b4b0",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/react-testing/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/frontend-a11y/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/go.md",
+      "sha256": "b0db2d674402ecb99c260fc99f39dd1afac2a03fa2410d20e1cfa273c1c6d9fd",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/golang-testing/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/golang-patterns/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/index.md",
+      "sha256": "90df11938d6430f43f349dd529e90e650fa4fcecee325f558bbc00aac9859044",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/skill-host-compat/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/change-impact/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/php.md",
+      "sha256": "54f5860c99fdb53fd6814b02c35bff35a69582c4761abc1f19281f59e82c98b6",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "rules/php/patterns.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/python.md",
+      "sha256": "ad0fa778377b822bcad71e37f5ae5ed4cf077f2fd92acb0c6a03a940c4a43d14",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/python-testing/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/python-patterns/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/rust.md",
+      "sha256": "c76ef283d245ebd3e16cfd3f790046804885411424403d885459f492a7fa470b",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/rust-testing/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/rust-patterns/SKILL.md"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "agents/rust-reviewer.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/typescript.md",
+      "sha256": "8cca261c747670906d0b0e3967fd2ff6c37ef9c7c9a8b479a881d060f217e73c",
+      "origin_kind": "owner-authored",
+      "conceptual_sources": [
+        {
+          "project": "Cassiopeia",
+          "path": "docs/agent/32-typescript-style.md",
+          "observed_sha256": "6a7fbee293d543e82e440a05c47d0b092e23256c5b106c7586740c4b0ce4fa39",
+          "lines": "20–45",
+          "retained_local": "MVC/layout/service classes/library choices/ratchet commands; current accepted project rules prevail"
+        },
+        {
+          "repository": "https://github.com/affaan-m/ECC",
+          "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+          "path": "skills/contract-first/SKILL.md"
+        }
+      ],
+      "adaptation_notes": "Original review/test obligations, not copied source bodies or executable recipes. Known unsafe examples excluded; no native activation or runtime execution claim. Project-specific rules remain local."
+    }
+  ]
+}

@@ -1,26 +1,29 @@
 > Runtime examples below use `$KIT` as an explicitly selected absolute root of this release; `$PREVIOUS_RELEASE` is the immutable prior release when testing upgrades. This path update does not activate or change helper behavior.
 
-# Підключення AI Factory до іншого репозиторію
+<a id="підключення-ai-factory-до-іншого-репозиторію"></a>
+# Connecting AI Factory to another repository
 
-[Головний вхід](../docs/legacy/ai-factory-plan-entry.md) · [Lifecycle](feature-lifecycle.md) · [Джерела істини](workflow.md#source-of-truth)
+[Main entry](../docs/legacy/ai-factory-plan-entry.md) · [Lifecycle](feature-lifecycle.md) · [Sources of truth](workflow.md#source-of-truth)
 
-Мета — додати сумісний маршрут до наявного процесу та перевірити його на реальних для репо сценаріях. Це не гарантія відсутності всіх сюрпризів. Немає автоматичного rollout, installs, permissions, MCP registration/build, hooks, model defaults або зовнішнього запису. Зберігаються стек, архітектура й чинний tracker. Для нового репо відсутні contracts лишаються явно невизначеними; шаблон не вигадує їх.
+The goal is to add a compatible route to the existing process and verify it against scenarios real for the repository. This is not a guarantee against every surprise. There is no automatic rollout, installs, permissions, MCP registration/build, hooks, model defaults or external writing. Preserve the stack, architecture and existing tracker. For a new repository, missing contracts remain explicitly undefined; a template does not invent them.
 
-## Один стартовий запит
+<a id="один-стартовий-запит"></a>
+## One starting request
 
-> Підключи AI Factory до `<repo-root>` за `~/.agents/ai-factory/onboarding.md`: inventory → manifest → safe preflight → мінімальний additive adapter → acceptance report. Збережи наявні workflow, стек, ADR та required gates. Дозволено документаційний adapter і pointers у межах цього підключення; не змінюй продукт, config/hooks/permissions/models, не запускай installs/dev/CI/deploy/MCP refresh. Перед записом покажи diff, backup/hashguards; повторний запуск має бути NOOP для незміненого adapter. Неясні policy-рішення залиш BLOCKED із власником; заверши незалежним review та свіжим forward-test, відокремивши fixtures від runtime доказів.
+> Connect AI Factory to `<repo-root>` under `~/.agents/ai-factory/onboarding.md`: inventory → manifest → safe preflight → minimal additive adapter → acceptance report. Preserve existing workflow, stack, ADRs and required gates. A documentation adapter and pointers are authorized within this onboarding; do not change the product, config/hooks/permissions/models or run installs/dev/CI/deploy/MCP refresh. Before writing, show the diff, backup/hashguards; a repeat run must be NOOP for an unchanged adapter. Leave unclear policy decisions BLOCKED with an owner; finish with independent review and a fresh forward-test, distinguishing fixtures from runtime evidence.
 
-Якщо доручено лише аудит, adaptation не виконується. Якщо мінімальні зміни вже явно дозволені, не запитуй повторно дозвіл лише через перехід між цими фазами. Питання власнику потрібне для нової політики, невизначеного scope або реального approval-блокера.
+If only an audit was requested, do not perform adaptation. If minimal changes are already explicitly authorized, do not ask for permission again merely because of a transition between these phases. Ask the owner for new policy, undefined scope or a real approval blocker.
 
 ## Startup routing
 
-Перед inventory запиши маршрут потрібних critique/review/verification за [review-handoff](review-handoff.md#перед-початком-роботи): новий субагент чи наявна окрема сесія, owner/reference, поточна підстава вибору та передача. Невизначений вибір уточни до spawn/надсилання, не до безпечної розвідки. Незалежний reviewer отримує pinned package; повторний handoff не створює нового reviewer.
+Before inventory, record the required critique/review/verification route under [review-handoff](review-handoff.md#перед-початком-роботи): a new subagent or an existing separate session, owner/reference, current selection rationale and handoff. Clarify an undefined selection before spawn/send, not before safe investigation. The independent reviewer receives a pinned package; repeated handoff does not create a new reviewer.
 
-## Швидкий початок
+<a id="швидкий-початок"></a>
+## Quick start
 
-1. Обери точний root; read-only звір HEAD/status, ancestor/nested instructions у scope, чинні work/spec/ADR і власників. Не читай `.env`, credentials або config values. За кількох кандидатів з’ясуй root перед записом.
-2. Прочитай [repo-bootstrap](../skills/utils/repo-bootstrap/SKILL.md) у check-only режимі: Codex `$repo-bootstrap`, Claude `/repo-bootstrap`; якщо discovery не підтверджено — прочитай точний файл і назви це fallback. Існування symlink не доводить invocation.
-3. Підготуй manifest у робочій теці задачі з [прикладу](../examples/onboarding/manifest.json). Прибери неактуальні кандидати, вкажи фактичні відносні шляхи репо та лише потрібні скіли. Shared root передається аргументом, не зашитий у код. Запусти вже наявним Python 3.9+:
+1. Choose the exact root; read-only, verify HEAD/status, ancestor/nested instructions in scope, current work/spec/ADR and owners. Do not read `.env`, credentials or config values. With multiple candidates, resolve the root before writing.
+2. Read [repo-bootstrap](../skills/utils/repo-bootstrap/SKILL.md) in check-only mode: Codex `$repo-bootstrap`, Claude `/repo-bootstrap`; if discovery is unconfirmed, read the exact file and label this a fallback. Symlink existence does not prove invocation.
+3. Prepare the manifest in the task working directory from the [example](../examples/onboarding/manifest.json). Remove irrelevant candidates, specify actual repository-relative paths and only needed skills. The shared root is an argument, not hardcoded. Run using already available Python 3.9+:
 
 ```sh
 python3 /path/to/ai-factory/runtime/onboarding/preflight.py \
@@ -29,89 +32,94 @@ python3 /path/to/ai-factory/runtime/onboarding/preflight.py \
   --shared-skill-root /path/to/shared/skills
 ```
 
-Helper тільки читає явно перелічені файли; JSON результат — stdout. Він не запускає repo commands, MCP, hooks чи discovery. Без Python — ручний checklist, без автоматичної установки. Докладні обмеження й schema — [helper README](../docs/onboarding-helper.md).
+The helper only reads explicitly listed files; JSON result goes to stdout. It runs no repo commands, MCP, hooks or discovery. Without Python, use a manual checklist; no automatic installation. Detailed limits and schema: [helper README](../docs/onboarding-helper.md).
 
-4. Доповни інвентар ручним читанням: повноваження джерел, scripts/prehooks/prerequisites, side effects, semantic conflicts, доступність потрібного незалежного reviewer. Не називай відсутність конфліктів результатом helper: він бачить лише явно внесені `conflicts`.
-5. Заверши check-only фазу без записів у target repo; manifest/evidence лишаються у task workspace. В окремій, уже авторизованій adaptation-фазі підготуй additive adapter за [шаблоном](../templates/adapter-full.md). Existing workflow не замінюється; prewrite hashes/backups і обмежений список файлів захищають конкурентні зміни. У старих входах заміни лише суперечливі твердження/додай pointers; не нашаровуй взаємовиключні правила. Нові обов’язкові gates або їх послаблення мають названого власника й рішення.
-6. Незалежний reviewer читає diff і sources; свіжий контекст проходить сценарії нижче. Запиши scope, revision, результати/блокери й обмеження в наявний task record. Тільки тоді називай документальне підключення configured; runtime перевіряється окремо дозволеними діями.
+4. Supplement inventory with manual reading: source authority, scripts/prehooks/prerequisites, side effects, semantic conflicts, availability of the required independent reviewer. Do not call absence of conflicts a helper result: it sees only explicitly supplied `conflicts`.
+5. Finish the check-only phase without writing to the target repository; manifest/evidence remain in the task workspace. In a separate, already authorized adaptation phase, prepare an additive adapter from the [template](../templates/adapter-full.md). Do not replace existing workflow; prewrite hashes/backups and a bounded file list protect concurrent changes. In old entrypoints, replace only contradictory statements/add pointers; do not layer mutually exclusive rules. New mandatory gates or their relaxation need a named owner and decision.
+6. An independent reviewer reads the diff and sources; a fresh context walks through the scenarios below. Record scope, revision, results/blockers and limits in the existing task record. Only then call documentation onboarding configured; runtime is checked separately through authorized actions.
 
-7. Перед acceptance перевір Obsidian за [кроком синхронізації](#obsidian-sync): реальний shared target, актуальність і scope дозволу. Дозволена синхронізація або явно PENDING/fallback фіксується в тому самому report; symlink не є дозволом на запис.
+7. Before acceptance, check Obsidian under the [synchronization step](#obsidian-sync): real shared target, currency and authorization scope. Record authorized synchronization or explicit PENDING/fallback in the same report; a symlink is not write permission.
 
-## Checklist адаптації
+<a id="checklist-адаптації"></a>
+## Adaptation checklist
 
-Перед змінами звір [documentation hygiene matrix](documentation-hygiene.md): logical/physical entrypoints, README/standards, hook effects, local/CI/browser coverage, task/handoff та ADR currency. Це уточнення наявного інвентарю, без нового tracker або перенесення правил іншого продукту.
+Before changes, inspect the [documentation hygiene matrix](documentation-hygiene.md): logical/physical entrypoints, README/standards, hook effects, local/CI/browser coverage, task/handoff and ADR currency. This refines the existing inventory without a new tracker or transplanting another product's rules.
 
-- [ ] Root/HEAD/dirty scope; applicable instructions; архітектура/стек; місця tasks/spec/ADR/QA/archive визначені без міграції за замовчуванням.
-- [ ] Доручення/permissions обмежують scope. Acceptance/contracts/ADR нормативні; код/scripts описують фактичну поведінку. Конфлікт має обидва джерела, рішення власника або BLOCKED залежної роботи. Код не легалізує баг. Уже доручене виправлення до однозначного контракту не потребує нового рішення; воно потрібне лише для неясної/суперечливої норми або її зміни.
-- [ ] Один primary record для small: scope/acceptance, plan, append-only progress, verdict/evidence/next step. Незалежний review може бути окремим файлом. Для existing задач не зливати/видаляти артефакти автоматично. Full маршрут лише за ризиком/контрактом, resume — лише інвалідовані gates.
-- [ ] Скіли: точний локальний/shared файл, availability/discovery окремо, `$skill` Codex / `/skill` Claude або explicit read fallback. Один оркестратор; не запускати весь inventory.
-- [ ] Pattern applicability включає test helpers; entity E2E/scoped filters — matching/nonmatching і поверхні за acceptance; UI-copy оцінюється на layout/zoom/accessible names, open/active стани. Build не доводить UI.
-- [ ] Commands знайдені статично; side effects/prehooks/transitive calls оглянуті вручну. Зокрема reset/delete volumes/seed/drain queues/generate/start/install не є read-only probe. Назва `check` не гарантує безпечності.
-- [ ] Review справді незалежний; PASS має durable verdict. Helper/Coder/Reviewer — ролі, не автоматичні model bindings. Непідтверджені host/model/effort/budget лишаються unresolved; не міняти defaults.
-- [ ] MCP registration, tool availability і graph freshness/coverage окремі. Missing/stale/unknown → файловий fallback; optional CRG не блокує незалежну роботу. Не rebuild/мігрувати graph автоматично.
-- [ ] QA/landing/commit/push/deploy межі взято з репо; readiness не розширює доручення. Завершений ідентичний handoff не запускає роботу повторно.
+- [ ] Root/HEAD/dirty scope; applicable instructions; architecture/stack; task/spec/ADR/QA/archive locations identified without migration by default.
+- [ ] Request/permissions bound the scope. Acceptance/contracts/ADRs are normative; code/scripts describe actual behavior. A conflict has both sources, an owner decision or BLOCKED dependent work. Code does not legitimize a bug. An already requested fix to an unambiguous contract needs no new decision; one is needed only for an unclear/conflicting norm or a change to it.
+- [ ] One primary record for small: scope/acceptance, plan, append-only progress, verdict/evidence/next step. Independent review may be a separate file. Do not automatically merge/delete artifacts of existing tasks. Full route only by risk/contract; resume only invalidated gates.
+- [ ] Skills: exact local/shared file, availability/discovery separately, `$skill` Codex / `/skill` Claude or explicit read fallback. One orchestrator; do not run the entire inventory.
+- [ ] Pattern applicability includes test helpers; entity E2E/scoped filters include matching/nonmatching and surfaces according to acceptance; evaluate UI copy for layout/zoom/accessible names, open/active states. A build does not prove UI.
+- [ ] Commands found statically; side effects/prehooks/transitive calls inspected manually. In particular reset/delete volumes/seed/drain queues/generate/start/install are not read-only probes. The name `check` does not guarantee safety.
+- [ ] Review is genuinely independent; PASS has a durable verdict. Helper/Coder/Reviewer are roles, not automatic model bindings. Unconfirmed host/model/effort/budget stay unresolved; do not change defaults.
+- [ ] MCP registration, tool availability and graph freshness/coverage are separate. Missing/stale/unknown → file fallback; optional CRG does not block independent work. Do not rebuild/migrate a graph automatically.
+- [ ] QA/landing/commit/push/deploy boundaries come from the repository; readiness does not expand the request. A completed identical handoff does not rerun work.
 
 <a id="checks"></a>
 
-## Applicability перевірок
+<a id="applicability-перевірок"></a>
+## Check applicability
 
-Ця матриця допомагає обґрунтувати набір, але не скасовує явних локальних required gates. Для кожного: джерело вимоги → impact → команда/сценарій та side effects → verdict/evidence. Скорочення required gate лишається BLOCKED до конкретного рішення його власника; пропозиція має назвати економію та втрачений захист.
+This matrix helps justify the set but does not cancel explicit local required gates. For each: requirement source → impact → command/scenario and side effects → verdict/evidence. Reducing a required gate stays BLOCKED until a specific owner decision; the proposal must name the saving and lost protection.
 
-| Impact | Доречні перевірки | Що не можна припускати |
+| Impact | Appropriate checks | What must not be assumed |
 |---|---|---|
-| Docs/process/helper | Links, узгодженість контрактів, fixture/negative tests для helper, незалежний docs/behavior forward-review | Docs автоматично безризикові; fixtures доводять реальний host |
-| Test helper/callback | Targeted regression, type/lint/format за контрактом, pattern applicability | Small скасовує mandatory repo gates; RED/GREEN дорівнює mutation |
-| Product logic/API/dependency boundary | Affected tests/types, contract/schema/architecture checks; ширші builds/generations за залежностями або required gates | Локальний unit доводить всі backends/builds |
-| UI-copy/layout/control | Зачеплені локалі, wrapping/overflow/zoom, keyboard/accessibility за scope, open/active/error стани; фактичний render | Text-only автоматично design N/A; screenshot без перегляду достатній |
-| Entity flow/scoped filter | Приймальні сценарії для кожної заявленої surface/type, matching/nonmatching, persistence/read/update за scope | URL/controls/API самі доводять склад списку |
-| Mutation потрібна контрактом/ризиком | Окремий mutant, killed/survived результат, чинний diff та команда; відновлення дозволеного scope | Перший RED перед fix — mutation; збій sandbox дає право його обходити |
-| Resume без зміни inputs | Звірка completion/revision/evidence, повернути чинний результат | Новий handoff автоматично інвалідує все |
+| Docs/process/helper | Links, contract consistency, fixture/negative tests for the helper, independent docs/behavior forward-review | Docs are automatically risk-free; fixtures prove a real host |
+| Test helper/callback | Targeted regression, type/lint/format under the contract, pattern applicability | Small cancels mandatory repo gates; RED/GREEN equals mutation |
+| Product logic/API/dependency boundary | Affected tests/types, contract/schema/architecture checks; broader builds/generations by dependencies or required gates | A local unit test proves all backends/builds |
+| UI-copy/layout/control | Affected locales, wrapping/overflow/zoom, keyboard/accessibility by scope, open/active/error states; actual render | Text-only automatically makes design N/A; an uninspected screenshot is sufficient |
+| Entity flow/scoped filter | Acceptance scenarios for each claimed surface/type, matching/nonmatching, persistence/read/update by scope | URL/controls/API alone prove list contents |
+| Mutation required by contract/risk | Separate mutant, killed/survived result, current diff and command; restoration of authorized scope | The first RED before a fix is mutation; a sandbox failure grants permission to bypass it |
+| Resume without input changes | Check completion/revision/evidence and return the current result | A new handoff automatically invalidates everything |
 
-Execution failure: BLOCKED + точна причина або вже дозволений механізм виконання. Немає універсальної вимоги «поза sandbox». Старий PASS не переноситься на змінений scope; незмінний scope не потребує ритуального повтору всіх перевірок, якщо локальний contract не вимагає цього явно.
+Execution failure: BLOCKED + exact reason or an already authorized execution mechanism. There is no universal “outside sandbox” requirement. An old PASS does not carry over to changed scope; unchanged scope needs no ritual repetition of all checks unless the local contract explicitly requires it.
 
-## Рівні підтвердження
+<a id="рівні-підтвердження"></a>
+## Levels of confirmation
 
-| Рівень | Доказ |
+| Level | Evidence |
 |---|---|
-| detected | Файл/команда/опис знайдені; це не runtime availability |
-| configured | Adapter, pointers, ownership, paths і відсутність невирішених нормативних конфліктів перевірені; окремо позначити залишкові BLOCKED |
-| behavior-tested | Конкретний сценарій виконано на названому host/revision з результатом; fixture, native forward-test і Claude CLI runtime — різні види доказу |
-| BLOCKED | Потрібний компонент/рішення/доступ недоступний, названа залежна частина й наступний власник |
-| N/A | Можливість не потрібна цьому scope, є причина; недоступний required gate не N/A |
+| detected | File/command/description found; not runtime availability |
+| configured | Adapter, pointers, ownership, paths and absence of unresolved normative conflicts verified; separately mark remaining BLOCKED items |
+| behavior-tested | A specific scenario ran on a named host/revision with a result; fixture, native forward-test and Claude CLI runtime are different evidence types |
+| BLOCKED | Required component/decision/access unavailable, dependent part and next owner named |
+| N/A | Capability not needed for this scope, with a reason; an unavailable required gate is not N/A |
 
-Helper ніколи сам не підвищує detected до configured/behavior-tested. Manifest — input інвентарю, не сертифікат готовності; semantic conflicts, model bindings і actual diff impact потребують людини/агента.
+The helper never promotes detected to configured/behavior-tested itself. The manifest is inventory input, not a readiness certificate; semantic conflicts, model bindings and actual diff impact require a human/agent.
 
-## Перевірка перед повторним використанням
+<a id="перевірка-перед-повторним-використанням"></a>
+## Verification before reuse
 
-Ізольовані fixtures не змінюють репозиторії:
+Isolated fixtures do not change repositories:
 
 ```sh
 cd /path/to/ai-factory/onboarding
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_preflight.py
 ```
 
-Обов’язкова вибірка для свіжого контексту: clean new repo; existing partial rules; missing shared skill; нормативний контракт проти коду; stale/unavailable CRG; small test-helper; UI-copy зі зміною layout; повтор завершеного handoff. Negative cases: path traversal/symlink/secret input, malformed manifest, config-file ≠ tool availability, empty side-effect indicators ≠ safe command. Forward reviewer отримує запит і raw artifacts, без підказки очікуваного verdict.
+Required sample for a fresh context: clean new repo; existing partial rules; missing shared skill; normative contract versus code; stale/unavailable CRG; small test-helper; UI-copy affecting layout; repeat of completed handoff. Negative cases: path traversal/symlink/secret input, malformed manifest, config-file ≠ tool availability, empty side-effect indicators ≠ safe command. The forward reviewer receives the request and raw artifacts without a hint at the expected verdict.
 
-Міграція — мінімальний diff + список залишених правил/змінених правил/невирішених рішень, backups і hashguards за [протоколом повтору та restore](onboarding/change-protocol.md). Немає автоматичного rollout до інших проєктів. Реальні Claude/Codex discovery, hooks, MCP, model access, product gates і deploy не покриваються synthetic fixtures; їх перевіряють окремо за дорученням.
+Migration is a minimal diff + list of retained rules/changed rules/unresolved decisions, backups and hashguards under the [repeat and restore protocol](onboarding/change-protocol.md). No automatic rollout to other projects. Synthetic fixtures do not cover real Claude/Codex discovery, hooks, MCP, model access, product gates or deploy; check these separately when requested.
 
 ## Host-specific acceptance
 
-Для кожного заявленого host/session збережи окремо: (1) readable exact skill file, (2) discovery evidence з датою/джерелом, (3) native tool inventory, (4) invocation result або NOT_TESTED. Відсутність native list/load tool не спростовує вже підтверджений discovery. Перелік із попередньої сесії не гарантує поточний, але зберігається як dated evidence; не замінюй його твердженням «не встановлено».
+For each claimed host/session, retain separately: (1) readable exact skill file, (2) discovery evidence with date/source, (3) native tool inventory, (4) invocation result or NOT_TESTED. Absence of a native list/load tool does not disprove already confirmed discovery. An inventory from a previous session does not guarantee the current one but remains dated evidence; do not replace it with “not installed”.
 
-Required review має точний локальний/shared SKILL.md або задокументований локальний review-контракт і незалежного виконавця. Якщо native command не discovered — явно прочитати цей файл та його references; ті самі scope, pinned diff, acceptance і durable verdict. Відсутній незалежний виконавець/потрібний tool означає BLOCKED відповідного gate. Не створюй глобальний skill для repo-specific review. Helper підтримує SKILL.md route; інший локальний контракт перевіряється вручну й записується в acceptance, без вигаданого native invocation.
+Required review has an exact local/shared SKILL.md or documented local review contract and an independent executor. If the native command is not discovered, explicitly read that file and its references; retain the same scope, pinned diff, acceptance and durable verdict. Missing independent executor/required tool means BLOCKED for that gate. Do not create a global skill for repository-specific review. The helper supports a SKILL.md route; another local contract is checked manually and recorded in acceptance without inventing native invocation.
 
-Моделі: [provider-independent inventory](models.md); catalog лише цього host/session, entitlement та budget окремо. Немає каталогів → UNBOUND + конкретний next step, не встановлення або платний probe. Optional CRG: config/listing/live query/freshness — різні докази; файли/rg достатні для дозволеної незалежної роботи. Вже завершені proofs використовуються лише в їхньому pinned scope.
+Models: [provider-independent inventory](models.md); catalog only for this host/session, entitlement and budget separately. No catalog → UNBOUND + specific next step, not installation or a paid probe. Optional CRG: config/listing/live query/freshness are different evidence; files/rg suffice for authorized independent work. Reuse completed proofs only within their pinned scope.
 
-Фінальний результат заповнюється за [acceptance template](../templates/acceptance-full.md). Обов’язкові outputs: inventory+manifest, reviewed diff/receipt/backups, repeat NOOP або явно BLOCKED чужої зміни, незалежний verdict, свіжі сценарії, невирішені owner-рішення й наступна дія. Для partial repo не створюй відсутні tracker/ADR/CI, якщо вони не потрібні погодженому scope. Для нового minimal repo достатньо одного короткого входу/adapter і task record; стек не вигадується.
+Fill the final result using the [acceptance template](../templates/acceptance-full.md). Required outputs: inventory+manifest, reviewed diff/receipt/backups, repeat NOOP or explicit BLOCKED for a foreign change, independent verdict, fresh scenarios, unresolved owner decisions and next action. For a partial repository, do not create missing tracker/ADR/CI unless needed by the agreed scope. For a new minimal repository, one short entrypoint/adapter and task record suffice; do not invent a stack.
 
 <a id="obsidian-sync"></a>
 
-## Obsidian: перевірка та погоджена синхронізація
+<a id="obsidian-перевірка-та-погоджена-синхронізація"></a>
+## Obsidian: verification and agreed synchronization
 
-1. Якщо проєкт використовує Obsidian/Shared, знайди фактичний vault і resolved target його Shared-посилання. Перевір target кожного залученого vault; не виводь спільність із назви `4 - Shared`. Якщо target один, canonical нотатка теж одна. Без Obsidian у scope — N/A з причиною, без створення vault/інтеграції.
-2. Прочитай лише релевантну workflow/report-нотатку; порівняй з canonical джерелами й поточними результатами. Зафіксуй path, source/revision/date та актуальна/застаріла/відсутня. Наявність symlink або вчорашній sync не доводять актуальності сьогодні, live MCP чи дозволу на запис.
-3. Якщо поточне доручення вже дозволяє саме цю синхронізацію, виконай її без повторного запиту. Інакше залиш PENDING: точний target, запропонований мінімальний diff, причина й потрібний scope дозволу. За недоступного каналу — PENDING + repo/task fallback; незалежна дозволена робота триває. Не встановлюй tools/MCP, не змінюй permissions і не створюй automation.
-4. За дозволеного запису: canonical target, backup/prewrite hashes, reviewed diff; збережи сторонній текст, не копіюй усі нормативні правила. Онови огляд, pointers, окремі результати проєктів і чесні runtime межі. Той самий shared target записується один раз. Немає змін змісту — NOOP, без штучного нового timestamp/report. Конкурентна правка → BLOCKED запису, не overwrite.
-5. Перевір links і visibility через фактичні targets; запиши SYNCED/NOOP/PENDING/BLOCKED/N/A, evidence та fallback/наступну дію у [readiness](../templates/acceptance-full.md). Filesystem visibility ≠ перевірений Obsidian UI/MCP. Дозвіл на один sync не створює постійного дозволу на наступні записи. Якщо sync required у цьому дорученні й лишився pending — не називай весь scope завершеним.
+1. If the project uses Obsidian/Shared, find the actual vault and resolved target of its Shared link. Check the target of each involved vault; do not infer sharing from the name `4 - Shared`. If the target is the same, there is one canonical note too. No Obsidian in scope → N/A with a reason, without creating a vault/integration.
+2. Read only the relevant workflow/report note; compare with canonical sources and current results. Record path, source/revision/date and current/stale/missing. A symlink or yesterday's sync does not prove currency today, live MCP or write permission.
+3. If the current request already authorizes this exact synchronization, perform it without asking again. Otherwise leave PENDING: exact target, proposed minimal diff, reason and required authorization scope. If the channel is unavailable — PENDING + repo/task fallback; authorized independent work continues. Do not install tools/MCP, change permissions or create automation.
+4. For an authorized write: canonical target, backup/prewrite hashes, reviewed diff; preserve unrelated text, do not copy all normative rules. Update the overview, pointers, separate project results and honest runtime limits. Write the same shared target once. No content change → NOOP, without an artificial new timestamp/report. Concurrent edit → BLOCKED write, not overwrite.
+5. Verify links and visibility through actual targets; record SYNCED/NOOP/PENDING/BLOCKED/N/A, evidence and fallback/next action in [readiness](../templates/acceptance-full.md). Filesystem visibility ≠ verified Obsidian UI/MCP. Permission for one sync does not create ongoing permission for later writes. If sync is required by this request and remains pending, do not call the entire scope complete.
 
-Це окремий контрольований крок після repository adaptation, а не обов’язкова копія звіту в кожний vault. Канонічні contracts/ADR/evidence залишаються у своїх джерелах; Obsidian — огляд і посилання. Локальний report без цього кроку не видається за повне виконання `ship-report`.
+This is a separate controlled step after repository adaptation, not a mandatory copy of the report into every vault. Canonical contracts/ADRs/evidence stay in their sources; Obsidian is an overview and links. A local report without this step must not be presented as full completion of `ship-report`.

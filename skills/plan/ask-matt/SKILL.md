@@ -1,6 +1,6 @@
 ---
 name: ask-matt
-description: Підкаже, який скіл чи процес підходить до ситуації. Роутер по скілах цього репозиторію.
+description: "Suggests which skill or process fits the situation. A router for this repository's skills."
 disable-model-invocation: true
 ---
 

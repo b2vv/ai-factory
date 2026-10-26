@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: Сканує кодову базу на предмет можливостей поглиблення, показує їх у вигляді візуального HTML-звіту, а потім гриль-опитуванням проробляє обраний варіант.
+description: "Scans the codebase for deepening opportunities, presents them in a visual HTML report, then grills the selected option to work through it."
 disable-model-invocation: true
 ---
 

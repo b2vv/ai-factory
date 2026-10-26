@@ -1,6 +1,6 @@
 ---
 name: domain-modeling
-description: "Побудова та уточнення доменної моделі проєкту. Використовуйте, коли обговорюєте термінологію кодової бази, пишете чи редагуєте GLOSSARY.md, або фіксуєте чи редагуєте ADR."
+description: "Build and refine a project's domain model. Use when discussing codebase terminology, writing or editing GLOSSARY.md, or recording or editing an ADR."
 ---
 
 # Domain Modeling
