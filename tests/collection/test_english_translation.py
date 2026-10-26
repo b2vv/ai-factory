@@ -13,6 +13,11 @@ spec = importlib.util.spec_from_file_location('factory_verify_translation', MODU
 v = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(v)
 
+import os
+HISTORY_ROOT = Path(os.environ['AI_FACTORY_HISTORY_BASELINE'])
+v.configure_history(HISTORY_ROOT)
+history_literal = v.history_literal
+
 
 class BaselineTests(unittest.TestCase):
     def setUp(self):
@@ -48,7 +53,7 @@ class BaselineTests(unittest.TestCase):
             v.load_baseline(self.root)
 
     def test_missing_baseline_is_blocked(self):
-        result = v.verify(self.root, self.root/'absent')
+        result = v.verify_historical(self.root, self.root/'absent')
         self.assertEqual(result['status'], 'BLOCKED')
         self.assertNotEqual(result['status'], 'PASS')
 
@@ -73,59 +78,59 @@ class BaselineTests(unittest.TestCase):
 
 class DescriptionTests(unittest.TestCase):
     def test_description_only_allows_english_text(self):
-        old = '---\nname: x\ndescription: Опис\nlicense: MIT\n---\nbody\n'
-        new = old.replace('Опис', 'Description')
+        old = history_literal('tests', 8, '9bdeca7bed58dc2c6cc68fe9a9a7239f9f71cea0ddae98bd77b0ae1823c63669')
+        new = old.replace(history_literal('tests', 63, '2302145027357a89d84e69ce23892afc6a6e336a18e781e5e99662f23387ee18'), 'Description')
         self.assertEqual(v.description_parts(old), v.description_parts(new))
         self.assertNotEqual(v.description_parts(old), v.description_parts(new.replace('body','changed')))
         self.assertNotEqual(v.description_parts(old), v.description_parts(new.replace('MIT','Other')))
 
     def test_exact_alias_preserved(self):
-        old = '---\nname: x\ndescription: Use "менше коду"\n---\nBody\n'
-        new = '---\nname: x\ndescription: Use less code. Ukrainian compatibility alias "менше коду"\n---\nBody\n'
-        v.english_coverage(old, new, [{'text':'менше коду','reason':'Original user trigger'}])
+        old = history_literal('tests', 9, 'd0218e39008db1ceff1b89150233884b439a899bcf9b269323217196737daafe')
+        new = history_literal('tests', 10, '1ba2cfd2667acabdc9501c7e856911bacdd5ed5a6786ae21bbeb96b421246143')
+        v.english_coverage(old, new, [{'text':history_literal('tests', 640, 'f7cf45de51b1517dfba8aa57159485cab2c0579a528550ce2c15a05789afd617'),'reason':'Original user trigger'}])
         with self.assertRaisesRegex(ValueError, 'missing original trigger'):
-            v.english_coverage(old, new.replace('менше коду','less code'), [])
+            v.english_coverage(old, new.replace(history_literal('tests', 642, 'f7cf45de51b1517dfba8aa57159485cab2c0579a528550ce2c15a05789afd617'),'less code'), [])
 
     def test_no_blanket_cyrillic_prose_exception(self):
         with self.assertRaisesRegex(ValueError, 'unjustified'):
-            v.english_coverage('Залиш увесь текст.', 'Залиш увесь текст.',
-                               [{'text':'Залиш увесь текст.','reason':'ignore all'}])
+            v.english_coverage(history_literal('tests', 280, 'af48ca2d110cfc589a6dfd3c950c5e837f182a92419bcc1b20966103828fa114'), history_literal('tests', 281, 'af48ca2d110cfc589a6dfd3c950c5e837f182a92419bcc1b20966103828fa114'),
+                               [{'text':history_literal('tests', 861, 'af48ca2d110cfc589a6dfd3c950c5e837f182a92419bcc1b20966103828fa114'),'reason':'ignore all'}])
 
     def test_missing_translation_fails(self):
         with self.assertRaisesRegex(ValueError, 'undeclared Cyrillic'):
-            v.english_coverage('Опис', 'Опис', [])
+            v.english_coverage(history_literal('tests', 283, '2302145027357a89d84e69ce23892afc6a6e336a18e781e5e99662f23387ee18'), history_literal('tests', 284, '2302145027357a89d84e69ce23892afc6a6e336a18e781e5e99662f23387ee18'), [])
 
     def test_yaml_outer_quotes_are_not_trigger_aliases(self):
-        old = '---\nname: x\ndescription: "Перевіряє зміни."\n---\nBody\n'
-        v.english_coverage(old, old.replace('Перевіряє зміни.', 'Reviews changes.'), [])
+        old = history_literal('tests', 11, '0f217944d0b712250cbaa0b6a26e23084175f430450eb1a2d0b2e7e51c2f0b84')
+        v.english_coverage(old, old.replace(history_literal('tests', 285, 'b39e648607bfa54c5a28579c6c7fa3d7ec4f836abcd1707bb4721a4e1308af13'), 'Reviews changes.'), [])
         with self.assertRaisesRegex(ValueError, 'unjustified'):
-            v.english_coverage(old, old, [{'text':'Перевіряє зміни.','reason':'wrong outer-quote exemption'}])
+            v.english_coverage(old, old, [{'text':history_literal('tests', 865, 'b39e648607bfa54c5a28579c6c7fa3d7ec4f836abcd1707bb4721a4e1308af13'),'reason':'wrong outer-quote exemption'}])
 
     def test_descriptive_quote_is_not_mistaken_for_trigger(self):
-        old = '---\nname: x\ndescription: Опиши «як працює» або на тригери "приймальні критерії".\n---\nBody\n'
-        new = '---\nname: x\ndescription: Describe how it works; compatibility trigger "приймальні критерії".\n---\nBody\n'
-        v.english_coverage(old,new,[{'text':'приймальні критерії','reason':'Exact trigger'}])
+        old = history_literal('tests', 12, 'a3088fb5f24f4538f26f8dcdf9073a0df9b42f1e36024deaf61386ac4e99b46f')
+        new = history_literal('tests', 13, 'af19a6e1361a36e79a510c3ed103d35a8432f3926db16348a9977694018e70b9')
+        v.english_coverage(old,new,[{'text':history_literal('tests', 646, '26ec6a701185ee7b2aeb6dcc57500df38af335144ec7bc3f0e28ec545d5a83e4'),'reason':'Exact trigger'}])
         with self.assertRaisesRegex(ValueError,'missing original trigger'):
-            v.english_coverage(old,new.replace('приймальні критерії','acceptance'),[])
+            v.english_coverage(old,new.replace(history_literal('tests', 648, '26ec6a701185ee7b2aeb6dcc57500df38af335144ec7bc3f0e28ec545d5a83e4'),'acceptance'),[])
 
     def test_original_link_fragment_and_numbered_id_are_data(self):
-        old = '[next](review.md#перед-початком) Section 5а'
-        new = '[next](review.md#перед-початком) Historical section ID 5а'
-        literals = [{'text':'review.md#перед-початком','reason':'Original target'},
-                    {'text':'5а','reason':'Original section identifier'}]
+        old = history_literal('tests', 14, '40f8a8d218ac0b351fdcf5a33be54faf8033c43102288f05a3723f1b9686ee4e')
+        new = history_literal('tests', 15, 'eeda0349b2dd01ca56ec1117121ba9b8465998d12b37e9a8c426097834f8961d')
+        literals = [{'text':history_literal('tests', 291, '5509c528f792ce56c023826defb87605af0da5f71239ab12e8dc0042c848353c'),'reason':'Original target'},
+                    {'text':history_literal('tests', 295, 'dd93b3c3a804db3ec501d4c05dc4acbf3ae75dbbe0eaab0db149af2637e839f5'),'reason':'Original section identifier'}]
         v.english_coverage(old,new,literals)
         with self.assertRaisesRegex(ValueError,'unjustified'):
-            v.english_coverage(old,new+' довільна проза',literals+[{'text':'довільна проза','reason':'not data'}])
+            v.english_coverage(old,new+history_literal('tests', 650, '9b3171ba7b58f5181fbc7e407d757ac105640d59726d753c539f0a2baae15068'),literals+[{'text':history_literal('tests', 1022, 'ca1a40589d6367fd722e9873032ea6b583bef26720afdd0c66efe08f51299a52'),'reason':'not data'}])
 
     def test_fake_alias_cannot_be_added(self):
         with self.assertRaisesRegex(ValueError, 'unjustified'):
-            v.english_coverage('Use "менше коду"', 'Alias "інше"',
-                               [{'text':'інше','reason':'invented'}])
+            v.english_coverage(history_literal('tests', 299, '244ccc8a1f8f68467ebd5e2455153771c33dc67a614d257fc8b51b3f7d250b12'), history_literal('tests', 300, '5b885e8b7d9f0ee6b2ad741ce1b8c54b8c290c7aa9c8d2934f343b01ca996a4b'),
+                               [{'text':history_literal('tests', 869, '6186abda14a2a7534091602a5f6ee025cf237e105265dfcca15346574e8287d2'),'reason':'invented'}])
 
 
 class AnchorAndTokenTests(unittest.TestCase):
     def test_duplicate_heading_suffix_and_percent_encoded_fragment(self):
-        text = '# Test\n# Test\n<a id="огляд"></a>\n[second](#test-1)\n[old](#%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4)\n'
+        text = history_literal('tests', 16, 'ca1738a1bea1d0d9472c689a5a5f8335e99d3ec6be5ed156642422dfba361991')
         self.assertEqual(v.check_fragments('x.md', text, {'x.md':text.encode()}), [])
         broken = text.replace('#test-1)', '#test-2)')
         self.assertTrue(v.check_fragments('x.md', broken, {'x.md':broken.encode()}))
@@ -139,8 +144,8 @@ class AnchorAndTokenTests(unittest.TestCase):
         self.assertTrue(v.check_fragments('x.md', text, {'x.md':text.encode()}))
 
     def test_original_compatibility_anchor_permitted_but_not_arbitrary_text(self):
-        v.english_coverage('# Огляд\n', '<a id="огляд"></a>\n# Review\n',
-                           [{'text':'<a id="огляд"></a>','reason':'Original heading fragment'}])
+        v.english_coverage(history_literal('tests', 68, 'a879dce27422df5bcacec13465bbef721140743599032fd116e67769f8167684'), history_literal('tests', 69, '8aca012e0706db95bcf81108bff85af70050521415cb72864e99f62315351d83'),
+                           [{'text':history_literal('tests', 657, 'bb37d3d0b4af243fa8b14fa278483634a88c5691e4f1debf483f15b630b92ecd'),'reason':'Original heading fragment'}])
 
     def test_changed_command_id_url_detected(self):
         text = '`git status` https://example.test/x ' + 'a'*40
@@ -230,7 +235,7 @@ class HistoricalAndMetadataTests(unittest.TestCase):
             v.metadata_proof(before,data,allowed)
 
     def test_extended_cyrillic_is_not_coverage_bypass(self):
-        for char in ('\u2de0','\ua640','\u1c80'):
+        for char in (history_literal('tests', 83, '400b3bbbbdde3d5c0cc7477f1c813aacff5d24901d13a0871f6236be1448a10f'),history_literal('tests', 84, '92fb755743ca51d864314a1365a10229ce75fa34c3bfb4f3a6714c997b2c38d9'),history_literal('tests', 85, '963dd7d0b94ca78c4407f478d46e24737492d63a5ae890f68c7b9dc05635e918')):
             with self.subTest(char=char):
                 with self.assertRaisesRegex(ValueError,'Cyrillic'):
                     v.english_coverage('Original',char,[])
@@ -238,7 +243,7 @@ class HistoricalAndMetadataTests(unittest.TestCase):
 
 class RefusalBoundaryTests(unittest.TestCase):
     def test_only_plain_echo_display_text_translation_allowed(self):
-        old='```bash\necho "Привіт"\n```\n'
+        old=history_literal('tests', 23, '759fd23e8fddf691f876ee329cce9757badd38c3bf309dd6c2f861c197120490')
         v.machine_blocks_proof(old,'```bash\necho "Hello"\n```\n')
         for new in ['```bash\nrm -rf target\n```\n',
                     '```bash\necho "$(danger)"\n```\n',
@@ -247,8 +252,8 @@ class RefusalBoundaryTests(unittest.TestCase):
                 with self.assertRaises(ValueError): v.machine_blocks_proof(old,new)
 
     def test_json_machine_keys_and_enums_frozen_on_cyrillic_line(self):
-        old='```json\n{"label":"Приклад","state":"READY"}\n```\n'
-        for new in [old.replace('state','status'),old.replace('READY','BLOCKED'),old.replace('Приклад','Example')]:
+        old=history_literal('tests', 24, 'd8a6539b53236b177ccae918436553bfba39ad18a6a451ebde3c68f14f085470')
+        for new in [old.replace('state','status'),old.replace('READY','BLOCKED'),old.replace(history_literal('tests', 344, '81e4832cdd84e1f5dd193dc4ae9c384e932d07fcaff67b7f0b4720894ac1e60b'),'Example')]:
             with self.assertRaisesRegex(ValueError,'machine data'):
                 v.machine_blocks_proof(old,new)
 
@@ -270,7 +275,7 @@ class RefusalBoundaryTests(unittest.TestCase):
         self.assertEqual(v.headings(text),['visible'])
 
     def test_remaining_cyrillic_blocks_rejected(self):
-        for char in ('\ufe2e','\U0001e030'):
+        for char in (history_literal('tests', 96, '9770f13b69a46ef10814c733cd8590d6ce9a2100dad3d31dcdc284a1c6807617'),history_literal('tests', 97, 'c9172689221b5285e81cecdf0b27e6c9f764bad7cd31bdb4c60254328109b8ce')):
             with self.assertRaisesRegex(ValueError,'Cyrillic'):
                 v.english_coverage('old',char,[])
 
@@ -281,15 +286,15 @@ class CompleteVerificationTests(unittest.TestCase):
         import shutil
         self.temp=tempfile.TemporaryDirectory(); self.home=Path(self.temp.name)
         self.base=self.home/'baseline'; self.root=self.home/'current';self.base.mkdir();self.root.mkdir()
-        self.before={'doc.md':b'# \xd0\x9e\xd0\xb3\xd0\xbb\xd1\x8f\xd0\xb4\n[jump](#\xd0\xbe\xd0\xb3\xd0\xbb\xd1\x8f\xd0\xb4)\n```bash\necho "\xd0\x9f\xd1\x80\xd0\xb8\xd0\xb2\xd1\x96\xd1\x82"\n```\n',
-                     'history.md':'# Давній\nHistorical baseline.\n'.encode(),
+        self.before={'doc.md':history_literal('tests_bytes', 3, 'd96fc07f239fefd6d942fba48918c2866421c0da7f19c552110e81e073d0e1dd'),
+                     'history.md':history_literal('tests', 674, '766f4172759eca32d6876179fcf02fee33ee1a7366b43446591784bcbdff1324').encode(),
                      'frozen.py':b'VALUE = 1\n',
                      'LICENSE.txt':b'Original notice\n',
-                     'tests/unicode.py':'NAME = "огляд"\n'.encode(),
+                     'tests/unicode.py':history_literal('tests', 675, '5730bb0110ba0f89c0cc09321d244cf7082e762e85bf8350851b27829750741d').encode(),
                      'provenance/research-archive.json':b'{"files":{}}'}
         for i in range(74):
             self.before[f'skills/s{i}/SKILL.md']=f'---\nname: s{i}\ndescription: English\n---\nBody {i}\n'.encode()
-        self.skill='skills/s0/SKILL.md';self.before[self.skill]='---\nname: s0\ndescription: Опис\n---\nBody 0\n'.encode()
+        self.skill='skills/s0/SKILL.md';self.before[self.skill]=history_literal('tests', 349, 'a18d49f38dd82a4fc6ed4b52d051934672f6166572188dc07abc17ba98881a19').encode()
         self.guard='runtime/session-size-docker/guard.py'; oldguard,newguard=GuardTests().sources()
         self.before[self.guard]=oldguard.encode()
         for n in ('source-map.json','layout-migration.json','authorized-additions.json'):
@@ -297,11 +302,11 @@ class CompleteVerificationTests(unittest.TestCase):
         self.write(self.base,self.before);self.seal(self.base)
         self.pin=v.digest((self.base/'release-manifest.json').read_bytes())
         shutil.copytree(self.base,self.root,dirs_exist_ok=True)
-        self.changed={'doc.md':'<a id="огляд"></a>\n# Review\n[jump](#огляд)\n```bash\necho "Hello"\n```\n'.encode(),
-                      self.skill:self.before[self.skill].replace('Опис'.encode(),b'Description'),
+        self.changed={'doc.md':history_literal('tests', 679, '4aa1aebec0a84423a55e120a4cfbf7b29f1b81db954e69469773c5c747793436').encode(),
+                      self.skill:self.before[self.skill].replace(history_literal('tests', 891, '2302145027357a89d84e69ce23892afc6a6e336a18e781e5e99662f23387ee18').encode(),b'Description'),
                       self.guard:newguard.encode()}
         self.history='docs/translations/en/history.md'
-        self.changed[self.history]=(f'Historical translation of history.md; {v.digest(self.before["history.md"])}; {v.BASE_COMMIT}\n<a id="давній"></a>\n# Ancient\nHistorical baseline.\n').encode()
+        self.changed[self.history]=(f"Historical translation of history.md; {v.digest(self.before['history.md'])}; {v.BASE_COMMIT}{history_literal('tests', 682, '2d3f7fb660d7738e5ad404fdd4e624e17830975beac660c227d2003769634f37')}").encode()
         self.write(self.root,self.changed)
         self.allowed=[{'path':n,'operation':'modify','class':cls} for n,cls in
                       [('doc.md','current_docs'),(self.skill,'skills'),(self.guard,'guard_diagnostics_only')]]
@@ -312,8 +317,8 @@ class CompleteVerificationTests(unittest.TestCase):
         self.records=[]
         for row in self.allowed[:4]:
             n=row['path']; literals=[]
-            if n=='doc.md': literals=[{'text':'<a id="огляд"></a>','reason':'original heading'},{'text':'огляд','reason':'original fragment'}]
-            if n==self.history: literals=[{'text':'<a id="давній"></a>','reason':'original heading'}]
+            if n=='doc.md': literals=[{'text':history_literal('tests', 898, 'bb37d3d0b4af243fa8b14fa278483634a88c5691e4f1debf483f15b630b92ecd'),'reason':'original heading'},{'text':history_literal('tests', 902, '0e7777fe6175c42dc95b22c8b7037eb6560f3ba27ab5ee49b508eb8865b7336e'),'reason':'original fragment'}]
+            if n==self.history: literals=[{'text':history_literal('tests', 906, 'd1f5f54f14926a4a22e91beb98ee7e92d7f971a51ad519f17b94b3a9d66db014'),'reason':'original heading'}]
             rec={'path':n,'class':row['class'],'base_sha256':None if n==self.history else v.digest(self.before[n]),'sha256':v.digest((self.root/n).read_bytes()),'preserved_literals':literals}
             if n==self.history:rec.update(original='history.md',original_sha256=v.digest(self.before['history.md']))
             self.records.append(rec)
@@ -347,7 +352,7 @@ class CompleteVerificationTests(unittest.TestCase):
             self.save_records()
         self.seal(self.root)
 
-    def result(self):return v.verify(self.root,self.base)
+    def result(self):return v.verify_historical(self.root,self.base)
 
     def test_complete_valid_tree_pass_and_all_74_outcomes(self):
         result=self.result();self.assertEqual(result['status'],'PASS',result['issues']);self.assertEqual(len(result['skills']),74)
@@ -379,23 +384,23 @@ class CompleteVerificationTests(unittest.TestCase):
 
     def test_changed_command_and_hidden_anchor_refused_in_verify(self):
         raw=(self.root/'doc.md').read_text()
-        for changed in [raw.replace('echo "Hello"','rm -rf target'),raw.replace('<a id="огляд"></a>','```text\n<a id="огляд"></a>\n```')]:
+        for changed in [raw.replace('echo "Hello"','rm -rf target'),raw.replace(history_literal('tests', 393, 'bb37d3d0b4af243fa8b14fa278483634a88c5691e4f1debf483f15b630b92ecd'),history_literal('tests', 394, 'd36f6f03fdd1ad14c47d451f1396107e8ab55e1c5ce6f89952efe1764df4542e'))]:
             self.corrupt('doc.md',changed)
             self.assertEqual(self.result()['status'],'FAIL')
         self.corrupt('doc.md',raw)
 
     def test_multiline_hidden_anchor_refused_by_complete_verify(self):
         raw = (self.root/'doc.md').read_text()
-        self.corrupt('doc.md',raw.replace('<a id="огляд"></a>',
-                     'text `first\n<a id="огляд"></a>\nlast`'))
+        self.corrupt('doc.md',raw.replace(history_literal('tests', 397, 'bb37d3d0b4af243fa8b14fa278483634a88c5691e4f1debf483f15b630b92ecd'),
+                     history_literal('tests', 398, 'b4749131d105f591b65ac4fef8d511ee2ec7082835d137d77d3af5baf7b2296d')))
         result = self.result()
         self.assertEqual(result['status'],'FAIL')
         self.assertIn('lost heading compatibility anchor:doc.md',result['issues'])
 
     def test_code_removal_cannot_synthesize_anchor_in_complete_verify(self):
         raw = (self.root/'doc.md').read_text()
-        self.corrupt('doc.md',raw.replace('<a id="огляд"></a>',
-                     '<`code`a id="огляд"></a>'))
+        self.corrupt('doc.md',raw.replace(history_literal('tests', 401, 'bb37d3d0b4af243fa8b14fa278483634a88c5691e4f1debf483f15b630b92ecd'),
+                     history_literal('tests', 402, '555c9ebe8065f17a4978cfda4f27909f9a0390108a3dc4384e156038ad389fad')))
         result = self.result()
         self.assertEqual(result['status'],'FAIL')
         self.assertIn('lost heading compatibility anchor:doc.md',result['issues'])
@@ -453,15 +458,15 @@ class CompleteVerificationTests(unittest.TestCase):
     def test_anchor_full_verifier_composition_and_current_tree_guard(self):
         import difflib,copy
         old=(self.root/'doc.md').read_text()
-        current=old.replace('<a id="огляд"></a>\n','').replace('#огляд)','#review)')
+        current=old.replace(history_literal('tests', 724, '3ebc469282cb3edc2a32e0be9dab761a201e76b4d766130b9040b55b89b34d86'),'').replace(history_literal('tests', 149, 'df9096e26d8f23d09e1e8a955223d8aaec39bd02c5110c0a3d60d5a6d9a8d3a6'),'#review)')
         prior=copy.deepcopy(self.records[0]['preserved_literals'])
         contracts={}
         def install(text):
             hunks=[{'start':j1,'end':j2,'before':old[i1:i2],'after':text[j1:j2]}
                    for tag,i1,i2,j1,j2 in difflib.SequenceMatcher(a=old,b=text,autojunk=False).get_opcodes() if tag!='equal']
             row={'path':'doc.md','pre_anchor_sha256':v.digest(old.encode()),'current_sha256':v.digest(text.encode()),
-                 'removed_ids':[{'old_id':'огляд','new_id':'review','binding':'Review'}],
-                 'changed_targets':[{'old_target':'#огляд','new_target':'#review','count':1}],
+                 'removed_ids':[{'old_id':history_literal('tests', 925, '0e7777fe6175c42dc95b22c8b7037eb6560f3ba27ab5ee49b508eb8865b7336e'),'new_id':'review','binding':'Review'}],
+                 'changed_targets':[{'old_target':history_literal('tests', 931, '1d18a628554bf375fd7f873f9805d8c3179f83eae140cd01f7d653296d8ab503'),'new_target':'#review','count':1}],
                  'banner_changes':[],'hunks':hunks,
                  'removed_preserved_literals':[{'index':i,'record':r} for i,r in enumerate(prior)],
                  'pre_literals_sha256':v.canonical_records_digest(prior),'current_literals_sha256':v.canonical_records_digest([])}
@@ -491,15 +496,15 @@ class CompleteVerificationTests(unittest.TestCase):
     def test_anchor_declared_literal_in_body_passes_but_native_heading_fails(self):
         import difflib,copy
         old=(self.root/'doc.md').read_text();prior=copy.deepcopy(self.records[0]['preserved_literals'])
-        current=old.replace('<a id="огляд"></a>\n','').replace('#огляд)','#review)')
+        current=old.replace(history_literal('tests', 739, '3ebc469282cb3edc2a32e0be9dab761a201e76b4d766130b9040b55b89b34d86'),'').replace(history_literal('tests', 151, 'df9096e26d8f23d09e1e8a955223d8aaec39bd02c5110c0a3d60d5a6d9a8d3a6'),'#review)')
         contracts={}
         def install(text):
             hunks=[{'start':j1,'end':j2,'before':old[i1:i2],'after':text[j1:j2]}
                    for tag,i1,i2,j1,j2 in difflib.SequenceMatcher(a=old,b=text,autojunk=False).get_opcodes() if tag!='equal']
             retained=[prior[1]]  # The exact original literal survives as body data.
             row={'path':'doc.md','pre_anchor_sha256':v.digest(old.encode()),'current_sha256':v.digest(text.encode()),
-                 'removed_ids':[{'old_id':'огляд','new_id':'review','binding':'Review'}],
-                 'changed_targets':[{'old_target':'#огляд','new_target':'#review','count':1}],
+                 'removed_ids':[{'old_id':history_literal('tests', 940, '0e7777fe6175c42dc95b22c8b7037eb6560f3ba27ab5ee49b508eb8865b7336e'),'new_id':'review','binding':'Review'}],
+                 'changed_targets':[{'old_target':history_literal('tests', 946, '1d18a628554bf375fd7f873f9805d8c3179f83eae140cd01f7d653296d8ab503'),'new_target':'#review','count':1}],
                  'banner_changes':[],'heading_changes':[],'hunks':hunks,
                  'removed_preserved_literals':[{'index':0,'record':prior[0]}],
                  'pre_literals_sha256':v.canonical_records_digest(prior),'current_literals_sha256':v.canonical_records_digest(retained)}
@@ -511,9 +516,9 @@ class CompleteVerificationTests(unittest.TestCase):
             (self.root/'provenance/english-translations.json').write_text(json.dumps(provenance));self.seal(self.root)
         excluded=[n for n in self.before if n.endswith('.md') and n!='doc.md']+[self.history]
         with patch.object(v,'ANCHOR_FILES',contracts),patch.object(v,'MAINTAINED_MARKDOWN',['doc.md']),patch.object(v,'ANCHOR_EXCLUDED_MARKDOWN',excluded):
-            install(current+'\nOriginal fragment literal: `огляд`\n')
+            install(current+history_literal('tests', 746, 'd3bd347a85eb079f764b45799c517f46f238fb7cc4aacf8f4020be9a8e538c0e'))
             self.assertEqual(self.result()['status'],'PASS',self.result()['issues'])
-            install(current+'\n## Example `огляд`\n')
+            install(current+history_literal('tests', 749, '6f02f156e371f3336ac6a72fe3a2a1a3bd647258cee902b987614fa4dec0d8e6'))
             # Pins, inverse, current declared literals and payload all agree; only
             # the current navigation location changes this permitted data to an ID.
             self.assertEqual(self.result()['status'],'FAIL')
@@ -523,11 +528,11 @@ class CompleteVerificationTests(unittest.TestCase):
         args=['verify_translation','--root',str(self.root),'--baseline',str(self.base)]
         stream=io.StringIO()
         with patch('sys.argv',args),contextlib.redirect_stdout(stream):
-            self.assertEqual(v.main(),0)
+            self.assertEqual(v.historical_main(),0)
         self.assertEqual(json.loads(stream.getvalue())['status'],'PASS')
         self.corrupt('frozen.py','changed');stream=io.StringIO()
         with patch('sys.argv',args),contextlib.redirect_stdout(stream):
-            self.assertEqual(v.main(),1)
+            self.assertEqual(v.historical_main(),1)
         self.assertEqual(json.loads(stream.getvalue())['status'],'FAIL')
 
 
@@ -549,7 +554,7 @@ Each mutant disables one enforcement statement without changing fixtures or expe
 
     def test_cleanup_enforcement_has_attributable_full_tree_mutation_kill(self):
         import inspect
-        source=inspect.getsource(v.verify);original=v.verify
+        source=inspect.getsource(v.verify_historical);original=v.verify_historical
         statement='structural_data = cleanup_content_proof(before, anchor_restored)'
         self.assertEqual(source.count(statement),1)
         mutant=source.replace(statement,'structural_data = dict(data)')
@@ -560,11 +565,11 @@ Each mutant disables one enforcement statement without changing fixtures or expe
             self.assertGreater(len(result.failures),0,'SURVIVED: cleanup enforcement')
             self.assertEqual(result.errors,[],'Mutation must fail a mapped assertion, not crash')
         finally:
-            v.verify=original
+            v.verify_historical=original
 
     def test_anchor_full_tree_enforcement_has_attributable_mutation_kills(self):
         import inspect
-        source=inspect.getsource(v.verify);original=v.verify
+        source=inspect.getsource(v.verify_historical);original=v.verify_historical
         cases=[('anchor_restored = anchor_content_proof(data)','anchor_restored = dict(data)'),
                ('current_tree_navigation_proof(data)','pass  # disabled current navigation'),
                ('restored_literals = anchor_provenance_proof(data, provenance)','restored_literals = {}')]
@@ -578,7 +583,7 @@ Each mutant disables one enforcement statement without changing fixtures or expe
                     self.assertGreater(len(result.failures),0,'SURVIVED: '+statement)
                     self.assertEqual(result.errors,[],'Mutation must fail a mapped assertion, not crash')
                 finally:
-                    v.verify=original
+                    v.verify_historical=original
 
     def test_current_ID_policy_and_resolution_have_independent_full_tree_mutation_kills(self):
         import inspect
@@ -602,7 +607,7 @@ Each mutant disables one enforcement statement without changing fixtures or expe
 
     def test_full_tree_guards_have_attributable_mutation_kills(self):
         import inspect
-        source=inspect.getsource(v.verify); original=v.verify
+        source=inspect.getsource(v.verify_historical); original=v.verify_historical
         for statement,test_name in self.CASES:
             with self.subTest(statement=statement):
                 self.assertEqual(source.count(statement),1)
@@ -615,7 +620,7 @@ Each mutant disables one enforcement statement without changing fixtures or expe
                                        'SURVIVED: '+statement+'; errors='+repr(result.errors))
                     self.assertEqual(result.errors,[], 'Mutation must fail the intended assertion, not crash')
                 finally:
-                    v.verify=original
+                    v.verify_historical=original
 
 
 
@@ -629,64 +634,64 @@ class RealTreeRegressionTests(unittest.TestCase):
                                  '[x](../../projects/a.md)', '[x](../../../../../projects/b.md)')
 
     def test_inline_shell_comments_do_not_authorize_command_changes(self):
-        old = '```bash\npip install package  # встановлення\n```\n'
-        v.machine_blocks_proof(old,old.replace('встановлення','installation'))
-        for candidate in (old.replace('pip install','pip uninstall').replace('встановлення','installation'),
-                          old.replace('package','other').replace('встановлення','installation')):
+        old = history_literal('tests', 31, '990e2a19dbbc0ddf6a7168bdbed972941741e540920a42c01210e80dbeba6931')
+        v.machine_blocks_proof(old,old.replace(history_literal('tests', 509, '521d83be9304146af0ad4c4aa5bfe97203ea8b0b58c58a8962561cb0426302a5'),'installation'))
+        for candidate in (old.replace('pip install','pip uninstall').replace(history_literal('tests', 511, '521d83be9304146af0ad4c4aa5bfe97203ea8b0b58c58a8962561cb0426302a5'),'installation'),
+                          old.replace('package','other').replace(history_literal('tests', 513, '521d83be9304146af0ad4c4aa5bfe97203ea8b0b58c58a8962561cb0426302a5'),'installation')):
             with self.assertRaises(ValueError): v.machine_blocks_proof(old,candidate)
         with self.assertRaises(ValueError):
-            v.machine_blocks_proof('```bash\nrun "# дані"\n```','```bash\nrun "# data"\n```')
+            v.machine_blocks_proof(history_literal('tests', 515, 'a479821d5041afe75e415e2e5b198d3fb319e1dcb5b0818a6c5b83fcbfcecdf3'),'```bash\nrun "# data"\n```')
 
     def test_exact_skill_example_description_not_yaml_machine_values(self):
-        old = '```yaml\n  ---\n  name: skill-name\n  description: Опис\n  ---\n```\n'
-        new = old.replace('Опис','Description')
+        old = history_literal('tests', 32, 'f31fbadf013c90436c5b16bc0a8fd34be9c51536f4cfe190b50875ab022eb248')
+        new = old.replace(history_literal('tests', 179, '2302145027357a89d84e69ce23892afc6a6e336a18e781e5e99662f23387ee18'),'Description')
         v.machine_blocks_proof(old,new)
         for candidate in (new.replace('skill-name','other'), new.replace('description:','permission:')):
             with self.assertRaises(ValueError): v.machine_blocks_proof(old,candidate)
         with self.assertRaises(ValueError):
-            v.machine_blocks_proof('```yaml\nmode: опис\n```','```yaml\nmode: description\n```')
+            v.machine_blocks_proof(history_literal('tests', 521, 'a93bf39a33f312158a888cb7999f85e8a20a27c6ec3233528c13d92e7975e7bd'),'```yaml\nmode: description\n```')
 
     def test_single_quoted_description_not_blanket_exception(self):
-        old = "---\nname: x\ndescription: 'Перевіряє інтерфейс.'\n---\nBody\n"
-        v.english_coverage(old,old.replace('Перевіряє інтерфейс.','Reviews the interface.'),[])
+        old = history_literal('tests', 33, 'c2d1e86a287f84ca6c01c8132387c78c5360e6094afa39eff862ca9ca690dbdc')
+        v.english_coverage(old,old.replace(history_literal('tests', 523, '8413daa02ff81043c045cef0e164bbafe9dce72b7755aff1b3095db088a5c6bf'),'Reviews the interface.'),[])
         with self.assertRaisesRegex(ValueError,'unjustified'):
-            v.english_coverage(old,old,[{'text':'Перевіряє інтерфейс.','reason':'not an alias'}])
+            v.english_coverage(old,old,[{'text':history_literal('tests', 965, '8413daa02ff81043c045cef0e164bbafe9dce72b7755aff1b3095db088a5c6bf'),'reason':'not an alias'}])
 
     def test_post_trigger_explanation_is_translatable(self):
-        old = '---\nname: x\ndescription: >\n  Коли питають "покажи ефект", або на тригер\n  /gain. Ніколи не рахує «економію».\n---\nBody\n'
-        new = '---\nname: x\ndescription: Show effect; alias "покажи ефект"; /gain. Never infer savings.\n---\nBody\n'
-        v.english_coverage(old,new,[{'text':'покажи ефект','reason':'Exact request'}])
+        old = history_literal('tests', 34, '46897f329877130f44feed5b8b35645cbd7b2e9736e072979b941e149eebb657')
+        new = history_literal('tests', 35, '6b6c3e5335cc664451d0182ac4eb033a6fc02182696d5ecfbe600da3a65ad5a3')
+        v.english_coverage(old,new,[{'text':history_literal('tests', 756, 'aee34723603ca53981c1f3ed6daba6978a2d2b37654de70f7559a2f93a347d33'),'reason':'Exact request'}])
         with self.assertRaisesRegex(ValueError,'missing original trigger'):
-            v.english_coverage(old,new.replace('покажи ефект','show effect'),[])
+            v.english_coverage(old,new.replace(history_literal('tests', 758, 'aee34723603ca53981c1f3ed6daba6978a2d2b37654de70f7559a2f93a347d33'),'show effect'),[])
 
     def test_protocol_labels_and_code_placeholders_are_source_bound(self):
-        old = '- ФАКТ: відомості\n`<дім артефактів>/_agent-<роль>.md`'
-        new = '- ФАКТ: facts\nArtifact root: <дім артефактів>'
-        v.english_coverage(old,new,[{'text':'ФАКТ:','reason':'Protocol label'},
-                                   {'text':'<дім артефактів>','reason':'Original placeholder'}])
+        old = history_literal('tests', 36, '667e3e247486d8b4fe51df1624c3365696a74344d0bbaf1ca9594118a7c569ec')
+        new = history_literal('tests', 37, '9dcb3bdf45ba2c392417d2e2515dc887eb772389f2a121310ad8b4896445e600')
+        v.english_coverage(old,new,[{'text':history_literal('tests', 762, '96f9fca509ce98dad38e27d94072b635e9bf28bf5e9643a63e771fdcf2ccd360'),'reason':'Protocol label'},
+                                   {'text':history_literal('tests', 766, '6c5834150edf780473fd93989bc206b8455aad7f395710ad91b49d88da2cfb03'),'reason':'Original placeholder'}])
         with self.assertRaisesRegex(ValueError,'unjustified'):
-            v.english_coverage('довільний текст','довільний текст',
-                               [{'text':'довільний текст','reason':'not protocol data'}])
+            v.english_coverage(history_literal('tests', 528, '51e0fc44b8977482bc7a5f87c78a661cf0ae4616315de018c0da3da1f016aba4'),history_literal('tests', 529, '51e0fc44b8977482bc7a5f87c78a661cf0ae4616315de018c0da3da1f016aba4'),
+                               [{'text':history_literal('tests', 969, '51e0fc44b8977482bc7a5f87c78a661cf0ae4616315de018c0da3da1f016aba4'),'reason':'not protocol data'}])
 
     def test_cyrillic_angle_placeholder_is_not_html_tag(self):
-        self.assertEqual(v.headings('### Знахідка: <коротка назва>'), ['знахідка-коротка-назва'])
+        self.assertEqual(v.headings(history_literal('tests', 530, '8e76c750b7f201518b4302a99ab4c4d0ba2bc96ecc4804773e69bd0eb346fb46')), [history_literal('tests', 531, '97f2b2534d48ecc5628f54cb09c66a17e5c05a339e23112eba46e218c2154aa4')])
         self.assertEqual(v.headings('### Finding <span>title</span>'), ['finding-title'])
 
 
 class FrontmatterIdentifierTests(unittest.TestCase):
     def test_original_key_is_data_but_value_is_not(self):
-        old = '---\nрозкладка: локальна структура\n---\nBody'
-        new = '---\nрозкладка: local layout\n---\nBody'
-        v.english_coverage(old,new,[{'text':'розкладка','reason':'Original frontmatter key'}])
+        old = history_literal('tests', 38, '51df1abb0f253e2c41c8b57521860dc9afbc4b177f3dcbb23d45ecc349dfcc4d')
+        new = history_literal('tests', 39, 'f2c07dbbaaeab54091624e2d38b8ae10c2b04413b75f66d9415ca622e44b2366')
+        v.english_coverage(old,new,[{'text':history_literal('tests', 770, '037fabde956282bdb2f32d739acd593efc9f5863ac0ceb4d3db782f6fa040765'),'reason':'Original frontmatter key'}])
         with self.assertRaisesRegex(ValueError,'unjustified'):
-            v.english_coverage(old,old,[{'text':'розкладка','reason':'Key'},
-                                       {'text':'локальна структура','reason':'Not a key'}])
+            v.english_coverage(old,old,[{'text':history_literal('tests', 973, '037fabde956282bdb2f32d739acd593efc9f5863ac0ceb4d3db782f6fa040765'),'reason':'Key'},
+                                       {'text':history_literal('tests', 977, '3356a1c06695574179c1c3f321d477d0b418e74941e66ec0d7a1a2352f3e06af'),'reason':'Not a key'}])
         with self.assertRaisesRegex(ValueError,'unjustified'):
-            v.english_coverage(old,new.replace('розкладка','нова'),
-                               [{'text':'нова','reason':'Invented key'}])
+            v.english_coverage(old,new.replace(history_literal('tests', 772, '037fabde956282bdb2f32d739acd593efc9f5863ac0ceb4d3db782f6fa040765'),history_literal('tests', 773, '1fa1af3ae83aebacc171be622a64d17909fae4fafbd9551c694db34d5e4c3faf')),
+                               [{'text':history_literal('tests', 981, '1fa1af3ae83aebacc171be622a64d17909fae4fafbd9551c694db34d5e4c3faf'),'reason':'Invented key'}])
 
     def test_first_protocol_slash_label_is_supported(self):
-        old = 'ФАКТ / РІШЕННЯ / ДАЛІ / ПИТАННЯ'
+        old = history_literal('tests', 40, 'd61ee57fb0e2fd2de47a82413c362565c7c18091e1af5116f1a126b710e6d782')
         v.english_coverage(old,old,[{'text':x,'reason':'Original protocol label'}
                                    for x in old.split(' / ')])
 
@@ -728,7 +733,7 @@ class MultilineInlineCodeTests(unittest.TestCase):
 class CleanupProofTests(unittest.TestCase):
     """Exact reviewed cleanup is an additional proof, never a legacy-test replacement."""
     def current_content(self):
-        root = MODULE.parents[1]
+        root = HISTORY_ROOT
         return {n:(v.restore_anchor(n,(root/n).read_bytes()) if n in v.ANCHOR_FILES else (root/n).read_bytes())
                 for n in v.CLEANUP_FILES}
 
@@ -873,7 +878,7 @@ class CleanupProofTests(unittest.TestCase):
 
 class AnchorNavigationTests(unittest.TestCase):
     def test_native_heading_code_literals_are_real_IDs(self):
-        for heading in ['## `Мірник`','## ` /команда ` — English label','## Cyrillic `слово`']:
+        for heading in [history_literal('tests', 206, '681331f68e715882ea8cb0a9022658763d9081ed7c227bc0a4660b3e23286bfd'),history_literal('tests', 207, '34aec7eefe59b3dc857c1c6e8ea2e5ef3506eb6f3d837d851f1ee935322fad2d'),history_literal('tests', 208, 'af870719ce86b8c33d871c0d9a702f14d040928aa54d472d06e156ba414ae882')]:
             with self.subTest(heading=heading),self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
                 v.current_navigation(heading)
         self.assertIn('english-heading',v.current_navigation('## English heading')[0])
@@ -883,17 +888,17 @@ class AnchorNavigationTests(unittest.TestCase):
         self.assertIn('finding',v.current_navigation('### Finding: <short name>')[0])
 
     def test_raw_entity_and_percent_encoded_IDs_refused(self):
-        for value in ['огляд','&#1086;&#1075;&#1083;&#1103;&#1076;','%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4']:
+        for value in [history_literal('tests', 211, '0e7777fe6175c42dc95b22c8b7037eb6560f3ba27ab5ee49b508eb8865b7336e'),history_literal('tests', 212, '2c7c805d7a141cd9210f8aef69f8ae2e442742ede6c0f1e4d36b44b691dab6fe'),history_literal('tests', 213, '95d91ea1391493e366159b7dd817590287bb67391d2db9a1537b2572cf0e9534')]:
             with self.subTest(value=value),self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
                 v.current_navigation('<a id="'+value+'"></a>')
         with self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
-            v.current_navigation('<section id="огляд">Text</section>')
-        for heading in ['# &#1086;&#1075;&#1083;&#1103;&#1076;','# `%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4`']:
+            v.current_navigation(history_literal('tests', 593, 'a0e783988ca29ea9f6e137239739ae7bab5dfeb3c720131f30e9bb97dc9a63b1'))
+        for heading in [history_literal('tests', 214, '7ff535ca82a19db1eb2216cdfcbdd9c050e2dc8b05618ade7a99dcab87f9bd6c'),history_literal('tests', 215, 'cdfbc8005a0c2a1dd95e229f5c7dcfaae7a1af70df597cc6185bf010fc095b2a')]:
             with self.subTest(heading=heading),self.assertRaisesRegex(ValueError,'Cyrillic current section ID'):
                 v.current_navigation(heading)
 
     def test_code_comments_do_not_create_navigation(self):
-        text='```html\n<a id="огляд"></a>\n```\n<!-- <a id="огляд"></a> -->\n`<a id="огляд"></a>`\n# English'
+        text=history_literal('tests', 53, 'f7187a7e6dc5cf9729181601a2a34e04bcd8cf4598c718601ba6833af32f30c7')
         self.assertEqual(v.current_navigation(text)[0],{'english'})
 
     def test_unsupported_active_navigation_fails_closed(self):
@@ -926,7 +931,7 @@ class AnchorNavigationTests(unittest.TestCase):
                 self.nav(bad)
 
     def test_current_fragment_cyrillic_and_encodings_refused(self):
-        for fragment in ['огляд','%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4','&#1086;&#1075;&#1083;&#1103;&#1076;']:
+        for fragment in [history_literal('tests', 227, '0e7777fe6175c42dc95b22c8b7037eb6560f3ba27ab5ee49b508eb8865b7336e'),history_literal('tests', 228, '95d91ea1391493e366159b7dd817590287bb67391d2db9a1537b2572cf0e9534'),history_literal('tests', 229, '2c7c805d7a141cd9210f8aef69f8ae2e442742ede6c0f1e4d36b44b691dab6fe')]:
             data={'a.md':('# A\n[b](b.md#'+fragment+')').encode(),'b.md':b'# Target'}
             with self.subTest(fragment=fragment),self.assertRaisesRegex(ValueError,'Cyrillic current internal fragment'):
                 self.nav(data)
@@ -950,13 +955,13 @@ class AnchorNavigationTests(unittest.TestCase):
 
 class AnchorContractTests(unittest.TestCase):
     def fixture(self):
-        old='<a id="огляд"></a>\n# Review\n'
+        old=history_literal('tests', 55, '8aca012e0706db95bcf81108bff85af70050521415cb72864e99f62315351d83')
         new='# Review\n'
-        literal={'text':'<a id="огляд"></a>','reason':'Original compatibility heading'}
+        literal={'text':history_literal('tests', 237, 'bb37d3d0b4af243fa8b14fa278483634a88c5691e4f1debf483f15b630b92ecd'),'reason':'Original compatibility heading'}
         row={'path':'doc.md','pre_anchor_sha256':v.digest(old.encode()),'current_sha256':v.digest(new.encode()),
-             'removed_ids':[{'old_id':'огляд','new_id':'review','binding':'Review'}],
+             'removed_ids':[{'old_id':history_literal('tests', 817, '0e7777fe6175c42dc95b22c8b7037eb6560f3ba27ab5ee49b508eb8865b7336e'),'new_id':'review','binding':'Review'}],
              'changed_targets':[],'banner_changes':[],
-             'hunks':[{'start':0,'end':0,'before':'<a id="огляд"></a>\n','after':''}],
+             'hunks':[{'start':0,'end':0,'before':history_literal('tests', 824, '3ebc469282cb3edc2a32e0be9dab761a201e76b4d766130b9040b55b89b34d86'),'after':''}],
              'removed_preserved_literals':[{'index':0,'record':literal}],
              'pre_literals_sha256':v.canonical_records_digest([literal]),
              'current_literals_sha256':v.canonical_records_digest([])}
@@ -1019,6 +1024,198 @@ class AnchorContractTests(unittest.TestCase):
         old,data,row,provenance=self.fixture();row['removed_preserved_literals'][0]['index']=2
         with patch.object(v,'ANCHOR_FILES',{'doc.md':row}),self.assertRaisesRegex(ValueError,'literal removal index'):
             v.anchor_provenance_proof(data,provenance)
+
+
+
+
+# Current-tree migration tests supplement, rather than replace, the 107 historical obligations.
+class AuthenticatedHistoryTests(unittest.TestCase):
+    def test_history_complete_closure_and_missing_input(self):
+        self.assertEqual(len(v.load_history(HISTORY_ROOT)),489)
+        result=v.verify(MODULE.parents[1],Path('/nonexistent'))
+        self.assertEqual(result['status'],'BLOCKED')
+        self.assertEqual(result['issues'],['history_baseline_required'])
+
+    def test_literal_selector_and_hash_are_both_required(self):
+        with self.assertRaises(ValueError):v.history_literal('unknown',0,'0'*64)
+        with self.assertRaises(ValueError):v.history_literal('tests',-1,'0'*64)
+        with self.assertRaises(ValueError):v.history_literal('tests',0,'0'*64)
+
+    def test_historical_assignments_never_execute_code(self):
+        for source in ['GUARD_TARGETS = danger()', 'GUARD_TARGETS = {}\nGUARD_TARGETS = {}', 'GUARD_TARGETS: dict = {}']:
+            with self.assertRaises(ValueError):v.history_assignment(source,'GUARD_TARGETS')
+        with self.assertRaises(ValueError):v.history_assignment('other = {}','other')
+
+    def test_language_audit_checks_decoded_and_raw_historical_probe(self):
+        probe=next(value for value in v.HISTORY_LITERALS['tests'] if v.CYRILLIC.search(value))
+        for value in [probe, json.dumps(probe,ensure_ascii=True), ''.join('&#'+str(ord(c))+';' for c in probe)]:
+            with self.assertRaisesRegex(ValueError,'current language'):
+                v.current_language_proof({'probe.md':value.encode()}, {})
+        v.current_language_proof({'probe.md':'English café naive'.encode()}, {})
+
+    def test_unknown_binary_and_encoded_path_rejected(self):
+        with self.assertRaisesRegex(ValueError,'binary'):
+            v.current_language_proof({'unknown.bin':b'\xff'}, {})
+        probe=next(value for value in v.HISTORY_LITERALS['tests'] if v.CYRILLIC.search(value))
+        with self.assertRaisesRegex(ValueError,'language path'):
+            v.current_language_proof({probe:b'English'}, {})
+
+    def test_wrong_history_manifest_and_payload_are_not_rebased(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)/'history';shutil.copytree(HISTORY_ROOT,root)
+            name='README.md';(root/name).write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError,'payload mismatch'):v.load_history(root)
+            manifest=json.loads((root/'release-manifest.json').read_text())
+            for row in manifest['files']:
+                if row['path']==name:row['sha256']=v.digest(b'changed')
+            (root/'release-manifest.json').write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError,'manifest identity'):v.load_history(root)
+
+    def test_history_archive_extras_are_authenticated(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)/'history';shutil.copytree(HISTORY_ROOT,root)
+            name=next(iter(json.loads((root/'provenance/research-archive.json').read_text())['files']))
+            (root/name).write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError,'archive mismatch'):v.load_history(root)
+
+class CurrentResidualProofTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.root=MODULE.parents[1]
+        cls.original=Path(os.environ['AI_FACTORY_TRANSLATION_BASELINE'])
+        cls.history=v.load_history(HISTORY_ROOT)
+        cls.data={name:v.regular(cls.root,name) for name in v.inventory(cls.root)}
+        cls.archive=set(json.loads(cls.history['provenance/research-archive.json'])['files'])
+        cls.source_data=dict(cls.data)
+        cls.source_data.update({name:cls.history[name] for name in cls.archive})
+        cls.distribution_data={name:raw for name,raw in cls.source_data.items() if name not in cls.archive}
+
+    def package(self,data):
+        data=dict(data);manifest=json.loads(data['release-manifest.json'])
+        for row in manifest['files']:row['sha256']=v.digest(data[row['path']])
+        data['release-manifest.json']=(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode()
+        checks={row['path']:row['sha256'] for row in manifest['files']}
+        checks['release-manifest.json']=v.digest(data['release-manifest.json'])
+        data['checksums.sha256']=''.join(checks[name]+'  '+name+'\n' for name in sorted(checks)).encode()
+        return data
+
+    def run_tree(self,data):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            for name,raw in data.items():
+                path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+            return v.verify(root,self.original,HISTORY_ROOT)
+
+    def test_complete_current_tree_and_all_skills(self):
+        result=v.verify(self.root,self.original,HISTORY_ROOT)
+        self.assertEqual(result['status'],'PASS',result['issues'])
+        self.assertEqual(result['current_language'],'PASS')
+        self.assertEqual(len(result['skills']),74)
+        self.assertEqual(result['current_files'],len(self.data))
+        self.assertEqual(result['current_inventory_mode'],'source' if len(self.data)==490 else 'distribution')
+
+    def test_changed_current_content_cannot_rebless_its_manifest(self):
+        data=dict(self.data);data['README.md']+=b'\nUnreviewed English edit.\n'
+        result=self.run_tree(self.package(data))
+        self.assertEqual(result['status'],'FAIL')
+        self.assertIn('residual content binding:README.md',result['issues'][0])
+
+    def test_contract_identity_and_undeclared_fields_are_rejected(self):
+        data=dict(self.data);contract=json.loads(data[v.CONTRACT_PATH]);contract['invented']='not authorized'
+        data[v.CONTRACT_PATH]=json.dumps(contract).encode()
+        result=self.run_tree(self.package(data));self.assertEqual(result['status'],'FAIL')
+        self.assertIn('contract identity',result['issues'][0])
+        # Independent schema check even when an isolated fixture pins new bytes.
+        with patch.object(v,'CONTRACT_SHA256',v.digest(data[v.CONTRACT_PATH])):
+            result=self.run_tree(self.package(data));self.assertEqual(result['status'],'FAIL')
+            self.assertIn('contract schema',result['issues'][0])
+
+    def test_omitted_and_swapped_historical_commitments_rejected(self):
+        name='provenance/english-translations.json'
+        for operation in ('remove','swap'):
+            data=dict(self.data);meta=json.loads(data[name])
+            row=next(row for row in meta['records'] if len(row['historical_literals']['records'])>1)
+            records=row['historical_literals']['records']
+            if operation=='remove':records.pop()
+            else:records[0],records[1]=records[1],records[0]
+            data[name]=json.dumps(meta).encode()
+            result=self.run_tree(self.package(data));self.assertEqual(result['status'],'FAIL')
+            self.assertIn('residual metadata projection',result['issues'][0])
+
+    def test_original_source_identity_cannot_be_rewritten(self):
+        name='provenance/english-translations.json';data=dict(self.data);meta=json.loads(data[name])
+        meta['records'][0]['base_sha256']='0'*64;data[name]=json.dumps(meta).encode()
+        result=self.run_tree(self.package(data));self.assertEqual(result['status'],'FAIL')
+        self.assertIn('residual metadata projection',result['issues'][0])
+
+    def test_frozen_file_and_extra_file_are_rejected(self):
+        for name,raw in [('AGENTS.md',self.data['AGENTS.md']+b'\nChanged.'),('extra.txt',b'Unexpected')]:
+            data=dict(self.data);data[name]=raw
+            result=self.run_tree(self.package(data));self.assertEqual(result['status'],'FAIL')
+            self.assertIn('residual',result['issues'][0])
+
+    def test_current_language_gate_is_wired_before_history_restoration(self):
+        probe=next(value for value in v.HISTORY_LITERALS['tests'] if v.CYRILLIC.search(value) and value.isalpha() and len(value)<12)
+        data=dict(self.data);data['README.md']+=('\n'+probe+'\n').encode();data=self.package(data)
+        # Neutralize only the independent exact-byte inverse gate to isolate language.
+        with patch.object(v,'residual_content_proof',lambda current,history:dict(history)):
+            result=self.run_tree(data);self.assertEqual(result['status'],'FAIL')
+            self.assertIn('current language text:README.md',result['issues'][0])
+            # This is the targeted guard-removal mutant: expected language rejection disappears.
+            with patch.object(v,'current_language_proof',lambda current,history:None):
+                mutant=self.run_tree(data);self.assertEqual(mutant['status'],'PASS',mutant['issues'])
+
+    def test_contract_gate_is_wired_before_history_restoration(self):
+        data=dict(self.data);data['README.md']+=b'\nUnreviewed English edit.\n';data=self.package(data)
+        result=self.run_tree(data);self.assertEqual(result['status'],'FAIL')
+        self.assertIn('residual content binding',result['issues'][0])
+        with patch.object(v,'residual_content_proof',lambda current,history:dict(history)):
+            mutant=self.run_tree(data);self.assertEqual(mutant['status'],'PASS',mutant['issues'])
+
+    def test_wrong_history_blocks_complete_verifier(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result=v.verify(self.root,self.original,Path(directory))
+        self.assertEqual(result['status'],'BLOCKED')
+        self.assertEqual(result['issues'],['history_unavailable_or_invalid'])
+
+    def test_byte_and_named_escape_values_are_scanned(self):
+        probe=next(value for value in v.HISTORY_LITERALS['tests'] if v.CYRILLIC.search(value) and value.isalpha() and len(value)<12)
+        import unicodedata
+        byte_source=('value = '+repr(probe.encode())).encode()
+        named=''.join('\\'+'N{'+unicodedata.name(c)+'}' for c in probe)
+        for data in [{'probe.py':byte_source},{'probe.txt':named.encode()}]:
+            with self.assertRaisesRegex(ValueError,'current language'):
+                v.current_language_proof(data,{})
+
+    def test_exact_distribution_full_proof_passes(self):
+        result=self.run_tree(self.distribution_data)
+        self.assertEqual(result['status'],'PASS',result['issues'])
+        self.assertEqual(result['current_inventory_mode'],'distribution')
+        self.assertEqual(result['current_files'],460)
+        self.assertEqual(len(result['skills']),74)
+        source=self.run_tree(self.source_data)
+        self.assertEqual(source['status'],'PASS',source['issues'])
+        self.assertEqual(source['current_inventory_mode'],'source')
+        self.assertEqual(source['current_files'],490)
+
+    def test_partial_archive_deletion_is_not_distribution(self):
+        data=dict(self.source_data);data.pop(sorted(self.archive)[0])
+        with self.assertRaisesRegex(ValueError,'residual current inventory'):
+            v.current_inventory_mode(data,self.history)
+        self.assertEqual(self.run_tree(data)['status'],'FAIL')
+
+    def test_distribution_missing_ordinary_payload_is_refused(self):
+        data=dict(self.distribution_data);data.pop('README.md')
+        with self.assertRaisesRegex(ValueError,'residual current inventory'):
+            v.current_inventory_mode(data,self.history)
+        self.assertEqual(self.run_tree(data)['status'],'FAIL')
+
+    def test_source_changed_archive_is_refused(self):
+        data=dict(self.source_data);name=next(name for name in sorted(self.archive) if name.endswith('.md'));data[name]+=b'\nUnreviewed archive edit.\n'
+        result=self.run_tree(data);self.assertEqual(result['status'],'FAIL')
+        self.assertIn('residual unchanged file:',result['issues'][0])
 
 
 if __name__ == '__main__':

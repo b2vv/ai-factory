@@ -1,6 +1,6 @@
 ---
 name: ponytail-audit
-description: "The same as ponytail-review, but across the entire repository tree rather than the diff: a ranked list of what to delete, simplify or replace with stdlib/native capabilities — largest cut first, ending with `net: -N lines, -M deps possible`. Use for a one-off codebase bloat audit, when asked what can be removed from the repository, where the bloat is or whether it is overcomplicated, or on triggers \"audit for over-engineering\", /ponytail-audit. Lists findings only; makes no edits. Correctness, security and performance are out of scope. Ukrainian compatibility trigger aliases: \"що можна викинути з цього репо\", \"де тут bloat\", \"чи не переускладнено\"."
+description: "The same as ponytail-review, but across the entire repository tree rather than the diff: a ranked list of what to delete, simplify or replace with stdlib/native capabilities — largest cut first, ending with `net: -N lines, -M deps possible`. Use for a one-off codebase bloat audit, when asked what can be removed from the repository, where the bloat is or whether it is overcomplicated, or on triggers \"audit for over-engineering\", /ponytail-audit. Lists findings only; makes no edits. Correctness, security and performance are out of scope. Additional trigger phrases: \"what can be removed from this repository\", \"where is the bloat\", \"is this overcomplicated\"."
 ---
 
 ponytail-review, repo-wide. Scan the whole tree instead of a diff. Rank

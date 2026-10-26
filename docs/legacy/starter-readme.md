@@ -1,14 +1,16 @@
+> **Historical English adaptation — authored derivative.** Historical source: [docs/legacy/starter-readme.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/docs/legacy/starter-readme.md). Original SHA256: `6329060b1357c88ca744fb691a44dc28912b85a941b0c1507fbccb7154a8c7b4`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](starter-readme.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
+
 > Retained documentation from release 626fd68. Historical layout/status statements below are preserved for provenance; current paths and commands are in the root README and migration guide.
 
 # AI Factory — full personal collection and portable tools
 
-## Почати тут
+## Start here
 
-- **[Усі 73 оригінальні скіли →](../../skills)** — повна включена колекція з підкаталогами й допоміжними файлами.
-- **[Повний AI Factory plan →](../../ai-factory/ai-factory-plan.md)** — план, workflow, roadmap та пов’язані правила.
-- [Коренева папка `skills/`](../../skills/) містить лише **5 portable adapters**, а не всю колекцію.
+- **[All 73 original skills →](../../skills)** — the full included collection with subdirectories and supporting files.
+- **[Full AI Factory plan →](../../ai-factory/ai-factory-plan.md)** — plan, workflow, roadmap and related rules.
+- The [root `skills/` directory](../../skills) contains only **5 portable adapters**, not the entire collection.
 
-Облік охоплює 84 внутрішні визначення: 73 включено; 11 synced-наборів мають явну ліцензійну заборону копіювання поза сервісом і представлені лише в [manifest із причинами виключення](../../provenance/source-map.json).
+The inventory covers 84 internal definitions: 73 are included; 11 synced sets explicitly prohibit copying outside the service under their licenses and appear only in the [manifest with exclusion reasons](../../provenance/source-map.json).
 
 ---
 

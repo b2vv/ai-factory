@@ -1,6 +1,6 @@
 ---
 name: repo-bootstrap
-description: Checks what a repository lacks for the pipeline — standards manifest, briefing, contract pointers, persistence channel, artifacts home, machine gates — and creates missing items on command without inventing content. Use for a new or unfamiliar repository, when connecting a project to the pipeline, or on triggers "ініціалізуй репо", "чого бракує в репо", "repo bootstrap", "налаштуй проєкт" (Ukrainian phrases retained as compatibility aliases).
+description: Checks what a repository lacks for the pipeline — standards manifest, briefing, contract pointers, persistence channel, artifacts home, machine gates — and creates missing items on command without inventing content. Use for a new or unfamiliar repository, when connecting a project to the pipeline, or on triggers "initialize the repository", "what is missing from the repository", "repo bootstrap", "set up the project".
 ---
 
 
@@ -52,7 +52,7 @@ The skill is **idempotent**: a second run on the same repository creates nothing
 | 3 | Contract file (`AGENT.md` / `AGENTS.md` / `CLAUDE.md`) | contains pointers to 1, 2 and orchestration rules | a pointer line, not a copy of content |
 | 4 | `CLAUDE.local.md` — persistence channel | file exists; **in `.gitignore`** | live-note channel + fallback to artifacts home |
 | 5 | Artifacts home (`reports/` or `work/reports/`) | directory exists or convention is named in manifest | — |
-| 5а | `work/` — tasks, debt, archive | directories exist; manifest names them **individually** and says where closed work moves | layout by **state**, not topic; archive holds pointers |
+| 5a | `work/` — tasks, debt, archive | directories exist; manifest names them **individually** and says where closed work moves | layout by **state**, not topic; archive holds pointers |
 | 6 | Machine gates | which scripts actually exist: lint, typecheck, test, e2e, formatter | manifest section; **record missing ones as gaps** |
 | 7 | Task tracker and triage labels | `docs/agents/issue-tracker.md` | delegate `setup-matt-pocock-skills` — do not duplicate |
 | 8 | CRG code graph (optional) | existing configuration paths; separately registration/availability, root/revision/hash/coverage | inventory only; stale/unavailable → file-based fallback. No install/build/registration in this onboarding |
@@ -62,9 +62,9 @@ The skill is **idempotent**: a second run on the same repository creates nothing
 Rows 8–10 are optional: their absence is a choice, not a gap. Say so instead of marking them
 red.
 
-Row 5а has its own trap: a directory named `archive/` may already exist at the repository root and mean
+Row 5a has its own trap: a directory named `archive/` may already exist at the repository root and mean
 **something completely different** — removed legacy code, not closed tasks (as in dg). Same name, different things:
-check what it contains before recording it as the task archive. The row identifier `5а` is retained compatibility data.
+check what it contains before recording it as the task archive. The row identifier is `5a`.
 
 
 ## Sequence

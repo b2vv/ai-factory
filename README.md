@@ -37,8 +37,8 @@ delta; it does not move consumer pins or replace immutable caches.
 TypeScript primarily preserves the user-authorized portable intent of the
 Cassiopeia rules. MVC layout, service/naming conventions, libraries and versions are not
 imposed on other projects. The [TypeScript reference](skills/arch/code-review/references/languages/typescript.md)
-explicitly explains the conflict with the old forced-interface Pocock rule: the historical file
-is unchanged, and the current project convention takes precedence. Exact conceptual
+explicitly explains the conflict with the old forced-interface Pocock rule: the historical policy
+is retained in an English adaptation, and the current project convention takes precedence. Exact conceptual
 sources, per-file digests and exclusions are in
 [language provenance](provenance/language-reference-origins.json); the checker's
 origins and rights/limitations are in [PROVENANCE](PROVENANCE.md).

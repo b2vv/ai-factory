@@ -1,6 +1,6 @@
 ---
 name: ux-review
-description: 'Audits an interface against cited UX best-practice rules: Nielsen heuristics, Laws of UX, UX-related WCAG 2.2 criteria, and patterns for forms / tables / states / navigation / copy / touch targets / cognitive load. Takes a screen, flow or prototype and returns RANKED violations, each with a source and an observable check. About usability, not whether it looks AI-generated (anti-slop-design) or exact mockup reconstruction (design-pass). Use to check/critique UX of a screen, flow, prototype or redesign, define UX acceptance criteria or gate interface readiness. Compatibility trigger aliases: "ux-review", "ux-аудит", "перевір UX", "ux lint", "прожар UX", "usability review", "юзабіліті".'
+description: 'Audits an interface against cited UX best-practice rules: Nielsen heuristics, Laws of UX, UX-related WCAG 2.2 criteria, and patterns for forms / tables / states / navigation / copy / touch targets / cognitive load. Takes a screen, flow or prototype and returns RANKED violations, each with a source and an observable check. About usability, not whether it looks AI-generated (anti-slop-design) or exact mockup reconstruction (design-pass). Use to check/critique UX of a screen, flow, prototype or redesign, define UX acceptance criteria or gate interface readiness. Additional trigger phrases: "ux-review", "UX audit", "check UX", "ux lint", "critique UX", "usability review", "usability".'
 ---
 
 

@@ -165,7 +165,7 @@
     },
     {
       "destination": "skills/arch/code-review/references/languages/typescript.md",
-      "sha256": "8cca261c747670906d0b0e3967fd2ff6c37ef9c7c9a8b479a881d060f217e73c",
+      "sha256": "4e33920edd290f84f3babf6c2f0431621e7859951880aab6cc920962230e4130",
       "origin_kind": "owner-authored",
       "conceptual_sources": [
         {

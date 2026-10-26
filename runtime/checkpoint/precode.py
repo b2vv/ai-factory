@@ -198,7 +198,7 @@ def check_index(root, index, task_root):
     for directory in sorted(tasks.iterdir()):
         if directory.is_dir() and re.match(r'^\d{3}-', directory.name) and directory.name not in linked:
             issues.append({'kind': 'unindexed-task', 'task': directory.name})
-    if re.search(r'Наступний вільний номер\s*[—:-]\s*\*\*\d+', text):
+    if re.search(r'Next available number\s*[—:-]\s*\*\*\d+', text):
         issues.append({'kind': 'hardcoded-next-number'})
     return {'status': 'FAIL' if issues else 'PASS', 'issues': issues,
             'limitation': 'Checks explicit links and directory coverage, not truth of task status, semantic decisions or agent compliance.'}

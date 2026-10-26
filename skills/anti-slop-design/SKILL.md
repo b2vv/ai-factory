@@ -1,6 +1,6 @@
 ---
 name: anti-slop-design
-description: 'A concrete catalog of frontend design AI tells (typography, color, layout, decoration, copy, motion), three dials and a mechanical pre-flight gate to keep an interface from looking templated. The factual companion to the methodological `frontend-design`. Use when building/refactoring the appearance of a landing page, portal, application or screen; when asked to avoid an AI-generated/templated look; or to check a finished screen for clichés. Compatibility trigger aliases: "щоб не виглядало як AI / не шаблонно / anti-slop", "anti-slop", "не як AI", "taste", "прожар дизайн", "design tells".'
+description: 'A concrete catalog of frontend design AI tells (typography, color, layout, decoration, copy, motion), three dials and a mechanical pre-flight gate to keep an interface from looking templated. The factual companion to the methodological `frontend-design`. Use when building/refactoring the appearance of a landing page, portal, application or screen; when asked to avoid an AI-generated/templated look; or to check a finished screen for clichés. Additional trigger phrases: "avoid an AI-generated or templated look / anti-slop", "anti-slop", "avoid an AI-generated look", "taste", "critique the design", "design tells".'
 license: Adapted from leonxlnx/taste-skill (MIT); see Provenance.
 ---
 

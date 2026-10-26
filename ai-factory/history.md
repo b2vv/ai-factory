@@ -1,193 +1,195 @@
 ---
-title: "Історія задуму та попередніх вимірів"
+title: "History of the concept and previous measurements"
 reviewed: 2026-10-16
 ---
 
-[До точки входу](../docs/legacy/ai-factory-plan-entry.md) · [Статус](status.md#capabilities) · [Маршрути](workflow.md#routing) · [Задачі](roadmap.md#tasks) · [Практики репо](repo-evidence.md#repo-evidence) · [Історія](history.md#history)
+> **Historical English adaptation — authored derivative.** Historical source: [ai-factory/history.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/ai-factory/history.md). Original SHA256: `d7520cdbe02175d651383dbe6c1e2ab756fa584357e096b5b42b279a0b752cdf`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](history.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
+
+[Entry point](../docs/legacy/ai-factory-plan-entry.md) · [Status](status.md#capabilities) · [Routes](workflow.md#routing) · [Tasks](roadmap.md#tasks) · [Repository practices](repo-evidence.md#repo-evidence) · [History](#history)
 
 <a id="history"></a>
 
-# Історія задуму та попередніх вимірів
+# History of the concept and previous measurements
 
-Це історичні записи, не поточні команди чи статуси. Чинні можливості описані лише в [реєстрі статусів](status.md#capabilities). Давні «немає», ✅ та числа нижче не переносяться на поточний стан без нової перевірки.
+These are historical records, not current commands or statuses. Current capabilities are described only in the [status registry](status.md#capabilities). Old “missing” claims, ✅ marks, and numbers below do not carry over to the current state without fresh verification.
 
-## 1. Історичний розбір треду (2026-08-25)
+## 1. Historical analysis of the thread (2026-08-25)
 
-Нижче «Є/Бракує» описують первинну мотивацію. Актуальний стан global — у реєстрі status.md; repo-specific твердження потребують нової перевірки.
+Below, “Present/Missing” describe the original motivation. The current global state is in the status.md registry; repo-specific claims need fresh verification.
 
-Тред = 12 етапів. Нижче кожен: **суть → чим закривається тут → чого бракує**.
+The thread has 12 stages. Each below: **essence → what covers it here → what is missing**.
 
-### 1.1 Deep CTO research перед кодом
-Суть: агент розбирається в продукті, кодовій базі, патернах, інфрі, залежностях, ризиках;
-до розуміння ніхто не імплементить.
+### 1.1 Deep CTO research before code
+Essence: the agent understands the product, codebase, patterns, infrastructure, dependencies, and risks;
+nobody implements before understanding.
 
-- **Є:** `dg/work/CTO-RESEARCH.md` — точний зразок того, що тред описує словами
-  (вердикт на один екран, кожна теза веде в первинне джерело, «розходиться — править джерело»).
-  У cargotrans-ui роль виконує `AGENT.md` (38 KB) + `CONTEXT.md`.
-- **Бракує:** **процесу**, який цей файл народжує й оновлює. Зараз він написаний руками один раз
-  (2026-08-24) і застаріє мовчки. Потрібен скіл `cto-research`: фіксований скелет розділів,
-  вимога `path:line` на кожну тезу, і **staleness-гейт** (файл старший за N комітів → перечитати).
-  Прецедент staleness вже є: `~/vaults/cargotrans-ui/tools/kb-staleness.mjs`.
+- **Present:** `dg/work/CTO-RESEARCH.md` — an exact example of what the thread describes in words
+  (a one-screen verdict, every claim leads to a primary source, “if they diverge, correct the source”).
+  In cargotrans-ui, `AGENT.md` (38 KB) + `CONTEXT.md` serve this role.
+- **Missing:** the **process** that produces and updates this file. Currently it was written manually once
+  (2026-08-24) and will silently go stale. A `cto-research` skill is needed: a fixed section skeleton,
+  a `path:line` requirement for every claim, and a **staleness gate** (file older than N commits → reread).
+  A staleness precedent already exists: `~/vaults/cargotrans-ui/tools/kb-staleness.mjs`.
 
-### 1.2 План як детальний документ (75% часу)
-Суть: не список тасок, а що/де змінюємо, які сервіси, сайд-ефекти, міграція, як тестуємо.
+### 1.2 The plan as a detailed document (75% of the time)
+Essence: not a task list, but what/where we change, which services, side effects, migration, and how we test.
 
-- **Є:** `spec-flow` у cargotrans-ui робить рівно це (spec→gate→plan→gate→tasks→implement→verify,
-  артефакти в `reports/<topic>/`).
-- **Бракує:** (а) у dg його нема взагалі; (б) у plan-секції нема обов'язкових полів
-  **сайд-ефекти / міграція / rollback** — а це половина того, що тред називає «видроченим планом».
+- **Present:** `spec-flow` in cargotrans-ui does exactly this (spec→gate→plan→gate→tasks→implement→verify,
+  artifacts in `reports/<topic>/`).
+- **Missing:** (a) dg has none at all; (b) the plan section has no mandatory
+  **side effects / migration / rollback** fields — half of what the thread calls a “painstakingly perfected plan.”
 
-### 1.3 План критикує сам себе (AI-slop, дірки, зайва складність, edge cases)
-- **Є:** `grilling` (global skill) + GATE 1/GATE 2 у spec-flow.
-- **Бракує:** критика зараз **одноголоса й однолінзова**. Тред описує *окремих агентів під окремі
-  дефекти*. Потрібен `plan-critique` — фан-аут на 4 незалежні лінзи (AI-slop / логічні діри /
-  надлишкова складність / непокриті edge cases), кожна повертає структурований вердикт,
-  і зведення. Це рівно те, що можна реалізувати доступними засобами делегування; `Workflow` не є гарантованою залежністю.
+### 1.3 The plan critiques itself (AI-slop, gaps, excess complexity, edge cases)
+- **Present:** `grilling` (global skill) + GATE 1/GATE 2 in spec-flow.
+- **Missing:** critique currently has **one voice and one lens**. The thread describes *separate agents for separate
+  defects*. A `plan-critique` is needed — fan-out into 4 independent lenses (AI-slop / logical gaps /
+  excess complexity / uncovered edge cases), each returning a structured verdict,
+  followed by synthesis. This is exactly what available delegation tools can implement; `Workflow` is not a guaranteed dependency.
 
-### 1.4 Різні моделі для різних ролей
-Задум — відокремити автора, дослідника й незалежного рецензента. Конкретні назви моделей, API та доступні провайдери залежать від агента й поточної сесії; стару матрицю тірів не вважати перевіреною конфігурацією. Крос-вендорний процес — опційний E4.4 з файловим брифом і перевірним результатом, якщо інструменти доступні та використання дозволене. Сам факт різних моделей не доводить незалежність контексту.
+### 1.4 Different models for different roles
+The idea is to separate author, researcher, and independent reviewer. Specific model names, APIs, and available providers depend on the agent and current session; do not treat the old tier matrix as a verified configuration. A cross-vendor process is optional E4.4, with a file brief and verifiable result, if tools are available and use is authorized. Different models alone do not prove context independence.
 
-### 1.5 Плани «захищають» перед імплементацією
-Суть: дойобатись до деталей — а якщо юзер зробить так? а якщо дані криві? а якщо сервіс упав? а як відкотити?
+### 1.5 Plans are defended before implementation
+Essence: scrutinize the details — what if the user does this? what if the data is malformed? what if the service fails? how do we roll back?
 
-- **Є:** `grilling` близький, але це діалог із користувачем, а не чекліст.
-- **Бракує:** `plan-defense` — **детермінований** чекліст із 5 обов'язкових питань
-  (кривий інпут / впав зовнішній сервіс / гонка й повторний клік / порожні та граничні дані / rollback),
-  де кожне питання має бути закрите **посиланням на рядок плану**, інакше гейт червоний.
-  Це дешевше й повторюваніше за «дойобуватись» вручну.
+- **Present:** `grilling` is close, but it is a dialogue with the user, not a checklist.
+- **Missing:** `plan-defense` — a **deterministic** checklist of 5 mandatory questions
+  (malformed input / failed external service / race and repeated click / empty and boundary data / rollback),
+  where every question must be closed with a **link to a plan line**, otherwise the gate is red.
+  This is cheaper and more repeatable than manual grilling.
 
-### 1.6 AI CTO ріже роботу на команди та спринти
-- **Є:** `~/.agents/rules/subagent-orchestration-ledger.md` — durable ledger, 4-статусний
-  протокол (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED), brief-file handoff.
-  Це і є «зони відповідальності + залежності + критерії готовності» з треду.
-- **Бракує:** правило лежить у `~/.agents/rules/`, але **жоден репо-контракт на нього не посилається**
-  (ні `AGENT.md` cargotrans, ні `AGENTS.md` dg). Тобто фактично воно не діє.
+### 1.6 AI CTO splits work into teams and sprints
+- **Present:** `~/.agents/rules/subagent-orchestration-ledger.md` — durable ledger, a 4-status
+  protocol (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED), brief-file handoff.
+  This is exactly the thread's “responsibility areas + dependencies + readiness criteria.”
+- **Missing:** the rule lives in `~/.agents/rules/`, but **no repository contract refers to it**
+  (neither cargotrans's `AGENT.md` nor dg's `AGENTS.md`). In practice, it therefore has no effect.
 
-### 1.7 Тести плануються до коду, детерміністично, на рівні продукту
-Суть: не тільки unit по внутрішній реалізації — що бачить юзер, що робить, що має статись, що вважається правильним.
+### 1.7 Tests are planned before code, deterministically, at product level
+Essence: not just units testing internal implementation — what the user sees, does, what should happen, and what counts as correct.
 
-- **Є:** `dg/work/TDD.md` (red-green-refactor, success+failure), global `tdd` skill,
-  playwright в обох репо.
-- **Бракує:** формату **acceptance-спеки як артефакту плану**: таблиця
-  `сценарій | передумова | дія юзера | очікуваний спостережуваний результат | як перевіряється (e2e/unit/руками)`.
-  Без неї «протестовано» лишається судженням, а не фактом.
+- **Present:** `dg/work/TDD.md` (red-green-refactor, success+failure), global `tdd` skill,
+  playwright in both repositories.
+- **Missing:** an **acceptance spec format as a plan artifact**: a table
+  `scenario | precondition | user action | expected observable result | how verified (e2e/unit/manually)`.
+  Without it, “tested” remains a judgment rather than a fact.
 
-### 1.8 Тестове середовище як prod; агент проходить фічу як юзер; контрольований доступ до логів/сервісів/read-only БД; дії трекаються
-- **Є:** playwright-конфіги в обох репо; у dg є demo-app і `compare:nodes` (візуальне порівняння).
-  Доступність браузерного інструмента потрібно встановити в поточній сесії.
-- **Бракує:** (а) для cargotrans-ui — записаного user-flow прогону з **скріншотами в артефакт**;
-  (б) read-only БД / логи не заведені як контрольований доступ ніде.
-  Чесно: пункт про read-only БД для frontend-репо (cargotrans-ui) і для embed-SDK (dg) —
-  **не застосовний**, це про бекенд-сервіс. Не тягну його в задачі.
+### 1.8 A prod-like test environment; the agent walks through the feature as a user; controlled access to logs/services/read-only databases; actions are tracked
+- **Present:** playwright configurations in both repositories; dg has a demo-app and `compare:nodes` (visual comparison).
+  Browser-tool availability must be established in the current session.
+- **Missing:** (a) for cargotrans-ui — a recorded user-flow run with **screenshots in an artifact**;
+  (b) read-only database / log access is not established as controlled access anywhere.
+  Honestly: the read-only database item for a frontend repository (cargotrans-ui) and an embed-SDK (dg) is
+  **not applicable**; it concerns a backend service. I am not adding it to the tasks.
 
-### 1.9 Execution: 5–50 паралельних PR
-- **Є:** нативні `Agent isolation:"worktree"`, `Workflow` з `pipeline`/`parallel`,
-  `.claude/worktrees/` як заготовка.
-- **Бракує:** правил, щоб паралелізм не з'їв сам себе: хто тримає ledger, як ділиться межа
-  файлів між гілками, що робити на конфлікті. Плюс **чесне обмеження**: 5–50 PR на одну фічу
-  має сенс лише коли фіча ріжеться на справді незалежні слайси; для FSD-репо це реалістично
-  на рівні 3–8, не 50. Цифри з треду — маркетинг, механіка — ні.
+### 1.9 Execution: 5–50 parallel PRs
+- **Present:** native `Agent isolation:"worktree"`, `Workflow` with `pipeline`/`parallel`,
+  `.claude/worktrees/` as a starting point.
+- **Missing:** rules to keep parallelism from undermining itself: who maintains the ledger, how file
+  boundaries are divided between branches, and what to do on conflict. Also an **honest limit**: 5–50 PRs for one feature
+  make sense only when the feature splits into genuinely independent slices; for an FSD repository,
+  3–8 is realistic, not 50. The thread's numbers are marketing; the mechanism is not.
 
-### 1.10 Незалежні AI-рев'юєри на GitHub; рев'юєр не знає, як писався код
-- **Є:** локальний `review` (cargotrans-ui) — сильний, бо перелічує стандарти, а не вгадує.
-- **Бракує:** (а) у dg нема аналога взагалі; (б) нема **PR-рев'юєра в CI**, який читає задачу+план+дифф
-  з нуля. Ключова властивість із треду — **сліпота рев'юєра до історії створення** —
-  потребує свіжого контексту без історії авторства; це може бути окремий процес або відповідно ізольований сабагент. Сам запуск на GitHub цього не гарантує.
-  Для dg це реально: `b2vv/dg` на GitHub, `gh` вже використовується (`docs/agents/issue-tracker.md`).
+### 1.10 Independent AI reviewers on GitHub; the reviewer does not know how the code was written
+- **Present:** local `review` (cargotrans-ui) — strong because it enumerates standards rather than guessing.
+- **Missing:** (a) dg has no equivalent at all; (b) no **PR reviewer in CI** reads task+plan+diff
+  from scratch. The thread's key property — **reviewer blindness to creation history** —
+  needs a fresh context without authorship history; this may be a separate process or an appropriately isolated subagent. Running on GitHub alone does not guarantee this.
+  For dg this is feasible: `b2vv/dg` is on GitHub, and `gh` is already used (`docs/agents/issue-tracker.md`).
 
-### 1.11 Звіт замість полотна: що зроблено, які сценарії протестовані, що неочевидного знайшли, скріни, проходка по flow, ризики
-- **Є:** конвенція `reports/<topic>/` (cargotrans-ui, ~30 тек) + шаблони Report/Session в Obsidian
-  + правило живої ноти в `CLAUDE.local.md` (інкрементальний flush — після реальної втрати контексту).
-- **Бракує:** `ship-report` — скіл із **фіксованими 6 секціями** треду, де «скріни» і «проходка по
-  user flow» не опційні. Зараз структура звіту щоразу трохи інша.
+### 1.11 A report instead of a wall of text: what was done, scenarios tested, non-obvious findings, screenshots, flow walkthrough, risks
+- **Present:** the `reports/<topic>/` convention (cargotrans-ui, ~30 directories) + Report/Session templates in Obsidian
+  + the live-note rule in `CLAUDE.local.md` (incremental flush — after an actual context loss).
+- **Missing:** `ship-report` — a skill with the thread's **fixed 6 sections**, where “screenshots” and “user-flow
+  walkthrough” are not optional. Currently the report structure differs slightly each time.
 
-### 1.12 Post-deploy: ключові тести на prod, логи, інтеграції, фінальний апдейт
-- **Первинна прогалина, пізніше частково закрита за записом E5.** Для dg задум: після `pages.yml` прогнати smoke по
-  GitHub Pages demo. Для cargotrans-ui — smoke по прод-URL після деплою.
-
----
-
-## 2. Reality-check по треду (принципи, не метрики)
-
-Щоб план не будувався на рекламі:
-
-- «сотні тисяч агентів», «500+ комітів за день» — це вітрина, не механіка. Переносне тут —
-  **дисципліна конвеєра**: research → план → критика плану → захист плану → тести до коду →
-  паралельне виконання → незалежне рев'ю → структурований звіт → post-deploy.
-- «75% часу на планінг» — неперевірена кількісна теза: наявність брифінгу та гейтів не вимірює витрачений час. Зберігаємо дисципліну планування без нормативу у відсотках.
-- «100+ разів завертав PR» — досяжно лише коли рев'юєр має **перелічений** мірник (як у
-  `review`-скілі cargotrans-ui), інакше це шум, а не якість.
+### 1.12 Post-deploy: key tests on prod, logs, integrations, final update
+- **Original gap, later partially closed according to E5's record.** For dg, the idea is to run smoke on
+  the GitHub Pages demo after `pages.yml`. For cargotrans-ui — smoke on the production URL after deployment.
 
 ---
-## 5.1 Історичний запис виміру (2026-08-25)
 
-Збережено як походження рішень. Статуси «немає» та претензії до реалізації нижче не є поточним аудитом: global уже змінився, див. status.md. Наведені числа й результати не відтворювалися 2026-10-14.
+## 2. Reality-check of the thread (principles, not metrics)
 
-Не переказ плану, а звірка з диском після першого **бойового** прогону E1.1→E1.2→E1.3 на реальному
-плані (`cargotrans-ui/work/plans/range-ux-from-trebble2.md`).
+To avoid building the plan on advertising:
 
-| Пункт | Стан | Чим виміряно |
+- “hundreds of thousands of agents,” “500+ commits per day” are a showcase, not the mechanism. What transfers here is
+  **pipeline discipline**: research → plan → plan critique → plan defense → tests before code →
+  parallel execution → independent review → structured report → post-deploy.
+- “75% of time on planning” is an unverified quantitative claim: the existence of briefing and gates does not measure time spent. Keep planning discipline without a percentage requirement.
+- “rejected PRs 100+ times” is achievable only when the reviewer has an **enumerated** yardstick (as in
+  cargotrans-ui's `review` skill); otherwise it is noise rather than quality.
+
+---
+## 5.1 Historical measurement record (2026-08-25)
+
+Preserved as the origin of decisions. “Missing” statuses and implementation criticisms below are not a current audit: global has already changed; see status.md. The cited numbers and results were not reproduced on 2026-10-14.
+
+Not a plan recap, but a disk reconciliation after the first **real-world** E1.1→E1.2→E1.3 run on an actual
+plan (`cargotrans-ui/work/plans/range-ux-from-trebble2.md`).
+
+| Item | State | Measurement evidence |
 |---|---|---|
-| E0.1–E0.5, E0.10 | ✅ | `~/vaults/diagram-hierarchy/` має структуру, `Home.md`, `README.md`; порт 27143 у шпаргалці |
-| E1.1 `cto-research` | ✅ прогнано | зібрав брифінг `cargotrans-ui/CONTEXT.md` — шість розділів, пойнтер в `AGENT.md` |
-| E1.2 `plan-critique` | ✅ прогнано | 4 лінзи → 8 blocking, з них 5 на вже відвантаженому коді |
-| E1.3 `plan-defense` | ✅ прогнано | таблиця 5 питань у плані, 0 дірок |
-| E1.4 `acceptance-spec` | ◐ скіл є, не вживався | дескриптор у global-vault бракував — дописано |
-| E1.5 `ship-report` | ❌ | немає в `~/.claude/skills/` |
-| E1.6 `post-deploy-check` | ❌ | те саме |
+| E0.1–E0.5, E0.10 | ✅ | `~/vaults/diagram-hierarchy/` has a structure, `Home.md`, `README.md`; port 27143 in the cheatsheet |
+| E1.1 `cto-research` | ✅ run | produced briefing `cargotrans-ui/CONTEXT.md` — six sections, pointer in `AGENT.md` |
+| E1.2 `plan-critique` | ✅ run | 4 lenses → 8 blocking findings, including 5 in already shipped code |
+| E1.3 `plan-defense` | ✅ run | 5-question table in the plan, 0 gaps |
+| E1.4 `acceptance-spec` | ◐ skill exists, not used | descriptor was missing from global-vault — added |
+| E1.5 `ship-report` | ❌ | absent from `~/.claude/skills/` |
+| E1.6 `post-deploy-check` | ❌ | same |
 | E1.7 `multi-model-roles` | ✅ | `~/.agents/rules/multi-model-roles.md` |
-| E2.1, E2.2, E2.4, E2.5 | ❌ | `spec-flow` кличе лише `grilling`; пойнтера на ledger в `AGENT.md` немає; `.claude/worktrees/` порожня |
+| E2.1, E2.2, E2.4, E2.5 | ❌ | `spec-flow` calls only `grilling`; no ledger pointer in `AGENT.md`; `.claude/worktrees/` is empty |
 
-### Що показав бойовий прогін — і чого в плані немає
+### What the real-world run revealed — and what the plan lacks
 
-**1. E2.2 — найдорожчий невиконаний пункт, і це доведено дією.** Гейти існують, але `spec-flow`
-GATE 2 їх не кличе. Обидва прогнані вручну, бо користувач попросив. Тобто вони спрацьовують тоді,
-коли хтось згадає, — а не тоді, коли треба. Це єдиний пункт, що перетворює наявні скіли з «є» на
-«діють».
+**1. E2.2 is the costliest unfinished item, proven by execution.** The gates exist, but `spec-flow`
+GATE 2 does not call them. Both were run manually because the user asked. They therefore trigger
+when someone remembers, not when needed. This is the only item that turns existing skills from “present” into
+“active.”
 
-**2. E1.2 має правильний DoD і хибну реалізацію в описі.** Записано «через `Workflow` `parallel` +
-`schema`». Насправді `Workflow` вимагає явного дозволу користувача, а сам скіл описує звичайні
-сабагенти. У прогоні **одна з чотирьох лінз впала** на інфраструктурі, і це помітили очима.
-`multi-model-roles` §3 каже: лінза, що не повернулась, — червоний гейт. Через `Agent` такого гейта
-немає взагалі.
+**2. E1.2 has the right DoD and a wrong implementation description.** It says “through `Workflow` `parallel` +
+`schema`.” In fact, `Workflow` requires explicit user permission, while the skill itself describes ordinary
+subagents. During the run, **one of four lenses failed** on infrastructure, and this was noticed visually.
+`multi-model-roles` §3 says a lens that does not return means a red gate. Through `Agent`, no such gate
+exists at all.
 
-**3. E1.3 має недосяжний DoD.** «План без rollback-секції гейт не проходить» — але скіл дозволяє
-закрити дірку рядком «поза скоупом, бо…». Тобто план без rollback **проходить**, якщо написати одне
-речення. Це правильно за задумом, але DoD стверджує протилежне й ніколи не буде виконаний як
-записаний.
+**3. E1.3 has an unattainable DoD.** “A plan without a rollback section does not pass the gate” — but the skill allows
+closing the gap with “out of scope because…”. A plan without rollback therefore **passes** if one
+sentence is written. This matches the intent, but the DoD says the opposite and will never be fulfilled as
+written.
 
-**4. E1.7 не має механізму застосування.** Його DoD — «rule видно в обох vault», тобто **видимість**,
-а не дія. У прогоні правило порушено **двічі** (лінзи успадкували тір автора; захист виконав сам
-автор плану), і спіймано це лише читанням правила постфактум. Конвеєр, у якому незалежність
-вердиктів тримається на памʼяті оркестратора, не тримається ні на чому.
+**4. E1.7 has no application mechanism.** Its DoD is “the rule is visible in both vaults,” meaning **visibility**,
+not action. In the run the rule was violated **twice** (lenses inherited the author's tier; the plan author
+performed the defense), and this was caught only by reading the rule afterward. A pipeline whose independent
+verdicts depend on the orchestrator's memory depends on nothing.
 
-**5. Гейт свіжості E1.1 не має за що зачепитись на першому прогоні.** Він порівнює шапку «дата +
-базовий коміт» із `HEAD`, а наявні `CONTEXT.md` шапки не мають. Перший прогін завжди «гейт не
-запускався». DoD варто дописати: скіл **пише** шапку, щоб гейт запрацював із другого разу.
+**5. E1.1's freshness gate has nothing to use on the first run.** It compares a “date +
+base commit” header with `HEAD`, but existing `CONTEXT.md` files have no header. The first run always means “gate
+not run.” The DoD should add: the skill **writes** the header so the gate works from the second run onward.
 
 ---
 
 <a id="ci-history"></a>
 
-## Історичні записи E4/E5 з попереднього реєстру
+## Historical E4/E5 records from the previous registry
 
-### E4 · Незалежне AI-рев'ю на PR  (P2)
+### E4 · Independent AI review on PRs  (P2)
 
-Ключове з треду — рев'юєр **не знає**, як писався код: окремий процес, чистий контекст.
+The thread's key point: the reviewer **does not know** how the code was written — a separate process, clean context.
 
-| # | Задача | DoD |
+| # | Task | DoD |
 |---|---|---|
-| E4.1 | ✅ `dg/.github/workflows/ai-review.yml` — на `pull_request`, `anthropics/claude-code-action@v1` (інтерфейс звірений з `docs/solutions.md`), мірник = `.claude/standards.md`. ⚠️ **Не перевірено бойовим PR:** секрет `ANTHROPIC_API_KEY` у репо відсутній (`gh secret list` порожній), тож job поки рапортує `skipped` | YAML валідний; лишається `gh secret set ANTHROPIC_API_KEY` + тестовий PR |
-| E4.2 | ✅ Два **окремі job'и** = окремі раннери = окремі контексти: `standards` (мірник, прив'язка до мови) і `spec-and-edges` (спека / межі / WASM↔TS / публічний API) | два незалежні коментарі, не один |
-| E4.3 | ✅ Другий прохід ставить рівно один лейбл через `gh pr edit`: `ready-for-human` або `needs-info` з поясненням, чого бракує | лейбл ставиться автоматично |
-| E4.4 | **P3, опційно:** зовнішній вендор як третій рев'юєр (чужий CLI через `Bash` з файловим брифом, або GitHub-бот) — оцінити тертя перед тим, як робити | рішення записане, не «зроблено про всяк випадок» |
+| E4.1 | ✅ `dg/.github/workflows/ai-review.yml` — on `pull_request`, `anthropics/claude-code-action@v1` (interface checked against `docs/solutions.md`), yardstick = `.claude/standards.md`. ⚠️ **Not verified with a real PR:** the repository lacks the `ANTHROPIC_API_KEY` secret (`gh secret list` is empty), so the job currently reports `skipped` | YAML is valid; `gh secret set ANTHROPIC_API_KEY` + a test PR remain |
+| E4.2 | ✅ Two **separate jobs** = separate runners = separate contexts: `standards` (yardstick, language binding) and `spec-and-edges` (spec / boundaries / WASM↔TS / public API) | two independent comments, not one |
+| E4.3 | ✅ The second pass sets exactly one label through `gh pr edit`: `ready-for-human` or `needs-info`, explaining what is missing | label is set automatically |
+| E4.4 | **P3, optional:** external vendor as a third reviewer (another CLI through `Bash` with a file brief, or a GitHub bot) — assess friction before doing it | decision recorded, not “done just in case” |
 
 ### E5 · Post-deploy  (P2)
 
-| # | Задача | DoD |
+| # | Task | DoD |
 |---|---|---|
-| E5.1 | ✅ `e2e/prod-smoke.spec.ts` + `playwright.prod.config.ts` + `npm run test:prod` + `.github/workflows/post-deploy.yml` (`workflow_run` по Pages). **Прогнано по живому деплою: 3 passed, 5.9 s**, білд названо у виводі | падіння видно без ручного відкриття |
-| E5.2 | ✅ `tools/post-deploy/run.sh` + `yarn post-deploy` — ключові flow (`authed-chromium` = `*-crud.e2e.ts`) по **прод-лінійному стенду** (дефолт `v1` :82). Прод-подібне середовище тут — не публічний URL, а стенди з окремими MySQL. **Запобіжник перевірено на обох гілках:** чужий стенд → відмова з інструкцією; правильний, але не піднятий → відмова з командою compose. Свідомо не автоматизує `switch-be.sh` і `cleanup.sh` | ⏳ самі flow не прогнані — стенди зараз опущені |
-| E5.3 | Фінальний post-deploy апдейт дописується **в той самий** `ship-report`, а не в новий файл | один звіт на фічу від плану до прод-перевірки |
+| E5.1 | ✅ `e2e/prod-smoke.spec.ts` + `playwright.prod.config.ts` + `npm run test:prod` + `.github/workflows/post-deploy.yml` (`workflow_run` for Pages). **Run against a live deployment: 3 passed, 5.9 s**, build named in the output | failure is visible without opening it manually |
+| E5.2 | ✅ `tools/post-deploy/run.sh` + `yarn post-deploy` — key flows (`authed-chromium` = `*-crud.e2e.ts`) against the **production-line stand** (default `v1` :82). A prod-like environment here is not a public URL, but stands with separate MySQL instances. **Guard verified on both branches:** wrong stand → refusal with instructions; correct but not running → refusal with the compose command. Deliberately does not automate `switch-be.sh` and `cleanup.sh` | ⏳ the flows themselves were not run — the stands are currently down |
+| E5.3 | The final post-deploy update is appended to **the same** `ship-report`, not a new file | one report per feature from planning to production verification |
 
 ---

@@ -1,6 +1,6 @@
 ---
 name: interface-review
-description: 'Orchestrates a complete interface review — combines the VISUAL gate (anti-slop-design: machine-generated visual cliches) and USABILITY audit (ux-review: Nielsen heuristics, Laws of UX, WCAG 2.2 UX criteria, forms/tables/states/nav/copy/touch/cognitive), plus the project layer and, when available, a11y conformance and copywriting. Merged, deduplicated, ranked findings + one gate. The review counterpart of design-pass (which is for building). Use for a FULL review/audit of a screen, flow, prototype or PR in one pass rather than one lens. Triggers: "interface-review", "повне рев''ю інтерфейсу", "full interface review", "прожар екран/флоу", "аудит UI" (Ukrainian phrases retained as compatibility aliases).'
+description: 'Orchestrates a complete interface review — combines the VISUAL gate (anti-slop-design: machine-generated visual cliches) and USABILITY audit (ux-review: Nielsen heuristics, Laws of UX, WCAG 2.2 UX criteria, forms/tables/states/nav/copy/touch/cognitive), plus the project layer and, when available, a11y conformance and copywriting. Merged, deduplicated, ranked findings + one gate. The review counterpart of design-pass (which is for building). Use for a FULL review/audit of a screen, flow, prototype or PR in one pass rather than one lens. Triggers: "interface-review", "complete interface review", "full interface review", "critique the screen or flow", "UI audit".'
 ---
 
 

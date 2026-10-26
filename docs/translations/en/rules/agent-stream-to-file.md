@@ -2,7 +2,7 @@
 title: Agent stream-to-file — every agent writes its progress to its own file so a failure does not erase its work
 ---
 
-> **Historical English translation — authored derivative.** Original: [rules/agent-stream-to-file.md](../../../../rules/agent-stream-to-file.md). Original SHA256: `4b35270e78dc9bfdf2ff849cfeca28266649e40dc380c0e2ef2aaa0c6110a7e0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
+> **Historical English adaptation — authored derivative.** Historical source: [rules/agent-stream-to-file.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/rules/agent-stream-to-file.md). Original SHA256: `4b35270e78dc9bfdf2ff849cfeca28266649e40dc380c0e2ef2aaa0c6110a7e0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](../../../../rules/agent-stream-to-file.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # 🧵 Agent stream-to-file
 
@@ -47,8 +47,8 @@ to no rule. If it only works when someone remembers to read it, it does not work
 
 **Every dispatch carries the path to a working file and requires writing to it during the work, not at the end.**
 
-The agent prompt contains the following. The record labels `ФАКТ:`, `РІШЕННЯ:`, `ДАЛІ:` and
-`ПИТАННЯ:` are retained compatibility labels meaning FACT, DECISION, NEXT and QUESTION.
+The agent prompt contains the following. Use the record labels `FACT:`, `DECISION:`, `NEXT:` and
+`QUESTION:`.
 
 ```
 WORKING FILE: <path>
@@ -56,12 +56,12 @@ Append to it AFTER EVERY STEP — do not accumulate everything for the final ans
 the entire file (append, not rewrite). If you are interrupted, this file will remain the only work trail.
 Final answer = a concise summary of the file.
 
-**First entry immediately, before the first tool:** a `ДАЛІ:` line with what you intend to check.
+**First entry immediately, before the first tool:** a `NEXT:` line with what you intend to check.
 Then record what is expensive to reconstruct:
-- ФАКТ: verified in code <exactly what, path:line> — before it becomes a conclusion;
-- РІШЕННЯ: <what was chosen>, because <reason> — before writing the section that carries it;
-- ДАЛІ: <what you intended to do next> — the most useful line if the agent dies;
-- ПИТАННЯ: <what remains unresolved>.
+- FACT: verified in code <exactly what, path:line> — before it becomes a conclusion;
+- DECISION: <what was chosen>, because <reason> — before writing the section that carries it;
+- NEXT: <what you intended to do next> — the most useful line if the agent dies;
+- QUESTION: <what remains unresolved>.
 ```
 
 **Why these four.** The harness transcript records **tool calls** — it cannot reconstruct the work.
@@ -72,12 +72,11 @@ line turns an interruption from “start over” into “continue here”.
 
 | Context | Path |
 |---|---|
-| Pipeline step (`spec-flow`, waves) | `<дім артефактів>/_agent-<роль>-<n>.md` |
-| Ad-hoc subagent | session scratchpad, `agent-<роль>.md` |
+| Pipeline step (`spec-flow`, waves) | `<artifact home>/_agent-<role>-<n>.md` |
+| Ad-hoc subagent | session scratchpad, `agent-<role>.md` |
 | Multiple lenses for one step | a separate file per lens — a shared file will collide in a race |
 
-The path placeholders above retain their original spellings: `<дім артефактів>` means artifact home
-and `<роль>` means role.
+The path placeholders above identify the artifact home and the agent role.
 
 **Parallel agents write to different files.** One file for two agents = a corrupted file; this is not
 a recommendation but a consequence of having no locking.
@@ -116,7 +115,7 @@ their intermediate state is already on disk.
 
 - **The guarantee begins with the first flush, not with launch.** Observed: an agent died on an API error
   **before** the first write — no file was created at all, no trail. That is why the first entry
-  (`ДАЛІ:` with the verification plan) is made before the first tool: it costs one line and avoids
+  (`NEXT:` with the verification plan) is made before the first tool: it costs one line and avoids
   “it died — and we do not even know what it intended to do”.
 - For the orchestrator, this has a simple implication: **missing or empty file = agent did not run**
   ([[multi-model-roles]] §3, retry once on another tier). Do not try to guess what it accomplished.

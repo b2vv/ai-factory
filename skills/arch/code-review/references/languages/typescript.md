@@ -2,7 +2,7 @@
 
 **Historical-rule warning:** Factory's inherited
 `rules/typescript-pocock-idioms.md` contains an older forced-interface house rule.
-It is preserved as historical source, not universal current authority. Current
+Its historical policy is retained in an English adaptation, not universal current authority. Current
 Cassiopeia rules use a hybrid policy: types for unions, derived/function shapes;
 interfaces where extension or declaration merging is intended. Follow the actual
 accepted project convention and record conflicts. This reference does not repair

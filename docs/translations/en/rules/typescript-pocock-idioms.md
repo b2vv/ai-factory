@@ -2,7 +2,7 @@
 title: Matt Pocock / TotalTypeScript — idioms (rules)
 ---
 
-> **Historical English translation — authored derivative.** Original: [rules/typescript-pocock-idioms.md](../../../../rules/typescript-pocock-idioms.md). Original SHA256: `06b659fe1b25ea31bd57b093b48646270ac08b05320798be4f50c94884266c42`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
+> **Historical English adaptation — authored derivative.** Historical source: [rules/typescript-pocock-idioms.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/rules/typescript-pocock-idioms.md). Original SHA256: `06b659fe1b25ea31bd57b093b48646270ac08b05320798be4f50c94884266c42`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](../../../../rules/typescript-pocock-idioms.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # 🧠 Matt Pocock / TotalTypeScript — idioms
 

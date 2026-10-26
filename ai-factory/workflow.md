@@ -148,7 +148,7 @@ CRG provides context candidates, not a verdict. Before trusting the graph, check
 
 ### Invocation and tool availability
 
-- Codex CLI: `$назва` or selection via `/skills`; Claude Code: `/назва`. For example, `$design-pass` / `/design-pass`.
+- Codex CLI: `$name` or selection via `/skills`; Claude Code: `/name`. For example, `$design-pass` / `/design-pass`.
 - `disable-model-invocation` is Claude metadata; do not transfer its semantics to another agent without verification. Harness commands, `Agent`, `Workflow`, MCP and specific models are not guaranteed.
 - Before independent review, identify available tools and delegation rules. If there is no independent executor, mark the gate BLOCKED; the author's self-check does not replace it.
 - Count checks launched and results received. A failure or empty response is not “clean”.

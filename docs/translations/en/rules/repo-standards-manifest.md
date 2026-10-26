@@ -2,7 +2,7 @@
 title: Repo standards manifest — .claude/standards.md, format and purpose
 ---
 
-> **Historical English translation — authored derivative.** Original: [rules/repo-standards-manifest.md](../../../../rules/repo-standards-manifest.md). Original SHA256: `fe4c59fa3705145be5d197e031a301274a0c00d1ad5d8d64cbba3c19d6b87b82`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
+> **Historical English adaptation — authored derivative.** Historical source: [rules/repo-standards-manifest.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/rules/repo-standards-manifest.md). Original SHA256: `fe4c59fa3705145be5d197e031a301274a0c00d1ad5d8d64cbba3c19d6b87b82`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](../../../../rules/repo-standards-manifest.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # 📐 Repo standards manifest
 
@@ -32,26 +32,25 @@ will apply the row to the entire repository — and report “does not use `sati
 
 ## 1. Fixed headings
 
-The order and names are stable — skills use them to find their sections. The literal Ukrainian
-heading keys below are retained as compatibility data; the explanations are English.
+The order and names are stable — skills use the English heading keys below to find their sections.
 
 ### Yardstick
 
-Original manifest heading: `## Мірник`.
+Manifest section heading: `## Yardstick`.
 
 Yardstick. Table: **document · what it decides · where its checklist is · applies to**.
 Only what is actually used to judge. An empty “applies to” cell is not allowed.
 
 ### Not a yardstick
 
-Original manifest heading: `## Не мірник`.
+Manifest section heading: `## Not a yardstick`.
 
 Not a yardstick. What looks like a standard but is not: reports, plans, recorded debt, intentions.
 Debt is not a violation; a recorded deviation is not a finding.
 
 ### Machine gates
 
-Original manifest heading: `## Машинні гейти`.
+Manifest section heading: `## Machine gates`.
 
 Machine gates. Command · exactly what it catches. Separately — **what they do NOT catch**, with a date
 and measurement method (“measured by `tools/lint-contract/lint-contract.test.ts`, 2026-08-14”). A measured
@@ -59,14 +58,14 @@ list is more valuable than a declared one: review pays off precisely where machi
 
 ### Constitution
 
-Original manifest heading: `## Конституція`.
+Manifest section heading: `## Constitution`.
 
 Constitution. Rules whose violation means stop, not a comment. Each links to its source (`AGENT.md §11`)
 and notes whether a linter already enforces it — enforced rules are not repeated in review.
 
 ### Pipeline threshold
 
-Original manifest heading: `## Поріг пайплайна`.
+Manifest section heading: `## Pipeline threshold`.
 
 Pipeline threshold. A structural condition (not a judgment) that activates the full SDD cycle:
 “does a new slice directory appear?”, “does a public API change?”. Also state what happens below the
@@ -74,19 +73,19 @@ threshold — a lightweight inline plan.
 
 ### Placement
 
-Original manifest heading: `## Розміщення`.
+Manifest section heading: `## Placement`.
 
 Placement. Where new code goes: “what → where”. Plus the reuse index, if the repository has one.
 
 ### Branches and PRs
 
-Original manifest heading: `## Гілки й PR`.
+Manifest section heading: `## Branches and PRs`.
 
 Branches and PRs. What to branch from, where PRs go, which remotes are canonical.
 
 ### Artifacts
 
-Original manifest heading: `## Артефакти`.
+Manifest section heading: `## Artifacts`.
 
 Artifacts. Home for spec/plan/tasks/reports — and the **task lifecycle**.
 
@@ -108,7 +107,7 @@ Three rules keep this layout working:
 - **Completed work moves to the archive rather than being deleted.** Otherwise the decision trail disappears.
 - **The archive keeps pointers, not copies.** A copy diverges from its original, while a dead pointer is visible
   to the freshness gate.
-- **Debt is not a violation.** The debt directory stays in `## Не мірник`: review does not report it
+- **Debt is not a violation.** The debt directory stays in `## Not a yardstick`: review does not report it
   as a finding.
 
 **`work/` ≠ home for completed research.** If a repository has `reports/**` referenced by code, that is

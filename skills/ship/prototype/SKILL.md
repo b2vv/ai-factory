@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: "Creates a disposable prototype to answer a design question. Use when the user wants to check whether a state model or logic \"feels right\", or explore what the UI should look like. Ukrainian compatibility trigger aliases: \"відчувається правильною\"."
+description: "Creates a disposable prototype to answer a design question. Use when the user wants to check whether a state model or logic \"feels right\", or explore what the UI should look like. Additional trigger phrases: \"feels right\"."
 ---
 
 # Prototype

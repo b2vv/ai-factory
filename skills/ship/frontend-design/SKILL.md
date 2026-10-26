@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: "Visual interface design so it reads as intentional rather than templated. Use when the user builds or reworks the appearance of a web system, portal, app, site or individual screen; asks that it not look AI-generated; or asks about palette, typography, density or design direction. Ukrainian compatibility trigger aliases: \"щоб не виглядало як AI\"."
+description: "Visual interface design so it reads as intentional rather than templated. Use when the user builds or reworks the appearance of a web system, portal, app, site or individual screen; asks that it not look AI-generated; or asks about palette, typography, density or design direction. Additional trigger phrases: \"avoid an AI-generated look\"."
 license: Complete terms in LICENSE.txt
 ---
 

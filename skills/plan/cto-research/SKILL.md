@@ -1,6 +1,6 @@
 ---
 name: cto-research
-description: Builds or updates the single pre-implementation briefing — product, codebase and seams, infrastructure, dependencies, risks — with every claim linked to a primary source. Use before planning a substantial feature, when starting in an unfamiliar repository, when the current briefing is stale, or on triggers "cto research", "брифінг", "розберись у продукті" (Ukrainian phrases retained as compatibility aliases).
+description: Builds or updates the single pre-implementation briefing — product, codebase and seams, infrastructure, dependencies, risks — with every claim linked to a primary source. Use before planning a substantial feature, when starting in an unfamiliar repository, when the current briefing is stale, or on triggers "cto research", "briefing", "understand the product".
 ---
 
 

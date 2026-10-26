@@ -1,198 +1,198 @@
 ---
-title: Multi-model roles — який тір моделі на яку роль у конвеєрі
+title: Multi-model roles — which model tier serves each pipeline role
 ---
+
+> **Historical English adaptation — authored derivative.** Historical source: [rules/multi-model-roles.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/rules/multi-model-roles.md). Original SHA256: `908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](multi-model-roles.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # 🎛️ Multi-model roles
 
-Крос-проєктне правило: як розкладати ролі конвеєра (research → план → критика → захист →
-імплементація → рев'ю → звіт) по моделях. Накладається на `Agent(model:)`, `Workflow` `opts.model`
-та `opts.effort`.
+Cross-project rule: how to distribute pipeline roles (research → planning → critique → defense →
+implementation → review → report) across models. Applies to `Agent(model:)`, `Workflow` `opts.model`
+and `opts.effort`.
 
-## 0. Хто і коли це читає
+## 0. Who reads this and when
 
-Читає **оркестратор** — сесія, що спавнить сабагентів — перед першим `Agent`/`Workflow`.
-Оркестратор ролі з таблиці §2 **делегує, а не виконує сам**: якщо він пише план власними руками,
-рядок «планування = `opus`» не спрацьовує ніколи, бо тір оркестратора задано ззовні (сесією), а не
-цим правилом.
-
----
-
-## 1. Що реально доступно
-
-**Усередині Claude Code вибір моделі = вибір тіра Claude.** `Agent`-tool приймає
-`sonnet | opus | haiku | fable` — **і більше нічого**: поля `effort` у нього немає.
-
-**`effort` досяжний рівно у двох місцях**, і жодне з них не є дефолтним шляхом:
-`Workflow` `opts.effort` (`low | medium | high | xhigh | max`) — **там, де `Workflow`-tool
-доступний**: він є не в кожній сесії, і сабагент усередині фан-ауту його не має взагалі; або
-frontmatter власного агента в `.claude/agents/*.md`. Спавниш через `Agent` — керування зводиться до тіра, і
-рядок таблиці з `effort` виконано **наполовину**; це називається вголос, а не замовчується.
-
-**`subagent_type: "fork"` ніколи не рахується іншою лінзою.** Fork успадковує і контекст, і модель
-батька, а переданий `model:` **мовчки ігнорує** — помилки не буде, вердикт виглядатиме валідним.
-Незалежність (§3) досяжна лише свіжим сабагентом із чистим контекстом.
-
-**GPT / Kimi / Gemini / GML як агенти звідси не викликаються** — це межа інструменту, не
-налаштування. Плануй конвеєр **повноцінним на самих тірах Claude**. Разова крос-вендорна думка,
-якщо вона колись знадобиться (файловий бріф чужому CLI, бот на PR), — окрема нотатка, а не крок
-цього конвеєра: у момент, коли правило читається, жодного чужого CLI на машині може не бути.
+The **orchestrator** — the session spawning subagents — reads this before the first `Agent`/`Workflow`.
+The orchestrator **delegates the roles in §2 rather than performing them itself**: if it writes the plan
+with its own hands, the “planning = `opus`” row never takes effect, because the orchestrator's tier is set
+externally (by the session), not by this rule.
 
 ---
 
-## 2. Розкладка ролей
+## 1. What is actually available
 
-| Роль у конвеєрі                                              | Тір                                            | Чому                                                                          |
+**Inside Claude Code, choosing a model means choosing a Claude tier.** The `Agent` tool accepts
+`sonnet | opus | haiku | fable` — **and nothing else**: it has no `effort` field.
+
+**`effort` is available in exactly two places**, neither of which is the default route:
+`Workflow` `opts.effort` (`low | medium | high | xhigh | max`) — **where the `Workflow` tool
+is available**: not every session has it, and a subagent inside fan-out does not have it at all; or
+the frontmatter of your own agent in `.claude/agents/*.md`. Spawn through `Agent` and control is limited
+to the tier, so a table row with `effort` is fulfilled **only halfway**; say so explicitly rather than hiding it.
+
+**`subagent_type: "fork"` never counts as another lens.** A fork inherits both the parent's context
+and model, and **silently ignores** a supplied `model:` — there is no error, and the verdict looks valid.
+Independence (§3) is achievable only with a fresh subagent and clean context.
+
+**GPT / Kimi / Gemini / GML cannot be invoked as agents from here** — this is a tool boundary,
+not a setting. Plan the pipeline to be **fully functional using Claude tiers alone**. A one-off
+cross-vendor opinion, if ever needed (a file brief for another CLI, a PR bot), is a separate note,
+not a step in this pipeline: when this rule is read, the machine may have no other CLI installed.
+
+---
+
+## 2. Role allocation
+
+| Pipeline role                                               | Tier                                           | Why                                                                           |
 | ------------------------------------------------------------ | ---------------------------------------------- | ----------------------------------------------------------------------------- |
-| **Планування, архітектурні розвилки**                        | `opus`                                         | найдорожча помилка — тут; ціна токенів мізерна проти переробки                |
-| **Критика плану** ([[plan-critique]])                        | `fable` — тобто **не тір планувальника**; спільний пул майже вичерпано → `sonnet` (§2.2) | лінза має бути незалежною; та сама модель схильна погодитись зі своїм текстом |
-| **Захист плану** ([[plan-defense]])                          | `sonnet` мінімум, **не автор плану**           | форма фіксована, вердикт — ні: питання 3 і 5 вимагають судження про гонку й незворотність |
-| **Research по репо / докам**                                 | `sonnet`                                       | обсяг читання великий, судження прості                                        |
-| **Імплементація таска**                                      | `sonnet` (`opus` на крос-межові зміни)         | план уже прийняв рішення; агент виконує                                       |
-| **Механіка** (перейменування, порти конфігів, масові правки) | `haiku`                                        | детерміноване перетворення                                                    |
-| **Код-рев'ю**                                                | **інший тір, ніж імплементував**               | однакова модель відтворює ту саму сліпу зону                                  |
+| **Planning, architectural alternatives**                     | `opus`                                         | the most expensive mistakes happen here; token cost is tiny compared with rework |
+| **Plan critique** ([[plan-critique]])                        | `fable` — **not the planner's tier**; shared pool nearly exhausted → `sonnet` (§2.2) | the lens must be independent; the same model tends to agree with its own text |
+| **Plan defense** ([[plan-defense]])                          | at least `sonnet`, **not the plan author**      | the form is fixed, the verdict is not: questions 3 and 5 require judgment about races and irreversibility |
+| **Research in repositories / documentation**                 | `sonnet`                                       | reading volume is high, judgments are simple |
+| **Task implementation**                                     | `sonnet` (`opus` for cross-boundary changes)     | the plan has already made the decisions; the agent executes |
+| **Mechanics** (renames, configuration ports, bulk edits)      | `haiku`                                        | deterministic transformation |
+| **Code review**                                             | **a different tier from the implementer**       | the same model reproduces the same blind spot |
 
-`effort` у клітинках навмисно немає — див. §1: через `Agent` він не передається. Коли крок іде
-через `Workflow`, бери `high` на планування і `low` на механіку.
+The cells deliberately omit `effort` — see §1: `Agent` cannot pass it. When the step uses
+`Workflow`, choose `high` for planning and `low` for mechanics.
 
-Кількість задач конвеєра (нуль, одна, багато) тір не змінює: таблиця застосовується **на роль**,
-а не на задачу — нуль задач означає, що роль просто не викликається, одна задача проходить ті самі
-рядки, що й N.
+The number of pipeline tasks (zero, one, many) does not change the tier: the table applies **per role**,
+not per task — zero tasks means the role is simply not invoked; one task follows the same rows as N.
 
-### 2.1 Коли потрібного тіра немає
+### 2.1 When the required tier is unavailable
 
-Імена тірів ретаяться, а акаунт може не мати `fable`. Порядок підстановки для ролі-вердикту:
-`fable → opus → sonnet`, **пропускаючи тір автора артефакту** — інакше перший же крок підстановки
-поверне вердикт тому, хто артефакт і писав. **Незалежність важить більше за тір**: критика на
-`sonnet` по чужому плану краща за `opus` по власному. Якщо довелось знизити тір — це рядок у звіті
-(`тір знижено: fable → sonnet`), а не мовчазна заміна.
+Tier names are retired, and an account may not have `fable`. Substitution order for a verdict role:
+`fable → opus → sonnet`, **skipping the artifact author's tier** — otherwise the very first substitution
+returns the verdict to the author. **Independence matters more than tier**: `sonnet` critiquing someone
+else's plan is better than `opus` critiquing its own. If the tier had to be lowered, include a report line
+(`tier lowered: fable → sonnet`), rather than silently substituting it.
 
-**Роль, якої немає в таблиці §2** — оркестратор мапить задачу на найближчий за характером рядок:
-судження про архітектуру/розвилки → «Планування»; читання й синтез без рішень → «Research»;
-детерміноване перетворення без судження → «Механіка». Мапінг неочевидний — бери `sonnet` (дефолт
-цього правила) і назви причину в звіті (`роль поза таблицею: <назва>`), а не мовчи.
+**A role absent from the §2 table** — the orchestrator maps the task to the row closest in nature:
+judgment about architecture/alternatives → “Planning”; reading and synthesis without decisions → “Research”;
+deterministic transformation without judgment → “Mechanics”. If the mapping is unclear, use `sonnet`
+(this rule's default) and state the reason in the report (`role outside the table: <name>`), rather than saying nothing.
 
-### 2.2 Критика: чотири лінзи дорогим тіром — найдорожчий рядок конвеєра
+### 2.2 Critique: four lenses on an expensive tier — the pipeline's most expensive row
 
-`plan-critique` множить вартість на чотири: один прогін = чотири сабагенти. Дорогий тір тут
-відчутний саме тому, що це єдина роль із вбудованим фан-аутом.
+`plan-critique` multiplies cost by four: one run = four subagents. An expensive tier is especially
+noticeable here because this is the only role with built-in fan-out.
 
-**Що насправді робить лінза.** Три з чотирьох ідуть по фіксованому переліку — AI-slop, надлишкова
-складність, edge cases: питання відомі наперед, і робота полягає в **дисциплінованому покритті**,
-а не в глибині міркування. Такому кроку потрібен чіткий completion criterion, і будь-який тір від
-`sonnet` угору його виконує. Четверта — **логічні діри** — єдина, де треба простежити, що з чого
-випливає; це судження, і тільки вона виграє від дорожчого тіра.
+**What a lens actually does.** Three of the four follow a fixed list — AI slop, excess complexity,
+edge cases: the questions are known in advance, and the work is **disciplined coverage**, not depth
+of reasoning. Such a step needs a clear completion criterion, and any tier from `sonnet` upward
+can fulfill it. The fourth — **logical gaps** — is the only one that must trace what follows from what;
+this is judgment, and it alone benefits from a more expensive tier.
 
-**Схема за замовчуванням — дешево вшир, дорого вглиб:**
+**Default arrangement — inexpensive breadth, expensive depth:**
 
-1. Усі чотири лінзи на `fable` (умова одна: це не тір автора плану). Тісно зі спільним пулом —
-   `sonnet`; підстава й межі цього вибору — «Коли `fable` доречний» нижче.
-2. Лінза «логічні діри» — той самий тір, або дорожчий, якщо план архітектурний.
-3. **Ескалація за знахідкою, а не заздалегідь:** на підтвердження дорожчим тіром ідуть
-   blocking-знахідки, і лише вони. Ескалюється кілька рядків, а не чотири повні прогони плану.
-4. Зведення (дедуп між лінзами, рішення blocking / non-blocking) — крок, де дорогий тір окупається
-   найкраще: вхід уже короткий, а ціна помилки — пропущений blocking.
+1. All four lenses on `fable` (one condition: it is not the plan author's tier). If the shared pool
+   is tight, use `sonnet`; the basis and limits of this choice are under “When `fable` is appropriate” below.
+2. The “logical gaps” lens uses the same tier, or a more expensive one if the plan is architectural.
+3. **Escalate on a finding, not in advance:** send blocking findings, and only those, to a more
+   expensive tier for confirmation. Escalate a few lines, not four full runs over the plan.
+4. Synthesis (deduplication across lenses, blocking / non-blocking decisions) is where an expensive
+   tier pays off most: the input is already short, and the cost of error is a missed blocker.
 
-Так дорогий тір бачить **знахідки**, а не весь план чотири рази.
+This way the expensive tier sees **findings**, not the entire plan four times.
 
-**Чого не можна робити заради економії:** зводити чотири лінзи в один прогін «перевір усе одразу».
-Тоді перша знахідка задає рамку решті, фан-аут вироджується в одну лінзу з довшим промптом — і
-зникає саме те, за що платили. Дешевшає **тір**, не кількість лінз.
+**What you must not do to save money:** collapse the four lenses into one “check everything at once” run.
+Then the first finding frames the rest, fan-out degenerates into a single lens with a longer prompt —
+and the very property you paid for disappears. Lower the **tier**, not the number of lenses.
 
-**Окремого гаманця в жодної моделі немає.** Ліміти дворівневі: спільне вікно, **shared across all
-models**, куди падають токени всіх тірів, і зверху — під-ліміт на родину («You've hit your Opus
-limit»), який може вибити лише вона. Модель списується в **обидва**. Тому рядок «Fable — 8%»
-означає лише «своєї стелі не виб'єш», а не «цей тір безкоштовний для спільного пулу»
-([docs: manage costs](https://code.claude.com/docs/en/costs), «When a developer asks about a limit»).
+**No model has its own separate wallet.** Limits have two levels: a common window, **shared across all
+models**, which receives tokens from every tier, and above it a family sub-limit (“You've hit your Opus
+limit”) that only that family can exhaust. A model consumes **both**. Therefore “Fable — 8%” means only
+“you will not hit its own ceiling”, not “this tier is free for the shared pool”
+([docs: manage costs](https://code.claude.com/docs/en/costs), “When a developer asks about a limit”).
 
-Наслідок: **перенесення ролі між тірами спільний пул не звільняє** — воно міняє лише швидкість,
-з якою він тече. Економія береться з **обсягу й кількості запитів**, тобто з ескалації за
-знахідкою (п. 3 вище), а не з вибору моделі.
+Consequence: **moving a role between tiers does not free the shared pool** — it only changes the speed
+at which it drains. Savings come from **request volume and count**, meaning escalation on a finding
+(item 3 above), not from model selection.
 
-**Коли `fable` доречний.** Підстава — не гаманець, а **стеля родини**. Спільне вікно вибиває
-роботу цілком, а под-ліміт родини — ні: після «You've hit your Sonnet limit» перехід на модель
-іншої родини роботу продовжує. Тож `fable` тримає критику живою тоді, коли планувальник і
-імплементер уже виїли стелю своєї родини, — і водночас автоматично задовольняє §3
-(інший тір, ніж автор плану).
+**When `fable` is appropriate.** The reason is not a separate wallet but the **family ceiling**.
+Exhausting the shared window stops all work; exhausting a family sub-limit does not: after “You've hit
+your Sonnet limit”, switching to another family lets work continue. Thus `fable` keeps critique alive
+when the planner and implementer have already consumed their family's ceiling — while automatically
+satisfying §3 (a different tier from the plan author).
 
-Читати рядки `/usage` так:
+Read `/usage` rows as follows:
 
-| Що бачиш | Що це означає для критики |
+| What you see | What it means for critique |
 |---|---|
-| `fable` низький, спільний пул низький | бери `fable` — незалежність задарма |
-| `fable` низький, **спільний пул високий** | вузьке місце не в тірі: ріж обсяг (ескалація за знахідкою), тір вторинний |
-| `fable` високий | критика вибиває власну стелю — знижуй до `sonnet`, пропускаючи тір автора (§2.1) |
+| `fable` low, shared pool low | use `fable` — independence at no extra cost |
+| `fable` low, **shared pool high** | the bottleneck is not the tier: reduce volume (escalate on findings); tier is secondary |
+| `fable` high | critique is hitting its own ceiling — lower to `sonnet`, skipping the author's tier (§2.1) |
 
-Тобто «переносити на `fable` заради економії спільного пулу» сенсу не має — а «тримати на
-`fable`, щоб не конкурувати за стелю родини планувальника» має.
+Thus “move to `fable` to save the shared pool” makes no sense — whereas “stay on `fable` to avoid
+competing for the planner family's ceiling” does.
 
-**Перед тим як міняти тір — виміряй, а не вгадуй.** `/usage` (клавіша `w` — тижневий зріз) має
-секцію **attribution**: розкладку споживання по скілах, сабагентах, плагінах і MCP-серверах,
-плюс **behavior flags** для того, що займає ≥10% — довгий контекст, кеш-місси. Якщо зверху
-виявиться довгий контекст, тір критики ні до чого, і міняти треба звички сесії.
-
----
-
-## 3. Правило незалежності
-
-Головне тут — не «дорожча модель краща», а **різні очі на різних кроках**.
-
-- Модель, що писала артефакт, **не** виносить по ньому вердикт. Планувальник ≠ критик,
-  імплементер ≠ рев'юєр. Досягається **тільки** свіжим сабагентом: `fork` успадковує модель і
-  контекст (§1).
-- **Тір автора записується, а не пригадується.** Задача пише `model=<тір>` у ledger **при
-  диспатчі**, не по завершенні ([[subagent-orchestration-ledger]] §1) — інакше після компакції
-  між DONE і рев'ю відповіді ще немає саме тоді, коли вона потрібна. Кроки поза задачами
-  (план, критика, захист) записують свій тір там, куди лягає їхній вердикт — у сам план або
-  звіт. Тір автора невідомий (resume, чужий або людський артефакт, ledger-рядок з тіром відсутній
-  або не читається) — вважай його `opus` і бери вердикт іншим тіром (`fable` або `sonnet`), а не
-  вгадуй.
-- Ізоляцію лінз одного кроку задає сам скіл (`plan-critique` §2: окремий сабагент, чистий
-  контекст) — тут це не переказується. Різні тіри між лінзами не потрібні: між собою їх розводить
-  контекст, різний тір потрібен лише **проти автора артефакту**.
-- **Лінза, що не повернулась, — це червоний гейт, а не «чисто».** `null` від агента (скіп,
-  падіння після ретраїв) = лінза не бігла: один ретрай на іншому тірі з тим самим чистим
-  контекстом; знову `null` — гейт червоний, і в звіті названо, якої лінзи бракує.
-- Коли вердикти розходяться — це сигнал, а не шум: розходження показує, де артефакт
-  двозначний. Розв'язується правкою артефакту, а не голосуванням.
-- **Друге коло критики** бере іншого критика, ніж перше, або дивиться лише правлені рядки: після
-  правок план містить текст, продиктований першим критиком, і той судив би власний внесок.
-- Якщо доступний **один-єдиний тір** — крок виконується ним, але в чистому контексті, і в звіт
-  іде рядок `незалежність: порушена (один тір)`. Мовчазне виконання заборонене.
-- **Той самий крок запущено вдруге** (гонка, дві вкладки, дві сесії оркеструють один конвеєр,
-  зайвий ретрай) — тір не змінюється: його визначає роль, а не інстанс виклику, тож обидва
-  прогони йдуть тим самим тіром і з тим самим правилом незалежності. Який із результатів
-  канонічний — вирішує durable ledger ([[subagent-orchestration-ledger]] §1: перший рядок
-  `dispatched` виграє), не це правило; воно гарантує лише однаковість тіра між прогонами, не
-  дедуплікацію самого виклику.
-- **Rollback вибору тіра.** Дешевий тір зіпсував крок, або незалежність порушили і вердикт хибний
-  — перевиконай крок на призначеному §2 тірі в новому чистому сабагенті; ledger отримує новий
-  рядок `dispatched`, старий не переписується заднім числом. Токени, витрачені на зіпсований
-  прогін, і код, уже закомічений чи запушений за хибним вердиктом, — sunk cost: це правило їх не
-  повертає. Відкат самого коду (revert, force-push) — git-операція поза цим правилом і на
-  спільній гілці незворотна для того, хто вже витягнув попередню версію. Правило гарантує тільки
-  що повторний прогін піде правильним тіром і незалежністю, не що ефекти першого прогону
-  зникнуть.
+**Before changing tiers, measure rather than guess.** `/usage` (the `w` key selects the weekly view)
+has an **attribution** section: consumption broken down by skills, subagents, plugins and MCP servers,
+plus **behavior flags** for anything taking ≥10% — long context, cache misses. If long context turns
+out to be the largest contributor, the critique tier is irrelevant and session habits need to change.
 
 ---
 
-## 4. Коли тір не має значення
+## 3. Independence rule
 
-Не витрачай `opus` там, де крок має **перевірюваний критерій завершення** і не потребує судження:
-прогін гейтів, заповнення фіксованої таблиці, оновлення шапки файлу. Дешевий тір із чітким
-критерієм дає той самий результат. Обережно з межею: фіксована **форма** відповіді ще не означає
-детермінований **вердикт** (див. рядок «Захист плану» в §2).
+The main point is not “a more expensive model is better” but **different eyes at different steps**.
 
-## 5. Захист (plan-defense)
+- The model that wrote an artifact **does not** issue its verdict. Planner ≠ critic,
+  implementer ≠ reviewer. This is achieved **only** through a fresh subagent: `fork` inherits model
+  and context (§1).
+- **Record the author's tier rather than recalling it.** The task writes `model=<tier>` to the ledger
+  **at dispatch**, not on completion ([[subagent-orchestration-ledger]] §1) — otherwise, after compaction
+  between DONE and review, the answer is absent exactly when it is needed. Steps outside tasks
+  (plan, critique, defense) record their tier wherever their verdict lands — in the plan or report.
+  If the author's tier is unknown (resume, someone else's or a human artifact, missing or unreadable
+  ledger row with a tier), treat it as `opus` and obtain a verdict from another tier (`fable` or `sonnet`),
+  rather than guessing. The placeholder `<tier>` identifies the model tier.
+- Isolation of lenses within a step is defined by the skill itself (`plan-critique` §2: a separate
+  subagent, clean context) and is not repeated here. Different tiers among lenses are unnecessary:
+  context separates them; a different tier is needed only **against the artifact's author**.
+- **A lens that does not return is a red gate, not “clean”.** Agent `null` (skip, crash after retries)
+  = lens did not run: retry once on another tier with the same clean context; another `null` means
+  the gate is red, and the report names the missing lens.
+- Disagreeing verdicts are a signal, not noise: disagreement shows where the artifact is ambiguous.
+  Resolve it by editing the artifact, not by voting.
+- **A second round of critique** uses a different critic from the first, or examines only the edited
+  lines: after changes, the plan contains text dictated by the first critic, who would be judging their own contribution.
+- If **only one tier** is available, use it but in a clean context, and include the report line
+  `independence: violated (one tier)`. Silent execution is forbidden.
+- **The same step is launched twice** (a race, two tabs, two sessions orchestrating one pipeline,
+  an unnecessary retry) — the tier does not change: the role determines it, not the invocation instance,
+  so both runs use the same tier and independence rule. Which result is canonical is decided by
+  the durable ledger ([[subagent-orchestration-ledger]] §1: the first `dispatched` row wins), not this
+  rule; it guarantees consistent tiers across runs, not deduplication of the invocation itself.
+- **Rollback of tier selection.** If a cheap tier spoiled a step, or independence was violated and
+  the verdict is wrong, rerun the step on the tier assigned by §2 in a new clean subagent; the ledger
+  gets a new `dispatched` row, and the old one is not rewritten retroactively. Tokens spent on the
+  spoiled run and code already committed or pushed under the false verdict are sunk costs: this rule
+  does not recover them. Rolling back the code itself (revert, force-push) is a git operation outside
+  this rule and is irreversible on a shared branch for anyone who already fetched the previous version.
+  The rule guarantees only that the rerun uses the correct tier and independence, not that the effects
+  of the first run disappear.
 
-| # | Питання | Закрито рядком | Вердикт |
+---
+
+## 4. When tier does not matter
+
+Do not spend `opus` on a step with a **verifiable completion criterion** that requires no judgment:
+running gates, filling a fixed table, updating a file header. A cheap tier with a clear criterion
+yields the same result. Be careful at the boundary: a fixed answer **form** does not imply a
+deterministic **verdict** (see the “Plan defense” row in §2).
+
+## 5. Defense (plan-defense)
+
+| # | Question | Covered by | Verdict |
 |---|---|---|---|
-| 1 | Кривий інпут | §2.1 «Роль, якої немає в таблиці §2» (роль поза таблицею); §3 «Тір автора невідомий» (артефакт без відомого автора); §2.1 «Імена тірів ретаяться, а акаунт може не мати `fable`» (тір відсутній в акаунті) | закрито |
-| 2 | Відмова залежності | §1 «`Workflow`-tool доступний... він є не в кожній сесії» (немає `Workflow`); §2.1 «Порядок підстановки... `fable → opus → sonnet`» (немає потрібного тіра); §3 «Лінза, що не повернулась, — це червоний гейт» (сабагент `null`/помер); §3 «ledger-рядок з тіром відсутній або не читається» (ledger не читається) | закрито |
-| 3 | Гонка й повторний виклик | §3 «Той самий крок запущено вдруге» (той самий крок двічі, дві сесії на один конвеєр); §3 «Друге коло критики бере іншого критика» (повторна критика); лінзи паралельно — поза скоупом явно, бо ізоляцію задає сам скіл (§3 «Ізоляцію лінз одного кроку задає сам скіл... тут це не переказується») | закрито |
-| 4 | Порожні та граничні дані | §2 «Кількість задач конвеєра (нуль, одна, багато) тір не змінює» (нуль/одна задача); §3 «Якщо доступний один-єдиний тір» (єдиний тір); §3 «Тір автора невідомий (resume, ...)» (вхід у конвеєр із середини); §3 «...інакше після компакції між DONE і рев'ю відповіді ще немає саме тоді, коли вона потрібна» (компакція посеред конвеєра) | закрито |
-| 5 | Rollback | §3 «Rollback вибору тіра» (перевиконання на призначеному тірі, новий рядок `dispatched`, sunk cost токенів і закомічений код, git-відкат — поза правилом) | закрито |
+| 1 | Malformed input | §2.1 “A role absent from the §2 table” (role outside the table); §3 “If the author's tier is unknown” (artifact with no known author); §2.1 “Tier names are retired, and an account may not have `fable`” (tier absent from account) | covered |
+| 2 | Dependency failure | §1 “where the `Workflow` tool is available… not every session has it” (no `Workflow`); §2.1 “Substitution order… `fable → opus → sonnet`” (required tier unavailable); §3 “A lens that does not return is a red gate” (subagent `null`/dead); §3 “missing or unreadable ledger row with a tier” (ledger unreadable) | covered |
+| 3 | Race and repeated invocation | §3 “The same step is launched twice” (same step twice, two sessions for one pipeline); §3 “A second round of critique uses a different critic” (repeated critique); parallel lenses explicitly out of scope because the skill defines isolation (§3 “Isolation of lenses within a step is defined by the skill itself… and is not repeated here”) | covered |
+| 4 | Empty and boundary data | §2 “The number of pipeline tasks (zero, one, many) does not change the tier” (zero/one task); §3 “If only one tier is available” (single tier); §3 “If the author's tier is unknown (resume, …)” (entering midway through the pipeline); §3 “…otherwise, after compaction between DONE and review, the answer is absent exactly when it is needed” (compaction mid-pipeline) | covered |
+| 5 | Rollback | §3 “Rollback of tier selection” (rerun on assigned tier, new `dispatched` row, token and committed-code sunk costs, git rollback outside this rule) | covered |
 
-## 🔗 Пов'язане
+## 🔗 Related
 
-- `~/.agents/rules/subagent-orchestration-ledger.md` — ledger + 4 статуси для паралельної роботи
-- `~/.agents/ai-factory-plan.md` — конвеєр, у якому ці ролі живуть
+- `~/.agents/rules/subagent-orchestration-ledger.md` — ledger + 4 statuses for parallel work
+- `~/.agents/ai-factory-plan.md` — the pipeline in which these roles operate

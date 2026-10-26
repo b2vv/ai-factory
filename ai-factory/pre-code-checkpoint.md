@@ -40,6 +40,8 @@ python3 -B runtime/checkpoint/precode.py change /explicit/before.json /explicit/
 python3 -B runtime/checkpoint/precode.py index --root /explicit/repository --index work/tasks/README.md --task-root work/tasks
 ```
 
+The index advisory check recognizes the English label `Next available number` followed by an em dash, colon or hyphen and a bold numeric value. Previously localized labels are outside this check's supported vocabulary; existing external indexes require their own migration.
+
 The validator checks declaration consistency: missing impact, unresolved required questions/dependencies, stale snapshot declarations and missing independent evidence block READY. Batch validation returns each task's status. `index` is an opt-in directory-index check for Cargo-style task folders, not a universal phase/queue migration. It checks links/directory coverage, not semantic status truth.
 
 **Enforcement limit:** neither prose nor this helper proves factual evidence, correct applicability, reviewer independence, native discovery or agent compliance. It never reads Git state, runs graphs, starts agents or changes configuration. The operator must collect/verify current evidence and invoke the check if selected. No CI/hook enforcement is installed by this release; fixtures validate the helper's behavior only.

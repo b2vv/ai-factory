@@ -15,8 +15,8 @@ from unittest.mock import patch
 
 import discovery_check as d
 
-LITERAL = '{"data":[{"cwd":"/fixture/project","errors":[],"skills":[{"name":"огляд","path":"/fixture/skills/review/SKILL.md","enabled":true}]}]}\n'.encode()
-LITERAL_SHA = 'ac1f4daee337e968c7e1d025da94f84bcf1e253620b59ba35b4f252db3a95963'
+LITERAL = '{"data":[{"cwd":"/fixture/project","errors":[],"skills":[{"name":"review","path":"/fixture/skills/review/SKILL.md","enabled":true}]}]}\n'.encode()
+LITERAL_SHA = '34cd647101c4a0871015737aa7bf3b7cc3c531b7ae138d68b9866d4efd876ea3'
 
 
 def encode(value):
@@ -26,7 +26,7 @@ def encode(value):
 def expected(raw=LITERAL):
     return dict(schema_version=1, profile='codex-skills-list-result-v1', provider='codex',
                 method='skills/list', response_sha256=hashlib.sha256(raw).hexdigest(),
-                cwd='/fixture/project', skills=[dict(name='огляд', path='/fixture/skills/review/SKILL.md', enabled=True)])
+                cwd='/fixture/project', skills=[dict(name='review', path='/fixture/skills/review/SKILL.md', enabled=True)])
 
 
 class DiscoveryTests(unittest.TestCase):
@@ -62,7 +62,7 @@ class DiscoveryTests(unittest.TestCase):
             elif fault == 'disabled': skills[0]['enabled'] = False
             elif fault == 'path': skills[0]['path'] = '/other/SKILL.md'
             elif fault == 'duplicate': skills.append(copy.deepcopy(skills[0]))
-            else: skills[0]['name'] = 'Огляд'
+            else: skills[0]['name'] = 'Review'
             with self.subTest(fault=fault):
                 result = self.result(obj)
                 self.assert_status(result, 'MISMATCH')
@@ -125,11 +125,20 @@ class DiscoveryTests(unittest.TestCase):
             with self.subTest(cwd=cwd): self.assert_status(self.result(contract=item), 'BLOCKED')
 
     def test_english_and_unicode_exact_selection(self):
-        for name in ('review', 'огляд', 'café', 'cafe\u0301'):
+        for name in ('review', 'naïve', 'café', 'cafe\u0301'):
             obj = json.loads(LITERAL); obj['data'][0]['skills'][0]['name'] = name
             contract = expected(encode(obj)); contract['skills'][0]['name'] = name
             self.assert_status(self.result(obj, contract), 'RESPONSE_MATCH')
 
+    def test_unicode_case_and_normalization_are_distinct_names(self):
+        for supplied in ('Café', 'cafe\u0301'):
+            obj = json.loads(LITERAL); obj['data'][0]['skills'][0]['name'] = supplied
+            contract = expected(encode(obj)); contract['skills'][0]['name'] = 'café'
+            with self.subTest(supplied=supplied):
+                result = self.result(obj, contract)
+                self.assert_status(result, 'MISMATCH')
+                self.assertEqual(0, result['matched_count'])
+                self.assertEqual(hashlib.sha256(encode(obj)).hexdigest(), result['response_sha256'])
     def test_digest_mismatch_is_blocked(self):
         item = expected(); item['response_sha256'] = '0'*64
         self.assert_status(self.result(contract=item), 'BLOCKED')
@@ -170,7 +179,7 @@ class DiscoveryTests(unittest.TestCase):
         for fault in ('missing_field', 'duplicate_name', 'disabled_expected', 'relative_nested_path'):
             obj = json.loads(LITERAL); contract = expected(encode(obj))
             if fault == 'missing_field': del obj['data'][0]['skills'][0]['path']
-            elif fault == 'duplicate_name': contract['skills'].append(dict(name='огляд', path='/different/SKILL.md', enabled=True))
+            elif fault == 'duplicate_name': contract['skills'].append(dict(name='review', path='/different/SKILL.md', enabled=True))
             elif fault == 'disabled_expected': contract['skills'][0]['enabled'] = False
             else: contract['skills'][0]['path'] = 'relative/sub/SKILL.md'
             contract['response_sha256'] = hashlib.sha256(encode(obj)).hexdigest()
@@ -350,7 +359,7 @@ class CrossHostTests(unittest.TestCase):
     assert_status = DiscoveryTests.assert_status
     def portable(self, provider='claude', fault=None):
         obj = dict(schema_version=1, provider=provider, cwd='/fixture/project',
-                   skills=[dict(name='огляд', path='/fixture/skills/review/SKILL.md', enabled=True)])
+                   skills=[dict(name='review', path='/fixture/skills/review/SKILL.md', enabled=True)])
         if fault == 'missing': obj['skills'] = []
         elif fault == 'disabled': obj['skills'][0]['enabled'] = False
         elif fault == 'path': obj['skills'][0]['path'] = '/other/SKILL.md'

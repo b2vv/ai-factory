@@ -132,24 +132,24 @@
     },
     {
       "destination": "skills/arch/code-review/references/languages/typescript.md",
-      "sha256": "8cca261c747670906d0b0e3967fd2ff6c37ef9c7c9a8b479a881d060f217e73c",
+      "sha256": "4e33920edd290f84f3babf6c2f0431621e7859951880aab6cc920962230e4130",
       "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
     }
   ],
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "665170181aaf0412c5c53ce117d0c2bba5a7bec087475be886247cca6da469ac",
+      "before_sha256": "2c3ceff24f49ed858e96a542a4213fc237e7a2a567876588ed5cdcad9fcf532d",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "264e87dd2651551a9901f549dcbc30c28ba77ac31c95b85e58e2be319f736864"
+      "after_sha256": "d8e5eacc22ae5adae0ce4c3f6b71193b05cf50511faf1f99d64952827d2f59ac"
     },
     {
       "destination": "skills/plan/plan-critique/SKILL.md",
-      "before_sha256": "18af9252e763326c8bc5f096f1fe01c8d34c1fd94e904f479ea79dd3c894f1e7",
+      "before_sha256": "70dc52aca0e22f9205d4040289746eb1cecb0aa842e72886035ca9ce62c45f61",
       "append": "\n## Clean critic input\n\nGive the selected independent critic the exact artifact, accepted contract, scoped snapshot and raw supporting evidence. Keep the author's proposed verdict, persuasive summary and private reasoning out of the initial packet; preserve relevant factual constraints and raw prior findings. Classify findings as actionable, contract misunderstanding, accepted tradeoff or unsupported, with evidence for each disposition. This refines the existing four-lens/local reviewer route; it does not authorize duplicate reviewers, a different model, paid API fallback or an automatic review loop. Missing authorized execution remains BLOCKED.\n\nAdaptation source: [doubt-driven-development](https://github.com/addyosmani/agent-skills/blob/aeac41d4d005999432bb7312f7ff06383a91d59d/skills/doubt-driven-development/SKILL.md), MIT; [license](LICENSE.addyosmani).\n",
       "append_sha256": "7676726786e091c623a32c41ab4b0b5c8fbed16ebab3a3836513d70a5cd35ff0",
-      "after_sha256": "e8323990106a6387c7478016ebf6f3b1efb406bdd862c8e2fdfeb3b12db6ce28"
+      "after_sha256": "35f38da3afdf028de92d4132853a99828c2fffc149f51d59cd104f78d56a7451"
     }
   ],
   "execution": "No upstream scripts, installers, hooks or fenced code executed."

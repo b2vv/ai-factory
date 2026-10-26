@@ -1,6 +1,6 @@
 ---
 name: plan-critique
-description: Critiques a completed plan through four independent lenses — AI-slop, logical gaps, excess complexity, uncovered edge cases — and consolidates findings into blocking / non-blocking. Use as a gate after writing a plan or specification, before task breakdown, or on the triggers "критика плану", "прожар план", "plan critique" (the Ukrainian phrases are retained compatibility triggers).
+description: Critiques a completed plan through four independent lenses — AI-slop, logical gaps, excess complexity, uncovered edge cases — and consolidates findings into blocking / non-blocking. Use as a gate after writing a plan or specification, before task breakdown, or on the triggers "critique the plan", "stress-test the plan", "plan critique".
 ---
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.

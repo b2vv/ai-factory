@@ -1,6 +1,6 @@
 ---
 name: cto-research
-description: Builds or updates the single pre-implementation briefing — product, codebase and seams, infrastructure, dependencies, risks — with every claim linked to a primary source. Use before planning a significant feature, when starting in an unfamiliar repo, when the existing briefing is stale, or on the triggers "cto research", "брифінг", "розберись у продукті" (the Ukrainian phrases are retained compatibility triggers).
+description: Builds or updates the single pre-implementation briefing — product, codebase and seams, infrastructure, dependencies, risks — with every claim linked to a primary source. Use before planning a significant feature, when starting in an unfamiliar repo, when the existing briefing is stale, or on the triggers "cto research", "briefing", "understand the product".
 ---
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.

@@ -2,7 +2,7 @@
 title: Multi-model roles — which model tier serves each pipeline role
 ---
 
-> **Historical English translation — authored derivative.** Original: [rules/multi-model-roles.md](../../../../rules/multi-model-roles.md). Original SHA256: `908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
+> **Historical English adaptation — authored derivative.** Historical source: [rules/multi-model-roles.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/rules/multi-model-roles.md). Original SHA256: `908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](../../../../rules/multi-model-roles.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # 🎛️ Multi-model roles
 
@@ -65,13 +65,12 @@ Tier names are retired, and an account may not have `fable`. Substitution order 
 `fable → opus → sonnet`, **skipping the artifact author's tier** — otherwise the very first substitution
 returns the verdict to the author. **Independence matters more than tier**: `sonnet` critiquing someone
 else's plan is better than `opus` critiquing its own. If the tier had to be lowered, include a report line
-(`тір знижено: fable → sonnet`, meaning “tier lowered: fable → sonnet”), rather than silently substituting it.
+(`tier lowered: fable → sonnet`), rather than silently substituting it.
 
 **A role absent from the §2 table** — the orchestrator maps the task to the row closest in nature:
 judgment about architecture/alternatives → “Planning”; reading and synthesis without decisions → “Research”;
 deterministic transformation without judgment → “Mechanics”. If the mapping is unclear, use `sonnet`
-(this rule's default) and state the reason in the report (`роль поза таблицею: <назва>`, meaning
-“role outside the table: <name>”), rather than saying nothing.
+(this rule's default) and state the reason in the report (`role outside the table: <name>`), rather than saying nothing.
 
 ### 2.2 Critique: four lenses on an expensive tier — the pipeline's most expensive row
 
@@ -141,13 +140,13 @@ The main point is not “a more expensive model is better” but **different eye
 - The model that wrote an artifact **does not** issue its verdict. Planner ≠ critic,
   implementer ≠ reviewer. This is achieved **only** through a fresh subagent: `fork` inherits model
   and context (§1).
-- **Record the author's tier rather than recalling it.** The task writes `model=<тір>` to the ledger
+- **Record the author's tier rather than recalling it.** The task writes `model=<tier>` to the ledger
   **at dispatch**, not on completion ([[subagent-orchestration-ledger]] §1) — otherwise, after compaction
   between DONE and review, the answer is absent exactly when it is needed. Steps outside tasks
   (plan, critique, defense) record their tier wherever their verdict lands — in the plan or report.
   If the author's tier is unknown (resume, someone else's or a human artifact, missing or unreadable
   ledger row with a tier), treat it as `opus` and obtain a verdict from another tier (`fable` or `sonnet`),
-  rather than guessing. The placeholder `<тір>` means `<tier>`.
+  rather than guessing. The placeholder `<tier>` identifies the model tier.
 - Isolation of lenses within a step is defined by the skill itself (`plan-critique` §2: a separate
   subagent, clean context) and is not repeated here. Different tiers among lenses are unnecessary:
   context separates them; a different tier is needed only **against the artifact's author**.
@@ -159,7 +158,7 @@ The main point is not “a more expensive model is better” but **different eye
 - **A second round of critique** uses a different critic from the first, or examines only the edited
   lines: after changes, the plan contains text dictated by the first critic, who would be judging their own contribution.
 - If **only one tier** is available, use it but in a clean context, and include the report line
-  `незалежність: порушена (один тір)` (“independence: violated (one tier)”). Silent execution is forbidden.
+  `independence: violated (one tier)`. Silent execution is forbidden.
 - **The same step is launched twice** (a race, two tabs, two sessions orchestrating one pipeline,
   an unnecessary retry) — the tier does not change: the role determines it, not the invocation instance,
   so both runs use the same tier and independence rule. Which result is canonical is decided by

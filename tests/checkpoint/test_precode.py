@@ -88,11 +88,34 @@ class CheckpointTests(unittest.TestCase):
     def test_index_detects_missing_task_and_broken_link(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);tasks=root/'work/tasks';tasks.mkdir(parents=True);(tasks/'001-real').mkdir();(tasks/'001-real/task.md').write_text('task')
-            index=tasks/'README.md';index.write_text('[bad](002-missing/plan.md)\nНаступний вільний номер — **001**.\n')
+            index=tasks/'README.md';index.write_text('[bad](002-missing/plan.md)\nNext available number — **001**.\n')
             result=p.check_index(root,'work/tasks/README.md','work/tasks')
             self.assertEqual({i['kind'] for i in result['issues']},{'missing-or-outside-link','unindexed-task','hardcoded-next-number'})
             index.write_text('[task](001-real/task.md)\n')
             self.assertEqual(p.check_index(root,'work/tasks/README.md','work/tasks')['status'],'PASS')
+    def test_index_english_marker_is_independently_detected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); tasks = root/'work/tasks'; tasks.mkdir(parents=True)
+            task = tasks/'001-real'; task.mkdir(); (task/'task.md').write_text('task')
+            index = tasks/'README.md'; valid_link = '[task](001-real/task.md)\n'
+            for separator in ('—', ':', '-'):
+                for whitespace in ('', ' ', '  \t'):
+                    marker = f'Next available number{whitespace}{separator}{whitespace}**002**.\n'
+                    index.write_text(valid_link + marker)
+                    before = index.read_bytes()
+                    with self.subTest(separator=separator, whitespace=whitespace):
+                        result = p.check_index(root, 'work/tasks/README.md', 'work/tasks')
+                        self.assertEqual(result['status'], 'FAIL')
+                        self.assertEqual(result['issues'], [{'kind': 'hardcoded-next-number'}])
+                        self.assertEqual(index.read_bytes(), before)
+            for marker in ('Next available number — 002.',
+                           'Next available number — **later**.',
+                           'next available number — **002**.'):
+                index.write_text(valid_link + marker + '\n')
+                with self.subTest(marker=marker):
+                    result = p.check_index(root, 'work/tasks/README.md', 'work/tasks')
+                    self.assertEqual(result['status'], 'PASS')
+                    self.assertEqual(result['issues'], [])
     def test_checkpoint_is_reachable_from_all_shared_entries(self):
         for name in ('ai-factory-plan.md','feature-lifecycle.md','workflow.md'):
             self.assertIn('](pre-code-checkpoint.md)', (ROOT/'ai-factory'/name).read_text())

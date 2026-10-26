@@ -1,6 +1,6 @@
 ---
 name: plan-defense
-description: Makes a plan defend itself against five fixed questions — malformed input, dependency failure, race and repeated invocation, empty and boundary data, rollback — with every answer pointing to a line in the plan. Use as the last gate before splitting into tasks or implementation, or on triggers "захист плану", "plan defense", "а що буде якщо" (Ukrainian phrases retained as compatibility aliases).
+description: Makes a plan defend itself against five fixed questions — malformed input, dependency failure, race and repeated invocation, empty and boundary data, rollback — with every answer pointing to a line in the plan. Use as the last gate before splitting into tasks or implementation, or on triggers "defend the plan", "plan defense", "what happens if".
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 name: cto-agenda
-description: Proposes what to do next — a ranked list of candidates collected from recorded repository sources, and one recommended next move with an explanation of why not the others. Use when P0 is closed and the queue is empty, when choosing between directions, when asked "що далі", "що брати в роботу", "склади беклог" (retained Ukrainian compatibility aliases), or on the trigger "cto agenda".
+description: Proposes what to do next — a ranked list of candidates collected from recorded repository sources, and one recommended next move with an explanation of why not the others. Use when P0 is closed and the queue is empty, when choosing between directions, when asked "what next", "what should we work on", "build a backlog", or on the trigger "cto agenda".
 ---
 
 
@@ -38,8 +38,8 @@ Visit **all** sources; state how many candidates each supplied (zero is also an 
 is allowed, but is marked `⚠️ no source` and must explain the observation from which it arose.
 This is the main safeguard: without it the agenda fills with plausible tasks nobody requested.
 
-**The archive is not a source.** `work/` is divided by state (the layout is given by the manifest's `## Артефакти`
-heading, retained as a literal compatibility reference), and completed work is archived. Pulling a candidate from there means proposing work already
+**The archive is not a source.** `work/` is divided by state (the layout is given by the manifest's `## Artifacts`
+section heading), and completed work is archived. Pulling a candidate from there means proposing work already
 done — so read the archive only to **filter out**: a candidate already present there is removed from the agenda
 with a note identifying what closed it.
 

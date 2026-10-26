@@ -1,6 +1,6 @@
 ---
 name: ponytail-debt
-description: "Collects all `ponytail:` comments in the repository into one register of deliberate simplifications — what was simplified, its ceiling and the trigger for revisiting it — so deferred work does not become permanent. Marks entries without a trigger as `no-trigger`: these are the ones that silently decay. Use to see exactly what was deferred and where, before planning or a release, or on triggers \"ponytail debt\", \"list the shortcuts\", or /ponytail-debt. Only reads and reports; writes the register to a file on request. Ukrainian compatibility trigger aliases: \"що ми лишили на потім\"."
+description: "Collects all `ponytail:` comments in the repository into one register of deliberate simplifications — what was simplified, its ceiling and the trigger for revisiting it — so deferred work does not become permanent. Marks entries without a trigger as `no-trigger`: these are the ones that silently decay. Use to see exactly what was deferred and where, before planning or a release, or on triggers \"ponytail debt\", \"list the shortcuts\", or /ponytail-debt. Only reads and reports; writes the register to a file on request. Additional trigger phrases: \"what did we defer\"."
 ---
 
 Every deliberate ponytail shortcut is marked with a `ponytail:` comment naming

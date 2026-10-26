@@ -1,79 +1,81 @@
 ---
-title: "ADR і workflow: джерела QnA та generic-ui"
+title: "ADR and workflow: QnA and generic-ui sources"
 reviewed: 2026-10-16
 ---
 
-[До точки входу](../docs/legacy/ai-factory-plan-entry.md) · [Статус](status.md#capabilities) · [Маршрути](workflow.md#routing) · [Задачі](roadmap.md#tasks) · [Практики репо](repo-evidence.md#repo-evidence) · [Історія](history.md#history)
+> **Historical English adaptation — authored derivative.** Historical source: [ai-factory/repo-evidence.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/ai-factory/repo-evidence.md). Original SHA256: `1dc7347146630f15d4b0fff6a3878b21f0787006494be0d26c96a49f3585116c`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](repo-evidence.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
+
+[Entry point](../docs/legacy/ai-factory-plan-entry.md) · [Status](status.md#capabilities) · [Routes](workflow.md#routing) · [Tasks](roadmap.md#tasks) · [Repository practices](#repo-evidence) · [History](history.md#history)
 
 <a id="repo-evidence"></a>
 
-# ADR і workflow: джерела QnA та generic-ui
+# ADR and workflow: QnA and generic-ui sources
 
-### 7.1 Джерела й межі висновку
+### 7.1 Sources and limits of the conclusion
 
-Досліджено папки `work/` усередині двох репозиторіїв:
+The `work/` directories inside two repositories were examined. Source names and line numbers below are historical attributions; unavailable local-project link targets have been removed without claiming current access or revalidation:
 
-- **QnA backend:** `openai-qna` — фактична назва каталогу `openai-qna`, не `qna-ai`; ідентифікація за README.md:1 та AGENTS.md:6.
+- **QnA backend:** `openai-qna` — the actual directory name is `openai-qna`, not `qna-ai`; identified through README.md:1 and AGENTS.md:6.
 - **generic-ui:** `generic-ui`.
 
-В обох `CLAUDE.md` посилається на `AGENTS.md`. Нижче розділено **правило**, **наявний приклад** і **пропозицію**. Читання review/journal підтверджує наявність запису про перевірку, а не повторне виконання тестів цим аудитом. Репозиторії, їхні скіли й ADR не змінювалися.
+In both, `CLAUDE.md` refers to `AGENTS.md`. Below, **rules**, **existing examples**, and **proposals** are distinguished. Reading a review/journal confirms that a verification record exists, not that this audit reran the tests. The repositories, their skills, and ADRs were not changed.
 
 <a id="adr-gates"></a>
 
-### 7.2 Коли потрібен ADR, а коли достатньо іншого запису
+### 7.2 When an ADR is needed and when another record suffices
 
-**Підтверджене спільне правило цих двох проєктів:** кандидат має пройти всі чотири критерії — важко скасувати; рішення неочевидне без контексту; є реальна відхилена альтернатива з причиною; запис змінює майбутні дії читача/агента. Джерела: QnA PRINCIPLES.md:44, generic-ui constitution.md:89. Це опис локальних контрактів, не вже встановлена глобальна вимога для всіх репо.
+**Confirmed common rule in these two projects:** a candidate must meet all four criteria — hard to reverse; the decision is not obvious without context; there is a real rejected alternative with a reason; the record changes the reader's/agent's future actions. Sources: QnA PRINCIPLES.md:44, generic-ui constitution.md:89. This describes local contracts, not an already established global requirement for all repositories.
 
-Практичні кандидати з джерел:
+Practical candidates from the sources:
 
-- **Контракт між споживачами/репозиторіями:** зміна вимагає узгодження реалізацій, а локальний рефактор виглядає безпечним. Приклад QnA: ADR 0026:3 — спільна семантика citation replay fold, відхилене незалежне дублювання.
-- **Неочевидний інваріант із реальною альтернативою:** QnA ADR 0032:3 — збереження Events після rewind, альтернатива amend-in-place й наслідки для кількох реалізацій.
-- **Deletion-blocker:** «залишити X, доки споживач Y не мігрує». generic-ui прямо вимагає назвати що зберігається, що блокує видалення і що його дозволить: constitution.md:105. Це кандидат лише за виконання всіх чотирьох критеріїв.
+- **Contract between consumers/repositories:** a change requires implementations to be coordinated, while a local refactor appears safe. QnA example: ADR 0026:3 — shared citation replay fold semantics, with independent duplication rejected.
+- **Non-obvious invariant with a real alternative:** QnA ADR 0032:3 — preserving Events after rewind, the amend-in-place alternative, and implications for several implementations.
+- **Deletion-blocker:** “keep X until consumer Y migrates.” generic-ui explicitly requires naming what is retained, what blocks deletion, and what will permit it: constitution.md:105. This is a candidate only if all four criteria are met.
 
-**ADR не потрібен автоматично** для кожної задачі, TODO, відкладеного cleanup, очевидної правки або переказу реалізації. Якщо хоча б один критерій не пройдено — коротке «чому» в документі-власнику/коментарі або відмова від запису. Виправлення застарілого факту в чинному ADR не є новим рішенням: у QnA це окрема обов’язкова перевірка актуальності, яка не проходить чотири критерії заново (PRINCIPLES.md:116). Зміна самого рішення чи причини відхилення альтернативи потребує нового рішення, а не тихого переписування старого.
+**An ADR is not automatically required** for every task, TODO, deferred cleanup, obvious edit, or implementation recap. If even one criterion fails, put a short “why” in the owning document/comment or omit the record. Correcting a stale fact in an existing ADR is not a new decision: in QnA this is a separate mandatory freshness check that does not repeat the four criteria (PRINCIPLES.md:116). Changing the decision itself or the reason for rejecting an alternative requires a new decision, not a silent rewrite of the old one.
 
-### 7.3 Хто запускає етапи і як пов’язані артефакти
+### 7.3 Who initiates stages and how artifacts relate
 
-| Питання | QnA backend | generic-ui |
+| Question | QnA backend | generic-ui |
 |---|---|---|
-| Авторитет процесу | `PRINCIPLES.md` → `work/README.md` → локальний work-скіл | Конституція й specs; `work/README.md` — опційний execution-протокол |
-| План і реалізація | Developer володіє планом та оркеструє; свіжий Worker реалізує й веде journal | Reviewer володіє plan/review; окремий Worker — кодом і journal; Operator передає роботу між сесіями |
-| Критика | Design critic перед планом на основі design; plan critic, коли план специфікує поведінку; очевидна послідовність правок може обійтись без нього | Додатковий Critic опційний для складної/ризикової роботи, після approval Reviewer і до commit; це окрема лінза якості коду |
-| Кандидати ADR | Reviewer складає promote list; відсутність майбутньої чернетки до codify сама по собі не finding | Reviewer формує promote-on-commit list; Operator переносить довготривале знання в specs/ADRs/wiki |
-| Фіксація й прийняття | Після approval Developer замовляє codify; Maintainer читає сирі review/journal і приймає, уточнює або відхиляє ADR | Operator відповідає за promotion і commit; не переносити сюди автоматично окрему роль Maintainer з QnA |
-| Зв’язки | Plan називає ticket/base/design; journal і review зберігають перебіг. Постійний ADR має самодостатню аргументацію, без залежності від work/design | Plan містить Constraints із посиланнями на specs/ADRs; work зберігає audit trail; знання між задачами виноситься в постійні docs |
-| Архів | Work-гілка заморожується; артефакти work не потрапляють у base при landing | Папка переміщується до `work/archive/<NNN>-<slug>/` разом із додатковими артефактами |
+| Process authority | `PRINCIPLES.md` → `work/README.md` → local work skill | Constitution and specs; `work/README.md` is an optional execution protocol |
+| Plan and implementation | Developer owns the plan and orchestrates; a fresh Worker implements and maintains the journal | Reviewer owns plan/review; a separate Worker owns code and journal; Operator transfers work between sessions |
+| Critique | Design critic before the plan, based on design; plan critic when the plan specifies behavior; an obvious sequence of edits may not need one | An additional Critic is optional for complex/risky work, after Reviewer approval and before commit; this is a separate code-quality lens |
+| ADR candidates | Reviewer compiles the promote list; absence of a future draft before codify is not itself a finding | Reviewer forms the promote-on-commit list; Operator transfers durable knowledge into specs/ADRs/wiki |
+| Recording and acceptance | After approval, Developer requests codify; Maintainer reads raw review/journal and accepts, clarifies, or rejects ADRs | Operator is responsible for promotion and commit; do not automatically import QnA's separate Maintainer role here |
+| Links | Plan names ticket/base/design; journal and review preserve progress. A permanent ADR has self-contained reasoning, without a dependency on work/design | Plan contains Constraints with links to specs/ADRs; work retains the audit trail; knowledge spanning tasks moves into permanent docs |
+| Archive | The work branch is frozen; work artifacts do not enter base when landing | The directory moves to `work/archive/<NNN>-<slug>/` together with additional artifacts |
 
-Джерела таблиці: QnA work/README.md:9, work-reviewer.md:32, design/README.md:12, adr-format.md:67; generic-ui work/README.md:3, розділи Roles, Lifecycle, Files та Optional role — Critic.
+Table sources: QnA work/README.md:9, work-reviewer.md:32, design/README.md:12, adr-format.md:67; generic-ui work/README.md:3, sections Roles, Lifecycle, Files, and Optional role — Critic.
 
-**Важлива локальна відмінність:** обидва процеси залишають commit оператору; QnA також віддає оператору branch/push/rebase/tag. Це не привід змінювати глобальні дозволи, а правило, яке треба прочитати й виконати при роботі саме в цих репо. Архівування, видалення superseded ADR та ephemeral design — теж локальні політики, не автоматична дія для інших проєктів.
+**Important local difference:** both processes leave commit to the operator; QnA also assigns branch/push/rebase/tag to the operator. This is not a reason to change global permissions, but a rule to read and follow when working in these particular repositories. Archiving, deletion of superseded ADRs, and ephemeral design are also local policies, not automatic actions for other projects.
 
 <a id="repo-skills"></a>
 
-### 7.4 Які скіли справді підключені
+### 7.4 Which skills are actually connected
 
-**QnA — наявний локальний файл** .claude/skills/work/SKILL.md:1. Він виконує `work/README.md`, а не замінює його:
+**QnA — existing local file** .claude/skills/work/SKILL.md:1. It follows `work/README.md` rather than replacing it:
 
-`design critic за потребою design-документа → work plan-critique за змістом плану → work run → work review → work codify → work land`.
+`design critic as required by the design document → work plan-critique according to plan content → work run → work review → work codify → work land`.
 
-`plan-critic`, `work-worker`, `work-reviewer`, `design-critic` — версіоновані prompt-файли в `.claude/agents/`, не назви глобальних скілів. Свіжі контексти читають саме ці файли; автор не переписує prompt свого рецензента. Конкретні Claude-моделі та механізми spawn з локального опису не можна вважати доступними в Codex. Якщо інший агент не виявляє локальний work-скіл, прочитай файл явно; саме перейменування `/work` на `$work` не доводить discovery. Без незалежного контексту відповідний gate лишається BLOCKED.
+`plan-critic`, `work-worker`, `work-reviewer`, `design-critic` are versioned prompt files in `.claude/agents/`, not global skill names. Fresh contexts read these exact files; the author does not rewrite their reviewer's prompt. Specific Claude models and spawn mechanisms from the local description cannot be assumed available in Codex. If another agent does not discover the local work skill, read the file explicitly; merely renaming `/work` to `$work` does not prove discovery. Without an independent context, the corresponding gate remains BLOCKED.
 
-**generic-ui — файловий протокол без обов’язкового skill-runner.** `role-reviewer`, `role-worker`, `role-critic`, `mode-careful`, `mode-ralph` згадані як опційні в work/README.md:11, але їхні виконувані SKILL.md у перевірених локальних/global місцях не підтверджені. Не оголошувати їх виконаними чи встановленими.
+**generic-ui — a file protocol without a mandatory skill runner.** `role-reviewer`, `role-worker`, `role-critic`, `mode-careful`, `mode-ralph` are mentioned as optional in work/README.md:11, but their executable SKILL.md files were not confirmed in the inspected local/global locations. Do not declare them executed or installed.
 
-Натомість існують prompt-скіли, прямо підключені через specs/README.md:22:
+There are, however, prompt skills directly connected through specs/README.md:22:
 
-- validate-spec.md — один spec проти живого коду;
-- analyze-specs.md — узгодженість кількох specs; перед bundle або після змін конституції/структури; після його фіксів повторити validate для зачепленого spec;
-- pre-qa-review.md — pre-QA рев’ю, передача QA та аналіз результатів після QA.
+- validate-spec.md — one spec against live code;
+- analyze-specs.md — consistency across multiple specs; before a bundle or after constitution/structure changes; after its fixes, repeat validate for the affected spec;
+- pre-qa-review.md — pre-QA review, QA handoff, and analysis of results after QA.
 
-Викликати їх явним проханням прочитати файл; сама наявність frontmatter не підтверджує slash-команду. Глобальні `spec-flow`, `plan-critique` або `design-pass` тут можна запропонувати як допоміжні лінзи, але не стверджувати, що вони вже автоматично вбудовані в ці локальні процеси.
+Invoke them with an explicit request to read the file; frontmatter alone does not confirm a slash command. Global `spec-flow`, `plan-critique`, or `design-pass` can be proposed here as supporting lenses, but do not claim they are already automatically integrated into these local processes.
 
-### 7.5 Приклади й виявлені розбіжності
+### 7.5 Examples and identified discrepancies
 
-- **QnA, спостережуваний приклад:** work/038-message-feedback/plan.md:3 пов’язує ticket, base й design, а відмінну назву гілки явно пояснює рішенням оператора. review.md:119 відокремлює fact corrections у ADR 0002/0013 від promote list:158 для нового rewind-інваріанта; ADR 0032 на диску існує. Це доказ зв’язку артефактів, не підтвердження landing або повторний прогін gate.
-- **generic-ui, наявні приклади:** work/002-keda-scaling/review.md:27 фіксує ADR 0020 разом із spec-оновленнями, а рядки 43–45 — перевірку four gates і supersede-посилань. work/003-jobs-heartbeat-research/plan.md:84 залишає рішення в per-job записі/коментарях і створює ADR лише за four gates. Це підтверджує, що журнал рішення та ADR — різні речі.
-- **generic-ui, локальна адаптація:** work/004-navigate-message-feedback/plan.md:9 використовує design як план без дублювання; рядок 35 вимагає amendment ADR 0002, а рядки 43–50 віддають browser/live verification і review людині, без reviewer-агента. Отже загальну схему work не застосовувати механічно поверх контракту конкретної задачі. Передача перевірки людині не є доказом, що її вже виконано.
-- **QnA, суперечність у шаблоні:** adr-format.md:45 радить посилання ADR на design, тоді як рядки 67–72 забороняють такі посилання, а design видаляється при landing. Не переносити цю суперечність у глобальний шаблон; винести власнику як окреме виправлення. У цьому аудиті джерело не змінене.
-- **Приклад не дорівнює поточному правилу:** QnA work/038 review описує перевірку HEAD із незакоміченими змінами (review.md:3), тоді як чинний work-скіл перед review вимагає committed state (SKILL.md:59). Дата/причина цієї різниці не встановлена; не трактувати старий приклад як дозвіл обійти чинний контракт.
+- **QnA, observed example:** work/038-message-feedback/plan.md:3 links ticket, base, and design, and explicitly explains a different branch name as the operator's decision. review.md:119 separates fact corrections in ADR 0002/0013 from the promote list:158 for the new rewind invariant; ADR 0032 exists on disk. This proves an artifact relationship, not landing or a repeated gate run.
+- **generic-ui, existing examples:** work/002-keda-scaling/review.md:27 records ADR 0020 alongside spec updates, while lines 43–45 record verification of the four gates and supersede links. work/003-jobs-heartbeat-research/plan.md:84 leaves the decision in a per-job record/comments and creates an ADR only under the four gates. This confirms that a decision journal and an ADR are different things.
+- **generic-ui, local adaptation:** work/004-navigate-message-feedback/plan.md:9 uses design as the plan without duplication; line 35 requires amendment of ADR 0002, while lines 43–50 assign browser/live verification and review to a human, without a reviewer agent. Therefore, do not mechanically apply the general work scheme over the contract for a specific task. Handing verification to a human does not prove it has already been performed.
+- **QnA, template contradiction:** adr-format.md:45 recommends ADR links to design, while lines 67–72 prohibit such links, and design is deleted on landing. Do not transfer this contradiction into a global template; raise it with the owner as a separate correction. The source was not changed in this audit.
+- **An example is not the current rule:** the QnA work/038 review describes verification of HEAD with uncommitted changes (review.md:3), while the current work skill requires committed state before review (SKILL.md:59). The date/reason for this difference was not established; do not treat an old example as permission to bypass the current contract.
 
-Практична маршрутизація та погоджений handoff — у [workflow.md](workflow.md#routing). Приклади тут не оновлюють поточний статус автоматично.
+Practical routing and the agreed handoff are in [workflow.md](workflow.md#routing). Examples here do not automatically update current status.

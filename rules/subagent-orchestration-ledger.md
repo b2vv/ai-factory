@@ -27,16 +27,16 @@ One durable note that survives context compaction and session reset.
 - **At startup** — read the ledger: **DO NOT** redispatch tasks marked complete; resume from the first unmarked task.
 - **When you dispatch a task** — append a line **immediately**, without waiting for review:
   ```
-  Task N: dispatched (model=<тір>)
+  Task N: dispatched (model=<tier>)
   ```
   The implementer's tier is needed **before** completion — when choosing the reviewer's tier
   ([[multi-model-roles]] §3: “review by a different tier”). If compaction occurs between DONE and
   review dispatch, the answer is already in the ledger; it is not in the orchestrator's memory.
 - **When the task passes review** — append a line:
   ```
-  Task N: complete (commits <base7>..<head7>, review clean, model=<тір>, reviewer=<тір>)
+  Task N: complete (commits <base7>..<head7>, review clean, model=<tier>, reviewer=<tier>)
   ```
-  The `<тір>` placeholder means tier. Both tiers on one line make the rule verifiable after the fact, not only at the time.
+  The `<tier>` placeholder identifies the model tier. Both tiers on one line make the rule verifiable after the fact, not only at the time.
 - **After restoring a session** — trust **the ledger + `git log`**, not memory/a retelling.
 
 > Connection to the stack: the `Workflow` tool has its own `resumeFromRunId` (a cache of agent() calls) — the ledger is needed for **manual** orchestration (Agent-tool in a loop) or as a human-readable journal over the Workflow journal.

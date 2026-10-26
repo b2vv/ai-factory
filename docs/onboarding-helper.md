@@ -141,14 +141,14 @@ SHA256 of the exact response bytes, including its newline):
   "method": "declared-inventory",
   "response_sha256": "<64 lowercase hexadecimal characters>",
   "cwd": "/fixture/project",
-  "skills": [{"name":"огляд","path":"/fixture/skills/review/SKILL.md","enabled":true}]
+  "skills": [{"name":"review","path":"/fixture/skills/review/SKILL.md","enabled":true}]
 }
 ```
 
 Portable declaration response, authored by an operator, **not** a native Claude API:
 
 ```json
-{"schema_version":1,"provider":"claude","cwd":"/fixture/project","skills":[{"name":"огляд","path":"/fixture/skills/review/SKILL.md","enabled":true}]}
+{"schema_version":1,"provider":"claude","cwd":"/fixture/project","skills":[{"name":"review","path":"/fixture/skills/review/SKILL.md","enabled":true}]}
 ```
 
 For Codex declarations use `provider: "codex"` in both documents. Portable response keys are
@@ -159,7 +159,7 @@ For an independently captured Codex `skills/list` **result object**, choose prov
 profile `codex-skills-list-result-v1`, method `skills/list`:
 
 ```json
-{"data":[{"cwd":"/fixture/project","errors":[],"skills":[{"name":"огляд","path":"/fixture/skills/review/SKILL.md","enabled":true}]}]}
+{"data":[{"cwd":"/fixture/project","errors":[],"skills":[{"name":"review","path":"/fixture/skills/review/SKILL.md","enabled":true}]}]}
 ```
 
 This is not the surrounding JSON-RPC envelope or a transcript. Exactly one row must match

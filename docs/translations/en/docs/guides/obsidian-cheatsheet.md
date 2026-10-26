@@ -1,16 +1,16 @@
 ---
 title: Obsidian + Claude Code + code-review-graph — Runbook
 scope: multi-project local setup
-розкладка: ~/vaults for notes, ~/dev for repositories
+layout: ~/vaults for notes, ~/dev for repositories
 ---
 
-> **Historical English translation — authored derivative.** Original: [docs/guides/obsidian-cheatsheet.md](../../../../guides/obsidian-cheatsheet.md). Original SHA256: `c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The sealed original remains unchanged; the in-repository historical document has a separately recorded local-project reference cleanup. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
+> **Historical English adaptation — authored derivative.** Historical source: [docs/guides/obsidian-cheatsheet.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/docs/guides/obsidian-cheatsheet.md). Original SHA256: `c1a2eadb8611250b0bcaeac2fffa8f0cd0396fa4852af2f1886413e5e359ffc0`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](../../../../guides/obsidian-cheatsheet.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # Runbook: Obsidian (local) + Claude Code + code-review-graph
 
 Multi-project local setup: a separate global vault + one vault per project,
 with separate scope for Claude Code (per-vault MCP) and code-review-graph (per-repo).
-The original frontmatter key `розкладка` means layout and is retained as metadata compatibility data.
+The frontmatter key `layout` describes the example locations for notes and repositories.
 
 ---
 

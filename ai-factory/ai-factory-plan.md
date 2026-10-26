@@ -31,7 +31,7 @@ A task branch and one writer in the main repository follow the [branch ownership
 | Small obvious change | Local rules, bounded scope and appropriate checks; the full pipeline only when needed |
 | Significant or risky change | Local process; if absent, agree a route with a plan, acceptance, independent review and evidence |
 
-The detailed [skill and ADR map](workflow.md#skill-map) names triggers, owners and outputs. Codex CLI: `$назва` or `/skills`; Claude Code: `/назва`. Before invoking, verify the exact file and tool availability; the same name does not guarantee the same skill.
+The detailed [skill and ADR map](workflow.md#skill-map) names triggers, owners and outputs. Codex CLI: `$name` or `/skills`; Claude Code: `/name`. Before invoking, verify the exact file and tool availability; the same name does not guarantee the same skill.
 
 ## Navigation
 

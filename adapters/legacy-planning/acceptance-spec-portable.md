@@ -1,6 +1,6 @@
 ---
 name: acceptance-spec
-description: Describes a feature as observable product behavior — scenario, precondition, user action, expected result, verification method — before code is written. Use when planning a feature and recording how it should work for the user, or on the triggers "acceptance", "приймальні критерії", "сценарії тестування" (the Ukrainian phrases are retained compatibility triggers).
+description: Describes a feature as observable product behavior — scenario, precondition, user action, expected result, verification method — before code is written. Use when planning a feature and recording how it should work for the user, or on the triggers "acceptance", "acceptance criteria", "test scenarios".
 ---
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.

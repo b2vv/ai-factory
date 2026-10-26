@@ -1,6 +1,6 @@
 ---
 name: post-deploy-check
-description: Re-runs key feature scenarios in production, compares behavior with the test environment, checks logs and integrations, and appends the result to the same report. Use after rollout, or on triggers "перевір прод", "post-deploy", "задеплоїли — перевір" (Ukrainian phrases retained as compatibility aliases).
+description: Re-runs key feature scenarios in production, compares behavior with the test environment, checks logs and integrations, and appends the result to the same report. Use after rollout, or on triggers "check production", "post-deploy", "verify after deployment".
 ---
 
 
@@ -16,7 +16,7 @@ to come here.
 
 ## 1. Find the feature report
 
-The report is in the artifacts home (`.claude/standards.md` → `## Артефакти`, the retained literal heading reference), with an empty
+The report is in the artifacts home (`.claude/standards.md` → `## Artifacts`, the manifest section heading), with an empty
 Post-deploy section. Append the result **there**, not in a new file.
 
 If there is no report, say so and ask which file to write to. Do not create a second report for a feature

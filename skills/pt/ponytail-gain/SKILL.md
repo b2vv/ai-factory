@@ -1,6 +1,6 @@
 ---
 name: ponytail-gain
-description: "A one-off card showing ponytail's measured effect — less code, cheaper, faster — using medians from the published benchmark, not the current repository. Use when asked what ponytail delivers or to show its effect, on \"ponytail scoreboard\", or on trigger /ponytail-gain. Not a mode: changes nothing and deliberately never computes \"savings\" for a particular repository — /ponytail-debt and /ponytail-audit provide actual repository numbers. Ukrainian compatibility trigger aliases: \"що дає ponytail\", \"покажи ефект\"."
+description: "A one-off card showing ponytail's measured effect — less code, cheaper, faster — using medians from the published benchmark, not the current repository. Use when asked what ponytail delivers or to show its effect, on \"ponytail scoreboard\", or on trigger /ponytail-gain. Not a mode: changes nothing and deliberately never computes \"savings\" for a particular repository — /ponytail-debt and /ponytail-audit provide actual repository numbers. Additional trigger phrases: \"what does ponytail deliver\", \"show the impact\"."
 ---
 
 # Ponytail Gain

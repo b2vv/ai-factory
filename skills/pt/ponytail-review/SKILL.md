@@ -1,6 +1,6 @@
 ---
 name: ponytail-review
-description: "Reviews a diff exclusively for excessive complexity: hand-reimplemented stdlib, an unnecessary dependency, a speculative abstraction, dead flexibility. One line per finding — location, what to cut, what to replace it with — and a `net: -N lines possible` summary. Use on a diff, branch or PR when answering what can be deleted or whether this is over-engineering, or on triggers \"review for over-engineering\", \"simplify review\", /ponytail-review. Complements correctness review rather than replacing it: bugs, security and performance are out of scope here. Ukrainian compatibility trigger aliases: \"що тут можна видалити\", \"це не over-engineering?\"."
+description: "Reviews a diff exclusively for excessive complexity: hand-reimplemented stdlib, an unnecessary dependency, a speculative abstraction, dead flexibility. One line per finding — location, what to cut, what to replace it with — and a `net: -N lines possible` summary. Use on a diff, branch or PR when answering what can be deleted or whether this is over-engineering, or on triggers \"review for over-engineering\", \"simplify review\", /ponytail-review. Complements correctness review rather than replacing it: bugs, security and performance are out of scope here. Additional trigger phrases: \"what can be deleted here\", \"is this over-engineered?\"."
 ---
 
 Review diffs for unnecessary complexity. One line per finding: location, what

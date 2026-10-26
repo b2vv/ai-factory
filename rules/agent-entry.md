@@ -36,7 +36,7 @@ Before **every** subagent launch, give it a working-file path and a requirement 
 ```
 WORKING FILE: <path>
 Append AFTER EVERY STEP (append, not rewrite). The first entry comes before the first tool:
-a `ДАЛІ:` line (NEXT) stating what you intend to check. Then use the compatibility labels ФАКТ / РІШЕННЯ / ДАЛІ / ПИТАННЯ (FACT / DECISION / NEXT / QUESTION).
+a `NEXT:` line stating what you intend to check. Then use the labels FACT / DECISION / NEXT / QUESTION.
 Final answer = a concise summary of the file.
 ```
 

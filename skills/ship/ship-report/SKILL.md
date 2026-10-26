@@ -1,6 +1,6 @@
 ---
 name: ship-report
-description: Writes the final feature report in six fixed sections — done, tested scenarios, non-obvious findings, screenshots, user-flow walkthrough, risks and limitations — as a delta from the plan. Use at feature or task completion, before deployment, when a report rather than a wall of text is needed, or on triggers "ship report", "звіт по фічі", "підсумуй роботу" (Ukrainian phrases retained as compatibility aliases).
+description: Writes the final feature report in six fixed sections — done, tested scenarios, non-obvious findings, screenshots, user-flow walkthrough, risks and limitations — as a delta from the plan. Use at feature or task completion, before deployment, when a report rather than a wall of text is needed, or on triggers "ship report", "feature report", "summarize the work".
 ---
 
 
@@ -15,7 +15,7 @@ that will diverge. If it matched the plan, say that in one line and move on.
 
 ## Home
 
-`plan.md` already lives in the repository's artifacts home (`.claude/standards.md` → `## Артефакти`, the retained literal heading reference).
+`plan.md` already lives in the repository's artifacts home (`.claude/standards.md` → `## Artifacts`, the manifest section heading).
 Put the report **there too**, beside the plan, and duplicate it as a Report note in Obsidian if the channel is live.
 
 **One report per feature.** Append Post-deploy to this same file (`post-deploy-check`),

@@ -1,51 +1,53 @@
 ---
-title: Matt Pocock / TotalTypeScript — ідіоми (правила)
+title: Matt Pocock / TotalTypeScript — idioms (rules)
 ---
 
-# 🧠 Matt Pocock / TotalTypeScript — ідіоми
+> **Historical English adaptation — authored derivative.** Historical source: [rules/typescript-pocock-idioms.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/rules/typescript-pocock-idioms.md). Original SHA256: `06b659fe1b25ea31bd57b093b48646270ac08b05320798be4f50c94884266c42`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](typescript-pocock-idioms.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
-> **Область дії: TypeScript.** Усе нижче — про систему типів TS, і поза `*.ts`/`*.tsx` предмета
-> не має. У полірепо (Rust, Python, Go поруч із TS) ці ідіоми на не-TS частину **не поширюються**:
-> знахідка «не використано `satisfies`» на `.rs`-файлі хибна за побудовою. Мірник прив'язується
-> до мови стовпчиком «діє на» — `~/.agents/rules/repo-standards-manifest.md` §0.
+# 🧠 Matt Pocock / TotalTypeScript — idioms
 
-> Дистиляція з deep-crawl `totaltypescript.com` (600 сторінок: workshops/tutorials/tips/blog) + OSS-репо (`tsconfig`, `ts-reset`, `shoehorn`). Кожне правило — з source-slug `totaltypescript.com/<slug>`. Джерело в репо: `reports/typescript-style/pocock-idioms.md`; house-style: `.ai/agent/32-typescript-style.md`.
+> **Scope: TypeScript.** Everything below concerns the TS type system and has no subject
+> outside `*.ts`/`*.tsx`. In a polyrepo (Rust, Python, Go alongside TS), these idioms **do not apply**
+> to the non-TS portion: a finding that a `.rs` file “does not use `satisfies`” is invalid by construction.
+> The yardstick is bound to the language through the “applies to” column — `~/.agents/rules/repo-standards-manifest.md` §0.
 
-## 🎯 Type-system ідіоми
-- **`satisfies` > `as`** (`how-to-use-satisfies-operator`) — додати констрейнт БЕЗ втрати inference/звуження. `as` — лише на trust-boundaries.
-- **Без `any`** (`any-considered-harmful`) — `any` вимикає перевірки → `unknown` + narrow. Легітимний виняток: generic-констрейнти `<T extends (...args: any[]) => any>` (там `unknown` ламає variance) — зі scoped `eslint-disable` + причина.
-- **Enums → `as const` object + union** (`why-i-dont-like-typescript-enums`) — TS enums nominal/дивні. `const X = {...} as const; type X = (typeof X)[keyof typeof X]`.
-- **Discriminated unions > «мішок optional-ів»** (`discriminated-unions-are-a-devs-best-friend`) — стани як `{status:'loading'} | {status:'error';error} | {status:'success';data}`; switch по дискримінанту з **exhaustive `never` default**.
-- **Derive, не дублюй** (`deriving-vs-decoupling`) — `Pick`/`Omit`/`typeof`/indexed-access від SSOT; decouple лише коли звʼязок випадковий. Zod `z.infer` = основна деривація.
-- **Branded types для id** (`four-essential-typescript-patterns`) — `type Password = Brand<string,'Password'>`; покрити КОЖЕН id.
-- **`as never`** (`as-never`) — рідко, лише коли TS не може прослідкувати звуження union; документуй.
-- **`type` за замовчуванням**, `interface` лише під `extends` (`type-vs-interface`). ⚠️ **Конфлікт із проєктом:** eslint форсує `interface` → у цьому репо свідома девіація (лишаємо `interface`).
-- `Readonly`/`readonly` + immutable; `as const` для літералів.
+> Distilled from a deep crawl of `totaltypescript.com` (600 pages: workshops/tutorials/tips/blog) + OSS repositories (`tsconfig`, `ts-reset`, `shoehorn`). Each rule includes a source slug `totaltypescript.com/<slug>`. Repository source: `reports/typescript-style/pocock-idioms.md`; house style: `.ai/agent/32-typescript-style.md`.
+
+## 🎯 Type-system idioms
+- **`satisfies` > `as`** (`how-to-use-satisfies-operator`) — add a constraint WITHOUT losing inference/narrowing. Use `as` only at trust boundaries.
+- **No `any`** (`any-considered-harmful`) — `any` disables checks → `unknown` + narrow. A legitimate exception: generic constraints `<T extends (...args: any[]) => any>` (where `unknown` breaks variance) — with a scoped `eslint-disable` + reason.
+- **Enums → `as const` object + union** (`why-i-dont-like-typescript-enums`) — TS enums are nominal/odd. `const X = {...} as const; type X = (typeof X)[keyof typeof X]`.
+- **Discriminated unions > “a bag of optionals”** (`discriminated-unions-are-a-devs-best-friend`) — states as `{status:'loading'} | {status:'error';error} | {status:'success';data}`; switch on the discriminant with an **exhaustive `never` default**.
+- **Derive, do not duplicate** (`deriving-vs-decoupling`) — `Pick`/`Omit`/`typeof`/indexed-access from the SSOT; decouple only when the connection is incidental. Zod `z.infer` = the primary derivation.
+- **Branded types for IDs** (`four-essential-typescript-patterns`) — `type Password = Brand<string,'Password'>`; cover EVERY ID.
+- **`as never`** (`as-never`) — rarely, only when TS cannot track union narrowing; document it.
+- **`type` by default**, `interface` only for `extends` (`type-vs-interface`). ⚠️ **Project conflict:** eslint forces `interface` → this repository makes a deliberate deviation (keep `interface`).
+- `Readonly`/`readonly` + immutable; `as const` for literals.
 
 ## 🔧 Function / object
-- **Не тип `Function`** (`dont-use-function-keyword`) — задавай `(item:T)=>number`; для truly-any → `(...args:any[])=>any`.
-- **Без method-shorthand** (`method-shorthand-syntax-considered-harmful`) — `foo(p):void` bivariant (небезпечно) → property syntax `foo:(p)=>void` (`method-signature-style:'property'`).
-- **Return-типи на top-level функціях** (`should-you-declare-return-types`) — для читачів+AI; **виняток: JSX-компоненти**.
-- **Порядок пропсів впливає на inference** (`property-order-matters`) — producer перед consumer.
-- Generics: реальні констрейнти, ніколи `<any>`; `NoInfer<>` блокує небажаний inference; `const` type-params для літералів; «немає такого як generic-тип» (є generic-функція).
+- **Not the `Function` type** (`dont-use-function-keyword`) — specify `(item:T)=>number`; for truly-any → `(...args:any[])=>any`.
+- **No method shorthand** (`method-shorthand-syntax-considered-harmful`) — `foo(p):void` is bivariant (unsafe) → property syntax `foo:(p)=>void` (`method-signature-style:'property'`).
+- **Return types on top-level functions** (`should-you-declare-return-types`) — for readers + AI; **exception: JSX components**.
+- **Property order affects inference** (`property-order-matters`) — producer before consumer.
+- Generics: real constraints, never `<any>`; `NoInfer<>` blocks unwanted inference; `const` type parameters for literals; “there is no such thing as a generic type” (there is a generic function).
 
 ## ⚛️ React
-- Пропси — локальний `interface Props`/`type Props`, **колокейт** у файлі компонента.
-- `React.ReactNode` для children (не `JSX.Element`); `ComponentProps<typeof X>` — позичити пропси; `ElementRef`/`ComponentRef` — refs.
-- `React.FC` не обовʼязковий; return-тип компонента = JSX (без анотації).
+- Props — local `interface Props`/`type Props`, **colocate** in the component file.
+- `React.ReactNode` for children (not `JSX.Element`); `ComponentProps<typeof X>` to borrow props; `ElementRef`/`ComponentRef` for refs.
+- `React.FC` is optional; a component's return type = JSX (without an annotation).
 
-## 🏗️ Архітектура / тести
-- **Де тримати типи** (`where-to-put-your-types`) — single-use колокейт у файлі; спільні — підняти в модуль.
-- **Тести типів** — `how-to-test-your-types`; **shoehorn `fromPartial`** для partial-моків (ніколи `as any` у тестах); скіл `migrate-to-shoehorn`.
-- **`ts-reset`** — `fetch`/`JSON.parse`→`unknown`; `filter(Boolean)` звужує; `Array.isArray`→`unknown[]`. Імпорт один раз (app-only).
-- **tsconfig** — `@total-typescript/tsconfig/bundler/dom/app` як база; наш MAX додає `exactOptionalPropertyTypes`, `noPropertyAccessFromIndexSignature`.
+## 🏗️ Architecture / tests
+- **Where to keep types** (`where-to-put-your-types`) — colocate single-use types in the file; lift shared ones into the module.
+- **Type tests** — `how-to-test-your-types`; **shoehorn `fromPartial`** for partial mocks (never `as any` in tests); the `migrate-to-shoehorn` skill.
+- **`ts-reset`** — `fetch`/`JSON.parse`→`unknown`; `filter(Boolean)` narrows; `Array.isArray`→`unknown[]`. Import once (app-only).
+- **tsconfig** — `@total-typescript/tsconfig/bundler/dom/app` as the base; our MAX adds `exactOptionalPropertyTypes`, `noPropertyAccessFromIndexSignature`.
 
-## 📌 Застосовано в cassiopeia-admin-ui (house decisions)
+## 📌 Applied in cassiopeia-admin-ui (house decisions)
 - ✅ no-enums (as const+union), satisfies>as, unknown-at-boundaries, discriminated unions, branded ids, Zod=SSOT.
-- ✅ Deep modules / single source; **services лишаються класами** (не рефакторити у функції).
-- ⚠️ Девіація: `interface` (не `type`-default) — форсовано eslint.
-- Правила as-error глобально (ратчет): `.ai/rules/typescript-style.mdc`, initiative `project_typescript_pocock_initiative`.
+- ✅ Deep modules / single source; **services remain classes** (do not refactor them into functions).
+- ⚠️ Deviation: `interface` (not `type`-default) — enforced by eslint.
+- Rules as errors globally (ratchet): `.ai/rules/typescript-style.mdc`, initiative `project_typescript_pocock_initiative`.
 
-## 🔗 Пов'язане
-- Скіли: `tdd`, `migrate-to-shoehorn` (див. проєктний `Testing & Codemods` промт).
-- Повний корпус у репо: `reports/typescript-style/` (pocock-idioms, ratchet-worklist, modal-service-audit); house-style `.ai/agent/32-typescript-style.md` + `.ai/rules/typescript-style.mdc`.
+## 🔗 Related
+- Skills: `tdd`, `migrate-to-shoehorn` (see the project's `Testing & Codemods` prompt).
+- Full corpus in the repository: `reports/typescript-style/` (pocock-idioms, ratchet-worklist, modal-service-audit); house style `.ai/agent/32-typescript-style.md` + `.ai/rules/typescript-style.mdc`.

@@ -1,11 +1,11 @@
-> **Historical English translation — authored derivative.** Original: [docs/guides/skills-cheatsheet.md](../../../../guides/skills-cheatsheet.md). Original SHA256: `4aa1bcca3b8c263499afadeb266ba06eda066e2cd0492643973ab8b6dece0bdd`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The original is unchanged. Historical assertions, statuses, examples, and limitations are retained; this translation does not establish current policy, execution evidence, or activation. Literal protocol tokens remain where required. Section navigation uses English heading anchors; old original-language fragment URLs are not retained.
+> **Historical English adaptation — authored derivative.** Historical source: [docs/guides/skills-cheatsheet.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/docs/guides/skills-cheatsheet.md). Original SHA256: `4aa1bcca3b8c263499afadeb266ba06eda066e2cd0492643973ab8b6dece0bdd`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](../../../../guides/skills-cheatsheet.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # 🧠 Skills cheatsheet (`~/.agents/skills`)
 
 Shared store — `~/.agents/skills`; Claude Code and Cursor are connected through symlinks. The corresponding SKILL.md is the current source of behavior; this file and Obsidian Shared are reference guides.
 
 ## How to invoke skills
-Codex CLI: `$назва` (name) or `/skills`. Claude Code: `/назва` (name). The `/команда` label below describes the Claude `disable-model-invocation` metadata, not the policy of every agent. English triggers are optional.
+Codex CLI: `$name` (name) or `/skills`. Claude Code: `/name` (name). The `/command` label below describes the Claude `disable-model-invocation` metadata, not the policy of every agent. English triggers are optional.
 
 Audit inventory, 2026-10-14: 60 custom/installed SKILL.md files outside synced, plus 22 in synced. The examples below are not a complete catalog of available tools. Check the mentioned MCPs, plugins, and harness commands in the current session; mark unavailable checks BLOCKED.
 
@@ -47,7 +47,7 @@ Audit inventory, 2026-10-14: 60 custom/installed SKILL.md files outside synced, 
 
 ### `ask-matt` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/ask-matt` when you do not know which skill to use.
 - **Where:** at the start of a task when several processes are possible.
@@ -59,7 +59,7 @@ Original command-category placeholder: `/команда`.
 
 ### `grill-me` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/grill-me` with your plan/design.
 - **Where:** before coding — when the plan seems ready but has hidden gaps.
@@ -71,7 +71,7 @@ Original command-category placeholder: `/команда`.
 
 ### `grill-with-docs` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/grill-with-docs`.
 - **Where:** the same grilling, but when decisions must be **recorded** in documentation.
@@ -82,7 +82,7 @@ Original command-category placeholder: `/команда`.
   - “/grill-with-docs — sequential-commit without batching for edit-session; justify it in an ADR.”
 
 ### `grilling` · `auto`
-- **How:** say “погриль мій план” (“grill my plan”) / “stress-test this”.
+- **How:** say “grill my plan” / “stress-test this”.
 - **Where:** a reusable interview loop called by other skills.
 - **Why:** the core grilling mechanism without additional effects (documentation).
 - **Prompts:**
@@ -93,7 +93,7 @@ Original command-category placeholder: `/команда`.
 
 ### `to-questionnaire` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/to-questionnaire` when a decision depends on someone outside the conversation.
 - **Where:** questions for a customer, lead, or colleague on another team.
@@ -106,7 +106,7 @@ Original command-category placeholder: `/команда`.
 
 ### `to-spec` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/to-spec` after discussion.
 - **Where:** when everything has already been discussed in chat and a PRD is needed.
@@ -117,7 +117,7 @@ Original command-category placeholder: `/команда`.
 
 ### `to-tickets` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/to-tickets` with a plan/PRD.
 - **Where:** when a plan needs to be split into independent tasks.
@@ -128,7 +128,7 @@ Original command-category placeholder: `/команда`.
 
 ### `triage` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/triage`.
 - **Where:** incoming bugs/features/external PRs that need sorting.
@@ -139,7 +139,7 @@ Original command-category placeholder: `/команда`.
 
 ### `implement` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/implement` with a PRD or set of issues.
 - **Where:** when requirements are ready and it is time to code.
@@ -150,7 +150,7 @@ Original command-category placeholder: `/команда`.
 
 ### `wayfinder` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/wayfinder` for work that does not fit in one agent session.
 - **Where:** a large, vague idea (‘fog’) — the route to the goal is not yet visible; standard `to-spec`/`to-tickets` is premature.
@@ -163,7 +163,7 @@ Original command-category placeholder: `/команда`.
 
 ### `implement-spec` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/implement-spec` after `to-spec` + `to-tickets`.
 - **Where:** the specification is already broken into tickets with blocking relationships.
@@ -192,7 +192,7 @@ Original command-category placeholder: `/команда`.
 
 ### `improve-codebase-architecture` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/improve-codebase-architecture`.
 - **Where:** when you want to find what to deepen/simplify in the codebase.
@@ -211,7 +211,7 @@ Original command-category placeholder: `/команда`.
   - “Fix the focus() bug (reveal-only during multiselect), starting with a failing test.”
 
 ### `diagnosing-bugs` · `auto`
-- **How:** “diagnose”, “debug this”, “щось падає/тормозить” (“something crashes/is slow”).
+- **How:** “diagnose”, “debug this”, “something crashes/is slow”.
 - **Where:** difficult bugs and performance regressions.
 - **Why:** reproduce → minimize → hypothesis → instrument → fix → regression-test loop.
 - **Prompts:**
@@ -306,7 +306,7 @@ Original command-category placeholder: `/команда`.
 
 ### `prototype` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/prototype`.
 - **Where:** explore a design before committing — state logic OR several UI options.
@@ -342,7 +342,7 @@ Original command-category placeholder: `/команда`.
 
 ### `teach` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/teach`.
 - **Where:** learn a concept/skill directly in the workspace.
@@ -353,7 +353,7 @@ Original command-category placeholder: `/команда`.
 
 ### `handoff` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/handoff` at the end of a session.
 - **Where:** context must be handed to another agent / a new session.
@@ -366,7 +366,7 @@ Original command-category placeholder: `/команда`.
 
 ### `retro` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/retro` at the end of a coding session (in that same session).
 - **Where:** a just-completed task or fixed bug.
@@ -412,7 +412,7 @@ Original command-category placeholder: `/команда`.
 
 ### `wait-what` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/wait-what` immediately after an agent message you did not understand.
 - **Where:** any conversation where an answer is too long or unclear.
@@ -422,7 +422,7 @@ Original command-category placeholder: `/команда`.
 
 ### `setup-matt-pocock-skills` · command
 
-Original command-category placeholder: `/команда`.
+Command-category placeholder: `/command`.
 
 - **How:** `/setup-matt-pocock-skills` **once** per repo.
 - **Where:** before first using engineering skills (`to-tickets`, `triage`, `tdd`, `diagnosing-bugs`, `improve-codebase-architecture`…).
@@ -582,7 +582,7 @@ Original command-category placeholder: `/команда`.
 > (a note in `ponytail-help`, section `## Update`); the rest is English verbatim.
 
 ### `ponytail` · `auto` *(mode, lasts until session end)*
-- **How:** `/ponytail` (`lite` | `full` — default | `ultra`); or “be lazy”, “yagni”, “не переускладнюй” (“do not overcomplicate”). Disable — “stop ponytail” / “normal mode”.
+- **How:** `/ponytail` (`lite` | `full` — default | `ultra`); or “be lazy”, “yagni”, “do not overcomplicate”. Disable — “stop ponytail” / “normal mode”.
 - **Where:** any coding task where the agent might build too much: a new utility, a new component, ‘add a cache’, ‘make an abstraction for the future’, library selection.
 - **Why:** the ladder as a **reflex**, not research — stops at the first rung that holds. Plus two things absent from ‘just be brief’: a bug fix targets the **root** (one guard in a shared function is a smaller diff than a guard in every caller), and a deliberate simplification with a ceiling leaves a comment `ponytail: <ceiling>, <upgrade path>` — this is what `ponytail-debt` later collects.
 - **Prompts:**
@@ -660,7 +660,7 @@ Original command-category placeholder: `/команда`.
 - **Chain:** no next step of its own — a reusable engine that `grill-me`, `grill-with-docs`, and `improve-codebase-architecture` (step 3) call internally.
 - **When:** you want an interview loop without side effects (no PRD/ADR writing) — for example, inside another skill or manually for a quick pass.
 - **Why:** one implementation of the grilling mechanism (one question at a time, with a recommended answer, until shared understanding) — other skills do not duplicate this logic, only add an effect (writing docs) or not.
-- **`grill-me` / `grill-with-docs` / `grilling` distinction:** `grill-me` = `/команда` (command) over `grilling`, no docs. `grill-with-docs` = `/команда` over `grilling` + `domain-modeling`, with ADR/glossary. `grilling` = core; call it directly with a trigger phrase when neither effect is needed.
+- **`grill-me` / `grill-with-docs` / `grilling` distinction:** `grill-me` = `/command` (command) over `grilling`, no docs. `grill-with-docs` = `/command` over `grilling` + `domain-modeling`, with ADR/glossary. `grilling` = core; call it directly with a trigger phrase when neither effect is needed.
 - **Combination points:** `grilling` ↔ `domain-modeling` (refine terms without a separate ADR) · `grilling` ← `improve-codebase-architecture` (step 3, finish pressure-testing the chosen refactor plan) · `grilling` ← `prototype` (pressure-test the chosen UI/logic option based on what you saw).
 - **Anti-patterns:**
   - ❌ grilling every small step separately instead of one pass to shared understanding — client-side ‘interviewing for its own sake’.
@@ -1098,7 +1098,7 @@ Original command-category placeholder: `/команда`.
 ## Plugin skills *(from `~/.claude/plugins`, managed by the marketplace)*
 
 ### `figma-friend` plugin *(v0.0.1, marketplace `figma-friend`)*
-> Frontend to MCP `figma-friend` / `chrome-devtools`. Invoked as `figma-friend:<скіл>` (skill).
+> Frontend to MCP `figma-friend` / `chrome-devtools`. Invoked as `figma-friend:<skill>` (skill).
 
 - **`clone-ui`** · `auto` — clone a live web page into Figma (“clone this page to Figma”, “recreate this UI”).
   - **Prompt:** “Clone the org-hierarchy page into Figma (`figma-friend:clone-ui`).”
@@ -1106,7 +1106,7 @@ Original command-category placeholder: `/команда`.
   - **Prompt:** “Help refine the card layout in Figma through `figma-friend:figma-designer`.”
 
 ### `figma` plugin *(official, v2.2.60)*
-> Frontend to remote MCP `figma` (Plugin API for cloud files). Invoked as `figma:<скіл>` (skill). `figma-use` / `figma-create-new-file` / `figma-generate-diagram` are **mandatory preludes** before the corresponding tool call (`use_figma` / `create_new_file` / `generate_diagram`).
+> Frontend to remote MCP `figma` (Plugin API for cloud files). Invoked as `figma:<skill>` (skill). `figma-use` / `figma-create-new-file` / `figma-generate-diagram` are **mandatory preludes** before the corresponding tool call (`use_figma` / `create_new_file` / `generate_diagram`).
 
 - **`figma-use`** · `auto` — any write/unique read action through JS in file context (create/edit/delete nodes, variables, components, auto-layout, bind variables). **Prelude to `use_figma`.**
 - **`figma-create-new-file`** · `auto` — a new empty file (design/FigJam/Slides). **Prelude to `create_new_file`.**
@@ -1123,7 +1123,7 @@ Original command-category placeholder: `/команда`.
 
 ## Built-in harness skills *(ship with Claude Code; not on disk)*
 
-> Invoked as `/<скіл>` (skill); updated with the CLI. Most useful for this project:
+> Invoked as `/<skill>` (skill); updated with the CLI. Most useful for this project:
 
 - **`/code-review`** — review the current diff for bugs/simplification (low→ultra). `/code-review ultra` — cloud multi-agent. *(also has deprecated alias `/ultrareview`)*
   - **Prompts:** “/code-review — scan the gamma diff for bugs.” · “/code-review ultra — deep review of the entire selection-state branch.”
@@ -1210,7 +1210,7 @@ Original command-category placeholder: `/команда`.
 **Gate** — simply a list of commands to run before saying ‘done’. Not a process or abstraction: concrete terminal lines. ‘Gate green’ = all behaved as expected. The gate depends on what the change affected (client / PHP / Helm chart), so it is always a *relevant subset*, not ‘all repo tests’. In genericui its composition is in `work/README.md` → ‘The gate’.
 
 > Example for a change touching both client and PHP (genericui):
-> `npx tsc --noEmit` (types, ~40 s) · `npx oxlint src/` (lint, ~2 s) · `yarn test-ci` (client units, ~21 s) · `./vendor/bin/pint --test` (PHP formatting) · `phpstan analyse --memory-limit=1G <змінені файли>` (changed files) · `./vendor/bin/phpunit --testsuite unit`.
+> `npx tsc --noEmit` (types, ~40 s) · `npx oxlint src/` (lint, ~2 s) · `yarn test-ci` (client units, ~21 s) · `./vendor/bin/pint --test` (PHP formatting) · `phpstan analyse --memory-limit=1G <changed files>` (changed files) · `./vendor/bin/phpunit --testsuite unit`.
 
 **Baseline** — what failed **before** your change. In a live repo a gate is almost never ‘zero failures’: in genericui `pint` complains about gitignored `tests/config/local.php`, and `phpunit --testsuite unit` yields 7 errors + 2 failures from vendor code. ‘Green’ means **‘exactly the same things fail as before’**, not ‘nothing fails’.
 
@@ -1219,7 +1219,7 @@ Original command-category placeholder: `/команда`.
 - ✅ ‘exactly these two fail (purge-resumability), and exactly these seven (`ArticleActions*`, one vendor deprecation)’ — fact. The eighth is immediately visible.
 - The same for static analysis: not ‘25 errors as usual’, but ‘22 in `User.php` + 3 in `edit_welcome_popup.php`’, with separate verification that the file version **before** the change produces the same 22.
 
-**Mutation** — checking whether a test catches anything at all. A test can exist and be decorative. Manually: (1) deliberately break the code (`756` → `680`); (2) run tests; (3) see **exactly what** failed (3 tests — good, nothing — an empty test); (4) `git checkout -- <файл>` and confirm `git status --short` is empty. No tool required.
+**Mutation** — checking whether a test catches anything at all. A test can exist and be decorative. Manually: (1) deliberately break the code (`756` → `680`); (2) run tests; (3) see **exactly what** failed (3 tests — good, nothing — an empty test); (4) `git checkout -- <file>` and confirm `git status --short` is empty. No tool required.
 
 **What the gate does NOT say.** It says ‘nothing broke among things we can check automatically’ — not ‘the feature works for a person’. That is why LIVE-VERIFIED in `work/README.md` is a separate state. In GUI-606 the gate was green for all five rounds, but live testing found a modal printing the same sentence twice: each sentence is individually correct, so the test cannot catch this in principle.
 
@@ -1281,7 +1281,7 @@ A full pass ≈ 25–30 tool calls, ~15 minutes: mostly gate and mutations. When
 
 # 🛠️ How a skill works (under the hood)
 
-> Source: official Anthropic **Agent Skills** docs (through context7). Explains the mechanism behind `/команда`/`auto` (command/auto) labels and the ‘triggers in English’ rule.
+> Source: official Anthropic **Agent Skills** docs (through context7). Explains the mechanism behind `/command`/`auto` (command/auto) labels and the ‘triggers in English’ rule.
 
 - **Folder structure:** `SKILL.md` (main instructions) + optional reference files (`REFERENCE.md`, `FORMS.md`…) + `scripts/`.
 - **Frontmatter (YAML) — 2 required fields:**
@@ -1291,7 +1291,7 @@ A full pass ≈ 25–30 tool calls, ~15 minutes: mostly gate and mutations. When
   description: What it does + WHEN to use it. “Use when the user mentions X / asks to Y…”
   ---
   ```
-  Claude Code metadata `disable-model-invocation: true` → makes the skill `/команда`-only (command-only) in Claude (the `/команда` label in §1–§7).
+  Claude Code metadata `disable-model-invocation: true` → makes the skill `/command`-only (command-only) in Claude (the `/command` label in §1–§7).
 - **Progressive disclosure (3 loading levels)** — why it is token-efficient and why **description decides everything**:
   1. **session start** — ONLY each skill's `name` + `description` enter context (a few lines);
   2. **trigger** — when `description` matches the task, the `SKILL.md` body loads;

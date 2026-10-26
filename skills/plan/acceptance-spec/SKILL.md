@@ -1,6 +1,6 @@
 ---
 name: acceptance-spec
-description: Describes a feature as observable product behavior — scenario, precondition, user action, expected result, verification method — before any code is written. Use when planning a feature and recording how it should work for the user, or on triggers "acceptance", "приймальні критерії", "сценарії тестування" (retained Ukrainian compatibility aliases).
+description: Describes a feature as observable product behavior — scenario, precondition, user action, expected result, verification method — before any code is written. Use when planning a feature and recording how it should work for the user, or on triggers "acceptance", "acceptance criteria", "test scenarios".
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 name: plan-defense
-description: Makes a plan defend itself against five fixed questions — malformed input, dependency failure, races and repeated invocation, empty and boundary data, rollback — where every answer must point to a plan line. Use as the last gate before task breakdown or implementation, or on the triggers "захист плану", "plan defense", "а що буде якщо" (the Ukrainian phrases are retained compatibility triggers).
+description: Makes a plan defend itself against five fixed questions — malformed input, dependency failure, races and repeated invocation, empty and boundary data, rollback — where every answer must point to a plan line. Use as the last gate before task breakdown or implementation, or on the triggers "defend the plan", "plan defense", "what happens if".
 ---
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.

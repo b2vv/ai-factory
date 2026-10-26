@@ -1,118 +1,137 @@
 ---
-title: Repo standards manifest — .claude/standards.md, формат і призначення
+title: Repo standards manifest — .claude/standards.md, format and purpose
 ---
+
+> **Historical English adaptation — authored derivative.** Historical source: [rules/repo-standards-manifest.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/rules/repo-standards-manifest.md). Original SHA256: `fe4c59fa3705145be5d197e031a301274a0c00d1ad5d8d64cbba3c19d6b87b82`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](repo-standards-manifest.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
 # 📐 Repo standards manifest
 
-Крос-проєктне правило: **процес живе в скілі, мірник живе в репо**.
+Cross-project rule: **the process lives in the skill; the yardstick lives in the repository**.
 
-Глобальні скіли (`code-review`, `spec-flow`) описують послідовність кроків, однакову скрізь.
-Те, що в кожному репо своє — які доки є стандартом, які команди зелені, куди лягає код —
-збирається в **один файл за передбачуваним шляхом**: `<repo>/.claude/standards.md`.
+Global skills (`code-review`, `spec-flow`) describe the sequence of steps that is the same everywhere.
+What differs in each repository — which documents are standards, which commands are green, where code goes —
+is collected in **one file at a predictable path**: `<repo>/.claude/standards.md`.
 
-Без нього глобальний `code-review` на кроці 3 **вгадує** мірник («щось, що документує, як писати
-код»). З ним вгадування стає пошуком за адресою — і копія скіла в кожному репо стає непотрібною.
-
----
-
-## 0. Мова — перше, що читається
-
-Мірник **прив'язується до мови й шляху**, і в полірепо це не формальність.
-`CODING_STANDARDS.md`, що описує Clean Code + SOLID + **Matt Pocock**, діє на TypeScript;
-на Rust-, Python- чи Go-частину того самого репо він не діє **взагалі** — у Pocock-ідіом
-(`satisfies` > `as`, branded types, discriminated unions, `z.infer` як SSOT) немає предмета
-поза TS.
-
-Тому кожен рядок мірника несе стовпчик **«діє на»** зі шляхами. Рядок без нього рев'юєр
-застосує до всього репо — і напише знахідку «не використано `satisfies`» на `.rs`-файл.
+Without it, global `code-review` at step 3 **guesses** the yardstick (“something that documents how to write
+code”). With it, guessing becomes an address lookup — and a copy of the skill in every repository is unnecessary.
 
 ---
 
-## 1. Фіксовані заголовки
+## 0. Language is read first
 
-Порядок і назви сталі — по них скіли знаходять свої секції.
+The yardstick **is bound to language and path**, and in a polyrepo this is not a formality.
+`CODING_STANDARDS.md` describing Clean Code + SOLID + **Matt Pocock** applies to TypeScript;
+it does **not apply at all** to the Rust, Python or Go portion of the same repository — Pocock idioms
+(`satisfies` > `as`, branded types, discriminated unions, `z.infer` as SSOT) have no subject
+outside TS.
 
-### `## Мірник`
+Therefore every yardstick row carries an **“applies to”** column with paths. Without it, a reviewer
+will apply the row to the entire repository — and report “does not use `satisfies`” on a `.rs` file.
 
-Таблиця: **док · що він вирішує · де його чекліст · діє на**.
-Лише те, за чим справді судять. Порожня клітинка «діє на» не допускається.
+---
 
-### `## Не мірник`
+## 1. Fixed headings
 
-Що виглядає як стандарт, але ним не є: звіти, плани, зафіксований борг, наміри.
-Борг — не порушення; записане відхилення — не знахідка.
+The order and names are stable — skills use the English heading keys below to find their sections.
 
-### `## Машинні гейти`
+### Yardstick
 
-Команда · що саме ловить. І окремо — **що вони НЕ ловлять**, з датою й способом виміру
-(«виміряно `tools/lint-contract/lint-contract.test.ts`, 2026-08-14»). Виміряний перелік
-цінніший за заявлений: рев'ю окупається саме на тому, чого машина не бачить.
+Manifest section heading: `## Yardstick`.
 
-### `## Конституція`
+Yardstick. Table: **document · what it decides · where its checklist is · applies to**.
+Only what is actually used to judge. An empty “applies to” cell is not allowed.
 
-Правила, порушення яких = стоп, а не зауваження. Кожне з посиланням на джерело (`AGENT.md §11`)
-і поміткою, чи воно вже форситься лінтером — форсоване правило в рев'ю не повторюють.
+### Not a yardstick
 
-### `## Поріг пайплайна`
+Manifest section heading: `## Not a yardstick`.
 
-Структурна умова (не судження), за якої вмикається повний SDD-цикл: «з'являється нова
-тека-слайс?», «змінюється публічний API?». І що робиться нижче порога — легкий інлайн-план.
+Not a yardstick. What looks like a standard but is not: reports, plans, recorded debt, intentions.
+Debt is not a violation; a recorded deviation is not a finding.
 
-### `## Розміщення`
+### Machine gates
 
-Куди лягає новий код: «що → куди». Плюс індекс переюзу, якщо він у репо є.
+Manifest section heading: `## Machine gates`.
 
-### `## Гілки й PR`
+Machine gates. Command · exactly what it catches. Separately — **what they do NOT catch**, with a date
+and measurement method (“measured by `tools/lint-contract/lint-contract.test.ts`, 2026-08-14”). A measured
+list is more valuable than a declared one: review pays off precisely where machines cannot see.
 
-Від чого гілкуємось, куди PR, які ремоути канонічні.
+### Constitution
 
-### `## Артефакти`
+Manifest section heading: `## Constitution`.
 
-Дім spec/plan/tasks/звітів — і **життєвий цикл задачі**.
+Constitution. Rules whose violation means stop, not a comment. Each links to its source (`AGENT.md §11`)
+and notes whether a linter already enforces it — enforced rules are not repeated in review.
 
-Задачі агента живуть у `work/`. Тека є в кожному репо, і всередині вона розділена **за станом**,
-а не за темою:
+### Pipeline threshold
 
-| Роль теки | Що там | Куди далі |
+Manifest section heading: `## Pipeline threshold`.
+
+Pipeline threshold. A structural condition (not a judgment) that activates the full SDD cycle:
+“does a new slice directory appear?”, “does a public API change?”. Also state what happens below the
+threshold — a lightweight inline plan.
+
+### Placement
+
+Manifest section heading: `## Placement`.
+
+Placement. Where new code goes: “what → where”. Plus the reuse index, if the repository has one.
+
+### Branches and PRs
+
+Manifest section heading: `## Branches and PRs`.
+
+Branches and PRs. What to branch from, where PRs go, which remotes are canonical.
+
+### Artifacts
+
+Manifest section heading: `## Artifacts`.
+
+Artifacts. Home for spec/plan/tasks/reports — and the **task lifecycle**.
+
+Agent tasks live in `work/`. Every repository has the directory, and its contents are split **by state**,
+not by topic:
+
+| Directory role | Contents | Next destination |
 |---|---|---|
-| задачі / плани | те, що ще не почали | почали → «в роботі» |
-| в роботі | ухвалені рішення й виміряні факти незакінченої розмови | завершили → архів |
-| тех-борг | реєстр боргу з адресами й вартістю | пункт закрито → викреслюється на місці |
-| баги / чужі проблеми | те, що ламається, але полагодити може не ця команда | зникає, коли фікс доїхав |
-| архів | завершене | назавжди |
+| tasks / plans | what has not yet started | started → “in progress” |
+| in progress | accepted decisions and measured facts from an unfinished conversation | finished → archive |
+| technical debt | debt register with addresses and costs | item closed → crossed out in place |
+| bugs / others' problems | what breaks but cannot be fixed by this team | disappears when the fix arrives |
+| archive | completed work | forever |
 
-Точні імена тек у кожного репо свої — маніфест називає їх поіменно, бо агент не має вгадувати.
+Exact directory names differ by repository — the manifest names them explicitly, because the agent must not guess.
 
-Три правила, які тримають цю розкладку робочою:
+Three rules keep this layout working:
 
-- **Завершене переїжджає в архів, а не видаляється.** Інакше зникає слід рішення.
-- **Архів тримає вказівники, а не копії.** Копія розходиться з оригіналом, а мертвий вказівник
-  видно гейтом свіжості.
-- **Борг — не порушення.** Тека боргу лишається в `## Не мірник`: рев'ю не звітує про неї
-  як про знахідку.
+- **Completed work moves to the archive rather than being deleted.** Otherwise the decision trail disappears.
+- **The archive keeps pointers, not copies.** A copy diverges from its original, while a dead pointer is visible
+  to the freshness gate.
+- **Debt is not a violation.** The debt directory stays in `## Not a yardstick`: review does not report it
+  as a finding.
 
-**`work/` ≠ дім завершених досліджень.** Якщо в репо є `reports/**`, на які посилається код, це
-доказова база — вона нерухома, бо перенос рве посилання. `work/` — те, що **попереду**.
+**`work/` ≠ home for completed research.** If a repository has `reports/**` referenced by code, that is
+the evidence base — it stays in place, because moving it breaks links. `work/` is what lies **ahead**.
 
 ---
 
-## 2. Що в маніфест не кладеться
+## 2. What does not go into the manifest
 
-Маніфест — **індекс і мірник**, не другий екземпляр стандартів. Правила лишаються у своїх
-доках; сюди йде рядок «док → що вирішує → де чекліст». Скопійований у маніфест текст
-стандарту стає другою правдою, що розійдеться з першою.
+The manifest is an **index and yardstick**, not a second copy of the standards. Rules stay in their
+own documents; this file gets a row “document → what it decides → where the checklist is”. Standard
+text copied into the manifest becomes a second truth that will diverge from the first.
 
-Виняток — **виміряні** факти, яких немає в жодному доку (перелік того, чого не ловлять гейти;
-дата виміру). Їм тут дім, бо іншого немає.
+The exception is **measured** facts that no document contains (the list of things gates do not catch;
+measurement date). This is their home because they have no other one.
 
-## 3. Коли маніфесту немає
+## 3. When the manifest is absent
 
-Скіл каже це прямо й пропонує зібрати — і працює далі в режимі вгадування, назвавши, що
-мірник вгаданий. Мовчазний перехід у вгадування — найгірший із варіантів: звіт виглядає
-однаково, а підстава під ним інша.
+The skill states this explicitly and proposes building one — then continues in guessing mode, declaring
+that the yardstick is guessed. Silently switching to guessing is the worst option: the report looks
+the same, but its basis differs.
 
-## 🔗 Пов'язане
+## 🔗 Related
 
-- `~/.agents/skills/spec-flow/SKILL.md` — процес, що читає цей маніфест
-- `~/.agents/skills/code-review/SKILL.md` §3 — крок, який маніфест позбавляє здогадок
-- `~/.agents/rules/typescript-pocock-idioms.md` — самі TS-ідіоми (область дії: TypeScript)
+- `~/.agents/skills/spec-flow/SKILL.md` — the process that reads this manifest
+- `~/.agents/skills/code-review/SKILL.md` §3 — the step this manifest frees from guesswork
+- `~/.agents/rules/typescript-pocock-idioms.md` — the TS idioms themselves (scope: TypeScript)

@@ -1,6 +1,6 @@
 ---
 name: plan-critique
-description: Critiques a completed plan through four independent lenses — AI-slop, logical gaps, unnecessary complexity, uncovered edge cases — and consolidates findings into blocking / non-blocking. Use as a gate after writing a plan or spec, before splitting into tasks, or on triggers "критика плану", "прожар план", "plan critique" (Ukrainian phrases retained as compatibility aliases).
+description: Critiques a completed plan through four independent lenses — AI-slop, logical gaps, unnecessary complexity, uncovered edge cases — and consolidates findings into blocking / non-blocking. Use as a gate after writing a plan or spec, before splitting into tasks, or on triggers "critique the plan", "stress-test the plan", "plan critique".
 ---
 
 

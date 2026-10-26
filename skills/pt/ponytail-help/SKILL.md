@@ -5,7 +5,7 @@ description: >
   (lite / full / ultra), six skills and how they differ, how to disable the mode
   and where to configure the default. Use when you cannot remember which
   ponytail skill fits the task, or on triggers "ponytail help",
-  "what ponytail commands", "як користуватись ponytail" (retained Ukrainian compatibility alias), /ponytail-help.
+  "what ponytail commands", "how to use ponytail", /ponytail-help.
   One-shot display: changes no mode and writes nothing.
 ---
 
@@ -70,7 +70,7 @@ Resolution: env var > config file > `full`.
 > **not** apply here, and neither do the two Node lifecycle hooks: there is no auto-activation
 > at session start and no `PONYTAIL_DEFAULT_MODE` / `~/.config/ponytail/config.json` resolution
 > — invoke `/ponytail` explicitly. Updating means re-copying `skills/*/SKILL.md` from the repo
-> (see `~/.agents/skills-cheatsheet.md`, section «⚙️ Обслуговування»).
+> (see `~/.agents/skills-cheatsheet.md`, section “⚙️ Maintenance”).
 
 Enable auto-update once: open `/plugin`, go to Marketplaces, pick ponytail, Enable auto-update. Claude Code then pulls new versions at startup (run `/reload-plugins` when it prompts). Manual refresh: `/plugin marketplace update ponytail` then `/reload-plugins`.
 

@@ -1,6 +1,6 @@
 ---
 name: design-pass
-description: 'Creates or improves UI from project constraints and a design plan through browser verification and fixes. Use for sites, screens and user journeys, including from a screenshot or Figma mockup. Compatibility trigger aliases: "дизайн-пари", "зроби по-дизайнерськи", "зроби як на макеті". For an audit without changes, use interface-review.'
+description: 'Creates or improves UI from project constraints and a design plan through browser verification and fixes. Use for sites, screens and user journeys, including from a screenshot or Figma mockup. Additional trigger phrases: "paired design", "give it a deliberate design", "match the mockup". For an audit without changes, use interface-review.'
 ---
 
 

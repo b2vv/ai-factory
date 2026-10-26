@@ -1,1269 +1,1322 @@
-# 🧠 Шпаргалка по скілах (`~/.agents/skills`)
+> **Historical English adaptation — authored derivative.** Historical source: [docs/guides/skills-cheatsheet.md at `2c0960885926`](https://github.com/b2vv/ai-factory/blob/2c0960885926075502a319a19eafbed901690dde/docs/guides/skills-cheatsheet.md). Original SHA256: `4aa1bcca3b8c263499afadeb266ba06eda066e2cd0492643973ab8b6dece0bdd`. Source base: `2c0960885926075502a319a19eafbed901690dde`. The immutable source at this commit and hash remains the historical reference; the [current in-repository document](skills-cheatsheet.md) is an English adaptation. Historical assertions, statuses, examples, and limitations are retained; this document does not establish current policy, execution evidence, or activation. Current labels, placeholders, and section navigation are English; local-project links remain removed.
 
-Спільне сховище — `~/.agents/skills`; Claude Code і Cursor підключені симлінками. Чинне джерело поведінки — відповідний SKILL.md, а цей файл і Obsidian Shared є довідниками.
+# 🧠 Skills cheatsheet (`~/.agents/skills`)
 
-## Як викликаються скіли
-Codex CLI: `$назва` або `/skills`. Claude Code: `/назва`. Позначка `/команда` нижче описує Claude-метадані `disable-model-invocation`, не політику всіх агентів. Англійські тригери не обов'язкові.
+Shared store — `~/.agents/skills`; Claude Code and Cursor are connected through symlinks. The corresponding SKILL.md is the current source of behavior; this file and Obsidian Shared are reference guides.
 
-Інвентар аудиту 2026-10-14: 60 власних/встановлених SKILL.md поза synced, ще 22 у synced. Приклади нижче не є повним каталогом доступних інструментів. Згадані MCP, плагіни та команди харнесу перевіряй у поточній сесії; відсутні перевірки позначай BLOCKED.
+## How to invoke skills
+Codex CLI: `$name` (name) or `/skills`. Claude Code: `/name` (name). The `/command` label below describes the Claude `disable-model-invocation` metadata, not the policy of every agent. English triggers are optional.
 
-## UI: рекомендована точка входу
-`$design-pass` у Codex або `/design-pass` у Claude: правила поточного проєкту → токени/компоненти/сценарії → референс за потреби → план → реалізація → браузер → виправлення → повторна перевірка. Перевір ієрархію, адаптивність, стани, доступність і головні сценарії; build не є візуальною перевіркою. Результати PASS / FAIL / BLOCKED / N/A з доказами. Додаткові лінзи: anti-slop-design, ux-review, interface-review.
+Audit inventory, 2026-10-14: 60 custom/installed SKILL.md files outside synced, plus 22 in synced. The examples below are not a complete catalog of available tools. Check the mentioned MCPs, plugins, and harness commands in the current session; mark unavailable checks BLOCKED.
 
-> Старі приклади з gamma, RAC, clsx, src/index.css, dark-only, ADR та конкретними командами — контекст окремого проєкту, не глобальні правила. Перед копіюванням заміни їх на чинні правила, шляхи, бібліотеки та команди свого репозиторію. Готові узагальнені промпти: `~/vaults/global/prompts/`. Реліз потребує відповідного доручення; зелена перевірка сама по собі не є дозволом публікувати.
+## UI: recommended entry point
+`$design-pass` in Codex or `/design-pass` in Claude: current project rules → tokens/components/scenarios → reference if needed → plan → implementation → browser → fixes → recheck. Check hierarchy, responsiveness, states, accessibility, and main scenarios; a build is not visual verification. Report PASS / FAIL / BLOCKED / N/A with evidence. Additional lenses: anti-slop-design, ux-review, interface-review.
 
----
-
-## 📑 Зміст
-
-- [Як викликаються скіли](#як-викликаються-скіли)
-- **Скіли `~/.agents/skills` (54)**
-  1. [Планування й узгодження](#1-планування-й-узгодження-grilling--роутинг) — `ask-matt` · `grill-me` · `grill-with-docs` · `grilling` · `to-questionnaire` · **`cto-research`** · **`cto-agenda`** · **`plan-critique`** · **`plan-defense`** · **`acceptance-spec`**
-  2. [Вимоги → задачі → реалізація](#2-вимоги--задачі--реалізація) — `to-spec` · `to-tickets` · `triage` · `implement` · `implement-spec` · `wayfinder` · **`spec-flow`**
-  3. [Архітектура, дизайн і якість коду](#3-архітектура-дизайн-і-якість-коду) — `codebase-design` · `domain-modeling` · `improve-codebase-architecture` · `tdd` · `diagnosing-bugs` · `code-review` · `receiving-code-review`
-  4. [Git, merge і запобіжники](#4-git-merge-і-запобіжники) — `resolving-merge-conflicts` · `git-guardrails-claude-code` · `setup-pre-commit` · `pr`
-  5. [CRG — навігація по графу коду](#5-crg--навігація-по-графу-коду-від-code-review-graph-mcp) — `crg-explore-codebase` · `crg-debug-issue` · `crg-refactor-safely` · `crg-review-changes`
-  6. [Прототипування, навчання, передача](#6-прототипування-навчання-передача-контексту) — `prototype` · `frontend-design` · `research` · `teach` · `handoff` · `retro` · **`ship-report`** · **`post-deploy-check`**
-  7. [Утиліти, міграції, метаскіли](#7-утиліти-міграції-метаскіли) — `migrate-to-shoehorn` · `scaffold-exercises` · `writing-for-agents` · `wizard` · `wait-what` · `setup-matt-pocock-skills` · `caveman` · **`repo-bootstrap`**
-- [🏭 Конвеєр AI-factory (9 власних скілів)](#-конвеєр-ai-factory-власні-скіли-не-pocock)
-- [🎀 Ponytail — режим лінивого сеньйора (6 скілів)](#-ponytail--режим-лінивого-сеньйора-6-скілів-не-pocock) — **`ponytail`** · **`ponytail-review`** · **`ponytail-audit`** · **`ponytail-debt`** · **`ponytail-gain`** · **`ponytail-help`**
-- [🔗 Зв'язки скілів (комбо)](#-звязки-скілів-комбо-для-кращого-результату)
-  - [Планування → доставка](#планування--доставка) · [Дизайн / архітектура](#дизайн--архітектура) · [Баги / якість](#баги--якість) · [Вхідні / процес](#вхідні--процес) · [Міграція / парність](#міграція--парність-legacy--new)
-  - [➕ Скіл + MCP](#-скіл--mcp-комбо-для-кращого-результату)
-- [🔌 MCP-сервери на машині](#-mcp-сервери-на-машині)
-  - [Спільні MCP](#спільні-mcp-є-і-в-claude-і-в-cursor) · [Тільки Claude](#тільки-claude) · [Тільки Cursor](#тільки-cursor)
-- [🧩 Плагінні / вбудовані скіли](#-плагінні--вбудовані-скіли-поза-agentsskills)
-  - [Плагінні скіли (figma, figma-friend)](#плагінні-скіли-з-claudeplugins-керуються-маркетплейсом) · [Вбудовані harness-скіли](#вбудовані-harness-скіли-ідуть-із-claude-code-не-на-диску)
-- [🎬 Наскрізні сценарії (end-to-end промти)](#-наскрізні-сценарії-end-to-end-промти)
-- [🔬 Рев'ю-пас, що перевіряє себе (як отримувати щоразу)](#-ревю-пас-що-перевіряє-себе-як-отримувати-щоразу)
-- [🛠️ Як скіл влаштований (під капотом)](#-як-скіл-влаштований-під-капотом)
-- [⚙️ Обслуговування](#-обслуговування)
+> Old examples mentioning gamma, RAC, clsx, src/index.css, dark-only, ADR, and specific commands describe an individual project, not global rules. Before copying them, substitute your repository's current rules, paths, libraries, and commands. Ready-to-use general prompts: `~/vaults/global/prompts/`. A release requires a corresponding instruction; a green check alone does not authorize publishing.
 
 ---
 
-## 1. Планування й узгодження (grilling / роутинг)
+## 📑 Contents
 
-### `ask-matt` · `/команда`
-- **Як:** `/ask-matt`, коли не знаєш, який скіл узяти.
-- **Де:** на старті задачі, коли є кілька можливих процесів.
-- **Чому:** роутер по всіх ручних скілах — підкаже потрібний flow замість того, щоб гадати.
-- **Промти:**
-  - «/ask-matt — маю сирий баг-репорт від QA про діаграму org-hierarchy, з якого скіла почати?»
-  - «/ask-matt — треба перенести legacy-форму на RHF: брати grilling, to-spec чи одразу implement?»
-  - «/ask-matt — купа вхідних issue від клієнта, як їх розгрібати по процесу?»
-
-### `grill-me` · `/команда`
-- **Як:** `/grill-me` зі своїм планом/дизайном.
-- **Де:** перш ніж кодити — коли план «начебто готовий», але є приховані діри.
-- **Чому:** безжальне інтерв'ю, що добиває кожну гілку рішень до спільного розуміння.
-- **Промти:**
-  - «/grill-me — план міграції person-form на RHF; добий приховані діри в edit-session/commit.»
-  - «/grill-me — дизайн selection-state для org-hierarchy (URL adapter дропає масиви).»
-  - «/grill-me — підхід до theme-flip через GoJS ThemeManager; де він зламається?»
-
-### `grill-with-docs` · `/команда`
-- **Як:** `/grill-with-docs`.
-- **Де:** те саме грилення, але коли треба **зафіксувати** рішення в доках.
-- **Чому:** паралельно пише ADR + глосарій, звіряє план із доменною мовою проєкту (`GLOSSARY.md`).
-- **Промти:**
-  - «/grill-with-docs — рішення про notched-border поля; паралельно пиши ADR + глосарій.»
-  - «/grill-with-docs — модель org vs group як однієї BE-сутності; зафіксуй у GLOSSARY.md.»
-  - «/grill-with-docs — sequential-commit без батчу для edit-session; обґрунтуй в ADR.»
-
-### `grilling` · `авто`
-- **Як:** скажи «погриль мій план» / «stress-test this».
-- **Де:** переюзабельний interview-loop, який смикають інші скіли.
-- **Чому:** ядро механіки грилення без додаткових ефектів (доків).
-- **Промти:**
-  - «Погриль ідею: винести locations у shared/ui/location-fields. Stress-test кожну гілку.»
-  - «Stress-test this: badge-лічильники в навігації через isolated useWatch.»
+- [How to invoke skills](#how-to-invoke-skills)
+- **Skills in `~/.agents/skills` (54)**
+  1. [Planning and alignment](#1-planning-and-alignment-grilling--routing) — `ask-matt` · `grill-me` · `grill-with-docs` · `grilling` · `to-questionnaire` · **`cto-research`** · **`cto-agenda`** · **`plan-critique`** · **`plan-defense`** · **`acceptance-spec`**
+  2. [Requirements → tasks → implementation](#2-requirements--tasks--implementation) — `to-spec` · `to-tickets` · `triage` · `implement` · `implement-spec` · `wayfinder` · **`spec-flow`**
+  3. [Architecture, design, and code quality](#3-architecture-design-and-code-quality) — `codebase-design` · `domain-modeling` · `improve-codebase-architecture` · `tdd` · `diagnosing-bugs` · `code-review` · `receiving-code-review`
+  4. [Git, merging, and safeguards](#4-git-merging-and-safeguards) — `resolving-merge-conflicts` · `git-guardrails-claude-code` · `setup-pre-commit` · `pr`
+  5. [CRG — code graph navigation](#5-crg--code-graph-navigation-from-code-review-graph-mcp) — `crg-explore-codebase` · `crg-debug-issue` · `crg-refactor-safely` · `crg-review-changes`
+  6. [Prototyping, learning, handoff](#6-prototyping-learning-and-context-handoff) — `prototype` · `frontend-design` · `research` · `teach` · `handoff` · `retro` · **`ship-report`** · **`post-deploy-check`**
+  7. [Utilities, migrations, meta-skills](#7-utilities-migrations-and-meta-skills) — `migrate-to-shoehorn` · `scaffold-exercises` · `writing-for-agents` · `wizard` · `wait-what` · `setup-matt-pocock-skills` · `caveman` · **`repo-bootstrap`**
+- [🏭 AI-factory pipeline (9 custom skills)](#-ai-factory-pipeline-custom-skills-not-pocock)
+- [🎀 Ponytail — lazy senior mode (6 skills)](#-ponytail--lazy-senior-mode-6-skills-not-pocock) — **`ponytail`** · **`ponytail-review`** · **`ponytail-audit`** · **`ponytail-debt`** · **`ponytail-gain`** · **`ponytail-help`**
+- [🔗 Skill combinations](#-skill-combinations-for-better-results)
+  - [Planning → delivery](#planning--delivery) · [Design / architecture](#design--architecture) · [Bugs / quality](#bugs--quality) · [Intake / process](#intake--process) · [Migration / parity](#migration--parity-legacy--new)
+  - [➕ Skill + MCP](#-skill--mcp-combinations-for-better-results)
+- [🔌 MCP servers on the machine](#-mcp-servers-on-the-machine)
+  - [Shared MCPs](#shared-mcps-both-claude-and-cursor) · [Claude only](#claude-only) · [Cursor only](#cursor-only)
+- [🧩 Plugin / built-in skills](#-plugin--built-in-skills-outside-agentsskills)
+  - [Plugin skills (figma, figma-friend)](#plugin-skills-from-claudeplugins-managed-by-the-marketplace) · [Built-in harness skills](#built-in-harness-skills-ship-with-claude-code-not-on-disk)
+- [🎬 End-to-end scenarios (prompts)](#-end-to-end-scenarios-prompts)
+- [🔬 A self-checking review pass (how to get one every time)](#-a-self-checking-review-pass-how-to-get-one-every-time)
+- [🛠️ How a skill works (under the hood)](#-how-a-skill-works-under-the-hood)
+- [⚙️ Maintenance](#-maintenance)
 
 ---
 
-### `to-questionnaire` · `/команда`
-- **Як:** `/to-questionnaire`, коли рішення залежить від людини, якої немає в розмові.
-- **Де:** питання до замовника, ліда, колеги з іншої команди.
-- **Чому:** перетворює рішення, на яке не можеш відповісти сам, на Markdown-опитувальник для однієї людини: заповнити асинхронно або пройти разом на зустрічі. Обернений до `grill-me`: опитуєш не себе, а когось іншого.
-- **Промти:**
-  - «/to-questionnaire — для дизайнера: що робимо з порожнім станом таблиці на мобільному.»
-  - «/to-questionnaire — питання до бекенду про контракт пагінації, щоб відправити в Slack.»
+## 1. Planning and alignment (grilling / routing)
 
-## 2. Вимоги → задачі → реалізація
+### `ask-matt` · command
 
-### `to-spec` · `/команда`
-- **Як:** `/to-spec` після обговорення.
-- **Де:** коли в чаті вже все проговорено й треба PRD.
-- **Чому:** синтезує PRD із розмови (без інтерв'ю) і публікує в трекер.
-- **Промти:**
-  - «/to-spec — з нашої розмови про theme-flip діаграми збери PRD і закинь у трекер.»
-  - «/to-spec — ми проговорили person media-upload (DropZone + MediaService); синтезуй PRD.»
+Command-category placeholder: `/command`.
 
-### `to-tickets` · `/команда`
-- **Як:** `/to-tickets` з планом/PRD.
-- **Де:** коли план треба порізати на самостійні таски.
-- **Чому:** вертикальні «tracer-bullet» зрізи — кожен issue можна взяти незалежно.
-- **Промти:**
-  - «/to-tickets — поріж PRD по badge-лічильниках на tracer-bullet issues.»
-  - «/to-tickets — розклади план міграції форм Formik→RHF на самостійні зрізи.»
+- **How:** `/ask-matt` when you do not know which skill to use.
+- **Where:** at the start of a task when several processes are possible.
+- **Why:** a router across all manual skills — suggests the right flow instead of guessing.
+- **Prompts:**
+  - “/ask-matt — I have a raw QA bug report about the org-hierarchy diagram; which skill should I start with?”
+  - “/ask-matt — I need to migrate a legacy form to RHF: grilling, to-spec, or straight to implement?”
+  - “/ask-matt — lots of incoming client issues; how should I process them?”
 
-### `triage` · `/команда`
-- **Як:** `/triage`.
-- **Де:** вхідні баги/фічі/зовнішні PR, що треба розсортувати.
-- **Чому:** проводить issue через стейт-машину ролей, пише agent-ready брифи.
-- **Промти:**
-  - «/triage — розсортуй ці 12 вхідних багів від QA, признач ролі, напиши брифи.»
-  - «/triage — зовнішній PR + 3 фіче-реквести; проведи через стейт-машину ролей.»
+### `grill-me` · command
 
-### `implement` · `/команда`
-- **Як:** `/implement` з PRD або набором issues.
-- **Де:** коли вимоги вже готові й час писати код.
-- **Чому:** структурована реалізація шматка роботи за специфікацією.
-- **Промти:**
-  - «/implement — issue #142 (badge-лічильники в навігації) за специфікацією.»
-  - «/implement — PRD на theme-flip; реалізуй перший вертикальний зріз.»
+Command-category placeholder: `/command`.
 
-### `wayfinder` · `/команда`
-- **Як:** `/wayfinder` для роботи, що не влазить в одну сесію агента.
-- **Де:** велика розмита ідея («fog») — маршрут до мети ще не видно, стандартний `to-spec`/`to-tickets` тут зарано.
-- **Чому:** будує спільну карту investigation-тікетів на трекері й закриває їх по одному, поки шлях до мети не проясниться.
-- **Промти:**
-  - «/wayfinder — переїзд форм-бібліотеки по всьому кодбейзу; це більше однієї сесії. Розклади як карту investigation-тікетів і йди по одному.»
-  - «/wayfinder — org-restructure розмита на старті; побудуй карту й веди по ній до чіткого плану.»
+- **How:** `/grill-me` with your plan/design.
+- **Where:** before coding — when the plan seems ready but has hidden gaps.
+- **Why:** a relentless interview that follows every decision branch through to shared understanding.
+- **Prompts:**
+  - “/grill-me — person-form migration plan to RHF; expose hidden gaps in edit-session/commit.”
+  - “/grill-me — selection-state design for org-hierarchy (the URL adapter drops arrays).”
+  - “/grill-me — theme-flip approach through GoJS ThemeManager; where will it break?”
+
+### `grill-with-docs` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/grill-with-docs`.
+- **Where:** the same grilling, but when decisions must be **recorded** in documentation.
+- **Why:** writes ADR + glossary in parallel and checks the plan against the project's domain language (`GLOSSARY.md`).
+- **Prompts:**
+  - “/grill-with-docs — decision about notched-border fields; write ADR + glossary alongside it.”
+  - “/grill-with-docs — model org vs group as one BE entity; record it in GLOSSARY.md.”
+  - “/grill-with-docs — sequential-commit without batching for edit-session; justify it in an ADR.”
+
+### `grilling` · `auto`
+- **How:** say “grill my plan” / “stress-test this”.
+- **Where:** a reusable interview loop called by other skills.
+- **Why:** the core grilling mechanism without additional effects (documentation).
+- **Prompts:**
+  - “Grill this idea: extract locations into shared/ui/location-fields. Stress-test every branch.”
+  - “Stress-test this: navigation badge counters through isolated useWatch.”
 
 ---
 
-### `implement-spec` · `/команда`
-- **Як:** `/implement-spec` після `to-spec` + `to-tickets`.
-- **Де:** специфікація вже розбита на тікети з блокувальними зв'язками.
-- **Чому:** реалізує всю специфікацію за один прогін. Читає тікети як граф задач, запускає сабагентів-виконавців у власних worktree по готовому фронтиру, зводить усе в одну інтеграційну гілку і закриває `code-review`. Паралельна альтернатива `implement`, який іде по одному тікету.
-- **Промти:**
-  - «/implement-spec — спека org-type-morph і її тікети в `work/`; реалізуй усе на інтеграційній гілці.»
+### `to-questionnaire` · command
 
-## 3. Архітектура, дизайн і якість коду
+Command-category placeholder: `/command`.
 
-### `codebase-design` · `авто`
-- **Як:** «спроєктуй інтерфейс модуля», «зроби код тестованішим».
-- **Де:** проєктування/покращення інтерфейсу модуля, вибір «шва» (seam).
-- **Чому:** спільний словник «глибоких модулів» — менше дрібних, протікаючих абстракцій.
-- **Промти:**
-  - «Спроєктуй інтерфейс модуля org-hierarchy: глибокий, тестований. Де провести шов?»
-  - «Зроби selection-state контролер тестованішим — який seam винести в хук?»
-  - «Як поглибити DropZone/MediaService, щоб менше протікаючих абстракцій?»
+- **How:** `/to-questionnaire` when a decision depends on someone outside the conversation.
+- **Where:** questions for a customer, lead, or colleague on another team.
+- **Why:** turns a decision you cannot answer yourself into a Markdown questionnaire for one person: fill it in asynchronously or work through it together in a meeting. The inverse of `grill-me`: interview someone else rather than yourself.
+- **Prompts:**
+  - “/to-questionnaire — for the designer: what should we do with the empty table state on mobile?”
+  - “/to-questionnaire — questions for the backend about the pagination contract, to send in Slack.”
 
-### `domain-modeling` · `авто`
-- **Як:** «зафіксуймо доменну термінологію», «запиши ADR».
-- **Де:** коли треба ubiquitous language або архітектурне рішення на папері.
-- **Чому:** будує й шліфує доменну модель, підтримує `GLOSSARY.md` + ADR.
-- **Промти:**
-  - «Зафіксуймо ubiquitous language для org vs group (одна BE-сутність) і запиши ADR.»
-  - «Запиши ADR про person-position write-keys (name не positionName, positionId…).»
+## 2. Requirements → tasks → implementation
 
-### `improve-codebase-architecture` · `/команда`
-- **Як:** `/improve-codebase-architecture`.
-- **Де:** хочеш знайти, що поглибити/спростити в кодбейзі.
-- **Чому:** сканує код, дає візуальний HTML-звіт можливостей, далі гриляєш обране.
-- **Промти:**
-  - «/improve-codebase-architecture — проскануй кодбейз, дай HTML-звіт можливостей.»
-  - «/improve-codebase-architecture — де у modules/ найбільше дублювання й бракує глибини?»
+### `to-spec` · command
 
-### `tdd` · `авто`
-- **Як:** «зробімо test-first», «red-green-refactor», «інтеграційні тести».
-- **Де:** нова фіча або баг-фікс через тести.
-- **Чому:** дисциплінований цикл червоний→зелений→рефактор.
-- **Промти:**
-  - «Зробімо badge-лічильник test-first: red-green-refactor.»
-  - «Інтеграційні тести selection-state: nodeClick відкриває сайдбар, selectionChanged чистить.»
-  - «Баг-фікс focus() (reveal-only при мультиселекті) спочатку через падаючий тест.»
+Command-category placeholder: `/command`.
 
-### `diagnosing-bugs` · `авто`
-- **Як:** «diagnose», «debug this», «щось падає/тормозить».
-- **Де:** важкі баги й регресії продуктивності.
-- **Чому:** loop відтворити → мінімізувати → гіпотеза → інструментувати → фікс → регрес-тест.
-- **Промти:**
-  - «Diagnose: діаграма скидається в root після theme-flip. Відтвори й мінімізуй.»
-  - «Debug this: selectedOrgIds губиться при shift-click.»
-  - «Щось тормозить на великому дереві org-hierarchy — знайди причину.»
+- **How:** `/to-spec` after discussion.
+- **Where:** when everything has already been discussed in chat and a PRD is needed.
+- **Why:** synthesizes a PRD from the conversation (without an interview) and publishes it to the tracker.
+- **Prompts:**
+  - “/to-spec — build a PRD from our discussion about the diagram's theme-flip and put it in the tracker.”
+  - “/to-spec — we discussed person media-upload (DropZone + MediaService); synthesize a PRD.”
 
-### `code-review` · `авто` ⚠️ *(колізія назви — див. примітку нижче)*
-- **Як:** «review since X», «переглянь цю гілку/PR/WIP-зміни».
-- **Де:** рев'ю дифу від фіксованої точки (коміт/гілка/тег/merge-base) за двома осями.
-- **Чому:** паралельно ганяє два саб-агенти — **Стандарти** (код відповідає задокументованим стандартам репо?) і **Специфікація** (код відповідає issue/PRD/spec, з якого виріс?) — і показує звіт поруч.
-- **⚠️ Не плутай з двома іншими «code-review»:** вбудований harness-скіл `/code-review` (баги/спрощення, low→ultra — див. [Вбудовані harness-скіли](#вбудовані-harness-скіли-ідуть-із-claude-code-не-на-диску)) і `crg-review-changes` (граф-рев'ю через `code-review-graph`). Усі три відповідають на «переглянь зміни», але різними осями. Якщо викликаєш `/code-review` і очікуєш саме Pocock-версію (Стандарти+Spec) — уточни це в промті явно.
-- **Промти:**
-  - «Review since main — звір гілку за Стандартами репо і Специфікацією з issue #142.»
-  - «Переглянь цей PR за двома осями: чи відповідає coding standards і чи закриває оригінальний PRD.»
+### `to-tickets` · command
 
-### `receiving-code-review` · `авто` ⚠️ *(не Pocock — з `obra/superpowers`)*
-- **Як:** «отримав рев'ю, як реагувати», «respond to review feedback» — або авто, коли приходить фідбек рев'ю.
-- **Де:** ПІСЛЯ будь-якого рев'ю (`/code-review`, скіл `code-review`, `crg-review-changes`, зовнішній PR-рев'ювер) — **перш ніж** застосовувати правки.
-- **Чому:** технічна дисципліна *прийому* фідбеку — verify-before-implement, **no performative agreement** («You're absolutely right!»/«Thanks!»), пуш-бек із технічним обґрунтуванням, уточни неясне **ДО** часткової реалізації, фіксуй **по одному** з тестом; до зовнішніх рев'юверів — скептично + YAGNI-grep (чи взагалі юзається те, що просять «зробити properly»).
-- **⚠️ Провенанс:** єдиний скіл у сховищі **не** з `mattpocock/skills`, а з `obra/superpowers`; Pocock-sync його **НЕ** чіпає (див. [⚙️ Обслуговування](#-обслуговування)). Це **консюмер** рев'ю, не продюсер — не плутай із трьома «code-review», що *роблять* рев'ю.
-- **Промти:**
-  - «Прийшло рев'ю на гілку gamma — реагуй за receiving-code-review: верифікуй кожен пункт проти коду, неясне уточни, performative-подяк не пиши, фіксуй по одному.»
-  - «Зовнішній PR-рев'ювер просить "зробити properly" — YAGNI-grep, пуш-бек із технічним обґрунтуванням, не імплементуй наосліп.»
+Command-category placeholder: `/command`.
+
+- **How:** `/to-tickets` with a plan/PRD.
+- **Where:** when a plan needs to be split into independent tasks.
+- **Why:** vertical tracer-bullet slices — each issue can be picked up independently.
+- **Prompts:**
+  - “/to-tickets — split the badge-counter PRD into tracer-bullet issues.”
+  - “/to-tickets — break down the Formik→RHF form migration plan into independent slices.”
+
+### `triage` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/triage`.
+- **Where:** incoming bugs/features/external PRs that need sorting.
+- **Why:** takes an issue through a role state machine and writes agent-ready briefs.
+- **Prompts:**
+  - “/triage — sort these 12 incoming QA bugs, assign roles, write briefs.”
+  - “/triage — external PR + 3 feature requests; take them through the role state machine.”
+
+### `implement` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/implement` with a PRD or set of issues.
+- **Where:** when requirements are ready and it is time to code.
+- **Why:** structured implementation of a piece of work against a specification.
+- **Prompts:**
+  - “/implement — issue #142 (navigation badge counters) according to the specification.”
+  - “/implement — theme-flip PRD; implement the first vertical slice.”
+
+### `wayfinder` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/wayfinder` for work that does not fit in one agent session.
+- **Where:** a large, vague idea (‘fog’) — the route to the goal is not yet visible; standard `to-spec`/`to-tickets` is premature.
+- **Why:** builds a shared map of investigation tickets in the tracker and closes them one at a time until the path to the goal becomes clear.
+- **Prompts:**
+  - “/wayfinder — migrating the form library across the entire codebase; this is more than one session. Map it into investigation tickets and proceed one at a time.”
+  - “/wayfinder — org-restructure is vague at the start; build a map and follow it to a clear plan.”
 
 ---
 
-## 4. Git, merge і запобіжники
+### `implement-spec` · command
 
-### `resolving-merge-conflicts` · `авто` ⚠️ *(апстрім прибрав 2026-09-24, тут лишили як кастомний)*
-- **Як:** під час активного merge/rebase з конфліктами.
-- **Де:** є незавершений конфлікт у git.
-- **Чому:** веде через розв'язання конфліктів покроково.
-- **Промти:**
-  - «Маю конфлікт rebase gamma на main. Проведи через розв'язання покроково.»
-  - «Конфлікт у yarn.lock + двох переміщених файлах org-hierarchy; розрули.»
+Command-category placeholder: `/command`.
 
-### `git-guardrails-claude-code` · `авто`
-- **Як:** «додай git-захист», «блокуй push/reset».
-- **Де:** хочеш запобігти руйнівним git-командам.
-- **Чому:** ставить Claude Code hooks, що блокують `push`, `reset --hard`, `clean`, `branch -D` тощо **до** виконання.
-- **Промти:**
-  - «Постав git-захист: блокуй push, reset --hard, clean, branch -D до виконання.»
-  - «Додай хуки, щоб випадково не пушнути напряму в main.»
+- **How:** `/implement-spec` after `to-spec` + `to-tickets`.
+- **Where:** the specification is already broken into tickets with blocking relationships.
+- **Why:** implements the entire specification in one run. Reads tickets as a task graph, launches executor subagents in their own worktrees along the ready frontier, brings everything into one integration branch, and completes `code-review`. A parallel alternative to `implement`, which handles one ticket at a time.
+- **Prompts:**
+  - “/implement-spec — the org-type-morph spec and its tickets in `work/`; implement everything on an integration branch.”
 
-### `setup-pre-commit` · `авто`
-- **Як:** «додай pre-commit хуки», «налаштуй Husky/lint-staged».
-- **Де:** новий репо без commit-time перевірок.
-- **Чому:** Husky + lint-staged (Prettier) + typecheck + тести на коміт.
-- **Промти:**
-  - «Налаштуй Husky + lint-staged (Prettier) + typecheck + тести на коміт.»
-  - «Додай pre-commit, що ганяє tsc -p tsconfig.app.json і vitest на staged-файлах.»
+## 3. Architecture, design, and code quality
 
----
+### `codebase-design` · `auto`
+- **How:** “design the module interface”, “make the code more testable”.
+- **Where:** designing/improving a module interface, choosing a seam.
+- **Why:** a shared vocabulary of deep modules — fewer small, leaky abstractions.
+- **Prompts:**
+  - “Design a deep, testable interface for the org-hierarchy module. Where should the seam go?”
+  - “Make the selection-state controller more testable — which seam should move into a hook?”
+  - “How can we deepen DropZone/MediaService to reduce leaky abstractions?”
 
-### `pr` · `авто`
-- **Як:** сам підхоплюється, коли пишеш опис PR; вручну — `/pr`.
-- **Де:** готова гілка, треба тіло PR.
-- **Чому:** шаблон Summary (діаграма, ескіз диффу чи дерево) → Evidence (до/після: скриншот, вивід, тест) → Merge Danger (одностороння чи двостороння «двері», радіус ураження). Коротко, без преамбул, доменною мовою з `GLOSSARY.md`. Адаптовано з `show-me` (Humanlayer).
-- **Промти:**
-  - «Напиши опис PR для GUI-611 на `navigate-v3`.»
+### `domain-modeling` · `auto`
+- **How:** “let's record domain terminology”, “write an ADR”.
+- **Where:** when ubiquitous language or a written architectural decision is needed.
+- **Why:** builds and refines the domain model, maintains `GLOSSARY.md` + ADR.
+- **Prompts:**
+  - “Let's record ubiquitous language for org vs group (one BE entity) and write an ADR.”
+  - “Write an ADR about person-position write-keys (name, not positionName, positionId…).”
 
-## 5. CRG — навігація по графу коду *(від code-review-graph MCP)*
+### `improve-codebase-architecture` · command
 
-### `crg-explore-codebase` · `авто`
-- **Як / Де / Чому:** зрозуміти структуру незнайомого кодбейзу через knowledge graph.
-- **Промти:**
-  - «Поясни структуру modules/org-hierarchy через knowledge graph.»
-  - «Звідки по всьому кодбейзу тягнеться selection-state — побудуй граф і покажи.»
+Command-category placeholder: `/command`.
 
-### `crg-debug-issue` · `авто`
-- **Як / Де / Чому:** системний дебаг через граф-навігацію по коду.
-- **Промти:**
-  - «Системно продебаж, чому focus() re-selects, через граф-навігацію.»
-  - «Знайди по графу всі місця, що пишуть selectedOrgIds.»
+- **How:** `/improve-codebase-architecture`.
+- **Where:** when you want to find what to deepen/simplify in the codebase.
+- **Why:** scans code, produces a visual HTML opportunities report; then you grill the selected option.
+- **Prompts:**
+  - “/improve-codebase-architecture — scan the codebase and give me an HTML opportunities report.”
+  - “/improve-codebase-architecture — where in modules/ is duplication greatest and depth missing?”
 
-### `crg-refactor-safely` · `авто`
-- **Як / Де / Чому:** планування й безпечний рефактор через аналіз залежностей (impact radius).
-- **Промти:**
-  - «Хочу винести selection-state у хук — покажи impact radius перед рефактором.»
-  - «Безпечно переїхати country-roots-panel у modules/org-hierarchy: які залежності?»
+### `tdd` · `auto`
+- **How:** “let's do test-first”, “red-green-refactor”, “integration tests”.
+- **Where:** a new feature or bug fix through tests.
+- **Why:** a disciplined red→green→refactor cycle.
+- **Prompts:**
+  - “Let's build the badge counter test-first: red-green-refactor.”
+  - “Selection-state integration tests: nodeClick opens the sidebar, selectionChanged clears it.”
+  - “Fix the focus() bug (reveal-only during multiselect), starting with a failing test.”
 
-### `crg-review-changes` · `авто`
-- **Як / Де / Чому:** структурований код-рев'ю через detect-changes + impact-аналіз.
-- **Промти:**
-  - «Зроби рев'ю змін на гілці gamma з impact-аналізом.»
-  - «Detect-changes по останньому коміту + що мовчки зачеплено поза диффом.»
+### `diagnosing-bugs` · `auto`
+- **How:** “diagnose”, “debug this”, “something crashes/is slow”.
+- **Where:** difficult bugs and performance regressions.
+- **Why:** reproduce → minimize → hypothesis → instrument → fix → regression-test loop.
+- **Prompts:**
+  - “Diagnose: the diagram resets to root after theme-flip. Reproduce and minimize.”
+  - “Debug this: selectedOrgIds gets lost on shift-click.”
+  - “Something is slow with a large org-hierarchy tree — find the cause.”
 
----
+### `code-review` · `auto` ⚠️ *(name collision — see note below)*
+- **How:** “review since X”, “review this branch/PR/WIP changes”.
+- **Where:** reviewing a diff from a fixed point (commit/branch/tag/merge-base) along two axes.
+- **Why:** runs two subagents in parallel — **Standards** (does the code follow the repo's documented standards?) and **Specification** (does the code match the issue/PRD/spec it came from?) — and displays their reports side by side.
+- **⚠️ Do not confuse it with the other two ‘code-review’ tools:** the built-in harness skill `/code-review` (bugs/simplification, low→ultra — see [Built-in harness skills](#built-in-harness-skills-ship-with-claude-code-not-on-disk)) and `crg-review-changes` (graph review through `code-review-graph`). All three respond to “review changes”, but along different axes. If invoking `/code-review` and expecting the Pocock version (Standards+Spec), say so explicitly in the prompt.
+- **Prompts:**
+  - “Review since main — check the branch against repo Standards and the Specification in issue #142.”
+  - “Review this PR along two axes: whether it meets coding standards and fulfills the original PRD.”
 
-## 6. Прототипування, навчання, передача контексту
-
-### `prototype` · `/команда`
-- **Як:** `/prototype`.
-- **Де:** треба обмацати дизайн до коміту — логіка стану АБО кілька варіантів UI.
-- **Чому:** одноразовий прототип: runnable terminal-app для бізнес-логіки, або перемикувані UI-варіації на одному роуті.
-- **Промти:**
-  - «/prototype — 3 варіанти layout для country-roots-panel на одному роуті.»
-  - «/prototype — обмацати логіку selection-state як runnable terminal-app.»
-
-### `frontend-design` · `авто` ⚠️ *(не Pocock — форк `anthropics/skills`)*
-- **Як:** тригериться сам на «зроби екран/портал/сайт», «щоб не виглядало як AI», питання про палітру/типографіку/щільність. Вручну — `/frontend-design`.
-- **Де:** візуальний бік UI — новий екран чи переробка вигляду наявного.
-- **Чому:** 6 кроків із перевірними критеріями, а не поради. Ключове — **розвилка на кроці 1**:
-  - **Page** (лендинг, сайт) — одиниця сторінка, сигнатура = герой-теза;
-  - **System** (портал, застосунок, дашборд) — одиниця *набір екранів*, героя немає, **сигнатура = те, що повторюється** (щільність, типо-шкала, поведінка полів, мова станів, мотив переходів). Тест: скріншот **будь-якого** екрана має впізнаватись як цей продукт.
-- **Крок 2 рятує від головної шкоди:** у наявному продукті більшість осей **уже витрачені** — скіл велить знайти токен-джерело, інвентар компонентів, механізм тем, parity-gate і стильову ідіому, і не відкривати палітру заново.
-- **Крок 4 — калібрування:** три «дефолтні AI-вигляди» з конкретними хексами + три дефолти саме для систем (сайдбар «іконка+лейбл», картки з тінями на сірому, рядок із 4 стат над таблицею, сірий спінер на всі стани).
-- **Крок 6 — гейт:** без скріншота дизайн не готовий; немає можливості зняти — сказати вголос, а не мовчати.
-- **Копірайтинг** — окремим файлом `WRITING.md` (progressive disclosure), читається коли пишеш текст інтерфейсу.
-- **Промти:**
-  - «Зроби екран <X> — це портал, не лендинг; сигнатура має бути в примітивах, не в героєві.»
-  - «Переробити вигляд <екран>. Спершу крок 2: назви, які осі вже витрачені дизайн-системою.»
-  - «Дизайн-напрямок для <продукт>, і звір план проти трьох AI-дефолтів.»
-- ⚠️ **Форк.** Апстрім — `anthropics/skills@2235be7c60`; ресинк лише вручну, діфом проти цього коміту. Ліцензія лежить поруч у `LICENSE.txt`.
-
-### `research` · `авто` ⚠️ *(не плутай з `deep-research`, див. примітку нижче)*
-- **Як:** «досліди X», «збери факти з доки/API», «делегуй читання фоновому агенту».
-- **Де:** питання, що варто перевірити за надійними першоджерелами (доки, API, код), результат — файл у репо.
-- **Чому:** піднімає фоновий агент, який читає, поки ти працюєш далі; фіксує висновки Markdown-файлом у репозиторії.
-- **⚠️ Не плутай** з вбудованим `deep-research` (fan-out веб-пошук по зовнішніх джерелах з adversarial-перевіркою і цитатами — див. [Вбудовані harness-скіли](#вбудовані-harness-скіли-ідуть-із-claude-code-не-на-диску)). `research` — прицільніший і фоновий (доки/API/код у межах задачі), `deep-research` — ширший звіт із зовнішнього вебу.
-- **Промти:**
-  - «Research — з'ясуй, чи tanstack query v5 підтримує підписку на кілька query-ключів одразу; зафіксуй у файл.»
-  - «Делегуй фоновому агенту: зібрати факти з доки RAC про keyboard-навігацію ComboBox, поки я продовжую іншу задачу.»
-
-### `teach` · `/команда`
-- **Як:** `/teach`.
-- **Де:** хочеш навчитись концепту/скіла прямо в робочому просторі.
-- **Чому:** багатосесійне навчання з матеріалами й записом прогресу.
-- **Промти:**
-  - «/teach — навчи GoJS ThemeManager прямо у воркспейсі, з прогресом.»
-  - «/teach — RHF + Zod resolver патерни на прикладі person-form.»
-
-### `handoff` · `/команда`
-- **Як:** `/handoff` наприкінці сесії.
-- **Де:** контекст треба передати іншому агенту / в нову сесію.
-- **Чому:** стискає розмову в компактний handoff-документ.
-- **Промти:**
-  - «/handoff — кінець сесії, стисни контекст для наступного агента.»
-  - «/handoff — передай поточний стан theme-flip роботи в нову сесію.»
+### `receiving-code-review` · `auto` ⚠️ *(not Pocock — from `obra/superpowers`)*
+- **How:** “I received a review; how should I respond?”, “respond to review feedback” — or automatically when review feedback arrives.
+- **Where:** AFTER any review (`/code-review`, the `code-review` skill, `crg-review-changes`, an external PR reviewer) — **before** applying fixes.
+- **Why:** technical discipline for *receiving* feedback — verify-before-implement, **no performative agreement** (“You're absolutely right!”/“Thanks!”), push back with technical reasoning, clarify ambiguity **BEFORE** partial implementation, fix **one item at a time** with a test; treat external reviewers skeptically + YAGNI-grep (is the thing they want ‘done properly’ even used?).
+- **⚠️ Provenance:** the only skill in the store **not** from `mattpocock/skills`, but from `obra/superpowers`; Pocock-sync does **NOT** touch it (see [⚙️ Maintenance](#-maintenance)). It is a review **consumer**, not a producer — do not confuse it with the three ‘code-review’ tools that *perform* reviews.
+- **Prompts:**
+  - “A review arrived for branch gamma — respond using receiving-code-review: verify each point against the code, clarify ambiguity, avoid performative thanks, fix one item at a time.”
+  - “An external PR reviewer asks to ‘do it properly’ — YAGNI-grep, push back with technical reasoning, do not implement blindly.”
 
 ---
 
-### `retro` · `/команда`
-- **Як:** `/retro` наприкінці сесії кодування (у тій самій сесії).
-- **Де:** щойно завершена задача чи виправлений баг.
-- **Чому:** дивиться на сесію і пропонує зміни не в коді, а в середовищі агента: пойнтери для навігації, автоматичні перевірки, стандарти коду, steering-файли, економія інструментів, доступ до інформації. Механічне порушення стандарту перетворює на детерміновану перевірку (лінт, pre-commit, CI), а `CODING_STANDARDS.md` лишає для справжніх рішень на розсуд.
-- **Промти:**
-  - «/retro — що в репо завадило швидко знайти, де живе фокус історії Navigate?»
-  - «/retro після фіксу бага: що б його запобігло?»
+## 4. Git, merging, and safeguards
 
-## 7. Утиліти, міграції, метаскіли
+### `resolving-merge-conflicts` · `auto` ⚠️ *(removed upstream on 2026-09-24; retained here as custom)*
+- **How:** during an active merge/rebase with conflicts.
+- **Where:** there is an unresolved git conflict.
+- **Why:** guides conflict resolution step by step.
+- **Prompts:**
+  - “I have a conflict rebasing gamma onto main. Guide me through resolving it step by step.”
+  - “Conflict in yarn.lock + two moved org-hierarchy files; resolve it.”
 
-### `migrate-to-shoehorn` · `авто`
-- **Як:** «shoehorn», «прибери `as` у тестах».
-- **Де:** тестові файли з `as`-асершенами.
-- **Чому:** міграція на `@total-typescript/shoehorn` (часткові тест-дані без `as`).
-- **Промти:**
-  - «Прибери `as`-асершени в тестах mapper'ів, мігруй на shoehorn.»
-  - «Partial тест-дані для person-схем без `as` — переведи на shoehorn.»
+### `git-guardrails-claude-code` · `auto`
+- **How:** “add git protection”, “block push/reset”.
+- **Where:** when you want to prevent destructive git commands.
+- **Why:** installs Claude Code hooks that block `push`, `reset --hard`, `clean`, `branch -D`, etc. **before** execution.
+- **Prompts:**
+  - “Install git protection: block push, reset --hard, clean, branch -D before execution.”
+  - “Add hooks to prevent accidentally pushing directly to main.”
 
-### `scaffold-exercises` · `авто`
-- **Як:** «заскафолди вправи», «новий розділ курсу».
-- **Де:** створення структури вправ (sections/problems/solutions/explainers).
-- **Чому:** генерує стуби, що одразу проходять лінт.
-- **Промти:**
-  - «Заскафолди новий розділ курсу: секції/задачі/рішення/пояснення, щоб одразу проходило лінт.»
-  - «Створи заготовки вправ під тему «RHF + Zod».»
-
-### `writing-for-agents` · `авто`
-- **Як:** сам підхоплюється, коли створюєш чи редагуєш скіл або правиш `AGENTS.md` / `CLAUDE.md`; вручну — `/writing-for-agents`.
-- **Де:** будь-який документ, який читатиме агент: скіл, `AGENTS.md`, `CLAUDE.md`.
-- **Чому:** довідник принципів і словника, щоб такі документи були передбачуваними. Наступник `writing-great-skills` (апстрім перейменував і перебудував його 2026-07-23).
-- **Промти:**
-  - «/writing-for-agents — відредагуй мій новий скіл, щоб був передбачуваним.»
-  - «Як написати тригери в description, щоб авто-підхоплення працювало?»
-  - «Перечитай цей `AGENTS.md` очима агента: що тут зайве чи двозначне?»
-
-### `wizard` · `авто`
-- **Як:** сам підхоплюється, коли агент натрапляє на крок, який може зробити лише людина; вручну — `/wizard`.
-- **Де:** провізіонування інфраструктури, облікові дані чи секрети CI, незнайома стороння панель керування, одноразова міграція чи перемикання.
-- **Чому:** замість нумерованих інструкцій у чаті генерує інтерактивний bash-скрипт: відкриває потрібні URL, каже, що натиснути, збирає значення і пише їх у `.env` чи секрети GitHub Actions. Для кроків, які агент може виконати сам, не викликається.
-- **Промти:**
-  - «Треба завести OAuth-застосунок у Google Cloud і покласти ключі в `.env` — зроби wizard.»
-  - «/wizard — проведи мене через налаштування секретів CI для деплою.»
-
-### `wait-what` · `/команда`
-- **Як:** `/wait-what` одразу після повідомлення агента, яке не зрозумів.
-- **Де:** будь-яка розмова, коли відповідь задовга чи незрозуміла.
-- **Чому:** агент переказує останнє повідомлення наново: трохи контексту, ASD-STE100 Simplified Technical English і доменна мова з `GLOSSARY.md`.
-- **Промти:**
-  - «/wait-what»
-
-### `setup-matt-pocock-skills` · `/команда`
-- **Як:** `/setup-matt-pocock-skills` **один раз** на репо.
-- **Де:** перед першим використанням engineering-скілів (`to-tickets`, `triage`, `tdd`, `diagnosing-bugs`, `improve-codebase-architecture`…).
-- **Чому:** конфігурує issue-трекер, словник triage-лейблів і розкладку доменних доків.
-- **Промти:**
-  - «/setup-matt-pocock-skills — сконфігуруй issue-трекер, triage-лейбли й доменні доки в цьому репо (один раз).»
-
-### `caveman` · `авто`
-- **Як:** «caveman mode», «be brief», `/caveman`.
-- **Де:** треба максимально стисло й дешево за токенами.
-- **Чому:** ультра-стислий режим (~−75% токенів) без втрати технічної точності.
-- **Промти:**
-  - «Caveman mode. Коротко: як викликати make:entity?»
-  - «Be brief: різниця org vs group у двох реченнях.»
+### `setup-pre-commit` · `auto`
+- **How:** “add pre-commit hooks”, “set up Husky/lint-staged”.
+- **Where:** a new repo without commit-time checks.
+- **Why:** Husky + lint-staged (Prettier) + typecheck + tests on commit.
+- **Prompts:**
+  - “Set up Husky + lint-staged (Prettier) + typecheck + tests on commit.”
+  - “Add pre-commit that runs tsc -p tsconfig.app.json and vitest on staged files.”
 
 ---
 
-# 🏭 Конвеєр AI-factory *(власні скіли, не Pocock)*
+### `pr` · `auto`
+- **How:** activates when you write a PR description; manually — `/pr`.
+- **Where:** the branch is ready and needs a PR body.
+- **Why:** Summary (diagram, diff sketch, or tree) → Evidence (before/after: screenshot, output, test) → Merge Danger (one-way or two-way door, blast radius). Brief, no preamble, using domain language from `GLOSSARY.md`. Adapted from `show-me` (Humanlayer).
+- **Prompts:**
+  - “Write a PR description for GUI-611 on `navigate-v3`.”
 
-> Дев'ять скілів, що перетворюють «AI як copilot» на «AI як команда»: розуміння → вибір → план →
-> два гейти → тести до коду → виконання → звіт. Написані під рубрику `writing-great-skills` (тепер `writing-for-agents`),
-> план і звірка — `~/.agents/ai-factory-plan.md`.
+## 5. CRG — code graph navigation *(from code-review-graph MCP)*
+
+### `crg-explore-codebase` · `auto`
+- **How / Where / Why:** understand an unfamiliar codebase's structure through a knowledge graph.
+- **Prompts:**
+  - “Explain the structure of modules/org-hierarchy through the knowledge graph.”
+  - “Where does selection-state reach across the codebase? Build and show the graph.”
+
+### `crg-debug-issue` · `auto`
+- **How / Where / Why:** systematic debugging through code graph navigation.
+- **Prompts:**
+  - “Systematically debug why focus() re-selects, using graph navigation.”
+  - “Find every place that writes selectedOrgIds through the graph.”
+
+### `crg-refactor-safely` · `auto`
+- **How / Where / Why:** planning and safe refactoring through dependency analysis (impact radius).
+- **Prompts:**
+  - “I want to extract selection-state into a hook — show the impact radius before refactoring.”
+  - “Safely move country-roots-panel into modules/org-hierarchy: what are the dependencies?”
+
+### `crg-review-changes` · `auto`
+- **How / Where / Why:** structured code review through detect-changes + impact analysis.
+- **Prompts:**
+  - “Review changes on branch gamma with impact analysis.”
+  - “Detect-changes for the latest commit + what is silently affected outside the diff.”
+
+---
+
+## 6. Prototyping, learning, and context handoff
+
+### `prototype` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/prototype`.
+- **Where:** explore a design before committing — state logic OR several UI options.
+- **Why:** a throwaway prototype: a runnable terminal app for business logic, or switchable UI variations on one route.
+- **Prompts:**
+  - “/prototype — 3 layout options for country-roots-panel on one route.”
+  - “/prototype — explore selection-state logic as a runnable terminal app.”
+
+### `frontend-design` · `auto` ⚠️ *(not Pocock — a fork of `anthropics/skills`)*
+- **How:** triggers on “build a screen/portal/site”, “make it not look like AI”, questions about palette/typography/density. Manually — `/frontend-design`.
+- **Where:** the visual side of UI — a new screen or an existing screen's appearance redesign.
+- **Why:** 6 steps with verifiable criteria, rather than advice. The key is the **branch at step 1**:
+  - **Page** (landing page, site) — the unit is a page, signature = hero thesis;
+  - **System** (portal, app, dashboard) — the unit is a *set of screens*, no hero, **signature = what repeats** (density, type scale, field behavior, state language, transition motif). Test: a screenshot of **any** screen must be recognizable as this product.
+- **Step 2 prevents the main harm:** in an existing product, most axes are **already spent** — the skill tells you to find the token source, component inventory, theme mechanism, parity gate, and styling idiom, rather than reopen the palette decision.
+- **Step 4 — calibration:** three ‘default AI looks’ with specific hex values + three system-specific defaults (an ‘icon+label’ sidebar, shadowed cards on gray, a row of 4 stats above a table, a gray spinner for every state).
+- **Step 6 — gate:** without a screenshot, the design is not ready; if you cannot capture one, say so rather than stay silent.
+- **Copywriting** — a separate `WRITING.md` file (progressive disclosure), read when writing interface text.
+- **Prompts:**
+  - “Build screen <X> — this is a portal, not a landing page; the signature belongs in primitives, not a hero.”
+  - “Redesign <screen>. First, step 2: name which axes the design system has already spent.”
+  - “Design direction for <product>, and check the plan against the three AI defaults.”
+- ⚠️ **Fork.** Upstream — `anthropics/skills@2235be7c60`; resync only manually, by diff against that commit. The license is alongside it in `LICENSE.txt`.
+
+### `research` · `auto` ⚠️ *(do not confuse with `deep-research`; see note below)*
+- **How:** “research X”, “collect facts from docs/API”, “delegate reading to a background agent”.
+- **Where:** a question worth checking against reliable primary sources (docs, APIs, code); the result is a file in the repo.
+- **Why:** starts a background agent that reads while you keep working; records findings in a Markdown file in the repository.
+- **⚠️ Do not confuse** with built-in `deep-research` (fan-out web research across external sources with adversarial checking and citations — see [Built-in harness skills](#built-in-harness-skills-ship-with-claude-code-not-on-disk)). `research` is more targeted and background-oriented (docs/API/code within the task); `deep-research` is a broader report from the external web.
+- **Prompts:**
+  - “Research — determine whether tanstack query v5 supports subscribing to several query keys at once; record it in a file.”
+  - “Delegate to a background agent: gather facts from RAC docs about ComboBox keyboard navigation while I continue another task.”
+
+### `teach` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/teach`.
+- **Where:** learn a concept/skill directly in the workspace.
+- **Why:** multi-session learning with materials and progress tracking.
+- **Prompts:**
+  - “/teach — teach GoJS ThemeManager right in the workspace, tracking progress.”
+  - “/teach — RHF + Zod resolver patterns using person-form as an example.”
+
+### `handoff` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/handoff` at the end of a session.
+- **Where:** context must be handed to another agent / a new session.
+- **Why:** compresses the conversation into a compact handoff document.
+- **Prompts:**
+  - “/handoff — end of session; compress context for the next agent.”
+  - “/handoff — pass the current state of theme-flip work to a new session.”
+
+---
+
+### `retro` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/retro` at the end of a coding session (in that same session).
+- **Where:** a just-completed task or fixed bug.
+- **Why:** examines the session and suggests changes to the agent's environment rather than code: navigation pointers, automated checks, code standards, steering files, tool savings, access to information. Converts mechanical standard violations into deterministic checks (lint, pre-commit, CI), leaving `CODING_STANDARDS.md` for genuine judgment calls.
+- **Prompts:**
+  - “/retro — what in the repo made it hard to quickly find where Navigate history focus lives?”
+  - “/retro after fixing the bug: what would have prevented it?”
+
+## 7. Utilities, migrations, and meta-skills
+
+### `migrate-to-shoehorn` · `auto`
+- **How:** “shoehorn”, “remove `as` in tests”.
+- **Where:** test files containing `as` assertions.
+- **Why:** migration to `@total-typescript/shoehorn` (partial test data without `as`).
+- **Prompts:**
+  - “Remove `as` assertions in mapper tests; migrate to shoehorn.”
+  - “Partial test data for person schemas without `as` — move it to shoehorn.”
+
+### `scaffold-exercises` · `auto`
+- **How:** “scaffold exercises”, “new course section”.
+- **Where:** creating an exercise structure (sections/problems/solutions/explainers).
+- **Why:** generates stubs that pass lint immediately.
+- **Prompts:**
+  - “Scaffold a new course section: sections/problems/solutions/explainers, passing lint immediately.”
+  - “Create exercise scaffolds for ‘RHF + Zod’.”
+
+### `writing-for-agents` · `auto`
+- **How:** activates when creating or editing a skill or modifying `AGENTS.md` / `CLAUDE.md`; manually — `/writing-for-agents`.
+- **Where:** any document an agent will read: a skill, `AGENTS.md`, `CLAUDE.md`.
+- **Why:** a reference for principles and vocabulary that make such documents predictable. Successor to `writing-great-skills` (upstream renamed and restructured it on 2026-07-23).
+- **Prompts:**
+  - “/writing-for-agents — edit my new skill to make it predictable.”
+  - “How should I write description triggers so automatic activation works?”
+  - “Reread this `AGENTS.md` through an agent's eyes: what is unnecessary or ambiguous?”
+
+### `wizard` · `auto`
+- **How:** activates when the agent encounters a step only a person can perform; manually — `/wizard`.
+- **Where:** infrastructure provisioning, CI credentials or secrets, an unfamiliar third-party control panel, a one-time migration or switchover.
+- **Why:** instead of numbered chat instructions, generates an interactive bash script: opens the relevant URLs, tells you what to click, collects values, and writes them to `.env` or GitHub Actions secrets. Not invoked for steps the agent can perform itself.
+- **Prompts:**
+  - “We need to create an OAuth application in Google Cloud and put keys in `.env` — make a wizard.”
+  - “/wizard — guide me through setting up CI secrets for deployment.”
+
+### `wait-what` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/wait-what` immediately after an agent message you did not understand.
+- **Where:** any conversation where an answer is too long or unclear.
+- **Why:** the agent restates its last message: some context, ASD-STE100 Simplified Technical English, and domain language from `GLOSSARY.md`.
+- **Prompts:**
+  - “/wait-what”
+
+### `setup-matt-pocock-skills` · command
+
+Command-category placeholder: `/command`.
+
+- **How:** `/setup-matt-pocock-skills` **once** per repo.
+- **Where:** before first using engineering skills (`to-tickets`, `triage`, `tdd`, `diagnosing-bugs`, `improve-codebase-architecture`…).
+- **Why:** configures the issue tracker, triage-label vocabulary, and domain documentation layout.
+- **Prompts:**
+  - “/setup-matt-pocock-skills — configure the issue tracker, triage labels, and domain docs in this repo (once).”
+
+### `caveman` · `auto`
+- **How:** “caveman mode”, “be brief”, `/caveman`.
+- **Where:** maximum brevity and low token cost.
+- **Why:** ultra-concise mode (~−75% tokens) without losing technical accuracy.
+- **Prompts:**
+  - “Caveman mode. Briefly: how do I invoke make:entity?”
+  - “Be brief: org vs group in two sentences.”
+
+---
+
+# 🏭 AI-factory pipeline *(custom skills, not Pocock)*
+
+> Nine skills that turn ‘AI as copilot’ into ‘AI as a team’: understanding → selection → plan →
+> two gates → tests before code → execution → report. Written against the `writing-great-skills` rubric (now `writing-for-agents`),
+> plan and reconciliation — `~/.agents/ai-factory-plan.md`.
 >
-> **Ланцюг:** `repo-bootstrap` → `cto-research` → `cto-agenda` → `spec-flow`
-> (усередині: `acceptance-spec`, GATE 2 = `plan-critique` + `plan-defense`, далі `tdd` → `code-review`)
-> → `ship-report` → деплой → `post-deploy-check`.
+> **Chain:** `repo-bootstrap` → `cto-research` → `cto-agenda` → `spec-flow`
+> (inside: `acceptance-spec`, GATE 2 = `plan-critique` + `plan-defense`, then `tdd` → `code-review`)
+> → `ship-report` → deployment → `post-deploy-check`.
 
-**Дві опори, без яких ланцюг розсипається:**
+**Two foundations without which the chain falls apart:**
 
-- `~/.agents/rules/repo-standards-manifest.md` — **процес у скілі, мірник у репо**
-  (`<repo>/.claude/standards.md`). Через нього глобальні скіли перестають вгадувати стандарти,
-  і копія скіла в кожному репо стає непотрібною. §0 — прив'язка мірника до **мови**
-  (Pocock діє лише на TS; у полірепо це не формальність).
-- `~/.agents/rules/multi-model-roles.md` — хто виносить вердикт по чужому артефакту.
-  Автор ≠ критик, імплементер ≠ рев'юєр; `fork` лінзою **не** рахується (успадковує модель і контекст).
+- `~/.agents/rules/repo-standards-manifest.md` — **process in the skill, yardstick in the repo**
+  (`<repo>/.claude/standards.md`). Global skills stop guessing standards through it,
+  making a copy of the skill in every repo unnecessary. §0 binds the yardstick to the **language**
+  (Pocock applies only to TS; in a polyrepo this is not a formality).
+- `~/.agents/rules/multi-model-roles.md` — who delivers a verdict on someone else's artifact.
+  Author ≠ critic, implementer ≠ reviewer; a `fork` does **not** count as a lens (it inherits the model and context).
 
-### `repo-bootstrap` · `авто`
-- **Як:** «ініціалізуй репо», «чого бракує в репо», «налаштуй проєкт».
-- **Де:** нове або чуже репо; перевірка, чи готове наявне.
-- **Чому:** інвентар із 10 рядків (`є` / `немає` / `є, але розійшовся`) і створення відсутнього.
-  **Не вигадує вміст:** чого в репо немає — `⚠️ немає`, рішення людини — `TODO:`. Саме так у dg
-  знайшлося, що lint відсутній як клас, а Rust-частина не має мірника.
-- **Промти:**
-  - «repo-bootstrap — перевір, чого цьому репо бракує для конвеєра, нічого не пиши.»
-  - «Ініціалізуй репо: створи маніфест і CLAUDE.local.md, решту покажи списком.»
+### `repo-bootstrap` · `auto`
+- **How:** “initialize the repo”, “what is missing in the repo”, “set up the project”.
+- **Where:** a new or unfamiliar repo; checking whether an existing one is ready.
+- **Why:** a 10-row inventory (`present` / `absent` / `present but drifted`) and creation of missing items.
+  **Does not invent content:** absent from the repo — `⚠️ missing`, a human decision — `TODO:`. This is how dg
+  was found to have no lint at all and no yardstick for its Rust portion.
+- **Prompts:**
+  - “repo-bootstrap — check what this repo lacks for the pipeline; do not write anything.”
+  - “Initialize the repo: create the manifest and CLAUDE.local.md; list the rest.”
 
-### `cto-research` · `авто`
-- **Як:** «брифінг», «розберись у продукті», «cto research».
-- **Де:** перед плануванням значущої фічі; на старті в незнайомому репо.
-- **Чому:** один брифінг на репо як **кеш** первинних джерел — кожна теза з `path:line`, при
-  розходженні править джерело. **Гейт свіжості** проти `HEAD`: перезбирає лише зачеплені розділи.
-- **Промти:**
-  - «cto-research — збери брифінг перед тим, як планувати експорт.»
-  - «Брифінг застарів? Прожени гейт свіжості й онови зачеплене.»
+### `cto-research` · `auto`
+- **How:** “briefing”, “understand the product”, “cto research”.
+- **Where:** before planning a significant feature; when starting in an unfamiliar repo.
+- **Why:** one briefing per repo as a **cache** of primary sources — each claim has `path:line`; on
+  disagreement, corrects the source. A **freshness gate** against `HEAD`: rebuilds only affected sections.
+- **Prompts:**
+  - “cto-research — prepare a briefing before planning export.”
+  - “Is the briefing stale? Run the freshness gate and update affected sections.”
 
-### `cto-agenda` · `авто`
-- **Як:** «що далі», «що брати в роботу», «склади беклог».
-- **Де:** P0 закрито й черга порожня; треба вибрати між напрямками.
-- **Чому:** кандидати з **шести перелічених джерел**, осі **розблоковує × зворотність**, і **один**
-  наступний хід + чому не інші. Продуктова розвилка виноситься людині, а не підміняється таском.
-- **Промти:**
-  - «cto-agenda — P0 закрито, що брати наступним і чому саме це.»
-  - «Склади агенду й окремо перелічи, які рішення за мною.»
+### `cto-agenda` · `auto`
+- **How:** “what next”, “what should we work on”, “make a backlog”.
+- **Where:** P0 is closed and the queue is empty; a direction must be chosen.
+- **Why:** candidates from **six listed sources**, axes **unblocking × reversibility**, and **one**
+  next move + why not the others. A product fork goes to the person rather than being disguised as a task.
+- **Prompts:**
+  - “cto-agenda — P0 is closed; what should we take next and why this specifically?”
+  - “Prepare the agenda and separately list the decisions that are mine.”
 
-### `spec-flow` · `авто`
-- **Як:** «фіча за SDD», «заспецифікуй фічу», «spec-flow».
-- **Де:** нова підсистема/слайс, зміна публічного API, крос-зрізова зміна. Поріг — з маніфесту.
-- **Чому:** **тонкий** оркестратор: spec → GATE 1 → plan → GATE 2 → tasks → implement → verify → wrap,
-  де кожну роль виконує профільний скіл. Своє в ньому лише послідовність і гейти.
-- **Промти:**
-  - «spec-flow на нову сутність — веди від спеки до звіту.»
-  - «Поріг спрацював? Якщо ні — скажи це й зроби легкий інлайн-план.»
+### `spec-flow` · `auto`
+- **How:** “feature through SDD”, “specify the feature”, “spec-flow”.
+- **Where:** a new subsystem/slice, a public API change, a cross-cutting change. Threshold comes from the manifest.
+- **Why:** a **thin** orchestrator: spec → GATE 1 → plan → GATE 2 → tasks → implement → verify → wrap,
+  with each role performed by its specialist skill. Only the sequence and gates are its own.
+- **Prompts:**
+  - “spec-flow for a new entity — guide it from specification to report.”
+  - “Was the threshold met? If not, say so and make a lightweight inline plan.”
 
-### `plan-critique` · `авто`
-- **Як:** «прожар план», «критика плану».
-- **Де:** GATE 2, після написання плану, до розбивки на таски.
-- **Чому:** чотири **сліпі одна до одної** лінзи — AI-slop / логічні діри / надлишкова складність /
-  edge cases. Читає **план** (на відміну від `grilling`, який питає **тебе**).
-  Лінза, що не повернулась, — червоний гейт, а не «чисто».
-- **Промти:**
-  - «plan-critique на plan.md — чотири лінзи, зведи blocking окремо.»
-  - «Скільки лінз запущено і скільки повернулось?»
+### `plan-critique` · `auto`
+- **How:** “roast the plan”, “plan critique”.
+- **Where:** GATE 2, after writing the plan, before splitting into tasks.
+- **Why:** four lenses **blind to each other** — AI-slop / logical gaps / excess complexity /
+  edge cases. Reads the **plan** (unlike `grilling`, which questions **you**).
+  A lens that did not return means a red gate, not ‘clean’.
+- **Prompts:**
+  - “plan-critique on plan.md — four lenses, summarize blocking findings separately.”
+  - “How many lenses were launched and how many returned?”
 
-### `plan-defense` · `авто`
-- **Як:** «захист плану», «а що буде якщо».
-- **Де:** GATE 2, останній крок перед тасками.
-- **Чому:** п'ять фіксованих питань (кривий інпут · відмова залежності · гонка й повторний виклик ·
-  граничні дані · rollback), кожне закривається **рядком плану**, не відповіддю в чаті.
-- **Промти:**
-  - «plan-defense — прожени п'ять питань і поклади таблицю в план.»
-  - «Скільки дірок лишилось? Нуль — йдемо в таски.»
+### `plan-defense` · `auto`
+- **How:** “plan defense”, “what happens if”.
+- **Where:** GATE 2, the last step before tasks.
+- **Why:** five fixed questions (bad input · dependency failure · race and repeated invocation ·
+  boundary data · rollback), each answered by a **line in the plan**, not a chat response.
+- **Prompts:**
+  - “plan-defense — run the five questions and put the table in the plan.”
+  - “How many gaps remain? Zero means we move to tasks.”
 
-### `acceptance-spec` · `авто`
-- **Як:** «приймальні критерії», «сценарії тестування», «acceptance».
-- **Де:** всередині плану, **до** коду.
-- **Чому:** фіча як **спостережувана поведінка**: сценарій · передумова · дія · очікуваний
-  результат · чим перевіряється. Три обов'язкові групи: happy path / межі / відмови.
-  «Список оновлюється коректно» не проходить; «0 рядків і текст порожнього стану» — проходить.
-- **Промти:**
-  - «acceptance-spec для цієї фічі — таблиця в plan.md, потім таски по рядках.»
-  - «Скільки рядків лишаються ручними?»
+### `acceptance-spec` · `auto`
+- **How:** “acceptance criteria”, “test scenarios”, “acceptance”.
+- **Where:** inside the plan, **before** code.
+- **Why:** the feature as **observable behavior**: scenario · precondition · action · expected
+  result · verification method. Three mandatory groups: happy path / boundaries / failures.
+  ‘The list updates correctly’ fails; ‘0 rows and empty-state text’ passes.
+- **Prompts:**
+  - “acceptance-spec for this feature — table in plan.md, then tasks by row.”
+  - “How many rows remain manual?”
 
-### `ship-report` · `авто`
-- **Як:** «звіт по фічі», «підсумуй роботу», «ship report».
-- **Де:** завершення фічі, перед деплоєм.
-- **Чому:** шість фіксованих секцій (зроблено / протестовані сценарії / неочевидне / скріни /
-  проходка по user flow / ризики) як **дельта** до плану — збіги згорнуті в посилання, розгорнуті
-  лише відхилення. Секція 2 — приймальна таблиця `acceptance-spec` із дописаними «фактичний
-  результат» і «вердикт», а не проза. Порожня секція пишеться як «не застосовно, бо…», не видаляється.
-- **Промти:**
-  - «ship-report по цій фічі — дельту до plan.md, таблицю з вердиктами.»
-  - «Скільки рядків приймальної таблиці лишились «не перевірено»?»
+### `ship-report` · `auto`
+- **How:** “feature report”, “summarize the work”, “ship report”.
+- **Where:** feature completion, before deployment.
+- **Why:** six fixed sections (completed / tested scenarios / non-obvious details / screenshots /
+  user-flow walkthrough / risks) as a **delta** to the plan — matches collapse into links; only
+  deviations are expanded. Section 2 is the `acceptance-spec` acceptance table with ‘actual
+  result’ and ‘verdict’ added, not prose. An empty section says ‘not applicable because…’; it is not deleted.
+- **Prompts:**
+  - “ship-report for this feature — delta to plan.md, a table with verdicts.”
+  - “How many acceptance-table rows remain ‘not verified’?”
 
-### `post-deploy-check` · `авто`
-- **Як:** «перевір прод», «задеплоїли — перевір», «post-deploy».
-- **Де:** після викатки; для dg — після `pages.yml`, для фронтенду — по прод-URL.
-- **Чому:** перепроходить **ключові** сценарії на реальних даних і дописує в **той самий** звіт.
-  Цінність — у **розбіжностях** прод ⟂ тест; збіг нічого не додає. Недоступне (логи, read-only БД)
-  називається недоступним — пропущене мовчки перетворює звіт на підпис під неперевіреним.
-  Окремо називає, **який білд** насправді відкрився: кеш і CDN віддають стару збірку частіше, ніж здається.
-- **Промти:**
-  - «post-deploy-check по Pages-демо — які рядки перепройшов і що розійшлось.»
-  - «Що з логів та інтеграцій тут узагалі доступно?»
+### `post-deploy-check` · `auto`
+- **How:** “check production”, “deployed — check it”, “post-deploy”.
+- **Where:** after rollout; for dg — after `pages.yml`, for frontend — at the production URL.
+- **Why:** reruns **key** scenarios on real data and appends to **the same** report.
+  Value lies in **differences** between production ⟂ test; a match adds nothing. Unavailable things (logs, read-only DB)
+  are labeled unavailable — silent omissions turn the report into a signature on unchecked work.
+  Separately identifies **which build** actually opened: caches and CDNs serve old builds more often than it seems.
+- **Prompts:**
+  - “post-deploy-check for the Pages demo — which rows did you rerun and what differed?”
+  - “Which logs and integrations are actually available here?”
 
-### Антипатерни ❌
-- ❌ кликати гейти «коли згадаю» — GATE 2 має кликатись зі `spec-flow`, інакше скіли існують, але не діють.
-- ❌ вердикт по власному артефакту (планувальник критикує свій план) — порушує `multi-model-roles` §3.
-- ❌ копія `review`/`spec-flow` у кожному репо — репо-специфіка йде в `.claude/standards.md`, не в скіл.
-- ❌ Pocock-знахідка на `.rs`/`.py` — хибна за побудовою, мірник прив'язується до мови.
-- ❌ другий звіт по тій самій фічі після деплою — post-deploy дописується в наявний, інакше історія фічі розсипається на файли, які ніхто не зшиває.
-
----
-
-# 🎀 Ponytail — режим лінивого сеньйора *(6 скілів, не Pocock)*
-
-> Шість скілів із [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) (MIT).
-> Один режим і п'ять разових карток довкола нього. Ідея одна: **найкращий код — той, що не
-> написали**, тож перед тим, як щось будувати, агент лізе драбиною і зупиняється на першій
-> сходинці, що тримає:
->
-> `1. чи це взагалі потрібно (YAGNI)` → `2. це вже є в кодовій базі` → `3. stdlib` →
-> `4. нативна можливість платформи` → `5. вже встановлена залежність` → `6. один рядок` →
-> `7. лише тоді — мінімум коду, що працює`.
->
-> **Драбина працює *після* розуміння задачі, не замість нього** — це головна межа скіла:
-> ліниве рішення, а не ліниве читання. Ніколи не ріже валідацію на межі довіри, обробку
-> помилок, безпеку й базову доступність.
->
-> **Ланцюг:** `ponytail` (під час роботи) → `ponytail-review` (на дифі) → `ponytail-audit`
-> (на всьому репо) → `ponytail-debt` (реєстр того, що свідомо відклали). `ponytail-help` і
-> `ponytail-gain` — довідка й картка ефекту, роботи не роблять.
->
-> ⚠️ **У нас установка тека-в-теку, не плагін.** Апстрім ставиться як marketplace-плагін із
-> двома Node-хуками; ми взяли лише шість `SKILL.md`. Наслідок: **немає авто-активації на
-> старті сесії** і не працює `PONYTAIL_DEFAULT_MODE` / `~/.config/ponytail/config.json` —
-> режим вмикається явно (`/ponytail`, `/ponytail ultra`). Це єдина правка в тілі скіла
-> (нотатка в `ponytail-help`, секція `## Update`), решта — англ. verbatim.
-
-### `ponytail` · `авто` *(режим, тримається до кінця сесії)*
-- **Як:** `/ponytail` (`lite` | `full` — типовий | `ultra`); або «be lazy», «yagni», «не переускладнюй». Вимкнути — «stop ponytail» / «normal mode».
-- **Де:** будь-яка задача з кодом, де є ризик, що агент побудує зайве: нова утиліта, новий компонент, «додай кеш», «зроби абстракцію під майбутнє», вибір бібліотеки.
-- **Чому:** драбина як **рефлекс**, а не дослідження — зупиняється на першій сходинці, що тримає. Плюс дві речі, яких немає в «просто пиши коротко»: фікс бага йде в **корінь** (один guard у спільній функції — менший диф, ніж guard у кожного викликача), а свідоме спрощення зі стелею лишає по собі коментар `ponytail: <стеля>, <шлях апгрейду>` — саме його потім збирає `ponytail-debt`.
-- **Промти:**
-  - «/ponytail — треба date-поле у формі person. Не тягни залежність, якщо платформа вміє.»
-  - «/ponytail ultra — «додай кеш для цих API-відповідей». Спершу оскаржи саму вимогу.»
-  - «ponytail full — фікси баг із порожнім selection в org-hierarchy: корінь, не симптом; кожен викликач має бути покритий одним guard'ом.»
-
-### `ponytail-review` · `авто`
-- **Як:** `/ponytail-review`, «review for over-engineering», «що тут можна видалити».
-- **Де:** на дифі / гілці / PR — **паралельно** до звичайного рев'ю, не замість.
-- **Чому:** одна вісь замість «загалом непогано, але…»: `delete:` · `stdlib:` · `native:` · `yagni:` · `shrink:`, по рядку на знахідку у форматі `L12-38: stdlib: 27-рядковий валідатор. "@" в рядку, 1 рядок.`, і підсумок `net: -N lines possible`. Нічого не застосовує. Баги, безпека й перф **свідомо поза скоупом** — їх веде `code-review` (§3); один smoke/`assert`-чек ponytail-мінімум і на видалення не пропонується.
-- **Промти:**
-  - «/ponytail-review на диф гілки t98 — тільки надлишкова складність, net у кінці.»
-  - «Це не over-engineering? Прожени ponytail-review по `packages/sdk/src/export`.»
-  - «ponytail-review на цей PR; знахідки не застосовуй — дай список, я виберу.»
-
-### `ponytail-audit` · `авто`
-- **Як:** `/ponytail-audit`, «audit for over-engineering», «що можна викинути з цього репо».
-- **Де:** разовий зріз по **всьому дереву**, коли дифу ще немає: перед великим рефактором, при вході в чуже репо, коли беклог порожній і треба знайти, де ріжеться найбільше.
-- **Чому:** те саме, що `ponytail-review`, але ранжоване **найбільшим різом уперед** і з `net: -N lines, -M deps possible`. Полює на конкретне: залежності, які дублюють платформу, інтерфейси з однією реалізацією, фабрики з одним продуктом, обгортки, що лише делегують, мертві прапорці й конфіги.
-- **Промти:**
-  - «/ponytail-audit по `packages/sdk` — ранжуй, найбільший різ першим.»
-  - «Аудит на роздутість: які залежності тут робить те, що вже вміє платформа?»
-  - «ponytail-audit по cassiopeia-admin-ui — дай топ-10 і `net`, нічого не чіпай.»
-
-### `ponytail-debt` · `авто`
-- **Як:** `/ponytail-debt`, «що ми лишили на потім», «list the shortcuts».
-- **Де:** після кількох сесій у режимі `ponytail`; перед плануванням спринту чи релізом.
-- **Чому:** `grep` по маркерах `ponytail:` перетворює розсипані коментарі на **реєстр** — рядок на маркер, згруповано по файлах: `<file>:<line>, що спрощено. ceiling: <стеля>. upgrade: <тригер повернутись>.` Маркери **без тригера** позначаються `no-trigger` — саме вони тихо гниють у «потім = ніколи». Це **єдине** реальне число по репо (на відміну від `ponytail-gain`). За запитом кладе реєстр у файл (`PONYTAIL-DEBT.md`).
-- **Промти:**
-  - «/ponytail-debt — збери всі `ponytail:` маркери, окремо покажи `no-trigger`.»
-  - «Що ми свідомо спростили в export-пайплайні і за яким тригером туди вертатись?»
-  - «ponytail-debt і поклади реєстр у `work/tech-debt/ponytail-debt.md`.»
-
-### `ponytail-gain` · `авто` *(разова картка)*
-- **Як:** `/ponytail-gain`, «що дає ponytail», «покажи ефект».
-- **Де:** коли треба показати сенс режиму — собі чи команді.
-- **Чому:** ASCII-скорборд «менше коду / дешевше / швидше». Режиму не змінює й **свідомо не рахує економію для конкретного репо**: незбудованої версії ніхто не писав, тож віднімати нема від чого — картка сама відсилає до `/ponytail-debt` і `/ponytail-audit` за реальними числами.
-- **⚠️ Числа в картці застарілі.** Скорборд друкує медіани **старого single-shot** бенчмарку (−80–94% коду, −47–77% вартості). README апстріму сам визнає цей замір частково артефактом розмовного базлайну ([#126](https://github.com/DietrichGebert/ponytail/issues/126)) і дає виправлені **агентні** числа проти чесного базлайну: **−54% коду, −22% токенів, −20% вартості, −27% часу, 100% safety** (12 фіч-тікетів на реальному FastAPI+React репо, Haiku 4.5, n=4). Цитуй другі, не перші.
-- **Промти:**
-  - «/ponytail-gain — покажи скорборд.»
-  - «Що дає ponytail і звідки ці числа? Скажи, які з них застарілі.»
-
-### `ponytail-help` · `авто` *(разова картка)*
-- **Як:** `/ponytail-help`, «ponytail help», «які там команди».
-- **Де:** забув, який із шести брати, або який рівень інтенсивності що робить.
-- **Чому:** одна таблиця рівнів (`lite` називає лінивішу альтернативу, ти вибираєш · `full` — драбина в силі · `ultra` — оскаржує саму вимогу) і одна таблиця шести скілів. Нічого не змінює.
-- **Промти:**
-  - «/ponytail-help — чим ultra відрізняється від full?»
-  - «ponytail help — який із шести взяти, якщо в мене вже є диф?»
-
-### Комбо з рештою сховища
-- `ponytail-audit` → **`cto-agenda`** (§🏭): аудит дає кандидатів «що видалити», агенда ранжує їх поруч із фічами по осях *розблоковує × зворотність* — інакше «мінус 400 рядків» ніколи не конкурує з новою фічею за увагу.
-- `tdd` (§3) → `ponytail-review` → **`code-review`** (§3): тести зелені → ріжемо зайве → лише потім вердикт по стандартах і спеці. Порядок важливий: `ponytail-review` пропонує видалення, а видаляти без зелених тестів — це не лінь, це другий баг.
-- `ponytail` ↔ **`caveman`** (§7): ортогональні й задумані парними — `ponytail` керує тим, **що будуєш**, `caveman` тим, **як говориш**. Разом дають найкоротший і диф, і відповідь.
-- `ponytail` + **`plan-critique`** (§🏭, лінза «надлишкова складність»): лінза читає **план**, `ponytail-review` — **диф**. Тому перша ловить зайву абстракцію до того, як її написали; другий — після. Не дублюються.
-- `ponytail-debt` → **`ship-report`** (§🏭): рядки реєстру, що стосуються фічі, ідуть у секцію «ризики й обмеження» — інакше стеля спрощення відома лише тому, хто його зробив.
-
-### Антипатерни ❌
-- ❌ вмикати `ponytail` на **некодовій** задачі (звіт, документація, переклад) — скіл сам це забороняє, але промт «be lazy» на прозу дає обрізаний текст, а не короткий код.
-- ❌ брати `ponytail-review` **замість** рев'ю на коректність — у нього баги й безпека поза скоупом за побудовою; це друга вісь, а не заміна `code-review`.
-- ❌ застосовувати знахідки `ponytail-audit` пачкою без тестів — скіл навмисно **нічого не застосовує**; масове видалення «мертвої гнучкості» без зелених тестів — класичний спосіб зламати те, що мало один живий викликач.
-- ❌ цитувати `−80–94%` із `/ponytail-gain` як поточні числа — це старий single-shot замір, актуальні — `−54% / −20% / −27%` (див. вище).
-- ❌ чекати, що режим увімкнеться сам на старті сесії — у нас немає плагінних хуків, `/ponytail` треба покликати.
+### Anti-patterns ❌
+- ❌ calling gates ‘when I remember’ — GATE 2 must be called from `spec-flow`; otherwise the skills exist but do not act.
+- ❌ a verdict on your own artifact (the planner critiques their own plan) — violates `multi-model-roles` §3.
+- ❌ a `review`/`spec-flow` copy in every repo — repo specifics belong in `.claude/standards.md`, not the skill.
+- ❌ a Pocock finding on `.rs`/`.py` — invalid by construction; bind the yardstick to the language.
+- ❌ a second report for the same feature after deployment — post-deploy appends to the existing one; otherwise the feature's history falls apart into files no one reconnects.
 
 ---
 
-# 🔗 Зв'язки скілів (комбо для кращого результату)
+# 🎀 Ponytail — lazy senior mode *(6 skills, not Pocock)*
 
-> Формат **skill→skill** комбо (нижче): **Ланцюг → коли → чому**, далі **Покроково (з хендофами)** — що кожна стадія віддає наступній, **Буст/Передумова** (який MCP чи setup підсилює), **Антипатерни** ❌ і **Промти**. `→` послідовно, `↔` взаємно живлять одне одного. 🏁 — наскрізні рецепти-приклади (доставка фічі / рефакторинг). Блок [➕ Скіл + MCP](#-скіл--mcp-комбо-для-кращого-результату) — легший (Ланцюг/коли/чому/промти).
+> Six skills from [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) (MIT).
+> One mode and five one-off cards around it. One idea: **the best code is code never
+> written**, so before building anything, the agent climbs a ladder and stops at the first
+> rung that holds:
+>
+> `1. is this needed at all (YAGNI)` → `2. already in the codebase` → `3. stdlib` →
+> `4. native platform capability` → `5. installed dependency` → `6. one line` →
+> `7. only then — the minimum working code`.
+>
+> **The ladder works *after* understanding the task, not instead of it** — this is the skill's main boundary:
+> a lazy solution, not lazy reading. Never cuts validation at the trust boundary, error handling,
+> security, or basic accessibility.
+>
+> **Chain:** `ponytail` (during work) → `ponytail-review` (on the diff) → `ponytail-audit`
+> (across the whole repo) → `ponytail-debt` (a register of consciously deferred work). `ponytail-help` and
+> `ponytail-gain` are reference and impact cards; they do not do the work.
+>
+> ⚠️ **Our installation is folder-to-folder, not a plugin.** Upstream installs as a marketplace plugin with
+> two Node hooks; we took only six `SKILL.md` files. Consequently: **no automatic activation at
+> session start**, and `PONYTAIL_DEFAULT_MODE` / `~/.config/ponytail/config.json` do not work —
+> the mode is explicitly enabled (`/ponytail`, `/ponytail ultra`). This is the only body edit in the skill
+> (a note in `ponytail-help`, section `## Update`); the rest is English verbatim.
 
-## Планування → доставка
+### `ponytail` · `auto` *(mode, lasts until session end)*
+- **How:** `/ponytail` (`lite` | `full` — default | `ultra`); or “be lazy”, “yagni”, “do not overcomplicate”. Disable — “stop ponytail” / “normal mode”.
+- **Where:** any coding task where the agent might build too much: a new utility, a new component, ‘add a cache’, ‘make an abstraction for the future’, library selection.
+- **Why:** the ladder as a **reflex**, not research — stops at the first rung that holds. Plus two things absent from ‘just be brief’: a bug fix targets the **root** (one guard in a shared function is a smaller diff than a guard in every caller), and a deliberate simplification with a ceiling leaves a comment `ponytail: <ceiling>, <upgrade path>` — this is what `ponytail-debt` later collects.
+- **Prompts:**
+  - “/ponytail — need a date field in the person form. Do not pull in a dependency if the platform can do it.”
+  - “/ponytail ultra — ‘add a cache for these API responses’. First challenge the requirement itself.”
+  - “ponytail full — fix the empty-selection bug in org-hierarchy: root, not symptom; one guard must cover every caller.”
 
-### `grilling` — ядро інтерв'ю-лупа *(смикається зсередини інших скілів)*
-- **Ланцюг:** сам по собі не має наступного кроку — це переюзабельний двигун, який `grill-me`, `grill-with-docs` і `improve-codebase-architecture` (крок 3) викликають зсередини.
-- **Коли:** хочеш interview-loop без побічних ефектів (без запису PRD/ADR) — наприклад, усередині іншого скіла чи вручну на швидку руку.
-- **Чому:** одна реалізація механіки грилення (питання по одному, з рекомендованою відповіддю, до спільного розуміння) — інші скіли не дублюють цю логіку, лише додають ефект (запис доків) чи ні.
-- **Різниця `grill-me` / `grill-with-docs` / `grilling`:** `grill-me` = `/команда` над `grilling`, без доків. `grill-with-docs` = `/команда` над `grilling` + `domain-modeling`, з ADR/глосарієм. `grilling` = ядро, клич напряму тригер-фразою, коли не треба жодного з двох ефектів.
-- **Комбо-точки:** `grilling` ↔ `domain-modeling` (шліфувати терміни без окремого ADR) · `grilling` ← `improve-codebase-architecture` (крок 3, добити обраний план рефактору) · `grilling` ← `prototype` (добити обраний UI/логіку варіант на основі побаченого).
-- **Антипатерни:**
-  - ❌ гриляти кожен дрібний крок окремо замість одного проходу до спільного розуміння — це client-side «інтерв'ю заради інтерв'ю».
-  - ❌ плутати з `grill-me`/`grill-with-docs` у промті-інструкції для іншого агента — якщо треба саме ефект (доки), кажи прямо, який.
-- **Промти:**
-  - «Погриль ідею: винести locations у shared/ui/location-fields. Питай по одному, з рекомендованою відповіддю на кожне.»
-  - «Stress-test this: підхід до theme-flip через GoJS ThemeManager. Де він ламається?»
-  - «(усередині improve-codebase-architecture) — тепер погриль обраний ТОП-1 план рефактору: де абстракція протікає, edge-cases, як мігрувати інкрементально.»
+### `ponytail-review` · `auto`
+- **How:** `/ponytail-review`, “review for over-engineering”, “what can be deleted here”.
+- **Where:** on a diff / branch / PR — **alongside** normal review, not instead.
+- **Why:** one axis instead of ‘generally good, but…’: `delete:` · `stdlib:` · `native:` · `yagni:` · `shrink:`, one line per finding in the format `L12-38: stdlib: 27-line validator. "@" in a string, 1 line.`, and a `net: -N lines possible` summary. Applies nothing. Bugs, security, and performance are **deliberately out of scope** — `code-review` (§3) handles those; one smoke/`assert` check is the ponytail minimum and is never proposed for deletion.
+- **Prompts:**
+  - “/ponytail-review on the t98 branch diff — only excess complexity, net at the end.”
+  - “Is this over-engineering? Run ponytail-review on `packages/sdk/src/export`.”
+  - “ponytail-review on this PR; do not apply findings — give me a list to choose from.”
 
-### `grill-me` → `to-spec` → `to-tickets` → `implement` 🏁 *(флагманський рецепт доставки фічі)*
-- **Ланцюг:** грилиш сиру ідею → синтезуєш у PRD → ріжеш на issues → реалізуєш.
-- **Коли:** фіча «в голові», треба довести до коду без втрати рішень.
-- **Чому:** кожен крок зберігає контекст попереднього; `implement` стартує з чітких agent-ready задач, а не з туману.
+### `ponytail-audit` · `auto`
+- **How:** `/ponytail-audit`, “audit for over-engineering”, “what can be removed from this repo”.
+- **Where:** a one-off pass over the **entire tree**, before a diff exists: before a large refactor, entering an unfamiliar repo, or when the backlog is empty and you need to find the biggest cuts.
+- **Why:** the same as `ponytail-review`, but ranked **largest cut first**, with `net: -N lines, -M deps possible`. Looks for specifics: dependencies duplicating the platform, single-implementation interfaces, single-product factories, wrappers that only delegate, dead flags and configs.
+- **Prompts:**
+  - “/ponytail-audit across `packages/sdk` — rank it, largest cut first.”
+  - “Bloat audit: which dependencies do what the platform already supports?”
+  - “ponytail-audit across cassiopeia-admin-ui — top 10 and `net`; touch nothing.”
 
-- **Передумова:** `/setup-matt-pocock-skills` (раз на репо) — інакше `to-spec`/`to-tickets` нема куди писати.
-- **Покроково (з артефактами-хендофами):**
-  1. **`/grill-me`** — інтерв'ю по сирій ідеї → закриваєш відкриті питання. → **Хендоф:** список рішень + межі скоупу.
-  2. **`/to-spec`** — синтез розмови (без повторного інтерв'ю). → **Хендоф:** PRD у трекері.
-  3. **`/to-tickets`** — PRD → вертикальні tracer-bullet зрізи. → **Хендоф:** набір самостійних issue з критеріями.
-  4. **`/implement`** — кожен issue → код за специфікацією. → **Хендоф:** PR/зміни.
-- **Буст:** `context7` на кроці 4, якщо реалізація впирається в API ліби; `tdd` всередині `implement` для критичної логіки.
-- **Антипатерни:**
-  - ❌ стрибнути в `/implement` без grill-me → реалізуєш туман.
-  - ❌ `/to-tickets` без PRD → issues без контексту й критеріїв приймання.
-- **Промти:**
-  - «Маю сиру ідею badge-лічильників. Прогани повний цикл: `/grill-me` → `/to-spec` → `/to-tickets` → `/implement`.»
-  - «Доведи theme-flip від ідеї до коду через grill-me → to-spec → to-tickets → implement.»
+### `ponytail-debt` · `auto`
+- **How:** `/ponytail-debt`, “what did we leave for later”, “list the shortcuts”.
+- **Where:** after several sessions in `ponytail` mode; before sprint planning or release.
+- **Why:** `grep` over `ponytail:` markers turns scattered comments into a **register** — one row per marker, grouped by file: `<file>:<line>, what was simplified. ceiling: <ceiling>. upgrade: <trigger to revisit>.`. Markers **without a trigger** are labeled `no-trigger` — those quietly decay into ‘later = never’. This is the **only** real number for the repo (unlike `ponytail-gain`). On request, writes the register to a file (`PONYTAIL-DEBT.md`).
+- **Prompts:**
+  - “/ponytail-debt — collect all `ponytail:` markers; show `no-trigger` separately.”
+  - “What did we consciously simplify in the export pipeline, and what triggers a return to it?”
+  - “ponytail-debt and put the register in `work/tech-debt/ponytail-debt.md`.”
 
-### `wayfinder` → `to-tickets` (по кожному investigation-тікету) *(коли фіча завелика для одної сесії)*
-- **Ланцюг:** розмита величезна ідея → `wayfinder` будує карту investigation-тікетів на трекері → кожен тікет закривається окремою сесією, аж поки маршрут до мети не проясниться → далі звичний `to-spec`/`to-tickets`/`implement` на вже ясній роботі.
-- **Коли:** ідея завелика для одного `/grill-me`/`to-spec` проходу — «fog»: сама структура роботи ще невідома, не лише деталі реалізації.
-- **Чому:** `to-spec`/`to-tickets` передбачають, що план вже ясний; `wayfinder` — попередній крок для ситуацій, де ясності ще нема.
-- **Передумова:** `/setup-matt-pocock-skills` (issue-трекер, куди писати карту).
-- **Покроково (з артефактами-хендофами):**
-  1. **`/wayfinder`** — розмита ідея → спільна карта investigation-тікетів у трекері. → **Хендоф:** карта + перший тікет у роботі.
-  2. **Резолюція тікетів по одному** — кожен закритий тікет прояснює карту (додає/закриває сусідні). → **Хендоф:** оновлена карта.
-  3. **Коли маршрут ясний** — переходь у звичний `/to-spec` → `/to-tickets` → `/implement` на вже сформованій роботі.
-- **Антипатерни:**
-  - ❌ намагатись одразу `/to-spec` величезну розмиту ідею → PRD на здогадах, критерії приймання «стеля з піску».
-  - ❌ розв'язувати всі investigation-тікети паралельно замість по одному → карта втрачає сенс «проясняти по ходу».
-- **Промти:**
-  - «/wayfinder — переїзд форм-бібліотеки по всьому кодбейзу; це більше однієї сесії. Побудуй карту investigation-тікетів і йди по одному.»
-  - «Org-restructure розмита на старті: /wayfinder спершу, /to-spec — коли маршрут проясниться.»
+### `ponytail-gain` · `auto` *(one-off card)*
+- **How:** `/ponytail-gain`, “what does ponytail give us”, “show the effect”.
+- **Where:** to show yourself or the team why the mode matters.
+- **Why:** an ASCII scoreboard: ‘less code / cheaper / faster’. Does not change the mode and **deliberately does not calculate savings for a specific repo**: nobody wrote the unbuilt version, so there is no baseline to subtract from — the card itself directs you to `/ponytail-debt` and `/ponytail-audit` for real numbers.
+- **⚠️ The card's numbers are outdated.** The scoreboard prints medians from the **old single-shot** benchmark (−80–94% code, −47–77% cost). Upstream's README itself acknowledges this measurement as partly an artifact of the conversational baseline ([#126](https://github.com/DietrichGebert/ponytail/issues/126)) and provides corrected **agentic** numbers against a fair baseline: **−54% code, −22% tokens, −20% cost, −27% time, 100% safety** (12 feature tickets in a real FastAPI+React repo, Haiku 4.5, n=4). Cite the latter, not the former.
+- **Prompts:**
+  - “/ponytail-gain — show the scoreboard.”
+  - “What does ponytail give us, and where do those numbers come from? Say which are outdated.”
+
+### `ponytail-help` · `auto` *(one-off card)*
+- **How:** `/ponytail-help`, “ponytail help”, “what commands are there”.
+- **Where:** you forgot which of the six to use, or what each intensity level does.
+- **Why:** one table of levels (`lite` names a lazier alternative and you choose · `full` — ladder in force · `ultra` — challenges the requirement itself) and one table of six skills. Changes nothing.
+- **Prompts:**
+  - “/ponytail-help — how does ultra differ from full?”
+  - “ponytail help — which of the six should I use if I already have a diff?”
+
+### Combinations with the rest of the store
+- `ponytail-audit` → **`cto-agenda`** (§🏭): the audit supplies ‘what to delete’ candidates; the agenda ranks them alongside features on *unblocking × reversibility* — otherwise ‘minus 400 lines’ never competes with a new feature for attention.
+- `tdd` (§3) → `ponytail-review` → **`code-review`** (§3): green tests → trim excess → only then a verdict on standards and spec. Order matters: `ponytail-review` proposes deletion; deleting without green tests is not laziness, it is a second bug.
+- `ponytail` ↔ **`caveman`** (§7): orthogonal and intended as a pair — `ponytail` controls **what you build**, `caveman` controls **how you speak**. Together they produce the shortest diff and response.
+- `ponytail` + **`plan-critique`** (§🏭, ‘excess complexity’ lens): the lens reads the **plan**; `ponytail-review` reads the **diff**. Thus the former catches an unnecessary abstraction before it is written; the latter after. They do not duplicate each other.
+- `ponytail-debt` → **`ship-report`** (§🏭): register rows related to the feature go into ‘risks and limitations’ — otherwise only the person who made the simplification knows its ceiling.
+
+### Anti-patterns ❌
+- ❌ enabling `ponytail` for a **non-code** task (report, documentation, translation) — the skill itself forbids it, but a ‘be lazy’ prose prompt produces truncated text, not concise code.
+- ❌ using `ponytail-review` **instead of** correctness review — bugs and security are outside its scope by construction; it is a second axis, not a `code-review` replacement.
+- ❌ applying `ponytail-audit` findings in bulk without tests — the skill deliberately **applies nothing**; mass deletion of ‘dead flexibility’ without green tests is a classic way to break something with one live caller.
+- ❌ citing `−80–94%` from `/ponytail-gain` as current numbers — that is the old single-shot measurement; current numbers are `−54% / −20% / −27%` (see above).
+- ❌ expecting the mode to enable itself at session start — we have no plugin hooks; `/ponytail` must be called.
+
+---
+
+# 🔗 Skill combinations (for better results)
+
+> **skill→skill** combination format (below): **Chain → when → why**, followed by **Step by step (with handoffs)** — what each stage gives the next, **Boost/Prerequisite** (which MCP or setup enhances it), **Anti-patterns** ❌, and **Prompts**. `→` sequential; `↔` mutually reinforcing. 🏁 — end-to-end example recipes (feature delivery / refactoring). The [➕ Skill + MCP](#-skill--mcp-combinations-for-better-results) block is lighter (Chain/when/why/prompts).
+
+## Planning → delivery
+
+### `grilling` — interview-loop core *(called from inside other skills)*
+- **Chain:** no next step of its own — a reusable engine that `grill-me`, `grill-with-docs`, and `improve-codebase-architecture` (step 3) call internally.
+- **When:** you want an interview loop without side effects (no PRD/ADR writing) — for example, inside another skill or manually for a quick pass.
+- **Why:** one implementation of the grilling mechanism (one question at a time, with a recommended answer, until shared understanding) — other skills do not duplicate this logic, only add an effect (writing docs) or not.
+- **`grill-me` / `grill-with-docs` / `grilling` distinction:** `grill-me` = `/command` (command) over `grilling`, no docs. `grill-with-docs` = `/command` over `grilling` + `domain-modeling`, with ADR/glossary. `grilling` = core; call it directly with a trigger phrase when neither effect is needed.
+- **Combination points:** `grilling` ↔ `domain-modeling` (refine terms without a separate ADR) · `grilling` ← `improve-codebase-architecture` (step 3, finish pressure-testing the chosen refactor plan) · `grilling` ← `prototype` (pressure-test the chosen UI/logic option based on what you saw).
+- **Anti-patterns:**
+  - ❌ grilling every small step separately instead of one pass to shared understanding — client-side ‘interviewing for its own sake’.
+  - ❌ confusing it with `grill-me`/`grill-with-docs` in a prompt for another agent — if you need an effect (docs), name it explicitly.
+- **Prompts:**
+  - “Grill this idea: extract locations into shared/ui/location-fields. Ask one question at a time, with a recommended answer for each.”
+  - “Stress-test this: theme-flip through GoJS ThemeManager. Where does it break?”
+  - “(inside improve-codebase-architecture) — now grill the chosen TOP-1 refactor plan: where the abstraction leaks, edge cases, how to migrate incrementally.”
+
+### `grill-me` → `to-spec` → `to-tickets` → `implement` 🏁 *(flagship feature-delivery recipe)*
+- **Chain:** grill a raw idea → synthesize a PRD → split into issues → implement.
+- **When:** the feature is ‘in your head’ and must become code without losing decisions.
+- **Why:** each step preserves the previous context; `implement` starts with clear agent-ready tasks rather than fog.
+
+- **Prerequisite:** `/setup-matt-pocock-skills` (once per repo) — otherwise `to-spec`/`to-tickets` have nowhere to write.
+- **Step by step (with handoff artifacts):**
+  1. **`/grill-me`** — interview on the raw idea → close open questions. → **Handoff:** decision list + scope boundaries.
+  2. **`/to-spec`** — synthesize the conversation (no repeat interview). → **Handoff:** PRD in the tracker.
+  3. **`/to-tickets`** — PRD → vertical tracer-bullet slices. → **Handoff:** independent issues with criteria.
+  4. **`/implement`** — each issue → code against the specification. → **Handoff:** PR/changes.
+- **Boost:** `context7` at step 4 if implementation depends on a library API; `tdd` inside `implement` for critical logic.
+- **Anti-patterns:**
+  - ❌ jumping into `/implement` without grill-me → implementing fog.
+  - ❌ `/to-tickets` without a PRD → issues without context or acceptance criteria.
+- **Prompts:**
+  - “I have a raw badge-counter idea. Run the full cycle: `/grill-me` → `/to-spec` → `/to-tickets` → `/implement`.”
+  - “Take theme-flip from idea to code through grill-me → to-spec → to-tickets → implement.”
+
+### `wayfinder` → `to-tickets` (per investigation ticket) *(when a feature is too large for one session)*
+- **Chain:** a huge vague idea → `wayfinder` builds an investigation-ticket map in the tracker → each ticket closes in its own session until the path to the goal becomes clear → then standard `to-spec`/`to-tickets`/`implement` on clarified work.
+- **When:** an idea is too large for one `/grill-me`/`to-spec` pass — ‘fog’: the structure of the work itself remains unknown, not just implementation details.
+- **Why:** `to-spec`/`to-tickets` assume the plan is clear; `wayfinder` is the preceding step when clarity is missing.
+- **Prerequisite:** `/setup-matt-pocock-skills` (issue tracker for the map).
+- **Step by step (with handoff artifacts):**
+  1. **`/wayfinder`** — vague idea → shared investigation-ticket map in the tracker. → **Handoff:** map + first ticket in progress.
+  2. **Resolve tickets one by one** — each closed ticket clarifies the map (adds/closes neighboring tickets). → **Handoff:** updated map.
+  3. **Once the route is clear** — move to standard `/to-spec` → `/to-tickets` → `/implement` on the now-defined work.
+- **Anti-patterns:**
+  - ❌ immediately trying to `/to-spec` a huge vague idea → a guess-based PRD and acceptance criteria built on sand.
+  - ❌ resolving all investigation tickets in parallel instead of one by one → the map loses its ‘clarify along the way’ purpose.
+- **Prompts:**
+  - “/wayfinder — moving the form library across the whole codebase; more than one session. Build an investigation-ticket map and proceed one at a time.”
+  - “Org-restructure is vague initially: /wayfinder first, /to-spec once the route is clear.”
 
 ### `grill-with-docs` ↔ `domain-modeling`
-- **Ланцюг:** грилення фіксує рішення в ADR/глосарії, `domain-modeling` шліфує доменну мову й тримає `GLOSSARY.md`.
-- **Коли:** нова підсистема або складний домен, де критична єдина термінологія.
-- **Чому:** наступні скіли (`improve-codebase-architecture`, `diagnosing-bugs`, `tdd`) читають `GLOSSARY.md` — узгоджена мова покращує їхній результат.
+- **Chain:** grilling records decisions in ADR/glossary; `domain-modeling` refines domain language and maintains `GLOSSARY.md`.
+- **When:** a new subsystem or complex domain where consistent terminology is critical.
+- **Why:** subsequent skills (`improve-codebase-architecture`, `diagnosing-bugs`, `tdd`) read `GLOSSARY.md` — consistent language improves their results.
 
-- **Покроково (взаємний цикл, не лінійно):**
-  1. **`/grill-with-docs`** — гриляєш рішення → пишеш ADR + чернетку нових термінів. → **Хендоф:** ADR + кандидати-терміни.
-  2. **`domain-modeling`** — шліфує терміни в ubiquitous language, інтегрує в `GLOSSARY.md`, ловить колізії з наявними. → **Хендоф:** оновлений `GLOSSARY.md`.
-  3. **↩ назад у `/grill-with-docs`**, якщо моделювання відкрило нову неоднозначність — домен рідко стабілізується з першого проходу.
-- **Буст:** `context7` — звірити, чи ліба підтримує припущення, перш ніж класти його в ADR (факт, а не здогад).
-- **Антипатерни:**
-  - ❌ ADR без узгодженого глосарія → терміни розповзаються по коду й DTO.
-  - ❌ один прохід замість циклу → залишкові неоднозначності просочуються в реалізацію.
-- **Промти:**
-  - «Нова підсистема org-type-morph: гриляй із доками й паралельно шліфуй доменну мову + GLOSSARY.md.»
-  - «Звір через context7 контракт organizationType, тоді зафіксуй ADR + глосарій.»
+- **Step by step (a mutual cycle, not linear):**
+  1. **`/grill-with-docs`** — grill the decision → write ADR + draft new terms. → **Handoff:** ADR + candidate terms.
+  2. **`domain-modeling`** — refines terms into ubiquitous language, integrates them into `GLOSSARY.md`, catches collisions with existing terms. → **Handoff:** updated `GLOSSARY.md`.
+  3. **↩ back to `/grill-with-docs`** if modeling revealed new ambiguity — the domain rarely stabilizes on the first pass.
+- **Boost:** `context7` — verify that a library supports an assumption before putting it in an ADR (fact, not guess).
+- **Anti-patterns:**
+  - ❌ an ADR without an agreed glossary → terms drift across code and DTOs.
+  - ❌ one pass instead of a cycle → residual ambiguity leaks into implementation.
+- **Prompts:**
+  - “New org-type-morph subsystem: grill with docs while refining domain language + GLOSSARY.md.”
+  - “Verify the organizationType contract through context7, then record ADR + glossary.”
 
-### `research` → `grill-with-docs` ↔ `domain-modeling` *(коли рішення залежить від незнайомого API/доки)*
-- **Ланцюг:** фоновий агент `research` перевіряє факти по докам/API/коду й лишає їх файлом → грилиш рішення на основі перевірених фактів, а не здогадів → фіксуєш ADR + шліфуєш термінологію.
-- **Коли:** рішення в ADR залежить від того, «чи вміє бібліотека/API X», а ти хочеш продовжувати працювати, поки хтось це перевіряє.
-- **Чому:** `research` (на відміну від `context7` "на льоту") — фоновий і письмовий: результат лишається файлом у репо, можна звірити пізніше чи дати іншому агенту.
-- **Не плутати:** це **інший** скіл, ніж вбудований `deep-research` (fan-out зовнішній веб-пошук із цитатами, для незнайомих технологій/best practices ззовні) — `research` тут прицільніший, по докам/API/коду в межах цього репо/задачі.
-- **Покроково (з артефактами-хендофами):**
-  1. **`research`** — фоновий агент читає доки/API/код за питанням. → **Хендоф:** Markdown-файл із перевіреними фактами.
-  2. **`/grill-with-docs`** — гриляєш рішення на основі файлу з кроку 1 → ADR + чернетка термінів. → **Хендоф:** ADR + кандидати-терміни.
-  3. **`domain-modeling`** — шліфує терміни, інтегрує в `GLOSSARY.md`.
-- **Антипатерни:**
-  - ❌ гриляти рішення про можливості ліби/API на здогадах, коли `research`/`context7` могли дати факт за хвилину.
-- **Промти:**
-  - «Research — з'ясуй у фоні, чи tanstack query v5 підтримує підписку на кілька query-ключів одразу; зафіксуй у файл.»
-  - «На основі research-файлу про RAC ComboBox — /grill-with-docs зафіксуй рішення в ADR і онови GLOSSARY.md.»
+### `research` → `grill-with-docs` ↔ `domain-modeling` *(when a decision depends on unfamiliar API/docs)*
+- **Chain:** the `research` background agent checks facts in docs/API/code and leaves a file → grill the decision on verified facts rather than guesses → record ADR + refine terminology.
+- **When:** an ADR decision depends on ‘can library/API X do this’, and you want to keep working while someone checks.
+- **Why:** unlike on-the-fly `context7`, `research` is background and written: its result remains in a repo file, available for later checks or another agent.
+- **Do not confuse:** this is a **different** skill from built-in `deep-research` (fan-out external web search with citations, for unfamiliar technologies/best practices from outside) — `research` here is more targeted, covering docs/API/code within this repo/task.
+- **Step by step (with handoff artifacts):**
+  1. **`research`** — background agent reads docs/API/code for the question. → **Handoff:** Markdown file with verified facts.
+  2. **`/grill-with-docs`** — grill the decision using step 1's file → ADR + draft terms. → **Handoff:** ADR + candidate terms.
+  3. **`domain-modeling`** — refines terms and integrates them into `GLOSSARY.md`.
+- **Anti-patterns:**
+  - ❌ grilling a decision about library/API capabilities from guesses when `research`/`context7` could provide a fact in a minute.
+- **Prompts:**
+  - “Research — find out in the background whether tanstack query v5 supports subscriptions to several query keys at once; record it in a file.”
+  - “Based on the research file about RAC ComboBox — /grill-with-docs, record the decision in an ADR and update GLOSSARY.md.”
 
-## Дизайн / архітектура
+## Design / architecture
 
-### `improve-codebase-architecture` → `codebase-design` → `grill-me` 🏁 *(флагманський рецепт рефакторингу)*
-- **Ланцюг:** скан дає HTML-звіт можливостей → словник «глибоких модулів» формує рішення → грилиш обране до плану.
-- **Коли:** «хочу покращити архітектуру, але не знаю, з чого почати».
-- **Чому:** від широкого скану до сфокусованого, перевіреного грилінгом рішення — без випадкових рефакторів.
+### `improve-codebase-architecture` → `codebase-design` → `grill-me` 🏁 *(flagship refactoring recipe)*
+- **Chain:** a scan yields an HTML opportunities report → the deep-module vocabulary shapes a solution → grill the chosen option into a plan.
+- **When:** ‘I want to improve the architecture but do not know where to start’.
+- **Why:** from broad scan to a focused, grilling-verified solution — without random refactors.
 
-- **Покроково (з артефактами-хендофами):**
-  1. **`/improve-codebase-architecture`** — скан кодбейзу → **HTML-звіт ранжованих можливостей** поглиблення/спрощення.
-     *Буст:* спочатку `code-review-graph` (`get_architecture_overview` + `get_hub_nodes` + `find_large_functions`) — скан спирається на реальні структурні метрики, а не на вибіркове читання.
-     → **Хендоф:** обери **ОДНУ** можливість з топу звіту (не весь список).
-  2. **`codebase-design`** — на цій одній можливості проєктуєш **глибокий модуль / шов**: що приховуємо, де провести seam, який вузький інтерфейс.
-     *Буст:* `context7`, якщо рішення впирається в API ліби (RAC/TanStack/zod).
-     → **Хендоф:** чернетка інтерфейсу + межі модуля + чорновий міграційний шлях.
-  3. **`/grill-me`** — гриляєш чернетку: де абстракція протікає, які краї/edge-cases, як мігрувати інкрементально, що ламається.
-     → **Хендоф:** перевірений, agent-ready план рефактору.
+- **Step by step (with handoff artifacts):**
+  1. **`/improve-codebase-architecture`** — codebase scan → **HTML report of ranked opportunities** for deepening/simplification.
+     *Boost:* first `code-review-graph` (`get_architecture_overview` + `get_hub_nodes` + `find_large_functions`) — the scan uses real structural metrics rather than selective reading.
+     → **Handoff:** choose **ONE** opportunity from the report's top entries (not the whole list).
+  2. **`codebase-design`** — for this one opportunity, design a **deep module / seam**: what to hide, where the seam goes, what narrow interface to expose.
+     *Boost:* `context7` if the solution depends on a library API (RAC/TanStack/zod).
+     → **Handoff:** draft interface + module boundaries + initial migration path.
+  3. **`/grill-me`** — grill the draft: abstraction leaks, boundaries/edge cases, incremental migration, what breaks.
+     → **Handoff:** verified, agent-ready refactor plan.
 
-- **Продовження пайплайну:** план → `/to-spec` → `/to-tickets` → `/implement`. Якщо зміни ризиковані й широкі — встав `crg-refactor-safely` (impact radius) перед кодом і закрий `tdd` (регрес-тести).
-  Тобто повний ланцюг: `improve-codebase-architecture → codebase-design → grill-me → to-spec → to-tickets → (crg-refactor-safely →) implement → tdd`.
+- **Pipeline continuation:** plan → `/to-spec` → `/to-tickets` → `/implement`. For broad, risky changes, insert `crg-refactor-safely` (impact radius) before code and close out with `tdd` (regression tests).
+  Full chain: `improve-codebase-architecture → codebase-design → grill-me → to-spec → to-tickets → (crg-refactor-safely →) implement → tdd`.
 
-- **Антипатерни (вбивають потенціал):**
-  - ❌ рефакторити **весь** звіт за раз → загруз; бери **1 можливість/прохід** і ганяй цикл повторно.
-  - ❌ пропустити крок 3 → це і є «випадковий рефактор», від якого ланцюг рятує.
-  - ❌ кодити без хендофа-артефакту з кроку 2 → grill-me нема що добивати.
+- **Anti-patterns (destroy the potential):**
+  - ❌ refactoring the **entire** report at once → overload; take **1 opportunity/pass** and repeat the cycle.
+  - ❌ skipping step 3 → exactly the ‘random refactor’ this chain prevents.
+  - ❌ coding without step 2's handoff artifact → grill-me has nothing to pressure-test.
 
-- **Промти:**
-  - «Покращити архітектуру org-hierarchy: спершу `code-review-graph` architecture-overview + hub-nodes → `/improve-codebase-architecture` HTML-звіт → візьму топ-1 → `codebase-design` спроєктує шов → `/grill-me` доб'є план.»
-  - «Selection-state контролер розрісся: проскануй, вибери одну можливість, спроєктуй глибокий хук, погриль міграцію.»
-  - «Після грилінгу — оформи план у `/to-spec` і поріж на issues.»
+- **Prompts:**
+  - “Improve org-hierarchy architecture: first `code-review-graph` architecture-overview + hub-nodes → `/improve-codebase-architecture` HTML report → I pick top 1 → `codebase-design` designs the seam → `/grill-me` finishes the plan.”
+  - “The selection-state controller has grown: scan it, choose one opportunity, design a deep hook, grill the migration.”
+  - “After grilling — turn the plan into `/to-spec` and split it into issues.”
 
 ### `prototype` → `grill-me` → `to-spec`
-- **Ланцюг:** одноразовий прототип обмацує дизайн → грилінг добиває дірки → PRD фіксує.
-- **Коли:** непевність у моделі стану/UX до коміту.
-- **Чому:** рішення на основі чогось **запущеного**, а не уяви.
+- **Chain:** a throwaway prototype explores the design → grilling closes gaps → PRD records it.
+- **When:** uncertain state model/UX before committing.
+- **Why:** decisions based on something **running**, rather than imagination.
 
-- **Покроково (з артефактами-хендофами):**
-  1. **`/prototype`** — runnable прототип: логіка стану (terminal-app) АБО UI-варіації на одному роуті. → **Хендоф:** запущений артефакт + спостереження що працює/ні.
-  2. **`/grill-me`** — гриляєш на основі побаченого: краї, стани, що ламається. → **Хендоф:** перевірені рішення.
-  3. **`/to-spec`** — фіксуєш у PRD. → **Хендоф:** PRD у трекері.
-- **Буст:** `playwright` — клікати/знімати прототип; `Figma Desktop` — тягнути токени, якщо це UI-варіації.
-- **Продовження пайплайну:** PRD → `/to-tickets` → `/implement`.
-- **Антипатерни:**
-  - ❌ грилити уявний дизайн без прототипу → ефект «на папері гарно».
-  - ❌ PRD до грилінгу → фіксуєш недопечене.
-- **Промти:**
-  - «Непевний у моделі selection-state: прототип → грилінг дірок → PRD.»
-  - «3 UI-варіанти country-roots-panel: прототип на одному роуті → playwright-скріншоти → грилінг → PRD.»
+- **Step by step (with handoff artifacts):**
+  1. **`/prototype`** — runnable prototype: state logic (terminal app) OR UI variations on one route. → **Handoff:** running artifact + observations of what works/does not.
+  2. **`/grill-me`** — grill based on observations: boundaries, states, what breaks. → **Handoff:** verified decisions.
+  3. **`/to-spec`** — record in a PRD. → **Handoff:** PRD in the tracker.
+- **Boost:** `playwright` — click/capture the prototype; `Figma Desktop` — pull tokens for UI variations.
+- **Pipeline continuation:** PRD → `/to-tickets` → `/implement`.
+- **Anti-patterns:**
+  - ❌ grilling an imagined design without a prototype → the ‘looks good on paper’ effect.
+  - ❌ PRD before grilling → recording something half-baked.
+- **Prompts:**
+  - “Uncertain about the selection-state model: prototype → grill gaps → PRD.”
+  - “3 country-roots-panel UI options: prototype on one route → playwright screenshots → grilling → PRD.”
 
-## Баги / якість
+## Bugs / quality
 
 ### `diagnosing-bugs` → `tdd`
-- **Ланцюг:** діагностика відтворює й мінімізує баг → `tdd` перетворює репро на падаючий тест → фікс → зелений.
-- **Коли:** важкий баг або регресія.
-- **Чому:** регрес-тест замикає баг назавжди; фікс ведеться тестом, а не здогадом.
+- **Chain:** diagnosis reproduces and minimizes the bug → `tdd` turns the repro into a failing test → fix → green.
+- **When:** a difficult bug or regression.
+- **Why:** the regression test locks the bug out permanently; the fix follows a test rather than a guess.
 
-- **Покроково (з артефактами-хендофами):**
-  1. **`diagnose`** — відтворити → мінімізувати → гіпотеза → інструментувати → знайти корінь. → **Хендоф:** мінімальне репро + корінна причина.
-  2. **`tdd`** — репро → падаючий тест (red) → фікс (green) → рефактор. → **Хендоф:** фікс + регрес-тест.
-- **Буст:** `playwright`/`chrome-devtools` для рантайм-багів (відтворити в браузері, зняти DOM/мережу/перф); `crg-debug-issue` (`code-review-graph`) — знайти по графу всі дотичні місця.
-- **Антипатерни:**
-  - ❌ фіксити без мінімального репро → лагодиш симптом, не причину.
-  - ❌ фікс без регрес-тесту → баг повертається наступного релізу.
-- **Промти:**
-  - «Важкий баг theme-flip: `diagnose` → зафіксуй регрес через `tdd`.»
-  - «selectedOrgIds губиться на shift-click: відтвори в браузері (playwright), знайди корінь, замкни tdd-тестом.»
+- **Step by step (with handoff artifacts):**
+  1. **`diagnose`** — reproduce → minimize → hypothesis → instrument → find the root. → **Handoff:** minimal repro + root cause.
+  2. **`tdd`** — repro → failing test (red) → fix (green) → refactor. → **Handoff:** fix + regression test.
+- **Boost:** `playwright`/`chrome-devtools` for runtime bugs (reproduce in the browser, capture DOM/network/performance); `crg-debug-issue` (`code-review-graph`) to find all related places in the graph.
+- **Anti-patterns:**
+  - ❌ fixing without a minimal repro → treating a symptom, not the cause.
+  - ❌ a fix without a regression test → the bug returns next release.
+- **Prompts:**
+  - “Difficult theme-flip bug: `diagnose` → lock in the regression through `tdd`.”
+  - “selectedOrgIds gets lost on shift-click: reproduce in the browser (playwright), find the root, lock it down with a tdd test.”
 
-### `tdd` → `code-review` (skill) *(перед merge/PR — Стандарти + Spec)*
-- **Ланцюг:** `tdd` замикає поведінку зеленим набором → скіл `code-review` звіряє готову гілку за двома осями відразу, паралельно.
-- **Коли:** гілка готова, перед відкриттям PR чи мержем — хочеш звірку і зі стандартами репо, і з вихідною задачею одним проходом.
-- **Чому:** два паралельні саб-агенти дешевше й швидше за два послідовні рев'ю; звіт поруч одразу показує розбіжність, якщо стандарти виконані, а spec — ні (чи навпаки).
-- **⚠️ Не плутати:** цей `code-review` — скіл із `~/.agents/skills` (Pocock), **інший**, ніж вбудований `/code-review` (баги/спрощення) чи `crg-review-changes` (граф-рев'ю). Хочеш саме цей — уточни «Стандарти+Spec» у промті.
-- **Антипатерни:**
-  - ❌ покладатись лише на цей огляд і пропускати вбудований `/code-review` — вони перевіряють різне (стандарти/spec vs баги/спрощення), не взаємозамінні.
-- **Промти:**
-  - «Гілка badge-лічильників готова. code-review — звір Стандарти репо і Специфікацію з issue #142 паралельно.»
-  - «Перед PR: review since main за двома осями — стандарти й відповідність оригінальному PRD.»
+### `tdd` → `code-review` (skill) *(before merge/PR — Standards + Spec)*
+- **Chain:** `tdd` locks down behavior with a green suite → the `code-review` skill checks the completed branch against both axes simultaneously, in parallel.
+- **When:** the branch is ready, before opening a PR or merging — you want to check repo standards and the original task in one pass.
+- **Why:** two parallel subagents are cheaper and faster than two sequential reviews; side-by-side reports immediately expose a mismatch when standards are met but the spec is not (or vice versa).
+- **⚠️ Do not confuse:** this `code-review` is the skill in `~/.agents/skills` (Pocock), **different** from built-in `/code-review` (bugs/simplification) or `crg-review-changes` (graph review). To request this one, specify ‘Standards+Spec’ in the prompt.
+- **Anti-patterns:**
+  - ❌ relying only on this review and skipping built-in `/code-review` — they check different things (standards/spec vs bugs/simplification), and are not interchangeable.
+- **Prompts:**
+  - “The badge-counter branch is ready. code-review — check repo Standards and the Specification from issue #142 in parallel.”
+  - “Before the PR: review since main on both axes — standards and compliance with the original PRD.”
 
-### `code-review` / `/code-review` / `crg-review-changes` → `receiving-code-review` *(після рев'ю — як реагувати на фідбек)*
-- **Ланцюг:** будь-який рев'ю-скіл видає findings → `receiving-code-review` задає **дисципліну відповіді**: верифікуй кожен пункт проти коду, уточни неясне, пуш-бек із технічним обґрунтуванням, фіксуй по одному з тестом.
-- **Коли:** отримав звіт рев'ю (свій `/code-review`, Pocock `code-review`, граф `crg-review-changes`) або фідбек **зовнішнього** PR-рев'ювера.
-- **Чому:** рев'ю-скіли знаходять проблеми, але **не** диктують *як на них реагувати* — без цього легко зісковзнути в performative-погодження чи blind-implement хибної поради.
-- **Антипатерни:**
-  - ❌ «You're absolutely right!» + одразу імплементувати весь список → часткова реалізація неясного, blind-fix того, що ламає код.
-  - ❌ мовчки прийняти зовнішнього рев'ювера без YAGNI-grep / перевірки, чи він розуміє контекст усього кодбейзу.
-- **Промти:**
-  - «/code-review видав 8 пунктів — далі receiving-code-review: верифікуй кожен проти коду, неясні уточни, performative-подяк не пиши, фіксуй по одному з тестом.»
+### `code-review` / `/code-review` / `crg-review-changes` → `receiving-code-review` *(after review — responding to feedback)*
+- **Chain:** any review skill produces findings → `receiving-code-review` sets the **response discipline**: verify each point against the code, clarify ambiguity, push back with technical reasoning, fix one item at a time with a test.
+- **When:** you receive a review report (your `/code-review`, Pocock `code-review`, graph-based `crg-review-changes`) or feedback from an **external** PR reviewer.
+- **Why:** review skills find problems but do **not** dictate *how to respond* — without this, it is easy to slide into performative agreement or blind implementation of bad advice.
+- **Anti-patterns:**
+  - ❌ “You're absolutely right!” + immediately implementing the entire list → partial implementation of ambiguous requests, blind fixes that break code.
+  - ❌ silently accepting an external reviewer without YAGNI-grep / checking whether they understand the whole codebase context.
+- **Prompts:**
+  - “/code-review returned 8 points — next, receiving-code-review: verify each against code, clarify unclear ones, no performative thanks, fix one at a time with a test.”
 
 ### `crg-explore-codebase` → `crg-debug-issue` / `crg-refactor-safely` / `crg-review-changes`
-- **Ланцюг:** `explore` будує/освіжає граф → далі дебаг, рефактор або рев'ю на готовому графі.
-- **Коли:** великий чи незнайомий кодбейз.
-- **Чому:** один раз побудований граф = токен-ефективний контекст для всіх трьох наступних.
+- **Chain:** `explore` builds/refreshes the graph → debug, refactor, or review on the ready graph.
+- **When:** a large or unfamiliar codebase.
+- **Why:** one graph build = token-efficient context for all three subsequent skills.
 
-- **Передумова:** MCP `code-review-graph` запущений і прив'язаний до репо (тут — `cassiopeia-admin-ui`).
-- **Покроково (з артефактами-хендофами):**
-  1. **`crg-explore-codebase`** — `build_or_update_graph` + `get_architecture_overview` → орієнтуєшся в структурі. → **Хендоф:** свіжий граф + мапа модулів/хабів.
-  2. **Розгалуження на тому самому графі** (без перебудови):
-     - **`crg-debug-issue`** — граф-навігація до кореня бага;
-     - **`crg-refactor-safely`** — impact radius перед зміною;
-     - **`crg-review-changes`** — `detect_changes` + impact для рев'ю.
-- **Антипатерни:**
-  - ❌ дебажити/рефакторити без свіжого графа → застарілий impact, пропущені зв'язки.
-  - ❌ перебудовувати граф щоразу → `explore` один раз, далі переюз (інкрементальне оновлення).
-- **Промти:**
-  - «Незнайомий модуль positions: спершу `crg-explore-codebase`, далі дебаг/рефактор/рев'ю на тому ж графі.»
-  - «Освіжи граф і дай architecture-overview org-hierarchy, потім impact radius для selection-state.»
+- **Prerequisite:** `code-review-graph` MCP is running and bound to the repo (here — `cassiopeia-admin-ui`).
+- **Step by step (with handoff artifacts):**
+  1. **`crg-explore-codebase`** — `build_or_update_graph` + `get_architecture_overview` → orient yourself in the structure. → **Handoff:** fresh graph + module/hub map.
+  2. **Branch on the same graph** (no rebuild):
+     - **`crg-debug-issue`** — graph navigation to the bug's root;
+     - **`crg-refactor-safely`** — impact radius before a change;
+     - **`crg-review-changes`** — `detect_changes` + impact for review.
+- **Anti-patterns:**
+  - ❌ debugging/refactoring without a fresh graph → stale impact, missed connections.
+  - ❌ rebuilding the graph every time → `explore` once, then reuse (incremental updates).
+- **Prompts:**
+  - “Unfamiliar positions module: first `crg-explore-codebase`, then debug/refactor/review on the same graph.”
+  - “Refresh the graph and give an org-hierarchy architecture-overview, then selection-state's impact radius.”
 
-### `crg-refactor-safely` → `tdd`  *(або `resolving-merge-conflicts` → `tdd`)*
-- **Ланцюг:** impact-аналіз / розв'язання конфлікту → тести підтверджують, що нічого не зламано.
-- **Коли:** ризиковані зміни, що зачіпають багато місць.
-- **Чому:** залежності видно заздалегідь, тести ловлять регрес.
+### `crg-refactor-safely` → `tdd`  *(or `resolving-merge-conflicts` → `tdd`)*
+- **Chain:** impact analysis / conflict resolution → tests confirm nothing broke.
+- **When:** risky changes affecting many places.
+- **Why:** dependencies are visible in advance; tests catch regressions.
 
-- **Покроково (з артефактами-хендофами):**
-  1. **`crg-refactor-safely`** (або **`resolving-merge-conflicts`**) — impact radius / розв'язання конфлікту → знаєш усі зачеплені точки. → **Хендоф:** список зачеплених місць.
-  2. **`tdd`** — тести на зачеплені точки (red на тому, що ламається) → зелений після зміни. → **Хендоф:** зелений набір, що замикає поведінку.
-- **Антипатерни:**
-  - ❌ рефактор без impact radius → пропущені зачеплені місця.
-  - ❌ покладатися лише на граф без тестів → impact показує зв'язки, не гарантує поведінку.
-- **Промти:**
-  - «Винести selection-state у хук: impact-аналіз → тести підтверджують, що нічого не зламано.»
-  - «Після rebase gamma: розрули конфлікти → прожени tdd на зачеплених mapper'ах.»
+- **Step by step (with handoff artifacts):**
+  1. **`crg-refactor-safely`** (or **`resolving-merge-conflicts`**) — impact radius / conflict resolution → identify every affected point. → **Handoff:** affected-place list.
+  2. **`tdd`** — tests for affected points (red for what breaks) → green after the change. → **Handoff:** green suite locking down behavior.
+- **Anti-patterns:**
+  - ❌ refactoring without an impact radius → missed affected places.
+  - ❌ relying only on the graph without tests → impact shows connections, not guaranteed behavior.
+- **Prompts:**
+  - “Extract selection-state into a hook: impact analysis → tests confirm nothing broke.”
+  - “After rebasing gamma: resolve conflicts → run tdd on affected mappers.”
 
 ### `tdd` → `migrate-to-shoehorn`
-- **Ланцюг:** написав тести → прибрав `as`-асершени на shoehorn.
-- **Коли:** тестова база з partial-даними через `as`.
-- **Чому:** типобезпечні часткові дані без ручного кастингу.
+- **Chain:** write tests → replace `as` assertions with shoehorn.
+- **When:** test data uses partial fixtures through `as`.
+- **Why:** type-safe partial data without manual casting.
 
-- **Покроково (з артефактами-хендофами):**
-  1. **`tdd`** — пишеш/маєш зелені тести (можливо з `as` для partial-фікстур). → **Хендоф:** зелений набір (із `as`).
-  2. **`migrate-to-shoehorn`** — `as` → shoehorn-хелпери (типобезпечні partial). → **Хендоф:** ті самі тести, без `as`, без втрати типів.
-- **Антипатерни:**
-  - ❌ мігрувати на shoehorn до того, як тести зелені → змішуєш дві зміни, важко локалізувати поломку.
-- **Промти:**
-  - «Напиши тести на person-mapper test-first → потім прибери `as` на shoehorn.»
+- **Step by step (with handoff artifacts):**
+  1. **`tdd`** — write/have green tests (possibly using `as` for partial fixtures). → **Handoff:** green suite (with `as`).
+  2. **`migrate-to-shoehorn`** — `as` → shoehorn helpers (type-safe partials). → **Handoff:** the same tests, without `as`, without losing types.
+- **Anti-patterns:**
+  - ❌ migrating to shoehorn before tests are green → mixing two changes makes breakage hard to locate.
+- **Prompts:**
+  - “Write person-mapper tests test-first → then replace `as` with shoehorn.”
 
-### Чистка 🧹 *(дублі / зламана логіка / стилі / motion)*
-- **Ланцюг:** `code-review-graph` (`semantic_search_nodes`/`get_community`/`find_large_functions`) → `/code-review` (+`/simplify`) → фікс за правилами компонентів → `tdd` + `/run`.
-- **Коли:** після порту/рефактору або періодично — прибрати дубльовані компоненти, зламану інтерактивну логіку, off-rule стилі.
-- **Чому:** окремого «cleanup»-скіла нема; це композиція. У проєкті тверді **правила поведінки/стилів** — порушення = баг, навіть якщо «працює».
+### Cleanup 🧹 *(duplicates / broken logic / styles / motion)*
+- **Chain:** `code-review-graph` (`semantic_search_nodes`/`get_community`/`find_large_functions`) → `/code-review` (+`/simplify`) → fixes following component rules → `tdd` + `/run`.
+- **When:** after a port/refactor or periodically — remove duplicated components, broken interactive logic, off-rule styles.
+- **Why:** no separate ‘cleanup’ skill; this is a composition. The project has firm **behavior/style rules** — a violation = a bug, even if ‘it works’.
 
-- **Покроково (з артефактами-хендофами):**
-  1. **`code-review-graph`** — знайди **дублі** компонентів (`semantic_search_nodes` по `shared/ui` + `get_community`/`list_communities`) і занадто великі вузли (`find_large_functions`). → **Хендоф:** список кандидатів на злиття/виніс.
-  2. **`/code-review`** (+`diagnosing-bugs`/`crg-debug-issue` якщо рантайм) — **зламана логіка**: non-modal popover dismiss, focus-rules, RAC-патерни, dead/clobbered код. → **Хендоф:** список фіксів.
-  3. **Звір стилі + анімації проти правил** — canonical tokens (`src/index.css`), **clsx (NOT tv())**, без `dark:`-варіантів, без raw `<input>`, notched-border поля; **motion/анімації** (тривалості, easing, стани hover/press/focus, `prefers-reduced-motion`) за `ux-states-and-motion`; `design-language` / `ui-interactivity-rules` / ADR-0021/0022/0026. → **Хендоф:** список off-rule місць (стилі + motion).
-  4. **`/simplify`** застосовує reuse/спрощення → **`tdd`** (поведінка) + **`/run`**/`Figma Desktop` (візуал). → **Хендоф:** чистий, за-правилами код.
-- **Гард-рейли (правила-критерії, не скіли):** `ui-interactivity-rules.md` · `ui-component-inventory.md` · `design-language.md` · `ux-states-and-motion.md` · ADR-0021 (interactivity charter) · ADR-0022 (RAC primitives) · ADR-0026 (field notched border) · «clsx not tv()» · canonical color tokens · no `dark:` variant · no raw `<input>`. Швидкий машинний зріз — `yarn lint` (boundaries + raw-input rule).
-- **Антипатерни:**
-  - ❌ створити компонент, не пошукавши дубль (`semantic_search`/inventory) → ще один primitive-сирота.
-  - ❌ «працює» ≠ «за правилами»: hover-dismiss у non-modal popover, focus-accent на label, off-token кольори, `dark:`-класи (мертві в `[data-theme]`).
-  - ❌ чистити стилі «на око» замість токенів `src/index.css` → дрейф від дизайн-системи.
-  - ❌ ad-hoc анімації (довільні durations/easing, ігнор `prefers-reduced-motion`) замість motion-токенів із `ux-states-and-motion` → неузгоджена візуальна взаємодія.
-- **Промти:**
-  - «Знайди дублі компонентів у shared/ui через code-review-graph, злий, прожени /code-review + /simplify, звір стилі проти ui-interactivity-rules і canonical tokens, замкни tdd + /run.»
-  - «Почисти модуль org-hierarchy: зламана інтерактивна логіка + off-token стилі + `dark:`-рудименти → фікс за ADR-0021/0026.»
+- **Step by step (with handoff artifacts):**
+  1. **`code-review-graph`** — find component **duplicates** (`semantic_search_nodes` across `shared/ui` + `get_community`/`list_communities`) and oversized nodes (`find_large_functions`). → **Handoff:** merge/extraction candidates.
+  2. **`/code-review`** (+`diagnosing-bugs`/`crg-debug-issue` for runtime problems) — **broken logic**: non-modal popover dismiss, focus-rules, RAC patterns, dead/clobbered code. → **Handoff:** fix list.
+  3. **Check styles + animations against rules** — canonical tokens (`src/index.css`), **clsx (NOT tv())**, no `dark:` variants, no raw `<input>`, notched-border fields; **motion/animations** (durations, easing, hover/press/focus states, `prefers-reduced-motion`) per `ux-states-and-motion`; `design-language` / `ui-interactivity-rules` / ADR-0021/0022/0026. → **Handoff:** off-rule locations (styles + motion).
+  4. **`/simplify`** applies reuse/simplification → **`tdd`** (behavior) + **`/run`**/`Figma Desktop` (visuals). → **Handoff:** clean, rule-compliant code.
+- **Guardrails (rules/criteria, not skills):** `ui-interactivity-rules.md` · `ui-component-inventory.md` · `design-language.md` · `ux-states-and-motion.md` · ADR-0021 (interactivity charter) · ADR-0022 (RAC primitives) · ADR-0026 (field notched border) · ‘clsx not tv()’ · canonical color tokens · no `dark:` variant · no raw `<input>`. Quick machine pass — `yarn lint` (boundaries + raw-input rule).
+- **Anti-patterns:**
+  - ❌ creating a component without searching for duplicates (`semantic_search`/inventory) → another orphan primitive.
+  - ❌ ‘works’ ≠ ‘follows rules’: hover-dismiss in a non-modal popover, focus-accent on a label, off-token colors, `dark:` classes (dead under `[data-theme]`).
+  - ❌ cleaning styles ‘by eye’ rather than `src/index.css` tokens → design-system drift.
+  - ❌ ad-hoc animations (arbitrary durations/easing, ignoring `prefers-reduced-motion`) instead of motion tokens from `ux-states-and-motion` → inconsistent visual interactions.
+- **Prompts:**
+  - “Find component duplicates in shared/ui through code-review-graph, merge them, run /code-review + /simplify, check styles against ui-interactivity-rules and canonical tokens, close with tdd + /run.”
+  - “Clean up org-hierarchy: broken interactive logic + off-token styles + `dark:` remnants → fixes per ADR-0021/0026.”
 
-## Вхідні / процес
+## Intake / process
 
-### `setup-matt-pocock-skills` → *(усі engineering-скіли)*
-- **Ланцюг:** один раз конфігуриш трекер/лейбли/доки → потім `to-tickets`, `triage`, `to-spec`, `implement` працюють «з коробки».
-- **Коли:** перший запуск engineering-скілів у новому репо.
-- **Чому:** без цього вони не знають, куди писати issue й які лейбли ставити.
+### `setup-matt-pocock-skills` → *(all engineering skills)*
+- **Chain:** configure tracker/labels/docs once → then `to-tickets`, `triage`, `to-spec`, `implement` work out of the box.
+- **When:** first use of engineering skills in a new repo.
+- **Why:** without setup they do not know where to write issues or which labels to apply.
 
-- **Покроково (з артефактами-хендофами):**
-  1. **`/setup-matt-pocock-skills`** (раз на репо) — issue-трекер + словник triage-лейблів + розкладка доменних доків (`GLOSSARY.md`). → **Хендоф:** сконфігуроване середовище.
-  2. **Далі будь-який engineering-скіл** — `to-spec` / `to-tickets` / `triage` / `implement` / `tdd` / `diagnosing-bugs` / `improve-codebase-architecture` працюють без донастройки.
-- **Антипатерни:**
-  - ❌ кликати `to-tickets`/`triage` до setup → нема куди писати, нема лейблів → скіл буксує.
-- **Промти:**
-  - «Новий репо: `setup-matt-pocock-skills` раз → далі to-tickets/triage/implement з коробки.»
+- **Step by step (with handoff artifacts):**
+  1. **`/setup-matt-pocock-skills`** (once per repo) — issue tracker + triage-label vocabulary + domain documentation layout (`GLOSSARY.md`). → **Handoff:** configured environment.
+  2. **Then any engineering skill** — `to-spec` / `to-tickets` / `triage` / `implement` / `tdd` / `diagnosing-bugs` / `improve-codebase-architecture` work without extra setup.
+- **Anti-patterns:**
+  - ❌ invoking `to-tickets`/`triage` before setup → nowhere to write, no labels → the skill stalls.
+- **Prompts:**
+  - “New repo: `setup-matt-pocock-skills` once → then to-tickets/triage/implement out of the box.”
 
 ### `triage` → `to-tickets` / `implement`
-- **Ланцюг:** `triage` сортує вхідне й пише брифи → готові issues беруться в роботу.
-- **Коли:** потік багів/фіч/зовнішніх PR.
-- **Чому:** у `implement` потрапляють лише чітко специфіковані, AFK-готові задачі.
+- **Chain:** `triage` sorts intake and writes briefs → ready issues are picked up.
+- **When:** a stream of bugs/features/external PRs.
+- **Why:** only clearly specified, AFK-ready tasks reach `implement`.
 
-- **Передумова:** `/setup-matt-pocock-skills` (словник triage-лейблів).
-- **Покроково (з артефактами-хендофами):**
-  1. **`/triage`** — вхідні через стейт-машину ролей → класифікація + agent-ready брифи. → **Хендоф:** розсортовані задачі з брифами.
-  2. **Розгалуження:** **`/to-tickets`** (формалізувати в трекер, якщо потрібен PRD-рівень) АБО **`/implement`** (якщо бриф самодостатній).
-- **Антипатерни:**
-  - ❌ кидати сирі баги в `/implement` без triage → реалізація без критеріїв і пріоритету.
-- **Промти:**
-  - «Потік багів від QA: `triage` сортує й пише брифи → `implement` бере готові.»
-  - «12 вхідних issue: `triage` з ролями → найбільші у `to-tickets`, дрібні одразу в `implement`.»
+- **Prerequisite:** `/setup-matt-pocock-skills` (triage-label vocabulary).
+- **Step by step (with handoff artifacts):**
+  1. **`/triage`** — intake through the role state machine → classification + agent-ready briefs. → **Handoff:** sorted tasks with briefs.
+  2. **Branch:** **`/to-tickets`** (formalize in the tracker if PRD-level treatment is needed) OR **`/implement`** (if the brief is self-contained).
+- **Anti-patterns:**
+  - ❌ throwing raw bugs into `/implement` without triage → implementation without criteria or priority.
+- **Prompts:**
+  - “QA bug stream: `triage` sorts and writes briefs → `implement` takes ready ones.”
+  - “12 incoming issues: `triage` with roles → larger ones to `to-tickets`, small ones straight to `implement`.”
 
-### Мета-обгортки
-- **`ask-matt`** — не знаєш, з якої зв'язки почати → `/ask-matt` підкаже точку входу.
-- **`handoff`** — фінал будь-якого ланцюга: стискає контекст для передачі наступному агенту/сесії.
+### Meta-wrappers
+- **`ask-matt`** — unsure which combination to start with → `/ask-matt` suggests an entry point.
+- **`handoff`** — the end of any chain: compresses context for the next agent/session.
 
-## Міграція / парність (legacy → new)
+## Migration / parity (legacy → new)
 
-### legacy → new parity 🏁 *(аудит → gap → порт → звірка)*
-- **Ланцюг:** `crg-explore-codebase`+`code-review-graph` → `grill-with-docs` (+`domain-modeling`) → `codebase-design` → `implement` (+`context7`) → `tdd` + `/verify`/`/run`.
-- **Коли:** переносиш старий функціонал (cass-clone) на нові компоненти cassiopeia-admin-ui — звірити, що нічого не загублено, і портувати відсутнє за правилами дизайну.
-- **Чому:** окремого скіла «migrate» нема; форма задачі — **аудит → gap → порт → звірка**, а не «створити»/«покращити». Композиція дає parity без 1:1-перетягування й без хибних «missing».
+### legacy → new parity 🏁 *(audit → gap → port → verify)*
+- **Chain:** `crg-explore-codebase`+`code-review-graph` → `grill-with-docs` (+`domain-modeling`) → `codebase-design` → `implement` (+`context7`) → `tdd` + `/verify`/`/run`.
+- **When:** moving old functionality (cass-clone) to new cassiopeia-admin-ui components — verify nothing was lost and port missing parts according to design rules.
+- **Why:** no separate ‘migrate’ skill; the task is **audit → gap → port → verify**, rather than ‘create’/‘improve’. Composition provides parity without a 1:1 transplant or false ‘missing’ reports.
 
-- **Передумова:** обидва репо в графі (`list_repos_tool`); інакше `semantic_search` у кожному окремо + ручне зіставлення. Звір freeze-скоуп (CREATE/EDIT форми — інша сесія).
-- **Покроково (з артефактами-хендофами):**
-  1. **`crg-explore-codebase` + `cross_repo_search`/`semantic_search_nodes`** — зіставляєш старий функціонал із новим аналогом «по схожості». → **Хендоф:** мапа відповідностей + список відсутнього/розбіжного.
-  2. **`/grill-with-docs`** (+`domain-modeling`) — грилиш список: реальна дірка vs **свідома дельта**. → **Хендоф:** verified gap-list у `reports/migration-audit/`.
-  3. **`codebase-design`** — як кожна дірка лягає на нові `shared/ui` + modular-MVC, за `design-language` / `ui-component-inventory` / `ux-states-and-motion`. → **Хендоф:** дизайн порту (**НЕ 1:1**).
-  4. **`/implement`** — переносиш на **власні `shared/ui` компоненти (на базі RAC)**, НЕ на RAC напряму. Спершу пошукай наявний у `shared/ui` (`semantic_search`/inventory — **не плоди дублі**); справді нема → створи новий primitive на RAC і **зафіксуй у `ui-component-inventory`** (щоб переюзати далі). `context7` — лише щоб звірити RAC-API під цей новий компонент. → **Хендоф:** зміни + (за потреби) новий `shared/ui`-компонент.
-  5. **`tdd` + `/verify`/`/run`** (+`playwright`/`Figma Desktop`) — поведінкова + візуальна парність до legacy/макета. → **Хендоф:** підтверджена парність.
-- **Гард-рейли (цей проєкт):**
-  - «Migration = rewrite, not port» — переробляй криву логіку, викидай мертвий код, дизайн роби по-новому.
-  - «Account for tab redistribution» — перш ніж флагати «поле зникло», grep по **всьому** модулю + `build-*-vm.ts` (нова person-full = 9 вкладок, не 1:1).
-- **Антипатерни:**
-  - ❌ порт 1:1 без `codebase-design` → тягнеш legacy-криву в нову архітектуру.
-  - ❌ пропустити крок 2 → хибні «missing» (дельта ≠ баг) і шум у звіті.
-  - ❌ «парність» без візуальної звірки (`/run`/Figma) → розходження з макетом лишається непоміченим.
-  - ❌ принести дублі / зламану логіку / off-rule стилі чи анімації → одразу прожени [Чистку](#чистка--дублі--зламана-логіка--стилі--motion) (dedup + поведінка + стилі + motion).
-- **Промти:**
-  - «legacy→new parity модуля org-hierarchy: cross-repo зістав cass-clone↔cassiopeia-admin-ui, gap-list прогрилити, портуй відсутнє на shared/ui за design-language, звір tdd + /run.»
-  - «Перевір, чи person-full не загубив полів проти legacy: grep весь модуль + build-*-vm, відсутнє — у reports/migration-audit.»
+- **Prerequisite:** both repos in the graph (`list_repos_tool`); otherwise `semantic_search` in each separately + manual comparison. Check freeze scope (CREATE/EDIT forms — another session).
+- **Step by step (with handoff artifacts):**
+  1. **`crg-explore-codebase` + `cross_repo_search`/`semantic_search_nodes`** — match old functionality to its new counterpart by similarity. → **Handoff:** correspondence map + missing/divergent items.
+  2. **`/grill-with-docs`** (+`domain-modeling`) — grill the list: real gap vs **intentional delta**. → **Handoff:** verified gap-list in `reports/migration-audit/`.
+  3. **`codebase-design`** — fit each gap into new `shared/ui` + modular-MVC, per `design-language` / `ui-component-inventory` / `ux-states-and-motion`. → **Handoff:** port design (**NOT 1:1**).
+  4. **`/implement`** — move to **your own `shared/ui` components (built on RAC)**, NOT RAC directly. First search for an existing component in `shared/ui` (`semantic_search`/inventory — **do not breed duplicates**); genuinely absent → create a new primitive on RAC and **record it in `ui-component-inventory`** (for later reuse). `context7` — only to verify the RAC API for this new component. → **Handoff:** changes + (if needed) a new `shared/ui` component.
+  5. **`tdd` + `/verify`/`/run`** (+`playwright`/`Figma Desktop`) — behavioral + visual parity with legacy/mockup. → **Handoff:** confirmed parity.
+- **Guardrails (this project):**
+  - “Migration = rewrite, not port” — rework bad logic, discard dead code, redesign.
+  - “Account for tab redistribution” — before flagging ‘field disappeared’, grep the **entire** module + `build-*-vm.ts` (new person-full = 9 tabs, not 1:1).
+- **Anti-patterns:**
+  - ❌ 1:1 port without `codebase-design` → pulling legacy flaws into the new architecture.
+  - ❌ skipping step 2 → false ‘missing’ reports (delta ≠ bug) and report noise.
+  - ❌ ‘parity’ without visual verification (`/run`/Figma) → mockup divergence goes unnoticed.
+  - ❌ bringing duplicates / broken logic / off-rule styles or animations → immediately run [Cleanup](#cleanup--duplicates--broken-logic--styles--motion) (dedup + behavior + styles + motion).
+- **Prompts:**
+  - “legacy→new parity for org-hierarchy: cross-repo match cass-clone↔cassiopeia-admin-ui, grill the gap-list, port missing parts to shared/ui per design-language, verify tdd + /run.”
+  - “Check whether person-full lost fields against legacy: grep the entire module + build-*-vm; missing items go in reports/migration-audit.”
 
-## ➕ Скіл + MCP (комбо для кращого результату)
+## ➕ Skill + MCP (combinations for better results)
 
-> Легший формат (без Покроково/Антипатерни): **Ланцюг → коли → чому → Промти**. MCP дає скілу зовнішнє джерело правди (свіжа дока, живий браузер, граф коду, макет), якого нема в пам'яті моделі.
+> Lighter format (no Step by step/Anti-patterns): **Chain → when → why → Prompts**. An MCP gives a skill an external source of truth (fresh docs, a live browser, a code graph, a mockup) absent from model memory.
 
-### Кодинг із актуальною докою
+### Coding with current documentation
 
 #### `tdd` / `implement` + `context7` *(MCP_DOCKER)*
-- **Ланцюг:** перед написанням коду `resolve-library-id` → `get-library-docs` → пишеш тест/реалізацію по реальному API.
-- **Коли:** використовуєш бібліотеку, де модель може галюцинувати сигнатури (нові версії RAC, TanStack, zod v4).
-- **Чому:** тести й код спираються на правдиве API, а не на застарілу пам'ять — менше «зеленого на брехливому моку».
-- **Промти:**
-  - «Дай свіжу доку RAC Popover через context7, потім пиши форму test-first.»
-  - «context7: актуальне API zod v4 superRefine → реалізуй валідацію org-форми.»
+- **Chain:** before coding, `resolve-library-id` → `get-library-docs` → write the test/implementation against the real API.
+- **When:** using a library whose signatures the model might hallucinate (new RAC, TanStack, zod v4 versions).
+- **Why:** tests and code use the true API rather than stale memory — less ‘green on a lying mock’.
+- **Prompts:**
+  - “Get fresh RAC Popover docs through context7, then write the form test-first.”
+  - “context7: current zod v4 superRefine API → implement org-form validation.”
 
 #### `grill-with-docs` / `domain-modeling` + `context7` *(MCP_DOCKER)*
-- **Ланцюг:** під час грилення/моделювання звіряєш припущення про можливості бібліотеки з її докою.
-- **Коли:** рішення залежить від того, «чи вміє ліба X» — перш ніж класти це в ADR/GLOSSARY.md.
-- **Чому:** ADR фіксує перевірений факт, а не здогад; наступні скіли читають коректний GLOSSARY.md.
-- **Промти:**
-  - «Гриляючи рішення, звір через context7, чи вміє TanStack Router типізований navigate з масивом, тоді в ADR.»
+- **Chain:** while grilling/modeling, check library-capability assumptions against its docs.
+- **When:** a decision depends on ‘can library X do this’ — before putting it in ADR/GLOSSARY.md.
+- **Why:** the ADR records a verified fact, not a guess; subsequent skills read an accurate GLOSSARY.md.
+- **Prompts:**
+  - “While grilling the decision, check through context7 whether TanStack Router supports typed navigate with an array, then put it in an ADR.”
 
-### Візуальний / браузерний dev-loop
+### Visual / browser development loop
 
 #### `prototype` (UI) + `playwright` *(MCP_DOCKER)*
-- **Ланцюг:** прототип запущено → `browser_navigate` → `browser_click` / `browser_snapshot` / `browser_take_screenshot`.
-- **Коли:** перебираєш UI-варіації або стани й треба швидко глянути/поклікати кожен.
-- **Чому:** рішення на основі запущеного й знятого UI, а не уяви; одразу видно зламані стани.
-- **Промти:**
-  - «Запусти прототип country-roots-panel і зніми скріншот кожного з 3 варіантів.»
-  - «Поклікай стани selection у прототипі через playwright і покажи DOM-геометрію.»
+- **Chain:** prototype running → `browser_navigate` → `browser_click` / `browser_snapshot` / `browser_take_screenshot`.
+- **When:** cycling through UI variations or states and needing to inspect/click each quickly.
+- **Why:** decisions based on a running, captured UI rather than imagination; broken states are immediately visible.
+- **Prompts:**
+  - “Run the country-roots-panel prototype and capture each of its 3 variants.”
+  - “Click selection states in the prototype through playwright and show DOM geometry.”
 
-#### `diagnosing-bugs` + `playwright` / `chrome-devtools` *(MCP_DOCKER / плагін)*
-- **Ланцюг:** відтворюєш баг у браузері (`browser_navigate` + дії) → знімаєш DOM/мережу/консоль → формуєш гіпотезу → фікс → регрес-перевірка тим самим сценарієм.
-- **Коли:** баг видно лише в рантаймі (UI-стан, мережеві запити, перф).
-- **Чому:** `chrome-devtools` дає глибший доступ (DOM/network/performance), ніж playwright-снапшоти — точніша гіпотеза.
-- **Промти:**
-  - «Відтвори баг theme-flip у браузері, зніми DOM/мережу/консоль, дай гіпотезу.»
-  - «chrome-devtools: профіль перформансу рендера великого дерева org-hierarchy.»
+#### `diagnosing-bugs` + `playwright` / `chrome-devtools` *(MCP_DOCKER / plugin)*
+- **Chain:** reproduce the bug in the browser (`browser_navigate` + actions) → capture DOM/network/console → form a hypothesis → fix → regression-check the same scenario.
+- **When:** the bug appears only at runtime (UI state, network requests, performance).
+- **Why:** `chrome-devtools` offers deeper access (DOM/network/performance) than playwright snapshots — a more precise hypothesis.
+- **Prompts:**
+  - “Reproduce the theme-flip bug in the browser, capture DOM/network/console, give a hypothesis.”
+  - “chrome-devtools: performance profile of rendering a large org-hierarchy tree.”
 
 #### `crg-review-changes` + `code-review-graph` ↔ `playwright` *(MCP)*
-- **Ланцюг:** `detect_changes` + impact-аналіз показують, що зачеплено → playwright візуально перевіряє зачеплені екрани.
-- **Коли:** рев'ю змін, що можуть мовчки зламати UI поза диффом.
-- **Чому:** граф підказує, де дивитись; браузер підтверджує, що там не зламано.
-- **Промти:**
-  - «Detect-changes на gamma → playwright перевіряє зачеплені екрани візуально.»
+- **Chain:** `detect_changes` + impact analysis show what is affected → playwright visually verifies affected screens.
+- **When:** reviewing changes that might silently break UI outside the diff.
+- **Why:** the graph indicates where to look; the browser confirms it is not broken there.
+- **Prompts:**
+  - “Detect-changes on gamma → playwright visually checks affected screens.”
 
-### Дизайн → код
+### Design → code
 
-#### `prototype` / дизайн-задачі + `Figma Desktop` *(MCP)*
-- **Ланцюг:** `get_variable_defs` / `get_design_context` / `get_screenshot` з відкритого макета → переносиш токени й контекст у прототип/код.
-- **Коли:** треба точна відповідність макету (значення токенів, відступи, кольори).
-- **Чому:** тягнеш **реальні** значення з Dev Mode, а не приблизні з ока.
-- **Промти:**
-  - «Витягни токени й відступи country-roots-panel з відкритого макета (Dev Mode) і застосуй.»
-  - «get_variable_defs кольорів статусів із макета → звір із src/index.css токенами.»
+#### `prototype` / design tasks + `Figma Desktop` *(MCP)*
+- **Chain:** `get_variable_defs` / `get_design_context` / `get_screenshot` from the open mockup → transfer tokens and context into prototype/code.
+- **When:** exact mockup fidelity is needed (token values, spacing, colors).
+- **Why:** pull **real** values from Dev Mode rather than eyeballing approximations.
+- **Prompts:**
+  - “Extract country-roots-panel tokens and spacing from the open mockup (Dev Mode) and apply them.”
+  - “get_variable_defs for status colors from the mockup → compare with src/index.css tokens.”
 
 #### `figma-friend:clone-ui` + `figma` (remote) + `playwright` *(Claude-only MCP)*
-- **Ланцюг:** playwright знімає живу сторінку → `figma` (Plugin API) відтворює її як Figma-файл.
-- **Коли:** треба перенести існуючий веб-екран у Figma для редизайну.
-- **Чому:** remote `figma` пише у хмарні файли (на відміну від read-only `Figma Desktop`).
-- **Промти:**
-  - «Клонуй живу сторінку org-hierarchy у новий Figma-файл (clone-ui + figma + playwright).»
+- **Chain:** playwright captures a live page → `figma` (Plugin API) recreates it as a Figma file.
+- **When:** an existing web screen must be moved into Figma for redesign.
+- **Why:** remote `figma` writes cloud files (unlike read-only `Figma Desktop`).
+- **Prompts:**
+  - “Clone the live org-hierarchy page into a new Figma file (clone-ui + figma + playwright).”
 
-### Навігація / архітектура великого кодбейзу
+### Navigation / architecture of a large codebase
 
 #### `crg-explore-codebase` / `crg-refactor-safely` + `code-review-graph` *(MCP)*
-- **Ланцюг:** `build_or_update_graph` → `get_architecture_overview` / `semantic_search_nodes` / `get_impact_radius`.
-- **Коли:** незнайомий або великий кодбейз; ризиковані зміни з широким impact-radius.
-- **Чому:** персистентний граф = токен-ефективний контекст і impact-аналіз замість сліпого читання файлів. `crg-*` скіли і є фронтендом до цього MCP.
-- **Промти:**
-  - «Збери граф і дай architecture-overview для modules/.»
-  - «get_impact_radius для винесення selection-state у хук перед рефактором.»
+- **Chain:** `build_or_update_graph` → `get_architecture_overview` / `semantic_search_nodes` / `get_impact_radius`.
+- **When:** an unfamiliar or large codebase; risky changes with a broad impact radius.
+- **Why:** persistent graph = token-efficient context and impact analysis instead of blind file reading. The `crg-*` skills are the frontend to this MCP.
+- **Prompts:**
+  - “Build the graph and give an architecture-overview for modules/.”
+  - “get_impact_radius for extracting selection-state into a hook before refactoring.”
 
 #### `improve-codebase-architecture` + `code-review-graph` *(MCP)*
-- **Ланцюг:** граф дає `get_architecture_overview` / `get_hub_nodes` / `find_large_functions` → скан формує HTML-звіт можливостей → гриляєш обране.
-- **Коли:** «хочу покращити архітектуру, але не знаю, з чого почати».
-- **Чому:** скан спирається на структурні метрики графа, а не на вибіркове читання.
-- **Промти:**
-  - «Граф: hub-nodes + великі функції → HTML-звіт можливостей → грилінг обраного.»
+- **Chain:** the graph provides `get_architecture_overview` / `get_hub_nodes` / `find_large_functions` → the scan produces an HTML opportunities report → grill the chosen option.
+- **When:** ‘I want to improve the architecture but do not know where to start’.
+- **Why:** the scan uses structural graph metrics rather than selective reading.
+- **Prompts:**
+  - “Graph: hub-nodes + large functions → HTML opportunities report → grill the selected option.”
 
-> ⚠️ **Стан MCP у цьому проєкті** (див. project-memory): `MCP_DOCKER` періодично лежить (browser/figma-screenshot loop ненадійний) — тоді figma-парність ганяй з **PROJECT SOURCE** (`figma/src` + `design/reference`), а не через MCP.
+> ⚠️ **MCP state in this project** (see project-memory): `MCP_DOCKER` periodically goes down (browser/figma-screenshot loop is unreliable) — then run figma parity from **PROJECT SOURCE** (`figma/src` + `design/reference`), not through MCP.
 
 ---
 
-# 🔌 MCP-сервери на машині
+# 🔌 MCP servers on the machine
 
-> MCP = зовнішні набори інструментів, які агент підхоплює поверх скілів.
-> Claude і Cursor конфігуряться окремо (`~/.claude.json` + плагіни / `~/.cursor/mcp.json`), тож набори можуть різнитися.
+> MCP = external toolsets that the agent loads on top of skills.
+> Claude and Cursor are configured separately (`~/.claude.json` + plugins / `~/.cursor/mcp.json`), so their sets may differ.
 
-## Спільні MCP (є і в Claude, і в Cursor)
+## Shared MCPs (both Claude and Cursor)
 
 ### `MCP_DOCKER` — Docker MCP Gateway
-- **Як:** один шлюз `docker mcp gateway run`, що віддає інструменти кількох серверів; керування — `docker mcp server ls / enable / disable`.
-- **Де:** коли треба свіжа дока бібліотеки або браузерна автоматизація.
-- **Чому:** агрегатор — кілька MCP за одним конектором, ізольовані в Docker. Зараз ввімкнено **2**:
-  - **`context7`** — актуальна документація бібліотек. Інструменти: `resolve-library-id`, `get-library-docs`. *(коли треба правдиве API бібліотеки замість пам'яті моделі)*
-    - **Промти:** «context7: resolve-library-id для react-aria-components → get-library-docs по Popover.» · «Дай актуальні доки TanStack Router по typed navigate.»
-  - **`playwright`** — автоматизація браузера. Інструменти: `browser_navigate`, `browser_click`, `browser_snapshot`, `browser_evaluate`, `browser_take_screenshot`… *(візуальний dev-loop, e2e-перевірки UI)*
-    - **Промти:** «playwright: navigate на host.docker.internal Storybook → screenshot story.» · «Клікни по вузлу діаграми й зніми snapshot стану.»
+- **How:** one gateway, `docker mcp gateway run`, exposes tools from multiple servers; management — `docker mcp server ls / enable / disable`.
+- **Where:** when fresh library docs or browser automation is needed.
+- **Why:** an aggregator — several MCPs behind one connector, isolated in Docker. Currently **2** enabled:
+  - **`context7`** — current library documentation. Tools: `resolve-library-id`, `get-library-docs`. *(when you need a library's true API rather than model memory)*
+    - **Prompts:** “context7: resolve-library-id for react-aria-components → get-library-docs about Popover.” · “Get current TanStack Router docs on typed navigate.”
+  - **`playwright`** — browser automation. Tools: `browser_navigate`, `browser_click`, `browser_snapshot`, `browser_evaluate`, `browser_take_screenshot`… *(visual development loop, UI e2e checks)*
+    - **Prompts:** “playwright: navigate to host.docker.internal Storybook → screenshot story.” · “Click a diagram node and capture a state snapshot.”
 
-### `Figma Desktop` *(локальний, `127.0.0.1:3845/mcp`)*
-- **Як:** `get_design_context`, `get_screenshot`, `get_variable_defs`, `get_metadata`.
-- **Де:** працюєш із локально відкритим Figma-файлом (Dev Mode).
-- **Чому:** тягне дизайн-контекст, токени й скріншоти прямо з десктопного Figma — без хмари.
-- **Промти:**
-  - «get_variable_defs з відкритого макета country-roots-panel → звір з токенами index.css.»
-  - «get_screenshot вибраного фрейму для піксельної звірки з міграцією.»
+### `Figma Desktop` *(local, `127.0.0.1:3845/mcp`)*
+- **How:** `get_design_context`, `get_screenshot`, `get_variable_defs`, `get_metadata`.
+- **Where:** working with a locally open Figma file (Dev Mode).
+- **Why:** pulls design context, tokens, and screenshots directly from desktop Figma — no cloud.
+- **Prompts:**
+  - “get_variable_defs from the open country-roots-panel mockup → compare with index.css tokens.”
+  - “get_screenshot of the selected frame for pixel comparison with the migration.”
 
-### `code-review-graph` *(локальний бінар, прив'язаний до `cassiopeia-admin-ui`)*
-- **Як:** `build_or_update_graph`, `semantic_search_nodes`, `get_impact_radius`, `get_review_context`, `get_architecture_overview`… + скіли `crg-*`.
-- **Де:** навігація, рев'ю й рефактор великого кодбейзу.
-- **Чому:** персистентний граф коду (tree-sitter) → токен-ефективний контекст і impact-аналіз замість сліпого читання файлів.
-- **Промти:**
-  - «build_or_update_graph → get_architecture_overview по modules/org-hierarchy.»
-  - «get_impact_radius для рефактора selection-state.»
+### `code-review-graph` *(local binary, bound to `cassiopeia-admin-ui`)*
+- **How:** `build_or_update_graph`, `semantic_search_nodes`, `get_impact_radius`, `get_review_context`, `get_architecture_overview`… + `crg-*` skills.
+- **Where:** navigation, review, and refactoring of a large codebase.
+- **Why:** persistent code graph (tree-sitter) → token-efficient context and impact analysis instead of blind file reading.
+- **Prompts:**
+  - “build_or_update_graph → get_architecture_overview for modules/org-hierarchy.”
+  - “get_impact_radius for a selection-state refactor.”
 
-## Тільки Claude
+## Claude only
 
-### `figma` *(плагін `figma`, remote `mcp.figma.com/mcp`)*
-- **Як:** офіційний remote Figma MCP; під нього — скіли `figma:*` (повний перелік — у [🧩 Плагінні скіли](#-плагінні--вбудовані-скіли-поза-agentsskills)).
-- **Де:** створення/редагування у Figma через Plugin API, генерація екранів/діаграм/бібліотек.
-- **Чому:** повний доступ до хмарних Figma-файлів (на відміну від локального `Figma Desktop`, що лише читає відкритий файл).
-- **Промти:**
-  - «figma-generate-design: збери екран org-hierarchy у хмарному файлі з нашого коду.»
-  - «figma-code-connect: змапь Figma-кнопку на наш shared/ui Button.»
+### `figma` *(plugin `figma`, remote `mcp.figma.com/mcp`)*
+- **How:** official remote Figma MCP; backed by `figma:*` skills (full list in [🧩 Plugin skills](#-plugin--built-in-skills-outside-agentsskills)).
+- **Where:** create/edit in Figma through Plugin API, generate screens/diagrams/libraries.
+- **Why:** full access to cloud Figma files (unlike local `Figma Desktop`, which only reads the open file).
+- **Prompts:**
+  - “figma-generate-design: build an org-hierarchy screen in a cloud file from our code.”
+  - “figma-code-connect: map the Figma button to our shared/ui Button.”
 
-### `chrome-devtools` *(плагін `figma-friend`; також проєкт `cargo/des`)*
-- **Як:** `chrome-devtools-mcp` — інспекція/дебаг сторінки через Chrome DevTools Protocol.
-- **Де:** дебаг живої веб-сторінки — DOM, мережа, перформанс.
-- **Чому:** глибший доступ до DevTools, ніж playwright-снапшоти.
-- **Промти:**
-  - «Інспектуй network на живій сторінці person-form під час сабміту.»
-  - «Профіль перформансу рендера діаграми org-hierarchy.»
+### `chrome-devtools` *(plugin `figma-friend`; also project `cargo/des`)*
+- **How:** `chrome-devtools-mcp` — page inspection/debugging through Chrome DevTools Protocol.
+- **Where:** debugging a live web page — DOM, network, performance.
+- **Why:** deeper DevTools access than playwright snapshots.
+- **Prompts:**
+  - “Inspect network on the live person-form page during submission.”
+  - “Profile org-hierarchy diagram rendering performance.”
 
-## Тільки Cursor
+## Cursor only
 
-> Унікальних немає — усі три Cursor-сервери (`MCP_DOCKER`, `Figma Desktop`, `code-review-graph`) спільні з Claude.
-
----
-
-# 🧩 Плагінні / вбудовані скіли (поза `~/.agents/skills`)
-
-> Це **інше джерело**, ніж §1–§7: ці скіли не лежать у фізичному сховищі й оновлюються окремо. Перелічені тут, щоб шпаргалка була повна.
-
-## Плагінні скіли *(з `~/.claude/plugins`, керуються маркетплейсом)*
-
-### Плагін `figma-friend` *(v0.0.1, marketplace `figma-friend`)*
-> Фронтенд до MCP `figma-friend` / `chrome-devtools`. Викликаються як `figma-friend:<скіл>`.
-
-- **`clone-ui`** · `авто` — клонувати живу веб-сторінку у Figma («clone this page to Figma», «recreate this UI»).
-  - **Промт:** «Клонуй сторінку org-hierarchy у Figma (`figma-friend:clone-ui`).»
-- **`figma-designer`** · `авто` — інтерактивна допомога з дизайн-задачами у Figma.
-  - **Промт:** «Допоможи причесати layout картки в Figma через `figma-friend:figma-designer`.»
-
-### Плагін `figma` *(офіційний, v2.2.60)*
-> Фронтенд до remote MCP `figma` (Plugin API хмарних файлів). Викликаються як `figma:<скіл>`. `figma-use` / `figma-create-new-file` / `figma-generate-diagram` — **обов'язкові прелюдії** перед відповідним tool-call (`use_figma` / `create_new_file` / `generate_diagram`).
-
-- **`figma-use`** · `авто` — будь-яка write-/унікальна read-дія через JS у контексті файлу (create/edit/delete вузлів, змінні, компоненти, auto-layout, bind змінних). **Прелюдія до `use_figma`.**
-- **`figma-create-new-file`** · `авто` — новий порожній файл (design/FigJam/Slides). **Прелюдія до `create_new_file`.**
-- **`figma-generate-design`** · `авто` — перенести сторінку/в'ю/модал/дровер/панель із коду у Figma (збирає section-by-section на токенах DS).
-  - **Промт:** «Збери екран person-form у Figma з нашого коду (`figma:figma-generate-design`).»
-- **`figma-generate-diagram`** · `авто` — діаграми у FigJam (flowchart, architecture, sequence, ERD, state, gantt, timeline; Mermaid). **Прелюдія до `generate_diagram`.**
-  - **Промт:** «Намалюй sequence-діаграму auth-handshake у FigJam.»
-- **`figma-generate-library`** · `авто` — побудувати/оновити дизайн-систему у Figma з кодбейзу (variables/tokens, компоненти, theming, foundations).
-  - **Промт:** «Згенеруй у Figma бібліотеку з наших shared/ui токенів і компонентів (`figma:figma-generate-library`).»
-- **`figma-code-connect`** · `авто` — Code Connect: мапінг Figma-компонентів на код-сніпети (`.figma.ts`/`.js`).
-  - **Промт:** «Змапь Figma-кнопку на наш `shared/ui` Button через Code Connect.»
-- **`figma-swiftui`** · `авто` — SwiftUI ↔ Figma (iOS). *Для цього проєкту нерелевантне (web).*
-- **`figma-use-figjam`** / **`figma-use-slides`** · `авто` — хелпери `figma-use` для контексту FigJam / Slides.
-
-## Вбудовані harness-скіли *(ідуть із Claude Code; не на диску)*
-
-> Викликаються як `/<скіл>`; оновлюються разом із CLI. Найкорисніші для цього проєкту:
-
-- **`/code-review`** — рев'ю поточного дифу на баги/спрощення (low→ultra). `/code-review ultra` — хмарний мульти-агентний. *(є й застарілий аліас `/ultrareview`)*
-  - **Промти:** «/code-review — пройдись по дифу gamma на баги.» · «/code-review ultra — глибоке рев'ю всієї гілки selection-state.»
-- **`/verify`** — перевірити, що зміна реально працює, запустивши застосунок і поспостерігавши поведінку.
-  - **Промт:** «/verify — переконайся, що theme-flip не скидає діаграму в root.»
-- **`/run`** — запустити/відкрити застосунок проєкту, зробити скріншот, підтвердити зміну в реальному UI.
-  - **Промт:** «/run — відкрий org-hierarchy і покажи скріншот country-roots-panel.»
-- **`/security-review`** — security-аудит pending-змін на гілці.
-  - **Промт:** «/security-review — перевір зміни в auth-session DI на гілці.»
-- **`/simplify`** — лише reuse/спрощення/ефективність (без полювання на баги) + застосувати фікси.
-  - **Промт:** «/simplify — причеши selection-state контролер без зміни поведінки.»
-- **`deep-research`** · `авто` — fan-out веб-пошук → fetch джерел → adversarial-перевірка → цитований звіт.
-  - **Промт:** «Зроби deep-research: best practices GoJS ThemeManager re-skin без rebuild, з цитатами.»
-- **`/fewer-permission-prompts`** — згенерувати allowlist у `.claude/settings.json`, щоб менше промптів дозволу.
-  - **Промт:** «/fewer-permission-prompts — додай у allowlist read-only yarn/git, які я часто підтверджую.»
-- **`/loop`**, **`/schedule`** — рекурентний запуск / cron-агенти. **`/init`**, **`/review`**, **`update-config`**, **`keybindings-help`**, **`claude-api`** — службові.
-  - **Промти:** «/loop 5m /code-review — рев'юй диф кожні 5 хв.» · «/schedule — щоранку о 9:00 ганяй security-review гілки.»
-
-> ⚠️ Розмежування (4 різні речі, які легко сплутати): `/review` (вбудований, для GitHub PR) ≠ `crg-review-changes` (граф-рев'ю локального дифу через `code-review-graph`) ≠ вбудований `/code-review` (рев'ю working-diff на баги/спрощення, low→ultra) ≠ скіл `code-review` із `~/.agents/skills` (Pocock-версія — Стандарти+Spec паралельно, §3). Останні два викликаються однаковим ім'ям — уточнюй у промті, яку саме версію треба. Так само `deep-research` (вбудований, зовнішній веб) ≠ `research` (§6, фоновий агент по докам/коду в репо).
+> None unique — all three Cursor servers (`MCP_DOCKER`, `Figma Desktop`, `code-review-graph`) are shared with Claude.
 
 ---
 
-# 🎬 Наскрізні сценарії (end-to-end промти)
+# 🧩 Plugin / built-in skills (outside `~/.agents/skills`)
 
-> Готові до вставки промти, що тягнуть **увесь ланцюг** скіл + MCP + harness під типову задачу. Під кожним — стек, який він задіює.
+> A **different source** from §1–§7: these skills are not in the physical store and update separately. Listed here to make the cheatsheet complete.
 
-### 1. Нова фіча від нуля до PR
-> Стек: `grill-me → to-spec → to-tickets → implement` (+`context7`,`tdd`) → `/code-review` → `/verify`
-- «Маю ідею badge-лічильників у навігації. Погриль її (`/grill-me`), оформи `/to-spec`, поріж `/to-tickets`, тоді `/implement` першого зрізу — бери **власні `shared/ui` (на базі RAC)**, нема компонента → створи primitive на RAC + додай в `ui-component-inventory` (RAC-API звіряй через context7), критичну логіку клади під tdd. Наприкінці прожени `/code-review` і `/verify`.»
+## Plugin skills *(from `~/.claude/plugins`, managed by the marketplace)*
 
-### 2. Архітектурний рефактор (флагман 🏁)
-> Стек: `code-review-graph` → `improve-codebase-architecture → codebase-design → grill-me` → `crg-refactor-safely` → `implement → tdd` → `/code-review`
-- «Selection-state контролер розрісся. Збери граф (`code-review-graph` architecture-overview + hub-nodes), `/improve-codebase-architecture` дай HTML-звіт, візьму топ-1 → `codebase-design` спроєктуй глибокий хук → `/grill-me` доб'є план → `crg-refactor-safely` покаже impact radius → реалізуй із tdd → `/code-review` наприкінці.»
+### `figma-friend` plugin *(v0.0.1, marketplace `figma-friend`)*
+> Frontend to MCP `figma-friend` / `chrome-devtools`. Invoked as `figma-friend:<skill>` (skill).
 
-### 3. Складний рантайм-баг
-> Стек: `diagnosing-bugs` (+`playwright`/`chrome-devtools`) → `crg-debug-issue` → `tdd` → `/verify`
-- «Діаграма скидається в root після theme-flip. `diagnose`: відтвори в браузері (playwright), зніми DOM/консоль; за потреби знайди дотичні місця по графу (`crg-debug-issue`); мінімізуй до кореня, замкни регрес через `tdd`, підтверди `/verify`.»
+- **`clone-ui`** · `auto` — clone a live web page into Figma (“clone this page to Figma”, “recreate this UI”).
+  - **Prompt:** “Clone the org-hierarchy page into Figma (`figma-friend:clone-ui`).”
+- **`figma-designer`** · `auto` — interactive help with Figma design tasks.
+  - **Prompt:** “Help refine the card layout in Figma through `figma-friend:figma-designer`.”
 
-### 4. UI з макета до робочого екрана
-> Стек: `Figma Desktop` → `prototype` (+`playwright`) → `grill-me` → `implement` → `/run`
-- «Витягни токени й відступи country-roots-panel з відкритого макета (`Figma Desktop` get_variable_defs), зроби `/prototype` 2–3 варіантів, зніми playwright-скріншоти, погриль (`/grill-me`), реалізуй обране (`/implement`), покажи в реальному застосунку `/run`.»
+### `figma` plugin *(official, v2.2.60)*
+> Frontend to remote MCP `figma` (Plugin API for cloud files). Invoked as `figma:<skill>` (skill). `figma-use` / `figma-create-new-file` / `figma-generate-diagram` are **mandatory preludes** before the corresponding tool call (`use_figma` / `create_new_file` / `generate_diagram`).
 
-### 5. Розгрібання вхідного потоку
-> Стек: `triage → to-tickets` / `implement` (передумова: `/setup-matt-pocock-skills`)
-- «12 вхідних issue від QA: `/triage` з ролями й брифами → найбільші у `/to-tickets`, дрібні самодостатні одразу в `/implement`.»
+- **`figma-use`** · `auto` — any write/unique read action through JS in file context (create/edit/delete nodes, variables, components, auto-layout, bind variables). **Prelude to `use_figma`.**
+- **`figma-create-new-file`** · `auto` — a new empty file (design/FigJam/Slides). **Prelude to `create_new_file`.**
+- **`figma-generate-design`** · `auto` — transfer a page/view/modal/drawer/panel from code to Figma (builds section by section using DS tokens).
+  - **Prompt:** “Build the person-form screen in Figma from our code (`figma:figma-generate-design`).”
+- **`figma-generate-diagram`** · `auto` — diagrams in FigJam (flowchart, architecture, sequence, ERD, state, gantt, timeline; Mermaid). **Prelude to `generate_diagram`.**
+  - **Prompt:** “Draw an auth-handshake sequence diagram in FigJam.”
+- **`figma-generate-library`** · `auto` — build/update a Figma design system from the codebase (variables/tokens, components, theming, foundations).
+  - **Prompt:** “Generate a Figma library from our shared/ui tokens and components (`figma:figma-generate-library`).”
+- **`figma-code-connect`** · `auto` — Code Connect: mapping Figma components to code snippets (`.figma.ts`/`.js`).
+  - **Prompt:** “Map the Figma button to our `shared/ui` Button through Code Connect.”
+- **`figma-swiftui`** · `auto` — SwiftUI ↔ Figma (iOS). *Not relevant to this project (web).*
+- **`figma-use-figjam`** / **`figma-use-slides`** · `auto` — `figma-use` helpers for FigJam / Slides context.
 
-### 6. Дослідження незнайомої технології → рішення в ADR
-> Стек: `deep-research` → `grill-with-docs` ↔ `domain-modeling` (+`context7`)
-- «Зроби `deep-research` про GoJS ThemeManager re-skin без rebuild (з цитатами), потім `/grill-with-docs` зафіксуй рішення в ADR і шліфуй термінологію (`domain-modeling`), звіряючи API через context7.»
+## Built-in harness skills *(ship with Claude Code; not on disk)*
 
-### 7. Перенесення legacy-функціоналу на нові компоненти
-> Стек: `crg-explore-codebase`+`code-review-graph` → `grill-with-docs` → `codebase-design` → `implement` (+`context7`) → `tdd` + `/run`
-- «Перенеси функціонал модуля X зі старого cass-clone на нові компоненти cassiopeia-admin-ui: cross-repo зістав по схожості (`code-review-graph`), gap-list прогрилити (`/grill-with-docs`) у `reports/migration-audit`, кожну дірку спроєктуй на `shared/ui` за design-language (`codebase-design`), реалізуй на **власних `shared/ui` (на базі RAC)** — нема компонента, створи primitive на RAC і додай у `ui-component-inventory` (RAC-API звіряй через context7), звір парність `tdd` + `/run` проти legacy/макета. Не 1:1: переробляй криву логіку, не флагай свідомі дельти як missing.»
+> Invoked as `/<skill>` (skill); updated with the CLI. Most useful for this project:
 
-### 8. Чистка: дублі / зламана логіка / стилі / анімації
-> Стек: `code-review-graph` (semantic_search / get_community / find_large_functions) → `/code-review` (+`diagnosing-bugs`) → фікс за правилами → `/simplify` → `tdd` + `/run`
-- «Почисти shared/ui + модуль X: через `code-review-graph` знайди **дублі** компонентів (semantic_search + get_community), `/code-review` витягни **зламану логіку** (non-modal popover dismiss, focus-rules, RAC-патерни) і **off-rule стилі/анімації** (canonical tokens `src/index.css`, clsx not tv(), без `dark:`, без raw `<input>`, motion за `ux-states-and-motion` + `prefers-reduced-motion`); фікс за `ui-interactivity-rules`/ADR-0021/0022/0026, застосуй `/simplify`, замкни `tdd` + `/run`. Перш ніж створювати компонент — шукай наявний (не плоди дублі).»
+- **`/code-review`** — review the current diff for bugs/simplification (low→ultra). `/code-review ultra` — cloud multi-agent. *(also has deprecated alias `/ultrareview`)*
+  - **Prompts:** “/code-review — scan the gamma diff for bugs.” · “/code-review ultra — deep review of the entire selection-state branch.”
+- **`/verify`** — verify that a change actually works by running the application and observing behavior.
+  - **Prompt:** “/verify — confirm that theme-flip does not reset the diagram to root.”
+- **`/run`** — run/open the project's application, capture a screenshot, confirm the change in the real UI.
+  - **Prompt:** “/run — open org-hierarchy and show a country-roots-panel screenshot.”
+- **`/security-review`** — security audit of pending branch changes.
+  - **Prompt:** “/security-review — check branch changes in auth-session DI.”
+- **`/simplify`** — only reuse/simplification/efficiency (no bug hunt) + apply fixes.
+  - **Prompt:** “/simplify — tidy the selection-state controller without changing behavior.”
+- **`deep-research`** · `auto` — fan-out web search → fetch sources → adversarial checking → cited report.
+  - **Prompt:** “Do deep-research: GoJS ThemeManager re-skin best practices without rebuild, with citations.”
+- **`/fewer-permission-prompts`** — generate an allowlist in `.claude/settings.json` for fewer permission prompts.
+  - **Prompt:** “/fewer-permission-prompts — add the read-only yarn/git operations I frequently approve to the allowlist.”
+- **`/loop`**, **`/schedule`** — recurring runs / cron agents. **`/init`**, **`/review`**, **`update-config`**, **`keybindings-help`**, **`claude-api`** — utility commands.
+  - **Prompts:** “/loop 5m /code-review — review the diff every 5 minutes.” · “/schedule — run branch security-review every morning at 9:00.”
 
-### 9. Merge: коректне вирішення конфліктів + фікс зламаного алгоритму
-> Стек: `resolving-merge-conflicts` (+`code-review-graph` `get_impact_radius`) → `diagnosing-bugs` (+`playwright`/`chrome-devtools`) → `tdd` → `/run`/`/verify` → `/code-review`
-- «Зливаю гілку Y у gamma. Розрули конфлікти (`resolving-merge-conflicts`) — НЕ accept ours/theirs наосліп: звір impact обох сторін через `code-review-graph` (`get_impact_radius`/`get_review_context`) і збережи семантично правильну логіку. Після merge портал зламався — `diagnose`: відтвори в браузері (playwright/chrome-devtools), знайди корінь у змерджених змінах, замкни регрес `tdd`, прожени новий код `/run`//verify проти реального порталу, фінально `/code-review` саму резолюцію конфліктів. Якщо merge зачепив shared/ui — перевір правила компонентів (див. [Чистку](#чистка--дублі--зламана-логіка--стилі--motion)).»
-
-### 10. Pull: коректне вирішення конфліктів + фікс зламаного алгоритму
-> Стек: `resolving-merge-conflicts` (+`code-review-graph` `get_impact_radius`/`detect_changes`) → `diagnosing-bugs` (+`playwright`/`chrome-devtools`) → `tdd` → `/run`/`/verify` → `/code-review`
-- «Роблю `git pull` (rebase) gamma з origin — прилетіли чужі зміни. Розрули конфлікти інтеграції (`resolving-merge-conflicts`) — НЕ гаси наосліп: звір impact **вхідних** комітів через `code-review-graph` (`detect_changes` + `get_impact_radius`), збережи семантично правильну логіку обох сторін. Якщо після pull портал зламався — `diagnose`: локалізуй, **який вхідний коміт** зламав алгоритм (відтвори в браузері playwright/chrome-devtools, за потреби `git bisect`), замкни регрес `tdd`, прожени новий код `/run`//verify проти реального порталу, `/code-review` резолюцію. Розмежування й гард-рейли — як у сценарії №9; shared/ui зачеплено → [Чистка](#чистка--дублі--зламана-логіка--стилі--motion).»
-
-### 11. Реліз-готовність: security-review перед релізом
-> Стек: `/security-review` + `/code-review` (+`crg-review-changes` impact) → `tdd` + `tsc -p tsconfig.app.json` + `yarn lint` → `/verify`/`/run`
-- «Перед релізом гілки gamma: `/security-review` pending-змін (auth-session DI, токени, секрети; BE — read-only, нові ендпоінти/контракти не чіпати), `/code-review` на баги + `crg-review-changes` impact того, що зачеплено поза диффом. Прожени `tdd`, реальний typecheck `tsc -p tsconfig.app.json` (НЕ `yarn tsc`), `yarn lint` (дивись **нові** порушення — є наявний шум ~2300). Підтверди критичні флоу `/verify`//run проти реального порталу. Червоне — фіксь і повтори; усе зелене → реліз. Далі `/handoff`.»
-
-### 12. Завершення сесії
-> Стек: `handoff`
-- «`/handoff` — стисни поточний стан роботи над theme-flip у передавальний документ для наступної сесії.»
+> ⚠️ Distinction (4 easily confused things): `/review` (built-in, for GitHub PRs) ≠ `crg-review-changes` (local diff graph review through `code-review-graph`) ≠ built-in `/code-review` (working-diff review for bugs/simplification, low→ultra) ≠ `code-review` skill from `~/.agents/skills` (Pocock version — parallel Standards+Spec, §3). The last two use the same invocation name — specify which version you need in the prompt. Likewise `deep-research` (built-in, external web) ≠ `research` (§6, background agent for docs/code in the repo).
 
 ---
 
-# 🔬 Рев'ю-пас, що перевіряє себе (як отримувати щоразу)
+# 🎬 End-to-end scenarios (prompts)
 
-> Не скіл, а **протокол паса** — набір інваріантів, які перетворюють рев'ю з переказу чужого журналу на перевірку. Кладеться поверх будь-якого рев'ю-інструменту: вбудованого `/code-review`, скіла `code-review` (§3), `crg-review-changes` (§5) або рольового рев'ю з файлом (`work/<NNN>/review.md` у genericui).
-> Кейс, з якого витягнуто: `genericui` GUI-606, `work/006-pdf-export-width` — 4 паси; на 4-му три must-fix попереднього раунду закриті **мутаціями**, а три нові findings знайшлися **в записі, а не в коді**.
+> Ready-to-paste prompts that run the **entire chain** of skill + MCP + harness for a typical task. Each has its stack underneath.
 
-## Словник (без нього розділ не читається)
+### 1. New feature from zero to PR
+> Stack: `grill-me → to-spec → to-tickets → implement` (+`context7`,`tdd`) → `/code-review` → `/verify`
+- “I have an idea for navigation badge counters. Grill it (`/grill-me`), create `/to-spec`, split with `/to-tickets`, then `/implement` the first slice — use **our own `shared/ui` (built on RAC)**; no component → create a primitive on RAC + add to `ui-component-inventory` (check RAC API through context7), put critical logic under tdd. Finish with `/code-review` and `/verify`.”
 
-**Гейт** — просто список команд, які треба прогнати перед «готово». Не процес і не абстракція: конкретні рядки в терміналі. «Гейт зелений» = всі відпрацювали як очікувалось. Склад гейту залежить від того, що зачепила зміна (клієнт / PHP / Helm-чарт), тому це завжди *релевантна підмножина*, а не «всі тести репо». У genericui склад описаний у `work/README.md` → «The gate».
+### 2. Architectural refactor (flagship 🏁)
+> Stack: `code-review-graph` → `improve-codebase-architecture → codebase-design → grill-me` → `crg-refactor-safely` → `implement → tdd` → `/code-review`
+- “The selection-state controller has grown. Build the graph (`code-review-graph` architecture-overview + hub-nodes), `/improve-codebase-architecture` give an HTML report; I choose top 1 → `codebase-design` design a deep hook → `/grill-me` finishes the plan → `crg-refactor-safely` shows impact radius → implement with tdd → `/code-review` at the end.”
 
-> Приклад складу для зміни, що чіпає і клієнт, і PHP (genericui):
-> `npx tsc --noEmit` (типи, ~40 с) · `npx oxlint src/` (лінт, ~2 с) · `yarn test-ci` (юніти клієнта, ~21 с) · `./vendor/bin/pint --test` (формат PHP) · `phpstan analyse --memory-limit=1G <змінені файли>` · `./vendor/bin/phpunit --testsuite unit`.
+### 3. Difficult runtime bug
+> Stack: `diagnosing-bugs` (+`playwright`/`chrome-devtools`) → `crg-debug-issue` → `tdd` → `/verify`
+- “The diagram resets to root after theme-flip. `diagnose`: reproduce in the browser (playwright), capture DOM/console; if needed, find related places through the graph (`crg-debug-issue`); minimize to the root, lock the regression with `tdd`, confirm with `/verify`.”
 
-**Базлайн** — те, що падало **до** твоєї зміни. У живому репо гейт майже ніколи не «нуль падінь»: у genericui `pint` скаржиться на gitignored `tests/config/local.php`, а `phpunit --testsuite unit` дає 7 errors + 2 failures із вендорного коду. «Зелений» означає **«падає рівно те саме, що падало раніше»**, а не «не падає нічого».
+### 4. UI from mockup to working screen
+> Stack: `Figma Desktop` → `prototype` (+`playwright`) → `grill-me` → `implement` → `/run`
+- “Extract country-roots-panel tokens and spacing from the open mockup (`Figma Desktop` get_variable_defs), `/prototype` 2–3 variants, capture playwright screenshots, grill (`/grill-me`), implement the choice (`/implement`), show it in the real application with `/run`.”
 
-**Атрибутований базлайн** — той самий базлайн, але **поіменно**. Різниця вирішальна:
-- ❌ «phpunit падає, але воно й так падало» — віра. Твоє восьме падіння не видно: було 7, стало 8, обидва рази «і так падало».
-- ✅ «падають рівно ці двоє (purge-resumability) і рівно ці сім (`ArticleActions*`, один deprecation у вендорі)» — факт. Восьме видно одразу.
-- Те саме для статики: не «25 помилок, як завжди», а «22 в `User.php` + 3 в `edit_welcome_popup.php`», і окремо перевірено, що версія файлу **до** зміни дає ті самі 22.
+### 5. Processing incoming work
+> Stack: `triage → to-tickets` / `implement` (prerequisite: `/setup-matt-pocock-skills`)
+- “12 incoming QA issues: `/triage` with roles and briefs → largest to `/to-tickets`, small self-contained ones straight to `/implement`.”
 
-**Мутація** — перевірка, чи тест взагалі щось ловить. Тест може існувати і бути декоративним. Руками: (1) навмисно зламай код (`756` → `680`); (2) прожени тести; (3) подивись, **що саме** впало (3 тести — добре, нічого — тест порожній); (4) `git checkout -- <файл>` і переконайся, що `git status --short` порожній. Жодного інструмента не треба.
+### 6. Researching unfamiliar technology → decision in an ADR
+> Stack: `deep-research` → `grill-with-docs` ↔ `domain-modeling` (+`context7`)
+- “Do `deep-research` on GoJS ThemeManager re-skin without rebuild (with citations), then `/grill-with-docs` record the decision in an ADR and refine terminology (`domain-modeling`), checking the API through context7.”
 
-**Чого гейт НЕ каже.** Він каже «нічого не зламано з того, що ми вміємо перевіряти автоматично» — і не каже «фіча працює для людини». Тому LIVE-VERIFIED у `work/README.md` — окремий стан. У кейсі GUI-606 гейт був зелений усі п'ять раундів, а вживу знайшлось, що модалка друкує те саме речення двічі: кожне речення окремо правильне, тому тест такого не ловить у принципі.
+### 7. Moving legacy functionality to new components
+> Stack: `crg-explore-codebase`+`code-review-graph` → `grill-with-docs` → `codebase-design` → `implement` (+`context7`) → `tdd` + `/run`
+- “Move module X functionality from old cass-clone to new cassiopeia-admin-ui components: cross-repo similarity matching (`code-review-graph`), grill the gap-list (`/grill-with-docs`) into `reports/migration-audit`, design each gap on `shared/ui` per design-language (`codebase-design`), implement using **our own `shared/ui` (built on RAC)** — no component: create a primitive on RAC and add it to `ui-component-inventory` (check RAC API through context7), verify parity with `tdd` + `/run` against legacy/mockup. Not 1:1: rework bad logic, do not flag intentional deltas as missing.”
 
-## 6 інваріантів
+### 8. Cleanup: duplicates / broken logic / styles / animations
+> Stack: `code-review-graph` (semantic_search / get_community / find_large_functions) → `/code-review` (+`diagnosing-bugs`) → rule-based fixes → `/simplify` → `tdd` + `/run`
+- “Clean shared/ui + module X: find component **duplicates** through `code-review-graph` (semantic_search + get_community), use `/code-review` to uncover **broken logic** (non-modal popover dismiss, focus-rules, RAC patterns) and **off-rule styles/animations** (canonical tokens `src/index.css`, clsx not tv(), no `dark:`, no raw `<input>`, motion per `ux-states-and-motion` + `prefers-reduced-motion`); fix per `ui-interactivity-rules`/ADR-0021/0022/0026, apply `/simplify`, close with `tdd` + `/run`. Before creating a component — search for an existing one (do not breed duplicates).”
 
-1. **Свіжа сесія, яка цей код не писала.** Автор рев'ює свій намір, а не результат. Рев'юер продакшн-коду не пише, `git add`/commit не робить — інакше він стає воркером і втрачає кут.
-2. **Гейт переміряний, а не процитований.** Не брати цифри з журналу: запустити самому (`tsc` · лінт · тести · `pint` · `phpstan` · `phpunit` — що є в проєкті) і навести **виміряні** числа. Головне: базлайн **атрибутований** — не «там і так падало», а по файлах (`User.php` 22, `edit_welcome_popup.php` 3) і по іменах тестів (2 purge + 7 ArticleActions). Неатрибутований базлайн ховає нову поломку.
-3. **Кожне «закрито» підтверджене мутацією.** Не «тест існує», а «зламай — і падає рівно він». Приклад із кейсу: константа guard'а 756→680 ⇒ 3 падіння; прибрати колапс копії ⇒ 1; розширити його ⇒ 3; вимкнути unmount-резолв ⇒ 1; прибрати `@import` із LESS ⇒ 1. Це різниця між рев'ю коду і рев'ю **захисту** коду.
-4. **Дерево повернуте й доведене.** Після кожної мутації `git checkout -- <file>` + `git status --short` порожній. Без цього мутації — ризик, а не інструмент.
-5. **Незалежне виведення.** Межі, пороги, відсотки рахуй із констант сам. Коментар у коді — не доказ: у кейсі той самий хибний коментар («guard приходить із шириною ≤680») двічі поспіль **підтверджував** баг замість того, щоб його викрити.
-6. **Перевіряй запис, а не тільки код.** Меседжі комітів (у кейсі один описував тест, якого не існує), SHA у документах (після rebase вони мертві — живуть лише в reflog), `**State:**` у планах, посилання на ADR/специ. Код може бути правильний, а брехати — опис.
+### 9. Merge: correct conflict resolution + fixing a broken algorithm
+> Stack: `resolving-merge-conflicts` (+`code-review-graph` `get_impact_radius`) → `diagnosing-bugs` (+`playwright`/`chrome-devtools`) → `tdd` → `/run`/`/verify` → `/code-review`
+- “Merging branch Y into gamma. Resolve conflicts (`resolving-merge-conflicts`) — do NOT blindly accept ours/theirs: check both sides' impact through `code-review-graph` (`get_impact_radius`/`get_review_context`) and preserve semantically correct logic. The portal broke after merge — `diagnose`: reproduce in the browser (playwright/chrome-devtools), find the root in merged changes, lock the regression with `tdd`, run the new code `/run`//verify against the real portal, finally `/code-review` the conflict resolution itself. If merge touched shared/ui — check component rules (see [Cleanup](#cleanup--duplicates--broken-logic--styles--motion)).”
 
-## Кошики findings
+### 10. Pull: correct conflict resolution + fixing a broken algorithm
+> Stack: `resolving-merge-conflicts` (+`code-review-graph` `get_impact_radius`/`detect_changes`) → `diagnosing-bugs` (+`playwright`/`chrome-devtools`) → `tdd` → `/run`/`/verify` → `/code-review`
+- “Doing `git pull` (rebase) of gamma from origin — other people's changes arrived. Resolve integration conflicts (`resolving-merge-conflicts`) — do NOT suppress them blindly: check **incoming** commits' impact through `code-review-graph` (`detect_changes` + `get_impact_radius`), preserve both sides' semantically correct logic. If the portal broke after pull — `diagnose`: locate **which incoming commit** broke the algorithm (reproduce in the browser with playwright/chrome-devtools, use `git bisect` if needed), lock the regression with `tdd`, run new code `/run`//verify against the real portal, `/code-review` the resolution. Boundaries and guardrails are as in scenario #9; shared/ui affected → [Cleanup](#cleanup--duplicates--broken-logic--styles--motion).”
 
-`must-fix` / `should-improve` / `nits` / **`accepted`** — і `accepted` обов'язкова: вона доводить покриття («перевірив і претензій нема») і тримає рев'юера від вигаданих зауважень. Чисту зміну — схвалювати. Диспозиція з фіксованого словника (`approved` / `changes-requested`), стан — рядком угорі файлу.
+### 11. Release readiness: security-review before release
+> Stack: `/security-review` + `/code-review` (+`crg-review-changes` impact) → `tdd` + `tsc -p tsconfig.app.json` + `yarn lint` → `/verify`/`/run`
+- “Before releasing branch gamma: `/security-review` pending changes (auth-session DI, tokens, secrets; BE — read-only, do not touch new endpoints/contracts), `/code-review` for bugs + `crg-review-changes` impact of what is affected outside the diff. Run `tdd`, the real typecheck `tsc -p tsconfig.app.json` (NOT `yarn tsc`), `yarn lint` (look for **new** violations — existing noise ~2300). Confirm critical flows with `/verify`//run against the real portal. Red — fix and repeat; all green → release. Then `/handoff`.”
 
-## Промт (копіпаст)
+### 12. Ending a session
+> Stack: `handoff`
+- “`/handoff` — compress the current theme-flip work state into a handoff document for the next session.”
+
+---
+
+# 🔬 A self-checking review pass (how to get one every time)
+
+> Not a skill, but a **pass protocol** — invariants that turn a review from a retelling of someone else's journal into verification. Layered over any review tool: built-in `/code-review`, the `code-review` skill (§3), `crg-review-changes` (§5), or a role-based review file (`work/<NNN>/review.md` in genericui).
+> The source case: `genericui` GUI-606, `work/006-pdf-export-width` — 4 passes; in pass 4, the previous round's three must-fix items were closed through **mutations**, while three new findings were found **in the record, not the code**.
+
+## Vocabulary (needed to read this section)
+
+**Gate** — simply a list of commands to run before saying ‘done’. Not a process or abstraction: concrete terminal lines. ‘Gate green’ = all behaved as expected. The gate depends on what the change affected (client / PHP / Helm chart), so it is always a *relevant subset*, not ‘all repo tests’. In genericui its composition is in `work/README.md` → ‘The gate’.
+
+> Example for a change touching both client and PHP (genericui):
+> `npx tsc --noEmit` (types, ~40 s) · `npx oxlint src/` (lint, ~2 s) · `yarn test-ci` (client units, ~21 s) · `./vendor/bin/pint --test` (PHP formatting) · `phpstan analyse --memory-limit=1G <changed files>` (changed files) · `./vendor/bin/phpunit --testsuite unit`.
+
+**Baseline** — what failed **before** your change. In a live repo a gate is almost never ‘zero failures’: in genericui `pint` complains about gitignored `tests/config/local.php`, and `phpunit --testsuite unit` yields 7 errors + 2 failures from vendor code. ‘Green’ means **‘exactly the same things fail as before’**, not ‘nothing fails’.
+
+**Attributed baseline** — the same baseline, but **named individually**. The distinction is crucial:
+- ❌ ‘phpunit fails, but it already failed’ — faith. Your eighth failure is invisible: 7 became 8, both called ‘already failed’.
+- ✅ ‘exactly these two fail (purge-resumability), and exactly these seven (`ArticleActions*`, one vendor deprecation)’ — fact. The eighth is immediately visible.
+- The same for static analysis: not ‘25 errors as usual’, but ‘22 in `User.php` + 3 in `edit_welcome_popup.php`’, with separate verification that the file version **before** the change produces the same 22.
+
+**Mutation** — checking whether a test catches anything at all. A test can exist and be decorative. Manually: (1) deliberately break the code (`756` → `680`); (2) run tests; (3) see **exactly what** failed (3 tests — good, nothing — an empty test); (4) `git checkout -- <file>` and confirm `git status --short` is empty. No tool required.
+
+**What the gate does NOT say.** It says ‘nothing broke among things we can check automatically’ — not ‘the feature works for a person’. That is why LIVE-VERIFIED in `work/README.md` is a separate state. In GUI-606 the gate was green for all five rounds, but live testing found a modal printing the same sentence twice: each sentence is individually correct, so the test cannot catch this in principle.
+
+## 6 invariants
+
+1. **A fresh session that did not write this code.** An author reviews their intention, not the result. The reviewer writes no production code, does no `git add`/commit — otherwise they become a worker and lose their angle.
+2. **Gate remeasured, not quoted.** Do not take numbers from the journal: run it yourself (`tsc` · lint · tests · `pint` · `phpstan` · `phpunit` — whatever the project has) and report **measured** numbers. Crucially: the baseline is **attributed** — not ‘already failed’, but by file (`User.php` 22, `edit_welcome_popup.php` 3) and test name (2 purge + 7 ArticleActions). An unattributed baseline conceals new breakage.
+3. **Every ‘closed’ confirmed by mutation.** Not ‘the test exists’, but ‘break it — and that exact test fails’. Case examples: guard constant 756→680 ⇒ 3 failures; remove copy collapse ⇒ 1; expand it ⇒ 3; disable unmount resolution ⇒ 1; remove `@import` from LESS ⇒ 1. This distinguishes code review from reviewing the code's **protection**.
+4. **Tree restored and proven.** After every mutation, `git checkout -- <file>` + empty `git status --short`. Otherwise mutations are a risk rather than a tool.
+5. **Independent derivation.** Calculate boundaries, thresholds, percentages from constants yourself. A code comment is not evidence: in the case, the same false comment (‘the guard arrives at width ≤680’) **confirmed** the bug twice instead of exposing it.
+6. **Check the record, not only the code.** Commit messages (one in the case described a nonexistent test), document SHAs (dead after rebase — exist only in reflog), `**State:**` in plans, links to ADRs/specs. Code can be right while the description lies.
+
+## Finding buckets
+
+`must-fix` / `should-improve` / `nits` / **`accepted`** — and `accepted` is mandatory: it demonstrates coverage (‘checked, no objections’) and discourages invented remarks. Approve a clean change. Disposition from a fixed vocabulary (`approved` / `changes-requested`), state on a line at the top of the file.
+
+## Prompt (copy/paste)
 
 ```
-Ти Reviewer. Свіжа сесія, продакшн-коду не пишеш, не комітиш, нічого не git add.
-Скоуп: <діапазон комітів або гілка>. Прочитай <план/журнал/попередній review>,
-правила репо (CLAUDE.md / CLAUDE.local.md) і тест-політику.
+You are Reviewer. Fresh session; no production code, no commits, no git add.
+Scope: <commit range or branch>. Read <plan/journal/previous review>,
+repo rules (CLAUDE.md / CLAUDE.local.md), and test policy.
 
-Гейт запусти сам і наведи ВИМІРЯНІ числа з атрибутованим базлайном
-(по файлах і по іменах тестів, не «там і так падало»).
+Run the gate yourself and report MEASURED numbers with an attributed baseline
+(by file and test name, not ‘it already failed’).
 
-Кожне «закрито» з попереднього раунду підтверди мутацією:
-злам -> які саме тести падають -> git checkout -- -> доказ чистого дерева.
+Confirm every ‘closed’ from the previous round by mutation:
+break -> exactly which tests fail -> git checkout -- -> evidence of a clean tree.
 
-Findings у кошики must-fix / should-improve / nits / accepted.
-Перевір також запис: меседжі комітів, SHA у документах, стан у планах, посилання на ADR.
-Наприкінці — диспозиція і що промотувати в специ/ADR.
+Findings in must-fix / should-improve / nits / accepted buckets.
+Also check the record: commit messages, document SHAs, plan state, ADR links.
+End with disposition and what to promote into specs/ADRs.
 ```
 
-## Definition of done для worker'а (щоб пас був дешевим)
+## Worker definition of done (to make the pass cheap)
 
-Половина вартості рев'ю — це те, що воркер не залишив. Вимагай у журналі:
-- **таблицю мутацій**: дефект → скільки і яких тестів падає (тоді рев'юер *перевіряє*, а не відкриває);
-- гейт із цифрами, а не «зелено»;
-- відхилення від плану **з причиною**;
-- відкриті питання явним списком.
+Half the cost of review comes from what the worker did not leave behind. Require in the journal:
+- a **mutation table**: defect → how many and which tests fail (then the reviewer *verifies* rather than discovers);
+- gate numbers, not ‘green’;
+- deviations from the plan **with reasons**;
+- an explicit list of open questions.
 
-## Базлайни — у файл, не в голову
+## Baselines — in a file, not in your head
 
-Відомі падіння (лінт на gitignored-файлі, N помилок статики, флакі-сьют) запиши в репо — `specs/stack/gate-baselines.md` або секцію в тест-політиці. Тоді рядок гейту стає **порівнянням із записаним**, а не судженням, і кожен пас не виводить базлайн заново (і по-різному).
+Record known failures (lint on a gitignored file, N static errors, a flaky suite) in the repo — `specs/stack/gate-baselines.md` or a test-policy section. Then a gate line is a **comparison with a record**, not a judgment, and each pass does not derive the baseline anew (and differently).
 
-## Ціна і що різати
+## Cost and what to cut
 
-Повний пас ≈ 25–30 інструментальних викликів, ~15 хв: більшість — гейт і мутації. Коли часу нема, ріж у такому порядку: мутації для нитів → незалежне виведення арифметики → перевірку запису. **Не ріж** переміряний гейт і мутації для must-fix — без них пас перетворюється на переказ журналу.
+A full pass ≈ 25–30 tool calls, ~15 minutes: mostly gate and mutations. When time is short, cut in this order: mutations for nits → independent arithmetic derivation → record checks. **Do not cut** the remeasured gate or must-fix mutations — without them the pass becomes a journal retelling.
 
-## Зв'язки
+## Connections
 
-- Інструмент паса: вбудований `/code-review` (working-diff, low→ultra) · скіл `code-review` (§3, Стандарти+Spec паралельно) · `crg-review-changes` (§5, граф-рев'ю + impact поза диффом).
-- Після паса, коли фідбек прилетів **тобі**: `receiving-code-review` (§3) — верифікуй перед імплементацією, не «You're absolutely right».
-- Мутації й регреси замикай через `tdd` (§3); якщо findings перетворилися на баг-полювання — `diagnosing-bugs` (§3).
-- Рольовий варіант (Reviewer / Worker / Critic з файлами `plan.md` / `journal.md` / `review.md`) описаний у `work/README.md` проєкту genericui; сам протокол — file-only, скіла не потребує.
+- Pass tool: built-in `/code-review` (working-diff, low→ultra) · `code-review` skill (§3, parallel Standards+Spec) · `crg-review-changes` (§5, graph review + impact outside the diff).
+- After the pass, when feedback reaches **you**: `receiving-code-review` (§3) — verify before implementing, not ‘You're absolutely right’.
+- Lock mutations and regressions through `tdd` (§3); if findings become bug hunting — `diagnosing-bugs` (§3).
+- The role-based variant (Reviewer / Worker / Critic with `plan.md` / `journal.md` / `review.md` files) is described in genericui's `work/README.md`; the protocol itself is file-only, requiring no skill.
 
 ---
 
-# 🛠️ Як скіл влаштований (під капотом)
+# 🛠️ How a skill works (under the hood)
 
-> Джерело: офіційні докси Anthropic **Agent Skills** (через context7). Пояснює механіку, на яку спираються позначки `/команда`/`авто` й правило «тригери — англійською».
+> Source: official Anthropic **Agent Skills** docs (through context7). Explains the mechanism behind `/command`/`auto` (command/auto) labels and the ‘triggers in English’ rule.
 
-- **Структура теки:** `SKILL.md` (головні інструкції) + опційно reference-файли (`REFERENCE.md`, `FORMS.md`…) + `scripts/`.
-- **Frontmatter (YAML) — 2 обов'язкові поля:**
+- **Folder structure:** `SKILL.md` (main instructions) + optional reference files (`REFERENCE.md`, `FORMS.md`…) + `scripts/`.
+- **Frontmatter (YAML) — 2 required fields:**
   ```yaml
   ---
   name: skill-name
-  description: Що робить + КОЛИ вживати. «Use when the user mentions X / asks to Y…»
+  description: What it does + WHEN to use it. “Use when the user mentions X / asks to Y…”
   ---
   ```
-  Метадані Claude Code `disable-model-invocation: true` → роблять скіл `/команда`-only у Claude (саме це позначка `/команда` у §1–§7).
-- **Progressive disclosure (3 рівні завантаження)** — чому це токен-ефективно і чому **опис вирішує все**:
-  1. **старт сесії** — у контекст іде ЛИШЕ `name` + `description` кожного скіла (кілька рядків);
-  2. **тригер** — коли `description` збігся із задачею, підвантажується тіло `SKILL.md`;
-  3. **за потреби** — reference-файли/скрипти читаються лише коли скіл на них вказує.
-  → Опис може бути українською; і опис має казати **і що, і КОЛИ** (інакше скіл не підхопиться).
-- **MCP-інструменти всередині скіла — повним ім'ям** `Server:tool` (напр. `code-review-graph:get_impact_radius`, `figma:use_figma`) — щоб виклик не був двозначним.
-- **Споріднене (інше джерело):** є ще Anthropic-managed скіли через Claude **API** (`container.skills` + beta-хедер `skills-2025-10-02`, напр. `pdf`/`docx`/`xlsx`/`pptx`) — це окремо від локальних `~/.agents/skills` і тут **не** використовується.
+  Claude Code metadata `disable-model-invocation: true` → makes the skill `/command`-only (command-only) in Claude (the `/command` label in §1–§7).
+- **Progressive disclosure (3 loading levels)** — why it is token-efficient and why **description decides everything**:
+  1. **session start** — ONLY each skill's `name` + `description` enter context (a few lines);
+  2. **trigger** — when `description` matches the task, the `SKILL.md` body loads;
+  3. **as needed** — reference files/scripts are read only when the skill points to them.
+  → The description may be Ukrainian; it must say **both what and WHEN** (otherwise the skill will not activate).
+- **MCP tools inside a skill — fully qualified** `Server:tool` (e.g. `code-review-graph:get_impact_radius`, `figma:use_figma`) — to avoid ambiguous calls.
+- **Related (another source):** Anthropic-managed skills also exist through the Claude **API** (`container.skills` + beta header `skills-2025-10-02`, e.g. `pdf`/`docx`/`xlsx`/`pptx`) — separate from local `~/.agents/skills` and **not** used here.
 
-> 💡 Редагуєш свій скіл? Клич **`/writing-for-agents`** — він застосовує ці принципи (опис-як-discovery-surface, progressive disclosure, передбачуваність).
+> 💡 Editing your skill? Invoke **`/writing-for-agents`** — it applies these principles (description as discovery surface, progressive disclosure, predictability).
 
 ---
 
-# ⚙️ Обслуговування
+# ⚙️ Maintenance
 
-- **Усі скіли — фізичні теки** в `~/.agents/skills` (нічого не залежить від проєктів; видалиш репо — скіли лишаться).
-- **Оновити Pocock-скіли:** клонувати/оновити `mattpocock/skills` (`skills/engineering|productivity|misc/*`, без `deprecated/`) → скопіювати оновлені теки сюди (НЕ писати крізь симлінки; кожен `description:` перекладати на українську після копіювання).
-- **Стан апстріму на 2026-07-08:** `to-prd`→**перейменовано** на `to-spec`, `to-issues`→**перейменовано** на `to-tickets` (старі назви видалені звідси). Додано нові: `code-review`, `research`, `wayfinder`. `caveman` і `zoom-out` **прибрані з апстріму** — `caveman` лишили тут як кастомний (оновлюй вручну), `zoom-out` не встановлений. Апстрім також має теки `in-progress/*` і `personal/*` (чернетки/особисте Метта) — свідомо не встановлені; є в `.claude-plugin`/README апстріму, якщо знадобляться.
-- **Синк 2026-10-06 (апстрім `6fd9479`; попередня база — `d574778`, 2026-07-08).** Оновлено 24 скіли, додано 6 нових: `implement-spec`, `pr`, `retro`, `wizard`, `to-questionnaire`, `wait-what`. `writing-great-skills` → **перейменовано** на `writing-for-agents` (стару назву видалено). `resolving-merge-conflicts` апстрім **прибрав** без заміни — тут лишили як кастомний (оновлюй вручну, Pocock-sync його більше не бачить). Конвенцію доменних доків `CONTEXT.md`/`CONTEXT-MAP.md` апстрім **перейменував** на `GLOSSARY.md`/`GLOSSARY-MAP.md` — у репо, де лежить `CONTEXT.md`-глосарій, перейменуй файл. ⚠️ `cto-research` і `repo-bootstrap` вживають `CONTEXT.md` в **іншому** сенсі (брифінг проєкту, не глосарій) — їх свідомо не перейменовували. Кожна тека тепер має `agents/openai.yaml` (метадані для Codex) — копіюється разом із текою. **Історична локальна правка (тепер не єдина):** `ask-matt`, розділ «Codebase health» — рядок про `/pattern-architecture-review`; при ресинку переносити заново. Як знайти базу наступного разу: шукати коміт апстріму, на якому тіла `SKILL.md` (без рядка `description:`) збігаються з локальними.
-- **Не-Pocock скіл у сховищі — `receiving-code-review`** (з `obra/superpowers`, встановлено 2026-07-09). Апстрім **інший** — `github.com/obra/superpowers/skills/receiving-code-review`; Pocock-sync (клон `mattpocock/skills`) його **не бачить і не має видаляти**. Оновлювати вручну з superpowers (тіло — англ. verbatim, `description:` — укр., як і решта). Решту superpowers-скілів свідомо **не** брали: дублюють Pocock+harness (`test-driven-development`→`tdd`, `systematic-debugging`→`diagnosing-bugs`, `verification-before-completion`→`/verify`, `writing-plans`→`to-spec`/`to-tickets`, `executing-plans`→`implement`, `brainstorming`→`grilling`, `writing-skills`→`writing-great-skills`) або вбудоване (`using-git-worktrees`→harness worktree, `dispatching-parallel-agents`→`Workflow`-tool). **`anthropics/skills` `frontend-design` — ВЗЯЛИ 2026-08-11, рішення переглянуто.** Раніше відхиляли саме через конфлікт із migration-правилами (pixel-match figma-source + canonical tokens vs «вигадай signature-дизайн») — і причина була правильна: апстрім написаний під **лендинг** і під **greenfield**. Форк знімає обидва: крок 1 розводить *Page* і *System* (у системі героя немає, сигнатура — те, що повторюється), а крок 2 змушує спершу знайти токен-джерело, інвентар, механізм тем і parity-gate і визнати, що більшість осей **уже витрачені**. Апстрім — `2235be7c60` (2026-06-09); Pocock-sync його **не бачить і не має видаляти**; ресинк лише вручну діфом проти того коміту. Ліцензія — `frontend-design/LICENSE.txt`, копірайтинг — `WRITING.md`. Під конкретний репо з жорсткою дизайн-системою краще окремий **внутрішній** скіл, а не правки цього.
-- **Не-Pocock набір — `ponytail*`** (6 скілів із `github.com/DietrichGebert/ponytail`, MIT, встановлено 2026-09-03 з коміту `2ed6c52c9d`). Апстрім **інший**, Pocock-sync їх **не бачить і не має видаляти**. Взяли лише `skills/*/SKILL.md` — тека-в-теку, як решту; **плагін не ставили** (апстрім пропонує `/plugin marketplace add DietrichGebert/ponytail`, який тягне ще й два Node lifecycle-хуки). Наслідок і компроміс: хуків немає → **немає авто-активації на старті сесії** і не резолвиться `PONYTAIL_DEFAULT_MODE` / `~/.config/ponytail/config.json`; режим кличеться явно (`/ponytail`). Через це — **початкова правка в тілі**: у `ponytail-help`, секція `## Update`, доданий блок «Local note», бо картка інакше радить користувачу неробочий `/plugin marketplace update`. Після локального аудиту 2026-10-14 також змінено ponytail-help і ponytail-debt; при ресинку зберігати diff. Початкові тіла — англ., `description:` — укр. (як і всюди). Оновлювати вручну діфом проти `2ed6c52c9d`; при ресинку правку в `ponytail-help` перенести заново. **`.skill-lock.json` свідомо не чіпали:** це стан CLI `npx skills` (у ньому лише `archify`, якого в сховищі навіть немає), а його `skillFolderHash` рахує сам інструмент — вписати запис руками означало б покласти туди вигаданий хеш.
-- **Orchestration-патерн (нотатка, не скіл):** ledger + 4-статус-протокол (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED) + brief-file handoff зі скіла `subagent-driven-development` (superpowers) витягнуто в `~/.agents/rules/subagent-orchestration-ledger.md` — **без** установки скіла-дубля (дублює `implement` + `Workflow`-tool).
-- **`crg-*`** — від `code-review-graph` MCP, оновлюються разом із сервером.
-- **Плагінні скіли** (`figma`, `figma-friend`) — НЕ в `~/.agents/skills`; живуть у `~/.claude/plugins/cache`, оновлюються через `/plugin` (маркетплейс). Стан — `~/.claude/plugins/installed_plugins.json`.
-- **Вбудовані harness-скіли** (`/code-review`, `/verify`, `deep-research`…) — ідуть із Claude Code, оновлюються разом із CLI; вручну нічого робити не треба.
-- Після змін у скілах — **рестарт сесії** Claude Code / **Reload Window** у Cursor, далі `/skills`.
+- **All skills are physical folders** in `~/.agents/skills` (nothing depends on projects; delete a repo and skills remain).
+- **Update Pocock skills:** clone/update `mattpocock/skills` (`skills/engineering|productivity|misc/*`, excluding `deprecated/`) → copy updated folders here (do NOT write through symlinks; translate every `description:` to Ukrainian after copying).
+- **Upstream state on 2026-07-08:** `to-prd`→**renamed** to `to-spec`, `to-issues`→**renamed** to `to-tickets` (old names removed here). Added: `code-review`, `research`, `wayfinder`. `caveman` and `zoom-out` **removed upstream** — `caveman` retained here as custom (update manually), `zoom-out` not installed. Upstream also contains `in-progress/*` and `personal/*` (Matt's drafts/personal material) — intentionally not installed; listed in upstream `.claude-plugin`/README if needed.
+- **Sync 2026-10-06 (upstream `6fd9479`; previous base — `d574778`, 2026-07-08).** Updated 24 skills, added 6: `implement-spec`, `pr`, `retro`, `wizard`, `to-questionnaire`, `wait-what`. `writing-great-skills` → **renamed** to `writing-for-agents` (old name removed). Upstream **removed** `resolving-merge-conflicts` without replacement — retained here as custom (update manually; Pocock-sync no longer sees it). Upstream **renamed** domain-doc convention `CONTEXT.md`/`CONTEXT-MAP.md` to `GLOSSARY.md`/`GLOSSARY-MAP.md` — in repos with a `CONTEXT.md` glossary, rename the file. ⚠️ `cto-research` and `repo-bootstrap` use `CONTEXT.md` in a **different** sense (project briefing, not glossary) — intentionally not renamed. Every folder now has `agents/openai.yaml` (Codex metadata) — copied along with the folder. **Historical local edit (no longer the only one):** `ask-matt`, ‘Codebase health’ section — line about `/pattern-architecture-review`; reapply on resync. To find the base next time: find the upstream commit whose `SKILL.md` bodies (excluding the `description:` line) match local ones.
+- **Non-Pocock skill in the store — `receiving-code-review`** (from `obra/superpowers`, installed 2026-07-09). A **different** upstream — `github.com/obra/superpowers/skills/receiving-code-review`; Pocock-sync (clone of `mattpocock/skills`) **does not see it and must not delete it**. Update manually from superpowers (English verbatim body, Ukrainian `description:`, like the rest). Other superpowers skills were deliberately **not** taken: they duplicate Pocock+harness (`test-driven-development`→`tdd`, `systematic-debugging`→`diagnosing-bugs`, `verification-before-completion`→`/verify`, `writing-plans`→`to-spec`/`to-tickets`, `executing-plans`→`implement`, `brainstorming`→`grilling`, `writing-skills`→`writing-great-skills`) or built-ins (`using-git-worktrees`→harness worktree, `dispatching-parallel-agents`→`Workflow` tool). **`anthropics/skills` `frontend-design` — ADOPTED 2026-08-11, decision revisited.** Previously rejected specifically for conflicting with migration rules (pixel-match figma-source + canonical tokens vs ‘invent a signature design’) — a valid reason: upstream targets **landing pages** and **greenfield**. The fork addresses both: step 1 separates *Page* and *System* (a system has no hero; its signature is what repeats), while step 2 first requires finding the token source, inventory, theme mechanism, and parity gate, and recognizing most axes are **already spent**. Upstream — `2235be7c60` (2026-06-09); Pocock-sync **does not see it and must not delete it**; resync only manually by diff against that commit. License — `frontend-design/LICENSE.txt`, copywriting — `WRITING.md`. For a particular repo with a strict design system, prefer a separate **internal** skill rather than modifying this one.
+- **Non-Pocock set — `ponytail*`** (6 skills from `github.com/DietrichGebert/ponytail`, MIT, installed 2026-09-03 from commit `2ed6c52c9d`). **Different** upstream; Pocock-sync **does not see them and must not delete them**. Took only `skills/*/SKILL.md` — folder to folder, like the rest; **did not install the plugin** (upstream offers `/plugin marketplace add DietrichGebert/ponytail`, which also brings two Node lifecycle hooks). Consequence and tradeoff: no hooks → **no activation at session start**, and `PONYTAIL_DEFAULT_MODE` / `~/.config/ponytail/config.json` do not resolve; invoke the mode explicitly (`/ponytail`). Thus the **initial body edit**: a ‘Local note’ block in `ponytail-help`, section `## Update`, because otherwise the card recommends the nonworking `/plugin marketplace update`. After the local audit on 2026-10-14, ponytail-help and ponytail-debt were also changed; preserve the diff on resync. Original bodies are English, `description:` Ukrainian (as everywhere). Update manually by diff against `2ed6c52c9d`; reapply the `ponytail-help` edit on resync. **`.skill-lock.json` intentionally untouched:** this is state for CLI `npx skills` (containing only `archify`, which is not even in the store), and the tool computes `skillFolderHash` itself — a manual entry would contain an invented hash.
+- **Orchestration pattern (note, not a skill):** ledger + 4-status protocol (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED) + brief-file handoff from `subagent-driven-development` (superpowers) extracted into `~/.agents/rules/subagent-orchestration-ledger.md` — **without** installing a duplicate skill (duplicates `implement` + `Workflow` tool).
+- **`crg-*`** — from `code-review-graph` MCP; updated with the server.
+- **Plugin skills** (`figma`, `figma-friend`) — NOT in `~/.agents/skills`; live in `~/.claude/plugins/cache`, updated through `/plugin` (marketplace). State — `~/.claude/plugins/installed_plugins.json`.
+- **Built-in harness skills** (`/code-review`, `/verify`, `deep-research`…) — ship with Claude Code, update with the CLI; no manual action needed.
+- After skill changes — **restart the session** in Claude Code / **Reload Window** in Cursor, then `/skills`.
 
-## Збереження локальних виправлень (2026-10-14)
-Оновлення апстріму виконуй через diff, збережи резервну копію. Локальні правки стосуються design-pass, frontend-design, anti-slop-design, ux-review, interface-review, ponytail-help/debt, code-review, cto-research, implement-spec, spec-flow, wayfinder, prototype/UI.md, setup-pre-commit, resolving-merge-conflicts, issue-tracker-local.md, git-guardrails hook і wizard/template.sh. Не перезаписуй їх сліпим копіюванням. Bundled hook не оновлює встановлені копії; synced лишено без змін.
+## Preserving local fixes (2026-10-14)
+Update upstream through a diff; keep a backup. Local edits concern design-pass, frontend-design, anti-slop-design, ux-review, interface-review, ponytail-help/debt, code-review, cto-research, implement-spec, spec-flow, wayfinder, prototype/UI.md, setup-pre-commit, resolving-merge-conflicts, issue-tracker-local.md, the git-guardrails hook, and wizard/template.sh. Do not overwrite them with blind copying. The bundled hook does not update installed copies; synced was left unchanged.
