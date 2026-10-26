@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Розробка через тестування (TDD). Використовуйте, коли користувач хоче будувати функції чи виправляти баги спочатку через тести, згадує "red-green-refactor" або хоче інтеграційні тести.
+description: "Test-driven development (TDD). Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\" or wants integration tests."
 ---
 
 # Test-Driven Development

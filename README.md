@@ -13,212 +13,221 @@ validation does not certify native skill/UI compliance or hook execution. Inheri
 session-guard timing fixtures did not complete reliably in the tested Docker
 harness; this release makes no new runtime acceptance claim.
 
-- **[Усі 73 оригінальні скіли](skills/)** — один canonical editable tree; групи, references, scripts, assets і synced variants збережені.
-- **[Повний AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap та історичні джерела.
-- [Спільні правила](rules/) · [Runtime helpers](runtime/README.md) · [Явні policy adapters](adapters/README.md)
+- **[All 73 original skills](skills/)** — one canonical editable tree; groups, references, scripts, assets and synced variants are preserved.
+- **[Full AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap and historical sources.
+- [Shared rules](rules/) · [Runtime helpers](runtime/README.md) · [Explicit policy adapters](adapters/README.md)
 
-Статус: release candidate. Scanner milestone пройшов незалежне code/runtime review для Docker-only linux/amd64 запуску на macOS; це не прийняття всього backlog, native agent discovery чи постійної активації проєктів. Фінальний release-пакет потребує окремого hash-bound review перед tag/publication. Структура не надає дозволу на installs, hooks, MCP, model changes чи product actions. Локальні project contracts і поточне доручення мають пріоритет.
+Status: release candidate. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The final release package requires a separate hash-bound review before tagging/publication. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.
 
-## Що адаптовано з ECC
+<a id="що-адаптовано-з-ecc"></a>
+## What was adapted from ECC
 
-Це вибіркова авторська адаптація ідей після source audit
+These are selective, independently authored adaptations of ideas following a source audit of
 [ECC `90606c8315ee09cafc303515c5f33024db6b9882`](https://github.com/affaan-m/ECC/tree/90606c8315ee09cafc303515c5f33024db6b9882),
-а не встановлення ECC чи імпорт його skill/hook pack. Реалізація нижче входить у
-Factory commit `17a9527421e8fac3e43a16c287c404118699833c`; це unreleased
-commit-pinned candidate, не нова публікація тегу rc.5. Цей опис — окремий docs-only
-delta; він не пересуває consumer pins і не замінює immutable caches.
+not an ECC installation or an import of its skill/hook pack. The implementation below is included in
+Factory commit `17a9527421e8fac3e43a16c287c404118699833c`; it is an unreleased
+commit-pinned candidate, not a new publication of the rc.5 tag. This description is a separate docs-only
+delta; it does not move consumer pins or replace immutable caches.
 
-| Що реалізовано | Що саме отримує користувач | Межі доказів |
+| Implemented capability | What the user gets | Evidence limits |
 |---|---|---|
-| [Offline discovery-response checker](docs/onboarding-helper.md) | Спільне порівняння обраних skills за name/path/enabled; declared inventory для Claude і Codex; окремий parser supplied Codex `skills/list` result | `RESPONSE_MATCH`: кожний обраний skill присутній рівно один раз за очікуваним enabled path; додаткові необрані skills дозволені. Digests прив’язують bytes, не автентичність capture. Native Claude parser відсутній; capture authenticity, native discovery/invocation і model behavior — NOT_TESTED. Checker не запускає host |
-| [П'ять language review/testing references](skills/arch/code-review/references/languages/index.md) | TypeScript: runtime boundary validation і wire contracts; PHP: DTO/ports та unit/integration; Python: fixture ownership, autospec/await і cleanup; Rust: ownership/unsafe contracts, properties/doctests; Go: bounded concurrency, cancellation, race/fuzz/golden obligations | Це guidance для наявних TDD/review gates, не встановлені toolchains, compiled recipes чи доказ виконання тестів продукту |
-| Optional framework references у тому самому index | React для підтвердженого TS/TSX; Laravel лише для Laravel; Django/DRF або FastAPI лише за фактичним стеком | Зазвичай index + одна мова + нуль/один framework. Невідомий стек — UNKNOWN; жодного автоматичного завантаження всіх references або framework install |
+| [Offline discovery-response checker](docs/onboarding-helper.md) | Shared comparison of selected skills by name/path/enabled; declared inventory for Claude and Codex; a separate parser for a supplied Codex `skills/list` result | `RESPONSE_MATCH`: each selected skill appears exactly once at the expected enabled path; additional unselected skills are allowed. Digests bind bytes, not capture authenticity. There is no native Claude parser; capture authenticity, native discovery/invocation and model behavior are NOT_TESTED. The checker does not launch the host |
+| [Five language review/testing references](skills/arch/code-review/references/languages/index.md) | TypeScript: runtime boundary validation and wire contracts; PHP: DTO/ports and unit/integration; Python: fixture ownership, autospec/await and cleanup; Rust: ownership/unsafe contracts, properties/doctests; Go: bounded concurrency, cancellation, race/fuzz/golden obligations | Guidance for the existing TDD/review gates, not installed toolchains, compiled recipes or evidence that product tests were executed |
+| Optional framework references in the same index | React for confirmed TS/TSX; Laravel only for Laravel; Django/DRF or FastAPI only when supported by the actual stack | Normally the index + one language + zero/one framework. An unknown stack is UNKNOWN; no automatic loading of all references or framework installation |
 
-TypeScript насамперед зберігає дозволений користувачем переносимий намір правил
-Cassiopeia. MVC layout, service/naming conventions, бібліотеки та версії не
-нав'язуються іншим проєктам. [TypeScript reference](skills/arch/code-review/references/languages/typescript.md)
-явно пояснює конфлікт зі старим forced-interface правилом Pocock: історичний файл
-залишено незмінним, чинна project convention має пріоритет. Точні conceptual
-sources, per-file digests та exclusions — у
-[language provenance](provenance/language-reference-origins.json); походження
-checker і права/обмеження — у [PROVENANCE](PROVENANCE.md).
+TypeScript primarily preserves the user-authorized portable intent of the
+Cassiopeia rules. MVC layout, service/naming conventions, libraries and versions are not
+imposed on other projects. The [TypeScript reference](skills/arch/code-review/references/languages/typescript.md)
+explicitly explains the conflict with the old forced-interface Pocock rule: the historical file
+is unchanged, and the current project convention takes precedence. Exact conceptual
+sources, per-file digests and exclusions are in
+[language provenance](provenance/language-reference-origins.json); the checker's
+origins and rights/limitations are in [PROVENANCE](PROVENANCE.md).
 
-Небезпечні приклади не перенесено дослівно. Go guidance вимагає cancellation до
-реальної blocking operation і bounded fan-out; Rust не допускає вигаданого lifetime
-з raw pointer та нагадує про `Debug` для `unwrap_err`; FastAPI розділяє transport і
-lifespan; Django не називає external side effect ідемпотентним без відповідного
-контракту. PHP cache/Composer commands не оголошено read-only. Formatting не
-підміняє lint/typecheck. Докази виконання кожного recipe потрібні окремо.
+Unsafe examples were not copied verbatim. Go guidance requires cancellation to reach
+the actual blocking operation and bounded fan-out; Rust rejects fabricated lifetimes
+from raw pointers and notes the `Debug` requirement for `unwrap_err`; FastAPI distinguishes transport from
+lifespan; Django does not call an external side effect idempotent without an appropriate
+contract. PHP cache/Composer commands are not described as read-only. Formatting does not
+replace lint/typecheck. Execution evidence is required separately for each recipe.
 
-**Що вже було у Factory.** Core TDD, mutation/behavior coverage, snapshot-bound
-independent review, durable handoff, guarded installer/update/rollback та чотири
-viewport classes не запозичено заново і не замінено ECC. Чинні
+**What Factory already had.** Core TDD, mutation/behavior coverage, snapshot-bound
+independent review, durable handoff, guarded installer/update/rollback and four
+viewport classes were not adopted anew or replaced with ECC. The existing
 [workflow](ai-factory/workflow.md), [behavior coverage](skills/arch/code-review/references/behavior-coverage.md)
-і [review handoff](ai-factory/review-handoff.md) залишаються єдиним authority.
+and [review handoff](ai-factory/review-handoff.md) remain the sole authority.
 
-**Що не переносили.** Wholesale skills/hooks install, worktree orchestration,
-transcript learning/LLM summaries, auto-promotion, широкі MCP defaults і заяви про
-універсальну native parity. Budgeted context routing, matched behavioral eval та
-додаткові recipes для parked/rejected/validated ідей до task — лише можливі наступні
-роботи, **NOT_IMPLEMENTED у цьому delta**; наявний
-[lifecycle](ai-factory/feature-lifecycle.md) не змінюється. Наявність upstream
-README або тестових fixtures не є доказом продуктивності чи безпечного runtime.
+**What was not adopted.** Wholesale skills/hooks installation, worktree orchestration,
+transcript learning/LLM summaries, auto-promotion, broad MCP defaults and claims of
+universal native parity. Budgeted context routing, matched behavioral eval and
+additional recipes for parked/rejected/validated ideas before they become tasks are only possible future
+work, **NOT_IMPLEMENTED in this delta**; the existing
+[lifecycle](ai-factory/feature-lifecycle.md) is unchanged. The presence of an upstream
+README or test fixtures is not evidence of productivity or safe runtime behavior.
 
-**Окремий rollout checkpoint (2026-10-26).** Candidate `17a9527` застосований через
-погоджені tooling adapters у Cargo, Courses, Cassiopeia та dg; hash/path checks і
-повторна reconciliation/installer NOOP пройшли. Незалежна технічна перевірка
-прийнята, зовнішні final applied-snapshot reviews ще PENDING. У dg після apply
-стороння робота змінила продуктовий HEAD: tooling bytes перевірені, але загальне
-HEAD/WIP preservation не оголошено PASS. Це датований звіт, не live status service,
-не native activation proof і не дозвіл повторювати rollout. Цей docs delta не
-змінює жодного з цих pins чи review verdicts.
+**Separate rollout checkpoint (2026-10-26).** Candidate `17a9527` was applied through
+approved tooling adapters in Cargo, Courses, Cassiopeia and dg; hash/path checks and
+repeat reconciliation/installer NOOP passed. The independent technical review was
+accepted; external final applied-snapshot reviews are still PENDING. In dg, after apply,
+unrelated work changed the product HEAD: tooling bytes were verified, but overall
+HEAD/WIP preservation is not reported as PASS. This is a dated report, not a live status service,
+native activation proof or permission to repeat the rollout. This docs delta does not
+change any of those pins or review verdicts.
 
-## Почати через AI: три сценарії
+<a id="почати-через-ai-три-сценарії"></a>
+## Getting started with AI: three scenarios
 
-Цей repository містить workflow, skills, templates та offline helpers; він не встановлює сам Codex/Claude, мову проєкту, MCP/graph servers чи моделі. Локальні helpers не потребують додаткового SaaS; доступ до AI залишається вашим чинним account/ліцензією, не обіцянкою безкоштовних model calls.
+This repository contains workflow, skills, templates and offline helpers; it does not install Codex/Claude itself, the project's language, MCP/graph servers or models. Local helpers need no additional SaaS; AI access remains subject to your existing account/license, not a promise of free model calls.
 
-| Ситуація | Маршрут і готовий prompt |
+| Situation | Route and ready-to-use prompt |
 |---|---|
-| Наявний проєкт | [AI-assisted onboarding](docs/guides/ai-assisted-onboarding.md#existing-project): read-only inventory → scoped adapter diff → погоджений apply → окремий host proof |
-| Порожній проєкт | [Empty project](docs/guides/ai-assisted-onboarding.md#empty-project): спочатку продукт/стек/acceptance, потім мінімальні instructions; автоматичного app bootstrap немає |
-| Інший developer / машина | [New machine](docs/guides/ai-assisted-onboarding.md#new-machine): trusted private source → dedicated package root → selected host exposure → project adapter; без копіювання credentials |
+| Existing project | [AI-assisted onboarding](docs/guides/ai-assisted-onboarding.md#existing-project): read-only inventory → scoped adapter diff → approved apply → separate host proof |
+| Empty project | [Empty project](docs/guides/ai-assisted-onboarding.md#empty-project): first define the product/stack/acceptance, then minimal instructions; no automatic app bootstrap |
+| Another developer / machine | [New machine](docs/guides/ai-assisted-onboarding.md#new-machine): trusted private source → dedicated package root → selected host exposure → project adapter; no copying credentials |
 
-**Що куди ставити.** Повний перевірений package — в окремий керований каталог, наприклад `~/project-data/ai-factory-kit`. `~/.agents/skills` — канонічний спільний host-facing store за конвенцією цього набору; `~/.claude/skills` може використовувати те саме джерело лише після перевірки конфліктів і підтримки host. `kit.py` НЕ публікує skills туди й навмисно відхиляє `~/.agents`, `~/.claude` або каталог `skills` як install root. Немає безпечної команди «встановити все в home». [Карта шарів і discovery](docs/guides/ai-assisted-onboarding.md#destinations) пояснює exact-file fallback, варіанти/колізії та межі автоматизації.
+**What goes where.** Place the full verified package in a separate managed directory, for example `~/project-data/ai-factory-kit`. `~/.agents/skills` is the canonical shared host-facing store by this kit's convention; `~/.claude/skills` may use the same source only after checking conflicts and host support. `kit.py` does NOT publish skills there and deliberately rejects `~/.agents`, `~/.claude` or a directory named `skills` as an install root. There is no safe "install everything into home" command. The [layer and discovery map](docs/guides/ai-assisted-onboarding.md#destinations) explains exact-file fallback, variants/collisions and automation limits.
 
-**Перед будь-яким запуском:** прочитати source/provenance і effects scripts; checksum не є підписом або sandbox. Не передавати агенту токени, `.env`, keychain чи сесійні логи. [Security adoption](docs/guides/ai-assisted-onboarding.md#security-proposed) поки **PROPOSED**, не installed/enforced.
+**Before any execution:** read the source/provenance and the scripts' effects; a checksum is not a signature or sandbox. Do not give the agent tokens, `.env`, keychain contents or session logs. [Security adoption](docs/guides/ai-assisted-onboarding.md#security-proposed) is still **PROPOSED**, not installed/enforced.
 
-Технічний мінімум helpers: Python **3.9+**, POSIX filesystem; Git потрібний review helpers/fixtures. macOS — поточне середовище перевірки; Linux — **NOT_TESTED**, Windows — **UNSUPPORTED** (`fcntl`). Інструменти продукту визначає його стек; Node/npm/Docker не потрібні для offline install. Точні CLI versions/discovery/runtime capabilities перевіряються на цільовій машині, не успадковуються з цього README.
+Minimum requirements for helpers: Python **3.9+**, a POSIX filesystem; Git is required by review helpers/fixtures. macOS is the current verification environment; Linux is **NOT_TESTED**, Windows is **UNSUPPORTED** (`fcntl`). Product tools depend on its stack; Node/npm/Docker are not required for offline installation. Exact CLI versions/discovery/runtime capabilities must be verified on the target machine, not inherited from this README.
 
-Задачі виконуються на [task branch головного repo](ai-factory/workflow.md#task-branches), один writer, без автоматичного worktree/clone для задач. Чужий/невідомий dirty WIP → STOP і координація; без stash/reset/commit для очищення. Runtime/test isolation — окремо. Початкове отримання trusted AI Factory source для нової машини не є створенням per-task clone продукту.
+Tasks use a [task branch in the main repo](ai-factory/workflow.md#task-branches), with one writer and no automatic per-task worktree/clone. Foreign/unknown dirty WIP → STOP and coordinate; no stash/reset/commit to clear the tree. Runtime/test isolation is separate. Obtaining trusted AI Factory source for a new machine for the first time is not creating a per-task product clone.
 
-## AI Factory як локальний tooling агента в проєкті
+<a id="ai-factory-як-локальний-tooling-агента-в-проєкті"></a>
+## AI Factory as project-local agent tooling
 
-Factory можна організувати як локальний інструмент: pinned workflow/skills окремо від
-налаштувань конкретного проєкту. **Рекомендована схема**, якщо вона не конфліктує з
-наявним підключенням:
+Factory can be organized as local tooling: pinned workflow/skills separate from
+project-specific settings. **Recommended layout**, provided it does not conflict with
+the existing integration:
 
 ```text
 <project>/
   .ai/
-    factory/   # керований snapshot обраної ревізії Factory; не редагувати вручну
-    project/   # локальні paths, adapter/config та pin; зберігати під час update
-    README.md  # як агенту почати/resume, де правила, задачі та докази
+    factory/   # managed snapshot of the selected Factory revision; do not edit manually
+    project/   # local paths, adapter/config and pin; preserve during update
+    README.md  # how the agent starts/resumes; where rules, tasks and evidence live
 ```
 
-Ці destinations можна залишити локальними й ignored. Спочатку перевірити, що вже
-tracked і що містить `.ai/`: **gitignore не прибирає вже tracked файли**. Не ігнорувати
-всю `.ai/` навмання, не виконувати автоматичний untrack і не мігрувати наявні
-AGENTS/adapter/pin/symlinks. Для нового setup обрати лише точні погоджені ignore paths.
-Не зберігати тут secrets, tokens, `.env`, auth/session stores; ignored не означає захищене.
+These destinations may remain local and ignored. First check what is already
+tracked and what `.ai/` contains: **gitignore does not remove already tracked files**. Do not blindly ignore
+all of `.ai/`, automatically untrack files or migrate existing
+AGENTS/adapter/pin/symlinks. For a new setup, select only the exact approved ignore paths.
+Do not store secrets, tokens, `.env`, auth/session stores here; ignored does not mean protected.
 
-**Агенту потрібен явний entrypoint.** Довільна `.ai/` не гарантує discovery чи виконання
-workflow. Користувач може додати короткий tracked pointer з root README/AGENTS,
-налаштувати підтримуваний саме його агентом entrypoint або кожного разу починати з
-«Прочитай `.ai/README.md` і застосуй указаний там workflow до моєї задачі». README для
-людини не обов'язково автоматично читається агентом. Native skill invocation та явне
-читання файла — різні докази; жоден pointer не гарантує дотримання правил.
+**The agent needs an explicit entrypoint.** An arbitrary `.ai/` does not guarantee discovery or execution of
+the workflow. The user may add a short tracked pointer from root README/AGENTS,
+configure an entrypoint supported by their particular agent, or start each time with
+"Read `.ai/README.md` and apply its specified workflow to my task." A README for
+humans is not necessarily read automatically by an agent. Native skill invocation and explicit
+file reading are different evidence; neither pointer guarantees compliance with the rules.
 
-### Що реалізовано, а що потрібно перевірити
+<a id="що-реалізовано-а-що-потрібно-перевірити"></a>
+### What is implemented and what needs verification
 
-[Чинний installer](docs/portability-design.md) `tools/kit.py` працює з явним dedicated
+The [current installer](docs/portability-design.md), `tools/kit.py`, uses an explicit dedicated
 absolute target: plan/install/update/rollback, selected components, hashes, backups,
-receipts і guarded NOOP. Він **не має окремого `.ai` mode**, не генерує project config,
-не змінює gitignore/AGENTS і не реєструє skills у host. Ця layout-рекомендація сама
-по собі не є підтвердженим installer/runtime acceptance.
+receipts and guarded NOOP. It **has no separate `.ai` mode**, does not generate project config,
+change gitignore/AGENTS or register skills with the host. This layout recommendation alone
+does not establish installer/runtime acceptance.
 
-До встановлення агент має прочитати source/provenance та контракт **обраної ревізії**,
-перевірити підтримку target `.ai/factory/`, canonical paths без symlink components,
-відсутність перетину source/target і unmanaged collisions, потрібні components та
-writer window. Target — тільки dedicated subtree, не корінь продуктового repository
-і не вся `.ai/`. Якщо обрана версія не підтримує такий target, залишити залежний setup
-BLOCKED або погодити вже підтримуваний зовнішній dedicated root; не обходити guards.
-Не створювати другий installer. [Onboarding guide](docs/guides/ai-assisted-onboarding.md)
-і [read-only preflight](docs/onboarding-helper.md) лишаються чинним маршрутом.
+Before installation, the agent must read the source/provenance and the contract of the **selected revision**,
+verify support for target `.ai/factory/`, canonical paths without symlink components,
+no source/target overlap or unmanaged collisions, the required components and
+the writer window. The target must be a dedicated subtree, not the product repository root
+or all of `.ai/`. If the selected version does not support that target, leave the dependent setup
+BLOCKED or agree on an already supported external dedicated root; do not bypass guards.
+Do not create a second installer. The [onboarding guide](docs/guides/ai-assisted-onboarding.md)
+and [read-only preflight](docs/onboarding-helper.md) remain the established route.
 
-Для project-local declarations повторно використати наявні adapter,
-`ai-factory-manifest.json` і `ai-factory-package.json`, якщо вони вже є. Для нового
-setup погодити їхні paths у `.ai/project/` на основі [manifest example](examples/onboarding/manifest.json)
-та [adapter template](templates/adapter-full.md), без другого джерела тих самих правил.
-Не переносити локальні overrides у `.ai/factory/`: update має змінювати лише managed
-package target і залишати project config, task history та required gates незмінними.
+For project-local declarations, reuse the existing adapter,
+`ai-factory-manifest.json` and `ai-factory-package.json`, if present. For a new
+setup, agree on their paths in `.ai/project/` using the [manifest example](examples/onboarding/manifest.json)
+and [adapter template](templates/adapter-full.md), without a second source for the same rules.
+Do not move local overrides into `.ai/factory/`: an update must change only the managed
+package target and leave project config, task history and required gates unchanged.
 
-Pin — точний commit обраного trusted source, release manifest/hash і component set,
-а не floating branch або `latest`. Приклад наявного exact pin:
-`1e5411f12677c45fd67b0900c77eb418a214d065` (merged scanner milestone до release); статус candidate не є
-незалежним прийняттям усіх можливостей. Перед використанням перевірити конкретний
-release, потрібні hashes і [provenance](PROVENANCE.md). Hash із того самого невідомого
-архіву не автентифікує автора. Незакомічений checkout, зокрема scanner additions,
-не підміняє pinned workflow release й не активується локальним setup.
+A pin is the exact commit of the selected trusted source, release manifest/hash and component set,
+not a floating branch or `latest`. An example of an existing exact pin:
+`1e5411f12677c45fd67b0900c77eb418a214d065` (merged scanner milestone before release); candidate status does not
+constitute independent acceptance of all capabilities. Before use, verify the specific
+release, required hashes and [provenance](PROVENANCE.md). A hash from the same unknown
+archive does not authenticate its author. An uncommitted checkout, including scanner additions,
+does not substitute for a pinned workflow release and is not activated by local setup.
 
-**Нова машина:** ignored files не приходять із clone. Зберегти окремо несекретний
-bootstrap record із trusted source/commit, manifest hash, components, layout і backup
-локального config — у погодженому приватному backup або як мінімальний tracked manifest
-за вибором команди. Відновити той самий pin через перевірений setup; custom config не
-можна відтворити лише з Factory core. Повний trusted source зберігається окремо від
-встановленого subset; metadata subset не робить його повним release. Новий release
-отримується й застосовується лише явним update із review diff, backup та preservation
-checks, без автоматичного переписування локальних налаштувань.
+**New machine:** ignored files do not arrive with a clone. Separately preserve a non-secret
+bootstrap record containing trusted source/commit, manifest hash, components, layout and a backup of
+local config — in an approved private backup or as a minimal tracked manifest,
+as the team chooses. Restore the same pin through verified setup; custom config cannot
+be reconstructed from Factory core alone. Full trusted source is kept separately from
+the installed subset; subset metadata does not make it a full release. A new release
+is obtained and applied only through an explicit update with diff review, backup and preservation
+checks, without automatically overwriting local settings.
 
-### Промпт 1 — перевірити й безпечно підключити локально
+<a id="промпт-1--перевірити-й-безпечно-підключити-локально"></a>
+### Prompt 1 — inspect and safely connect local tooling
 
 ```text
-Підготуй AI Factory як локальний tooling для <PROJECT_ROOT>.
+Prepare AI Factory as local tooling for <PROJECT_ROOT>.
 Trusted source: <SOURCE + EXACT COMMIT + MANIFEST HASH>.
-Спочатку лише read-only: прочитай локальні AGENTS/CLAUDE, чинний adapter/pin,
-README, git tracked/ignored state, relevant WIP і ownership. Не читай secrets.
-Не припускай, що підключення відсутнє, і не мігруй existing setup автоматично.
-Прочитай root README, onboarding guide, installer contract і source обраного
-Factory release; перевір hashes/provenance та підтримку рекомендованих
-.ai/factory/, .ai/project/, .ai/README.md. Не вигадуй .ai installer mode.
-Використай наявні kit plan, preflight та change protocol, де вони застосовні.
-До записів покажи точні paths/components/entrypoint, ignore changes за потреби,
-conflicts, diff, backup/rollback і що залишиться локальним. Немає підтримки
-або writer window — BLOCKED залежний setup, без обходу guards.
-Лише після погодження конкретного plan застосуй цей setup і перевір hashes,
-local preservation та repeat NOOP. Не запускай product tools/scanners,
-installs залежностей, hooks/MCP, не міняй permissions або model defaults.
+Start read-only: read local AGENTS/CLAUDE, the current adapter/pin,
+README, git tracked/ignored state, relevant WIP and ownership. Do not read secrets.
+Do not assume integration is absent or migrate the existing setup automatically.
+Read root README, the onboarding guide, the installer contract and the source of the selected
+Factory release; verify hashes/provenance and support for the recommended
+.ai/factory/, .ai/project/, .ai/README.md. Do not invent an .ai installer mode.
+Use existing kit plan, preflight and change protocol where applicable.
+Before writing, show exact paths/components/entrypoint, ignore changes if needed,
+conflicts, diff, backup/rollback and what will remain local. Missing support
+or writer window means BLOCKED for the dependent setup; do not bypass guards.
+Only after the specific plan is approved, apply this setup and verify hashes,
+local preservation and repeat NOOP. Do not run product tools/scanners,
+dependency installs or hooks/MCP, or change permissions or model defaults.
 ```
 
-### Промпт 2 — почати або продовжити задачу
+<a id="промпт-2--почати-або-продовжити-задачу"></a>
+### Prompt 2 — start or resume a task
 
 ```text
-Прочитай <PROJECT_ROOT>/.ai/README.md або чинний погоджений entrypoint,
-локальні instructions/config та pinned Factory workflow. Перевір pin і paths.
-Задача: <МЕТА або ID + ЧИННИЙ PLAN/REPORT>.
-Покажи scope/acceptance, root/branch/HEAD/relevant WIP, writer, small/full/resume,
-review route і pre-code READY/BLOCKED. Збережи локальні contracts та gates.
-На resume звір поточні inputs і докази; не відкривай незмінене завершене заново.
-Виконуй лише доручений scope; evidence і handoff — у наявних task artifacts.
-Відсутній shared файл/required review — конкретний BLOCKED, не вигаданий PASS.
-Не оновлюй core/pin/config і не запускай scanner лише через читання workflow.
+Read <PROJECT_ROOT>/.ai/README.md or the current approved entrypoint,
+local instructions/config and the pinned Factory workflow. Verify the pin and paths.
+Task: <GOAL or ID + CURRENT PLAN/REPORT>.
+Show scope/acceptance, root/branch/HEAD/relevant WIP, writer, small/full/resume,
+review route and pre-code READY/BLOCKED. Preserve local contracts and gates.
+On resume, reconcile current inputs and evidence; do not reopen unchanged completed work.
+Perform only the assigned scope; keep evidence and handoff in existing task artifacts.
+A missing shared file/required review means a specific BLOCKED, not an invented PASS.
+Do not update core/pin/config or run a scanner merely because you read the workflow.
 ```
 
-### Промпт 3 — перевірено оновити package
+<a id="промпт-3--перевірено-оновити-package"></a>
+### Prompt 3 — perform a verified package update
 
 ```text
-Підготуй update локального AI Factory до <NEW EXACT COMMIT + MANIFEST HASH>.
-Спочатку read-only звір чинний pin, managed state, повний бажаний component set,
-новий trusted source/provenance, relevant WIP і writer window.
-Перевір підтримку update у цій версії; використай чинний kit plan/update,
-не новий installer. Покажи diff/additions/removals/conflicts, backup і rollback.
-Зафіксуй baseline hashes project-local config/README/entrypoints; не переписуй
-їх із core template. Несумісність локального adapter — окрема явна пропозиція.
-Лише після погодження exact plan онови managed package target і погоджену
-pin metadata; збережи решту .ai/project/ та чинні локальні правила/task history.
-Перевір final hashes, local preservation і повторний NOOP. Concurrent changes
-або unmanaged collision — BLOCKED, без force/reset/untrack. Поверни receipt,
-перевірки, limitations і next action; без product rollout/scans/commit/push.
+Prepare a local AI Factory update to <NEW EXACT COMMIT + MANIFEST HASH>.
+First, read-only, reconcile the current pin, managed state, full desired component set,
+new trusted source/provenance, relevant WIP and writer window.
+Verify update support in this version; use the existing kit plan/update,
+not a new installer. Show the diff/additions/removals/conflicts, backup and rollback.
+Record baseline hashes of project-local config/README/entrypoints; do not overwrite
+them from a core template. Local adapter incompatibility requires a separate explicit proposal.
+Only after the exact plan is approved, update the managed package target and approved
+pin metadata; preserve the rest of .ai/project/ and existing local rules/task history.
+Verify final hashes, local preservation and repeat NOOP. Concurrent changes
+or an unmanaged collision mean BLOCKED; no force/reset/untrack. Return the receipt,
+checks, limitations and next action; no product rollout/scans/commit/push.
 ```
 
-## Один файл — одна роль
+<a id="один-файл--одна-роль"></a>
+## One file — one role
 
-`skills/` містить originals, не скорочені portable заміни. `ai-factory/` — повний source plan. `docs/portable/` та `adapters/legacy-planning/` — явно окремі успадковані portable profiles; їхні поведінкові відмінності не злиті мовчки. `runtime/legacy/` зберігає original helper behavior, тоді як portable review/session helpers мають hardened Git reads та explicit store. Тести обох варіантів лежать у `tests/`.
+`skills/` contains originals, not abbreviated portable replacements. `ai-factory/` is the full source plan. `docs/portable/` and `adapters/legacy-planning/` are explicitly separate inherited portable profiles; their behavioral differences are not silently merged. `runtime/legacy/` preserves original helper behavior, while portable review/session helpers have hardened Git reads and an explicit store. Tests for both variants live in `tests/`.
 
-84 внутрішні source definitions accounted: 73 включені, 11 synced-наборів мають явну outside-Service copy restriction і залишаються лише в [provenance inventory](provenance/source-map.json). Зовнішні symlink targets і `b2b*` не додаються. [Походження й notices](PROVENANCE.md).
+84 internal source definitions accounted for: 73 included, 11 synced sets have an explicit outside-Service copy restriction and remain only in the [provenance inventory](provenance/source-map.json). External symlink targets and `b2b*` are not added. [Origins and notices](PROVENANCE.md).
 
-## Безпечне використання та оновлення
+<a id="безпечне-використання-та-оновлення"></a>
+## Safe use and updates
 
-[Migration guide](docs/migration-0.4.md) пояснює exact paths, component selection, variants і перехід зі старої layout. [Installer contract](docs/portability-design.md) зберігає explicit plan, hash guards, backups і guarded rollback.
+The [migration guide](docs/migration-0.4.md) explains exact paths, component selection, variants and migration from the old layout. The [installer contract](docs/portability-design.md) retains explicit planning, hash guards, backups and guarded rollback.
 
 ```sh
 # Source checkout includes an exact, inert research archive; export only release files.
@@ -230,13 +239,13 @@ TOOLKIT_DIR="$(python3 -c 'from pathlib import Path; print(Path.cwd().parent / "
 python3 -B "$EXPORT_DIR/tools/kit.py" plan --package "$EXPORT_DIR" --root "$TOOLKIT_DIR" --component collection --component planning --component review --component session-guard
 ```
 
-Цей приклад виконує export, перевірку та read-only installer plan; не install. Destination export має бути новим, toolkit root — окремим dedicated каталогом. Для повного regression suite використайте `python3 -B "$EXPORT_DIR/tools/run_tests.py" --previous-release /absolute/path/to/verified-previous-release` лише після вибору реального immutable previous release. Placeholder не є готовою командою; archive scripts не запускати.
+This example exports, verifies and performs a read-only installer plan; it does not install. The export destination must be new, and the toolkit root must be a separate dedicated directory. For the full regression suite, use `python3 -B "$EXPORT_DIR/tools/run_tests.py" --previous-release /absolute/path/to/verified-previous-release` only after selecting an actual immutable previous release. The placeholder is not a ready-to-run command; do not execute archive scripts.
 
-`collection` — compatibility component, що включає повні skills та explicit legacy helpers; `skills` можна вибрати окремо. `graphify` містить єдиний canonical graphify skill, а `skills` залежить від нього. `planning` додає чотири **не-discovered adapter documents**, не новий SKILL tree. Installer розв’язує оголошені component dependencies, відхиляє cycles/unknown components; no network/tool installs/host registration.
+`collection` is a compatibility component that includes the full skills and explicit legacy helpers; `skills` can be selected separately. `graphify` contains the sole canonical graphify skill, and `skills` depends on it. `planning` adds four **non-discovered adapter documents**, not a new SKILL tree. The installer resolves declared component dependencies and rejects cycles/unknown components; no network/tool installs/host registration.
 
-Нові інсталяції та upgrades — лише у dedicated root, не поверх `~/.agents`, `~/.claude` або product repo. Передавайте повний бажаний component set. Native discovery не доведена exact-file читанням; вибирайте qualified skill paths. `docs`, `import-memory`, `morning`, `skill-creator` мають по дві збережені synced-версії; не активувати однойменні variants одночасно без явного mapping.
+New installations and upgrades must use a dedicated root, not overlay `~/.agents`, `~/.claude` or a product repo. Supply the full desired component set. Exact-file reading does not prove native discovery; select qualified skill paths. `docs`, `import-memory`, `morning`, `skill-creator` each have two preserved synced versions; do not activate same-name variants simultaneously without explicit mapping.
 
-Product pins і immutable caches оновлюються окремим погодженим rollout; публікація shared release сама їх не перемикає. [Повна карта всіх 350 старих файлів](provenance/layout-migration.json) фіксує moved/deduplicated/revised destinations; жоден original skill не втрачено.
+Product pins and immutable caches are updated through a separate approved rollout; publishing a shared release does not switch them automatically. The [full map of all 350 old files](provenance/layout-migration.json) records moved/deduplicated/revised destinations; no original skill was lost.
 
 ## Pre-code readiness
 
@@ -244,7 +253,7 @@ Product pins і immutable caches оновлюються окремим пого�
 
 Versioned [plan critic prompt](prompts/plan-critic.md), exact plan/snapshot binding and material-change rules extend that same checkpoint. No extra tracker, native registration or automatic reviewer dispatch.
 
-[Documentation hygiene](ai-factory/documentation-hygiene.md) уточнює чинний onboarding: factual drift, symlink routing, hook/CI coverage та scope provenance. Це документаційне доповнення; originals і runtime behavior незмінені.
+[Documentation hygiene](ai-factory/documentation-hygiene.md) clarifies the existing onboarding: factual drift, symlink routing, hook/CI coverage and scope provenance. This is a documentation addition; originals and runtime behavior are unchanged.
 
 [Selective constraint adoption](ai-factory/constraint-adoption.md) adds one skill and offline evidence checks, preserving existing Storybook/E2E and reviewer routes. Live model behavior and native discovery remain NOT_TESTED.
 

@@ -1,6 +1,6 @@
 ---
 name: implement
-description: "Реалізує роботу на основі специфікації чи набору тікетів."
+description: "Implements work from a specification or a set of tickets."
 disable-model-invocation: true
 ---
 

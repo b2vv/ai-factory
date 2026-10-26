@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Спільний словник для проєктування глибоких модулів. Використовуйте, коли користувач хоче спроєктувати чи покращити інтерфейс модуля, знайти можливості для поглиблення, визначити, де провести шов (seam), зробити код придатнішим для тестування чи навігації ШІ, або коли інший скіл потребує словника глибоких модулів.
+description: "A shared vocabulary for designing deep modules. Use when the user wants to design or improve a module interface, find opportunities for deepening, decide where to place a seam, make code easier to test or navigate with AI, or when another skill needs the deep-module vocabulary."
 ---
 
 # Codebase Design

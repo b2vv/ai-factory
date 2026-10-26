@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Цикл діагностики складних багів та регресій продуктивності. Використовуйте, коли користувач каже "diagnose"/"debug this" або повідомляє, що щось зламалося/кидає помилку/падає/працює повільно.
+description: "A diagnostic loop for difficult bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\" or reports that something is broken, throws an error, crashes or runs slowly."
 ---
 
 # Diagnosing Bugs

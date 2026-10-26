@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: Безжальне інтерв'ю, що загострює план чи дизайн.
+description: "A relentless interview that sharpens a plan or design."
 disable-model-invocation: true
 ---
 

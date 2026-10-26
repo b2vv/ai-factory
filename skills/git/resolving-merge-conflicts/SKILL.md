@@ -1,6 +1,6 @@
 ---
 name: resolving-merge-conflicts
-description: "Використовуйте, коли потрібно вирішити поточний конфлікт git merge/rebase."
+description: "Use when resolving a current git merge/rebase conflict."
 ---
 
 1. **See the current state** of the merge/rebase. Record the initial working-tree and staged status, then check git history and the conflicting files so unrelated local work remains identifiable.

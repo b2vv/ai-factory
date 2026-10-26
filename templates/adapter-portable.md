@@ -17,6 +17,6 @@ Status: PROPOSAL until reviewed and applied. Version/source/checksum: fill expli
 - Optional MCP/model inventory and freshness: ...
 - Per-file baseline/applied hashes, receipt and guarded restore: ...
 
-Після clear/new startup/resume: bound pending → короткий task/checkpoint + «Продовжити?», чекати поточної відповіді без task/review/send; unbound → тиша. Згода лише для поточної сесії/задачі, permissions незмінні. Compaction уже погодженої активної задачі зберігає continuity без повторного питання; waiting confirmation не активує Stop-продовження.
+After clear/new startup/resume: bound pending → short task/checkpoint + “Continue?”, wait for the current response without task/review/send; unbound → silence. Consent applies only to the current session/task; permissions remain unchanged. Compaction of an already approved active task preserves continuity without asking again; waiting confirmation does not activate Stop-driven continuation.
 
 Use one existing primary record. Do not duplicate a tracker, migrate architecture, install dependencies or waive required gates through this template.

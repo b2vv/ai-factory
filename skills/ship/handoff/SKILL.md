@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Стискає поточну розмову в документ передачі (handoff), щоб інший агент міг продовжити роботу.
+description: "Compresses the current conversation into a handoff document so another agent can continue the work."
 argument-hint: "What will the next session be used for?"
 disable-model-invocation: true
 ---

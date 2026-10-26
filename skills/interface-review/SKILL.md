@@ -1,72 +1,82 @@
 ---
 name: interface-review
-description: 'Оркестратор повного рев''ю інтерфейсу — зводить в один прохід ВІЗУАЛЬНИЙ гейт (anti-slop-design: машинні кліше вигляду) і USABILITY-аудит (ux-review: евристики Nielsen, Laws of UX, WCAG 2.2 UX-критерії, форми/таблиці/стани/нав/копі/тач/когнітив), плюс проєктний шар і, за наявності, a11y-конформність та копірайт. Злиті, дедупнуті, ранжовані знахідки + єдиний гейт. Це рев''ю-аналог design-pass (той — для побудови). Використовуйте, коли треба ПОВНЕ рев''ю/аудит екрана, флоу, прототипу чи PR одним проходом, а не лише одну лінзу. Тригери: "interface-review", "повне рев''ю інтерфейсу", "full interface review", "прожар екран/флоу", "аудит UI".'
+description: 'Orchestrates a complete interface review — combines the VISUAL gate (anti-slop-design: machine-generated visual cliches) and USABILITY audit (ux-review: Nielsen heuristics, Laws of UX, WCAG 2.2 UX criteria, forms/tables/states/nav/copy/touch/cognitive), plus the project layer and, when available, a11y conformance and copywriting. Merged, deduplicated, ranked findings + one gate. The review counterpart of design-pass (which is for building). Use for a FULL review/audit of a screen, flow, prototype or PR in one pass rather than one lens. Triggers: "interface-review", "повне рев''ю інтерфейсу", "full interface review", "прожар екран/флоу", "аудит UI" (Ukrainian phrases retained as compatibility aliases).'
 ---
 
-# interface-review — оркестратор повного рев'ю інтерфейсу
+<a id="interface-review--оркестратор-повного-ревю-інтерфейсу"></a>
 
-Це **склейка й порядок**, не нові правила. Як `design-pass` зводить побудову (відтворення → метод →
-anti-slop гейт), так `interface-review` зводить **рев'ю**: візуальний гейт + usability-аудит (+ проєкт,
-+ a11y/копі за наявності) в один злитий, дедупнутий, ранжований звіт. Кожну вісь робить свій існуючий
-скіл — тут лише послідовність і **merge**, щоб один дефект не порахувався кількома лінзами.
+# interface-review — complete interface review orchestrator
 
-## Коли застосовувати
+This is **composition and ordering**, not new rules. Just as `design-pass` combines building (reconstruction → method →
+anti-slop gate), `interface-review` combines **review**: visual gate + usability audit (+ project,
++ a11y/copy when available) into one merged, deduplicated, ranked report. Each axis uses its existing
+skill — this supplies only sequence and **merge**, so several lenses do not count one defect repeatedly.
 
-Повне рев'ю/аудит екрана, флоу, прототипу чи PR; фінальний гейт «готовності» інтерфейсу. Для однієї
-лінзи клич відповідний скіл напряму (`ux-review` на usability, `anti-slop-design` на вигляд).
+<a id="коли-застосовувати"></a>
 
-## Порядок
+## When to use
 
-0. **Скоуп + докази (один раз).** Назви артефакт (екран / флоу / прототип / діф), **в'юпорти**
-   (прочитай і застосуй [спільний viewport-контракт](../design-pass/references/viewport-coverage.md): phone, tablet portrait, tablet landscape, desktop при 100%; text enlargement/reflow окремо), **роль + задачу**. Зніми скрини / пройди флоу — усі лінзи
-   працюють з ОДНИХ доказів, не з пам'яті. Для PR — режим дифу (див. нижче).
+Full review/audit of a screen, flow, prototype or PR; the final interface “readiness” gate. For one
+lens, invoke the corresponding skill directly (`ux-review` for usability, `anti-slop-design` for appearance).
 
-1. **Проєктний шар (якщо в репозиторії).** Завантаж локальний дизайн-скіл / токени / `CLAUDE.md`/
-   `AGENTS.md`. Він **б'є** generic там, де перекриває (напр. свідоме enabled+no-op замість `disabled`
-   — рішення проєкту, не порушення). Той самий пріоритет **проєкт > правила > generic**, що в кожній лінзі.
+<a id="порядок"></a>
 
-2. **Візуальна лінза — [`anti-slop-design`](../anti-slop-design/SKILL.md).** Машинні кліше вигляду +
-   §3 pre-flight як гейт. Володіє: типографіка-як-шаблон, декор, generic-палітра, «AI-вигляд».
+## Sequence
 
-3. **Usability-лінза — [`ux-review`](../ux-review/SKILL.md).** Повний прогін `references/rules.md`
-   (евристики, Laws, WCAG-UX, форми/таблиці/стани/нав/копі/тач/когнітив) з власним гейтом і дедупом.
-   Володіє: придатність до використання, доступність-UX, копі, стани, адаптив.
+0. **Scope + evidence (once).** Name the artifact (screen / flow / prototype / diff), **viewports**
+   (read and apply the [shared viewport contract](../design-pass/references/viewport-coverage.md): phone, tablet portrait, tablet landscape, desktop at 100%; text enlargement/reflow separately), **role + task**. Capture screenshots / walk through the flow — all lenses
+   use the SAME evidence, not memory. For PRs, use diff mode (below).
 
-4. **Опційні лінзи (за наявності скіла).** Глибша a11y-конформність (повний WCAG-рев'ю понад UX-SC) і
-   спеціалізований копірайт — якщо в оточенні є відповідний скіл; інакше їх UX-зріз уже покриває `ux-review`.
+1. **Project layer (when in a repository).** Load the local design skill / tokens / `CLAUDE.md`/
+   `AGENTS.md`. It **overrides** generic rules where they overlap (e.g. deliberate enabled+no-op instead of `disabled`
+   is a project decision, not a violation). Same precedence as every lens: **project > rules > generic**.
 
-5. **MERGE (ключовий крок).** Зведи знахідки всіх лінз в ОДИН список:
-   - **Dimension ownership:** вигляд/кліше → anti-slop; usability/форми/таблиці/стани/нав/копі/тач →
-     ux-review. **Загальний tie-break (обидві лінзи мають специфічне правило на ОДИН дефект):** володіє
-     лінза з ЦИТОВАНИМ посилаємим правилом; суто візуальне прочитання без джерела — corroboration. Приклади:
-     контраст/фокус → цитоване WCAG-правило ux-review; **групування/ієрархія/щільність** («секції зливаються,
-     нема групування») → цитований `[law] Common Region`/`[law] Proximity`/`[cog] Chunking` ux-review володіє,
-     anti-slop «виглядає пласко» згортається як corroboration.
-   - **Один побачений дефект = одна знахідка** під найспецифічнішою лінзою; severity НЕ підсумовувати.
-   - Ранжуй разом (blocker / major / minor), найважче першим.
+2. **Visual lens — [`anti-slop-design`](../anti-slop-design/SKILL.md).** Machine-generated visual cliches +
+   §3 pre-flight as a gate. Owns: template typography, decoration, generic palette, “AI appearance”.
 
-## Звіт і гейт
+3. **Usability lens — [`ux-review`](../ux-review/SKILL.md).** Full pass over `references/rules.md`
+   (heuristics, Laws, WCAG-UX, forms/tables/states/nav/copy/touch/cognitive) with its own gate and deduplication.
+   Owns: usability, accessibility-UX, copy, states, responsiveness.
 
-Єдиний ранжований список. Кожна знахідка: лінза+правило · що побачено і де (доказ) · джерело(URL) · фікс.
-Гейт (як у лінзах): інтерфейс не «готовий», поки blocker+major не порожній **або** кожен — датоване обмеження, явно
-прийняте користувачем (магнітуда/механізм). Прогін на скрині/живому екрані, не з пам'яті.
+4. **Optional lenses (when the skill exists).** Deeper a11y conformance (full WCAG review beyond UX-SC) and
+   specialist copywriting — if the corresponding skill is available; otherwise `ux-review` already covers their UX aspects.
 
-## Режим дифу / PR
+5. **MERGE (the key step).** Consolidate all lenses' findings into ONE list:
+   - **Dimension ownership:** appearance/cliches → anti-slop; usability/forms/tables/states/nav/copy/touch →
+     ux-review. **General tie-break (both lenses have a specific rule for ONE defect):** the lens with a
+     CITED referenceable rule owns it; a purely visual reading without a source is corroboration. Examples:
+     contrast/focus → ux-review's cited WCAG rule; **grouping/hierarchy/density** (“sections blend together,
+     no grouping”) → ux-review's cited `[law] Common Region`/`[law] Proximity`/`[cog] Chunking` owns it,
+     while anti-slop's “looks flat” collapses into corroboration.
+   - **One observed defect = one finding** under the most specific lens; do NOT add severities.
+   - Rank together (blocker / major / minor), most severe first.
 
-Візьми змінені екрани/компоненти, прожени лінзи проти базової гілки (до/після), звітуй **регресії** цього
-дифу, а не ввесь борг екрана. Наявний борг поза дифом — окремо.
+<a id="звіт-і-гейт"></a>
+
+## Report and gate
+
+One ranked list. Each finding: lens+rule · what was observed and where (evidence) · source(URL) · fix.
+Gate (as in the lenses): the interface is not “ready” until blocker+major is empty **or** each is a dated limitation explicitly
+accepted by the user (magnitude/mechanism). Run on a screenshot/live screen, not from memory.
+
+<a id="режим-дифу--pr"></a>
+
+## Diff / PR mode
+
+Take changed screens/components, run the lenses against the base branch (before/after), and report this diff's
+**regressions**, not the screen's entire debt. Existing debt outside the diff goes separately.
 
 ## Done
 
-- скоуп + реально переглянуті докази всіх застосовних baseline viewport зібрані один раз за спільним контрактом; відсутні — NOT_TESTED, required gate — BLOCKED;
-- проєктний шар завантажено (в репозиторії) і враховано в пріоритеті;
-- прогнано принаймні дві лінзи (anti-slop + ux-review); опційні — якщо скіл є;
-- знахідки ЗЛИТІ й дедупнуті (один дефект = одна знахідка, severity не подвоєно), відранжовані;
-- кожна знахідка має лінзу+правило + доказ + джерело + фікс;
-- у режимі гейта: blocker+major порожній або кожен — датоване обмеження, явно прийняте користувачем.
+- scope + actually inspected evidence for all applicable baseline viewports collected once under the shared contract; missing evidence — NOT_TESTED, required gate — BLOCKED;
+- project layer loaded (in a repository) and respected in precedence;
+- at least two lenses run (anti-slop + ux-review); optional ones when the skill exists;
+- findings MERGED and deduplicated (one defect = one finding, severity not doubled), ranked;
+- each finding has lens+rule + evidence + source + fix;
+- in gate mode: blocker+major empty, or each is a dated limitation explicitly accepted by the user.
 
 ---
 
-**Лінзи:** [`anti-slop-design`](../anti-slop-design/SKILL.md) (вигляд) · [`ux-review`](../ux-review/SKILL.md)
-(usability). **Побудовний аналог:** [`design-pass`](../design-pass/SKILL.md). Проєктний шар — локальний
-скіл репозиторію, якщо є (він перемагає generic).
+**Lenses:** [`anti-slop-design`](../anti-slop-design/SKILL.md) (appearance) · [`ux-review`](../ux-review/SKILL.md)
+(usability). **Building counterpart:** [`design-pass`](../design-pass/SKILL.md). Project layer: the repository's local
+skill, if present (it overrides generic).

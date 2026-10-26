@@ -1,6 +1,6 @@
 ---
 name: setup-matt-pocock-skills
-description: Налаштовує репозиторій для інженерних скілів — трекер задач, словник лейблів тріажу та розкладку доменних доків. Запустіть один раз перед першим використанням інших інженерних скілів.
+description: "Sets up a repository for engineering skills — issue tracker, triage-label vocabulary and domain-document layout. Run once before using the other engineering skills for the first time."
 disable-model-invocation: true
 ---
 

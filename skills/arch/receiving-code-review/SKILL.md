@@ -1,6 +1,6 @@
 ---
 name: receiving-code-review
-description: Технічна дисципліна прийому код-рев'ю — верифікуй перед імплементацією, не роби performative-погодження («You're absolutely right!»/«Thanks!»), пуш-бек із технічним обґрунтуванням, уточнюй усе незрозуміле ДО часткової реалізації, фіксуй по одному з тестом. Використовуйте, коли отримуєте фідбек код-рев'ю (від людини чи зовнішнього рев'ювера) — особливо якщо він неясний або технічно сумнівний — перш ніж застосовувати правки.
+description: "Technical discipline for receiving code review: verify before implementing; do not agree performatively (\"You're absolutely right!\"/\"Thanks!\"); push back with technical reasoning; clarify everything unclear BEFORE partial implementation; fix one item at a time with a test. Use when receiving code-review feedback (from a person or an external reviewer), especially when it is unclear or technically questionable, before applying changes."
 ---
 
 # Code Review Reception

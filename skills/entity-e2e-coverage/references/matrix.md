@@ -1,46 +1,54 @@
-# Матриця й перевірка звіту
+<a id="матриця-й-перевірка-звіту"></a>
 
-Людинозрозуміла таблиця у чинному plan достатня; JSON потрібен лише для валідатора. Baseline створюється до тестування, звіряється з оригінальними QA/spec і передається reviewer окремо від report. Видалений із самого baseline QA ID не може бути відновлений валідатором — джерело перевіряє reviewer.
+# Matrix and report validation
 
-## Формат
+A human-readable table in the current plan is sufficient; JSON is needed only for the validator. Create the baseline before testing, reconcile it with the original QA/spec and give it to the reviewer separately from the report. The validator cannot recover a QA ID removed from the baseline itself; the reviewer checks the source.
 
-Зразки: [contract](example-contract.json), [report](example-report.json). Усі значення в них та [cases](cases.json) **синтетичні**, навіть `executed: true`: це fixtures валідатора, не докази браузерного тесту.
+<a id="формат"></a>
 
-Contract: `revision`, `diff`, `qa` (повний scoped inventory ID/source) і `rows`. Рядок має унікальний `id`, `qa_id`, `field`, `expected`, `expected_source`, `surface`, `state`, `action`, `assertion`, `channel` (`ui/api/db`), `required`. Кілька полів одного QA finding — окремі rows. `expected` — детермінований текстовий опис значення/формату; для transform додай правило до нього та джерело. Не використовуй «правильно».
+## Format
 
-`required: false` означає саме N/A, потребує `na_reason` і `na_source`. Не змінюй required на false через недоступний браузер/роль/сервер. Для нового погодженого scope збережи diff старого baseline і рішення власника.
+Examples: [contract](example-contract.json), [report](example-report.json). All values in them and in [cases](cases.json) are **synthetic**, even `executed: true`: these are validator fixtures, not browser-test evidence.
 
-Report: поточні `revision`, `diff`, `run_id`, `environment`, `fixture_id`, `results`. Кожен result: `id`, `status`; для non-PASS — `reason` (крім N/A, чия причина в baseline). PASS має `evidence`: ті самі п’ять run-полів, `executed: true`, фактичні `surface/state/channel/assertion`, `artifact`, унікальний у цьому artifact `assertion_id`, `observed`. Один trace може містити багато незалежних assertions; один assertion не закриває різні зобов’язання. Для ручного тесту locator — конкретний крок запису, не загальний скриншот.
+Contract: `revision`, `diff`, `qa` (the complete scoped ID/source inventory) and `rows`. Each row has a unique `id`, `qa_id`, `field`, `expected`, `expected_source`, `surface`, `state`, `action`, `assertion`, `channel` (`ui/api/db`), `required`. Multiple fields in one QA finding need separate rows. `expected` is a deterministic textual description of the value/format; for a transform, include its rule and source. Do not use “correct”.
 
-`diff` — fingerprint tested diff, включно з relevant untracked, а не просто branch або слово «dirty». Звір його з checkout і test deployment; report не може сам довести, що названа ревізія реально була відкрита. Для повторного прогону зафіксуй новий run та нові докази; baseline acceptance зберігається, його tested identity оновлюється явно.
+`required: false` specifically means N/A and requires `na_reason` and `na_source`. Do not change required to false because a browser/role/server is unavailable. For a newly agreed scope, preserve the old baseline diff and the owner's decision.
 
-Виклик (Python 3, без додаткових бібліотек):
+Report: current `revision`, `diff`, `run_id`, `environment`, `fixture_id`, `results`. Each result: `id`, `status`; for non-PASS, `reason` (except N/A, whose reason is in the baseline). PASS has `evidence`: the same five run fields, `executed: true`, actual `surface/state/channel/assertion`, `artifact`, an `assertion_id` unique within that artifact, and `observed`. One trace can contain many independent assertions; one assertion does not close different obligations. For a manual test, the locator is a specific record step, not a general screenshot.
+
+`diff` is the tested diff fingerprint, including relevant untracked files, not just a branch or the word “dirty”. Check it against the checkout and test deployment; the report cannot itself prove that the stated revision was actually open. For a rerun, record a new run and new evidence; preserve baseline acceptance and explicitly update its tested identity.
+
+Invocation (Python 3, no additional libraries):
 
 ```sh
 python3 ~/.agents/skills/entity-e2e-coverage/scripts/validate_matrix.py contract.json report.json
 python3 ~/.agents/skills/entity-e2e-coverage/scripts/test_validate_matrix.py
 ```
 
-Exit 0: bookkeeping complete за переданим baseline. Exit 1: malformed/incomplete/FAIL/BLOCKED або підозріла невідповідність; причини в JSON. `browser_execution_proven` завжди false. Скрипт не відкриває artifacts, не порівнює DOM, не запускає browser, не виводить коректність expected/observed із текстів і не підтверджує правдивість metadata. Ідентичні, але вигадані metadata пройдуть; потрібен review фактичного test/trace і незалежного джерела.
+Exit 0: bookkeeping complete for the supplied baseline. Exit 1: malformed/incomplete/FAIL/BLOCKED or suspicious inconsistency; reasons are in JSON. `browser_execution_proven` is always false. The script does not open artifacts, compare the DOM, run a browser, infer expected/observed correctness from text or verify metadata truthfulness. Matching but fabricated metadata will pass; review the actual test/trace and independent source.
 
-## Реалістичний приклад
+<a id="реалістичний-приклад"></a>
 
-QA-41 вимагає назву Depot Cedar у detail та edit; після зміни — Depot Birch. QA-42 окремо вимагає display label `Kyiv region` для reference `r-17`, збереження region без зміни. Порівняння edit value з response `name` не доводить detail. Persistence API може очікувати `r-17`, UI має очікувати label з незалежної fixture.
+## Realistic example
 
-Для дат окремо зафіксуй, чи `2026-10-17` є calendar date без timezone, чи timestamp з перетворенням у задану зону; не обрізай рядок до дня, якщо QA перевіряє час. Для boolean `false` перевір реальний контрактний label/unchecked, а не наявність truthy тексту. Для null/empty та nested references зафіксуй placeholder/відсутність/label, які справді обіцяє spec. Додавай лише поля й стани поточного scope.
+QA-41 requires the name Depot Cedar in detail and edit; after a change, Depot Birch. QA-42 separately requires the display label `Kyiv region` for reference `r-17`, keeping the region unchanged. Comparing the edit value with response `name` does not prove detail. Persistence API may expect `r-17`; the UI must expect a label from an independent fixture.
 
-Cases A–E містять різні звіти для depot workflow, придатні для незалежного review без доступу до живого середовища. Серед них є create→edit без view-доказу, повний цикл, edit-only UI із документованим N/A, недоступний required view та загублений QA field. Очікувані verdicts перевіряє test script; не видавай синтетичний complete за product PASS.
+For dates, separately record whether `2026-10-17` is a calendar date without a timezone or a timestamp converted to a specified zone; do not truncate to the day if QA checks the time. For boolean `false`, check the actual contractual label/unchecked state, not the presence of truthy text. For null/empty and nested references, record the placeholder/absence/label actually promised by the spec. Add only fields and states within the current scope.
 
-## Умовні поля для filters / keyboard / visual
+Cases A–E contain different reports for the depot workflow, suitable for independent review without live-environment access. They include create→edit without view evidence, a complete cycle, edit-only UI with documented N/A, an unavailable required view and a lost QA field. The test script checks expected verdicts; do not present synthetic complete as product PASS.
 
-Лише коли ці вимоги є в acceptance, додай row `kind`: `filter-matching`, `filter-nonmatching`, `keyboard` або `visual`, та `entity_type`. Evidence повторює обидва поля; channel — `ui`. Решта CRUD rows не змінюються.
+<a id="умовні-поля-для-filters--keyboard--visual"></a>
 
-Для заявленого filter scope додай contract `filter_scopes: [{"entity_type": "truck", "surface": "list", "source": "acceptance AF-1"}]`. Кожна пара потребує окремих required matching/nonmatching rows. Заявлені типи/поверхні звіряє reviewer з acceptance: parser не знаходить пропущеного scope у зовнішній прозі. Не включай до filter_scopes незастосовні фільтри; optional row з `required: false`, N/A/source/reason документує scoped виключення.
+## Conditional fields for filters / keyboard / visual
 
-Required keyboard row також має `input_method` (`simulated-browser-key` або `manual-key`), `key` і `ui_effect`; evidence повторює їх. `dispatch-submit` не є keyboard input. Поля фіксують заявлений спосіб, а не доводять натискання.
+Only when acceptance includes these requirements, add row `kind`: `filter-matching`, `filter-nonmatching`, `keyboard` or `visual`, and `entity_type`. Evidence repeats both fields; channel is `ui`. Other CRUD rows remain unchanged.
 
-Для scoped visual states створи окремі required `kind: visual` rows із конкретними `surface/state/assertion`; наприклад open-popover, active-trigger, chips. Default screenshot не може підмінити інший state. Реальний inventory і фактичне порівняння зображень перевіряє reviewer, не parser.
+For a declared filter scope, add contract `filter_scopes: [{"entity_type": "truck", "surface": "list", "source": "acceptance AF-1"}]`. Each pair requires separate required matching/nonmatching rows. The reviewer reconciles declared types/surfaces with acceptance: the parser cannot find omitted scope in external prose. Do not include inapplicable filters in filter_scopes; an optional row with `required: false`, N/A/source/reason documents a scoped exclusion.
 
-Необов’язкове report `claimed_pass_rows` — IDs рядків, для яких summary заявляє PASS; невідомі/non-PASS IDs відхиляються. Поле не аналізує текст summary чи зовнішній checklist. PARTIAL/BLOCKED із причиною дозволяють чесний звіт, але required row залишає coverage incomplete (exit 1). N/A з обґрунтуванням не закриває required scope.
+A required keyboard row also has `input_method` (`simulated-browser-key` or `manual-key`), `key` and `ui_effect`; evidence repeats them. `dispatch-submit` is not keyboard input. These fields record the declared method rather than proving a keypress.
 
-[Scoped fixtures](scoped-cases.json) синтетично перевіряють missing entity coverage, keyboard substitution, uncovered active state, overclaim та scoped N/A. Вони не є результатом браузерного запуску.
+For scoped visual states, create separate required `kind: visual` rows with specific `surface/state/assertion`; for example open-popover, active-trigger, chips. A default screenshot cannot substitute for another state. The reviewer, not the parser, checks the actual inventory and image comparison.
+
+Optional report `claimed_pass_rows` contains IDs of rows for which the summary claims PASS; unknown/non-PASS IDs are rejected. The field does not analyze summary text or an external checklist. PARTIAL/BLOCKED with a reason allow an honest report, but a required row leaves coverage incomplete (exit 1). Justified N/A does not close required scope.
+
+[Scoped fixtures](scoped-cases.json) synthetically check missing entity coverage, keyboard substitution, uncovered active state, overclaim and scoped N/A. They are not browser-run results.

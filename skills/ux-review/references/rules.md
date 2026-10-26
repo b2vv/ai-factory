@@ -1,127 +1,149 @@
-# ux-review — руллсет (цитовані UX-правила)
+<a id="ux-review--руллсет-цитовані-ux-правила"></a>
 
-Формат кожного правила: `[категорія] НАЗВА — принцип → ЯК ПЕРЕВІРИТИ / що є порушенням → джерело(URL)`.
-Поле **ЯК ПЕРЕВІРИТИ обов'язкове**: правило без спостережуваного чека в звіт не йде.
+# ux-review — ruleset (cited UX rules)
 
-Пороги, що РІЗНЯТЬСЯ між джерелами (назви обидва, не вигадуй єдиний):
-- **Тач-таргет:** WCAG 2.2 min 24×24 CSS px (AA, 2.5.8) · WCAG enhanced 44×44 (AAA, 2.5.5) · Apple HIG 44×44 pt · Material 48×48 dp + 8 dp проміжок. Застосовуй за контекстом (тач-первинна дія → 44/48; щільна таблиця на десктопі → 24 з проміжком).
-- **Час відгуку — різні прилади:** 0.1 s = відчуття миттєвості · **0.4 s (Doherty)** = цільова інтерактивність · 1 s = межа безперервності думки · 10 s = межа уваги (далі обов'язковий % прогрес). Не плутай 400 ms-ціль із 1 s/10 s-порогами.
-- **Zoom — два критерії:** 1.4.4 Resize Text = текст до 200% без втрат · 1.4.10 Reflow = без 2-вимірного скролу при 400% (еквів. 320 CSS px). Перевіряй обидва, не змішуй.
+Each rule's format: `[category] NAME — principle → HOW TO CHECK / what constitutes a violation → source(URL)`.
+The **HOW TO CHECK field is mandatory**: a rule without an observable check does not enter the report.
+
+Thresholds that DIFFER between sources (name both; do not invent a single one):
+- **Touch target:** WCAG 2.2 min 24×24 CSS px (AA, 2.5.8) · WCAG enhanced 44×44 (AAA, 2.5.5) · Apple HIG 44×44 pt · Material 48×48 dp + 8 dp spacing. Apply by context (touch-first action → 44/48; dense desktop table → 24 with spacing).
+- **Response time—different measures:** 0.1 s = perceived immediacy · **0.4 s (Doherty)** = target interactivity · 1 s = continuity-of-thought boundary · 10 s = attention boundary (beyond it, percentage progress is mandatory). Do not confuse the 400 ms target with 1 s/10 s thresholds.
+- **Zoom—two criteria:** 1.4.4 Resize Text = text up to 200% without loss · 1.4.10 Reflow = no two-dimensional scrolling at 400% (equivalent to 320 CSS px). Check both; do not conflate them.
 
 ---
 
 ## 1. Nielsen 10 Usability Heuristics
-джерело на всі 10: https://www.nngroup.com/articles/ten-usability-heuristics/
+Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 
-[heuristic] Visibility of system status — система своєчасно повідомляє, що відбувається → порушення: дія без loading/підтвердження/зміни стану; нема «збережено/надіслано».
-[heuristic] Match system & real world — мова користувача, знайомі поняття, природний порядок → порушення: внутрішній жаргон, коди, терміни розробника в UI.
-[heuristic] User control & freedom — явний «аварійний вихід»: undo/cancel/back → порушення: незворотні дії без undo, модалка без закриття, пастки флоу.
-[heuristic] Consistency & standards — однакові слова/дії = одне; конвенції платформи → порушення: кнопка діє по-різному на різних екранах, нестандартні іконки/терміни.
-[heuristic] Error prevention — запобігати краще, ніж повідомляти → порушення: деструктивна дія без підтвердження/обмежень; вільне поле там, де має бути вибір.
-[heuristic] Recognition over recall — робити опції видимими, не змушувати пам'ятати → порушення: треба пам'ятати дані з попереднього екрана; приховані вимоги.
-[heuristic] Flexibility & efficiency — акселератори для досвідчених, не заважаючи новачкам → порушення: нема шорткатів/дефолтів/повтору частих дій.
-[heuristic] Aesthetic & minimalist design — без зайвого, що конкурує з важливим → порушення: захаращення, декор, що відволікає від задачі.
-[heuristic] Help users with errors — помилки звичайною мовою, точна проблема + рішення → порушення: криптичний код без пояснення й шляху виправлення.
-[heuristic] Help & documentation — ідеально без довідки; за потреби — легко знайти, по задачі, конкретні кроки → порушення: довідку важко знайти/вона відірвана від контексту.
+[heuristic] Visibility of system status — the system communicates what is happening promptly → violation: an action without loading/confirmation/state change; no “saved/sent”.
+[heuristic] Match system & real world — user language, familiar concepts, natural order → violation: internal jargon, codes or developer terms in the UI.
+[heuristic] User control & freedom — an explicit emergency exit: undo/cancel/back → violation: irreversible actions without undo, a modal without dismissal, flow traps.
+[heuristic] Consistency & standards — identical words/actions mean the same thing; platform conventions → violation: a button behaves differently on different screens, nonstandard icons/terms.
+[heuristic] Error prevention — prevention is better than notification → violation: a destructive action without confirmation/constraints; a free-text field where selection is needed.
+[heuristic] Recognition over recall — make options visible rather than requiring memory → violation: users must remember data from a previous screen; hidden requirements.
+[heuristic] Flexibility & efficiency — accelerators for experienced users without obstructing beginners → violation: no shortcuts/defaults/repetition of frequent actions.
+[heuristic] Aesthetic & minimalist design — no excess competing with what matters → violation: clutter, decoration distracting from the task.
+[heuristic] Help users with errors — plain-language errors, specific problem + solution → violation: a cryptic code without explanation or a correction path.
+[heuristic] Help & documentation — ideally no help needed; when needed, easy to find, task-focused, concrete steps → violation: help is hard to find/disconnected from context.
 
 ## 2. Laws of UX
-[law] Jakob's Law — користувач очікує, що твій продукт працює як інші, знайомі → порушення: нестандартні патерни там, де є усталена конвенція → https://lawsofux.com/jakobs-law/
-[law] Fitts's Law — час до цілі залежить від відстані й розміру → порушення: малі далекі клік-таргети; головну дію сховано/зменшено → https://lawsofux.com/fittss-law/
-[law] Hick's Law — час рішення росте з кількістю/складністю виборів → порушення: довгі меню/безліч рівнорядних опцій без групування/дефолту → https://lawsofux.com/hicks-law/
-[law] Miller's Law — у робочій пам'яті ~7±2 елементи → порушення: довгі негруповані списки/поля; розбивай на чанки → https://lawsofux.com/millers-law/
-[law] Postel's Law — ліберально до вводу, суворо до виводу → порушення: відкидати валідний ввід через формат (пробіли в картці/телефоні) → https://lawsofux.com/postels-law/
-[law] Tesler's Law — незнижувана складність; хтось її бере → порушення: неусувну складність перекладено на користувача замість системи → https://lawsofux.com/teslers-law/
-[law] Peak-End Rule — досвід судять за піком і фіналом → порушення: болісний пік (помилка) чи кінцівка (оплата/confirmation) без турботи → https://lawsofux.com/peak-end-rule/
-[law] Aesthetic-Usability Effect — естетичне сприймають як зручніше → порушення: неохайний візуал знижує довіру й толерантність до дрібних проблем → https://lawsofux.com/aesthetic-usability-effect/
-[law] Doherty Threshold — продуктивність зростає при взаємодії <400 ms → порушення: відгук UI >400 ms без оптимістичного апдейту/feedback → https://lawsofux.com/doherty-threshold/
-[law] Law of Proximity — близькі об'єкти = група → порушення: лейбл далі від свого поля, ніж від чужого; дії не згруповані → https://lawsofux.com/proximity/
-[law] Law of Common Region — спільна межа/фон групує → порушення: пов'язані елементи без спільного контейнера/картки → https://lawsofux.com/common-region/
-[law] Serial Position Effect — краще пам'ятають перший і останній → порушення: ключові нав-пункти/дії заховані в середині → https://lawsofux.com/serial-position-effect/
-[law] Zeigarnik Effect — незавершені задачі пам'ятають краще → порушення: нема прогрес-індикатора/чеклиста для багатокрокового флоу → https://lawsofux.com/zeigarnik-effect/
-[law] Von Restorff (Isolation) Effect — відмінний елемент запам'ятовують → порушення: кілька «primary» CTA конкурують; головну дію візуально не виділено → https://lawsofux.com/von-restorff-effect/
+[law] Jakob's Law — users expect your product to work like familiar others → violation: unconventional patterns where an established convention exists → https://lawsofux.com/jakobs-law/
+[law] Fitts's Law — time to reach a target depends on distance and size → violation: small distant click targets; the primary action hidden/shrunk → https://lawsofux.com/fittss-law/
+[law] Hick's Law — decision time grows with the number/complexity of choices → violation: long menus/many equal options without grouping/defaults → https://lawsofux.com/hicks-law/
+[law] Miller's Law — working memory holds ~7±2 items → violation: long ungrouped lists/fields; break into chunks → https://lawsofux.com/millers-law/
+[law] Postel's Law — liberal input, strict output → violation: rejecting valid input because of formatting (spaces in a card/phone number) → https://lawsofux.com/postels-law/
+[law] Tesler's Law — irreducible complexity must be borne by someone → violation: unavoidable complexity shifted onto the user instead of the system → https://lawsofux.com/teslers-law/
+[law] Peak-End Rule — experience is judged by its peak and ending → violation: a painful peak (error) or ending (payment/confirmation) without care → https://lawsofux.com/peak-end-rule/
+[law] Aesthetic-Usability Effect — attractive things are perceived as more usable → violation: untidy visuals reduce trust and tolerance for small problems → https://lawsofux.com/aesthetic-usability-effect/
+[law] Doherty Threshold — productivity rises with interaction <400 ms → violation: UI response >400 ms without optimistic update/feedback → https://lawsofux.com/doherty-threshold/
+[law] Law of Proximity — nearby objects form a group → violation: a label farther from its own field than another; ungrouped actions → https://lawsofux.com/proximity/
+[law] Law of Common Region — a shared boundary/background groups items → violation: related elements without a shared container/card → https://lawsofux.com/common-region/
+[law] Serial Position Effect — first and last items are remembered better → violation: key navigation items/actions hidden in the middle → https://lawsofux.com/serial-position-effect/
+[law] Zeigarnik Effect — unfinished tasks are remembered better → violation: no progress indicator/checklist for a multistep flow → https://lawsofux.com/zeigarnik-effect/
+[law] Von Restorff (Isolation) Effect — a distinct element is remembered → violation: multiple “primary” CTAs compete; the primary action is not visually distinguished → https://lawsofux.com/von-restorff-effect/
 
-## 3. WCAG 2.2 (UX-дотичні SC)
-[wcag] 2.5.8 Target Size (Min) AA — таргети ≥24×24 CSS px або достатній проміжок → порушення: <24px клік-таргет без spacing/inline/UA/essential-винятку → https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
-[wcag] 2.5.5 Target Size (Enhanced) AAA — таргети ≥44×44 CSS px → порушення (AAA): нижче 44px для основних дій → https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html
-[wcag] 2.4.7 Focus Visible AA — видимий індикатор фокуса → порушення: outline:none без заміни; фокус не видно → https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html
-[wcag] 2.4.11 Focus Not Obscured (Min) AA — сфокусований елемент хоча б частково видимий → порушення: sticky header/банер перекриває фокус → https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html
-[wcag] 3.2.3 Consistent Navigation AA — повторювана навігація в однаковому порядку → порушення: нав-пункти міняють порядок/місце між сторінками → https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html
-[wcag] 3.2.4 Consistent Identification AA — однофункційні компоненти ідентифіковані однаково → порушення: та сама дія названа/проіконена по-різному → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
-[wcag] 3.2.6 Consistent Help A — довідка/контакт у тому самому місці на всіх сторінках → порушення: посилання на допомогу «стрибає» → https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html
-[wcag] 3.3.1 Error Identification A — помилкове поле визначене, помилка описана текстом → порушення: лише червона рамка без тексту; помилка тільки кольором → https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html
-[wcag] 3.3.3 Error Suggestion AA — якщо виправлення відоме — підкажи → порушення: «невірний формат» без прикладу правильного → https://www.w3.org/WAI/WCAG22/Understanding/error-suggestion.html
-[wcag] 3.3.4 Error Prevention (Legal/Financial/Data) AA — зворотність / перевірка / підтвердження → порушення: незворотна оплата/видалення без confirm/review → https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html
-[wcag] 3.3.6 Error Prevention (All) AAA — те саме для будь-якого сабміту → порушення (AAA): сабміт без зворотності/перевірки/підтвердження → https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-all.html
-[wcag] 1.4.3 Contrast (Min) AA — текст 4.5:1; великий (≥18pt/14pt bold) 3:1 → порушення: сірий текст нижче 4.5:1 → https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
-[wcag] 1.4.11 Non-text Contrast AA — UI-компоненти/стани 3:1 до сусідніх кольорів → порушення: межа інпута/іконка/focus-ring нижче 3:1 → https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html
-[wcag] 3.3.7 Redundant Entry A — не питати ту саму інфу двічі в межах сесії → порушення: повторне введення адреси/email без autofill/«те саме» → https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html
-[wcag] 3.3.8 Accessible Authentication (Min) AA — без когнітивного тесту для входу → порушення: заборона paste пароля; капча-головоломка без альтернативи → https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html
-[wcag] 2.5.7 Dragging Movements AA — для drag — альтернатива одним pointer → порушення: reorder/slider лише перетягуванням без клік-альтернативи → https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html
+<a id="3-wcag-22-ux-дотичні-sc"></a>
 
-## 4. Форми
-[form] One thing per page — одне питання/рішення на сторінку (групуй лише там, де дослідження це підтверджує) → порушення: довга багатосекційна форма, де губиться фокус → https://design-system.service.gov.uk/patterns/question-pages/
-[form] Label above field — постійний видимий лейбл над полем → порушення: лейбл зникає/зліва обрізає поле на мобільному → https://baymard.com/blog/mobile-form-usability-label-position
-[form] Placeholder ≠ label — не використовувати placeholder замість лейбла → порушення: підказка зникає при вводі → провали пам'яті й виправлення помилок → https://www.nngroup.com/articles/form-design-placeholders/
-[form] Inline validation — валідуй у правильний момент (на blur/після завершення поля, не на кожну літеру), помилку поруч із полем + підсвіти → порушення: помилки лише на сабміті або «на кожну літеру» → https://baymard.com/blog/inline-form-validation ; https://www.nngroup.com/articles/errors-forms-design-guidelines/
-[form] Error wording — опиши, що сталось + як виправити; без жаргону/«please/sorry/you forgot» → порушення: «An error occurred»/«This field is required» без підказки → https://design-system.service.gov.uk/components/error-message/
-[form] Error summary — зведи помилки вгорі з лінками на поля; той самий текст у summary й біля поля → порушення: нема навігації до першої помилки у довгій формі → https://design-system.service.gov.uk/components/error-message/
-[form] Preserve input on error — не очищати поля при помилці → порушення: сабміт з помилкою стирає форму → https://design-system.service.gov.uk/components/error-message/
-[form] Input types & autocomplete — правильний type/inputmode/autocomplete → порушення: email полем type=text без autocomplete; нема числової клавіатури → https://www.nngroup.com/articles/web-form-design/
-[form] Destructive confirmation — деструктивні/фінансові/правові дії зворотні, перевірені або підтверджені → порушення: delete/pay одним кліком без confirm/undo → https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html
-[form] Logical grouping — групуй пов'язані поля (proximity/common region) → порушення: поля в хаотичному порядку; лейбл ближче до чужого поля → https://lawsofux.com/proximity/
+## 3. WCAG 2.2 (UX-related SC)
+[wcag] 2.5.8 Target Size (Min) AA — targets ≥24×24 CSS px or sufficient spacing → violation: a <24px click target without a spacing/inline/UA/essential exception → https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+[wcag] 2.5.5 Target Size (Enhanced) AAA — targets ≥44×44 CSS px → violation (AAA): below 44px for primary actions → https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html
+[wcag] 2.4.7 Focus Visible AA — visible focus indicator → violation: outline:none without a replacement; invisible focus → https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html
+[wcag] 2.4.11 Focus Not Obscured (Min) AA — focused element at least partially visible → violation: sticky header/banner obscures focus → https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html
+[wcag] 3.2.3 Consistent Navigation AA — repeated navigation in the same order → violation: navigation items change order/location across pages → https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html
+[wcag] 3.2.4 Consistent Identification AA — components with the same function identified consistently → violation: the same action has different labels/icons → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
+[wcag] 3.2.6 Consistent Help A — help/contact in the same location on all pages → violation: help link “jumps” → https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html
+[wcag] 3.3.1 Error Identification A — erroneous field identified, error described in text → violation: only a red border without text; color-only error → https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html
+[wcag] 3.3.3 Error Suggestion AA — suggest a correction if known → violation: “invalid format” without a correct example → https://www.w3.org/WAI/WCAG22/Understanding/error-suggestion.html
+[wcag] 3.3.4 Error Prevention (Legal/Financial/Data) AA — reversibility / checking / confirmation → violation: irreversible payment/deletion without confirm/review → https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html
+[wcag] 3.3.6 Error Prevention (All) AAA — the same for any submission → violation (AAA): submission without reversibility/checking/confirmation → https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-all.html
+[wcag] 1.4.3 Contrast (Min) AA — text 4.5:1; large (≥18pt/14pt bold) 3:1 → violation: gray text below 4.5:1 → https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+[wcag] 1.4.11 Non-text Contrast AA — UI components/states 3:1 against adjacent colors → violation: input border/icon/focus ring below 3:1 → https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html
+[wcag] 3.3.7 Redundant Entry A — do not ask for the same information twice within a session → violation: repeated address/email entry without autofill/“same as” → https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html
+[wcag] 3.3.8 Accessible Authentication (Min) AA — no cognitive test for login → violation: password paste prohibited; puzzle CAPTCHA without an alternative → https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html
+[wcag] 2.5.7 Dragging Movements AA — a single-pointer alternative to dragging → violation: reorder/slider only by dragging, without a click alternative → https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html
 
-## 5. Таблиці / списки даних
-[table] Numeric right-align — числа праворуч, бажано tabular/моно-цифри → порушення: числа ліворуч — важко порівнювати розряди → https://www.nngroup.com/articles/data-tables/
-[table] Freeze headers — закріпити рядок-заголовок і колонку-ідентифікатор при скролі → порушення: при скролі губиться, що означає стовпець/рядок → https://www.nngroup.com/articles/data-tables/
-[table] Row tracking — zebra/легкі межі/hover для утримання рядка → порушення: суцільне полотно без орієнтирів ока → https://www.nngroup.com/articles/data-tables/
-[table] Human-readable first column — перша колонка = зрозумілий ідентифікатор, не auto-id → порушення: UUID/числовий ключ першим стовпцем → https://www.nngroup.com/articles/data-tables/
-[table] Row/batch actions — дії через чекбокси + Select All; уникати hover-only меню → порушення: дії видно лише при наведенні мишею → https://www.nngroup.com/articles/data-tables/
-[table] Filters/sort visible state — фільтри помітні + явна індикація активного фільтра/сортування → порушення: незрозуміло, що список відфільтровано/чому порожній → https://www.nngroup.com/articles/data-tables/
-[table] Edit in side panel — редагування в немодальній бічній панелі, не в модалці, що ховає таблицю → порушення: модалка перекриває контекст інших рядків → https://www.nngroup.com/articles/data-tables/
-[table] Narrow-screen strategy — на вузькому: горизонтальний скрол зі sticky-колонкою (ідентифікатор + дії) або stacked-картки, без обрізання → порушення: таблиця ламає лейаут/обрізана; дії зникають при h-скролі → https://www.nngroup.com/articles/mobile-tables/
-[table] Empty/zero state — порожня таблиця пояснює, що тут буде, і дає дію → порушення: порожньо без пояснення (грузиться? помилка?) → https://www.nngroup.com/articles/empty-state-interface-design/
+<a id="4-форми"></a>
 
-## 6. Навігація / IA
-[nav] Single primary nav — одна основна навігація, стабільна між екранами → порушення: конкурентні нав-системи або нав, що змінює порядок → https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html
-[nav] Current-state visibility — видно, де користувач зараз (active стан) → порушення: нема підсвітки поточного пункту/кроку → https://www.nngroup.com/articles/ten-usability-heuristics/
-[nav] Breadcrumbs for depth — хлібні крихти на глибоких ієрархіях → порушення: глибокий розділ без шляху назад до рівнів → https://www.nngroup.com/articles/breadcrumbs/
-[nav] Consistent identification — однакові дії названі/проіконені однаково → порушення: «Видалити» то кнопка, то іконка-кошик, то «Прибрати» → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
+## 4. Forms
+[form] One thing per page — one question/decision per page (group only where research supports it) → violation: a long multisection form where focus is lost → https://design-system.service.gov.uk/patterns/question-pages/
+[form] Label above field — persistent visible label above the field → violation: label disappears/left label clips the field on mobile → https://baymard.com/blog/mobile-form-usability-label-position
+[form] Placeholder ≠ label — do not use a placeholder instead of a label → violation: the hint disappears during input → memory and error-correction failures → https://www.nngroup.com/articles/form-design-placeholders/
+[form] Inline validation — validate at the right time (on blur/after completing the field, not every character), with the error beside the field + highlighting → violation: errors only on submit or “on every character” → https://baymard.com/blog/inline-form-validation ; https://www.nngroup.com/articles/errors-forms-design-guidelines/
+[form] Error wording — describe what happened + how to fix it; no jargon/“please/sorry/you forgot” → violation: “An error occurred”/“This field is required” without guidance → https://design-system.service.gov.uk/components/error-message/
+[form] Error summary — summarize errors at the top with links to fields; the same text in the summary and beside the field → violation: no navigation to the first error in a long form → https://design-system.service.gov.uk/components/error-message/
+[form] Preserve input on error — do not clear fields on error → violation: a failed submission erases the form → https://design-system.service.gov.uk/components/error-message/
+[form] Input types & autocomplete — correct type/inputmode/autocomplete → violation: email as type=text without autocomplete; no numeric keyboard → https://www.nngroup.com/articles/web-form-design/
+[form] Destructive confirmation — destructive/financial/legal actions reversible, checked or confirmed → violation: one-click delete/pay without confirm/undo → https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html
+[form] Logical grouping — group related fields (proximity/common region) → violation: chaotic field order; a label closer to another field → https://lawsofux.com/proximity/
 
-## 7. Зворотний зв'язок і стани
-[state] Loading threshold — <1s нічого; 1–10s спінер/скелетон; >10s прогрес-бар із % і можливістю перервати → порушення: спінер на <1s (мерехтіння) або голий екран на >10s → https://www.nngroup.com/articles/response-times-3-important-limits/
-[state] Perceived latency — відгук <400ms або оптимістичне оновлення/негайний feedback → порушення: клік без реакції >400ms → https://lawsofux.com/doherty-threshold/
-[state] Empty states instructive — порожній стан пояснює, що тут може бути, і дає дію → порушення: цілком порожній екран → плутанина → https://www.nngroup.com/articles/empty-state-interface-design/
-[state] Error states actionable — що сталось + як виправити, поруч із причиною → порушення: загальне «Something went wrong» без наступного кроку → https://design-system.service.gov.uk/components/error-message/
-[state] Success + undo — підтверджувати успіх; для деструктивних давати undo → порушення: мовчазний успіх; видалення без «Відмінити» → https://www.nngroup.com/articles/ten-usability-heuristics/
-[state] Progress indicator >10s — довгі операції з % прогресу й оцінкою часу → порушення: нескінченний спінер на довгій операції → https://www.nngroup.com/articles/progress-indicators/
+<a id="5-таблиці--списки-даних"></a>
 
-## 8. Контент / мікрокопі
-[copy] Action-oriented buttons — лейбл кнопки = дія/результат (дієслово) → порушення: «OK/Submit/Yes» замість «Зберегти зміни/Видалити курс» → https://www.nngroup.com/articles/ten-usability-heuristics/
-[copy] User's language — слова користувача, без жаргону й кодів → порушення: технічні терміни/внутрішні назви в UI → https://www.nngroup.com/articles/ten-usability-heuristics/
-[copy] Consistent terminology — один термін на одне поняття по всьому продукту → порушення: «курс/програма/клас» як синоніми → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
-[copy] Predictability — лейбл/дія роблять те, що обіцяють → порушення: «Зберегти» також публікує; лінк веде не туди → https://lawsofux.com/jakobs-law/
+## 5. Tables / data lists
+[table] Numeric right-align — numbers right-aligned, preferably tabular/monospaced digits → violation: left-aligned numbers make place values hard to compare → https://www.nngroup.com/articles/data-tables/
+[table] Freeze headers — freeze the header row and identifier column during scrolling → violation: scrolling loses the meaning of a column/row → https://www.nngroup.com/articles/data-tables/
+[table] Row tracking — zebra/light borders/hover to track the row → violation: an uninterrupted surface without visual landmarks → https://www.nngroup.com/articles/data-tables/
+[table] Human-readable first column — first column = understandable identifier, not auto-id → violation: UUID/numeric key in the first column → https://www.nngroup.com/articles/data-tables/
+[table] Row/batch actions — actions through checkboxes + Select All; avoid hover-only menus → violation: actions visible only on mouse hover → https://www.nngroup.com/articles/data-tables/
+[table] Filters/sort visible state — noticeable filters + explicit indication of active filter/sort → violation: unclear that the list is filtered/why it is empty → https://www.nngroup.com/articles/data-tables/
+[table] Edit in side panel — edit in a nonmodal side panel, not a modal hiding the table → violation: a modal covers other rows' context → https://www.nngroup.com/articles/data-tables/
+[table] Narrow-screen strategy — on narrow screens: horizontal scroll with a sticky column (identifier + actions) or stacked cards, without clipping → violation: the table breaks the layout/is clipped; actions disappear during horizontal scrolling → https://www.nngroup.com/articles/mobile-tables/
+[table] Empty/zero state — an empty table explains what will be here and offers an action → violation: emptiness without explanation (loading? error?) → https://www.nngroup.com/articles/empty-state-interface-design/
 
-## 9. Моб/тач/респонсив
-[mobile] Touch target — ≥44×44 pt (Apple HIG) / ≥48×48 dp (Material); WCAG min 24px / AAA 44px — назвати застосовний поріг → порушення: іконка-кнопка 24px як основна дія на тач → https://developer.apple.com/design/human-interface-guidelines/accessibility ; https://m3.material.io/foundations/designing/structure
-[mobile] Target spacing — достатній проміжок між таргетами (Material ~8dp) → порушення: щільні дрібні таргети → помилкові тапи → https://m3.material.io/foundations/designing/structure
-[mobile] No 2D scroll (Reflow) — контент без горизонтального скролу при 400% (320 CSS px), крім винятків (таблиці/мапи) → порушення: широкий блок ламає viewport → https://www.w3.org/WAI/WCAG22/Understanding/reflow.html
-[mobile] Resize text 200% — текст читабельний при збільшенні до 200% без втрат/перекриття → порушення: обрізання/накладання при 200% тексту → https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html
+<a id="6-навігація--ia"></a>
 
-## 10. Когнітивне навантаження
-[cog] Progressive disclosure — показувати лише потрібне зараз, решту розкривати на вимогу → порушення: усі опції/поля одразу на одному екрані → https://www.nngroup.com/articles/progressive-disclosure/
-[cog] Smart defaults — розумні дефолти замість порожніх обов'язкових виборів → порушення: обов'язковий вибір без очевидного дефолту → https://lawsofux.com/hicks-law/
-[cog] Recognition over recall — впізнавання замість пригадування (видимі опції, недавнє, автозаповнення) → порушення: треба пам'ятати код/назву з іншого екрана → https://www.nngroup.com/articles/ten-usability-heuristics/
-[cog] Chunking 5±2 — групувати в блоки по ~5±2, не довгі негруповані списки → порушення: меню/форма з 15 рівнорядних пунктів без груп → https://lawsofux.com/millers-law/
+## 6. Navigation / IA
+[nav] Single primary nav — one primary navigation, stable across screens → violation: competing navigation systems or navigation changing order → https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html
+[nav] Current-state visibility — visible current location (active state) → violation: no highlight for the current item/step → https://www.nngroup.com/articles/ten-usability-heuristics/
+[nav] Breadcrumbs for depth — breadcrumbs in deep hierarchies → violation: a deep section with no path back through levels → https://www.nngroup.com/articles/breadcrumbs/
+[nav] Consistent identification — identical actions have identical labels/icons → violation: “Delete” is sometimes a button, sometimes a trash icon, sometimes “Remove” → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
 
-## 11. Стани інтерактивних контролів
-[states] Interaction-state matrix — кожен інтерактивний контрол визначає й візуально розрізняє rest / hover / active(pressed) / focus / disabled / loading → порушення: hover=rest; нема pressed-фідбеку; disabled не відрізнити від активного; loading без індикації → https://m3.material.io/foundations/interaction/states/overview
-[states] Focus окремо від hover — видимий focus-стан для клавіатури, не лише hover для миші → порушення: hover є, focus нема (клавіатура «сліпа») → https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html
-[states] Disabled пояснює причину — зрозуміло, ЧОМУ контрол недоступний (підказка/текст); краще не показувати недоступне, ніж мертвий сірий → порушення: сірий контрол без жодного пояснення → https://www.nngroup.com/articles/ten-usability-heuristics/
-[states] Loading/pending на контролі — асинхронна дія показує pending на самому контролі (спінер / disabled-на-час), не «мертвий клік» → порушення: натиснув — жодної реакції, незрозуміло, чи триває → https://www.nngroup.com/articles/progress-indicators/
+<a id="7-зворотний-звязок-і-стани"></a>
+
+## 7. Feedback and states
+[state] Loading threshold — <1s nothing; 1–10s spinner/skeleton; >10s progress bar with % and cancellation → violation: a spinner for <1s (flickering) or a blank screen for >10s → https://www.nngroup.com/articles/response-times-3-important-limits/
+[state] Perceived latency — response <400ms or optimistic update/immediate feedback → violation: a click without reaction for >400ms → https://lawsofux.com/doherty-threshold/
+[state] Empty states instructive — empty state explains what could be here and offers an action → violation: an entirely empty screen → confusion → https://www.nngroup.com/articles/empty-state-interface-design/
+[state] Error states actionable — what happened + how to fix it, next to the cause → violation: generic “Something went wrong” without a next step → https://design-system.service.gov.uk/components/error-message/
+[state] Success + undo — confirm success; provide undo for destructive actions → violation: silent success; deletion without “Undo” → https://www.nngroup.com/articles/ten-usability-heuristics/
+[state] Progress indicator >10s — long operations with percentage progress and a time estimate → violation: an endless spinner for a long operation → https://www.nngroup.com/articles/progress-indicators/
+
+<a id="8-контент--мікрокопі"></a>
+
+## 8. Content / microcopy
+[copy] Action-oriented buttons — button label = action/outcome (verb) → violation: “OK/Submit/Yes” instead of “Save changes/Delete course” → https://www.nngroup.com/articles/ten-usability-heuristics/
+[copy] User's language — user vocabulary, no jargon or codes → violation: technical terms/internal names in UI → https://www.nngroup.com/articles/ten-usability-heuristics/
+[copy] Consistent terminology — one term per concept throughout the product → violation: “course/program/class” used as synonyms → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
+[copy] Predictability — label/action fulfills its promise → violation: “Save” also publishes; a link leads elsewhere → https://lawsofux.com/jakobs-law/
+
+<a id="9-мобтачреспонсив"></a>
+
+## 9. Mobile/touch/responsive
+[mobile] Touch target — ≥44×44 pt (Apple HIG) / ≥48×48 dp (Material); WCAG min 24px / AAA 44px: name the applicable threshold → violation: a 24px icon button as the primary touch action → https://developer.apple.com/design/human-interface-guidelines/accessibility ; https://m3.material.io/foundations/designing/structure
+[mobile] Target spacing — sufficient space between targets (Material ~8dp) → violation: dense small targets → mistaken taps → https://m3.material.io/foundations/designing/structure
+[mobile] No 2D scroll (Reflow) — content without horizontal scrolling at 400% (320 CSS px), except exceptions (tables/maps) → violation: a wide block breaks the viewport → https://www.w3.org/WAI/WCAG22/Understanding/reflow.html
+[mobile] Resize text 200% — text readable when enlarged to 200% without loss/overlap → violation: clipping/overlapping at 200% text → https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html
+
+<a id="10-когнітивне-навантаження"></a>
+
+## 10. Cognitive load
+[cog] Progressive disclosure — show only what is needed now, reveal the rest on demand → violation: all options/fields on one screen at once → https://www.nngroup.com/articles/progressive-disclosure/
+[cog] Smart defaults — sensible defaults instead of empty required choices → violation: a mandatory choice without an obvious default → https://lawsofux.com/hicks-law/
+[cog] Recognition over recall — recognition instead of recall (visible options, recents, autofill) → violation: users must remember a code/name from another screen → https://www.nngroup.com/articles/ten-usability-heuristics/
+[cog] Chunking 5±2 — group into blocks of ~5±2, not long ungrouped lists → violation: a menu/form with 15 equal items without groups → https://lawsofux.com/millers-law/
+
+<a id="11-стани-інтерактивних-контролів"></a>
+
+## 11. Interactive control states
+[states] Interaction-state matrix — each interactive control defines and visually distinguishes rest / hover / active(pressed) / focus / disabled / loading → violation: hover=rest; no pressed feedback; disabled indistinguishable from active; loading without indication → https://m3.material.io/foundations/interaction/states/overview
+[states] Focus separate from hover — visible keyboard focus state, not just mouse hover → violation: hover exists, focus does not (keyboard is “blind”) → https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html
+[states] Disabled explains why — clear WHY a control is unavailable (hint/text); better to hide unavailable actions than show lifeless gray → violation: a gray control without any explanation → https://www.nngroup.com/articles/ten-usability-heuristics/
+[states] Loading/pending on the control — an asynchronous action shows pending on the control itself (spinner / temporarily disabled), not a “dead click” → violation: click without reaction, unclear whether it is running → https://www.nngroup.com/articles/progress-indicators/
 
 ---
 
-## Найавторитетніші джерела (для цитування)
+<a id="найавторитетніші-джерела-для-цитування"></a>
+
+## Most authoritative sources (for citation)
 - NN/g 10 Usability Heuristics — https://www.nngroup.com/articles/ten-usability-heuristics/
 - NN/g Response-Time Limits — https://www.nngroup.com/articles/response-times-3-important-limits/
 - NN/g Placeholders Are Harmful — https://www.nngroup.com/articles/form-design-placeholders/
@@ -134,4 +156,5 @@
 - Baymard Institute (form research) — https://baymard.com/blog/mobile-form-usability-label-position
 - Apple HIG — https://developer.apple.com/design/human-interface-guidelines/ · Material 3 — https://m3.material.io/
 
-Усі URL підтверджені fetch'ем станом на 2026-10-14 (мертвий `nngroup.com/articles/hicks-law/` замінено на lawsofux + NN/g progressive-disclosure).
+
+All URLs were confirmed by fetch as of 2026-10-14 (the dead `nngroup.com/articles/hicks-law/` was replaced with lawsofux + NN/g progressive-disclosure).

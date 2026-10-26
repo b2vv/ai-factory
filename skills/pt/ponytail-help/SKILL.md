@@ -1,12 +1,12 @@
 ---
 name: ponytail-help
 description: >
-  Довідкова картка по всьому набору ponytail — три рівні інтенсивності
-  (lite / full / ultra), шість скілів і чим вони відрізняються, як вимкнути режим
-  і де налаштувати типовий. Використовуйте, коли не пам'ятаєте, який саме
-  ponytail-скіл узяти під задачу, або на тригери "ponytail help",
-  "what ponytail commands", "як користуватись ponytail", /ponytail-help.
-  Разовий показ: режиму не змінює, нічого не пише.
+  Reference card for the full ponytail set — three intensity levels
+  (lite / full / ultra), six skills and how they differ, how to disable the mode
+  and where to configure the default. Use when you cannot remember which
+  ponytail skill fits the task, or on triggers "ponytail help",
+  "what ponytail commands", "як користуватись ponytail" (retained Ukrainian compatibility alias), /ponytail-help.
+  One-shot display: changes no mode and writes nothing.
 ---
 
 # Ponytail Help

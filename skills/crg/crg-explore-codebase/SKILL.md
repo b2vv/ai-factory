@@ -1,6 +1,6 @@
 ---
 name: crg-explore-codebase
-description: "Навігація локальним CRG: архітектура, imports/calls і модулі; для розуміння коду, не заміни перевірки файлів."
+description: "Navigate the local CRG: architecture, imports/calls and modules; for understanding code, not replacing file verification."
 ---
 
 ## Runtime contract

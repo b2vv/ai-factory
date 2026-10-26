@@ -1,95 +1,109 @@
 ---
 name: ux-review
-description: 'Аудит інтерфейсу проти цитованих UX best-practice правил — евристики Nielsen, Laws of UX, UX-дотичні критерії WCAG 2.2, патерни форм / таблиць / станів / навігації / копірайту / тач-таргетів / когнітивного навантаження. Бере екран, флоу чи прототип і повертає РАНЖОВАНІ порушення, кожне з джерелом і спостережуваним чеком. Не про те, «чи виглядає як AI» (це anti-slop-design) і не про точне відтворення макета (design-pass) — про придатність до використання. Використовуйте, коли треба перевірити/прожарити UX екрана, потоку, прототипу чи редизайну, скласти acceptance-критерії UX або гейтнути «готовність» інтерфейсу. Тригери: "ux-review", "ux-аудит", "перевір UX", "ux lint", "прожар UX", "usability review", "юзабіліті".'
+description: 'Audits an interface against cited UX best-practice rules: Nielsen heuristics, Laws of UX, UX-related WCAG 2.2 criteria, and patterns for forms / tables / states / navigation / copy / touch targets / cognitive load. Takes a screen, flow or prototype and returns RANKED violations, each with a source and an observable check. About usability, not whether it looks AI-generated (anti-slop-design) or exact mockup reconstruction (design-pass). Use to check/critique UX of a screen, flow, prototype or redesign, define UX acceptance criteria or gate interface readiness. Compatibility trigger aliases: "ux-review", "ux-аудит", "перевір UX", "ux lint", "прожар UX", "usability review", "юзабіліті".'
 ---
 
-# ux-review — аудит UX проти цитованих правил
+<a id="ux-review--аудит-ux-проти-цитованих-правил"></a>
 
-Це **факти + гейт**, не метод побудови. Метод («як приймати дизайн-рішення», branch page vs system,
-де ризик) — у [`frontend-design`](../ship/frontend-design/SKILL.md). Як НЕ виглядати шаблонно — у
-[`anti-slop-design`](../anti-slop-design/SKILL.md). Відповідність a11y-стандарту — у профільному
-accessibility-рев'ю. Цей скіл перевіряє одне: **чи зручно й передбачувано цим користуватись** —
-проти набору перевірних правил зі зведеними першоджерелами.
+# ux-review — UX audit against cited rules
 
-Правила живуть у [`references/rules.md`](references/rules.md): кожне у форматі
-`[категорія] НАЗВА — принцип → ЯК ПЕРЕВІРИТИ (спостережуваний чек) → джерело(URL)`. Поле
-**ЯК ПЕРЕВІРИТИ обов'язкове**: правило без способу перевірки на цьому екрані — гіпотеза в костюмі
-правила, гейт на ньому не тримається. Не тягни в звіт правило, яке не можеш перевірити на артефакті.
+These are **facts + a gate**, not a construction method. The method (how to make design decisions, page vs system branching,
+where risk lies) is in [`frontend-design`](../ship/frontend-design/SKILL.md). How NOT to look templated is in
+[`anti-slop-design`](../anti-slop-design/SKILL.md). Accessibility-standard conformance belongs in specialized
+accessibility review. This skill checks one thing: **is this convenient and predictable to use**,
+against verifiable rules with collected primary sources.
 
-## Коли застосовувати
+Rules live in [`references/rules.md`](references/rules.md), each in the format
+`[category] NAME — principle → HOW TO CHECK (observable check) → source(URL)`. The
+**HOW TO CHECK field is mandatory**: a rule without a way to check it on this screen is a hypothesis dressed as
+a rule and cannot support a gate. Do not report a rule you cannot check on the artifact.
 
-Рев'ю чи аудит UX конкретного екрана / потоку / прототипу / редизайну; формування UX-acceptance;
-фінальний гейт «готовності» інтерфейсу перед здачею. Не для вибору палітри/типографіки (це
-`frontend-design`) і не для pixel-parity з макетом (це `design-pass`).
+<a id="коли-застосовувати"></a>
 
-## Порядок
+## When to apply
 
-0. **Скоуп.** Назви артефакт (жива сторінка / скрин / прототип / багатокроковий флоу), **в'юпорти**
-   (прочитай і застосуй [спільний viewport-контракт](../design-pass/references/viewport-coverage.md): phone, tablet portrait, tablet landscape, desktop при 100%; text enlargement/reflow окремо), і **хто/навіщо** (роль + задача користувача).
-   Без задачі користувача половина евристик не має сенсу.
+UX review or audit of a specific screen / flow / prototype / redesign; defining UX acceptance;
+a final interface-readiness gate before delivery. Not palette/typography selection (that is
+`frontend-design`) or pixel parity with a mockup (that is `design-pass`).
 
-1. **Докази, не пам'ять.** Для живого/візуального таргета — зніми його (реально переглянуті screenshots кожної застосовної поверхні × baseline viewport за спільним контрактом);
-   для флоу — пройди кроки. Кожне порушення мусить спиратись на *побачене* (елемент, екран, крок), а
-   не на загальне «зазвичай погано». Той самий принцип, що §3 pre-flight у `anti-slop-design`.
+<a id="порядок"></a>
 
-1b. **Крайні умови.** Застосовні правила прожени не лише на «щасливому» стані, а й під стрес-умовами: дуже довгий текст/ім'я, порожньо (0), 1 елемент, багато (overflow), стан помилки, повільна мережа. Багато дефектів (обрізання, злипання, зламаний лейаут, зниклі дії) видно ЛИШЕ тут.
+## Procedure
 
-2. **Прогін по правилах.** Іди `references/rules.md` категорія за категорією. Для кожного правила
-   виконай його «ЯК ПЕРЕВІРИТИ» проти артефакта → `pass` / `violation` з доказом (що саме, де).
-   Пропускай правила, не застосовні до цього типу екрана (напр. table-правила на формі) — і скажи, що
-   пропустив.
+0. **Scope.** Name the artifact (live page / screenshot / prototype / multistep flow), **viewports**
+   (read and apply the [shared viewport contract](../design-pass/references/viewport-coverage.md): phone, tablet portrait, tablet landscape, desktop at 100%; text enlargement/reflow separately), and **who/why** (role + user task).
+   Without a user task, half the heuristics are meaningless.
 
-Перед ранжуванням зафіксуй цільовий рівень доступності з вимог проєкту; якщо його немає, назви це. Невиконаний AAA-критерій не є автоматично blocker для AA-цілі. Відрізняй перевірений дефект від неперевіреного критерію.
+1. **Evidence, not memory.** For a live/visual target, capture it (actually inspected screenshots of every applicable surface × baseline viewport under the shared contract);
+   for a flow, walk the steps. Each violation must rest on what was *seen* (element, screen, step),
+   not a general “usually bad”. The same principle as §3 pre-flight in `anti-slop-design`.
 
-3. **Ранжуй.** Кожне порушення → **blocker** (блокує задачу / втрата даних / недосяжний контроль /
-   провал застосовного обов'язкового критерію WCAG з урахуванням цільового рівня й винятків) · **major** (суттєве тертя, плутанина, високе когнітивне навантаження) ·
-   **minor** (поліш). Знахідка без спостережуваного чека — не знахідка, викинь.
-   **Дедуп:** один побачений дефект = одна знахідка під НАЙСПЕЦИФІЧНІШИМ правилом; решту збіжних правил — як corroboration у тій самій знахідці, severity НЕ підсумовувати по них. (У руллсеті є навмисні крос-категорійні повтори — recognition-over-recall, consistent-identification, error-prevention, target-size, proximity, latency — не лічи один дефект кілька разів.)
+1b. **Edge conditions.** Run applicable rules not only in the happy state but also under stress: very long text/name, empty (0), 1 item, many (overflow), error state, slow network. Many defects (clipping, crowding, broken layout, missing actions) are visible ONLY here.
 
-4. **Звіт.** Ранжований список, найважче першим. Кожна знахідка:
-   - **правило + категорія** (напр. `[forms] Placeholder ≠ label`);
-   - **порушення**: що побачено і де (елемент/екран/крок) — доказ;
-   - **джерело**: URL першоджерела правила;
-   - **фікс**: конкретна зміна.
-   У кінці — короткий підсумок `pass`-ів і явно пропущені категорії.
+2. **Rule pass.** Walk `references/rules.md` category by category. For every rule,
+   perform its HOW TO CHECK against the artifact → `pass` / `violation` with evidence (exactly what and where).
+   Skip rules inapplicable to this screen type (e.g. table rules on a form), and state what
+   you skipped.
 
-## Режим гейта (pre-flight «готовності»)
+Before ranking, record the target accessibility level from project requirements; if absent, say so. Failure of an AAA criterion is not automatically a blocker for an AA target. Distinguish a verified defect from an untested criterion.
 
-Як у `anti-slop-design`: інтерфейс не «готовий», поки список blocker+major не порожній **або** кожен
-пункт у ньому — датоване обмеження, явно прийняте користувачем (магнітуда або механізм, не «потім полагодимо»).
-Прогін роби на скрині/живому екрані, не з пам'яті; не зміг зняти — скажи чесно.
+3. **Rank.** Each violation → **blocker** (blocks the task / data loss / unreachable control /
+   failure of an applicable mandatory WCAG criterion, considering target level and exceptions) · **major** (substantial friction, confusion, high cognitive load) ·
+   **minor** (polish). A finding without an observable check is not a finding; remove it.
+   **Dedup:** one observed defect = one finding under the MOST SPECIFIC rule; cite other matching rules as corroboration within the same finding, and do NOT add their severities. (The ruleset deliberately repeats across categories—recognition-over-recall, consistent-identification, error-prevention, target-size, proximity, latency—so do not count one defect multiple times.)
 
-## Режим рев'ю дифу / PR
+4. **Report.** Ranked list, most severe first. Each finding:
+   - **rule + category** (e.g. `[forms] Placeholder ≠ label`);
+   - **violation**: what was observed and where (element/screen/step), with evidence;
+   - **source**: primary-source URL for the rule;
+   - **fix**: a specific change.
+   End with a short summary of `pass` results and explicitly skipped categories.
 
-Для рев'ю гілки чи PR на UI-регресії: візьми змінені екрани/компоненти (діф), визнач, які правила зачіпає зміна, і прожени їх проти базової гілки (до/після). Шукай саме **регресії**, внесені зміною (зламаний стан/контраст/фокус/адаптив/копі), а не ввесь наявний борг екрана. Нова знахідка = регресія цього дифу; борг поза дифом фіксуй окремо, не змішуй із регресіями.
+<a id="режим-гейта-pre-flight-готовності"></a>
 
-## Пріоритет, коли шари сперечаються
+## Gate mode (readiness pre-flight)
 
-**проєкт > правила скіла > generic.** Канонічні токени, патерни й стандарти репозиторію (локальний
-дизайн-скіл, `CLAUDE.md`/`AGENTS.md`, дизайн-система) **б'ють** generic-правило там, де вони його
-перекривають (напр. проєкт свідомо тримає кнопку enabled+no-op замість `disabled` — це рішення
-проєкту, не порушення). Правило скіла вмикається там, де проєкт мовчить. Де джерела самі конфліктують
-(напр. тач-таргет 24px WCAG min vs 44px Apple HIG) — назви обидва пороги й застосовний контекст,
-не вдавай єдину цифру.
+As in `anti-slop-design`, the interface is not “ready” until the blocker+major list is empty **or** each
+item is a dated limitation explicitly accepted by the user (magnitude or mechanism, not “we will fix it later”).
+Run against a screenshot/live screen, not from memory; if you could not capture it, say so honestly.
 
-## Чесність
+<a id="режим-ревю-дифу--pr"></a>
 
-- Не цитуй правило, яке не перевірив на артефакті. Не вигадуй порогів чи URL.
-- Не роздувай severity: blocker — це блокер, не вподобання.
-- Пропущене (не зняв вузький в'юпорт, не пройшов флоу) — назви пропущеним, не видавай за `pass`.
+## Diff / PR review mode
+
+For UI regression review of a branch or PR, take the changed screens/components (diff), identify affected rules and run them against the base branch (before/after). Look specifically for **regressions** introduced by the change (broken state/contrast/focus/responsiveness/copy), not all existing screen debt. A new finding is a regression in this diff; record debt outside the diff separately rather than mixing it with regressions.
+
+<a id="пріоритет-коли-шари-сперечаються"></a>
+
+## Priority when layers disagree
+
+**project > skill rules > generic.** Canonical repository tokens, patterns and standards (local
+design skill, `CLAUDE.md`/`AGENTS.md`, design system) **override** a generic rule where they cover it
+(e.g. a project intentionally keeps a button enabled+no-op rather than `disabled`: this is a
+project decision, not a violation). The skill rule applies where the project is silent. Where sources themselves conflict
+(e.g. WCAG minimum touch target 24px vs Apple HIG 44px), name both thresholds and the applicable context;
+do not pretend there is a single number.
+
+<a id="чесність"></a>
+
+## Honesty
+
+- Do not cite a rule you have not checked on the artifact. Do not invent thresholds or URLs.
+- Do not inflate severity: a blocker is a blocker, not a preference.
+- Name skipped work (no narrow-viewport capture, flow not walked) as skipped; do not present it as `pass`.
 
 ## Done
 
-- скоуп названо (артефакт, в'юпорти, роль+задача);
-- докази всіх застосовних baseline viewport переглянуті й записані за спільним контрактом; відсутні — NOT_TESTED, required gate — BLOCKED;
-- пройдено застосовні категорії `references/rules.md`, пропущені названо;
-- кожна знахідка має правило + доказ + джерело(URL) + фікс, і відранжована;
-- severity виставлено; знахідки без спостережуваного чека прибрано;
-- у режимі гейта: blocker+major порожній або кожен — датоване обмеження, явно прийняте користувачем.
+- scope named (artifact, viewports, role+task);
+- evidence from every applicable baseline viewport inspected and recorded under the shared contract; missing evidence is NOT_TESTED, a required gate is BLOCKED;
+- applicable `references/rules.md` categories checked, skipped categories named;
+- each finding has rule + evidence + source(URL) + fix and is ranked;
+- severity assigned; findings without observable checks removed;
+- in gate mode: blocker+major empty or each is a dated limitation explicitly accepted by the user.
 
 ---
 
-**Пара:** правила — [`references/rules.md`](references/rules.md). Доповнює, не заміняє:
-[`anti-slop-design`](../anti-slop-design/SKILL.md) (машинні кліше вигляду), accessibility-рев'ю
-(відповідність WCAG), [`design-pass`](../design-pass/SKILL.md) (відтворення макета),
-[`frontend-design`](../ship/frontend-design/SKILL.md) (метод візуальних рішень).
+**Companion:** rules are in [`references/rules.md`](references/rules.md). Complements, does not replace:
+[`anti-slop-design`](../anti-slop-design/SKILL.md) (machine clichés in appearance), accessibility review
+(WCAG conformance), [`design-pass`](../design-pass/SKILL.md) (mockup reconstruction),
+[`frontend-design`](../ship/frontend-design/SKILL.md) (visual decision method).

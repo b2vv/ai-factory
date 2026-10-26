@@ -1,184 +1,197 @@
 ---
-title: "Маршрути роботи, передача контексту та перевірки"
+title: "Work routes, context handoff and checks"
 reviewed: 2026-10-16
 ---
 
-[До точки входу](../docs/legacy/ai-factory-plan-entry.md) · [Статус](status.md#capabilities) · [Маршрути](workflow.md#routing) · [Задачі](roadmap.md#tasks) · [Практики репо](repo-evidence.md#repo-evidence) · [Історія](history.md#history)
+[Entry point](../docs/legacy/ai-factory-plan-entry.md) · [Status](status.md#capabilities) · [Routes](workflow.md#routing) · [Tasks](roadmap.md#tasks) · [Repository practices](repo-evidence.md#repo-evidence) · [History](history.md#history)
 
 <a id="task-branches"></a>
 
-## Task branch у головному репозиторії
+<a id="task-branch-у-головному-репозиторії"></a>
+## Task branch in the main repository
 
-Звичайний маршрут задачі — окрема task branch у головному репозиторії. Worktree, окремий clone або detached checkout не створюються автоматично; інший маршрут потребує явного доручення користувача. Це правило має пріоритет над історичними прикладами та defaults обраного скілу щодо Git isolation; локальні acceptance, архітектура й required gates зберігаються.
+The normal task route is a separate task branch in the main repository. A worktree, separate clone or detached checkout is not created automatically; another route requires an explicit user instruction. This rule takes precedence over historical examples and the selected skill's defaults for Git isolation; local acceptance, architecture and required gates remain in place.
 
-У чинному task/plan запиши main repository root, task branch і base, поточні HEAD/index/dirty scope, одного активного writer та порядок передачі ownership. У shared working directory одночасно працює лише один writer; незалежне read-only дослідження допускається за стабільного snapshot. Перед зміною гілки перевір власника й стан дерева. За чужого або невідомого dirty/staged/untracked WIP не перемикай гілку. Не застосовуй stash/reset/clean/commit для звільнення дерева без окремого дозволу. За конфлікту зупини залежні дії й погодь порядок/межі роботи; не переходь мовчки на worktree чи clone. Не переривай процеси іншої сесії.
+In the current task/plan, record the main repository root, task branch and base, current HEAD/index/dirty scope, one active writer and the ownership handoff procedure. Only one writer works in a shared working directory at a time; independent read-only research is allowed against a stable snapshot. Before changing branches, check ownership and tree state. Do not switch branches when dirty/staged/untracked WIP belongs to someone else or its ownership is unknown. Do not use stash/reset/clean/commit to clear the tree without separate permission. On conflict, stop dependent actions and agree on the order and boundaries of work; do not silently move to a worktree or clone. Do not interrupt another session's processes.
 
-Runtime/test isolation — окремий контракт: узгоджені ports, service/project identity, data volumes і heavy-gate slot. Він не означає Git worktree та не дозволяє destructive reset/seed спільних даних. Handoff передає актуальну branch ownership і snapshot; після зміни writer/гілки перевір тільки зачеплені докази. Ця норма не запускає гілку, commit, push, deploy чи інструменти сама.
+Runtime/test isolation is a separate contract: agreed ports, service/project identity, data volumes and a heavy-gate slot. It does not imply a Git worktree or permit a destructive reset/seed of shared data. Handoff transfers current branch ownership and snapshot; after a writer/branch change, verify only affected evidence. This rule does not itself initiate a branch, commit, push, deploy or tools.
 
 <a id="routing"></a>
 
-# Маршрути роботи, передача контексту та перевірки
+<a id="маршрути-роботи-передача-контексту-та-перевірки"></a>
+# Work routes, context handoff and checks
 
-Це погоджена схема вибору процесу, а не новий виконуваний скіл. Чинні інструкції репо й доручення користувача визначають дії. Для вже налаштованого проєкту повторний bootstrap не потрібен.
+This is an agreed process selection scheme, not a new executable skill. Current repository instructions and the user's request determine actions. A project that is already configured does not need another bootstrap.
 
-Практична [навігація feature lifecycle](feature-lifecycle.md) пов’язує етапи з наявними скілами, ролями й gates; вона не додає другого оркестратора та зберігає локальні workflow.
+Practical [feature lifecycle navigation](feature-lifecycle.md) connects stages to existing skills, roles and gates; it does not add a second orchestrator and preserves local workflows.
 
 ## Before code: explicit task readiness
 
 Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
 
-## Startup: хто виконує критику, review та перевірки
+<a id="startup-хто-виконує-критику-review-та-перевірки"></a>
+## Startup: who performs critique, review and checks
 
-До роботи запиши у чинний primary record і покажи користувачу: мета → **новий субагент / наявна окрема сесія / НЕ ВИЗНАЧЕНО**, owner, точний session/agent reference якщо відомий, підстава поточного вибору, хто передає пакет, координація shared-resource checks. Явне доручення має пріоритет. Якщо вибір не задано й не можна однозначно вивести з поточного доручення — запитай до spawn/надсилання; незалежні safe inventory/planning дозволені. Не створюй дубль reviewer і не контактуй з іншою сесією без авторизації. Наявна сесія ≠ виконаний review. Авторські checks позначай окремо.
+Before work, record in the current primary record and show the user: purpose → **new subagent / existing separate session / UNDETERMINED**, owner, exact session/agent reference if known, rationale for the current choice, who delivers the package, and coordination of shared-resource checks. An explicit instruction takes precedence. If the choice is not specified and cannot be unambiguously inferred from the current request, ask before spawning/sending; independent safe inventory/planning is allowed. Do not create a duplicate reviewer or contact another session without authorization. An existing session ≠ a completed review. Label authorial checks separately.
 
-Пакет і verdict — за [review handoff](review-handoff.md): task/session IDs, root/base/HEAD, scoped dirty/untracked hashes та diff, pinned acceptance/contracts, raw evidence/commands/exits, constraints. Reviewer read-only, перевіряє джерела незалежно; тести зі shared side effects потребують координації. Findings: file:line + impact + verification. PASS прив'язаний до snapshot; після змін — пропорційний final-delta review. Missing response/evidence → NOT_TESTED/BLOCKED. Small лишає один primary record, без другого tracker.
+The package and verdict follow [review handoff](review-handoff.md): task/session IDs, root/base/HEAD, scoped dirty/untracked hashes and diff, pinned acceptance/contracts, raw evidence/commands/exits, constraints. The reviewer is read-only and verifies sources independently; tests with shared side effects require coordination. Findings: file:line + impact + verification. PASS is bound to a snapshot; after changes, perform a proportional final-delta review. Missing response/evidence → NOT_TESTED/BLOCKED. Small keeps one primary record, without a second tracker.
 
-## Вхід у проєкт
+<a id="вхід-у-проєкт"></a>
+## Entering a project
 
-| Ситуація | Перший крок | Продовження |
+| Situation | First step | Continuation |
 |---|---|---|
-| Є чинний workflow | Прочитай AGENTS.md/CLAUDE.md, локальний work/README, контракт задачі й відповідні скіли | Використай їх; глобальні лінзи додавай лише для конкретної прогалини, без другого pipeline |
-| Репо частково налаштовано або стан невідомий | repo-bootstrap у режимі перевірки; адаптуй інвентар до реального стеку та локальних контрактів | Таблиця «є / частково / немає / N/A / не перевірено», докази й мінімальний diff-пропозиція; зміни налаштування після погодження |
-| Мала очевидна правка | Обмежений scope, застосовні локальні правила й перевірки | Не вимагай нового work-folder, ADR чи повного fan-out без локальної вимоги/ризику |
-| Значна, ризикова або міжмодульна зміна | Локальний процес; за його відсутності — запропонувати узгоджену послідовність research → plan/acceptance → critique/defense → implementation → review → report | До виконання узгодити scope, власників та критерії; post-deploy лише коли застосовний і доручений |
+| An existing workflow is in place | Read AGENTS.md/CLAUDE.md, the local work/README, task contract and relevant skills | Use them; add global lenses only for a specific gap, without a second pipeline |
+| Repository setup is partial or unknown | repo-bootstrap in check mode; adapt the inventory to the actual stack and local contracts | A table of “present / partial / absent / N/A / not verified”, evidence and a minimal proposed diff; configuration changes after agreement |
+| A small, obvious change | Bounded scope, applicable local rules and checks | Do not require a new work-folder, ADR or full fan-out without a local requirement/risk |
+| A substantial, risky or cross-module change | The local process; if absent, propose an agreed sequence: research → plan/acceptance → critique/defense → implementation → review → report | Agree on scope, owners and criteria before execution; post-deploy only when applicable and requested |
 
 <a id="skill-map"></a>
 
-## Карта скілів і ADR
+<a id="карта-скілів-і-adr"></a>
+## Skill and ADR map
 
-Перед викликом перевір discovery й доступність. Якщо локальний і глобальний скіли мають однакове ім’я, назви точний обраний шлях; не покладайся на випадкове вирішення колізії.
+Before invocation, check discovery and availability. If local and global skills share a name, identify the exact selected path; do not rely on accidental collision resolution.
 
-### Вибір інтерв'ю та архітектурної перевірки
+<a id="вибір-інтервю-та-архітектурної-перевірки"></a>
+### Selecting an interview and architecture check
 
-Спочатку прочитай релевантні чинні джерела; питання власнику закривають невідомі рішення,
-а не замінюють доступний технічний пошук. Запиши обраний exact path, причину, джерела,
-очікуваний artifact і gate у наявному task record. Читання файла не є native invocation.
+First read the relevant current sources; questions to the owner resolve unknown decisions,
+rather than replace available technical research. Record the selected exact path, rationale, sources,
+expected artifact and gate in the existing task record. Reading a file is not native invocation.
 
-| Ситуація | Маршрут | Вихід і gate |
+| Situation | Route | Output and gate |
 |---|---|---|
-| Невідомі або застарілі факти | Обмежене читання docs/code | Посилання на джерела й залишкові питання; саме читання не є domain modeling |
-| Інтерв'ю без зміни моделі домену | [grilling](../skills/plan/grilling/SKILL.md); [grill-me](../skills/plan/grill-me/SKILL.md) лише за явного вибору wrapper | Один interview, рішення/frontier і підтвердження спільного розуміння до залежних дій |
-| Нові терміни або зміна моделі домену | Явно обраний [grill-with-docs](../skills/plan/grill-with-docs/SKILL.md): grilling + [domain-modeling](../skills/arch/domain-modeling/SKILL.md) | Реальний glossary update для вирішених термінів; ADR за умовами обраного контракту, без повторного grilling |
-| Структурний архітектурний вплив | [pattern-architecture-review](../skills/pattern-architecture-review/SKILL.md) коли застосовний | Межі, альтернативи й findings з доказами; не вимога впровадити патерн |
-| Очевидна мала правка | Чинний small checkpoint | Обґрунтований N/A для зайвого interview/architecture review; сильніші локальні gates збережені |
-| Resume | Наявний checkpoint і докази | Повторно перевір лише змінені inputs/рішення; незмінені verdict зберігаються у своєму scope |
+| Unknown or stale facts | Bounded reading of docs/code | Source references and remaining questions; reading alone is not domain modeling |
+| An interview without a domain model change | [grilling](../skills/plan/grilling/SKILL.md); [grill-me](../skills/plan/grill-me/SKILL.md) only when the wrapper is explicitly selected | One interview, decisions/frontier and confirmation of shared understanding before dependent actions |
+| New terms or a domain model change | Explicitly selected [grill-with-docs](../skills/plan/grill-with-docs/SKILL.md): grilling + [domain-modeling](../skills/arch/domain-modeling/SKILL.md) | An actual glossary update for resolved terms; ADR under the selected contract, without repeated grilling |
+| Structural architectural impact | [pattern-architecture-review](../skills/pattern-architecture-review/SKILL.md) when applicable | Boundaries, alternatives and findings with evidence; not a requirement to introduce a pattern |
+| An obvious small change | The current small checkpoint | Justified N/A for unnecessary interview/architecture review; stronger local gates remain |
+| Resume | The existing checkpoint and evidence | Recheck only changed inputs/decisions; unchanged verdicts remain valid within their scope |
 
-`grill-me` і `grill-with-docs` забороняють implicit invocation; таблиця не змінює їхні
-SKILL/agent contracts і не дозволяє автоматичний запуск. Наявність файлів не доводить discovery.
-Якщо наводиш readiness/compliance counts, знаменник включає всі застосовні критерії, зокрема
-FAIL і NOT_RUN; чисельник — лише evidenced PASS. N/A має окреме пояснення. Blocker переважає
-будь-який відсоток; stale evidence не є PASS. Числового cutoff немає: відсоток лише
-інформаційний і не підміняє acceptance або незалежний review.
+`grill-me` and `grill-with-docs` prohibit implicit invocation; the table does not change their
+SKILL/agent contracts or permit automatic execution. File presence does not prove discovery.
+If reporting readiness/compliance counts, the denominator includes all applicable criteria, including
+FAIL and NOT_RUN; the numerator includes only evidenced PASS. N/A has a separate explanation. A blocker overrides
+any percentage; stale evidence is not PASS. There is no numerical cutoff: the percentage is only
+informational and does not replace acceptance or independent review.
 
-### Qualitative readiness: обов'язкові критерії та докази
+<a id="qualitative-readiness-обовязкові-критерії-та-докази"></a>
+### Qualitative readiness: mandatory criteria and evidence
 
-Owner-погоджена політика AF-13 (2026-10-22): незакритий обов'язковий критерій блокує
-залежний крок або завершення відповідного scope незалежно від відсотка. Не додавай
-довільного порога на кшталт 80% і не перенось блокер на незалежні задачі без залежності.
+Owner-approved AF-13 policy (2026-10-22): an unresolved mandatory criterion blocks
+the dependent step or completion of the relevant scope regardless of percentage. Do not add
+an arbitrary threshold such as 80% or extend a blocker to independent tasks without a dependency.
 
-У чинному checkpoint запиши для кожного критерію: ID, requirements чи architecture,
-mandatory/applicability з причиною, очікувану умову, evidence path/hash/date/scope,
-PASS/FAIL/NOT_RUN/N/A і явний blocker. Критерії беруться з applicable contracts та
-acceptance, а не вигадуються для красивого результату. Facts і owner decisions відділені;
-architecture obligation оцінюється лише там, де застосовна. N/A не скасовує обов'язкової
-вимоги без обґрунтованої незастосовності за її контрактом. Застарілий або чужий hash
-означає NOT_RUN для поточних bytes, а не PASS. Відсутнє вимірювання — NOT_RUN, не 0%.
+In the current checkpoint, record for each criterion: ID, requirements or architecture,
+mandatory/applicability with rationale, expected condition, evidence path/hash/date/scope,
+PASS/FAIL/NOT_RUN/N/A and an explicit blocker. Criteria come from applicable contracts and
+acceptance; do not invent them to produce a favorable result. Facts and owner decisions are separate;
+architecture obligations are assessed only where applicable. N/A does not waive a mandatory
+requirement without justified non-applicability under its contract. A stale or unrelated hash
+means NOT_RUN for the current bytes, not PASS. An absent measurement is NOT_RUN, not 0%.
 
-Інформаційний ratio: evidenced PASS / усі явно перелічені applicable критерії, включно
-з FAIL і NOT_RUN. N/A окремо з поясненням. За нульового знаменника показуй N/A, не 100%.
-Навіть усі PASS не замінюють required independent review чи інший локальний gate.
+Informational ratio: evidenced PASS / all explicitly listed applicable criteria, including
+FAIL and NOT_RUN. Report N/A separately with an explanation. With a zero denominator, show N/A, not 100%.
+Even all PASS does not replace required independent review or another local gate.
 
-| Синтетичний приклад | Counts | Рішення |
+| Synthetic example | Counts | Decision |
 |---|---|---|
-| Два актуальні PASS, один mandatory NOT_RUN; UI критерій N/A для docs-only | 2/3 (66.7%); N/A: 1 з причиною | BLOCKED залежний крок через missing evidence |
-| Дев'ять PASS, один mandatory FAIL | 9/10 (90%) | BLOCKED, високий ratio не закриває finding |
-| Колишній PASS має старий hash; другий критерій PASS | 1/2 (50%); stale → NOT_RUN | Звірити змінений scope, не повторювати незачеплене |
-| Критерії ще не визначено або не виміряно | NOT_RUN, ratio не обчислено | Спочатку встановити applicability/evidence |
+| Two current PASS, one mandatory NOT_RUN; UI criterion N/A for docs-only | 2/3 (66.7%); N/A: 1 with rationale | BLOCKED dependent step due to missing evidence |
+| Nine PASS, one mandatory FAIL | 9/10 (90%) | BLOCKED; a high ratio does not close a finding |
+| A former PASS has a stale hash; the second criterion is PASS | 1/2 (50%); stale → NOT_RUN | Check the changed scope; do not repeat unaffected work |
+| Criteria are not yet defined or measured | NOT_RUN, ratio not calculated | First establish applicability/evidence |
 
-Це docs/checkpoint convention, не dashboard, автоматичний metric gate або доказ
-реальної readiness проєкту. Приклади синтетичні, не вимірювання продукту.
+This is a docs/checkpoint convention, not a dashboard, automatic metric gate or proof
+of actual project readiness. The examples are synthetic, not product measurements.
 
-| Тригер | Куди звернутися | Власник / очікуваний результат |
+| Trigger | Where to turn | Owner / expected result |
 |---|---|---|
-| Невідомий стан налаштування | [repo-bootstrap](../skills/utils/repo-bootstrap/SKILL.md), лише перевірка | Агент дає інвентар; користувач погоджує потрібні зміни |
-| Потрібне розуміння продукту/застарів брифінг | [cto-research](../skills/plan/cto-research/SKILL.md) | Оновлення наявного брифінгу, не контрактних інструкцій; база + dirty state + джерела |
-| Треба вибрати наступну роботу | [cto-agenda](../skills/plan/cto-agenda/SKILL.md) | Обґрунтований кандидат; продуктові рішення залишаються користувачу |
-| Значна реалізація без відповідного локального процесу | [spec-flow](../skills/deliver/spec-flow/SKILL.md); acceptance-spec, plan-critique, plan-defense за його етапами | Погоджений план і критерії; GATE 2: critique + defense + конституція; незалежний verdict |
-| Мовні review/testing питання в поточній задачі | [Вибіркові language references](../skills/arch/code-review/references/languages/index.md): TS, PHP, Python, Rust, Go; framework лише за фактичним стеком | Чинне TDD/review ядро незмінне; обрані paths, applicability і versions у наявному task record. Для TS — явна історична межа старого Pocock rule у новому reference; native activation NOT_TESTED |
-| UI | [design-pass](../skills/design-pass/SKILL.md) і [критерії UI](#ui) | Реальний рендер, взаємодія, виправлення, повторна перевірка |
-| Нове тривале рішення / зміна старого | Локальні ADR-правила; за відсутності запропонувати [four-gate критерії](repo-evidence.md#adr-gates) | Автор за локальним workflow готує аргументацію; визначений reviewer/operator приймає її |
-| Застарів факт у чинному ADR | Локальне правило currency/supersession | Відділити факт від зміни рішення, перевірити код та посилання; не створювати ADR механічно |
-| Завершення задачі | Локальний review/report; за потреби [ship-report](../skills/ship/ship-report/SKILL.md) | Сценарії, verdict, докази й обмеження в наявному артефакті |
-| Доручена перевірка після деплою | [post-deploy-check](../skills/ship/post-deploy-check/SKILL.md) | Ідентичність білда, ключові сценарії, доповнення того самого звіту |
-| QnA / generic-ui | [Локальні маршрути й відмінності](repo-evidence.md#repo-skills) | Не замінювати їх глобальним spec-flow; людський reviewer може бути обраним локальним виконавцем |
+| Unknown setup state | [repo-bootstrap](../skills/utils/repo-bootstrap/SKILL.md), check only | The agent provides an inventory; the user approves necessary changes |
+| Product understanding is needed / the briefing is stale | [cto-research](../skills/plan/cto-research/SKILL.md) | Update the existing briefing, not contractual instructions; base + dirty state + sources |
+| The next work needs to be selected | [cto-agenda](../skills/plan/cto-agenda/SKILL.md) | A reasoned candidate; product decisions remain with the user |
+| Substantial implementation without an appropriate local process | [spec-flow](../skills/deliver/spec-flow/SKILL.md); acceptance-spec, plan-critique, plan-defense at its stages | Agreed plan and criteria; GATE 2: critique + defense + constitution; independent verdict |
+| Language review/testing questions in the current task | [Selective language references](../skills/arch/code-review/references/languages/index.md): TS, PHP, Python, Rust, Go; frameworks only for the actual stack | The existing TDD/review core stays unchanged; selected paths, applicability and versions go in the existing task record. For TS, the new reference explicitly states the historical boundary of the old Pocock rule; native activation NOT_TESTED |
+| UI | [design-pass](../skills/design-pass/SKILL.md) and [UI criteria](#ui) | Actual rendering, interaction, fixes, rechecking |
+| A new lasting decision / change to an old one | Local ADR rules; if absent, propose [four-gate criteria](repo-evidence.md#adr-gates) | The author prepares the rationale under the local workflow; the designated reviewer/operator accepts it |
+| A fact in an existing ADR is stale | The local currency/supersession rule | Separate a fact from a decision change, verify code and links; do not mechanically create an ADR |
+| Task completion | Local review/report; [ship-report](../skills/ship/ship-report/SKILL.md) if needed | Scenarios, verdict, evidence and limitations in the existing artifact |
+| A requested post-deploy check | [post-deploy-check](../skills/ship/post-deploy-check/SKILL.md) | Build identity, key scenarios, additions to the same report |
+| QnA / generic-ui | [Local routes and differences](repo-evidence.md#repo-skills) | Do not replace them with global spec-flow; a human reviewer may be the selected local executor |
 
 <a id="source-of-truth"></a>
 
-## Джерела істини
+<a id="джерела-істини"></a>
+## Sources of truth
 
-Розділяй нормативне й описове. Acceptance, прийняті contracts/ADR визначають потрібну поведінку; код/scripts показують фактичну реалізацію й доступні команди. Код може спростувати застарілу описову ноту, але не легалізує баг і не скасовує acceptance. Конфлікт запиши з двома джерелами та впливом; рішення приймає власник контракту в межах доручення. Доручення виправити баг відповідно до однозначного прийнятого контракту вже дозволяє відновити цю норму; нового погодження лише через відхилення коду не потрібно. Нове рішення потрібне за суперечливих/неясних норм або запропонованої зміни контракту; до нього залежна частина BLOCKED, незалежна дозволена робота триває. Scope користувача й актуальні runtime permissions обмежують усі маршрути.
+Separate normative and descriptive material. Acceptance and accepted contracts/ADRs define required behavior; code/scripts show the actual implementation and available commands. Code can disprove a stale descriptive note, but does not legitimize a bug or cancel acceptance. Record a conflict with both sources and its impact; the contract owner decides within the request's scope. A request to fix a bug according to an unambiguous accepted contract already permits restoring that rule; code deviation alone does not require new approval. A new decision is needed for conflicting/unclear rules or a proposed contract change; until then, the dependent part is BLOCKED and independent authorized work continues. The user's scope and current runtime permissions bound every route.
 
-Проєктне архітектурне рішення зберігається у репозиторії, в каталозі за його правилами. Obsidian містить посилання й огляд, а не другий редагований оригінал ADR. Це правило організації цього плану; наявні конфлікти/дублікати спочатку показати власнику, не мігрувати мовчки. Work/task/spec посилаються на ADR; постійний ADR не залежить від артефакту, що буде видалений. Для QnA діє додаткова заборона посилань на процесні work/design-записи — див. джерела.
+A project's architectural decision is stored in its repository, in the directory specified by its rules. Obsidian contains links and an overview, not a second editable ADR original. This is the organizational rule for this plan; show existing conflicts/duplicates to the owner first, without silently migrating them. Work/task/spec links to ADRs; a permanent ADR does not depend on an artifact that will be deleted. QnA additionally prohibits links to procedural work/design records — see the sources.
 
-Чинні вимоги задають інструкції репо та обраний SKILL.md; Shared і шпаргалки — довідники. Стан можливостей ведеться тільки у [status.md](status.md#capabilities). Черга задач — у [roadmap.md](roadmap.md#tasks), попередні виміри — в [history.md](history.md#history). Розбіжність коду з прийнятим ADR потребує розбору причини, а не автоматичної перемоги однієї сторони.
+Repository instructions and the selected SKILL.md define current requirements; Shared and cheat sheets are references. Capability state is maintained only in [status.md](status.md#capabilities). The task queue is in [roadmap.md](roadmap.md#tasks), previous measurements in [history.md](history.md#history). A discrepancy between code and an accepted ADR requires analysis of the cause, not an automatic victory for either side.
 
 <a id="handoff"></a>
 
-## Мінімальна передача контексту
+<a id="мінімальна-передача-контексту"></a>
+## Minimal context handoff
 
-Використай наявний plan/journal/ledger проєкту. Новий обов’язковий файл не потрібний. Перед передачею або завершенням сесії доповни:
+Use the project's existing plan/journal/ledger. No new mandatory file is needed. Before handoff or session completion, add:
 
-| Поле | Достатній зміст |
+| Field | Sufficient content |
 |---|---|
-| Ціль і scope | Що має змінитися, межі файлів/поведінки, що поза задачею |
-| Авторитетні джерела | Точні шляхи інструкцій, плану, ADR, обраних скілів; власники записів |
-| Стан дерева | Репо/checkout/гілка, commit SHA, staged/unstaged/untracked стан у scope; що вже зроблено й ким |
-| Рішення | Прийняте й ким, відхилені варіанти та причина; відкриті питання окремо |
-| Перевірки | Команда/сценарій, ревізія або dirty state, результат і шлях до доказу; що не запускалось |
-| Блокери | Конкретна причина, вплив, потрібний доступ/рішення; без секретів |
-| Наступний крок | Одна конкретна дія, виконавець і критерій її завершення |
+| Goal and scope | What must change, file/behavior boundaries, what is outside the task |
+| Authoritative sources | Exact paths to instructions, plan, ADRs and selected skills; record owners |
+| Tree state | Repository/checkout/branch, commit SHA, staged/unstaged/untracked state in scope; what has been done and by whom |
+| Decisions | What was accepted and by whom, rejected alternatives and rationale; open questions separately |
+| Checks | Command/scenario, revision or dirty state, result and evidence path; what was not run |
+| Blockers | Specific reason, impact, required access/decision; no secrets |
+| Next step | One specific action, executor and completion criterion |
 
-Отримувач спочатку читає ці артефакти та перевіряє актуальність дерева, а не повторює всю розвідку. Новий reviewer отримує контракт і докази без авторської історії чату; findings залишаються доступні сирими. Для паралельних виконавців — окремі журнали та межі запису. Після збою спочатку прочитай журнал; невідповідь не є успіхом. Коли змінився scope/рішення, онови контракт через його власника; коли змінився код після PASS, повтори зачеплені перевірки.
+The recipient first reads these artifacts and checks tree currency, rather than repeating all reconnaissance. A new reviewer receives the contract and evidence without the author's chat history; raw findings remain accessible. Parallel executors have separate journals and write boundaries. After a failure, read the journal first; no response is not success. When scope/decisions change, update the contract through its owner; when code changes after PASS, repeat affected checks.
 
-### Три ролі та CRG
+<a id="три-ролі-та-crg"></a>
+### Three roles and CRG
 
-Для поточного ручного маршруту використовуй [Helper / Coder / Escalation-reviewer](models.md): одна роль на потрібний крок, явний binding, bounded retries і незалежний контекст review. Це не автоматичний router і не дозвіл на новий paid access; локальні гейти залишаються чинними.
+For the current manual route, use [Helper / Coder / Escalation-reviewer](models.md): one role per necessary step, an explicit binding, bounded retries and independent review context. This is not an automatic router or permission for new paid access; local gates remain in effect.
 
-CRG дає кандидати контексту, а не verdict. Перед довірою до графа звір [root/branch/revision, hashes і coverage](crg.md), включно з untracked; після невдалого bounded recovery працюй через файли й детерміновані перевірки. Build/test/browser QA не замінюються graph score або думкою моделі.
+CRG provides context candidates, not a verdict. Before trusting the graph, check [root/branch/revision, hashes and coverage](crg.md), including untracked files; after unsuccessful bounded recovery, work through files and deterministic checks. Build/test/browser QA is not replaced by a graph score or a model's opinion.
 
-### Виклики й доступність інструментів
+<a id="виклики-й-доступність-інструментів"></a>
+### Invocation and tool availability
 
-- Codex CLI: `$назва` або вибір через `/skills`; Claude Code: `/назва`. Наприклад `$design-pass` / `/design-pass`.
-- `disable-model-invocation` — метадані Claude; не переносити їхню семантику на інший агент без перевірки. Команди харнесу, `Agent`, `Workflow`, MCP та конкретні моделі не гарантовані.
-- Перед незалежним рев’ю визнач доступні засоби й правила делегування. Якщо незалежного виконавця немає, назви гейт BLOCKED; самоперевірка автора не замінює його.
-- Рахуй запущені й отримані перевірки. Падіння або порожня відповідь не є «чисто».
+- Codex CLI: `$назва` or selection via `/skills`; Claude Code: `/назва`. For example, `$design-pass` / `/design-pass`.
+- `disable-model-invocation` is Claude metadata; do not transfer its semantics to another agent without verification. Harness commands, `Agent`, `Workflow`, MCP and specific models are not guaranteed.
+- Before independent review, identify available tools and delegation rules. If there is no independent executor, mark the gate BLOCKED; the author's self-check does not replace it.
+- Count checks launched and results received. A failure or empty response is not “clean”.
 
 <a id="ui"></a>
 
-## UI: критерії готовності
+<a id="ui-критерії-готовності"></a>
+## UI: readiness criteria
 
-[design-pass](../skills/design-pass/SKILL.md): проєктні правила й локальний дизайн-скіл → токени/компоненти/теми/сценарії → референс за потреби → план → реалізація → браузер → виправлення → повторна перевірка. Стек, палітра, шрифти й обмеження окремого проєкту не стають глобальними.
+[design-pass](../skills/design-pass/SKILL.md): project rules and local design skill → tokens/components/themes/scenarios → reference if needed → plan → implementation → browser → fixes → rechecking. A particular project's stack, palette, fonts and constraints do not become global.
 
-Перевіряти ієрархію, адаптивність, застосовні стани, клавіатуру/фокус/контраст, reduced motion, масштаб і головний сценарій з відновленням після помилки. Допоміжні лінзи: [frontend-design](../skills/ship/frontend-design/SKILL.md), [anti-slop-design](../skills/anti-slop-design/SKILL.md), [ux-review](../skills/ux-review/SKILL.md), [interface-review](../skills/interface-review/SKILL.md).
+Check hierarchy, responsiveness, applicable states, keyboard/focus/contrast, reduced motion, zoom, and the main flow with error recovery. Supporting lenses: [frontend-design](../skills/ship/frontend-design/SKILL.md), [anti-slop-design](../skills/anti-slop-design/SKILL.md), [ux-review](../skills/ux-review/SKILL.md), [interface-review](../skills/interface-review/SKILL.md).
 
-Build, статичний аналіз і тести звітуються окремо від перегляду рендеру й взаємодії. Для кожної перевірки: PASS / FAIL / BLOCKED / N/A, спосіб і доказ; N/A має причину. Створений, але не переглянутий скріншот не доводить візуальну якість. Після виправлення потрібна повторна перевірка. Невиконаний ключовий гейт означає «реалізовано, перевірка неповна», а не безумовне «готово».
+Report build, static analysis and tests separately from inspecting rendering and interaction. For each check: PASS / FAIL / BLOCKED / N/A, method and evidence; N/A needs a reason. A screenshot that was created but not inspected does not prove visual quality. Rechecking is required after a fix. An unfulfilled key gate means “implemented, verification incomplete”, not unconditional “done”.
 
-## Інтеграція ADR-перевірок у наступні задачі
+<a id="інтеграція-adr-перевірок-у-наступні-задачі"></a>
+## Integrating ADR checks into subsequent tasks
 
-Це погоджений напрям документації; інтеграція в конкретний репозиторій залишається окремою задачею після його аудиту. Новий глобальний скіл не створено.
+This is the agreed documentation direction; integration into a specific repository remains a separate task after its audit. No new global skill has been created.
 
-1. До bootstrap/реалізації знайти чинний workflow, власника плану/review/commit, каталог ADR, правило supersession і архів. Для частково налаштованого репо спочатку показати прогалини й погодити мінімальні доповнення. Не накладати паралельно два конкуруючі протоколи.
-2. На research/plan записати кандидатів рішень: обмеження, споживачі, альтернативи, причина вибору, перевірка. Не створювати ADR механічно на кожен ticket. Поріг ADR узяти з локальних правил; якщо їх немає, запропонувати [four-gate критерії](repo-evidence.md#adr-gates) на погодження.
-3. До implementation перевірити, що design/plan має потрібний локальний approval або явно записаний override, а критерії завершення перевірні. Worker отримує самодостатній контракт; journal зберігає питання й відхилення. Хто схвалює відхилення — визначає локальний процес.
-4. Під час реалізації оновлювати факти в зачеплених docs/ADR разом із кодом. Нове рішення, виправлення факту та відкладену роботу класифікувати окремо. Після merge перевірити принесені ADR на протиріччя і колізії номерів; scope повторного review — за локальним правилом.
-5. Незалежний reviewer перевіряє код, gate і цілісність документації, формує список рішень для promotion. Codify та acceptance ADR виконує визначений локальним процесом власник. Зв’язки вести в правильному напрямку: work/spec/task може посилатися на ADR; постійний ADR не повинен залежати від артефакту, що буде видалений.
-6. Перед завершенням перевірити: кожен кандидат має disposition; відхилена альтернатива й наслідки зрозумілі; рішення не дублюється; номери та посилання правильні; суперечності з кодом розв’язані; докази gate називають команду й ревізію/стан дерева; заблоковане не зараховане як PASS. Для UI зберігається вимога доказів браузерної перевірки з [критеріїв UI](#ui); якщо локальний контракт віддає її людині, агент готує handoff і чесно залишає результат неперевіреним до отримання доказу. Архів/landing лише за правилами й дорученням конкретного проєкту.
+1. Before bootstrap/implementation, find the current workflow, plan/review/commit owner, ADR directory, supersession rule and archive. For a partially configured repository, first show gaps and agree on minimal additions. Do not overlay two competing protocols.
+2. During research/plan, record decision candidates: constraints, consumers, alternatives, rationale for the choice and verification. Do not mechanically create an ADR for every ticket. Take the ADR threshold from local rules; if absent, propose [four-gate criteria](repo-evidence.md#adr-gates) for approval.
+3. Before implementation, verify that design/plan has the required local approval or an explicitly recorded override, and that completion criteria are testable. The worker receives a self-contained contract; the journal preserves questions and deviations. The local process determines who approves deviations.
+4. During implementation, update facts in affected docs/ADRs alongside code. Classify a new decision, a factual correction and deferred work separately. After merge, check incoming ADRs for contradictions and number collisions; the local rule determines re-review scope.
+5. The independent reviewer checks code, gates and documentation integrity, and lists decisions for promotion. The owner designated by the local process performs ADR codification and acceptance. Keep links in the correct direction: work/spec/task may link to an ADR; a permanent ADR must not depend on an artifact that will be deleted.
+6. Before completion, check that every candidate has a disposition; rejected alternatives and consequences are clear; decisions are not duplicated; numbers and links are correct; contradictions with code are resolved; gate evidence names the command and revision/tree state; blocked items are not counted as PASS. UI still requires browser-check evidence under the [UI criteria](#ui); if the local contract assigns this to a human, the agent prepares a handoff and honestly leaves the result unverified until evidence arrives. Archive/landing follows only the specific project's rules and request.
 
-Додавати ці перевірки до E1.4/E1.5 та оцінки E2/E3 як **кандидати інтеграції після repo-аудиту**. Наявний work-протокол має пріоритет над бажанням повторно створити глобальний pipeline. Реалізація цих доповнень, виправлення локальних суперечностей і тест нового workflow — окремі наступні задачі, не результат цього документального проходу.
+Add these checks to E1.4/E1.5 and the E2/E3 assessment as **integration candidates after a repository audit**. The existing work protocol takes precedence over the desire to recreate a global pipeline. Implementing these additions, resolving local contradictions and testing a new workflow are separate subsequent tasks, not the result of this documentation pass.
 
 ## Session-size handoff (2026-10-17)
 
-[Спільний helper](../docs/legacy/session-size.md) рахує bytes через stat точного transcript_path, не читає transcript. На 4 000 000 / 5 000 000 bytes пише draft; агент завершує pending operation і записує sanitized goal/done/pending/evidence/constraints через checkpoint. Лише COMPLETE checkpoint можна передати за явним ID. Нова сесія читає його після звірки root/branch/HEAD/dirty metadata. Handoff — контекст, не дозвіл. Не replay side effects, не resume старий великий transcript. Немає автозапуску CLI; запуск нової сесії належить користувачу. Якщо доступ до transcript/state заборонено — BLOCKED/UNKNOWN без обходу permissions.
+The [shared helper](../docs/legacy/session-size.md) counts bytes through stat of the exact transcript_path without reading the transcript. At 4 000 000 / 5 000 000 bytes, it writes a draft; the agent completes the pending operation and records sanitized goal/done/pending/evidence/constraints through checkpoint. Only a COMPLETE checkpoint can be handed off by explicit ID. The new session reads it after checking root/branch/HEAD/dirty metadata. Handoff is context, not permission. Do not replay side effects or resume the old large transcript. There is no automatic CLI launch; starting a new session belongs to the user. If transcript/state access is prohibited, report BLOCKED/UNKNOWN without bypassing permissions.
 
 ## Targeted constraint lens
 

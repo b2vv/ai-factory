@@ -1,64 +1,76 @@
-# AGENTS.md — точка входу до `~/.agents`
+<a id="agentsmd--точка-входу-до-agents"></a>
 
-Вендор-нейтральний SSOT для роботи агентів. Читається будь-яким інструментом; для Claude Code
-на нього вказує `~/.claude/CLAUDE.md`, для Cursor — `~/.cursor/` через симлінки на `skills/`.
+# AGENTS.md — entry point for `~/.agents`
 
-**Редагуй тут.** `~/.claude/skills` і `~/.cursor/skills` — симлінки на `~/.agents/skills`,
-а `~/vaults/global/rules` — на `~/.agents/rules`. Правка в будь-якому дзеркалі змінює оригінал.
+Vendor-neutral SSOT for agent work. Readable by any tool; for Claude Code,
+`~/.claude/CLAUDE.md` points here; for Cursor, `~/.cursor/` does so through symlinks to `skills/`.
+
+**Edit here.** `~/.claude/skills` and `~/.cursor/skills` are symlinks to `~/.agents/skills`,
+and `~/vaults/global/rules` points to `~/.agents/rules`. An edit through any mirror changes the original.
 
 ---
 
-## Що де лежить
+<a id="що-де-лежить"></a>
 
-| Тека / файл | Що це |
+## Where things live
+
+| Directory / file | What it is |
 |---|---|
-| [`rules/`](README.md) | крос-проєктні правила: оркестрація сабагентів, ролі моделей, формат маніфесту стандартів репо, TS-ідіоми |
-| `skills/` | скіли (54 шт.), фізичне джерело для всіх інструментів; згруповані у `plan/ deliver/ arch/ git/ crg/ ship/ utils/ pt/`; плоскі симлінки збережені для зворотної сумісності |
-| `skills-cheatsheet.md` | шпаргалка по скілах: як / де / чому / промти |
-| `obsidian-cheatsheet.md` | робота з vault через MCP |
-| `ai-factory-plan.md` | план розбудови, не операційний документ |
+| [`rules/`](README.md) | cross-project rules: subagent orchestration, model roles, repo standards manifest format, TS idioms |
+| `skills/` | skills (54), the physical source for all tools; grouped into `plan/ deliver/ arch/ git/ crg/ ship/ utils/ pt/`; flat symlinks retained for backward compatibility |
+| `skills-cheatsheet.md` | skill cheat sheet: how / where / why / prompts |
+| `obsidian-cheatsheet.md` | working with a vault through MCP |
+| `ai-factory-plan.md` | development plan, not an operational document |
 
 ---
 
-## 🔴 Правила, які мусять спрацювати **до** завантаження будь-якого скіла
+<a id="-правила-які-мусять-спрацювати-до-завантаження-будь-якого-скіла"></a>
 
-Решта правил у `rules/` доходять через скіли — скіл вантажиться, читає правило, застосовує.
-Наведене нижче так **не працює**: воно потрібне в момент, коли жоден скіл ще не викликаний.
+## 🔴 Rules that must take effect **before** loading any skill
 
-### 1. Сабагент пише хід у власний файл
+The other rules in `rules/` arrive through skills — a skill loads, reads the rule, and applies it.
+The following does **not work** that way: it is needed when no skill has been invoked yet.
 
-Перед **кожним** запуском сабагента дай йому шлях до робочого файлу й вимогу дописувати по ходу.
+<a id="1-сабагент-пише-хід-у-власний-файл"></a>
+
+### 1. A subagent writes progress to its own file
+
+Before **every** subagent launch, give it a working-file path and a requirement to append as it proceeds.
 
 ```
-РОБОЧИЙ ФАЙЛ: <шлях>
-Дописуй ПІСЛЯ КОЖНОГО КРОКУ (append, не rewrite). Перший запис — до першого інструменту:
-рядок `ДАЛІ:` з тим, що збираєшся перевіряти. Далі — ФАКТ / РІШЕННЯ / ДАЛІ / ПИТАННЯ.
-Фінальна відповідь = стислий переказ файлу.
+WORKING FILE: <path>
+Append AFTER EVERY STEP (append, not rewrite). The first entry comes before the first tool:
+a `ДАЛІ:` line (NEXT) stating what you intend to check. Then use the compatibility labels ФАКТ / РІШЕННЯ / ДАЛІ / ПИТАННЯ (FACT / DECISION / NEXT / QUESTION).
+Final answer = a concise summary of the file.
 ```
 
-Паралельні агенти — **різні файли**. Агент упав → спершу **прочитай файл**, тоді вирішуй:
-порожній = не бігав (ретрай раз на іншому тірі), часткові знахідки = ретрай із «продовж, не повторюй».
+Parallel agents — **different files**. An agent crashed → first **read the file**, then decide:
+empty = did not run (retry once on another tier); partial findings = retry with “continue, do not repeat”.
 
-Не застосовується до тривіальних однокрокових агентів.
+Does not apply to trivial one-step agents.
 
-**Чому це тут, а не лише в `rules/`:** воно там і було — докладне, на 112 рядків, і **не
-застосовувалось**, бо єдиним каналом були скіли, а агенти запускались напряму. Повне правило,
-з емпірикою двох серій смертей: [`rules/agent-stream-to-file.md`](agent-stream-to-file.md).
+**Why this is here, not only in `rules/`:** it was there — detailed, 112 lines long, and **was not
+applied**, because its only channel was skills, while agents were launched directly. The full rule,
+with evidence from two series of agent deaths: [`rules/agent-stream-to-file.md`](agent-stream-to-file.md).
 
-### 2. Мовчазний агент — не чистий агент
+<a id="2-мовчазний-агент--не-чистий-агент"></a>
 
-`null`, порожня відповідь чи падіння **не означають «знахідок немає»**. Це агент, який не
-відпрацював, і зараховувати його як чистого не можна: перерахуй запущені проти повернутих
-**числом** і назви розбіжність уголос. Деталі — [`rules/multi-model-roles.md`](multi-model-roles.md) §3.
+### 2. A silent agent is not a clean agent
+
+`null`, an empty response, or a crash **do not mean “no findings”**. That is an agent that did not
+complete its work, and it cannot be counted as clean: count launched versus returned agents
+**numerically** and state the discrepancy explicitly. Details — [`rules/multi-model-roles.md`](multi-model-roles.md) §3.
 
 ---
 
-## Як додавати правило
+<a id="як-додавати-правило"></a>
 
-1. Файл у `rules/`, рядок у [`rules/README.md`](README.md).
-2. **Обери канал доставки** — без нього правило не спрацює:
-   - має діяти на прямий виклик інструмента → сюди, у розділ вище;
-   - належить етапу конвеєра → у відповідний скіл;
-   - специфічне для репо → у `<repo>/AGENTS.md`.
+## How to add a rule
 
-🔴 Правило без каналу дорівнює відсутньому.
+1. A file in `rules/`, an entry in [`rules/README.md`](README.md).
+2. **Choose a delivery channel** — without one, the rule will not take effect:
+   - must act on a direct tool call → here, in the section above;
+   - belongs to a pipeline stage → in the corresponding skill;
+   - specific to the repo → in `<repo>/AGENTS.md`.
+
+🔴 A rule without a channel is equivalent to a missing rule.

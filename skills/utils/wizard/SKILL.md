@@ -1,6 +1,6 @@
 ---
 name: wizard
-description: "Генерує інтерактивний bash-майстер, що проводить людину через кроки, які може виконати лише вона. Використовуйте при провізіонуванні інфраструктури, налаштуванні облікових даних чи секретів CI, проходженні незнайомої сторонньої панелі керування або одноразовій міграції чи перемиканні. Не викликайте для кроків, які агент може виконати сам."
+description: "Generates an interactive bash wizard that guides a person through steps only they can perform. Use when provisioning infrastructure, configuring credentials or CI secrets, navigating an unfamiliar third-party dashboard, or performing a one-off migration or cutover. Do not invoke for steps the agent can perform itself."
 ---
 
 # Wizard

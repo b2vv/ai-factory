@@ -1,76 +1,82 @@
 ---
 name: plan-critique
-description: Прожарює готовий план чотирма незалежними лінзами — AI-slop, логічні діри, надлишкова складність, непокриті edge cases — і зводить знахідки в blocking / non-blocking. Використовуйте як гейт після написання плану чи спеки, перед розбивкою на таски, або на тригери "критика плану", "прожар план", "plan critique".
+description: Critiques a completed plan through four independent lenses — AI-slop, logical gaps, excess complexity, uncovered edge cases — and consolidates findings into blocking / non-blocking. Use as a gate after writing a plan or specification, before task breakdown, or on the triggers "критика плану", "прожар план", "plan critique" (the Ukrainian phrases are retained compatibility triggers).
 ---
 
 Portable adaptation: use the [bundled lifecycle](../../docs/portable/feature-lifecycle.md) and [review routing](../../docs/portable/review-handoff.md). Local contracts and current user authorization govern writes and delegation. Named skills not linked here are optional external extensions, not installed dependencies.
 
-# plan-critique — чотири лінзи по плану
+<a id="plan-critique--чотири-лінзи-по-плану"></a>
+# plan-critique — four lenses on a plan
 
-Гейт між «план написано» і «план виконуємо». Відрізняється від `grilling` тим, що
-`grilling` питає **тебе**, а цей скіл читає **план** і повертає знахідки.
+The gate between “the plan is written” and “we execute the plan.” It differs from `grilling`: `grilling`
+questions **you**, while this skill reads **the plan** and returns findings.
 
-**Лінза** — тут провідне поняття: чотири незалежні читання того самого тексту, кожне сліпе до
-решти. Одне читання «на все погане» дає одну знахідку й відчуття завершеності; чотири вузькі
-дають чотири різні.
+**Lens** is the central concept: four independent readings of the same text, each blind to
+the others. One reading “for everything bad” yields one finding and a sense of completion; four narrow
+readings yield four different ones.
 
-## 1. Підготуй матеріал
+<a id="1-підготуй-матеріал"></a>
+## 1. Prepare the material
 
-На вході — файл плану (`plan.md`, `spec.md`, таск). Плюс контекст, без якого лінзи сліпі:
-брифінг репо (`cto-research`), стандарти репо, наявні механізми, які план міг би переюзати.
+Input: a plan file (`plan.md`, `spec.md`, task). Plus context without which the lenses are blind:
+the repo briefing (`cto-research`), repo standards, existing mechanisms the plan could reuse.
 
-## 2. Прожени чотири лінзи паралельно
+<a id="2-прожени-чотири-лінзи-паралельно"></a>
+## 2. Run four lenses in parallel
 
-Кожна лінза — **окремий незалежний reviewer з чистим контекстом за погодженим маршрутом**, який бачить план і контекст, але не
-бачить висновків інших лінз. (Коли користувач увімкнув оркестрацію — той самий фан-аут через
-`Workflow`; поведінка однакова.)
+Each lens is a **separate independent reviewer with a clean context through the agreed route**, seeing the plan and context but not
+the conclusions of other lenses. (When the user enables orchestration, use the same fan-out through
+`Workflow`; the behavior is identical.)
 
-| Лінза | Що шукає |
+| Lens | What it looks for |
 |---|---|
-| **AI-slop** | правдоподібний наповнювач: вигадані абстракції під один виклик, церемонія без користувача, кроки, що переказують очевидне, «на майбутнє» без замовника на це майбутнє |
-| **Логічні діри** | кроки, що не випливають з попередніх: непроставлені передумови, стан, який ніхто не встановлює, хибний порядок, розрив між «зробили X» і «тому працює Y» |
-| **Надлишкова складність** | те саме меншою кількістю рухів: новий механізм там, де є наявний (reuse-first), шар без другого клієнта, конфіг під єдиний випадок |
-| **Edge cases** | порожні / граничні / дублікатні дані, повторний і паралельний виклик, відмова залежності, часткове застосування посеред кроку |
+| **AI-slop** | plausible filler: invented abstractions for one call, ceremony without a user, steps restating the obvious, “for the future” without anyone requesting that future |
+| **Logical gaps** | steps that do not follow from preceding ones: unstated prerequisites, state nobody sets, wrong order, a gap between “we did X” and “therefore Y works” |
+| **Excess complexity** | the same outcome in fewer moves: a new mechanism where one exists (reuse-first), a layer without a second client, configuration for a single case |
+| **Edge cases** | empty / boundary / duplicate data, repeated and concurrent invocation, dependency failure, partial application midway through a step |
 
-Кожна знахідка повертається у фіксованій формі:
+Each finding returns in a fixed format:
 
 ```
-[лінза] <заголовок>
-де:      <секція або рядок плану>
-чому:    <що конкретно зламається або що коштує зайвого>
-що зробити: <правка в план — не в код>
-вага:    blocking | non-blocking
+[lens] <title>
+where:   <plan section or line>
+why:     <what specifically breaks or costs extra>
+action:  <plan correction — not code>
+weight:  blocking | non-blocking
 ```
 
-**Blocking** = план у цьому місці веде до неправильного результату або до переробки.
-**Non-blocking** = коштує зайвого, але результат вийде правильний.
+**Blocking** = this part of the plan leads to a wrong result or rework.
+**Non-blocking** = costs extra, but the result will be correct.
 
-### Лінза, що не повернулась
+<a id="лінза-що-не-повернулась"></a>
+### A lens that did not return
 
-Сабагент може впасти на інфраструктурі, бути скіпнутим або повернути `null`. Це **не** «чисто» —
-це лінза, яка не бігла, і мовчки вона виглядає точно як чиста.
+A subagent may fail on infrastructure, be skipped or return `null`. This is **not** “clean” —
+it is a lens that did not run, and silence makes it look exactly like a clean result.
 
-1. Перерахуй повернуті вердикти проти запущених лінз **числом**: `4 запущено / N повернулось`.
-   Розбіжність називається вголос до того, як зводити знахідки.
-2. Один обґрунтований повтор у дозволеному незалежному контексті; інший tier лише за доступності й авторизації.
-3. Знову порожньо → **гейт червоний**, і в підсумку названо, якої саме лінзи бракує.
+1. Count returned verdicts against launched lenses **numerically**: `4 launched / N returned`.
+   State the discrepancy before consolidating findings.
+2. One justified retry in an authorized independent context; another tier only if available and authorized.
+3. Still empty → **the gate is red**, and the summary names exactly which lens is missing.
 
-Ролі й доступність — [models](../../docs/portable/models.md), маршрут — [review handoff](../../docs/portable/review-handoff.md). Не запускай нових субагентів без погодженого маршруту; наявні окремі контексти допустимі. Авторський контекст не є незалежною лінзою.
+Roles and availability: [models](../../docs/portable/models.md); route: [review handoff](../../docs/portable/review-handoff.md). Do not launch new subagents without an agreed route; existing separate contexts are acceptable. The author's context is not an independent lens.
 
-## 3. Зведи
+<a id="3-зведи"></a>
+## 3. Consolidate
 
-- Схлопни дублікати між лінзами в одну знахідку, зберігши, скільки лінз її бачили
-  (знахідка з двох лінз важить більше за дві окремі).
-- Відсортуй: blocking спершу.
-- Кожен blocking проведи в правку плану — і назви рядок, який змінився.
+- Collapse duplicates across lenses into one finding, preserving how many lenses saw it
+  (a finding seen by two lenses weighs more than two separate ones).
+- Sort blocking findings first.
+- Turn each blocking finding into a plan correction — and name the changed line.
 
-## 4. Завершення
+<a id="4-завершення"></a>
+## 4. Completion
 
-Скіл завершено, коли виконано **все**:
+The skill is complete when **all** of these hold:
 
-- [ ] Названо число `запущено / повернулось`. Розбіжність відпрацьована за «лінзою, що не
-      повернулась»: або перезапуск дав вердикт, або гейт червоний з іменем лінзи.
-- [ ] Кожна лінза, що повернулась, дала ≥1 знахідку або явне «чисто, бо <що саме перевірено>».
-- [ ] Кожна знахідка має вагу.
-- [ ] Кожен blocking або внесений у план, або записаний як свідомо прийнятий — з причиною.
-- [ ] Назване підсумкове число: скільки blocking лишилося відкритими (нуль → план готовий до `plan-defense`).
+- [ ] State the `launched / returned` count. Handle a discrepancy under “a lens that did not
+      return”: either a retry produced a verdict or the gate is red with the lens named.
+- [ ] Each returned lens produced ≥1 finding or an explicit “clean, because <what exactly was checked>”.
+- [ ] Every finding has a weight.
+- [ ] Every blocking finding is either incorporated in the plan or recorded as consciously accepted, with a reason.
+- [ ] State the final count: how many blocking findings remain open (zero → the plan is ready for `plan-defense`).

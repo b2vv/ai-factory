@@ -1,84 +1,100 @@
 ---
 name: cto-agenda
-description: Пропонує, що робити далі — ранжований список кандидатів, зібраних із зафіксованих джерел репо, і один рекомендований наступний хід із поясненням, чому не інші. Використовуйте, коли P0 закрито й черга порожня, коли треба вибрати між кількома напрямками, коли питають "що далі", "що брати в роботу", "склади беклог", або на тригер "cto agenda".
+description: Proposes what to do next — a ranked list of candidates collected from recorded repository sources, and one recommended next move with an explanation of why not the others. Use when P0 is closed and the queue is empty, when choosing between directions, when asked "що далі", "що брати в роботу", "склади беклог" (retained Ukrainian compatibility aliases), or on the trigger "cto agenda".
 ---
 
-# cto-agenda — що робити далі
+<a id="cto-agenda--що-робити-далі"></a>
 
-Місток між «розумію продукт» ([[cto-research]]) і «виконую вибране» (`spec-flow`, `to-tickets`).
-Відповідає на одне питання: **який наступний хід**.
+# cto-agenda — what to do next
 
-**Хід** — провідне поняття. Не «пріоритет», не «таск», а хід: те, що змінює позицію й після чого
-доступні інші ходи. Список ходів без вибраного — це робота, перекладена назад на людину;
-скіл закінчується **одним** ходом.
+The bridge between “I understand the product” ([[cto-research]]) and “I execute the choice” (`spec-flow`, `to-tickets`).
+Answers one question: **what is the next move**.
 
-## 1. Опертись на брифінг
+**Move** is the key concept. Not a “priority” or “task”, but a move: something that changes the position and makes
+other moves available. A list without a selected move pushes the work back onto the person;
+the skill ends with **one** move.
 
-Кандидати беруться з брифінгу репо, а не з вражень. Немає брифінгу або він відстав від `HEAD` —
-спершу `cto-research`, потім сюди. Скажи, на який коміт спирається агенда: коли брифінг
-переписали, старий вибір ходу міг протухнути разом із ним.
+<a id="1-опертись-на-брифінг"></a>
 
-## 2. Зібрати кандидатів із перелічених джерел
+## 1. Start from the briefing
 
-Пройди **всі** джерела; для кожного скажи, скільки кандидатів воно дало (нуль — теж відповідь):
+Candidates come from the repository briefing, not impressions. If there is no briefing or it trails `HEAD`,
+run `cto-research` first, then return here. State the commit underlying the agenda: when the briefing
+was rewritten, the old choice of move may have expired with it.
 
-| Джерело | Що звідти береться |
+<a id="2-зібрати-кандидатів-із-перелічених-джерел"></a>
+
+## 2. Collect candidates from the listed sources
+
+Visit **all** sources; state how many candidates each supplied (zero is also an answer):
+
+| Source | What it supplies |
 |---|---|
-| **Відкриті** таски в `work/` (+ `gh issue list`) | заявлена, але не зроблена робота |
-| Зафіксований борг (`tech-debt/`, CRITIQUE-файли) | те, що вже визнано проблемою |
-| Розділ «Ризики» брифінгу | найкрихкіше місце |
-| Невиконані чекбокси (`REQUIREMENTS`, `SPEC`, live-таски) | обіцяне й недороблене |
-| Скіпнуті тести, вимкнені гейти, `TODO`-якорі в коді | борг, який не потрапив у документи |
-| Продуктові розвилки без відповіді | те, що блокує планування взагалі |
+| **Open** tasks in `work/` (+ `gh issue list`) | declared but unfinished work |
+| Recorded debt (`tech-debt/`, CRITIQUE files) | what is already recognized as a problem |
+| The briefing's “Risks” section | the most fragile area |
+| Unchecked boxes (`REQUIREMENTS`, `SPEC`, live tasks) | promised but unfinished work |
+| Skipped tests, disabled gates, `TODO` anchors in code | debt absent from documents |
+| Unresolved product choices | what blocks planning itself |
 
-**Кожен кандидат несе джерело** — `path:line`, номер issue, `doc §`. Кандидат, який агент вигадав
-сам, дозволений, але позначається `⚠️ без джерела` і мусить пояснити, з якого спостереження виріс.
-Це головний запобіжник: без нього агенда наповнюється правдоподібними задачами, яких ніхто не просив.
+**Every candidate carries a source** — `path:line`, issue number, `doc §`. An agent-invented candidate
+is allowed, but is marked `⚠️ no source` and must explain the observation from which it arose.
+This is the main safeguard: without it the agenda fills with plausible tasks nobody requested.
 
-**Архів у джерела не входить.** `work/` розділена за станом (розкладку дає `## Артефакти`
-маніфесту), і завершене лежить в архіві. Витягнути звідти кандидата означає запропонувати вже
-зроблене — тому архів читається лише щоб **відсіяти**: кандидат, який там уже є, з агенди
-викидається з поміткою, чим його закрито.
+**The archive is not a source.** `work/` is divided by state (the layout is given by the manifest's `## Артефакти`
+heading, retained as a literal compatibility reference), and completed work is archived. Pulling a candidate from there means proposing work already
+done — so read the archive only to **filter out**: a candidate already present there is removed from the agenda
+with a note identifying what closed it.
 
-## 3. Розкласти по двох осях
+<a id="3-розкласти-по-двох-осях"></a>
 
-Замість «high / medium / low» — два виміри, які справді відрізняють хід від ходу:
+## 3. Classify on two axes
 
-- **Розблоковує** — скільки іншого чекає на цей хід (перелічи що саме, іменами).
-- **Зворотність** — скільки коштує дізнатися, що хід був хибний: дешево (правка) чи дорого
-  (міграція даних, публічний API, зовнішній ефект).
+Instead of “high / medium / low”, use two dimensions that actually distinguish moves:
 
-Незворотні ходи вимагають більше доказів **до** старту; зворотні можна брати як пробу.
-Хід, що нічого не розблоковує і дорогий у відкаті, — кандидат на «не зараз», і це пишеться прямо.
+- **Unblocks** — how much other work awaits this move (name exactly what).
+- **Reversibility** — the cost of discovering that the move was wrong: cheap (an edit) or expensive
+  (data migration, public API, external effect).
 
-## 4. Відокремити рішення людини
+Irreversible moves require more evidence **before** starting; reversible ones can be tried as an experiment.
+A move that unblocks nothing and is expensive to undo is a candidate for “not now”; say so explicitly.
 
-Продуктові розвилки — **не** ходи агента. Кожну винеси окремим списком у формі:
-питання · варіанти · що кожен коштує · **рекомендація з причиною**.
+<a id="4-відокремити-рішення-людини"></a>
 
-Агент рекомендує; вибирає людина. Розвилка, підмінена таском, — це рішення, ухвалене мовчки.
+## 4. Separate human decisions
 
-## 5. Назвати хід
+Product choices are **not** agent moves. List each separately as:
+question · options · cost of each · **recommendation with a reason**.
 
-Одна рекомендація, і слідом — **чому не інші**: для кожного з 2–3 найближчих конкурентів рядок,
-що саме переважило. Без цього рекомендація не перевіряється, а отже й не оскаржується.
+The agent recommends; the person chooses. Disguising a choice as a task is making a decision silently.
 
-Далі хід іде у `spec-flow` (якщо це значуща фіча) або `to-tickets` (якщо це набір дрібного).
-Агенда сама коду не пише.
+<a id="5-назвати-хід"></a>
 
-## 6. Дім агенди
+## 5. Name the move
 
-Один файл на репо: `work/AGENDA.md` (або секція «Черга», якщо репо вже тримає її в брифінгу).
-Агенда **перезбирається**, а не дописується — беклог, що тільки росте, перестає бути вибором.
-Ходи, зроблені з минулої агенди, лишаються рядком «зроблено: <хід> → <коміт/PR>».
+Give one recommendation, followed by **why not the others**: for each of the 2–3 closest alternatives,
+a line explaining what tipped the balance. Otherwise the recommendation cannot be checked or challenged.
 
-## 7. Завершення
+The move then goes to `spec-flow` (for a substantial feature) or `to-tickets` (for a set of small items).
+The agenda itself writes no code.
 
-Скіл завершено, коли виконано **все**:
+<a id="6-дім-агенди"></a>
 
-- [ ] Названо коміт брифінгу, на який спирається агенда.
-- [ ] Усі шість джерел пройдені, для кожного названо число кандидатів.
-- [ ] Кожен кандидат має джерело або мітку `⚠️ без джерела`; назване число таких міток.
-- [ ] Кожен кандидат розкладений по обох осях (розблоковує / зворотність).
-- [ ] Продуктові розвилки винесені окремо, кожна з рекомендацією.
-- [ ] Названо **один** наступний хід і причини відмови 2–3 конкурентам.
+## 6. Where the agenda lives
+
+One file per repository: `work/AGENDA.md` (or a “Queue” section if the repository already keeps it in the briefing).
+The agenda is **rebuilt**, not appended to — an ever-growing backlog stops being a choice.
+Moves completed since the last agenda remain as “done: <move> → <commit/PR>”.
+
+<a id="7-завершення"></a>
+
+## 7. Completion
+
+The skill is complete when **all** of the following hold:
+
+- [ ] State the briefing commit underlying the agenda.
+- [ ] Visit all six sources and state each candidate count.
+- [ ] Every candidate has a source or a `⚠️ no source` label; state the number of those labels.
+- [ ] Classify each candidate on both axes (unblocks / reversibility).
+- [ ] List product choices separately, each with a recommendation.
+- [ ] Name **one** next move and reasons for rejecting the 2–3 alternatives.

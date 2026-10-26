@@ -1,24 +1,27 @@
-# Additive зміна, повтор і guarded restore
+<a id="additive-зміна-повтор-і-guarded-restore"></a>
+# Additive change, repeat and guarded restore
 
-[Вхід](../onboarding.md) · [Acceptance](../../templates/acceptance-full.md)
+[Entry](../onboarding.md) · [Acceptance](../../templates/acceptance-full.md)
 
-Це протокол для вже авторизованого writer, не автоматична команда застосування. Preflight лишається read-only. Файли receipt/backup/diff зберігаються в task workspace, не в додатковому tracker репо. Повтор використовує той самий canonical adapter і entry marker/path.
+This is a protocol for an already authorized writer, not an automatic apply command. Preflight remains read-only. Receipt/backup/diff files live in the task workspace, not an additional repository tracker. Repeating uses the same canonical adapter and entry marker/path.
 
-## Перед записом
+<a id="перед-записом"></a>
+## Before writing
 
-1. Inventory визначає один наявний authoritative entry та task workflow. Якщо adapter/pointer уже є, прочитай їх; не додавай ще один каталог, блок або копію правил. Семантичні дублікати перевіряються вручну, exact hash сам їх не знаходить.
-2. Зафіксуй root, branch, HEAD, scoped dirty/untracked state. Обери explicit files, перевір resolved paths і відсутність symlink/secret/config targets. Для existing entry зміна — лише мінімальний pointer/узгодження описового факту. Нормативний конфлікт без owner-рішення не переписується.
-3. Для кожного файла збережи receipt: absolute target, existed_before, baseline SHA256 (або null), byte-for-byte backup path (або null), proposed SHA256, diff, authorization/source, operation status. Backup включає вже наявні чужі dirty bytes; це не дозвіл переписати їх. Не записуй секрети в receipt.
-4. Переглянь повний diff та незалежне review. Перед кожним записом повторно звір існування/тип/батьківські шляхи й SHA baseline. За будь-якої зміни — BLOCKED цього файла, не force overwrite. Під час короткого apply потрібне узгоджене вікно без конкурентного writer: hashguard не є OS-lock. Зберігай permissions existing файла. Записуй лише reviewed bytes, потім перевір applied SHA й познач receipt applied.
-5. Після застосування перевір links/anchors, adapter compatibility та receipt. `adapter_files` у manifest містить canonical destinations і desired SHA: preflight має повернути NOOP для matching bytes. Different bytes → BLOCKED/reviewed merge; не автоматичний reapply. Не трактуй NOOP як semantic acceptance або runtime PASS.
+1. Inventory identifies one existing authoritative entry and task workflow. If an adapter/pointer already exists, read it; do not add another directory, block or rules copy. Semantic duplicates are checked manually; an exact hash alone does not find them.
+2. Record root, branch, HEAD and scoped dirty/untracked state. Select explicit files, check resolved paths and the absence of symlink/secret/config targets. For an existing entry, the change is only a minimal pointer/alignment of a descriptive fact. Do not overwrite a normative conflict without an owner decision.
+3. For each file retain a receipt: absolute target, existed_before, baseline SHA256 (or null), byte-for-byte backup path (or null), proposed SHA256, diff, authorization/source, operation status. The backup includes existing foreign dirty bytes; this is not permission to overwrite them. Do not put secrets in the receipt.
+4. Inspect the full diff and independent review. Immediately before each write, recheck existence/type/parent paths and baseline SHA. Any change → BLOCKED for that file, not force overwrite. The short apply requires an agreed window without a concurrent writer: a hashguard is not an OS lock. Preserve existing file permissions. Write only reviewed bytes, then verify applied SHA and mark the receipt applied.
+5. After apply, check links/anchors, adapter compatibility and receipt. `adapter_files` in the manifest holds canonical destinations and desired SHA: preflight must return NOOP for matching bytes. Different bytes → BLOCKED/reviewed merge, not automatic reapply. Do not treat NOOP as semantic acceptance or runtime PASS.
 
-## Restore лише власного застосованого diff
+<a id="restore-лише-власного-застосованого-diff"></a>
+## Restore only your own applied diff
 
-Restore потребує доручення в поточному scope; наявність backup сама не наказує відкотити роботу. Не використовуй git reset/checkout/clean або повний snapshot repo.
+Restore requires a request in the current scope; a backup's existence alone does not instruct you to roll work back. Do not use git reset/checkout/clean or a full repository snapshot.
 
-- Receipt має applied=true і applied SHA. Повторно перевір target type/path та **поточний SHA == applied SHA**. Якщо ні — BLOCKED, збережи конкурентну зміну; потрібен ручний merge з власником, не overwrite.
-- Existing файл: перевір backup SHA == baseline SHA, віднови лише його байти/permissions, перевір baseline SHA. Новий файл: видали лише цей exact applied файл за guard; не видаляй теки рекурсивно й не прибирай сторонні файли.
-- Partial apply: restore лише записані applied entries; untouched files не чіпати. Запиши per-file restore result; не називай transaction атомарною між багатьма файлами.
-- Повтор restore: baseline уже відновлено або own new file уже відсутній → NOOP. Інший content → BLOCKED. Backup/receipt зберігаються як докази.
+- The receipt has applied=true and applied SHA. Recheck target type/path and **current SHA == applied SHA**. Otherwise → BLOCKED; preserve the concurrent change. A manual merge with the owner is needed, not overwrite.
+- Existing file: verify backup SHA == baseline SHA, restore only its bytes/permissions, verify baseline SHA. New file: remove only that exact applied file under the guard; do not recursively remove directories or remove unrelated files.
+- Partial apply: restore only recorded applied entries; leave untouched files alone. Record per-file restore results; do not call a multi-file transaction atomic.
+- Repeat restore: baseline already restored or own new file already absent → NOOP. Other content → BLOCKED. Keep backup/receipt as evidence.
 
-Мінімальна disposable rehearsal: add → повтор NOOP; existing merge зі збереженням owner bytes; concurrent edit → apply/restore BLOCKED; own applied bytes → baseline restore; new file → exact removal; повтор restore NOOP. Це перевірка протоколу на fixtures, не дозвіл працювати з іншими репо.
+Minimal disposable rehearsal: add → repeat NOOP; existing merge preserving owner bytes; concurrent edit → apply/restore BLOCKED; own applied bytes → baseline restore; new file → exact removal; repeat restore NOOP. This checks the protocol on fixtures, not authorization to work on other repositories.

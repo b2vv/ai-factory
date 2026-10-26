@@ -1,6 +1,6 @@
 ---
 name: to-questionnaire
-description: "Перетворює рішення, на яке ви не можете повністю відповісти самі, на опитувальник, який заповнить хтось інший."
+description: "Turns a decision you cannot fully answer yourself into a questionnaire for someone else to complete."
 disable-model-invocation: true
 ---
 

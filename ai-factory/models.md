@@ -1,53 +1,57 @@
 ---
-title: "Три ролі моделей у чинному workflow"
+title: "Three model roles in the current workflow"
 reviewed: 2026-10-16
 ---
 
-[Вхід](../docs/legacy/ai-factory-plan-entry.md) · [Workflow](workflow.md) · [CRG](crg.md)
+[Entry](../docs/legacy/ai-factory-plan-entry.md) · [Workflow](workflow.md) · [CRG](crg.md)
 
 # Helper / Coder / Escalation-reviewer
 
-Це ручний розподіл ролей у наявному workflow, не встановлений router і не новий pipeline. Малі задачі не потребують трьох агентів. Локальний контракт визначає acceptance, гейти, власника коміту й потребу незалежного review. Чинний стек та користувацькі зміни зберігаються.
+This is a manual division of roles in the existing workflow, not an installed router or a new pipeline. Small tasks do not need three agents. The local contract defines acceptance, gates, commit ownership and the need for independent review. Preserve the current stack and user changes.
 
-| Роль | Межі й результат | Ескалація |
+| Role | Boundaries and result | Escalation |
 |---|---|---|
-| Helper | Швидкий дешевший read-only пошук, карта файлів, короткий підсумок із file:line; без source edits, остаточного verdict і важких перевірок | Неоднозначні вимоги/архітектура, суперечливі джерела або відсутня доказова база → Coder |
-| Coder | Реалізація погодженого scope, acceptance, доречні детерміновані перевірки; журнал рішень/змін/результатів | Високий ризик або два невдалі обґрунтовані виправлення → Escalation |
-| Escalation / reviewer | Складні причини, міжмодульні контракти, auth/доступ/дані/міграції/незворотність; review в новому незалежному контексті | Немає незалежного виконавця або бракує доступу/рішення → BLOCKED + конкретний handoff |
+| Helper | Fast, cheaper read-only search, file map, short summary with file:line; no source edits, final verdict or heavy checks | Ambiguous requirements/architecture, conflicting sources or missing evidence → Coder |
+| Coder | Implement the agreed scope, acceptance, appropriate deterministic checks; journal of decisions/changes/results | High risk or two failed justified fixes → Escalation |
+| Escalation / reviewer | Complex causes, cross-module contracts, auth/access/data/migrations/irreversibility; review in a new independent context | No independent executor or missing access/decision → BLOCKED + specific handoff |
 
-Високий ризик направляється одразу до Escalation, без обов'язкового невдалого дешевого проходу. Якщо Escalation сам писав рішення/код, для verdict потрібен інший reviewer; самоперевірка не стає незалежною через нову назву ролі. Модель не замінює compiler/lint/tests, browser interaction чи людське acceptance.
+High risk goes directly to Escalation, without requiring a failed cheap pass first. If Escalation authored the solution/code, another reviewer is needed for the verdict; self-review does not become independent through a new role name. A model does not replace compiler/lint/tests, browser interaction or human acceptance.
 
-## Bindings і рівень підтвердження
+<a id="bindings-і-рівень-підтвердження"></a>
+## Bindings and level of confirmation
 
-Bindings визначаються заново для конкретного host/session, незалежно від провайдера. Назва ролі не задає model ID. Старі cache snapshots і configured defaults — історичні кандидати, не поточний каталог або entitlement. Каталог Codex app/dot/іншого executor не переноситься в локальний Codex CLI чи Claude Code.
+Determine bindings anew for the particular host/session, regardless of provider. A role name does not specify a model ID. Old cache snapshots and configured defaults are historical candidates, not a current catalog or entitlement. A Codex app/dot/other executor catalog does not carry over to local Codex CLI or Claude Code.
 
-| Поле session inventory | Необхідний доказ / дія за відсутності |
+| Session inventory field | Required evidence / action if absent |
 |---|---|
-| Host, session, дата, роль | Назвати конкретний CLI/app та сесію; не виводити з назви репо |
-| Available catalog і provenance | Вже доступний каталог саме цього host/session з reference; за відсутності отримати read-only inventory підтримуваним засобом або залишити UNBOUND |
-| Candidate + effort | Candidate має бути в цьому каталозі; effort лише з підтверджених можливостей цього host, інакше unresolved |
-| Entitlement | Окремо unknown / available / unavailable з доказом; присутність у каталозі не гарантує доступ акаунта |
-| Budget | Окремо unknown / approved / denied; врахувати чинне доручення, не вмикати платний доступ |
-| Actual binding | Лише вже підтверджений фактичний запуск/стан сесії; configured candidate не є runtime proof |
+| Host, session, date, role | Name the particular CLI/app and session; do not infer it from the repository name |
+| Available catalog and provenance | An already available catalog for this exact host/session with a reference; if absent, obtain a read-only inventory by a supported method or leave UNBOUND |
+| Candidate + effort | The candidate must be in this catalog; effort only from confirmed host capabilities, otherwise unresolved |
+| Entitlement | Separately unknown / available / unavailable with evidence; catalog presence does not guarantee account access |
+| Budget | Separately unknown / approved / denied; account for the current request, do not enable paid access |
+| Actual binding | Only an already confirmed actual run/session state; a configured candidate is not runtime proof |
 
-Для Helper, Coder, Escalation/reviewer запиши candidate status (catalog unknown / unselected / missing / listed), entitlement, budget та конкретний next step. Missing candidate → обрати з доступного same-host каталогу; unknown entitlement → перевірити доступ без платного probe; unknown budget → рішення власника перед витратним запуском. Непідтверджена комбінація — **UNBOUND**. Якщо вже відома поточна модель, її можна вказати як actual binding без припущення про дешевший tier; роль Helper сама не знижує вартість.
+For Helper, Coder, Escalation/reviewer record candidate status (catalog unknown / unselected / missing / listed), entitlement, budget and a specific next step. Missing candidate → choose from the available same-host catalog; unknown entitlement → verify access without a paid probe; unknown budget → owner decision before a costly run. An unconfirmed combination is **UNBOUND**. If the current model is already known, it may be recorded as the actual binding without assuming a cheaper tier; the Helper role alone does not reduce cost.
 
-[Preflight schema](../docs/onboarding-helper.md) перевіряє лише поданий inventory і session identity, не автентичність evidence або entitlement. `VALIDATED_DECLARATION` не означає виконаний model binding. Жодних model API probes, автоматичного перемикання, запису config або обходу permissions для заповнення таблиці. Наявний незалежний reviewer може виконати дозволену роботу; якщо required tier/reviewer недоступний — BLOCKED конкретного gate, не self-review PASS. Немає потреби призначати всі три ролі малій задачі.
+The [preflight schema](../docs/onboarding-helper.md) checks only the supplied inventory and session identity, not evidence authenticity or entitlement. `VALIDATED_DECLARATION` does not mean an executed model binding. No model API probes, automatic switching, config writes or permission bypass to fill the table. An existing independent reviewer may perform authorized work; if the required tier/reviewer is unavailable, BLOCKED applies to that specific gate, not self-review PASS. There is no need to assign all three roles to a small task.
 
-## Ліміти роботи
+<a id="ліміти-роботи"></a>
+## Work limits
 
-- Helper: одна вузька задача; до 5 цільових пошукових/tool кроків і приблизно 800 токенів підсумку. Після одного уточненого повтору передати знайдене й блокер. Ці межі — стартовий бюджет, не критерій істинності.
-- Coder: не більше двох виправлень однієї невдалої перевірки без нового доказу/гіпотези. Далі — короткий пакет Escalation; не повторювати той самий дорогий full gate без причини.
-- Reviewer: один первинний прохід і один прохід по виправленнях; після зміни scope/рішення оновити контракт. Empty/null/timeout ≠ clean: один обґрунтований retry, потім BLOCKED.
-- Контекст: передавати контракт, точні файли/рядки, diff і результати; не весь чат, архів репо або повний graph dump. Орієнтир handoff ≤1500 токенів плюс посилання; великий scope розбити до dispatch. Не скорочувати докази для формального потрапляння в ліміт.
-- Після двох циклів без прогресу або перед compaction зафіксувати журнал і конкретний наступний крок. Гроші/квоти не вгадувати; автоматичного cost routing немає.
+- Helper: one narrow task; up to 5 targeted search/tool steps and roughly 800 tokens of summary. After one refined retry, hand off findings and the blocker. These limits are a starting budget, not a criterion of truth.
+- Coder: no more than two fixes of one failing check without new evidence/a hypothesis. Next, provide a short Escalation package; do not repeat the same expensive full gate without a reason.
+- Reviewer: one initial pass and one pass over fixes; update the contract after a scope/decision change. Empty/null/timeout ≠ clean: one justified retry, then BLOCKED.
+- Context: pass the contract, exact files/lines, diff and results; not the entire chat, repository archive or full graph dump. Handoff guideline ≤1500 tokens plus links; split a large scope before dispatch. Do not shorten evidence merely to fit the limit.
+- After two cycles without progress or before compaction, record the journal and a specific next step. Do not guess money/quotas; there is no automatic cost routing.
 
-## CRG і мінімальний handoff
+<a id="crg-і-мінімальний-handoff"></a>
+## CRG and minimal handoff
 
-Перед graph-assisted роботою: [CRG freshness/coverage](crg.md). При stale/missing/untracked scope не робити висновків «немає callers», «dead code», «нуль impact»; перейти до `rg`, поточних файлів, language tools і тестів. Розмір/дорожнеча моделі не виправляє stale context.
+Before graph-assisted work: [CRG freshness/coverage](crg.md). For stale/missing/untracked scope, do not conclude “no callers”, “dead code”, “zero impact”; switch to `rg`, current files, language tools and tests. Model size/cost does not fix stale context.
 
-У наявному plan/journal записати: роль + фактична модель/effort/host; ціль/acceptance та межі; repo/root/branch/HEAD + dirty/untracked scope; авторитетні інструкції; CRG status і точні запити/обмеження; змінені файли; команди/результати PASS/FAIL/BLOCKED/N/A; рішення/блокер; наступний виконавець і одна дія. Reviewer отримує ці артефакти без авторської історії чату. Нового обов'язкового журналу не потрібно.
+In the existing plan/journal record: role + actual model/effort/host; goal/acceptance and boundaries; repo/root/branch/HEAD + dirty/untracked scope; authoritative instructions; CRG status and exact queries/limits; changed files; commands/results PASS/FAIL/BLOCKED/N/A; decision/blocker; next executor and one action. The reviewer receives these artifacts without the author's chat history. No new mandatory journal is needed.
 
-## Докази доступності
+<a id="докази-доступності"></a>
+## Evidence of availability
 
-Зберігай безсекретний reference на каталог/сесію та дату у чинному task record. Config/cache можна врахувати лише як відповідний тип джерела, без читання credentials та без називання старого кешу актуальним каталогом. Discovery, entitlement, budget і invocation мають окремі докази. Цим документальним оновленням model API та CLI probes не виконувалися, defaults не змінювалися.
+Keep a secret-free catalog/session reference and date in the current task record. Config/cache may be considered only as the corresponding source type, without reading credentials or calling an old cache the current catalog. Discovery, entitlement, budget and invocation require separate evidence. This documentation update ran no model API or CLI probes and changed no defaults.

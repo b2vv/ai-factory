@@ -1,144 +1,154 @@
 ---
-title: "Черга розвитку та критерії приймання"
+title: "Development queue and acceptance criteria"
 reviewed: 2026-10-16
 ---
 
-[До точки входу](../docs/legacy/ai-factory-plan-entry.md) · [Статус](status.md#capabilities) · [Маршрути](workflow.md#routing) · [Задачі](roadmap.md#tasks) · [Практики репо](repo-evidence.md#repo-evidence) · [Історія](history.md#history)
+[Entry point](../docs/legacy/ai-factory-plan-entry.md) · [Status](status.md#capabilities) · [Routes](workflow.md#routing) · [Tasks](roadmap.md#tasks) · [Repo practices](repo-evidence.md#repo-evidence) · [History](history.md#history)
 
 <a id="tasks"></a>
 
-# Черга розвитку та критерії приймання
+<a id="черга-розвитку-та-критерії-приймання"></a>
+# Development queue and acceptance criteria
 
-Це задачі й цільові критерії, не команда виконати їх усі. Поточний статус — тільки в [status.md](status.md#capabilities). Спочатку звірити цільове репо: уже реалізоване не створювати повторно. Репозиторні команди/порти нижче — контекст задач, їхня актуальність перевіряється перед виконанням.
+These are tasks and target criteria, not an instruction to execute them all. Current status lives only in [status.md](status.md#capabilities). First inspect the target repo: do not recreate what is already implemented. Repository commands/ports below are task context; verify their currency before execution.
 
-## 3. Авторство й оцінювання скілів
+<a id="3-авторство-й-оцінювання-скілів"></a>
+## 3. Skill authoring and evaluation
 
-Чинна назва — [writing-for-agents](../skills/utils/writing-for-agents/SKILL.md); `writing-great-skills` — історична назва. Використовувати рубрику структури, progressive disclosure і перевірних критеріїв завершення. Глобальний скіл уже існує; створювати дубль у кожному репо не потрібно лише заради доступності.
+The current name is [writing-for-agents](../skills/utils/writing-for-agents/SKILL.md); `writing-great-skills` is historical. Use the rubric for structure, progressive disclosure and verifiable completion criteria. The global skill already exists; there is no need to duplicate it in every repo merely for availability.
 
-У аудиті 2026-10-14 був доступний Codex [skill-creator](../../.codex/skills/.system/skill-creator/SKILL.md). Це не доказ встановлення однойменного Claude-плагіна. Старий запис про кеш/installed_plugins і `run-skill-generator` не підтверджує поточний стан; його не використовуємо для рішення про встановлення.
+The 2026-10-14 audit had access to Codex [skill-creator](../../.codex/skills/.system/skill-creator/SKILL.md). This does not prove installation of the same-named Claude plugin. The old cache/installed_plugins and `run-skill-generator` record does not confirm current state; do not use it to decide installation.
 
-E1.8 залишається пропозицією eval-петлі: перевірити тригеринг, зміст виходу й поведінку на типових/граничних задачах доступним варіантом skill-creator. Поведінкові eval корисні й для явних викликів. Встановлення плагінів не є частиною цього редагування; наявність скрипта не означає, що eval уже виконаний.
+E1.8 remains an eval-loop proposal: check triggering, output content and behavior on typical/boundary tasks with an available skill-creator variant. Behavioral evals are also useful for explicit invocations. Plugin installation is not part of this edit; a script's presence does not mean the eval has run.
 
 ---
 
-## 4. Запроєктована структура Obsidian для dg
+<a id="4-запроєктована-структура-obsidian-для-dg"></a>
+## 4. Proposed Obsidian structure for dg
 
-Стан vault/Shared та межі перевірки — у [status.md](status.md#capabilities). Нижче збережено цільову схему для E0, а не повторний інвентар.
+Vault/Shared state and verification limits are in [status.md](status.md#capabilities). The target E0 layout below is preserved, not a repeated inventory.
 
-За рунбуком `~/.agents/obsidian-cheatsheet.md`, розкладка — як у cargotrans-ui.
+According to the `~/.agents/obsidian-cheatsheet.md` runbook, the layout follows cargotrans-ui.
 
-**Порти:** 27123 = cassiopeia, 27124 = її HTTPS, 27133 = cargotrans-ui → **27143 був запланований для dg**. Поточну зайнятість і роботу сервера не перевірено.
+**Ports:** 27123 = cassiopeia, 27124 = its HTTPS, 27133 = cargotrans-ui → **27143 was planned for dg**. Current occupancy and server operation were not checked.
 
-Розкладка `~/vaults/diagram-hierarchy/`:
+Layout of `~/vaults/diagram-hierarchy/`:
 
 ```
-1 - Notes/{ADR,Domain,Prompts,Reports,Sessions}   # ADR: лише посилання/огляд; оригінал у репо
-2 - Contract/  -> symlink на dg/AGENTS.md, dg/CONTEXT.md, dg/CONTRIBUTING.md
+1 - Notes/{ADR,Domain,Prompts,Reports,Sessions}   # ADR: links/overview only; original in the repo
+2 - Contract/  -> symlink to dg/AGENTS.md, dg/CONTEXT.md, dg/CONTRIBUTING.md
 3 - Reference/ -> Docs (dg/docs), Work (dg/work), Requirements (docs/REQUIREMENTS.md)
-4 - Shared     -> ~/vaults/global   (patterns, prompts, skills, rules — наскрізь)
+4 - Shared     -> ~/vaults/global   (patterns, prompts, skills, rules — shared throughout)
 ```
 
-`Domain/` дзеркалить реальні межі dg: `core-wasm`, `sdk-render`, `contour`, `row-tree`,
-`export`, `interactions`, `demo` — не FSD-шари (їх тут нема).
+`Domain/` mirrors actual dg boundaries: `core-wasm`, `sdk-render`, `contour`, `row-tree`,
+`export`, `interactions`, `demo` — not FSD layers (there are none here).
 
 ---
 
-## 5. Реєстр задач і критерії приймання
+<a id="5-реєстр-задач-і-критерії-приймання"></a>
+## 5. Task registry and acceptance criteria
 
-ID збережені. Виконання та докази фіксуються в status.md; старі результати E4/E5 винесено в history.md.
+IDs are preserved. Execution and evidence are recorded in status.md; old E4/E5 results were moved to history.md.
 
-Позначення: **[я]** — можу зробити в сесії; **[ти]** — потрібні руки в GUI/браузері.
-Пріоритет: **P0** розблоковує решту, **P3** — опційне.
+Notation: **[me]** — I can do it in-session; **[you]** — hands-on GUI/browser work is needed.
+Priority: **P0** unblocks the rest; **P3** is optional.
 
-### E0 · Obsidian для dg — vault `diagram-hierarchy`  (P0)
+<a id="e0--obsidian-для-dg--vault-diagram-hierarchy--p0"></a>
+### E0 · Obsidian for dg — vault `diagram-hierarchy`  (P0)
 
-| # | Задача | Хто | DoD |
+| # | Task | Who | DoD |
 |---|---|---|---|
-| E0.1 | Створити `~/vaults/diagram-hierarchy` зі структурою `1 - Notes/{ADR,Domain,Prompts,Reports,Sessions}` | я | теки на місці |
-| E0.2 | Symlink-и: `4 - Shared` → `~/vaults/global`; `2 - Contract/*` → `AGENTS.md`, `CONTEXT.md`, `CONTRIBUTING.md`; `3 - Reference/*` → `docs`, `work` | я | `ls -l` показує лінки, не копії |
-| E0.3 | `.gitignore` (ігнорити `2 - Contract`, `3 - Reference`, `4 - Shared`, `.obsidian/plugins/*/data.json`, `.obsidian/workspace*.json`) + `git init` + перший коміт | я | `git status` чистий |
-| E0.4 | `Home.md` + `README.md` vault-а (за зразком cargotrans-ui: розкладка, MCP-порт, безпека) | я | обидва файли є, `[[Home]]` — вхід |
-| E0.5 | Шаблони `_ADR Template` (індекс/посилання на ADR у репо), `_Report Template`, `_Session Template`, `_domain-note-template` | я | скопійовано з cargotrans-ui, адаптовано під dg |
-| E0.6 | Відкрити vault в Obsidian → Community plugins → **Local REST API with MCP** → Install/Enable → HTTP server on → **порт 27143** → скопіювати Bearer-токен | **ти** | плагін слухає `127.0.0.1:27143` |
-| E0.7 | Settings → Files & Links → Excluded files: `4 - Shared/.obsidian` | **ти** | global-конфіг не індексується |
-| E0.8 | `cd ~/projects/dg && claude mcp add -s local --transport http obsidian http://127.0.0.1:27143/mcp/ --header "Authorization: Bearer <token>"` → `claude mcp list` = ✓ Connected | я (після E0.6) | MCP `obsidian` у local-scope dg |
-| E0.9 | `dg/CLAUDE.local.md` — порт правил cargotrans-ui: KB-старт, **жива Session-нота інкрементально** (flush рано й часто), fallback у `work/reports/<topic>/_wip-*.md` коли Obsidian закритий | я | файл є, `.gitignore` його ігнорує |
-| E0.10 | Оновити `~/.agents/obsidian-cheatsheet.md` §3 — рядок таблиці `diagram-hierarchy / 27143` | я | таблиця портів актуальна |
-| E0.11 | Засіяти `1 - Notes/Domain/`: `_how-it-works.md`, `_domain-moc.md`, `_gotchas.md`, `_glossary.md` — з `CTO-RESEARCH.md` + `SPEC.md`, з `path:line` | я | 4 файли, кожна теза має джерело |
+| E0.1 | Create `~/vaults/diagram-hierarchy` with `1 - Notes/{ADR,Domain,Prompts,Reports,Sessions}` structure | me | directories exist |
+| E0.2 | Symlinks: `4 - Shared` → `~/vaults/global`; `2 - Contract/*` → `AGENTS.md`, `CONTEXT.md`, `CONTRIBUTING.md`; `3 - Reference/*` → `docs`, `work` | me | `ls -l` shows links, not copies |
+| E0.3 | `.gitignore` (ignore `2 - Contract`, `3 - Reference`, `4 - Shared`, `.obsidian/plugins/*/data.json`, `.obsidian/workspace*.json`) + `git init` + first commit | me | `git status` is clean |
+| E0.4 | Vault `Home.md` + `README.md` (following cargotrans-ui: layout, MCP port, security) | me | both files exist; `[[Home]]` is the entry |
+| E0.5 | Templates `_ADR Template` (index/link to repo ADR), `_Report Template`, `_Session Template`, `_domain-note-template` | me | copied from cargotrans-ui, adapted for dg |
+| E0.6 | Open the vault in Obsidian → Community plugins → **Local REST API with MCP** → Install/Enable → HTTP server on → **port 27143** → copy the Bearer token | **you** | plugin listens on `127.0.0.1:27143` |
+| E0.7 | Settings → Files & Links → Excluded files: `4 - Shared/.obsidian` | **you** | global config is not indexed |
+| E0.8 | From the selected dg project root: `claude mcp add -s local --transport http obsidian http://127.0.0.1:27143/mcp/ --header "Authorization: Bearer <token>"` → `claude mcp list` = ✓ Connected | me (after E0.6) | MCP `obsidian` in dg local scope |
+| E0.9 | `dg/CLAUDE.local.md` — port cargotrans-ui rules: KB start, **incremental live Session note** (flush early and often), fallback to `work/reports/<topic>/_wip-*.md` when Obsidian is closed | me | file exists, `.gitignore` ignores it |
+| E0.10 | Update `~/.agents/obsidian-cheatsheet.md` §3 — table row `diagram-hierarchy / 27143` | me | ports table is current |
+| E0.11 | Seed `1 - Notes/Domain/`: `_how-it-works.md`, `_domain-moc.md`, `_gotchas.md`, `_glossary.md` — from `CTO-RESEARCH.md` + `SPEC.md`, with `path:line` | me | 4 files, every claim has a source |
 
-### E1 · Глобальний шар: скіли пайплайна  (P0–P1)
+<a id="e1--глобальний-шар-скіли-пайплайна--p0p1"></a>
+### E1 · Global layer: pipeline skills  (P0–P1)
 
-Дім — `~/.agents/skills/<категорія>/<name>/SKILL.md` або окрема коренева тека; точні шляхи — у status.md. Shared містить довідкові картки, які оновлюються окремо, а не виконувані копії.
-**Кожен скіл проходить рубрику `writing-for-agents` перед мержем.**
+Home is `~/.agents/skills/<категорія>/<name>/SKILL.md` or a separate root directory; exact paths are in status.md. The compatibility path placeholder `<категорія>` means category. Shared contains reference cards updated separately, not executable copies.
+**Every skill passes the `writing-for-agents` rubric before merge.**
 
-| # | Задача | Пріор | DoD |
+| # | Task | Priority | DoD |
 |---|---|---|---|
-| E1.1 | `cto-research` — скелет розділів (продукт / кодова база й seams / інфра / залежності / ризики / вердикт на екран), вимога `path:line` на тезу, гейт свіжості за базовим комітом, HEAD і staged/unstaged/untracked змінами; шапка пишеться при першому збиранні | P0 | прогін на dg відтворює наявний `CTO-RESEARCH.md` за структурою |
-| E1.2 | `plan-critique` — фан-аут 4 лінзи (AI-slop / логічні діри / надлишкова складність / непокриті edge cases), структурований вердикт на лінзу + зведення; реалізація — доступні засоби незалежного делегування за правилами агента; якщо їх немає — BLOCKED | P0 | названо `4 запущено / N повернулось`; кожна повернута лінза дала знахідку або явне «чисто»; лінза, що не повернулась, дає червоний гейт з її іменем |
-| E1.3 | `plan-defense` — детермінований чекліст 5 питань (кривий інпут / впав сервіс / гонка+повторний клік / порожні та граничні дані / rollback); кожне закрите **посиланням на рядок плану**, інакше гейт червоний | P0 | у плані лежить таблиця з 5 рядків, у кожному або посилання на рядок плану, або «поза скоупом, бо <причина>»; порожній рядок = червоний гейт |
-| E1.4 | `acceptance-spec` — таблиця `сценарій / передумова / дія / спостережуваний результат / чим перевіряється`; вбудовується в `plan.md` **до** коду | P1 | таблиця генерується й лінкується з tasks.md |
-| E1.5 | `ship-report` — 6 фіксованих секцій треду, звіт як **дельта** до плану; секція 2 — приймальна таблиця `acceptance-spec` із дописаними «фактичний результат» і «вердикт» | P1 | усі 6 секцій присутні (порожня = «не застосовно, бо…», не видалена); кожен рядок таблиці має вердикт; назване число «не перевірено» |
-| E1.6 | `post-deploy-check` — прогін **ключових** сценаріїв по прод/Pages URL, розбіжності прод ⟂ тест, логи й інтеграції, дозапис у той самий звіт | P2 | названо доступне/недоступне і який білд відкрився; список розбіжностей існує навіть порожній; результат у наявному звіті, не в новому. ⚠️ зроблено `авто`, не user-invoked: «перевір прод» — природний тригер, і `ship-report` має його дістати |
-| E1.7 | Rule `~/.agents/rules/multi-model-roles.md` — розподіл ролей і незалежність контексту; доступні моделі/провайдери перевіряти у поточній сесії | P1 | На погодженому пілоті названі автор і незалежний reviewer, фактичні засоби/моделі та канал завантаження правила; кількість запущених/повернутих перевірок збігається або гейт BLOCKED. Видимість у vault сама не є DoD |
-| E1.8 | Вибрати доступний `skill-creator` і запланувати eval-петлю; встановлення, якщо потрібне, — окреме рішення; оцінити на E1.1 / E1.2 / E1.5 (тест-промпти + `description`-оптимізація) | P2 | На ≥5 промптах на скіл перевірені доречність виклику і поведінка виходу за очікуваними критеріями: типовий, граничний, нерелевантний запит та недоступний інструмент; для явного виклику — виконання контракту. Записані версія, результати й дефекти; сам trigger не є PASS |
-| E1.10 | `repo-bootstrap` — інвентар із 11 позицій (маніфест, брифінг, контракт-пойнтери, `CLAUDE.local.md`, дім артефактів, задачі/борг/архів, гейти, трекер, CRG, vault, агенда), дві гілки (перевірка / ініціалізація), ідемпотентний; **не вигадує вміст** — `⚠️ немає` замість правдоподібного стандарту, `TODO:` замість рішення за людину | P0 | на чужому репо дає таблицю станів; на dg/cargotrans другий прогін не створює нічого нового |
-| E1.9 | `cto-agenda` — **що робити далі**: кандидати з шести перелічених джерел (таски/issues, борг, ризики брифінгу, невиконані чекбокси, скіпнуті тести й `TODO`, продуктові розвилки) → осі **розблоковує × зворотність** → **один** наступний хід + чому не інші. Дім — `work/AGENDA.md`, перезбирається, не дописується | P0 | усі 6 джерел пройдені з числом кандидатів; кожен кандидат має джерело або мітку `⚠️ без джерела`; названо один хід і відмову 2–3 конкурентам |
+| E1.1 | `cto-research` — section skeleton (product / codebase and seams / infrastructure / dependencies / risks / one-screen verdict), `path:line` per claim, freshness gate by base commit, HEAD and staged/unstaged/untracked changes; write the header on first assembly | P0 | a dg run reproduces the structure of the existing `CTO-RESEARCH.md` |
+| E1.2 | `plan-critique` — fan out into 4 lenses (AI-slop / logical gaps / excess complexity / uncovered edge cases), structured verdict per lens + consolidation; implemented through available independent-delegation mechanisms under agent rules; without them, BLOCKED | P0 | state `4 launched / N returned`; every returned lens gives a finding or explicit “clean”; a missing lens makes the gate red with that lens named |
+| E1.3 | `plan-defense` — deterministic checklist of 5 questions (malformed input / service failure / race+repeated click / empty and boundary data / rollback); each closed by **a reference to a plan line**, otherwise the gate is red | P0 | a 5-row table in the plan, each row either references a plan line or says “out of scope because <reason>”; an empty row = red gate |
+| E1.4 | `acceptance-spec` — table `scenario / precondition / action / observable result / verification method`; embedded in `plan.md` **before** code | P1 | table generated and linked from tasks.md |
+| E1.5 | `ship-report` — 6 fixed thread sections, report as a **delta** from the plan; section 2 is the `acceptance-spec` table with added “actual result” and “verdict” | P1 | all 6 sections present (empty = “not applicable because…”, not deleted); every table row has a verdict; state the “not tested” count |
+| E1.6 | `post-deploy-check` — run **key** scenarios against the production/Pages URL, production ⟂ test discrepancies, logs and integrations, append to the same report | P2 | name what is available/unavailable and which build opened; a discrepancy list exists even if empty; result in the existing report, not a new one. ⚠️ implemented as `auto`, not user-invoked: “перевір прод” is the retained natural trigger meaning “check production”, and `ship-report` must reach it |
+| E1.7 | Rule `~/.agents/rules/multi-model-roles.md` — role allocation and context independence; check available models/providers in the current session | P1 | An agreed pilot names the author and independent reviewer, actual tools/models and rule-loading channel; launched/returned check counts match or the gate is BLOCKED. Vault visibility alone is not DoD |
+| E1.8 | Select an available `skill-creator` and plan an eval loop; installation, if needed, is a separate decision; evaluate E1.1 / E1.2 / E1.5 (test prompts + `description` optimization) | P2 | At ≥5 prompts per skill, invocation relevance and output behavior are checked against expected criteria: typical, boundary, irrelevant request and unavailable tool; for explicit invocation, contract fulfillment. Record version, results and defects; triggering alone is not PASS |
+| E1.10 | `repo-bootstrap` — 11-item inventory (manifest, briefing, contract pointers, `CLAUDE.local.md`, artifact home, tasks/debt/archive, gates, tracker, CRG, vault, agenda), two branches (check / initialization), idempotent; **does not invent content** — `⚠️ missing` instead of a plausible standard, `TODO:` instead of deciding for a person | P0 | produces a state table in an unfamiliar repo; a second dg/cargotrans run creates nothing new |
+| E1.9 | `cto-agenda` — **what to do next**: candidates from six listed sources (tasks/issues, debt, briefing risks, unchecked boxes, skipped tests and `TODO`, product forks) → **unblocks × reversibility** axes → **one** next move + why not the others. Home is `work/AGENDA.md`, rebuilt, not appended | P0 | all 6 sources examined with candidate counts; each candidate has a source or `⚠️ no source` label; name one move and reject 2–3 alternatives |
 
-### E2 · cargotrans-ui — доростити наявний конвеєр  (P1)
+<a id="e2--cargotrans-ui--доростити-наявний-конвеєр--p1"></a>
+### E2 · cargotrans-ui — extend the existing pipeline  (P1)
 
-Ціль — мінімальні доповнення наявного процесу після перевірки стану; не повторне будівництво.
+The goal is minimal additions to the existing process after checking its state, not rebuilding it.
 
-| # | Задача | DoD |
+| # | Task | DoD |
 |---|---|---|
-| E2.1 | `spec-flow` §3: додати в `plan.md` **обов'язкові** поля «сайд-ефекти / план міграції / rollback» | план без них не проходить GATE 2 |
-| E2.2 | Звірити локальний GATE 2 із погодженим процесом: `plan-critique` + `plan-defense` + конституція; `grilling` належить GATE 1 глобального spec-flow, не додається вдруге автоматично | обидва нові гейти викликаються зі spec-flow |
-| E2.3 | Прибрати з `spec-flow` формулювання через заборону (**negation** з рубрики writing-for-agents) — переписати на позитивну ціль | жодного «НЕ вмикати» без пари «замість цього зроби» |
-| E2.4 | Дописати в `AGENT.md` пойнтер на `~/.agents/rules/subagent-orchestration-ledger.md` (ledger + 4 статуси) — зараз правило існує, але контракт на нього не посилається | пойнтер є, ledger лягає в `reports/<topic>/wave-NN/progress.md` |
-| E2.5 | Task branches у головному репозиторії, один writer, explicit handoff і зупинка на чужому WIP — [branch ownership](workflow.md#task-branches); без автоматичного worktree/clone | task record містить branch/base/owner, snapshot і погоджений runtime slot |
-| E2.6 | Підключити `ship-report` до `spec-flow` §7 як формат фінального звіту в `reports/<topic>/` | шаблон звіту фіксований |
-| E2.7 | Playwright user-flow прогін зі **скріншотами в артефакт** звіту (є `.env.playwright.local`) | Актуальні desktop/mobile скріни з розмірами viewport реально переглянуто; головний сценарій, стани й клавіатуру пройдено; дефекти виправлено та перевірено повторно. Докази й PASS/FAIL/BLOCKED/N/A у звіті; людську перевірку не зараховувати без результату |
-| E2.8 | `post-deploy-check` на прод-URL cargotrans | чекліст існує й один раз пройдений |
+| E2.1 | `spec-flow` §3: add **mandatory** “side effects / migration plan / rollback” fields to `plan.md` | a plan without them fails GATE 2 |
+| E2.2 | Reconcile local GATE 2 with the agreed process: `plan-critique` + `plan-defense` + constitution; `grilling` belongs to global spec-flow GATE 1 and is not automatically added twice | both new gates are invoked from spec-flow |
+| E2.3 | Remove prohibition-based wording from `spec-flow` (**negation** in the writing-for-agents rubric) — rewrite as a positive goal | no “DO NOT enable” without a paired “do this instead” |
+| E2.4 | Add a pointer to `~/.agents/rules/subagent-orchestration-ledger.md` (ledger + 4 statuses) in `AGENT.md` — the rule exists now but the contract does not reference it | pointer present, ledger stored at `reports/<topic>/wave-NN/progress.md` |
+| E2.5 | Task branches in the main repository, one writer, explicit handoff and stopping on foreign WIP — [branch ownership](workflow.md#task-branches); no automatic worktree/clone | task record contains branch/base/owner, snapshot and agreed runtime slot |
+| E2.6 | Connect `ship-report` to `spec-flow` §7 as the final-report format in `reports/<topic>/` | fixed report template |
+| E2.7 | Playwright user-flow run with **screenshots in the report artifact** (`.env.playwright.local` exists) | Current desktop/mobile screenshots with viewport dimensions actually inspected; main scenario, states and keyboard exercised; defects fixed and rechecked. Evidence and PASS/FAIL/BLOCKED/N/A in the report; do not count human verification without a result |
+| E2.8 | `post-deploy-check` on the cargotrans production URL | checklist exists and has been run once |
 
-### E3 · dg — підняти базу конвеєра  (P1)
+<a id="e3--dg--підняти-базу-конвеєра--p1"></a>
+### E3 · dg — establish the pipeline foundation  (P1)
 
-За первинним записом dg мав лише CRG-обгортки; поточний стан репо не перевірено. Порядок важливий: спершу мірник рев'ю, потім оркестратор.
+The initial record says dg had only CRG wrappers; the repo's current state was not checked. Order matters: review criteria first, orchestrator second.
 
-| # | Задача | DoD |
+| # | Task | DoD |
 |---|---|---|
-| E3.1 | `dg/.claude/skills/review/SKILL.md` — за зразком cargotrans, але мірник **перелічений під dg**: `work/CODING_STANDARDS.md`, `work/SPEC.md` §13, `work/TDD.md`, `AGENTS.md`; машинні гейти = `npm run test:verify` (typecheck + test + e2e + compare:nodes) + `npm run test:rust` | рев'ю не вгадує стандарти; `work/tasks/**`, `work/tech-debt/**` явно **не** мірник |
-| E3.2 | `dg/.claude/skills/spec-flow/SKILL.md` — порт із cargotrans, поріг перевизначено під dg (нова підсистема в `packages/core` або `packages/sdk`, зміна публічного API SDK, зміна worker-контракту), артефакти → `work/reports/<topic>/` | пайплайн запускається на реальній задачі рівня T-таска |
-| E3.3 | Прив'язати `cto-research` (E1.1) до наявного `work/CTO-RESEARCH.md` як до вихідного артефакту + staleness-гейт (файл від 2026-08-24, база `a5eb0f6`) | скіл оновлює файл, а не пише другий |
-| E3.4 | Перевірити доступність глобального `writing-for-agents` у dg; за потреби додати пойнтер на чинний SKILL.md без дублювання | скіл доступний у dg |
-| E3.5 | Секція «Pipeline» в `AGENTS.md`: research → plan → critique → defense → tests-first → implement → review → report → post-deploy, з лінками на скіли | одна точка входу для агента |
-| E3.6 | `acceptance-spec` для живого P0 (`work/tasks/T78-post-t77-critique.md`) як пілот формату | таблиця сценаріїв є, кожен рядок має чим перевіряється |
+| E3.1 | `dg/.claude/skills/review/SKILL.md` — following cargotrans, but criteria **enumerated for dg**: `work/CODING_STANDARDS.md`, `work/SPEC.md` §13, `work/TDD.md`, `AGENTS.md`; machine gates = `npm run test:verify` (typecheck + test + e2e + compare:nodes) + `npm run test:rust` | review does not guess standards; `work/tasks/**`, `work/tech-debt/**` explicitly are **not** criteria |
+| E3.2 | `dg/.claude/skills/spec-flow/SKILL.md` — port from cargotrans, threshold redefined for dg (new subsystem in `packages/core` or `packages/sdk`, SDK public API change, worker-contract change), artifacts → `work/reports/<topic>/` | pipeline runs on an actual T-task-level task |
+| E3.3 | Bind `cto-research` (E1.1) to existing `work/CTO-RESEARCH.md` as its output artifact + staleness gate (file dated 2026-08-24, base `a5eb0f6`) | skill updates the file rather than writing a second one |
+| E3.4 | Check global `writing-for-agents` availability in dg; if needed, add a pointer to the current SKILL.md without duplication | skill available in dg |
+| E3.5 | “Pipeline” section in `AGENTS.md`: research → plan → critique → defense → tests-first → implement → review → report → post-deploy, with skill links | one agent entry point |
+| E3.6 | `acceptance-spec` for live P0 (`work/tasks/T78-post-t77-critique.md`) as a format pilot | scenario table exists, every row has a verification method |
 
-### E4 · Незалежне AI-рев’ю на PR (P2)
+<a id="e4--незалежне-ai-ревю-на-pr-p2"></a>
+### E4 · Independent AI review on PRs (P2)
 
-| # | Задача | DoD |
+| # | Task | DoD |
 |---|---|---|
-| E4.1 | Перевірити наявний dg ai-review workflow та погоджений мірник; доступ налаштовується окремо | Валідний YAML і реальний тестовий PR; skipped відрізняється від успішного review |
-| E4.2 | Звірити окремі standards/spec-and-edges job та вхідні контексти | Два незалежні вердикти з доказами; різні runner самі не доводять незалежність |
-| E4.3 | Перевірити результуючий ready-for-human/needs-info label | Рівно один правильний label і пояснення на тестовому PR |
-| E4.4 | P3: оцінити користь зовнішнього вендора як третього reviewer | Рішення про користь/тертя записане; не встановлювати про всяк випадок |
+| E4.1 | Check the existing dg ai-review workflow and agreed criteria; access is configured separately | Valid YAML and a real test PR; skipped is distinguished from successful review |
+| E4.2 | Check separate standards/spec-and-edges jobs and their input contexts | Two independent verdicts with evidence; different runners alone do not prove independence |
+| E4.3 | Check the resulting ready-for-human/needs-info label | Exactly one correct label and an explanation on the test PR |
+| E4.4 | P3: evaluate an external vendor's usefulness as a third reviewer | Benefit/friction decision recorded; do not install just in case |
 
 ### E5 · Post-deploy (P2)
 
-| # | Задача | DoD |
+| # | Task | DoD |
 |---|---|---|
-| E5.1 | Звірити dg prod-smoke/playwright.prod/test:prod/post-deploy workflow з реальним деплоєм | Названий білд, сценарії та verdict; збій спостережуваний без ручного відкриття |
-| E5.2 | Звірити cargo tools/post-deploy/run.sh і yarn post-deploy на погодженому стенді | Перевірені guard і самі релевантні flows; непіднятий стенд — BLOCKED; switch/cleanup не автоматизуються цим планом |
-| E5.3 | Додати post-deploy результат у наявний ship-report | Один звіт на фічу, з окремими доказами до/після деплою |
+| E5.1 | Check dg prod-smoke/playwright.prod/test:prod/post-deploy workflow against the actual deployment | Build, scenarios and verdict named; failure observable without manually opening it |
+| E5.2 | Check cargo tools/post-deploy/run.sh and yarn post-deploy on an agreed test environment | Guards and relevant flows checked; unavailable environment means BLOCKED; switch/cleanup are not automated by this plan |
+| E5.3 | Add the post-deploy result to the existing ship-report | One report per feature, with separate pre/post-deploy evidence |
 
-Точні старі команди, параметри, цифри й обмеження збережені в [історії E4/E5](history.md#ci-history); вони не є поточною перевіркою.
+Exact old commands, parameters, figures and limitations are retained in [E4/E5 history](history.md#ci-history); they are not a current verification.
 
-## 6. Наступний порядок після актуалізації
+<a id="6-наступний-порядок-після-актуалізації"></a>
+## 6. Next sequence after updating the inventory
 
-1. Перед реалізацією будь-якого E0/E2/E3/E4/E5 — перевірити саме цільовий репозиторій та зіставити його стан із критеріями; для ADR і локального workflow використати [практики репо](repo-evidence.md#repo-evidence). Не створювати повторно те, що вже існує; локальні копії скілів можуть відрізнятися від global.
-2. Звірити E1.1–E1.6, E1.9–E1.10 із status.md. Наступний крок — пілот на погодженій реальній задачі й докази, а не повторне написання скілів. Для UI обов’язковий цикл design-pass із [workflow](workflow.md#ui).
-3. На підставі інвентарю вибрати конкретну прогалину E2/E3: контракти, acceptance-сценарії, незалежні гейти, ledger, звіт. Зберігати локальні стандарти й межі мов/пакетів.
-4. E4/E5 перевіряти окремо: файл CI ≠ успішний job; job ≠ незалежне якісне рев’ю; історичний smoke ≠ здоровий поточний деплой. Доступи/секрети не налаштовувати мовчки й не записувати в звіти.
-5. E1.8/E4.4 — eval і крос-вендорність після перевірки базового процесу та окремого рішення про обсяг.
+1. Before implementing any E0/E2/E3/E4/E5, inspect the specific target repository and compare its state with the criteria; for ADR and local workflow use [repo practices](repo-evidence.md#repo-evidence). Do not recreate what already exists; local skill copies may differ from global.
+2. Compare E1.1–E1.6, E1.9–E1.10 with status.md. The next step is a pilot on an agreed real task and evidence, not rewriting skills. UI requires the design-pass cycle from [workflow](workflow.md#ui).
+3. Based on inventory, select a specific E2/E3 gap: contracts, acceptance scenarios, independent gates, ledger, report. Preserve local standards and language/package boundaries.
+4. Check E4/E5 separately: CI file ≠ successful job; job ≠ independent quality review; historical smoke ≠ healthy current deployment. Do not silently configure access/secrets or write them in reports.
+5. E1.8/E4.4: eval and cross-vendor work after checking the basic process and making a separate scope decision.
 
-Контрольований доступ до БД/логів визначається потребою конкретного сценарію та наявними правами, а не самим ярликом «frontend» чи «SDK». Кількість паралельних агентів/PR визначається незалежністю задач і доступними ресурсами; 3–8 чи 5–50 не є нормативом.
+Controlled DB/log access is determined by the needs of the specific scenario and existing permissions, not merely a “frontend” or “SDK” label. The number of parallel agents/PRs is determined by task independence and available resources; 3–8 or 5–50 is not a standard.
 
-У проході 2026-10-14 змінено лише план. Не запускалися проєкти, браузерні сценарії, CI, деплої чи eval; конфігурації, плагіни й реалізація пунктів плану не змінювалися.
+The 2026-10-14 pass changed only the plan. No projects, browser scenarios, CI, deployments or evals ran; configurations, plugins and implementation of plan items were not changed.

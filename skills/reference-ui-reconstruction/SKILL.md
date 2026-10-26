@@ -1,6 +1,6 @@
 ---
 name: reference-ui-reconstruction
-description: Відтворює вебінтерфейс за скріншотом, мокапом, макетом Figma чи іншим візуальним референсом із вимірюваною відповідністю. Використовуй цей скіл, коли користувач надає референс, просить скопіювати чи відтворити наявний інтерфейс, вимагає відповідності макету або повідомляє про вигадані агентом відступи, типографіку, кольори чи компоненти. Фіксуй спостережувані факти до написання коду й перевіряй результат скриншотом у тому самому розмірі вікна.
+description: "Reconstructs a web interface from a screenshot, mockup, Figma design or other visual reference with measurable fidelity. Use this skill when the user provides a reference, asks to copy or reconstruct an existing interface, requires fidelity to a design, or reports agent-invented spacing, typography, colors or components. Record observable facts before writing code and verify the result with a screenshot at the same viewport size."
 ---
 
 # Reference UI Reconstruction

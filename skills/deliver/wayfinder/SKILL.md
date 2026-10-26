@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: "Планує величезний обсяг роботи (більший, ніж вміщає одна сесія агента) як спільну карту тікетів-рішень у трекері задач, і закриває їх по одному, доки шлях до мети не стане зрозумілим."
+description: "Plans a huge body of work (larger than one agent session can hold) as a shared map of decision tickets in the issue tracker, and closes them one at a time until the path to the goal becomes clear."
 disable-model-invocation: true
 ---
 

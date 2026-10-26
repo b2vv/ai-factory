@@ -1,77 +1,89 @@
 ---
 name: cto-research
-description: Збирає або оновлює єдиний брифінг перед імплементацією — продукт, кодова база й seams, інфра, залежності, ризики — де кожна теза веде в первинне джерело. Використовуйте перед плануванням значущої фічі, на початку роботи в незнайомому репо, коли наявний брифінг застарів, або на тригери "cto research", "брифінг", "розберись у продукті".
+description: Builds or updates the single pre-implementation briefing — product, codebase and seams, infrastructure, dependencies, risks — with every claim linked to a primary source. Use before planning a substantial feature, when starting in an unfamiliar repository, when the current briefing is stale, or on triggers "cto research", "брифінг", "розберись у продукті" (Ukrainian phrases retained as compatibility aliases).
 ---
 
-# cto-research — брифінг перед імплементацією
+<a id="cto-research--брифінг-перед-імплементацією"></a>
 
-Один файл, який агент читає **до** плану. Не тікет і не ADR.
+# cto-research — the pre-implementation briefing
 
-Брифінг — це **кеш** первинних джерел, не самостійна істина. Кожна теза несе посилання на
-джерело; коли кеш і джерело розходяться — править джерело, а кеш переписується під нього.
-Це єдине правило, з якого випливає решта скіла.
+One file the agent reads **before** the plan. Neither a ticket nor an ADR.
 
-## 1. Знайди дім брифінгу
+The briefing is a **cache** of primary sources, not independent truth. Every claim carries a source
+reference; when cache and source disagree, the source governs and the cache is rewritten to match.
+This is the single rule from which the rest of the skill follows.
 
-Спочатку прочитай застосовні `AGENT.md` / `AGENTS.md` / `CLAUDE.md`: якщо вони вказують на брифінг, використовуй цей шлях. Інакше шукай `work/CTO-RESEARCH.md` → `CONTEXT.md` → `docs/CONTEXT.md` і перевір, що це справді брифінг, перш ніж оновлювати. Файл інструкцій не переписуй як брифінг; наявну явно виділену секцію брифінгу можна оновити, зберігаючи решту. Не знайшов — створюєш `work/CTO-RESEARCH.md`
-(або `docs/` у репо без `work/`) і додаєш пойнтер у контракт-файл репо.
+<a id="1-знайди-дім-брифінгу"></a>
 
-**Один брифінг на репо.** Другий файл поряд із першим — це два кеші, що розходяться.
+## 1. Find the briefing's home
 
-## 2. Гейт свіжості (перший крок, коли файл уже є)
+First read applicable `AGENT.md` / `AGENTS.md` / `CLAUDE.md`: if they point to a briefing, use that path. Otherwise look for `work/CTO-RESEARCH.md` → `CONTEXT.md` → `docs/CONTEXT.md` and verify that it really is a briefing before updating. Do not rewrite an instructions file as a briefing; an existing explicitly designated briefing section can be updated while preserving the rest. If none exists, create `work/CTO-RESEARCH.md`
+(or `docs/` in a repository without `work/`) and add a pointer in the repository contract file.
 
-Прочитай шапку: дата + базовий коміт. Порівняй з `git log --oneline <base>..HEAD`. Також перевір `git status --short`, staged/unstaged diff і релевантні untracked файли: незакомічена робота може змінити брифінг без нових комітів. Якщо base відсутній або не резолвиться, гейт неперевірений — збери брифінг заново. Релевантні локальні зміни вимагають оновлення зачеплених розділів і позначки у шапці, що вона включає незакомічений стан.
+**One briefing per repository.** A second file beside the first creates two diverging caches.
 
-| Що бачиш | Дія |
+<a id="2-гейт-свіжості-перший-крок-коли-файл-уже-є"></a>
+
+## 2. Freshness gate (the first step when the file exists)
+
+Read the header: date + base commit. Compare with `git log --oneline <base>..HEAD`. Also check `git status --short`, staged/unstaged diffs and relevant untracked files: uncommitted work can change the briefing without new commits. If the base is absent or cannot resolve, the gate is unverified — rebuild the briefing. Relevant local changes require updating affected sections and noting in the header that it includes uncommitted state.
+
+| Observation | Action |
 |---|---|
-| 0 комітів різниці й немає релевантних локальних змін | брифінг свіжий → відразу до плану, скіл завершено |
-| є коміти, але ні вони, ні локальні зміни не чіпають областей брифінгу | онови шапку (дата, base) і скажи це |
-| коміти чіпають продукт / межі / інфру / залежності | **перезбери** зачеплені розділи (кроки 3–4) |
-| шапки немає (файл писала людина або це перший прогін) | гейт **порівняти нічого**: скажи це, збери брифінг як новий і **напиши шапку** — з неї гейт працює з наступного разу |
+| 0 commits difference and no relevant local changes | briefing is fresh → go directly to the plan; skill complete |
+| commits exist, but neither they nor local changes touch briefing areas | update the header (date, base) and say so |
+| commits touch product / boundaries / infrastructure / dependencies | **rebuild** affected sections (steps 3–4) |
+| no header (written by a person or this is the first run) | gate has **nothing to compare**: say so, build the briefing as new and **write the header** — it enables the gate next time |
 
-Скажи вголос, скільки комітів пройшло й що з них зачепило брифінг — це і є доказ, що гейт відпрацював.
-Шапка — єдиний носій цього гейта, тож прогін без неї не завершується.
+State how many commits have passed and what in them affected the briefing — that is the evidence that the gate ran.
+The header is the gate's only carrier, so a run without it cannot finish.
 
-## 3. Збери по п'яти осях
+<a id="3-збери-по-пяти-осях"></a>
 
-Кожну вісь копай у первинному джерелі (код, workflow-файли, lock-файли, `git log`), не в переказі.
+## 3. Research five axes
 
-1. **Продукт** — що це, для кого, формат постачання, масштаб даних, де живе логіка.
-   Джерела: `docs/REQUIREMENTS.md`, README, live-таски.
-2. **Кодова база й seams** — пакети/шари, де проходять межі (модуль↔модуль, main↔worker,
-   нативне↔JS, клієнт↔сервер), що перетинає кожну межу. Джерела: код, `architecture_map` з CRG.
-3. **Інфра й доставка** — CI-воркфлоу, гейти, як і куди деплоїться, які команди зелені зараз.
-   Джерела: `.github/workflows/`, `package.json` scripts, конфіги.
-4. **Залежності** — критичні бібліотеки, версії, що заблоковане на чому.
-   Джерела: lock-файли, `package.json`, `Cargo.toml`.
-5. **Ризики** — що вже зафіксовано як борг/критика, що недороблене свідомо, де найкрихкіше.
-   Джерела: `tech-debt/`, `tasks/`, коментарі-якорі в коді.
+Research each axis in primary sources (code, workflow files, lockfiles, `git log`), not summaries.
 
-## 4. Напиши брифінг
+1. **Product** — what it is, who it serves, delivery format, data scale, where logic lives.
+   Sources: `docs/REQUIREMENTS.md`, README, live tasks.
+2. **Codebase and seams** — packages/layers, where boundaries lie (module↔module, main↔worker,
+   native↔JS, client↔server), what crosses each boundary. Sources: code, CRG `architecture_map`.
+3. **Infrastructure and delivery** — CI workflows, gates, how and where deployment happens, which commands are green now.
+   Sources: `.github/workflows/`, `package.json` scripts, configurations.
+4. **Dependencies** — critical libraries, versions, what is blocked on what.
+   Sources: lockfiles, `package.json`, `Cargo.toml`.
+5. **Risks** — recorded debt/criticism, deliberate incompleteness, most fragile areas.
+   Sources: `tech-debt/`, `tasks/`, anchor comments in code.
 
-Порядок розділів фіксований:
+<a id="4-напиши-брифінг"></a>
 
-1. **Вердикт на один екран** — продукт одним абзацом, поточний стан, живий P0, і
-   **архітектурний факт №1**: те, що агент найімовірніше зрозуміє неправильно, якщо не сказати
-   (розбіжність «заявлено vs як воно насправді працює»).
-2. Продукт · 3. Кодова база й seams · 4. Інфра й доставка · 5. Залежності · 6. Ризики.
+## 4. Write the briefing
 
-Правила письма:
+Section order is fixed:
 
-- **Кожна теза несе джерело** — `path:line`, `doc §`, ім'я workflow-файлу або хеш коміта.
-  Теза, для якої джерела не знайшлось, лишається з міткою `⚠️ неперевірено` і формулюванням
-  «схоже, що…» — так наступний читач знає, де кеш тонкий.
-- Таблиці замість абзаців там, де це пари «питання → відповідь → джерело».
-- Шапка містить дату й базовий коміт (`git rev-parse --short HEAD`) — з них працює гейт свіжості.
+1. **One-screen verdict** — the product in one paragraph, current state, live P0, and
+   **architectural fact #1**: what the agent is most likely to misunderstand unless told
+   (the gap between “declared” and “how it actually works”).
+2. Product · 3. Codebase and seams · 4. Infrastructure and delivery · 5. Dependencies · 6. Risks.
 
-## 5. Завершення
+Writing rules:
 
-Скіл завершено, коли виконано **все**:
+- **Every claim carries a source** — `path:line`, `doc §`, workflow filename or commit hash.
+  A claim with no located source retains a `⚠️ unverified` label and the wording
+  “it appears that…” — so the next reader knows where the cache is thin.
+- Use tables instead of paragraphs for “question → answer → source” relationships.
+- The header contains date and base commit (`git rev-parse --short HEAD`) — they drive the freshness gate.
 
-- [ ] Шість розділів на місці, порожніх немає.
-- [ ] Кожна теза має джерело або мітку `⚠️ неперевірено` — перелічи, скільки тез несе мітку.
-- [ ] Шапка оновлена: сьогоднішня дата + поточний short-hash.
-- [ ] Названо «архітектурний факт №1».
-- [ ] Контракт-файл репо (`AGENT.md` / `AGENTS.md`) містить пойнтер на брифінг.
+<a id="5-завершення"></a>
 
-Далі — план (`spec-flow`, якщо він є в цьому репо). Брифінг сам по собі рішень не приймає.
+## 5. Completion
+
+The skill is complete when **all** of the following hold:
+
+- [ ] All six sections exist, none empty.
+- [ ] Every claim has a source or a `⚠️ unverified` label — count the labeled claims.
+- [ ] The header is updated: today's date + current short hash.
+- [ ] “Architectural fact #1” is named.
+- [ ] The repository contract file (`AGENT.md` / `AGENTS.md`) contains a pointer to the briefing.
+
+Next comes the plan (`spec-flow`, if present in this repository). The briefing itself makes no decisions.

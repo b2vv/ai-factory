@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: Створює одноразовий прототип, щоб відповісти на дизайнерське питання. Використовуйте, коли користувач хоче перевірити, чи «відчувається правильною» модель стану чи логіка, або дослідити, як має виглядати UI.
+description: "Creates a disposable prototype to answer a design question. Use when the user wants to check whether a state model or logic \"feels right\", or explore what the UI should look like. Ukrainian compatibility trigger aliases: \"відчувається правильною\"."
 ---
 
 # Prototype

@@ -1,154 +1,170 @@
 ---
-title: "Feature lifecycle — маршрут через наявні скіли"
+title: "Feature lifecycle — route through existing skills"
 reviewed: 2026-10-16
 ---
 
-# Від запиту до готовності фічі
+<a id="від-запиту-до-готовності-фічі"></a>
+# From request to feature readiness
 
-[Вхід](../docs/legacy/ai-factory-plan-entry.md) · [Workflow](workflow.md) · [Ролі й ліміти](models.md) · [CRG](crg.md)
+[Entry](../docs/legacy/ai-factory-plan-entry.md) · [Workflow](workflow.md) · [Roles and limits](models.md) · [CRG](crg.md)
 
-Це навігація по чинному процесу, не новий скіл чи оркестратор. Спочатку доручення користувача й застосовні локальні інструкції, потім обраний SKILL.md. Зберігай поточний стек, архітектуру та місце plan/journal. Один артефакт має одного власника; не створюй другий task tracker. Якщо обрано spec-flow, саме він делегує свої етапи: наведені нижче кроки не запускаються вдруге.
+This is navigation through the current process, not a new skill or orchestrator. First the user's request and applicable local instructions, then the selected SKILL.md. Preserve the current stack, architecture and plan/journal location. One artifact has one owner; do not create a second task tracker. If spec-flow is selected, it delegates its own stages: do not run the steps below a second time.
 
-Переносиме підключення та manifest — [onboarding.md](onboarding.md). Нормативне acceptance/contracts/ADR відокремлюй від фактичного коду/scripts за [правилом джерел](workflow.md#source-of-truth): код не виправдовує порушення контракту.
+Portable onboarding and manifest: [onboarding.md](onboarding.md). Separate normative acceptance/contracts/ADRs from actual code/scripts under the [source rule](workflow.md#source-of-truth): code does not justify a contract violation.
 
-Task branch та один writer у головному репозиторії — за [branch ownership contract](workflow.md#task-branches); runtime isolation окрема від Git isolation.
+A task branch and one writer in the main repository follow the [branch ownership contract](workflow.md#task-branches); runtime isolation is separate from Git isolation.
 
 ## Before code: explicit task readiness
 
 Use the [pre-code checkpoint](pre-code-checkpoint.md) in the existing task/plan: scope/acceptance, proportional grilling and decisions, dependencies, scoped fresh impact or explicit file fallback, required independent planning gate, and READY/BLOCKED. Batch approval is not blanket READY. Small stays short; resume revalidates only the affected scope. Existing stronger local contracts remain. This is a protocol requirement, not automatic agent/CI enforcement.
 
-Security adoption залишається **PROPOSED**: [risk-triggered gates](../docs/guides/ai-assisted-onboarding.md#security-proposed) додаються до чинних acceptance лише за застосовними features і погодженим scope. До execution — provenance/permissions; до acceptance — actual artifact/runtime proof на final snapshot, scanner detection/clean/error fixtures та independent verdict. Copied-handler harness, exit 0 або merge не замінюють required runtime evidence. Це посилання не встановлює scanners, hooks/MCP чи новий tracker.
+Security adoption remains **PROPOSED**: [risk-triggered gates](../docs/guides/ai-assisted-onboarding.md#security-proposed) are added to current acceptance only for applicable features and agreed scope. Before execution — provenance/permissions; before acceptance — actual artifact/runtime proof on the final snapshot, scanner detection/clean/error fixtures and independent verdict. A copied-handler harness, exit 0 or merge does not replace required runtime evidence. This link installs no scanners, hooks/MCP or new tracker.
 
-На startup, після етапу та compaction/resume віднови [конкретний pending next action](review-handoff.md#pending-next-action) у чинному record: review_mode=existing_session або independent_subagent, writer/reviewer і зв’язок, prepared/sent/ACK/verdict, blocker/next check. Призначена додаткова сесія зберігається; за її відсутності обирається independent_subagent, без запуску самим вибором. Недоступний обраний runtime → BLOCKED, не тихий fallback. Виконуй лише applicable дозволену дію; файл не є доставкою, без потрібного final verdict немає DONE. Незмінені прийняті етапи не повторюються.
+At startup, after a stage and after compaction/resume, restore the [specific pending next action](review-handoff.md#pending-next-action) in the current record: review_mode=existing_session or independent_subagent, writer/reviewer and contact route, prepared/sent/ACK/verdict, blocker/next check. Keep the assigned additional session; if absent, select independent_subagent without launching it merely by making that selection. Selected runtime unavailable → BLOCKED, not silent fallback. Execute only the applicable authorized action; a file is not delivery, and there is no DONE without the required final verdict. Do not repeat unchanged accepted stages.
 
 Proposed security adoption route: [security adapter](../adapters/security/review.md) — security-impact → abuse invariants → actual code/config review → negative tests → final evidence/verdict in the existing task. It adds no discovered skill, reviewer, scanner or automatic execution. Required checks and final verdict must close before DONE; delivery states follow [review handoff](review-handoff.md#delivery-state).
 
-## Startup: хто виконує критику, review та перевірки
+<a id="startup-хто-виконує-критику-review-та-перевірки"></a>
+## Startup: who performs critique, review and checks
 
-Після clear/new startup/resume: bound pending → короткий task/checkpoint + «Продовжити?», чекати поточної відповіді без task/review/send; unbound → тиша. Згода лише для поточної сесії/задачі, permissions незмінні. Compaction уже погодженої активної задачі зберігає continuity без повторного питання; waiting confirmation не активує Stop-продовження.
+After clear/new startup/resume: bound pending → brief task/checkpoint + “Continue?”, await the current response without task/review/send; unbound → silence. Consent applies only to the current session/task; permissions stay unchanged. Compaction of an already approved active task preserves continuity without another question; waiting for confirmation does not activate Stop-driven continuation.
 
-До роботи запиши у чинний primary record і покажи користувачу: мета → **новий субагент / наявна окрема сесія / НЕ ВИЗНАЧЕНО**, owner, точний session/agent reference якщо відомий, підстава поточного вибору, хто передає пакет, координація shared-resource checks. Явне доручення має пріоритет. Якщо обраний за контрактом режим має невідомі необхідні дані/дозвіл — уточни лише їх до spawn/надсилання; незалежні safe inventory/planning дозволені. Не створюй дубль reviewer і не контактуй з іншою сесією без авторизації. Наявна сесія ≠ виконаний review. Авторські checks позначай окремо.
+Before work, record in the current primary record and show the user: goal → **new subagent / existing separate session / UNDETERMINED**, owner, exact session/agent reference if known, rationale for the current choice, who hands off the package, coordination of shared-resource checks. An explicit request takes precedence. If the mode selected under the contract lacks necessary information/permission, clarify only that before spawn/send; independent safe inventory/planning is allowed. Do not duplicate the reviewer or contact another session without authorization. An existing session ≠ completed review. Mark author checks separately.
 
-Пакет і verdict — за [review handoff](review-handoff.md): task/session IDs, root/base/HEAD, scoped dirty/untracked hashes та diff, pinned acceptance/contracts, raw evidence/commands/exits, constraints. Reviewer read-only, перевіряє джерела незалежно; тести зі shared side effects потребують координації. Findings: file:line + impact + verification. PASS прив'язаний до snapshot; після змін — пропорційний final-delta review. Missing response/evidence → NOT_TESTED/BLOCKED. Small лишає один primary record, без другого tracker.
+Package and verdict follow [review handoff](review-handoff.md): task/session IDs, root/base/HEAD, scoped dirty/untracked hashes and diff, pinned acceptance/contracts, raw evidence/commands/exits, constraints. The reviewer is read-only and independently checks sources; tests with shared side effects require coordination. Findings: file:line + impact + verification. PASS is snapshot-bound; after changes, use proportional final-delta review. Missing response/evidence → NOT_TESTED/BLOCKED. Small retains one primary record, without a second tracker.
 
-## Вибір маршруту
+<a id="вибір-маршруту"></a>
+## Route selection
 
-- **Малий:** зрозумілий локальний scope → короткі acceptance → потрібний контекст → один завершений зріз → доречні перевірки → локальне незалежне рев’ю → короткий report/наступний стан. Для small один основний task record містить scope/acceptance, план, append-only перебіг і підсумок; окремі незалежний review та raw evidence — лише за потрібними gates. Не дублюй це в чотирьох документах. План може бути в наявній задачі або повідомленні, якщо репо дозволяє; чинні задачі не мігруй автоматично. Немає обов’язкових нового каталогу, ADR, grilling чи fan-out.
-- **Повний:** невизначена поведінка, міжмодульна зміна, дані/міграція, авторизація, зовнішній контракт або складний UI → дослідження → spec/acceptance/plan → потрібний ADR та незалежний плановий gate → реалізація → перевірки → незалежний review → виправлення → report/QA. Спочатку локальний процес; spec-flow лише якщо він обраний і сумісний із ним.
-- **Частково налаштований проєкт:** [repo-bootstrap](../skills/utils/repo-bootstrap/SKILL.md), Codex `$repo-bootstrap`, Claude `/repo-bootstrap`, тільки check-only. Результат — прогалини й мінімальна пропозиція. Наявність bootstrap-команд не дозволяє установок або переписування конфігурації.
+- **Small:** clear local scope → short acceptance → necessary context → one completed slice → appropriate checks → local independent review → brief report/next state. For small, one primary task record holds scope/acceptance, plan, append-only progress and outcome; separate independent review and raw evidence only as required by gates. Do not duplicate this in four documents. The plan may be in the existing task or message if the repository permits; do not automatically migrate existing tasks. No mandatory new directory, ADR, grilling or fan-out.
+- **Full:** uncertain behavior, cross-module change, data/migration, authorization, external contract or complex UI → research → spec/acceptance/plan → required ADR and independent planning gate → implementation → checks → independent review → fixes → report/QA. Local process first; spec-flow only if selected and compatible with it.
+- **Partly configured project:** [repo-bootstrap](../skills/utils/repo-bootstrap/SKILL.md), Codex `$repo-bootstrap`, Claude `/repo-bootstrap`, check-only. Result: gaps and a minimal proposal. Bootstrap commands being present does not authorize installation or configuration rewriting.
 
-Ролі — [Helper, Coder, Escalation/reviewer](models.md). Helper збирає докази read-only; Coder веде дозволені зміни й артефакти; reviewer працює в незалежному свіжому контексті. Модельні candidates не означають перевірений runtime-доступ; Claude binding залишається **UNBOUND** до окремої перевірки. Людина-власник приймає продуктові рішення та визначені локальні QA/landing-рішення.
+Roles: [Helper, Coder, Escalation/reviewer](models.md). Helper gathers evidence read-only; Coder owns authorized changes and artifacts; the reviewer works in an independent fresh context. Model candidates do not mean verified runtime access; Claude binding remains **UNBOUND** until separately checked. The human owner makes product decisions and designated local QA/landing decisions.
 
-## Як викликати
+<a id="як-викликати"></a>
+## How to invoke
 
-Нижче пари **Codex CLI / Claude Code**. Спочатку перевір discovery та точний SKILL.md за посиланням; у Codex є також `/skills`. Symlink або файл на диску не доводить discovery. За колізії локальної й глобальної назви явно вкажи шлях і прочитай потрібний файл; це fallback інструкцій, а не доказ успішної slash-команди. Не вигадуй MCP/Agent API; фактична схема й дозволені засоби визначають виконання.
+Pairs below are **Codex CLI / Claude Code**. First check discovery and the exact linked SKILL.md; Codex also has `/skills`. A symlink or file on disk does not prove discovery. If local and global names collide, explicitly state the path and read the needed file; this is an instruction fallback, not proof of a successful slash command. Do not invent MCP/Agent APIs; the actual schema and authorized mechanisms determine execution.
 
-Обраний скіл виконується з його власними gates, а не лише з назвою в журналі. `cto-research` може записувати briefing, `spec-flow` — створювати workflow-артефакти, `ship-report` — дублювати звіт у доступний Obsidian; це не read-only дії Helper і не автоматичний дозвіл на зовнішній запис. Якщо потрібна лише локальна дія, використай чинний локальний контракт і чесно назви це локальним звітом, не повним виконанням іншого скілу.
+Run the selected skill with its own gates, not just its name in the journal. `cto-research` may write a briefing, `spec-flow` may create workflow artifacts, `ship-report` may duplicate a report to available Obsidian; these are not Helper read-only actions or automatic authorization for external writing. If only local action is needed, use the current local contract and honestly call it a local report, not full execution of another skill.
 
-## Етапи
+<a id="етапи"></a>
+## Stages
 
-### 1. Scope й acceptance
+<a id="1-scope-й-acceptance"></a>
+### 1. Scope and acceptance
 
-- **Вхід / коли:** запит і чинна задача; завжди, глибина за ризиком.
-- **Скіли:** за суттєвої невизначеності [grilling](../skills/plan/grilling/SKILL.md) — `$grilling` / `/grilling`; для поведінкової фічі [acceptance-spec](../skills/plan/acceptance-spec/SKILL.md) — `$acceptance-spec` / `/acceptance-spec`. Для очевидної правки достатньо коротких локальних критеріїв.
-- **Власник:** Coder формулює, користувач вирішує невідомі продуктові питання.
-- **Результат:** межі й non-goals; спостережувані happy/boundary/failure сценарії, спосіб перевірки; причина незастосовності групи. Не вигадуй вимоги з реалізації.
-- **Gate → далі:** поведінка достатньо визначена; якщо обрано grilling, його підтвердження спільного розуміння потрібне до дій. Далі 2; невідоме, що змінює результат, — BLOCKED для залежної частини.
+- **Input / when:** request and current task; always, with depth based on risk.
+- **Skills:** for substantial uncertainty, [grilling](../skills/plan/grilling/SKILL.md) — `$grilling` / `/grilling`; for a behavioral feature, [acceptance-spec](../skills/plan/acceptance-spec/SKILL.md) — `$acceptance-spec` / `/acceptance-spec`. Short local criteria suffice for an obvious edit.
+- **Owner:** Coder formulates; the user resolves unknown product questions.
+- **Result:** boundaries and non-goals; observable happy/boundary/failure scenarios, verification method; reason a group does not apply. Do not invent requirements from implementation.
+- **Gate → next:** behavior is sufficiently defined; if grilling is selected, its confirmation of shared understanding is required before action. Next 2; an unknown that changes the result means BLOCKED for the dependent part.
 
-### 2. Дослідження та свіжість контексту
+<a id="2-дослідження-та-свіжість-контексту"></a>
+### 2. Research and context freshness
 
-- **Вхід / коли:** scope, root/branch/base/HEAD, dirty й untracked; щоразу перевір актуальність, глибоке дослідження лише для невідомого.
-- **Скіли:** [cto-research](../skills/plan/cto-research/SKILL.md) — `$cto-research` / `/cto-research`; [crg-explore-codebase](../skills/crg/crg-explore-codebase/SKILL.md) — `$crg-explore-codebase` / `/crg-explore-codebase`, коли граф допоможе. Для багу замість широкої розвідки [crg-debug-issue](../skills/crg/crg-debug-issue/SKILL.md) — `$crg-debug-issue` / `/crg-debug-issue`.
-- **Власник:** Helper збирає файли/докази; Coder записує потрібний briefing у чинне місце.
-- **Результат:** зачеплені межі, реалізація, ADR, повторне використання, ризики й невідоме з посиланнями.
-- **Gate → далі:** за [CRG-контрактом](crg.md) перевір hashes/coverage, а не лише HEAD/час; untracked не гарантовано індексується. За stale/missing graph — файловий пошук і явна межа доказів; нуль impact, особливо Go, не доводить відсутності впливу. Refresh потребує окремого права запису й координації writer; цей маршрут його не запускає автоматично. Далі 3 або малий зріз 6.
+- **Input / when:** scope, root/branch/base/HEAD, dirty and untracked files; check currency each time, with deep research only for unknowns.
+- **Skills:** [cto-research](../skills/plan/cto-research/SKILL.md) — `$cto-research` / `/cto-research`; [crg-explore-codebase](../skills/crg/crg-explore-codebase/SKILL.md) — `$crg-explore-codebase` / `/crg-explore-codebase` when the graph helps. For a bug, replace broad investigation with [crg-debug-issue](../skills/crg/crg-debug-issue/SKILL.md) — `$crg-debug-issue` / `/crg-debug-issue`.
+- **Owner:** Helper gathers files/evidence; Coder writes the needed briefing in its existing location.
+- **Result:** affected boundaries, implementation, ADRs, reuse, risks and unknowns with links.
+- **Gate → next:** under the [CRG contract](crg.md), verify hashes/coverage, not only HEAD/time; untracked files are not guaranteed to be indexed. For a stale/missing graph, use file search and explicit evidence limits; zero impact, especially for Go, does not prove no impact. Refresh needs separate write authorization and writer coordination; this route does not start it automatically. Next 3 or small slice 6.
 
-### 3. Spec і план
+<a id="3-spec-і-план"></a>
+### 3. Spec and plan
 
-- **Вхід / коли:** acceptance і докази; повний маршрут або локальна вимога. Малий — компактний план у чинному артефакті.
-- **Скіли:** [spec-flow](../skills/deliver/spec-flow/SKILL.md) — `$spec-flow` / `/spec-flow`, лише як обраний оркестратор. Він делегує acceptance-spec, [plan-critique](../skills/plan/plan-critique/SKILL.md) — `$plan-critique` / `/plan-critique`, [plan-defense](../skills/plan/plan-defense/SKILL.md) — `$plan-defense` / `/plan-defense`. У локальному процесі окремі лінзи додаються за потребою.
-- **Власник:** Coder/локальний власник плану; незалежний reviewer дає gate verdict.
-- **Результат:** що/чому, задачі з файлами, залежностями й acceptance IDs, перевірки, side effects, міграція/rollback або обґрунтоване N/A.
-- **Gate → далі:** вимоги локального плану; для spec-flow GATE 1 і GATE 2 (critique + defense + конституція) обов’язкові. plan-critique означає всі чотири незалежні лінзи; одна самоперевірка — не його PASS. plan-defense покриває invalid input, dependency failure, race/repeat, boundaries, rollback з доказами в плані. Немає reviewer/mandatory manifest — BLOCKED для відповідного процесу, не прихований bootstrap. Далі 4/5/6 за застосовністю.
+- **Input / when:** acceptance and evidence; full route or a local requirement. Small uses a compact plan in the current artifact.
+- **Skills:** [spec-flow](../skills/deliver/spec-flow/SKILL.md) — `$spec-flow` / `/spec-flow`, only as the selected orchestrator. It delegates acceptance-spec, [plan-critique](../skills/plan/plan-critique/SKILL.md) — `$plan-critique` / `/plan-critique`, [plan-defense](../skills/plan/plan-defense/SKILL.md) — `$plan-defense` / `/plan-defense`. Add individual lenses to the local process as needed.
+- **Owner:** Coder/local plan owner; independent reviewer gives the gate verdict.
+- **Result:** what/why, tasks with files, dependencies and acceptance IDs, checks, side effects, migration/rollback or justified N/A.
+- **Gate → next:** local planning requirements; for spec-flow, GATE 1 and GATE 2 (critique + defense + constitution) are mandatory. plan-critique means all four independent lenses; one self-check is not its PASS. plan-defense covers invalid input, dependency failure, race/repeat, boundaries and rollback with evidence in the plan. Missing reviewer/mandatory manifest → BLOCKED for that process, not hidden bootstrap. Next 4/5/6 as applicable.
 
-### 4. Умовний ADR
+<a id="4-умовний-adr"></a>
+### 4. Conditional ADR
 
-- **Вхід / коли:** архітектурне рішення, нова залежність/межа/конвенція, зміна прийнятого рішення; за локальним порогом, не на кожну фічу.
-- **Скіли:** окремий ADR-скіл не потрібен; використовуй локальний шаблон і правила. Якщо порогу немає, запропонуй [four-gate критерії](repo-evidence.md#adr-gates), не встановлюй їх мовчки.
-- **Власник:** визначений репо автор і reviewer/operator рішення.
-- **Результат:** ADR у репо з альтернативами, наслідками, статусом; plan/task посилається на нього. Виправлення факту відділяється від supersession рішення.
-- **Gate → далі:** потрібне рішення прийняте за локальними правилами; інакше BLOCKED залежна реалізація. За відсутності тригера N/A з короткою причиною. Далі 5 або 6.
+- **Input / when:** architectural decision, new dependency/boundary/convention, change to an accepted decision; under the local threshold, not for every feature.
+- **Skills:** no separate ADR skill is needed; use the local template and rules. If no threshold exists, propose the [four-gate criteria](repo-evidence.md#adr-gates), do not silently impose them.
+- **Owner:** author and decision reviewer/operator designated by the repository.
+- **Result:** ADR in the repository with alternatives, consequences and status; plan/task links to it. Separate factual correction from decision supersession.
+- **Gate → next:** required decision accepted under local rules; otherwise dependent implementation is BLOCKED. With no trigger, N/A with a short reason. Next 5 or 6.
 
 ### 5. UI/design
 
-- **Вхід / коли:** змінений екран/контрол/сценарій, референс і локальна система. UI-copy теж оцінюється: довжина/локалізація, wrapping, overflow, zoom, accessible name, open/active стани. Text-only не означає автоматичного design N/A; обсяг proof пропорційний впливу. Без відповідного UI-впливу — N/A з причиною.
-- **Скіли:** спершу локальний дизайн-скіл; за потребою [design-pass](../skills/design-pass/SKILL.md) — `$design-pass` / `/design-pass`. Для аудиту [interface-review](../skills/interface-review/SKILL.md) — `$interface-review` / `/interface-review`; у вибраному design-pass це обов’язковий фінальний прохід.
-- **Власник:** Coder; reviewer оцінює зібрані фактичні докази.
-- **Результат:** план композиції/станів, повторне використання компонентів, критерії desktop/mobile, keyboard/focus, error/recovery, zoom/reflow й reduced motion де застосовно.
-- **Gate → далі:** перед кодом визначені локальні обмеження; реалізація й browser proof завершуються через 6–7. Не імпортуй generic стек/тему/шрифт. Без фактичного рендеру/взаємодії UI-gate BLOCKED; build не закриває його.
+- **Input / when:** changed screen/control/scenario, reference and local system. UI copy is also assessed: length/localization, wrapping, overflow, zoom, accessible name, open/active states. Text-only does not automatically mean design N/A; proof scope is proportional to impact. Without relevant UI impact — N/A with a reason.
+- **Skills:** local design skill first; if needed [design-pass](../skills/design-pass/SKILL.md) — `$design-pass` / `/design-pass`. For audit, [interface-review](../skills/interface-review/SKILL.md) — `$interface-review` / `/interface-review`; this is a mandatory final pass in selected design-pass.
+- **Owner:** Coder; reviewer assesses gathered factual evidence.
+- **Result:** composition/state plan, component reuse, desktop/mobile criteria, keyboard/focus, error/recovery, zoom/reflow and reduced motion where applicable.
+- **Gate → next:** local constraints defined before code; implementation and browser proof complete through 6–7. Do not import a generic stack/theme/font. Without actual render/interaction the UI gate is BLOCKED; a build does not close it.
 
-### 6. Реалізація
+<a id="6-реалізація"></a>
+### 6. Implementation
 
-- **Вхід / коли:** погоджений scope/план, потрібні рішення, acceptance; для дозволеної реалізації.
-- **Скіли:** [tdd](../skills/arch/tdd/SKILL.md) — `$tdd` / `/tdd`, коли обрано TDD або цього вимагає процес. Для ризикового refactor [crg-refactor-safely](../skills/crg/crg-refactor-safely/SKILL.md) — `$crg-refactor-safely` / `/crg-refactor-safely`, лише в дозволеному scope; назва не надає write-MCP permission.
-- **Власник:** Coder, з узгодженими межами запису між виконавцями.
-- **Результат:** один завершений вертикальний зріз, поведінкові тести й оновлений journal.
-- **Gate → далі:** глобальний tdd вимагає погоджених з користувачем seams до написання тестів; не перепитуй те, що вже погоджено. Його цикл — один red → minimal green за раз; refactoring віднесено до review, не масова пачка уявних тестів наперед. Локальний однойменний скіл може мати інший контракт — фіксуй точний шлях. Далі 7.
+- **Input / when:** agreed scope/plan, necessary decisions, acceptance; for authorized implementation.
+- **Skills:** [tdd](../skills/arch/tdd/SKILL.md) — `$tdd` / `/tdd`, when TDD is selected or required by the process. For risky refactoring, [crg-refactor-safely](../skills/crg/crg-refactor-safely/SKILL.md) — `$crg-refactor-safely` / `/crg-refactor-safely`, only within authorized scope; the name grants no write-MCP permission.
+- **Owner:** Coder, with agreed write boundaries between executors.
+- **Result:** one completed vertical slice, behavioral tests and updated journal.
+- **Gate → next:** global tdd requires seams agreed with the user before writing tests; do not ask again about what is already agreed. Its cycle is one red → minimal green at a time; refactoring belongs to review, not a mass batch of imagined tests up front. A local skill with the same name may have another contract — record the exact path. Next 7.
 
-### 7. Перевірки й browser QA
+<a id="7-перевірки-й-browser-qa"></a>
+### 7. Checks and browser QA
 
-- **Вхід / коли:** актуальний diff та acceptance; вибери набір за [матрицею applicability](onboarding.md#checks) і явними локальними gates. Зниження обов’язкового gate потребує рішення його власника; small сам по собі не waiver. RED→GREEN доводить відтворення/виправлення дефекту; mutation окремо вносить контрольовану зміну та перевіряє її виявлення тестами, зі своїм evidence. Sandbox failure — BLOCKED або явно дозволений механізм виконання, не універсальний наказ запускати поза sandbox.
-- **Скіли:** окремого універсального test-скілу немає; фактичні package scripts/Makefile/CI і локальні правила. UI — завершити design-pass/interface-review, якщо обрано. Для E2E сутностей/QA field findings застосуй [entity-e2e-coverage](../skills/entity-e2e-coverage/SKILL.md) — `$entity-e2e-coverage` / `/entity-e2e-coverage`: baseline QA ID × field × surface/state до тестів; окремі persistence/view/edit/update assertions, без підміни required view через edit. Правила й локальні джерела — у [testing-rules](../skills/entity-e2e-coverage/references/testing-rules.md). Це доповнення чинного acceptance/report, не новий pipeline. Для scoped filters — matching/nonmatching на кожному заявленому entity type × surface; для keyboard acceptance — simulated browser key із UI-effect, не submit dispatch. У design-pass окремо покрий змінені open/active/chips states. Тимчасові корисні regressions зберігай до еквівалентного переносу й targeted run постійного suite за testing-rules.
-- **Власник:** Coder запускає дозволені команди; окрема людська QA-роль там, де вимагає репо.
-- **Результат:** команда/сценарій, SHA+dirty scope, exit/verdict, доказ; UI — реально переглянуті кадри із viewport та виконані взаємодії, повтор після виправлення.
-- **Gate → далі:** всі обов’язкові застосовні перевірки PASS. FAIL → 6; недоступність/недозволена побічна дія → BLOCKED із точним потрібним кроком. Не замінюй skipped CI/E2E зеленим загальним статусом. Далі 8.
+- **Input / when:** current diff and acceptance; select the set using the [applicability matrix](onboarding.md#checks) and explicit local gates. Reducing a mandatory gate needs its owner's decision; small alone is not a waiver. RED→GREEN proves defect reproduction/fix; mutation separately introduces a controlled change and checks detection by tests, with its own evidence. Sandbox failure means BLOCKED or an explicitly authorized execution mechanism, not a universal command to run outside the sandbox.
+- **Skills:** there is no separate universal test skill; use actual package scripts/Makefile/CI and local rules. UI — complete design-pass/interface-review if selected. For entity E2E/QA field findings use [entity-e2e-coverage](../skills/entity-e2e-coverage/SKILL.md) — `$entity-e2e-coverage` / `/entity-e2e-coverage`: baseline QA ID × field × surface/state before tests; separate persistence/view/edit/update assertions, without substituting edit for required view. Rules and local sources are in [testing-rules](../skills/entity-e2e-coverage/references/testing-rules.md). This supplements current acceptance/report, not a new pipeline. For scoped filters — matching/nonmatching for each claimed entity type × surface; for keyboard acceptance — simulated browser key with a UI effect, not submit dispatch. In design-pass, separately cover changed open/active/chips states. Preserve useful temporary regressions until equivalent transfer and a targeted permanent-suite run under testing-rules.
+- **Owner:** Coder runs authorized commands; a separate human QA role where the repository requires it.
+- **Result:** command/scenario, SHA+dirty scope, exit/verdict, evidence; for UI, actually inspected frames with viewport and performed interactions, repeated after fixes.
+- **Gate → next:** all mandatory applicable checks PASS. FAIL → 6; unavailable execution/unauthorized side effect → BLOCKED with the exact required step. Do not substitute a green overall status for skipped CI/E2E. Next 8.
 
-### 8. Незалежне рев’ю
+<a id="8-незалежне-ревю"></a>
+### 8. Independent review
 
-- **Вхід / коли:** pin diff/base/HEAD, relevant untracked, контракт і докази; перед готовністю за локальним gate, для ризикової фічі обов’язково.
-- **Скіли:** локальне review першим. За обраного глобального [code-review](../skills/arch/code-review/SKILL.md) — `$code-review` / `/code-review` — дві незалежні осі Standards і Spec. [crg-review-changes](../skills/crg/crg-review-changes/SKILL.md) — `$crg-review-changes` / `/crg-review-changes` може дати контекст впливу, не незалежний verdict сам собою.
-- **Applicability:** для змін абстракцій, відповідальностей, залежностей або дублювання (включно з test helpers) явно оціни [pattern-architecture-review](../skills/pattern-architecture-review/SKILL.md) — `$pattern-architecture-review` / `/pattern-architecture-review`. У чинному plan/report запиши коротке `applied` з посиланням на доказ або `N/A` з причиною; звичайний docs/typo без такої зміни не потребує цього проходу. Локальне review не є повним еквівалентом спеціалізованих лінз. Збережи локальний precedence; сумісти потрібну оцінку з незалежним review того самого pinned diff або додай лише відсутні лінзи окремим supplement, без повтору вже підтверджених checks/циклу.
-- **Власник:** незалежний reviewer у свіжому контексті; автор дає джерела, не підміняє review самоперевіркою.
-- **Результат:** сирі findings із file:line, доказом, рівнем впевненості й блокувальністю; окремий verdict за потрібними осями.
-- **Gate → далі:** немає відкритих blocking findings; відсутній/порожній reviewer — BLOCKED, не clean review. Spec не вигадувати; відсутність позначити як skipped/BLOCKED залежно від контракту. Далі 9 при findings, інакше 10.
+- **Input / when:** pinned diff/base/HEAD, relevant untracked files, contract and evidence; before readiness under the local gate, mandatory for a risky feature.
+- **Skills:** local review first. If global [code-review](../skills/arch/code-review/SKILL.md) — `$code-review` / `/code-review` — is selected, two independent axes: Standards and Spec. [crg-review-changes](../skills/crg/crg-review-changes/SKILL.md) — `$crg-review-changes` / `/crg-review-changes` may provide impact context, not an independent verdict by itself.
+- **Applicability:** for changes to abstractions, responsibilities, dependencies or duplication (including test helpers), explicitly assess [pattern-architecture-review](../skills/pattern-architecture-review/SKILL.md) — `$pattern-architecture-review` / `/pattern-architecture-review`. In the current plan/report record a short `applied` with an evidence link or `N/A` with a reason; ordinary docs/typo edits without such a change do not need this pass. Local review is not a full equivalent of specialized lenses. Preserve local precedence; combine the required assessment with independent review of the same pinned diff or add only missing lenses as a separate supplement, without repeating already confirmed checks/cycles.
+- **Owner:** independent reviewer in a fresh context; the author provides sources, not self-review as a replacement.
+- **Result:** raw findings with file:line, evidence, confidence and blocking status; separate verdict for the required axes.
+- **Gate → next:** no open blocking findings; missing/empty reviewer → BLOCKED, not clean review. Do not invent a spec; mark absence skipped/BLOCKED depending on the contract. Next 9 if findings, otherwise 10.
 
-### 9. Виправлення й повторний gate
+<a id="9-виправлення-й-повторний-gate"></a>
+### 9. Fixes and repeated gate
 
-- **Вхід / коли:** findings; лише коли вони є.
-- **Скіли:** [receiving-code-review](../skills/arch/receiving-code-review/SKILL.md) — `$receiving-code-review` / `/receiving-code-review`.
-- **Власник:** Coder верифікує й виправляє; reviewer перевіряє закриття.
-- **Результат:** кожен finding → виправлення+перевірка або доказова незгода/прийняте рішення власника; без безумовного виконання порад.
-- **Gate → далі:** неясні пов’язані findings спершу уточнити за контрактом скілу. Повторити зачеплені 7–8 на новому diff. За [лімітами](models.md): не більше двох безрезультатних fixes одного check без нових доказів; reviewer initial + один fixes pass; null — один повтор. Далі escalation/BLOCKED, а не автоматичний PASS. Зміна scope повертає до 1–3 через власника контракту. Закрито → 10.
+- **Input / when:** findings; only when present.
+- **Skills:** [receiving-code-review](../skills/arch/receiving-code-review/SKILL.md) — `$receiving-code-review` / `/receiving-code-review`.
+- **Owner:** Coder verifies and fixes; reviewer checks closure.
+- **Result:** each finding → fix+verification or evidenced disagreement/accepted owner decision; no unconditional execution of advice.
+- **Gate → next:** first clarify unclear related findings under the skill contract. Repeat affected 7–8 on the new diff. Under the [limits](models.md): no more than two fruitless fixes of one check without new evidence; reviewer initial + one fixes pass; null — one retry. Then escalation/BLOCKED, not automatic PASS. Scope change returns to 1–3 through the contract owner. Closed → 10.
 
-### 10. Документація, handoff і readiness for landing
+<a id="10-документація-handoff-і-readiness-for-landing"></a>
+### 10. Documentation, handoff and readiness for landing
 
-- **Вхід / коли:** перевірений diff або чесний блокер; завершення/пауза сесії.
-- **Скіли:** локальний report; за відповідності scope [ship-report](../skills/ship/ship-report/SKILL.md) — `$ship-report` / `/ship-report`. Додатковий [handoff](../skills/ship/handoff/SKILL.md) — `$handoff` / `/handoff` лише за явним запитом: він створює тимчасовий файл поза repo, не замінює durable journal; Claude має `disable-model-invocation: true`.
-- **Власник:** Coder веде report; локальний owner/operator/QA приймає наступний стан.
-- **Результат:** що змінилося, acceptance verdicts, фактичні checks, відкриті ризики/блокери, рішення/ADR, root/branch/SHA/dirty, наступна дія й власник за [handoff-контрактом](workflow.md#handoff). Не вигадуй acceptance-таблицю заднім числом як нібито попередньо погоджену.
-- **Gate → далі:** ready for review/QA/landing названо точно. Це не дозвіл на commit, push, merge чи deploy. Людська QA pending не є done; перенос/архів — лише за локальним порядком. Після landing/post-deploy перевірки виконуються лише за окремим застосовним дорученням.
+- **Input / when:** verified diff or honest blocker; session completion/pause.
+- **Skills:** local report; when scope fits, [ship-report](../skills/ship/ship-report/SKILL.md) — `$ship-report` / `/ship-report`. Additional [handoff](../skills/ship/handoff/SKILL.md) — `$handoff` / `/handoff` only on explicit request: it creates a temporary file outside the repo, not a replacement for the durable journal; Claude has `disable-model-invocation: true`.
+- **Owner:** Coder maintains the report; local owner/operator/QA accepts the next state.
+- **Result:** what changed, acceptance verdicts, actual checks, open risks/blockers, decisions/ADRs, root/branch/SHA/dirty, next action and owner under the [handoff contract](workflow.md#handoff). Do not invent an acceptance table afterward as though it had been agreed beforehand.
+- **Gate → next:** name ready for review/QA/landing precisely. This is not permission to commit, push, merge or deploy. Pending human QA is not done; moving/archiving only under local procedure. After landing/post-deploy, checks run only under a separate applicable request.
 
-## Адаптація до трьох репозиторіїв
+<a id="адаптація-до-трьох-репозиторіїв"></a>
+## Adaptation to three repositories
 
-| Репозиторій | Що зберігати | Особливі gates |
+| Repository | What to preserve | Special gates |
 |---|---|---|
-| Cassiopeia | [work/README](~/projects/cassiopeia/cassiopeia-admin-ui/work/README.md), локальний UI/ADR і наявні задачі | `qa-test` перед merge; окремий тестувальник-людина, потім merge/deploy й archive. Рев’ю та UI-fit не заміняють QA. Стару суперечливу інструкцію direct archive не використовувати для обходу нового gate; конфлікт, що впливає на задачу, показати власнику. |
-| Cargo | [task-workflow](~/projects/cargo/cargotrans-ui/work/rules/task-workflow.md): власник плану, worker journal, read-only reviewer, operator | [локальний review](~/projects/cargo/cargotrans-ui/.claude/skills/review/SKILL.md), `$review` / `/review` лише якщо саме цей скіл discovered; інакше точний файл. Один прохід без fan-out за замовчуванням. [QA-конвенція](~/projects/cargo/cargotrans-ui/work/qa/README.md): tasks → qa після merge → archive після QA. Старий маршрут без QA не закриває цей gate. |
-| Courses | [work/tasks.md](~/projects/courses/work/tasks.md), чинні phase plans/reports і незалежні review briefs | Зберегти Go modular monolith і TanStack Start/Rsbuild/React Aria. spec-flow тільки opt-in, без другої системи задач. Pending user QA не перетворюється на done. Важкі команди — за умовами нижче. |
+| Cassiopeia | work/README, local UI/ADRs and existing tasks | `qa-test` before merge; a separate human tester, then merge/deploy and archive. Review and UI fit do not replace QA. Do not use an old conflicting direct-archive instruction to bypass the new gate; show the owner a conflict affecting the task. |
+| Cargo | `work/rules/task-workflow.md`: plan owner, worker journal, read-only reviewer, operator | Local review (`.claude/skills/review/SKILL.md`), `$review` / `/review` only if that exact skill is discovered; otherwise the exact file. One pass without fan-out by default. QA convention (`work/qa/README.md`): tasks → qa after merge → archive after QA. The old route without QA does not close this gate. |
+| Courses | work/tasks.md, current phase plans/reports and independent review briefs | Preserve the Go modular monolith and TanStack Start/Rsbuild/React Aria. spec-flow only opt-in, without a second task system. Pending user QA does not become done. Heavy commands follow the conditions below. |
 
-**Courses:** [Makefile](~/projects/courses/Makefile) `make check` (рядок 165) і `make e2e-local` (106) включають `e2e-reset`: зупинка compose та видалення postgres/redis/media volumes, включно з dev-даними того самого compose project (107–128). `drain-queue` (151–156) видаляє media/asr queue keys і вимагає ексклюзивної сесії важких gates. `check-generated` (159–164) спершу генерує файли. Це не read-only smoke test. Перед запуском потрібні чинна явна авторизація з розумінням втрати даних, перевірений compose project і відсутність конкуруючих writers; без цього потрібний gate BLOCKED. Не обходь обов’язковий gate меншою командою й не називай її повним check. У Cassiopeia також перевір side effects pretest:E2E перед запуском; у Cargo skipped E2E не підтверджує browser QA.
+**Courses:** Makefile `make check` (line 165) and `make e2e-local` (106) include `e2e-reset`: stopping compose and deleting postgres/redis/media volumes, including dev data of the same compose project (107–128). `drain-queue` (151–156) deletes media/asr queue keys and requires an exclusive heavy-gate session. `check-generated` (159–164) generates files first. This is not a read-only smoke test. Before running, current explicit authorization with understanding of data loss, a verified compose project and absence of competing writers are required; without these the required gate is BLOCKED. Do not bypass a mandatory gate with a smaller command or call that command the full check. In Cassiopeia also inspect pretest:E2E side effects before running; in Cargo skipped E2E does not confirm browser QA.
 
-## Відновлення з середини
+<a id="відновлення-з-середини"></a>
+## Resuming from the middle
 
-0. Ідентичний handoff за незмінених inputs не відкриває завершену задачу повторно: звір статус і поверни наявний результат. Не приписуй повтор автоматизації без доказів.
-1. Прочитай наявний task/plan/journal, останній handoff та сирий review. Знайди власника й точний останній gate; не запускай весь маршрут заново.
-2. Звір checkout/root/branch/base/HEAD, staged/unstaged/untracked та зміни після доказів. Не чіпай чужі зміни; узгодь межі запису.
-3. Познач інвалідовані gates. Змінився контракт → 1–3; лише fix → 6–9; лише handoff → 10. Застарілий граф → fallback 2, без несанкціонованого rebuild.
-4. Запиши одну наступну дію, відповідальну роль і критерій завершення. Збережи застосовні попередні докази; після зміни коду повтори зачеплені checks.
+0. An identical handoff with unchanged inputs does not reopen a completed task: verify status and return the existing result. Do not attribute repetition to automation without evidence.
+1. Read the existing task/plan/journal, latest handoff and raw review. Find the owner and exact latest gate; do not restart the entire route.
+2. Check checkout/root/branch/base/HEAD, staged/unstaged/untracked files and changes since the evidence. Leave foreign changes untouched; agree write boundaries.
+3. Mark invalidated gates. Contract changed → 1–3; fix only → 6–9; handoff only → 10. Stale graph → fallback 2, without unauthorized rebuild.
+4. Record one next action, responsible role and completion criterion. Preserve applicable previous evidence; after code changes rerun affected checks.
 
-**PASS** — фактично виконаний застосовний gate із доказом. **FAIL** — виконаний, критерій порушено. **BLOCKED** — потрібний gate неможливо виконати через конкретну залежність/доступ/рішення. **N/A** — критерій не застосовується зі зрозумілою причиною; відсутній браузер, reviewer або дозвіл на destructive test не є N/A. Інші незалежні дозволені кроки можна продовжувати, але залежний landing gate залишається відкритим.
+**PASS** means an applicable gate actually performed with evidence. **FAIL** means performed, criterion violated. **BLOCKED** means a required gate cannot be performed because of a specific dependency/access/decision. **N/A** means the criterion does not apply, with a clear reason; missing browser, reviewer or permission for a destructive test is not N/A. Other independent authorized steps may continue, but the dependent landing gate remains open.
 
-Цей документ не свідчить, що фічу, skills, runtime-моделі або gates вже перевірено. Поточний стан можливостей ведеться в [status.md](status.md#capabilities); реальний пілот потребує конкретної задачі.
+This document does not establish that the feature, skills, runtime models or gates have already been verified. Current capability status is maintained in [status.md](status.md#capabilities); a real pilot requires a specific task.
 
 ## Targeted constraint lens
 

@@ -1,6 +1,6 @@
 ---
 name: to-tickets
-description: "Розбиває план, специфікацію чи поточну розмову на набір «tracer-bullet» тікетів, кожен із зазначеними блокувальними зв'язками, і публікує їх у налаштований трекер (зв'язки як текст в окремому файлі на кожен тікет локально або нативні блокувальні посилання в реальному трекері)."
+description: "Breaks a plan, specification or current conversation into a set of \"tracer-bullet\" tickets, each with explicit blocking relationships, and publishes them to the configured tracker (relationships as text in a separate local file per ticket, or native blocking links in an actual tracker)."
 disable-model-invocation: true
 ---
 

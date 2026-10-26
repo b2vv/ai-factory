@@ -1,6 +1,6 @@
 ---
 name: crg-review-changes
-description: "Структуроване рев’ю змін через локальний CRG: залежності, affected flows і кандидати тестових прогалин; результати підтверджувати кодом."
+description: "Structured change review through the local CRG: dependencies, affected flows and candidate test gaps; confirm findings against the code."
 ---
 
 ## Runtime contract

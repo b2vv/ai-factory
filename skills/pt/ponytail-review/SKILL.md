@@ -1,13 +1,6 @@
 ---
 name: ponytail-review
-description: >
-  Рев'ю дифу виключно на надлишкову складність: переписаний руками stdlib, зайва
-  залежність, спекулятивна абстракція, мертва гнучкість. Один рядок на знахідку —
-  місце, що вирізати, чим замінити — і підсумок `net: -N lines possible`.
-  Використовуйте на дифі, гілці чи PR, коли треба відповісти "що тут можна видалити",
-  "це не over-engineering?", або на тригери "review for over-engineering",
-  "simplify review", /ponytail-review. Доповнює рев'ю на коректність, а не замінює:
-  баги, безпека й продуктивність тут поза скоупом.
+description: "Reviews a diff exclusively for excessive complexity: hand-reimplemented stdlib, an unnecessary dependency, a speculative abstraction, dead flexibility. One line per finding — location, what to cut, what to replace it with — and a `net: -N lines possible` summary. Use on a diff, branch or PR when answering what can be deleted or whether this is over-engineering, or on triggers \"review for over-engineering\", \"simplify review\", /ponytail-review. Complements correctness review rather than replacing it: bugs, security and performance are out of scope here. Ukrainian compatibility trigger aliases: \"що тут можна видалити\", \"це не over-engineering?\"."
 ---
 
 Review diffs for unnecessary complexity. One line per finding: location, what
