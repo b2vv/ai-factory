@@ -19,6 +19,60 @@ harness; this release makes no new runtime acceptance claim.
 
 Статус: release candidate. Scanner milestone пройшов незалежне code/runtime review для Docker-only linux/amd64 запуску на macOS; це не прийняття всього backlog, native agent discovery чи постійної активації проєктів. Фінальний release-пакет потребує окремого hash-bound review перед tag/publication. Структура не надає дозволу на installs, hooks, MCP, model changes чи product actions. Локальні project contracts і поточне доручення мають пріоритет.
 
+## Що адаптовано з ECC
+
+Це вибіркова авторська адаптація ідей після source audit
+[ECC `90606c8315ee09cafc303515c5f33024db6b9882`](https://github.com/affaan-m/ECC/tree/90606c8315ee09cafc303515c5f33024db6b9882),
+а не встановлення ECC чи імпорт його skill/hook pack. Реалізація нижче входить у
+Factory commit `17a9527421e8fac3e43a16c287c404118699833c`; це unreleased
+commit-pinned candidate, не нова публікація тегу rc.5. Цей опис — окремий docs-only
+delta; він не пересуває consumer pins і не замінює immutable caches.
+
+| Що реалізовано | Що саме отримує користувач | Межі доказів |
+|---|---|---|
+| [Offline discovery-response checker](docs/onboarding-helper.md) | Спільне порівняння обраних skills за name/path/enabled; declared inventory для Claude і Codex; окремий parser supplied Codex `skills/list` result | `RESPONSE_MATCH`: кожний обраний skill присутній рівно один раз за очікуваним enabled path; додаткові необрані skills дозволені. Digests прив’язують bytes, не автентичність capture. Native Claude parser відсутній; capture authenticity, native discovery/invocation і model behavior — NOT_TESTED. Checker не запускає host |
+| [П'ять language review/testing references](skills/arch/code-review/references/languages/index.md) | TypeScript: runtime boundary validation і wire contracts; PHP: DTO/ports та unit/integration; Python: fixture ownership, autospec/await і cleanup; Rust: ownership/unsafe contracts, properties/doctests; Go: bounded concurrency, cancellation, race/fuzz/golden obligations | Це guidance для наявних TDD/review gates, не встановлені toolchains, compiled recipes чи доказ виконання тестів продукту |
+| Optional framework references у тому самому index | React для підтвердженого TS/TSX; Laravel лише для Laravel; Django/DRF або FastAPI лише за фактичним стеком | Зазвичай index + одна мова + нуль/один framework. Невідомий стек — UNKNOWN; жодного автоматичного завантаження всіх references або framework install |
+
+TypeScript насамперед зберігає дозволений користувачем переносимий намір правил
+Cassiopeia. MVC layout, service/naming conventions, бібліотеки та версії не
+нав'язуються іншим проєктам. [TypeScript reference](skills/arch/code-review/references/languages/typescript.md)
+явно пояснює конфлікт зі старим forced-interface правилом Pocock: історичний файл
+залишено незмінним, чинна project convention має пріоритет. Точні conceptual
+sources, per-file digests та exclusions — у
+[language provenance](provenance/language-reference-origins.json); походження
+checker і права/обмеження — у [PROVENANCE](PROVENANCE.md).
+
+Небезпечні приклади не перенесено дослівно. Go guidance вимагає cancellation до
+реальної blocking operation і bounded fan-out; Rust не допускає вигаданого lifetime
+з raw pointer та нагадує про `Debug` для `unwrap_err`; FastAPI розділяє transport і
+lifespan; Django не називає external side effect ідемпотентним без відповідного
+контракту. PHP cache/Composer commands не оголошено read-only. Formatting не
+підміняє lint/typecheck. Докази виконання кожного recipe потрібні окремо.
+
+**Що вже було у Factory.** Core TDD, mutation/behavior coverage, snapshot-bound
+independent review, durable handoff, guarded installer/update/rollback та чотири
+viewport classes не запозичено заново і не замінено ECC. Чинні
+[workflow](ai-factory/workflow.md), [behavior coverage](skills/arch/code-review/references/behavior-coverage.md)
+і [review handoff](ai-factory/review-handoff.md) залишаються єдиним authority.
+
+**Що не переносили.** Wholesale skills/hooks install, worktree orchestration,
+transcript learning/LLM summaries, auto-promotion, широкі MCP defaults і заяви про
+універсальну native parity. Budgeted context routing, matched behavioral eval та
+додаткові recipes для parked/rejected/validated ідей до task — лише можливі наступні
+роботи, **NOT_IMPLEMENTED у цьому delta**; наявний
+[lifecycle](ai-factory/feature-lifecycle.md) не змінюється. Наявність upstream
+README або тестових fixtures не є доказом продуктивності чи безпечного runtime.
+
+**Окремий rollout checkpoint (2026-10-26).** Candidate `17a9527` застосований через
+погоджені tooling adapters у Cargo, Courses, Cassiopeia та dg; hash/path checks і
+повторна reconciliation/installer NOOP пройшли. Незалежна технічна перевірка
+прийнята, зовнішні final applied-snapshot reviews ще PENDING. У dg після apply
+стороння робота змінила продуктовий HEAD: tooling bytes перевірені, але загальне
+HEAD/WIP preservation не оголошено PASS. Це датований звіт, не live status service,
+не native activation proof і не дозвіл повторювати rollout. Цей docs delta не
+змінює жодного з цих pins чи review verdicts.
+
 ## Почати через AI: три сценарії
 
 Цей repository містить workflow, skills, templates та offline helpers; він не встановлює сам Codex/Claude, мову проєкту, MCP/graph servers чи моделі. Локальні helpers не потребують додаткового SaaS; доступ до AI залишається вашим чинним account/ліцензією, не обіцянкою безкоштовних model calls.
