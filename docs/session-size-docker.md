@@ -90,3 +90,68 @@ was used to fill that gap. Full default-host Docker-only migration is not comple
 The original AF16 milestone requires a bounded selected-event pilot, not blanket
 global rollout. Global migration is a separate deployment decision requiring a
 coverage-preserving enrollment policy and exact access/trust/rollback review.
+
+
+## Current native identity and manual checkpoint guidance
+
+The shell names in examples are placeholders, not required exported environment
+variables. For an already registered host, inspect its existing `native.sh`
+command: its explicit arguments identify the host, registry and receipt parent;
+the script directory identifies the dispatcher. Use the existing exact host/session
+binding selected by the current native event. Registry filenames are SHA-256 of
+`host + newline + session_id + newline`; records are fixed-format data, never shell.
+Validate the record's host/session and use its approved root/store. Do not scan for
+a latest session, create enrollment, or infer mount authority from hook payload paths.
+Pass each path and identifier as an individually quoted CLI argument. No global
+shell export is needed. `AI_FACTORY_HANDOFF` remains an explicit launch pointer;
+a conflicting `--pointer` is rejected rather than silently overriding it.
+
+A successful context-capable event emits `AI_FACTORY_NATIVE_IDENTITY` followed by
+JSON with `schema` (`ai-factory-native-identity/1`), `host`, `session_id`, canonical
+`root` and `event`. It contains no transcript path, prompt or tool contents. The
+model-visible hook identifier must match `[A-Za-z0-9_-]{1,256}`; this is narrower
+than the retained enrollment selector. Manual checkpoint/resume identity semantics
+are unchanged. Invalid model-visible identity is rejected before state advancement.
+
+Use only the newest host-delivered identity in the current conversation. The
+session ID is protocol metadata, not an authentication token or permission to
+access another path. Old/copied/foreign context cannot authorize a checkpoint.
+The adapter cannot authenticate a forged same-shaped native payload; native
+transport remains the trust boundary. After a later deferred/blocked/unknown event
+without current identity, do not fall back to an older identity. If it cannot be
+confirmed, report `CURRENT_NATIVE_IDENTITY_UNAVAILABLE` and whether the existing
+registry binding was found, rather than claiming an environment mapping is absent.
+
+The revised introduction is delivered once per guidance version on the first
+successful normal SessionStart/UserPromptSubmit/PostToolUse event, including old
+sessions and a prompt after unavailable startup. Subsequent successful events
+refresh identity without an identity-only state write. Stop and failed/deferred
+events do not confirm identity delivery. Native-event explicit-pointer resume returns its validated
+summary plus identity; a consistent same-target NOOP returns identity only, without
+summary replay or claim/state rewrite. The revised introduction follows on the next
+normal event. Combined resume text and the serialized output envelope are checked
+before claim/session writes; overflow is reported as `NATIVE_CONTEXT_TOO_LARGE`.
+
+A project adapter should distinguish its pinned kit helper from the host's actually
+registered runtime. Installing this package registers neither. A host-specific
+policy overlay is a different interface: inspect its own contract instead of
+assuming this package's registry format. This source update does not change any
+installed adapter, hook, trust setting, policy, coverage or consumer pin. Portable
+native delivery and end-to-end checkpoint/resume remain NOT_TESTED; a reported
+receipt from a separate installed profile does not establish this package's behavior.
+
+## Verification inputs for subsequent source changes
+
+`tools/run_tests.py` runs the offline suites; run `tests/packaging` explicitly too.
+The historical translation fixtures require `AI_FACTORY_TRANSLATION_BASELINE`
+(original commit `2c0960885926075502a319a19eafbed901690dde`) and
+`AI_FACTORY_HISTORY_BASELINE` (commit `12f51ed23cf664ac3b70e219a2d1a59a54bfeceb`).
+After functional changes, set `AI_FACTORY_ENGLISH_MIGRATION_SNAPSHOT` to an immutable
+source snapshot of the completed migration at
+`8697a62ef37d360297d32f31019cb68690fe43a9`. The existing proof authenticates its
+manifest/content; an arbitrary replacement cannot pass. This selects the subject
+of the exact historical migration proof, not the live language check. The separate
+`LiveCurrentLanguageTests` always audits current source using the same raw, decoded,
+JSON and Python-literal rules regardless of that setting. Missing baseline inputs
+are failures, not silent skips. Historical English provenance records bind their
+original exact migration bytes; the new functional delta is recorded separately.

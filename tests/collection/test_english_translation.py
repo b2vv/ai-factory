@@ -1083,7 +1083,7 @@ class AuthenticatedHistoryTests(unittest.TestCase):
 class CurrentResidualProofTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.root=MODULE.parents[1]
+        cls.root=Path(os.environ.get('AI_FACTORY_ENGLISH_MIGRATION_SNAPSHOT', MODULE.parents[1]))
         cls.original=Path(os.environ['AI_FACTORY_TRANSLATION_BASELINE'])
         cls.history=v.load_history(HISTORY_ROOT)
         cls.data={name:v.regular(cls.root,name) for name in v.inventory(cls.root)}
@@ -1217,6 +1217,14 @@ class CurrentResidualProofTests(unittest.TestCase):
         result=self.run_tree(data);self.assertEqual(result['status'],'FAIL')
         self.assertIn('residual unchanged file:',result['issues'][0])
 
+
+
+
+class LiveCurrentLanguageTests(unittest.TestCase):
+    def test_live_source_has_no_raw_or_decoded_cyrillic(self):
+        root = MODULE.parents[1]
+        data = {name: v.regular(root, name) for name in v.inventory(root)}
+        v.current_language_proof(data, v.load_history(HISTORY_ROOT))
 
 if __name__ == '__main__':
     unittest.main()

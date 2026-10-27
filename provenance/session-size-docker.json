@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "AUTHORED_OPTIONAL_PROFILE_FINAL_REVIEW_PENDING",
+  "status": "AUTHORED_OPTIONAL_PROFILE_EXACT_SNAPSHOT_REVIEW_REQUIRED",
   "native_pilot_review_sha256": "cbdb2a4bf804fdc1d8af04f5b82c891274a0a21d375b5131f8c391d94499988b",
   "native_pilot_manifest_sha256": "3ee9c791aea9a258f013d44dc480fbeac72600cadc271a322cdd2891e8315649",
   "files": [
@@ -29,8 +29,8 @@
       "path": "runtime/session-size-docker/guard.py",
       "source": "owner-authored AF16 reviewed task candidate/guard.py",
       "source_sha256": "a18776da514f0ea29388ce1d2394f0e0d1af2191777a9b5f915998f289b80fba",
-      "sha256": "0cf352a05c39129d691c2a4dfc99e15e157e11a5b0f2fbaef632daa49be6f41f",
-      "transformation": "Remove private synthetic root and safe.directory exception; preserve mapped cwd boundary; disable fsmonitor for all four metadata operations"
+      "sha256": "c87b56f1ea5cca88f7e506865ccc68d67fbc41e86f04b6340d06109c727464b7",
+      "transformation": "Remove private synthetic root and safe.directory exception; preserve mapped cwd boundary; disable fsmonitor for all four metadata operations; owner-authorized portable native identity guidance and preclaim delivery bounds; retained registry/no-Git-trust profile"
     },
     {
       "path": "runtime/session-size-docker/mapping-lib.sh",

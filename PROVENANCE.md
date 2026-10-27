@@ -104,3 +104,18 @@ The owner authorized an English adaptation of all remaining current text, includ
 The current translation provenance uses ordered digest commitments to historical literal and anchor records instead of embedding their old-language text. Full source-bound verification now requires both the original baseline and an explicitly supplied, hash-authenticated history baseline at commit `12f51ed23cf664ac3b70e219a2d1a59a54bfeceb`. Historical Python inputs are parsed only as literal data, never executed. Missing or altered historical evidence blocks the full proof; a package hash check alone is not semantic equivalence. `provenance/residual-english.json` binds the current adaptation, and exact independent final verdicts live in external snapshot receipts. `REQUIRED_EXTERNAL_REVIEW` expresses that enduring requirement, not a pending execution status or an embedded acceptance.
 
 English labels and trigger phrases intentionally replace the previous localized input vocabulary. No compatibility with unknown external callers, installed copies or native agent routing is claimed, and no consumer repository was migrated by this source change. Synthetic Unicode tests retain non-Cyrillic multibyte, case and normalization distinctions without changing the generic discovery parser. Original source identities, existing license notices, approved append blocks and immutable prior evidence remain intact; this translation grants no additional redistribution rights or host activation authority.
+
+## Unreleased portable native identity guidance
+
+This owner-authorized functional port adapts the reviewed host-profile identity
+and resume-delivery-bound fixes to the distributable enrolled-registry profile.
+Only shared guard behavior and tests are reused; no host policy selector, scoped
+Git trust option, private paths, sessions, credentials or configuration is imported.
+The exact input/output hashes and scope are recorded in
+[port provenance](provenance/native-identity-guidance.json). Existing source hashes
+and historical translation acceptance remain evidence for their original bytes,
+not acceptance of this new functional delta. The historical migration proof is run
+against its immutable completed snapshot; live source retains a separate raw and
+decoded language gate. Independent review and synthetic tests for this repository
+snapshot are separate from installed-profile review or user-reported native receipt.
+Publication grants no activation, consumer repin, new license or redistribution right.

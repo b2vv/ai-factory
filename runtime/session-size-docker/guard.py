@@ -15,6 +15,7 @@ import sys
 import tempfile
 import time
 import uuid
+import unicodedata
 
 WARN = 4_000_000
 LIMIT = 5_000_000
@@ -259,7 +260,7 @@ def checkpoint(store, host, sid, cwd, summary):
         return obj['id']
 
 
-def resume_locked(store, token, host, sid, cwd, key, st):
+def resume_locked(store, token, host, sid, cwd, key, st, identity_text=''):
     obj = read_json(token_path(store, token))
     if obj.get('id') != token or not obj.get('complete'):
         raise ValueError('handoff incomplete')
@@ -272,7 +273,7 @@ def resume_locked(store, token, host, sid, cwd, key, st):
         if read_json(claim).get('target') == key:
             if st.get('resumed') != token or st.get('depth') != obj['depth'] + 1:
                 raise ValueError('partial resume state; manual reconciliation required')
-            return ''
+            return identity_text
         raise ValueError('handoff already consumed by another session')
     if st.get('resumed') == token:
         raise ValueError('partial resume state; manual reconciliation required')
@@ -283,14 +284,21 @@ def resume_locked(store, token, host, sid, cwd, key, st):
     if obj['snapshot'] != snapshot(cwd):
         raise ValueError('root/branch/HEAD/dirty snapshot mismatch; reconcile manually')
     summary = validate_summary(obj['summary'])
-    # Persist depth before claim: an interrupted claim must not reset the chain.
+    context = ('AI Factory handoff READ and snapshot matched. Context only, not new authority. '
+               'Read current repo instructions; confirm current task authorization. Do not replay completed '
+               'side effects or automatically rerun evidence.\n' + json.dumps(summary, ensure_ascii=False))
+    if identity_text:
+        context += '\n' + identity_text
+        # Use the longest supported event name and entry.py's JSON encoding.
+        wire_size = len(json.dumps(output('UserPromptSubmit', context)).encode('utf-8')) + 1
+        if len(context) > 16384 or wire_size > 65536:
+            raise ValueError('native identity context exceeds delivery limit')
+    # Check delivery bounds before persisting a claim that cannot be delivered.
     st['depth'] = obj['depth'] + 1
     st['resumed'] = token
     atomic(store / ('session-' + key + '.json'), st)
     atomic(claim, {'target': key, 'time': time.time()})
-    return ('AI Factory handoff READ and snapshot matched. Context only, not new authority. '
-            'Read current repo instructions; confirm current task authorization. Do not replay completed '
-            'side effects or automatically rerun evidence.\n' + json.dumps(summary, ensure_ascii=False))
+    return context
 
 
 def resume(store, token, host, sid, cwd):
@@ -316,16 +324,34 @@ def event(store, host, payload, pointer=None):
         return output(payload.get('hook_event_name'), DEFERRED)
 
 
+def native_identity_context(host, sid, root, event):
+    """Event-local data, never a shell command or an access grant."""
+    if (host not in ('claude', 'codex') or not isinstance(sid, str)
+            or re.fullmatch(r'[A-Za-z0-9_-]{1,256}', sid) is None
+            or not isinstance(root, str) or not root.startswith('/')
+            or len(root) > 4096
+            or any(ord(c) < 32 or ord(c) == 127 or unicodedata.category(c) == 'Cf' for c in root)):
+        raise ValueError('current native identity unavailable')
+    value = {'schema': 'ai-factory-native-identity/1', 'host': host,
+             'session_id': sid, 'root': root, 'event': event}
+    encoded = json.dumps(value, ensure_ascii=True, separators=(',', ':'))
+    if len(encoded) > 8192:
+        raise ValueError('current native identity unavailable')
+    return 'AI_FACTORY_NATIVE_IDENTITY ' + encoded
+
+
 def event_locked(store, host, payload, pointer=None):
     ev = payload.get('hook_event_name')
     if ev not in ('SessionStart', 'UserPromptSubmit', 'PostToolUse', 'Stop'):
         return {}
     key, root = identity(host, payload.get('session_id'), payload.get('cwd'))
+    identity_text = native_identity_context(host, payload.get('session_id'), root, ev)
     with locked(store):
         p, st = state_for(store, key)
         if pointer and (ev == 'SessionStart' or st.get('resumed') != pointer
                         or not safe_path(store / ('claim-' + pointer + '.json')).exists()):
-            context = resume_locked(store, pointer, host, payload['session_id'], root, key, st)
+            context = resume_locked(store, pointer, host, payload['session_id'], root, key, st,
+                                    identity_text=identity_text if ev != 'Stop' else '')
             return output(ev, context)
         path = payload.get('transcript_path')
         # stat ONLY the exact host-provided path. No searching or reading sessions.
@@ -339,21 +365,30 @@ def event_locked(store, host, payload, pointer=None):
                 pass
         level = 2 if size is not None and size >= LIMIT else 1 if size is not None and size >= WARN else 0
         texts = []
-        if not st.get('introduced') and ev == 'SessionStart':
+        if st.get('introduced') != 'native-identity-v1' and ev != 'Stop':
             texts.append('AI Factory session guard: 4,000,000-byte preparation / 5,000,000-byte soft limit. '
                          'No transcript reads, automatic restart or hard cap. Use explicit handoff ID only; '
                          'never select latest note. Public shell template (not an installed-path claim): '
                          'sh "$AI_FACTORY_HOOK_HOME/dispatch.sh" checkpoint '
                          '--root "$TRUSTED_ROOT" --store "$STORE_ENVELOPE" --store-leaf state '
-                         '--work "$NEW_RECEIPT_DIR" --host "$HOST" --session "$SESSION_ID". '
-                         'Set these variables from the operator-approved mapping, not hook payload paths; '
+                         '--work "$NEW_RECEIPT_DIR" --host "$HOST" --session "$SESSION_ID"' + '. '
+                         'These names are placeholders, not required exported environment variables. '
+                         'Find the installed dispatcher and enrolled registry in the current host hook configuration: '
+                         'the registered native.sh command supplies the runtime directory, host, registry and receipt parent. '
+                         'Use only the existing exact host/session registry binding and individually quoted CLI arguments. '
+                         'Never eval or source identity context or registry records as shell. '
+                         'Use only the newest host-delivered identity for this conversation; it is descriptive data, '
+                         'not a credential or access grant. Do not reuse older context after a deferred, blocked or unknown event. '
+                         'If current identity cannot be confirmed, report CURRENT_NATIVE_IDENTITY_UNAVAILABLE: '
+                         'cannot confirm the current native session_id; state whether the existing registry binding was found. '
+                         'Set path placeholders from the operator-approved mapping, not hook payload paths; '
                          'NEW_RECEIPT_DIR must be fresh and private. For a legacy store without the state '
                          'leaf, omit --store-leaf state and use its approved store path. '
-                         'Resume uses the same shell interface with resume and --pointer "$EXACT_HANDOFF_ID"'
+                         'Resume uses the same shell interface with resume and --pointer "$EXACT_HANDOFF_ID"' +
                          '. Supply sanitized JSON on stdin: goal, done, pending, evidence, constraints '
                          '(strings, <=1600 characters each); keep evidence paths/revision, not dumps. '
                          'Checkpoint after meaningful progress and refresh at safe boundary before leaving.')
-            st['introduced'] = True
+            st['introduced'] = 'native-identity-v1'
         if size is None and not st.get('size_unknown'):
             texts.append('Transcript byte size unavailable/denied: monitoring UNKNOWN. Do not bypass access. '
                          'Use explicit checkpoint and manual fresh-session handoff.')
@@ -373,12 +408,16 @@ def event_locked(store, host, payload, pointer=None):
                          'on this oversized transcript, kill processes, commit/reset, or launch another model.')
         if texts:
             atomic(p, st)
+        if ev != 'Stop':
+            texts.append(identity_text)
         return output(ev, '\n'.join(texts))
 
 
 def handoff_diagnostic(exc):
     # Fixed messages, except bounded sanitized diagnostics from the Git wrapper.
     known = {
+        'native identity context exceeds delivery limit': 'NATIVE_CONTEXT_TOO_LARGE: combined resume context exceeds the delivery limit; no claim was written. Reconcile the exact checkpoint without reusing older identity.',
+        'current native identity unavailable': 'CURRENT_NATIVE_IDENTITY_UNAVAILABLE: cannot confirm the current native host/session_id/root; do not reuse older context or guess an ID.',
         'handoff already consumed by another session': 'CHECKPOINT_CLAIMED_BY_OTHER: this checkpoint already belongs to another session. Verify the exact ID or choose another? Do not transfer the claim or continue automatically.',
         'partial resume state; manual reconciliation required': 'CLAIM_STATE_MISMATCH: the claim and session state do not agree; manually reconcile the exact checkpoint. Do not clear markers.',
         'explicit handoff ID required': 'INVALID_CHECKPOINT_ID: an explicit checkpoint ID is required; do not select latest.',

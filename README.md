@@ -19,6 +19,15 @@ harness; this release makes no new runtime acceptance claim.
 
 Status: release candidate. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The final release package requires a separate hash-bound review before tagging/publication. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.
 
+## Unreleased native identity guidance
+
+Current source updates the optional Docker session guard with event-bound native
+identity and registry-based manual checkpoint guidance. The release narratives
+above describe their historical rc.5 scope; this functional source delta is not a
+new tag or automatic consumer upgrade. See the [identity contract](docs/session-size-docker.md#current-native-identity-and-manual-checkpoint-guidance)
+and [port provenance](provenance/native-identity-guidance.json). Installed host
+profiles and consumer pins are not changed by source publication.
+
 ## What was adapted from ECC
 
 These are selective, independently authored adaptations of ideas following a source audit of
