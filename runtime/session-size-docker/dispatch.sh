@@ -27,36 +27,32 @@ fail() { if [ "$required" = 1 ];then echo 'BLOCKED required handoff' >&2;exit 2;
 case "$host" in claude|codex) ;;*) fail;;esac
 case $0 in /*) code=${0%/*};;*) code=$PWD/${0%/*};;esac
 command -v docker >/dev/null 2>&1 || fail
-exec 3<&0
+exec 3<&0 5>&2
 umask 077
-name=af16-$$-$start;validator=$name-validator;created=0;validator_created=0
-cid=;active=;timer=;timedout=0
+name=;validator=;created=0;validator_created=0
+cid=;active=;timer=;command_limit=;timedout=0
 # Client operations are interrupted before the original aggregate cleanup deadline.
 run() {
  now=$(date +%s);remaining=$((deadline-now));[ "$remaining" -gt 0 ] || return 124
+ [ -z "${command_limit-}" ] || [ "$remaining" -le "$command_limit" ] || remaining=$command_limit
  (ulimit -f 1024;exec "$@" <&3) & active=$!
  (sleep "$remaining" & sleeper=$!;trap 'kill "$sleeper" 2>/dev/null || :;wait "$sleeper" 2>/dev/null || :;exit 0' TERM;wait "$sleeper";kill -TERM "$active" 2>/dev/null || :;sleep 0.1;kill -KILL "$active" 2>/dev/null || :) >/dev/null 2>&1 & timer=$!
  set +e;wait "$active";r=$?;set -e
  kill "$timer" 2>/dev/null || :;wait "$timer" 2>/dev/null || :;active=;timer=
  return "$r"
 }
-cleanup() {
- trap ':' INT TERM HUP
- [ -z "$active" ] || { kill -TERM "$active" 2>/dev/null || :;kill -KILL "$active" 2>/dev/null || :;wait "$active" 2>/dev/null || :; }
- [ -z "$timer" ] || { kill "$timer" 2>/dev/null || :;wait "$timer" 2>/dev/null || :; }
- deadline=$cleanup_end
- # Exact name reconciliation also covers a create whose CID reply was lost.
- [ "$created" = 1 ] || return 0
- set -- "$name";[ "$validator_created" = 0 ] || set -- "$@" "$validator"
- run docker rm -f "$@" > "$work/cleanup.out" 2> "$work/cleanup.err" || return 1
- return 0
-}
-trap 'cleanup || :; fail' INT TERM HUP
+. "$code/cleanup.sh"
+
+trap 'cleanup || :; fail 2>&5' INT TERM HUP
+trap 'cleanup || :' EXIT
 run sh "$code/preflight.sh" "$root" "$store" "$work" "$code" "$transcript" || fail
+identity_dir=$(mktemp -d "$work/identity.XXXXXXXX") || fail
+suffix=${identity_dir##*.};rmdir "$identity_dir"
+name=ai-factory-$host-worker-$suffix;validator=ai-factory-$host-validator-$suffix
 # Bounded stdin capture. No shell evaluation of payload.
 run head -c 8000001 > "$work/input.json" || { cleanup || :;fail; }
 image=semgrep/semgrep@sha256:c47e426f7f0cfa19af6d7877560d0a7135f683b8090ad0efc97c4ec7810dc435
-set -- create --pull never --name "$name" --platform linux/amd64 --network none --read-only --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges --cpus 2 --memory 2g --memory-swap 2g --pids-limit 128 --tmpfs /tmp:rw,noexec,nosuid,size=268435456 --log-driver local --log-opt max-size=1m --log-opt max-file=1 --log-opt compress=false --env HOME=/tmp --env PYTHONDONTWRITEBYTECODE=1 --env GIT_CONFIG_NOSYSTEM=1 --env DOCKER_OTEL_RESOURCE_ATTRIBUTES= --env DD_SERVICE= --env TSAN_OPTIONS= --mount "type=bind,src=$code,dst=/code,readonly" --mount "type=bind,src=$root,dst=$root,readonly" --mount "type=bind,src=$store,dst=$store" --mount "type=bind,src=$work/input.json,dst=/input.json,readonly"
+set -- create --pull never --name "$name" --label com.docker.compose.project=ai-factory --label com.docker.compose.service=session --label com.docker.compose.oneoff=False --label com.docker.compose.config-hash=ai-factory-ephemeral-v1 --label "ai-factory.invocation=$name" --platform linux/amd64 --network none --read-only --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges --cpus 2 --memory 2g --memory-swap 2g --pids-limit 128 --tmpfs /tmp:rw,noexec,nosuid,size=268435456 --log-driver local --log-opt max-size=1m --log-opt max-file=1 --log-opt compress=false --env HOME=/tmp --env PYTHONDONTWRITEBYTECODE=1 --env GIT_CONFIG_NOSYSTEM=1 --env DOCKER_OTEL_RESOURCE_ATTRIBUTES= --env DD_SERVICE= --env TSAN_OPTIONS= --mount "type=bind,src=$code,dst=/code,readonly" --mount "type=bind,src=$root,dst=$root,readonly" --mount "type=bind,src=$store,dst=$store" --mount "type=bind,src=$work/input.json,dst=/input.json,readonly"
 if [ -n "$transcript" ];then
 
  set -- "$@" --mount "type=bind,src=$transcript,dst=$transcript,readonly"
@@ -87,7 +83,7 @@ run docker start -a "$cid" > "$work/result.json" 2> "$work/worker.err" || { clea
 run docker inspect --format '{{.State.Status}}|{{.State.ExitCode}}|{{.State.OOMKilled}}|{{.State.Dead}}' "$cid" > "$work/terminal.txt" 2> "$work/terminal.err" || { cleanup || :;fail; }
 [ "$(cat "$work/terminal.txt")" = 'exited|0|false|false' ] || { cleanup || :;fail; }
 # Validate captured bytes in an independent, source-free container before delivery.
-set -- create --pull never --name "$validator" --platform linux/amd64 --network none --read-only --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges --cpus 2 --memory 2g --memory-swap 2g --pids-limit 128 --tmpfs /tmp:rw,noexec,nosuid,size=268435456 --log-driver local --log-opt max-size=1m --log-opt max-file=1 --log-opt compress=false --env HOME=/tmp --env PYTHONDONTWRITEBYTECODE=1 --env GIT_CONFIG_NOSYSTEM=1 --env DOCKER_OTEL_RESOURCE_ATTRIBUTES= --env DD_SERVICE= --env TSAN_OPTIONS= --mount "type=bind,src=$code,dst=/code,readonly" --mount "type=bind,src=$work/result.json,dst=/result.json,readonly" --entrypoint python3 "$image" -B /code/validate.py --mode "$mode" --input /result.json
+set -- create --pull never --name "$validator" --label com.docker.compose.project=ai-factory --label com.docker.compose.service=validator --label com.docker.compose.oneoff=False --label com.docker.compose.config-hash=ai-factory-ephemeral-v1 --label "ai-factory.invocation=$name" --platform linux/amd64 --network none --read-only --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges --cpus 2 --memory 2g --memory-swap 2g --pids-limit 128 --tmpfs /tmp:rw,noexec,nosuid,size=268435456 --log-driver local --log-opt max-size=1m --log-opt max-file=1 --log-opt compress=false --env HOME=/tmp --env PYTHONDONTWRITEBYTECODE=1 --env GIT_CONFIG_NOSYSTEM=1 --env DOCKER_OTEL_RESOURCE_ATTRIBUTES= --env DD_SERVICE= --env TSAN_OPTIONS= --mount "type=bind,src=$code,dst=/code,readonly" --mount "type=bind,src=$work/result.json,dst=/result.json,readonly" --entrypoint python3 "$image" -B /code/validate.py --mode "$mode" --input /result.json
 # Keep worker evidence separate from the validator's inspect evidence.
 run mkdir "$work/worker" || { cleanup || :;fail; }
 for f in inspect.json policy.txt mounts.txt env.txt terminal.txt;do run cp "$work/$f" "$work/worker/$f" || { cleanup || :;fail; };done

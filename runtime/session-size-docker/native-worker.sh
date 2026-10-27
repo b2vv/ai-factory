@@ -9,8 +9,19 @@ private_dir "$registry";private_dir "$receipts"
 explicit_key=${AI_FACTORY_SESSION_BINDING-}
 umask 077
 selection=$(mktemp -d "$receipts/selection.XXXXXXXX")
-trap 'rm -f "$selection/payload.json"' EXIT
-projection=$(sh "$code/session-key.sh" "$host" "$selection") || exit 2
+trap 'rm -f "$selection/payload.json" "$selection/parser-output.tmp"' EXIT
+# Keep the parser PID visible for cancellation; retain only its bounded projection.
+parser_pid=
+exec 3<&0
+trap '[ -z "$parser_pid" ] || kill -TERM "$parser_pid" 2>/dev/null || :' INT TERM HUP
+sh "$code/session-key.sh" "$host" "$selection" <&3 > "$selection/parser-output.tmp" & parser_pid=$!
+parser_rc=0;wait "$parser_pid" || parser_rc=$?
+if kill -0 "$parser_pid" 2>/dev/null;then parser_rc=0;wait "$parser_pid" || parser_rc=$?;fi
+parser_pid=
+[ "$parser_rc" = 0 ] || { rm -f "$selection/parser-output.tmp";exit 2; }
+projection=$(cat "$selection/parser-output.tmp")
+rm "$selection/parser-output.tmp"
+trap - INT TERM HUP
 key=$(printf '%s\n' "$projection" | head -n 1)
 [ -z "$explicit_key" ] || [ "$explicit_key" = "$key" ] || exit 2
 case "$key" in ''|*[!a-f0-9]*) exit 2;;esac

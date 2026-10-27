@@ -7,9 +7,17 @@ if a[0]=='create':
  if mode=='createfail':sys.exit(1)
  mounts=[a[i+1] for i,x in enumerate(a) if x=='--mount'];env=[a[i+1] for i,x in enumerate(a) if x=='--env'];user=a[a.index('--user')+1];image=a[a.index('--entrypoint')+2]
  state.write_text(json.dumps({'mounts':mounts,'env':env,'user':user,'image':image,'validator':'/code/validate.py' in a,'args':a}));print('fixturecid')
+elif a[0]=='ps':
+ if not state.exists():sys.exit(0)
+ s=json.loads(state.read_text());owner=next(x.split('=',1)[1] for x in s['args'] if x.startswith('ai-factory.invocation='))
+ print('c'*64+'|'+owner+'|'+owner)
+ if s['validator']:print('c'*64+'|'+owner.replace('-worker-','-validator-')+'|'+owner)
 elif a[0]=='inspect':
  s=json.loads(state.read_text());fmt=a[a.index('--format')+1] if '--format' in a else ''
- if 'NanoCpus' in fmt:
+ if 'ai-factory.invocation' in fmt:
+  args=s['args']
+  for name in a[a.index('--format')+2:]:print('c'*64+'|/'+name+'|'+next(x.split('=',1)[1] for x in args if x.startswith('ai-factory.invocation=')))
+ elif 'NanoCpus' in fmt:
   for k in ['CapAdd','Devices','DeviceRequests','PortBindings']:
    if '{{len .HostConfig.'+k+'}}' in fmt and '{{if .HostConfig.'+k+'}}' not in fmt:
     print('error calling len: len of nil pointer',file=sys.stderr);sys.exit(1)
@@ -37,5 +45,5 @@ elif a[0]=='start':
  else:print(json.dumps({'status':'OK','result':{'checkpoint_id':'a'*32+'-1-'+'b'*12}}))
 elif a[0]=='rm':
  if mode=='cleanupfail':sys.exit(1)
- print('fixturecid')
+ print('c'*64)
 else:sys.exit(2)

@@ -49,9 +49,10 @@
         "Owner-authorized language references provenance/navigation; original identity and hashes preserved",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Owner-authorized native identity guidance provenance; historical source identity preserved.",
-        "0.7.0-rc.6 owner-authorized bugfix prerelease framing; historical source identity preserved."
+        "0.7.0-rc.6 owner-authorized bugfix prerelease framing; historical source identity preserved.",
+        "0.7.0-rc.7 owner-authorized ephemeral lifecycle provenance; historical source hashes retained."
       ],
-      "new_sha256": "7c7a8061897de2cbad244a92d8227e563910592cfb1ed589e5f39fe5c8fd2dc9"
+      "new_sha256": "ef9e4e2fba68d9f39dce4cabbbbcfffc3127a05df39eea2fd3c68d8f01badbbb"
     },
     {
       "old_path": "README.md",

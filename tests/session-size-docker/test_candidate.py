@@ -83,7 +83,7 @@ class Lifecycle(unittest.TestCase):
  def test_failures_cleanup(self):
   for fault in ['createfail','badpolicy','startfail','oom','cleanupfail']:
    with self.subTest(fault=fault):
-    r=self.run_case(fault);self.assertNotEqual(r[0],0,r);self.assertIn('rm',r[2],r)
+    r=self.run_case(fault);self.assertNotEqual(r[0],0,r);self.assertIn('ps' if fault=='createfail' else 'rm',r[2],r)
  def test_deadline(self):
   r=self.run_case('hang');self.assertNotEqual(r[0],0,r);self.assertLess(r[1],10,r);self.assertIn('rm',r[2],r)
  def test_parent_cancellation(self):

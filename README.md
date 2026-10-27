@@ -1,6 +1,8 @@
-# AI Factory — 0.7.0-rc.6
+# AI Factory — 0.7.0-rc.7
 
-This bugfix prerelease updates the optional Docker session guard with bounded
+This bugfix prerelease adds readable ephemeral hook names, ai-factory grouping metadata, ownership-checked cleanup retries and cancellation forwarding. The optional Docker component includes these fixes on a fresh installation. Cleanup remains bounded by the original nine-second deadline; unavailable-daemon residuals are reported as UNRESOLVED. See [hook lifecycle release notes](docs/release-0.7.0-rc.7.md).
+
+The previous bugfix prerelease updates the optional Docker session guard with bounded
 identity from the current validated native event and discoverable enrolled
 registry guidance. Shell template names are placeholders, not required environment
 variables. Native resume validates delivery bounds before state or claim writes;

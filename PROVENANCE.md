@@ -129,3 +129,12 @@ provenance sections describe their original source states. The current release
 manifest and checksums bind the exported files; independent external acceptance
 binds the exact source, release notes and distribution archive. Historical test
 limitations and native NOT_TESTED scope remain explicit in the release notes.
+
+## 0.7.0-rc.7 ephemeral lifecycle fix
+
+Owner-authorized first-party shell cleanup, cancellation propagation, descriptive
+resource names and synthetic stateful tests. No third-party code, private payload,
+project mapping or host credential is included. The portable helper is shipped
+through the existing explicit component installer; installed host policy overlays
+remain separate. The new metadata does not replace historical source identities
+or imply independent acceptance of unrelated capabilities.

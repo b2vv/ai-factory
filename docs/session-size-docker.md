@@ -155,3 +155,33 @@ of the exact historical migration proof, not the live language check. The separa
 JSON and Python-literal rules regardless of that setting. Missing baseline inputs
 are failures, not silent skips. Historical English provenance records bind their
 original exact migration bytes; the new functional delta is recorded separately.
+
+## Ephemeral container lifecycle (rc.7)
+
+Parser, worker and validator names identify the host and role, for example
+`ai-factory-codex-worker-Ab12Cd34`. The random suffix prevents concurrent name
+collisions. Names and labels contain no session identifiers, transcript paths or
+prompt content. Project aliases are not inferred from private paths. Docker IDs
+remain opaque immutable identifiers. The containers carry the `ai-factory`
+Compose project label, role/service labels, a static ephemeral-profile marker in
+`com.docker.compose.config-hash`, and `oneoff=False` for Docker Desktop stack
+presentation. The profile marker is not a Compose YAML digest; they remain
+short-lived direct Docker invocations, not persistent Compose-managed services.
+Do not use group-wide start, stop, down or prune operations on hook jobs.
+
+The shared cleanup helper verifies the invocation label and removes only the
+verified full container ID. It retries in-flight creation and removal failures
+inside the existing cleanup reserve. Each pass uses one invocation-filtered
+daemon list request, verifies exact names/ownership, and submits all matching IDs
+together. This avoids serial per-container inspection consuming the reserve.
+Native cancellation is forwarded to the parser, and transient parser projections
+are removed. The installed host policy/identity overlay is separate from this
+portable component and must be patched without replacing it with portable files.
+
+Private `cleanup-status.json` receipts record PENDING, REMOVED or UNRESOLVED with
+a safe invocation name. PENDING can remain if the host kills the process before
+completion. A daemon that remains unavailable or completes creation after the
+nine-second deadline can still leave a residual: no bounded client can guarantee
+otherwise. Preserve the receipt and inspect exact ownership before any separately
+authorized removal. There is no background sweeper or broad prefix-based deletion.
+Existing event evidence remains available; cleanup does not read transcripts.

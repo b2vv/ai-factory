@@ -237,11 +237,12 @@ class IdentityDelivery(unittest.TestCase):
         self.assertEqual(list(self.store.glob('session-*.json')), [])
 
     def test_serialized_resume_bound_rejects_before_claim(self):
-        self.root = self.base.joinpath(*['\U0001f600'*50 for _ in range(12)])
+        self.root = self.base.joinpath(*['\U0001f600'*50 for _ in range(3)])
         self.root.mkdir(parents=True)
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         self.args.root = str(self.root)
-        token = self.resume_fixture({f: '\U0001f600'*1000 for f in guard.FIELDS})
+        # Keep the path within macOS PATH_MAX; escaped summary bytes still exceed the wire bound.
+        token = self.resume_fixture({f: '\U0001f600'*1100 for f in guard.FIELDS})
         with patch.object(guard, 'snapshot', return_value={'root': str(self.root)}):
             with self.assertRaisesRegex(ValueError, 'native identity context exceeds delivery limit'):
                 self.invoke()
