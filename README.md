@@ -1,17 +1,17 @@
-# AI Factory — 0.7.0-rc.5
+# AI Factory — 0.7.0-rc.6
 
-This prerelease strengthens code-review and TDD coverage guidance: individual
-mutations of changed and deleted behavioral constructs, honest survivor
-classification, and plain CI-running tests when service-only coverage skips in CI.
-Evidenced real CI execution satisfies that specific gap; stronger local rules remain.
-Reviewers recommend refactors; authorized authors implement and resubmit the delta.
-Correlated test oracles are described as weak evidence rather than infallible matches.
+This bugfix prerelease updates the optional Docker session guard with bounded
+identity from the current validated native event and discoverable enrolled
+registry guidance. Shell template names are placeholders, not required environment
+variables. Native resume validates delivery bounds before state or claim writes;
+repeat delivery preserves no-op behavior. The portable registry profile remains
+separate from installed host policy overlays.
 
-The rc.4 four-viewport UI contract, separate text enlargement/reflow checks and
-optional inactive rc.3 Docker session-guard package remain unchanged. Package
-validation does not certify native skill/UI compliance or hook execution. Inherited
-session-guard timing fixtures did not complete reliably in the tested Docker
-harness; this release makes no new runtime acceptance claim.
+Changes since rc.5 also include current-tree English adaptation, offline discovery
+response checks and language/framework review references. Translated labels and
+triggers may require migration for external callers using older localized names.
+Existing UI/review guidance and consumer pins are not automatically activated.
+Native delivery and end-to-end checkpoint/resume remain NOT_TESTED for this profile.
 
 - **[All 73 original skills](skills/)** — one canonical editable tree; groups, references, scripts, assets and synced variants are preserved.
 - **[Full AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap and historical sources.
@@ -19,12 +19,10 @@ harness; this release makes no new runtime acceptance claim.
 
 Status: release candidate. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The final release package requires a separate hash-bound review before tagging/publication. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.
 
-## Unreleased native identity guidance
+## Native identity guidance in rc.6
 
-Current source updates the optional Docker session guard with event-bound native
-identity and registry-based manual checkpoint guidance. The release narratives
-above describe their historical rc.5 scope; this functional source delta is not a
-new tag or automatic consumer upgrade. See the [identity contract](docs/session-size-docker.md#current-native-identity-and-manual-checkpoint-guidance)
+This release includes event-bound native identity and registry-based manual
+checkpoint guidance. It does not automatically upgrade consumers. See the [identity contract](docs/session-size-docker.md#current-native-identity-and-manual-checkpoint-guidance)
 and [port provenance](provenance/native-identity-guidance.json). Installed host
 profiles and consumer pins are not changed by source publication.
 
@@ -33,9 +31,8 @@ profiles and consumer pins are not changed by source publication.
 These are selective, independently authored adaptations of ideas following a source audit of
 [ECC `90606c8315ee09cafc303515c5f33024db6b9882`](https://github.com/affaan-m/ECC/tree/90606c8315ee09cafc303515c5f33024db6b9882),
 not an ECC installation or an import of its skill/hook pack. The implementation below is included in
-Factory commit `17a9527421e8fac3e43a16c287c404118699833c`; it is an unreleased
-commit-pinned candidate, not a new publication of the rc.5 tag. This description is a separate docs-only
-delta; it does not move consumer pins or replace immutable caches.
+Factory commit `17a9527421e8fac3e43a16c287c404118699833c`; that source change is included in rc.6 without changing the immutable rc.5 tag.
+These capabilities do not move consumer pins or replace immutable caches.
 
 | Implemented capability | What the user gets | Evidence limits |
 |---|---|---|

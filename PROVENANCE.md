@@ -119,3 +119,13 @@ against its immutable completed snapshot; live source retains a separate raw and
 decoded language gate. Independent review and synthetic tests for this repository
 snapshot are separate from installed-profile review or user-reported native receipt.
 Publication grants no activation, consumer repin, new license or redistribution right.
+
+## 0.7.0-rc.6 bugfix prerelease
+
+This release packages the accepted portable native identity fix and intervening
+English/discovery/reference source changes since rc.5. It retains prerelease status;
+no stable promotion, installed host change or consumer upgrade is implied. Existing
+provenance sections describe their original source states. The current release
+manifest and checksums bind the exported files; independent external acceptance
+binds the exact source, release notes and distribution archive. Historical test
+limitations and native NOT_TESTED scope remain explicit in the release notes.

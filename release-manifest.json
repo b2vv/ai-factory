@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.7.0-rc.5",
+  "version": "0.7.0-rc.6",
   "status": "RELEASE_CANDIDATE_SCOPED_SCANNER_RUNTIME_ACCEPTED",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -102,12 +102,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "187d3faa35c3fc3d0004d361ffbb1c028bd1bf481481fb9ad552e9dd121bad20",
+      "sha256": "7c7a8061897de2cbad244a92d8227e563910592cfb1ed589e5f39fe5c8fd2dc9",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "ecf6374e7a4c97350bd8da26d7d755c257da7d9d0fa7eb4dd25bf5104d21cf99",
+      "sha256": "c9b6d70efefa78b08549744eb513aeb462448b96a339fc1e7a5f449746cfb2d2",
       "component": "core"
     },
     {
@@ -467,7 +467,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "7c441387fd35364a187cb69b0c16b0528137dda14789d2f2eb15e0c0529dd0c2",
+      "sha256": "6806125d4b0cdf91affd11299a74b4c6192dde5d8705c996ee86ff76c10f3959",
       "component": "core"
     },
     {

@@ -48,9 +48,10 @@
         "Authored cross-host offline discovery checker provenance; original hashes preserved",
         "Owner-authorized language references provenance/navigation; original identity and hashes preserved",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized native identity guidance provenance; historical source identity preserved."
+        "Owner-authorized native identity guidance provenance; historical source identity preserved.",
+        "0.7.0-rc.6 owner-authorized bugfix prerelease framing; historical source identity preserved."
       ],
-      "new_sha256": "187d3faa35c3fc3d0004d361ffbb1c028bd1bf481481fb9ad552e9dd121bad20"
+      "new_sha256": "7c7a8061897de2cbad244a92d8227e563910592cfb1ed589e5f39fe5c8fd2dc9"
     },
     {
       "old_path": "README.md",
