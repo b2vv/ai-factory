@@ -779,7 +779,7 @@
     },
     {
       "path": "runtime/storage/internal/config/config.go",
-      "sha256": "4c9b63e4f249e885fb34af0349f4e9ada2fabf952c730474e17e8f9c8bf95347",
+      "sha256": "becc85823576428435a60e08f16d606d3d5cf5c6c44eaac8965a78a161ff539e",
       "component": "storage"
     },
     {

@@ -75,7 +75,7 @@ func (c Config) Validate() error {
 // Admission is the result of a capacity check performed BEFORE accepting a record.
 type Admission struct {
 	Allowed bool
-	Warning bool   // at/над warn threshold but still admitting
+	Warning bool   // at/above warn threshold but still admitting
 	Reason  string // populated when not allowed
 }
 
