@@ -43,6 +43,7 @@ func run() error {
 	cfgPath := flag.String("config", "", "optional JSON config file (overlays D4 defaults)")
 	tokenPath := flag.String("operator-token", "", "path to the 0600 operator token file {id,secret} (required)")
 	doInit := flag.Bool("init", false, "explicit first-time operator initialization of -state, then exit (refuses to reset existing/partial/corrupt state)")
+	devAllowNonLoopback := flag.Bool("dev-allow-nonloopback", false, "DEV/TEST ONLY: permit a non-loopback -listen bind (e.g. 0.0.0.0 inside a container whose port is published ONLY to the host's 127.0.0.1). Normal startup stays loopback-only by default; this must be set EXPLICITLY. It changes nothing about authentication/authorization - operator and agent credentials are still required and checked.")
 	flag.Parse()
 
 	if *state == "" {
@@ -66,7 +67,13 @@ func run() error {
 	if *tokenPath == "" {
 		return errors.New("-operator-token is required")
 	}
-	if err := requireLoopback(*listen); err != nil {
+	// Default contract: loopback-only bind. A non-loopback bind is allowed ONLY when the
+	// operator explicitly opts in (dev/test container mode), and even then the intended
+	// deployment publishes the container port to the host's 127.0.0.1 only. This gate does
+	// not relax authentication; it only lets the process bind a container-internal 0.0.0.0.
+	if *devAllowNonLoopback {
+		fmt.Fprintf(os.Stderr, "factory: WARNING: -dev-allow-nonloopback is set; binding %q WITHOUT the loopback-only guard (dev/test container mode). Publish the port to host 127.0.0.1 only; never expose to LAN/internet.\n", *listen)
+	} else if err := requireLoopback(*listen); err != nil {
 		return err
 	}
 

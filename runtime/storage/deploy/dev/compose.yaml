@@ -1,0 +1,58 @@
+# Reproducible dev/test launch for the Factory storage control-registry/API TEST HARNESS.
+# NOT a supported distribution (owner decision D1). Databases are disabled; no capture.
+#
+# Isolation and exposure:
+#   - the container port is published to the HOST's 127.0.0.1 only (never 0.0.0.0/LAN);
+#   - a dedicated bridge network is created for this project (no other services);
+#   - the container runs with all capabilities dropped, no-new-privileges, read-only root
+#     filesystem, and a small tmpfs for /tmp; it has no access to the Docker socket and does
+#     not use host networking or privileged mode;
+#   - durable state lives in a named volume; the operator token is bind-mounted read-only
+#     from a host path you provide (never committed, never baked into the image).
+#
+# Requires Docker Engine >= 28.0.0 (earlier versions had a 127.0.0.1 port-publishing issue).
+# See README.md in this directory for init/start/stop/restart and verification steps.
+
+name: factory-storage-devtest
+
+services:
+  factory:
+    build:
+      context: ../..
+      dockerfile: deploy/dev/Dockerfile
+      platforms:
+        - linux/amd64
+    image: factory-storage-devtest:local
+    # Explicit dev/test command. -dev-allow-nonloopback is required ONLY because the process
+    # binds the container-internal 0.0.0.0; the published port stays host-loopback-only.
+    command:
+      - -state
+      - /state
+      - -operator-token
+      - /run/secrets/operator_token
+      - -listen
+      - 0.0.0.0:8777
+      - -dev-allow-nonloopback
+    ports:
+      # host 127.0.0.1 only -> container 8777. Override the host port with FACTORY_HOST_PORT.
+      - "127.0.0.1:${FACTORY_HOST_PORT:-8777}:8777"
+    volumes:
+      - state:/state
+      - "${FACTORY_OPERATOR_TOKEN:?set FACTORY_OPERATOR_TOKEN to the host path of a 0600 operator token file}:/run/secrets/operator_token:ro"
+    networks:
+      - devtest
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: "no"
+
+networks:
+  devtest:
+    driver: bridge
+
+volumes:
+  state:

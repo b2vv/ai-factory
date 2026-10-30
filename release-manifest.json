@@ -739,12 +739,27 @@
     },
     {
       "path": "runtime/storage/cmd/factory/main.go",
-      "sha256": "1530d69df73ef66b2a7dbfb726cdf07a2f48af0ca0969742cab01a26093d3053",
+      "sha256": "71beb8a17bd5e82c0443222762b7e989083fdbc124077677c5f43dde37f96994",
       "component": "storage"
     },
     {
       "path": "runtime/storage/cmd/factory/smoke_test.go",
       "sha256": "45317ea70d60fcd6ea8a98a0fd570a8877b95e0233bdef938206c452b33e315c",
+      "component": "storage"
+    },
+    {
+      "path": "runtime/storage/deploy/dev/Dockerfile",
+      "sha256": "6b86c35ed7172ae5d21a6a886743cf7cbf5a15692296a175f3ace7bd3df1ca69",
+      "component": "storage"
+    },
+    {
+      "path": "runtime/storage/deploy/dev/README.md",
+      "sha256": "0023394ccd5e994430878c3ce67f9c8e6e71db1372b6996412d9a3e5c0eceac0",
+      "component": "storage"
+    },
+    {
+      "path": "runtime/storage/deploy/dev/compose.yaml",
+      "sha256": "66d95e7d040c46d8e0f20cd15bb4c91c0e04b3207258b23c70237c715d3ecfdc",
       "component": "storage"
     },
     {
