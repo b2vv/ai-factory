@@ -15,6 +15,6 @@ Bind evidence to repository/root, base, HEAD, and the exact scoped dirty/untrack
 
 For interruption or a second sprint task, read the current primary record and establish that task's checkpoint before coding. Verify graph freshness if used; a stale graph can be replaced by direct file/caller inspection with that limitation recorded. Keep the existing reviewer route, local commit gate and final-delta review.
 
-Read [floor evidence](references/floor-evidence.md) when assessing a signal or preparing the evidence record. The shared offline validator checks record completeness and snapshot equality; it does not detect all weakening or prove the truth of supplied evidence. Use the project's real tests and independent review for those claims.
+Read [floor evidence](references/floor-evidence.md) when assessing a signal or preparing the evidence record, including its **Anti-patterns** section, and the shared [reference anti-patterns](../../ai-factory/reference-anti-patterns.md) (4-field template + cross-cutting rules). The floor moves only by an explicit, reviewed owner decision — never by relaxing a check to obtain PASS. The shared offline validator checks record completeness and snapshot equality; it does not detect all weakening or prove the truth of supplied evidence. Use the project's real tests and independent review for those claims.
 
 Adapted from Addy Osmani's agent-skills at the pinned source recorded in [provenance](references/provenance.md). [MIT license](LICENSE.addyosmani).

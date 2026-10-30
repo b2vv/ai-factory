@@ -12,13 +12,15 @@ The goal is the entire spec implemented on a single **integration branch**, with
 
 The tickets are not a list of steps. They are a **task graph** with blocking relationships between them. This means there is always a **frontier** of tickets which are ready to be grabbed.
 
+Here a "ticket" is a node in this tracker task graph — a different object from the `ai-factory/feature-lifecycle.md` single build task and from a wayfinder decision ticket. Same word, three objects; do not conflate them.
+
 Communication to and from subagents should be sparse. Communicate primarily through **context pointers**: to the spec, tickets, research notes, and previous commits. Don't duplicate information already available via pointers.
 
 **Implementer subagents** should be run in the background where possible for maximum concurrency.
 
 ## Steps
 
-1. Read the spec and tickets to understand the task graph.
+1. Read the spec and tickets to understand the task graph. For a FULL-scale feature (per `ai-factory/feature-lifecycle.md`), confirm the independent planning gate was passed (recorded on the issue) or that planning was delegated to `spec-flow` and linked. If a Full feature arrived `ready-for-agent` with neither, stop and route it through the gate first; do not build straight from spec+tickets. SMALL changes keep the short path.
 
 2. (optional) Use an **exploration subagent** to conduct any exploration required by the tickets - relevant codebase files or external documentation. Ensure the exploration subagent can save files - it should save its markdown notes in a directory outside the repo, accessible by all future subagents. This lets **implementer subagents** focus on implementation rather than exploration.
 

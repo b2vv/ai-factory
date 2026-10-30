@@ -75,3 +75,7 @@ Take changed screens/components, run the lenses against the base branch (before/
 **Lenses:** [`anti-slop-design`](../anti-slop-design/SKILL.md) (appearance) · [`ux-review`](../ux-review/SKILL.md)
 (usability). **Building counterpart:** [`design-pass`](../design-pass/SKILL.md). Project layer: the repository's local
 skill, if present (it overrides generic).
+
+## Reference anti-patterns
+
+This skill's domain anti-patterns are stated inline above (its merged visual + usability gate). During plan/implement/review also consult the shared [reference anti-patterns](../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (accessibility REQUIREMENT-vs-preference split; no invented exceptions).

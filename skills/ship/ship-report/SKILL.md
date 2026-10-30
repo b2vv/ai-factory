@@ -75,6 +75,8 @@ State whether it was performed manually or by an e2e run, and exactly how.
 What remains uncovered; where it may break; what was deliberately excluded from scope (with a reason). Debt created
 by this feature is named here, not left in someone's head.
 
+Read the review findings from the task record's review-handoff package (where `code-review` wrote them). Name any unresolved findings here. Per `ai-factory/review-handoff.md`, completion is blocked by unresolved BLOCKERS; non-blocking recommendations are recorded, not gating. Do not present the report as a completion verdict while a BLOCKER is unresolved.
+
 
 ## Completion
 
@@ -87,3 +89,5 @@ The skill is complete when **all** of the following hold:
 - [ ] Every §3 finding has an anchor.
 - [ ] The report lives in the artifacts home beside the plan; the Post-deploy section is left empty
       for the future `post-deploy-check`.
+- [ ] §6 accounts for the review-handoff findings; any unresolved BLOCKER is named and the report
+      does not claim completion over it.

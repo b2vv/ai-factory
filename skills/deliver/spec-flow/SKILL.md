@@ -39,6 +39,8 @@ Below the threshold the cycle does not activate: use a lightweight inline plan; 
 Sections: **Problem** · **User scenarios** · **Acceptance criteria** · **Out of scope** ·
 **Open questions**. Intent only — stack, files and architecture arrive at step 4.
 
+Account for the linked research findings (`cto-research` briefing, if present in the task record), relevant ADRs (respect their status), and existing-code reuse opportunities when writing the spec. The planning gate reading the research later does NOT replace this: the spec author reads it too.
+
 
 ## 3. GATE 1 — shared understanding
 

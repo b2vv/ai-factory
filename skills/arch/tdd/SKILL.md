@@ -47,3 +47,7 @@ When the shape of that interface is itself in question (how deep the module is, 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle. The reviewer recommends refactoring; the authorized author implements it, reruns relevant checks and submits the final delta for review. Review itself does not authorize writes.
+
+## Reference anti-patterns
+
+This skill's domain anti-patterns are stated inline above (its red→green discipline and evidence rules). During plan/implement/review also consult the shared [reference anti-patterns](../../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (accessibility REQUIREMENT-vs-preference split; no invented exceptions).

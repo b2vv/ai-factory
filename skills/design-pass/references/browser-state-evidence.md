@@ -17,3 +17,20 @@ Map acceptance → existing story/state or E2E scenario → runtime evidence wit
 ### Impact-based evidence matrix
 
 Map each affected acceptance criterion to the most appropriate existing level and actual evidence: unit/component tests for component logic, contracts and interactions; Storybook for isolated states and any interaction, visual or a11y checks already configured; E2E for integrated flow/result. Inspect existing scripts/configuration before assuming Storybook addons or tests exist. Do not duplicate identical assertions across levels. Explain omitted relevant levels; retain mandatory local gates even where coverage overlaps. Unit/component PASS does not prove the persisted entity view or entire flow. A story can exercise configured interactions and accessibility, but does not by itself establish cross-route persistence/integration.
+
+
+## Anti-patterns (4-field; shared template + cross-cutting rules in `ai-factory/reference-anti-patterns.md`)
+
+- **Screenshot without checking the expectation.** How-not-to: attaching a screenshot as evidence without
+  verifying the acceptance value in it. Consequence: a captured-but-wrong state reads as PASS. How-to: assert the
+  expected value against what the shot shows; a shot is evidence only for the checked expectation. Exceptions:
+  none. Verify: does the record state the expected value and that the shot matches it?
+- **Skipping a baseline viewport.** How-not-to: capturing only desktop and declaring responsive done. Consequence:
+  phone/tablet clipping ships. How-to: cover each baseline viewport in the viewport-coverage contract; text
+  enlargement/reflow is a separate axis. Exceptions: a documented desktop-only surface. Verify: is there evidence
+  per baseline viewport, or only one width?
+- **Motion without a reduced-motion fallback.** How-not-to: motion that ignores `prefers-reduced-motion` or
+  carries the only state cue. How-to: honor reduced-motion; pair motion with a non-motion cue. Exceptions
+  (honoring `prefers-reduced-motion` maps to WCAG 2.3.3, AAA — a REQUIREMENT when AAA is targeted or agreed,
+  best practice otherwise): expressive motion where reduced-motion is respected. Verify: with reduced-motion on,
+  is the UI fully usable and are states still conveyed?

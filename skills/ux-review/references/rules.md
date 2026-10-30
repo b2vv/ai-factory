@@ -147,3 +147,41 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 
 
 All URLs were confirmed by fetch as of 2026-10-14 (the dead `nngroup.com/articles/hicks-law/` was replaced with lawsofux + NN/g progressive-disclosure).
+
+
+## Anti-patterns (4-field; shared template + cross-cutting rules in `ai-factory/reference-anti-patterns.md`)
+
+Each rule below is How-not-to / How-to / Exceptions / Verify. Accessibility items are tagged **REQUIREMENT**
+(a WCAG success criterion in scope for the project's target level — A/AA, plus any AAA criterion the project
+targets or has agreed — no taste/brand/density exception) or **preference** (a stylistic choice that is not a
+success criterion), per the central doc's cross-cutting rule 1. An AAA criterion out of scope at an AA target is
+scoped-out, not a "preference"; name the applicable threshold rather than dismissing it.
+
+- **Navigation / IA (§6).** How-not-to: nav items that change order or location across pages (3.2.3). How-to:
+  keep repeated navigation in a consistent order and place. Exceptions [REQUIREMENT]: none at taste level.
+  Verify: diff the nav across pages — reordering is a violation, not a redesign choice.
+- **Forms + validation (§4, WCAG 3.3.x).** How-not-to: a color-only error with no text (3.3.1); losing entered
+  values on error. How-to: identify the erroneous field in text beside it; keep the form editable with values
+  intact. Exceptions [REQUIREMENT]: none for the text identification. Verify: with color removed, is the error
+  still conveyed? If not, violation.
+- **Loading / empty / error states (§7).** How-not-to: only a happy-state design; a blank screen on 0 items or a
+  dead end on failure. How-to: design empty (explain + next action), loading (progress), and error (cause +
+  recovery) states. Exceptions: a transient sub-second load may skip a spinner. Verify: force 0 items / a failed
+  request — is there a usable state, or a dead end?
+- **Dangerous actions.** How-not-to: an irreversible action (delete, overwrite) with no confirm or undo. How-to:
+  confirm with consequence named, or provide undo. Exceptions: trivially reversible actions need neither. Verify:
+  can the user recover after one wrong click? If not, it needs a guard.
+- **Responsiveness (§9).** How-not-to: fixed-width layout that clips or hides actions at phone/tablet widths.
+  How-to: verify each baseline viewport (viewport-coverage contract) and text-reflow separately. Exceptions:
+  a documented desktop-only tool. Verify: at each baseline viewport, is every primary action reachable?
+- **Animation.** How-not-to: motion that ignores `prefers-reduced-motion`; motion as the only state cue. How-to:
+  honor reduced-motion; pair motion with a non-motion cue. (Honoring `prefers-reduced-motion` maps to WCAG 2.3.3,
+  AAA — a REQUIREMENT when AAA is targeted or agreed, best practice otherwise; never make motion the only state
+  cue.) Exceptions: expressive motion where reduced-motion is respected. Verify: with reduced-motion on,
+  is the UI still fully usable and are states still conveyed?
+- **Information density (§10).** How-not-to: overloading one view so the primary task is lost. How-to: progressive
+  disclosure; prioritize the primary task. Exceptions: an expert dense view chosen by the role. Verify: can the
+  stated role+task be completed without hunting? Density is a defect only when it blocks the task.
+- **Accessibility baseline (§3).** How-not-to: `outline:none` with no replacement (2.4.7); unnamed controls
+  (name/role/value). How-to: visible focus; programmatic name/role/value. Exceptions [REQUIREMENT]: none at taste
+  level. Verify: keyboard-only, can you see focus and operate every control?

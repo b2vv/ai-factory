@@ -10,13 +10,17 @@ The issue tracker and triage label vocabulary should have been provided to you. 
 
 ## Process
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
+1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching. Account for any linked research briefing (`cto-research`) and existing-code reuse opportunities when writing the spec.
 
 2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+3. Write the spec using the template below, then publish it to the project issue tracker.
+
+   Route by scale per `ai-factory/feature-lifecycle.md` Small-vs-Full:
+   - **SMALL** tracker change: apply the `ready-for-agent` triage label — no need for additional triage. The short path is unchanged.
+   - **FULL**-scale tracker feature: before `ready-for-agent`, it must either carry the Observable acceptance section AND pass the independent planning gate (`plan-critique` + `plan-defense`) recorded on the issue, OR explicitly delegate planning to `spec-flow` and link that result on the issue. Stamping `ready-for-agent` on a Full feature without one of these bypasses the gate and is not allowed.
 
 <spec-template>
 
@@ -39,6 +43,10 @@ A LONG, numbered list of user stories. Each user story should be in the format o
 </user-story-example>
 
 This list of user stories should be extremely extensive and cover all aspects of the feature.
+
+## Observable acceptance
+
+Observable acceptance scenarios in the canonical `acceptance-spec` shape — a table of scenario · precondition · user action · expected observable result · how verified. This is the authoritative acceptance definition for the spec; the User Stories above and any later entity-e2e matrix are VIEWS of it, not rival definitions. Keep it observable (what a user/test can see), not implementation detail.
 
 ## Implementation Decisions
 

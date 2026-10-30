@@ -52,12 +52,12 @@
     },
     {
       "destination": "skills/constraint-driven-development/SKILL.md",
-      "sha256": "c0dc32d2a151d8d904740981ead40bea75ac5b65c39f186e164580da79ebe28a",
+      "sha256": "8fb425b2caf772b9a5a7749cbaec63eaa589915c50a0c6bd060c4eeecb8744e6",
       "kind": "selective authored adaptation with retained MIT notice"
     },
     {
       "destination": "skills/constraint-driven-development/references/floor-evidence.md",
-      "sha256": "32480d19682eec01ef2827af6308324c16490cd61d70932f81345233ed2af95d",
+      "sha256": "b0de55b755cf4621c4f6ac952fd002f26a590d22d0eb0894e816fb7351d57b98",
       "kind": "selective authored adaptation with retained MIT notice"
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "destination": "skills/design-pass/references/browser-state-evidence.md",
-      "sha256": "a57e6c8b2ccc2e3d326b351f4cdfe65fb3c388018515cc62bfa8a2e6b2eb388e",
+      "sha256": "151150283b28b41dd4e2db495d9c706dccc3fe61cce26d9b5aa6a2f53d4ad2a0",
       "kind": "selective authored adaptation with retained MIT notice"
     },
     {
@@ -82,7 +82,7 @@
     },
     {
       "destination": "skills/arch/code-review/references/behavior-coverage.md",
-      "sha256": "dd17e16ae44d14075dbe1569aeb7761a6f68b949eb839ee9f9dadba918970f50",
+      "sha256": "f27495ff02f70e3a2023c1a29295df62df786a48369933d7d8ed8fd68cebeb71",
       "kind": "Owner-authorized authored generic review coverage reference; distinct from upstream MIT adaptation; see PROVENANCE.md"
     },
     {
@@ -134,22 +134,27 @@
       "destination": "skills/arch/code-review/references/languages/typescript.md",
       "sha256": "4e33920edd290f84f3babf6c2f0431621e7859951880aab6cc920962230e4130",
       "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "ai-factory/reference-anti-patterns.md",
+      "sha256": "70d148987e4154ce8882949be1ae9a02154b25ca6184e65dd14bf705a81ea82f",
+      "kind": "Owner-authorized authored cross-skill reference anti-pattern rules (4-field template + a11y REQUIREMENT-vs-preference split); first-party, distinct from upstream MIT adaptation; see PROVENANCE.md"
     }
   ],
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "2c3ceff24f49ed858e96a542a4213fc237e7a2a567876588ed5cdcad9fcf532d",
+      "before_sha256": "dc496074caa850a633c6825bdb824a332b9778e755004ff160a82a88293b675f",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "d8e5eacc22ae5adae0ce4c3f6b71193b05cf50511faf1f99d64952827d2f59ac"
+      "after_sha256": "c98b0230bac7c940019a063ffa17b3edef4fb4de89304423f89ef4ac6b9ba490"
     },
     {
       "destination": "skills/plan/plan-critique/SKILL.md",
-      "before_sha256": "70dc52aca0e22f9205d4040289746eb1cecb0aa842e72886035ca9ce62c45f61",
+      "before_sha256": "581a781ca37d0439d8dc949df3151a80567d1e01b22893694bfed47835b1db7c",
       "append": "\n## Clean critic input\n\nGive the selected independent critic the exact artifact, accepted contract, scoped snapshot and raw supporting evidence. Keep the author's proposed verdict, persuasive summary and private reasoning out of the initial packet; preserve relevant factual constraints and raw prior findings. Classify findings as actionable, contract misunderstanding, accepted tradeoff or unsupported, with evidence for each disposition. This refines the existing four-lens/local reviewer route; it does not authorize duplicate reviewers, a different model, paid API fallback or an automatic review loop. Missing authorized execution remains BLOCKED.\n\nAdaptation source: [doubt-driven-development](https://github.com/addyosmani/agent-skills/blob/aeac41d4d005999432bb7312f7ff06383a91d59d/skills/doubt-driven-development/SKILL.md), MIT; [license](LICENSE.addyosmani).\n",
       "append_sha256": "7676726786e091c623a32c41ab4b0b5c8fbed16ebab3a3836513d70a5cd35ff0",
-      "after_sha256": "35f38da3afdf028de92d4132853a99828c2fffc149f51d59cd104f78d56a7451"
+      "after_sha256": "540477ce2db1ffbf630b2b52a639945cdea9088adae70b419f2e017269416d11"
     }
   ],
   "execution": "No upstream scripts, installers, hooks or fenced code executed."
