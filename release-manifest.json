@@ -512,7 +512,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "65615cafd6bfe197164e4e69b6cbcdc713265695f92e77a1497fe2685d5ccd9d",
+      "sha256": "256684f1b100a79f3930cf2be8fba074bb5633015add39e64f531b7bc82e1d68",
       "component": "core"
     },
     {
@@ -527,7 +527,7 @@
     },
     {
       "path": "rules/agent-entry.md",
-      "sha256": "7525a0b23b3d1797657c4c835a48cb71ced8f33d914c436be95f7136549c92cf",
+      "sha256": "1dbc5f3bc128de346e4dc7c61facf91c22865ff552da28b03d34710d056c7681",
       "component": "core"
     },
     {

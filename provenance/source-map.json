@@ -4313,14 +4313,15 @@
       "source": "~/.agents/AGENTS.md",
       "destination": "rules/agent-entry.md",
       "source_sha256": "b7dffab20ba9d6cc341173912fe192e4df217023a922299f338b3407b915b4fa",
-      "sha256": "7525a0b23b3d1797657c4c835a48cb71ced8f33d914c436be95f7136549c92cf",
+      "sha256": "1dbc5f3bc128de346e4dc7c61facf91c22865ff552da28b03d34710d056c7681",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
+        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
+        "Owner-authorized original addition: the 'Resume a prior task when the user asks to continue' rule authored in-repo as a before-skill session-recovery rule; not derived from the named source bytes, so source_sha256 is unchanged."
       ],
       "category": "canonical-instructions-and-guides",
       "previous_release_destination": "collection/agents/AGENTS.md"
