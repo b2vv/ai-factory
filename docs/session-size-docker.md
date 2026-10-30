@@ -6,6 +6,15 @@ are POSIX shell/basic utilities and Docker CLI/daemon. No Docker socket is mount
 inside helpers. It does not register hooks, enroll sessions, install Docker, grant
 Git trust or replace the [retained native profile](session-size.md).
 
+## Ordinary continuation is file-based, not this
+
+The default way to continue a task across `/clear` or a new session is the **file-based task
+record**: `/clear` then "continue", recovered from the active task record (see the
+session-continuation rule in [`rules/agent-entry.md`](../rules/agent-entry.md)). It needs no
+handoff ID, no Docker, and no CLI restart. This Docker guard is a **separate, explicitly opt-in**
+mechanism — it takes effect only if an operator deliberately registers the hooks below, and
+nothing installs or registers it by default.
+
 ## Supported boundary
 
 An operator creates a private mapping for an explicitly approved host/session,
