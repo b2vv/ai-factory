@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "version": "0.8.0-alpha.1+import-safety.1",
-  "status": "ALPHA_EXPERIMENTAL_UNTAGGED_IMPORT_SAFETY_PATCH",
+  "version": "0.8.0-alpha.1+codex-events.1",
+  "status": "ALPHA_EXPERIMENTAL_UNTAGGED_CODEX_EVENT_SUBSET",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
   "components": {
@@ -114,7 +114,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "8c48bd5f02ae4e4fda7d176a9c50c43569d15cc40d1170dda81c615f677bbc6e",
+      "sha256": "c67f6c8e89aacba64242d6b4821e327b4a69f47b21ef53e41b48b11eb3e210c8",
       "component": "core"
     },
     {
@@ -945,7 +945,7 @@
     {
       "path": "runtime/storage/deploy/oci/manifest.json",
       "component": "storage",
-      "sha256": "7c04ef4e1900f876d5d42bcb41eb059e00fc5dcbc2cce13632b441af528dff27"
+      "sha256": "759e21b3e12671044b088c5400635efe3a023efcbcec0ad1eae024ea256598d2"
     },
     {
       "path": "runtime/storage/deploy/test/compose.yaml",
@@ -980,7 +980,7 @@
     {
       "path": "runtime/storage/internal/api/api.go",
       "component": "storage",
-      "sha256": "39ec31d54217561d446e8286f7b634109107db33b6e7e2b799e61d049ab9899b"
+      "sha256": "86cb8549b92bba2fdb758f52264decb7f96798468a011cd9ace25c6f8b8e4d5f"
     },
     {
       "path": "runtime/storage/internal/api/api_test.go",
@@ -1006,6 +1006,16 @@
       "path": "runtime/storage/internal/api/capacity_integration_test.go",
       "component": "storage",
       "sha256": "e6808e157714e205add8b628f6dedc8feba1c7836acc5e85cd47be661af9691b"
+    },
+    {
+      "path": "runtime/storage/internal/api/codex_capture.go",
+      "component": "storage",
+      "sha256": "1e08388a9b1352dc87558100f086dd7e878e5e90ea89be07bd322857f405ee4c"
+    },
+    {
+      "path": "runtime/storage/internal/api/codex_event_integration_test.go",
+      "component": "storage",
+      "sha256": "1ecc81cfae2fc64c374678ee61ed647a32dc906ca3a27912379f11e0c6792b38"
     },
     {
       "path": "runtime/storage/internal/api/codex_v2_regression_test.go",
@@ -1253,9 +1263,14 @@
       "sha256": "0422cfaed9c89be13da5cd3f44f511a5c793ef27c76395b860b2bcab8540759e"
     },
     {
+      "path": "runtime/storage/internal/capture/CODEX-EVENTS.md",
+      "component": "storage",
+      "sha256": "e267453c3d65df43d07efb8c0f1304f753f43a48f2c1466d72108ade08fbbc89"
+    },
+    {
       "path": "runtime/storage/internal/capture/PROVIDER-ADAPTER-JUSTIFICATION.md",
       "component": "storage",
-      "sha256": "f145f89bc874c849a668e0b811b06dab4594c540252ab1b0d2fcb956dc7e3963"
+      "sha256": "ba81242be95651f8b687fb621f81251faf499fe9fe73771cd73b6f0a94553b62"
     },
     {
       "path": "runtime/storage/internal/capture/capture.go",
@@ -1271,6 +1286,16 @@
       "path": "runtime/storage/internal/capture/claudecode.go",
       "component": "storage",
       "sha256": "b59fe4e551a05a755ceab6c7c9eda3ae5fb9eabcb608854e0a2a0601ff9c7745"
+    },
+    {
+      "path": "runtime/storage/internal/capture/codex_event.go",
+      "component": "storage",
+      "sha256": "61c83a8b4811e6a8b1d1cc66470c156a32576e02b7a80564323b4579ac1b92b3"
+    },
+    {
+      "path": "runtime/storage/internal/capture/codex_event_test.go",
+      "component": "storage",
+      "sha256": "fb947fdd49eb52fac66de30ec93fb280b122475bb0f7aaaa54e3143e7df5a0a2"
     },
     {
       "path": "runtime/storage/internal/capture/sanitize.go",
@@ -1460,7 +1485,7 @@
     {
       "path": "runtime/storage/internal/ingest/redaction_test.go",
       "component": "storage",
-      "sha256": "3240c43d3b44f45224a325a029f1cd7260a5f1dfccbb65e64fd405d78aca5b0c"
+      "sha256": "90acaedcf0fa8aad648172f9137c609f2da5eb97b2b65ebc24533e1b98115ece"
     },
     {
       "path": "runtime/storage/internal/ingest/review_regression_test.go",
@@ -3399,6 +3424,6 @@
     "automatic_reclaim": "NOT_IMPLEMENTED_BLOCKED",
     "backups": "EXCLUDED_DESTRUCTIVE_DEPENDENT_CLI_DISABLED",
     "activation": "DEFAULT_OFF",
-    "patch": "Owner-authorized 2026-10-31 known-credential pre-WAL withholding and strict unsupported-format refusal; no new tag, no runtime activation; review remains BLOCKED."
+    "patch": "Documented Codex event subset and synthetic real-DB decision-search/reopen proof; automatic recording OFF, real conversation input/runtime pending."
   }
 }

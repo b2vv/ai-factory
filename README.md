@@ -6,7 +6,8 @@ automatic WAL reclaim is **NOT_IMPLEMENTED/BLOCKED**. At a full WAL, intake fail
 closed. Backups are excluded and backup-dependent destructive operator commands
 are disabled. This tag does not activate databases, real capture, hooks or projects.
 See [alpha scope and limitations](docs/release-0.8.0-alpha.1.md).
-The untagged follow-up adds conservative known-credential withholding before WAL
+The untagged follow-ups add an explicit [Codex lifecycle-event intake](runtime/storage/internal/capture/CODEX-EVENTS.md)
+(automatic recording OFF; real conversation validation pending), plus conservative known-credential withholding before WAL
 and refuses unsupported Claude shapes. It does not guarantee detection of all
 secrets or implement a native Codex adapter. See the
 [adapter contract](runtime/storage/internal/capture/PROVIDER-ADAPTER-JUSTIFICATION.md).

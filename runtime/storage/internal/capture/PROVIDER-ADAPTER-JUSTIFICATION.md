@@ -40,10 +40,11 @@ LIMITATIONS (honest):
   new identities merely to bypass conflicts, overwrite old data, or silently claim
   a complete archive. Original source files are never rewritten by these adapters.
 
-## Second provider (e.g. a non-Claude assistant) — NOT_IMPLEMENTED
+## Native Codex transcript / Markdown adapter — NOT_IMPLEMENTED
 
-No adapter exists. This is NOT merely NOT_TESTED: there is no parser code for any other
-provider's native format. Implementing one requires a verified public-interface shape and
+No native transcript/Markdown adapter exists. A narrow documented lifecycle-event
+subset is supported separately in [CODEX-EVENTS.md](CODEX-EVENTS.md); its transport
+does not imply native automatic recording or complete conversation fidelity. Implementing one requires a verified public-interface shape and
 synthetic fixtures for that format, plus its own justification entry here.
 
 ## Real-data capture — NOT ENABLED

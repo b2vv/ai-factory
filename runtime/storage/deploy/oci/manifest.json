@@ -5,9 +5,9 @@
   "platform_note": "Other architectures are NOT_TESTED. The verification run below was produced under linux/amd64 emulation on an arm64 host (functional check only).",
   "dockerfile": "deploy/oci/Dockerfile.runtime",
   "source_binding": {
-    "base_commit": "686184a3199cfd730508beac453239e0b7ac2b53",
+    "base_commit": "2060a6cd3557018ce85e95652d7b3a8c7a028684",
     "base_ref": "origin/main",
-    "candidate_state": "Owner-authorized untagged import-safety patch after v0.8.0-alpha.1. The alpha.1 tag remains immutable; use the exact patch commit and rebuilt binary. No activation.",
+    "candidate_state": "Owner-authorized untagged documented Codex event subset. Automatic recording OFF, native Markdown import absent, actual real conversation proof pending. Rebuild from exact source commit; alpha.1 tag unchanged.",
     "module": "aifactory.local/storage",
     "go_directive": "go 1.23",
     "go_mod_sha256": "35e98e4e5597ca96b69d7770e8d70d4a7dda5323b73215344e2b74f36585d492",

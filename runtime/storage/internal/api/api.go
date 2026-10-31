@@ -170,6 +170,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("/v1/whoami", s.handleWhoami)
 	mux.HandleFunc("/v1/capture", s.handleCapture)
 	mux.HandleFunc("/v1/capture/claude-code", s.handleCaptureClaudeCode)
+	mux.HandleFunc("/v1/capture/codex-event", s.handleCaptureCodexEvent)
 	mux.HandleFunc("/v1/archive/query", s.handleArchiveQuery)
 	mux.HandleFunc("/v1/search/query", s.handleSearchQuery)
 	mux.HandleFunc("/v1/documents/query", s.handleDocumentQuery)

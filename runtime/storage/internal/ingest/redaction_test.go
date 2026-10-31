@@ -35,6 +35,11 @@ func TestRedactionBeforeWAL(t *testing.T) {
 		t.Fatal(err)
 	}
 	recs = append(recs, cc...)
+	ce, _, err := capture.AdaptCodexEvent([]byte(`{"hook_event_name":"Stop","session_id":"codex_sample","turn_id":"turn_sample","last_assistant_message":"password=embedded-codex-canary","transcript_path":"/not-opened"}`), "p", "inst-1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	recs = append(recs, ce...)
 	dir := filepath.Join(t.TempDir(), "wal")
 	store := archive.NewMemStore()
 	ing, err := Open(dir, config.NewAccountant(config.Default()), store)
@@ -52,7 +57,7 @@ func TestRedactionBeforeWAL(t *testing.T) {
 	}
 	ing.Close()
 
-	forbidden := [][]byte{[]byte(cot), []byte(key), []byte("embedded-credential-canary"), []byte("embedded-claude-canary")}
+	forbidden := [][]byte{[]byte(cot), []byte(key), []byte("embedded-credential-canary"), []byte("embedded-claude-canary"), []byte("embedded-codex-canary")}
 
 	// 1) Raw WAL files on disk must not contain the prohibited values.
 	entries, _ := os.ReadDir(dir)
