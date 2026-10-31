@@ -9,8 +9,8 @@ import "aifactory.local/storage/internal/config"
 type Mode string
 
 const (
-	ModeFileOnly Mode = "file-only"    // no DB, no capture
-	ModeMongo    Mode = "mongo-only"   // archive + archive query, no PG
+	ModeFileOnly Mode = "file-only"  // no DB, no capture
+	ModeMongo    Mode = "mongo-only" // archive + archive query, no PG
 	ModePostgres Mode = "postgres-only"
 	ModeBoth     Mode = "both"
 )

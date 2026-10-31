@@ -16,6 +16,10 @@ type overlay struct {
 	LiveCapBytes    *int64   `json:"live_cap_bytes"`
 	WarnFraction    *float64 `json:"warn_fraction"`
 	FreeHeadroom    *int64   `json:"free_headroom"`
+	MongoURI        *string  `json:"mongo_uri"`
+	MongoDB         *string  `json:"mongo_db"`
+	MongoCollection *string  `json:"mongo_collection"`
+	PostgresDSN     *string  `json:"postgres_dsn"`
 }
 
 // Load builds the effective configuration: start from the owner-approved D4 defaults
@@ -67,6 +71,18 @@ func applyOverlay(c *Config, o overlay) {
 	if o.FreeHeadroom != nil {
 		c.FreeHeadroom = *o.FreeHeadroom
 	}
+	if o.MongoURI != nil {
+		c.MongoURI = *o.MongoURI
+	}
+	if o.MongoDB != nil {
+		c.MongoDB = *o.MongoDB
+	}
+	if o.MongoCollection != nil {
+		c.MongoCollection = *o.MongoCollection
+	}
+	if o.PostgresDSN != nil {
+		c.PostgresDSN = *o.PostgresDSN
+	}
 }
 
 func applyEnv(c *Config, getenv func(string) string) {
@@ -81,6 +97,18 @@ func applyEnv(c *Config, getenv func(string) string) {
 	}
 	if v, ok := envBool(getenv("STORAGE_CAPTURE_ENABLED")); ok {
 		c.CaptureEnabled = v
+	}
+	if v := getenv("STORAGE_MONGO_URI"); v != "" {
+		c.MongoURI = v
+	}
+	if v := getenv("STORAGE_MONGO_DB"); v != "" {
+		c.MongoDB = v
+	}
+	if v := getenv("STORAGE_MONGO_COLLECTION"); v != "" {
+		c.MongoCollection = v
+	}
+	if v := getenv("STORAGE_POSTGRES_DSN"); v != "" {
+		c.PostgresDSN = v
 	}
 }
 

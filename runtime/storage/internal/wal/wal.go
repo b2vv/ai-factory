@@ -36,6 +36,7 @@
 package wal
 
 import (
+	"crypto/sha256"
 	"encoding/binary"
 	"errors"
 	"fmt"
@@ -43,6 +44,12 @@ import (
 	"os"
 	"path/filepath"
 )
+
+// ErrKeyConflict is returned by Accept when the SAME idempotency key is replayed with a
+// DIFFERENT payload. A repeated key with identical content is a benign duplicate (F7); a
+// repeated key with different content is a CONFLICT and must never be silently dropped or
+// treated as a successful replay (it would hide an edit/withdrawal or an identity collision).
+var ErrKeyConflict = errors.New("wal: idempotency key replayed with a different payload (conflict, not a benign duplicate)")
 
 const (
 	frameMagic  = 'F'
@@ -84,8 +91,9 @@ type WAL struct {
 	accepts    *os.File
 	seq        uint64
 	chainCRC   uint32
-	dedup      map[string]uint64 // EXACT key -> seq; rebuilt from authoritative records on Open
-	appendable bool              // false until a clean/applied recovery; blocks appends after ambiguity
+	dedup      map[string]uint64   // EXACT key -> seq; rebuilt from authoritative records on Open
+	dedupHash  map[string][32]byte // EXACT key -> sha256(payload); detects same-key/different-payload CONFLICT
+	appendable bool                // false until a clean/applied recovery; blocks appends after ambiguity
 }
 
 // Open creates/opens a WAL in dir and restores authoritative state (sequence, accept
@@ -95,6 +103,11 @@ type WAL struct {
 func Open(dir string) (*WAL, error) {
 	if err := os.MkdirAll(dir, 0o700); err != nil {
 		return nil, err
+	}
+	// Converge any interrupted compaction flip to a single generation BEFORE opening journal
+	// descriptors, so RecoverPlan never sees a half-installed mixture of old and new files.
+	if err := resumeCompaction(dir); err != nil {
+		return nil, fmt.Errorf("wal: resume of interrupted compaction failed: %w", err)
 	}
 	d, err := os.OpenFile(filepath.Join(dir, "data"), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o600)
 	if err != nil {
@@ -111,7 +124,7 @@ func Open(dir string) (*WAL, error) {
 		in.Close()
 		return nil, err
 	}
-	w := &WAL{dir: dir, data: d, intents: in, accepts: a, dedup: map[string]uint64{}}
+	w := &WAL{dir: dir, data: d, intents: in, accepts: a, dedup: map[string]uint64{}, dedupHash: map[string][32]byte{}}
 
 	// C: a newly CREATED file's directory entry is not durable until the directory itself
 	// is fsync'd; a crash after creating "data"/"intents"/"accepts" but before the parent
@@ -141,12 +154,42 @@ func Open(dir string) (*WAL, error) {
 	for k, s := range rep.dedup {
 		w.dedup[k] = s
 	}
+	for k, h := range rep.keyHash {
+		w.dedupHash[k] = h
+	}
 	// Fold in the durable exact-key dedup index, reconciled against the authoritative
 	// journal (survives compaction; never manufactures acceptance the journal denies).
 	foldCommitted(dir, w.dedup, rep.seqKeys)
 	// Appendable only when recovery is clean (no blocked regions, no pending truncation).
 	w.appendable = !rep.IsBlocked() && rep.TruncateAt < 0
 	return w, nil
+}
+
+// Has reports whether key is already accepted in this WAL (a repeat will be a duplicate or a
+// conflict, writing no new bytes). Admission uses it so a benign replay is not charged against
+// the physical WAL cap.
+func (w *WAL) Has(key string) bool {
+	_, ok := w.dedup[key]
+	return ok
+}
+
+// Bytes returns the current total durable size of the journal files (data+intents+accepts+
+// committed.idx), used to seed and cross-check the in-memory WAL-capacity counter.
+func (w *WAL) Bytes() (int64, error) { return journalBytes(w.dir) }
+
+func journalBytes(dir string) (int64, error) {
+	var total int64
+	for _, name := range journalFiles {
+		fi, err := os.Stat(filepath.Join(dir, name))
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return 0, err
+		}
+		total += fi.Size()
+	}
+	return total, nil
 }
 
 func (w *WAL) Close() error {
@@ -189,7 +232,15 @@ func (w *WAL) Accept(key string, payload []byte) (Receipt, error) {
 	// Exact-key dedup. The dedup map is rebuilt from authoritative records on Open and
 	// from the durable exact-key index, so a replayed delivery is recognized across
 	// restarts and (eventually) across compaction — without 32-bit hash collisions.
+	// A repeated key is a benign duplicate ONLY if the payload is byte-identical (sha256
+	// compared); the SAME key with a DIFFERENT payload is a CONFLICT (ErrKeyConflict), never
+	// silently acknowledged as a duplicate (that would hide an edit/withdrawal or an identity
+	// collision and the new payload would never reach the archive).
 	if seq, ok := w.dedup[key]; ok {
+		h := sha256.Sum256(payload)
+		if stored, had := w.dedupHash[key]; had && stored != h {
+			return Receipt{Seq: seq, Key: key}, ErrKeyConflict
+		}
 		return Receipt{Seq: seq, Key: key, Duplicate: true}, nil
 	}
 
@@ -241,6 +292,7 @@ func (w *WAL) Accept(key string, payload []byte) (Receipt, error) {
 	w.seq = seq
 	w.chainCRC = acceptChain(w.chainCRC, seq, uint64(off), frameCRC, keyHash)
 	w.dedup[key] = seq
+	w.dedupHash[key] = sha256.Sum256(payload)
 
 	// 4) Persist the exact key to the compaction-surviving dedup index. A failure here
 	//    does NOT un-accept the record (frame+accept are durable and will replay/rebuild
@@ -249,6 +301,33 @@ func (w *WAL) Accept(key string, payload []byte) (Receipt, error) {
 		return Receipt{Seq: seq, Key: key}, fmt.Errorf("wal: record accepted (seq %d) but dedup index persist failed: %w", seq, err)
 	}
 	return Receipt{Seq: seq, Key: key}, nil
+}
+
+// payloadOf extracts the payload bytes from a complete frame span (already CRC-validated by
+// parseFrameSpan). It returns false if the span is too short or its declared lengths overrun.
+func payloadOf(b []byte) ([]byte, bool) {
+	if len(b) < 1+8+4+4+4 {
+		return nil, false
+	}
+	keyLen := int(binary.BigEndian.Uint32(b[9:13]))
+	payLen := int(binary.BigEndian.Uint32(b[13:17]))
+	start := 17 + keyLen
+	end := start + payLen
+	if keyLen < 0 || payLen < 0 || end+4 > len(b) || start < 17 {
+		return nil, false
+	}
+	return b[start:end], true
+}
+
+// RecordCost returns the TOTAL durable bytes one accepted record adds to the WAL: the data
+// frame + the fixed reservation (intent) + the fixed accept marker + the compaction-surviving
+// dedup-index record. Admission must reserve THIS, not just the payload length, so the
+// physical WAL cap is never exceeded (a duplicate key writes nothing and costs 0).
+func RecordCost(key string, payload []byte) int64 {
+	k := len(key)
+	frame := 1 + 8 + 4 + 4 + k + len(payload) + 4 // magic|seq|keylen|paylen|key|payload|crc
+	idx := 4 + 8 + k + 4                          // keylen|seq|key|crc (committed.idx record)
+	return int64(frame + intentSize + acceptSize + idx)
 }
 
 func intentBytes(seq, frameOff, frameLen uint64, frameCRC uint32) []byte {
@@ -396,8 +475,9 @@ type Report struct {
 	seq            uint64
 	chain          uint32
 	dedup          map[string]uint64
-	seqKeys        map[uint64]string // validated journal sequence -> exact key, used to reconcile the dedup index
-	truncIntentsAt int64             // intents byte offset to truncate to when a tail frame is dropped; -1 if none
+	keyHash        map[string][32]byte // validated exact key -> sha256(payload), for conflict detection on replay
+	seqKeys        map[uint64]string   // validated journal sequence -> exact key, used to reconcile the dedup index
+	truncIntentsAt int64               // intents byte offset to truncate to when a tail frame is dropped; -1 if none
 }
 
 func (r Report) IsBlocked() bool { return len(r.BlockedDx) > 0 }
@@ -438,7 +518,7 @@ func RecoverPlan(dir string) (Report, error) {
 		return Report{}, err
 	}
 
-	rep := Report{TruncateAt: -1, dedup: map[string]uint64{}, seqKeys: map[uint64]string{}, truncIntentsAt: -1}
+	rep := Report{TruncateAt: -1, dedup: map[string]uint64{}, keyHash: map[string][32]byte{}, seqKeys: map[uint64]string{}, truncIntentsAt: -1}
 
 	// Parse reservations in order, validating each record's integrity CRC and requiring
 	// strictly increasing sequence and non-overlapping, ordered data spans. A corrupt,
@@ -556,6 +636,9 @@ func RecoverPlan(dir string) (Report, error) {
 			validated[r.off] = true
 			rep.dedup[fr.key] = fr.seq
 			rep.seqKeys[fr.seq] = fr.key
+			if pay, ok := payloadOf(data[r.off:spanEnd]); ok {
+				rep.keyHash[fr.key] = sha256.Sum256(pay)
+			}
 			if fr.seq > rep.seq {
 				rep.seq = fr.seq
 			}
@@ -630,6 +713,10 @@ func (w *WAL) Apply(rep Report) (string, error) {
 	w.dedup = map[string]uint64{}
 	for k, s := range rep.dedup {
 		w.dedup[k] = s
+	}
+	w.dedupHash = map[string][32]byte{}
+	for k, h := range rep.keyHash {
+		w.dedupHash[k] = h
 	}
 	foldCommitted(w.dir, w.dedup, rep.seqKeys)
 	w.appendable = true

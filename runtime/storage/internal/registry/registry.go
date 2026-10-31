@@ -12,7 +12,9 @@ package registry
 import (
 	"errors"
 	"fmt"
+	"math"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -89,10 +91,16 @@ type Location struct {
 
 // Consent is epoch-versioned (R3). Every captured record is stamped with the epoch
 // under which it was collected; a revocation bumps the epoch and sets Enabled=false.
+//
+// RevokedThrough is the highest epoch at which consent was EVER revoked for this key. It is
+// monotonic and is NOT cleared by a later re-grant, so content collected under a
+// since-revoked consent stays permanently withheld even after consent is granted again
+// (re-granting authorizes NEW collection only; it never resurrects revoked data - P7/P13).
 type Consent struct {
-	Enabled   bool
-	Epoch     int64
-	UpdatedAt time.Time
+	Enabled        bool
+	Epoch          int64
+	RevokedThrough int64
+	UpdatedAt      time.Time
 }
 
 type consentKey struct {
@@ -102,13 +110,14 @@ type consentKey struct {
 // Grant binds a principal to allowed projects and operations, epoch-versioned so a
 // stale (revoked / superseded) grant is rejected.
 type Grant struct {
-	PrincipalID string
-	Kind        PrincipalKind
-	Projects    map[string]bool
-	Ops         map[Op]bool
-	Epoch       int64
-	Revoked     bool
-	Secret      string // opaque token secret; delivered by 0600-file reference, never logged
+	PrincipalID    string
+	Kind           PrincipalKind
+	Projects       map[string]bool
+	Ops            map[Op]bool
+	Epoch          int64
+	Revoked        bool
+	WorkflowDenied map[string]bool // project-scoped workflow revocation; other projects remain valid
+	Secret         string          // opaque token secret; delivered by 0600-file reference, never logged
 }
 
 type workflowAuthority struct {
@@ -133,6 +142,7 @@ var (
 // yet; do not treat this as a durable service or a worker replay-admission authority
 // until that boundary exists. Mutations are operator-only and serialized.
 type Registry struct {
+	blocked   atomic.Bool
 	mu        sync.Mutex
 	projects  map[string]Project
 	locations map[string][]Location // keyed by project UUID
@@ -256,6 +266,10 @@ func (r *Registry) SetConsent(actor Principal, project, provider, capability str
 	c := r.consent[k]
 	c.Epoch++
 	c.Enabled = enabled
+	if !enabled && c.Epoch > c.RevokedThrough {
+		// Record the revocation cutoff permanently; a later re-grant never clears it.
+		c.RevokedThrough = c.Epoch
+	}
 	c.UpdatedAt = r.now()
 	r.consent[k] = c
 	return c.Epoch, nil
@@ -263,8 +277,14 @@ func (r *Registry) SetConsent(actor Principal, project, provider, capability str
 
 // ConsentEpoch returns the current consent record (default: disabled, epoch 0).
 func (r *Registry) ConsentEpoch(project, provider, capability string) Consent {
+	if r.blocked.Load() {
+		return Consent{RevokedThrough: math.MaxInt64}
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.blocked.Load() {
+		return Consent{RevokedThrough: math.MaxInt64}
+	}
 	return r.consent[consentKey{project, provider, capability}]
 }
 
@@ -279,6 +299,11 @@ func copyGrant(g Grant) Grant {
 	for k, v := range g.Ops {
 		ops[k] = v
 	}
+	denied := make(map[string]bool, len(g.WorkflowDenied))
+	for k, v := range g.WorkflowDenied {
+		denied[k] = v
+	}
+	g.WorkflowDenied = denied
 	g.Projects = projects
 	g.Ops = ops
 	return g
@@ -346,8 +371,14 @@ func (r *Registry) RevokeGrant(actor Principal, principalID string) error {
 // Lookup returns a DEEP COPY of a grant and whether it exists. Mutating the returned
 // Projects/Ops maps can never change stored authorization.
 func (r *Registry) Lookup(principalID string) (Grant, bool) {
+	if r.blocked.Load() {
+		return Grant{}, false
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.blocked.Load() {
+		return Grant{}, false
+	}
 	g, ok := r.grants[principalID]
 	if !ok {
 		return Grant{}, false
@@ -358,16 +389,28 @@ func (r *Registry) Lookup(principalID string) (Grant, bool) {
 // HasProject reports whether a project UUID is known to the registry. Used by callers
 // (e.g. the retention/restore gate) that must fail closed on unknown authority.
 func (r *Registry) HasProject(uuid string) bool {
+	if r.blocked.Load() {
+		return false
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.blocked.Load() {
+		return false
+	}
 	_, ok := r.projects[uuid]
 	return ok
 }
 
 // WorkflowAuthority returns the current owner and authority epoch for a project.
 func (r *Registry) WorkflowAuthority(project string) (WorkflowOwner, int64, bool) {
+	if r.blocked.Load() {
+		return "", 0, false
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.blocked.Load() {
+		return "", 0, false
+	}
 	a, ok := r.authority[project]
 	return a.Owner, a.Epoch, ok
 }
@@ -382,8 +425,14 @@ func (r *Registry) WorkflowAuthority(project string) (WorkflowOwner, int64, bool
 // commit MUST NOT call back into this Registry (the mutation lock is held and is not
 // reentrant).
 func (r *Registry) FenceWorkflowCommit(project string, writerEpoch int64, commit func() error) error {
+	if r.blocked.Load() {
+		return ErrWorkflowFenced
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.blocked.Load() {
+		return ErrWorkflowFenced
+	}
 	a, ok := r.authority[project]
 	if !ok {
 		return ErrUnknownProj
@@ -415,11 +464,22 @@ func (r *Registry) FlipWorkflowAuthority(actor Principal, project string, to Wor
 
 // Projects lists known project UUIDs (read-only, any caller).
 func (r *Registry) Projects() []string {
+	if r.blocked.Load() {
+		return nil
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.blocked.Load() {
+		return nil
+	}
 	out := make([]string, 0, len(r.projects))
 	for u := range r.projects {
 		out = append(out, u)
 	}
 	return out
 }
+
+// Block permanently invalidates authority readers until a fresh registry is
+// reconstructed from durable state. Atomic storage avoids lock inversion when a
+// persistence failure occurs inside the workflow authority fence.
+func (r *Registry) Block() { r.blocked.Store(true) }

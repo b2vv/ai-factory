@@ -43,6 +43,9 @@ func Authorize(reg *registry.Registry, tok Token, project string, op registry.Op
 	if g.Secret != tok.Secret {
 		return ErrBadSecret
 	}
+	if (op == registry.OpWorkflowRead || op == registry.OpWorkflowWrite) && g.WorkflowDenied[project] {
+		return ErrOpDenied
+	}
 	if !g.Ops[op] {
 		return ErrOpDenied
 	}
@@ -64,6 +67,9 @@ func AuthorizeCrossProject(reg *registry.Registry, tok Token, op registry.Op) er
 	}
 	if g.Secret != tok.Secret {
 		return ErrBadSecret
+	}
+	if (op == registry.OpWorkflowRead || op == registry.OpWorkflowWrite) && len(g.WorkflowDenied) > 0 {
+		return ErrCrossProject
 	}
 	if g.Kind != registry.Operator || !g.Ops[registry.OpCrossProject] || !g.Ops[op] {
 		return ErrCrossProject

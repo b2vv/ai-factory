@@ -8,6 +8,7 @@
 package retention
 
 import (
+	"sync"
 	"time"
 
 	"aifactory.local/storage/internal/archive"
@@ -33,9 +34,11 @@ type Barrier struct {
 }
 
 // Manager holds the retained barrier log and references the registry for the
-// latest consent epochs.
+// latest consent epochs. The barrier log is guarded by mu because HTTP handlers (and the
+// background drain worker's publish gate) read it concurrently with operator installs (R7).
 type Manager struct {
 	reg      *registry.Registry
+	mu       sync.RWMutex
 	barriers []Barrier
 	now      func() time.Time
 }
@@ -50,26 +53,38 @@ func (m *Manager) SetClock(f func() time.Time) { m.now = f }
 // at the API/registry layer; here the barrier is appended to the retained log.
 func (m *Manager) DeleteProject(project string, epoch int64) Barrier {
 	b := Barrier{Project: project, Scope: ScopeProject, Epoch: epoch, CreatedAt: m.now()}
+	m.mu.Lock()
 	m.barriers = append(m.barriers, b)
+	m.mu.Unlock()
 	return b
 }
 
 // DeleteSession records a session-scope deletion barrier.
 func (m *Manager) DeleteSession(project, session string, epoch int64) Barrier {
 	b := Barrier{Project: project, Scope: ScopeSession, SessionID: session, Epoch: epoch, CreatedAt: m.now()}
+	m.mu.Lock()
 	m.barriers = append(m.barriers, b)
+	m.mu.Unlock()
 	return b
 }
 
-// Barriers returns the retained barrier log (never erased by backup expiry).
-func (m *Manager) Barriers() []Barrier { return m.barriers }
+// Barriers returns a SNAPSHOT copy of the retained barrier log (never erased by backup
+// expiry). A copy is returned so a caller can range over it without holding the lock.
+func (m *Manager) Barriers() []Barrier {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	return append([]Barrier(nil), m.barriers...)
+}
 
-// Serve applies the deletion barriers and the latest consent cutoff to a raw record
-// set, returning only records that may be served. A record is withheld if:
+// Serve applies the deletion barriers and the PERMANENT consent-revocation cutoff to a raw
+// record set, returning only records that may be served. A record is withheld if:
 //   - a project barrier exists for its project, OR
 //   - a session barrier exists for its (project, session), OR
-//   - its consent for (project, provider, capability "capture") is currently
-//     disabled and the record's ConsentEpoch is at/below that revocation epoch.
+//   - its ConsentEpoch is at/below the consent RevokedThrough watermark for
+//     (project, provider, capability). RevokedThrough is monotonic and is NOT cleared by a
+//     later re-grant, so content collected under a since-revoked consent stays withheld
+//     forever - re-granting consent authorizes new collection only, it never resurrects
+//     revoked data (P7/P13).
 func (m *Manager) Serve(records []archive.Record, capability string) []archive.Record {
 	var out []archive.Record
 	for _, r := range records {
@@ -77,8 +92,8 @@ func (m *Manager) Serve(records []archive.Record, capability string) []archive.R
 			continue
 		}
 		c := m.reg.ConsentEpoch(r.Project, r.Provider, capability)
-		if !c.Enabled && r.ConsentEpoch <= c.Epoch && c.Epoch > 0 {
-			continue // collected under a now-revoked consent
+		if r.ConsentEpoch <= c.RevokedThrough {
+			continue // collected at/below a revocation cutoff: permanently withheld
 		}
 		out = append(out, r)
 	}
@@ -86,6 +101,8 @@ func (m *Manager) Serve(records []archive.Record, capability string) []archive.R
 }
 
 func (m *Manager) barred(r archive.Record) bool {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
 	for _, b := range m.barriers {
 		if b.Project != r.Project {
 			continue
@@ -116,9 +133,12 @@ func (m *Manager) barred(r archive.Record) bool {
 //   - no deletion barrier covers it.
 //
 // Draining pre-revocation records requires explicit, separate authorization (not yet
-// implemented); Restore never does it implicitly. The durable barrier/consent state
-// this gate reads is in-memory only today (see registry STATUS); until the D3 durable
-// boundary exists this must not be relied on as a cross-process worker admission gate.
+// implemented); Restore never does it implicitly. Note on durability: the Manager's OWN
+// barrier slice is in-process memory, but it is rebuilt on restart by the control layer's
+// WAL replay (proven by ingest TestStaleRecordDoesNotBypassDeletionBarrierAcrossRestart), so
+// barriers do survive a same-lineage restart. What is still absent is a shared cross-PROCESS
+// durable boundary (D3): until it exists, this gate must not be relied on as the admission
+// gate for an independent out-of-process worker.
 func (m *Manager) Restore(backupRecords []archive.Record, capability string) []archive.Record {
 	var out []archive.Record
 	for _, r := range backupRecords {

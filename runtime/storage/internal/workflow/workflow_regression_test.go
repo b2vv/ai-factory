@@ -29,11 +29,11 @@ type hookStore struct {
 
 func (s *hookStore) Available() bool { return s.up }
 
-func (s *hookStore) Get(project, id string) (Task, bool) {
+func (s *hookStore) Get(project, id string) (Task, bool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	t, ok := s.tasks[project+"/"+id]
-	return t, ok
+	return t, ok, nil
 }
 
 func (s *hookStore) CAS(project string, t Task, expectedVersion int64) error {

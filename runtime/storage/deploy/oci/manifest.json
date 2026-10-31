@@ -1,0 +1,71 @@
+{
+  "artifact": "aifactory-storage-server",
+  "purpose": "Internal image/build manifest for the M7 OCI packaging (PLAN v4 \u00a79.1). It binds the built image to its source and pins every base and test-dependency image by registry digest. It is NOT a release manifest and does NOT authorize distribution, installation or deployment.",
+  "platform": "linux/amd64",
+  "platform_note": "Other architectures are NOT_TESTED. The verification run below was produced under linux/amd64 emulation on an arm64 host (functional check only).",
+  "dockerfile": "deploy/oci/Dockerfile.runtime",
+  "source_binding": {
+    "base_commit": "66a5c06",
+    "base_ref": "origin/main",
+    "candidate_state": "Owner-authorized 0.8.0-alpha.1 source; experimental/default-off, full acceptance incomplete. The annotated Git tag binds committed source; no OCI registry publication or activation.",
+    "module": "aifactory.local/storage",
+    "go_directive": "go 1.23",
+    "go_mod_sha256": "35e98e4e5597ca96b69d7770e8d70d4a7dda5323b73215344e2b74f36585d492",
+    "go_sum_sha256": "8007256de27260dab4e912a5d76c4e1fb09986b148265d8c840f378554c9b408",
+    "build_flags": "CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOFLAGS=-mod=readonly go build -trimpath -ldflags=-s -w"
+  },
+  "base_images": {
+    "builder": {
+      "ref": "golang:1.23",
+      "registry_digest": "sha256:60deed95d3888cc5e4d9ff8a10c54e5edc008c6ae3fba6187be6fb592e19e8c0",
+      "pinned_in_dockerfile": false,
+      "linux_amd64_digest": "sha256:e87b2a5f6df2dff71ea330d55d54f4979eb380ae58a7e3aabc9d53121243e689",
+      "pin_location": "build-and-verify.sh; offline --pull=never"
+    },
+    "runtime": {
+      "ref": "scratch",
+      "registry_digest": null,
+      "note": "The empty base image has no content to pin; the running image contains only the statically linked /factory binary."
+    }
+  },
+  "test_dependency_images": {
+    "note": "Used ONLY by the Stage 6 integration stack (deploy/test/compose.yaml); not part of the shipped image.",
+    "postgres": {
+      "ref": "postgres:17.5",
+      "registry_digest": "sha256:aadf2c0696f5ef357aa7a68da995137f0cf17bad0bf6e1f17de06ae5c769b302",
+      "linux_amd64_digest": "sha256:5fdd7ebaa553af131db4021414d753791dce12e0b5ac1e27ca9ac57e3982e78a"
+    },
+    "mongo": {
+      "ref": "mongo:7.0.16",
+      "registry_digest": "sha256:c630c59342c1493d50345136df2af14a76b9e827dd5316bfabee07a0880a5f3a",
+      "topology": "single-node standalone (write-concern majority == w:1); replica-set/quorum durability NOT exercised",
+      "linux_amd64_digest": "sha256:a3ba70fe8da14d155e158245fc89a9dd6adf92ae34976ebce24464a3c1573c78"
+    }
+  },
+  "built_image": {
+    "note": "Historical local-build observations only; current source/tag and external author-test evidence bind this alpha. Independent storage review remains BLOCKED.",
+    "image_config_id": "sha256:8c23b24fc106af8fc5d598d33ea89271a097af887b99fcd17217b0a372ee2722",
+    "saved_tar_sha256_observed": "821dca92cc32cf81129558c258614fa2c51b38d9a901e304e398f690a304a712",
+    "offline_flow_verified": "docker save -> remove tag -> docker load (no implicit pull) -> run -init (INITIALIZED) -> run + GET /health == 200 (mode=file-only, databases+capture disabled by default)"
+  },
+  "schema_binding": {
+    "schema_version": 2,
+    "migrations": [
+      "0001_workflow.sql",
+      "0002_derived_index.sql"
+    ],
+    "forward": "Embedded migration runner applies each migration once, tracked in schema_migrations, inside a transaction; idempotent re-apply is tested (TestPGMigrationIdempotent).",
+    "binding_guard": "IMPLEMENTED + TESTED (B5, fail-closed half): OpenPostgres refuses to run if the DB carries a migration this binary does not embed (a newer image advanced the schema) -> ErrSchemaNewerThanImage, checked BEFORE applying. Test: TestPGSchemaNewerThanImageFailsClosed.",
+    "rollback": "DEFERRED: owner excluded backup/restore delivery on 2026-10-31. Existing guarded implementation/evidence is retained; migration-operator refuses activation because the destructive path requires verified backup. No real rollback is authorized or performed.",
+    "derived_index_version": 1
+  },
+  "license_review": "deploy/oci does not add third-party content; vendored dependency LICENSE/NOTICE files are under runtime/storage/THIRD-PARTY/ (see PROVENANCE-LICENSE-REVIEW.md in the task artifacts).",
+  "build_entrypoint": "deploy/oci/build-and-verify.sh",
+  "logical_budget": {
+    "version": "logical-v1",
+    "ledger": "budget.bin, fixed 32768 bytes, exclusive lock, checksummed durable intents",
+    "metric": "managed representations, declared indexes, control/dedup metadata and staging; separate physical free headroom",
+    "automatic_reclaim": "UNAPPLIED: renewed approval review rejected DrainOnce wiring; explicit synthetic maintenance only",
+    "legacy_state": "Missing accounting ledger refuses ordinary writer startup; explicit first initialization creates it. Existing live state is not migrated or activated."
+  }
+}

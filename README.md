@@ -1,6 +1,13 @@
-# AI Factory — 0.7.0-rc.7
+# AI Factory — 0.8.0-alpha.1
 
-This bugfix prerelease adds readable ephemeral hook names, ai-factory grouping metadata, ownership-checked cleanup retries and cancellation forwarding. The optional Docker component includes these fixes on a fresh installation. Cleanup remains bounded by the original nine-second deadline; unavailable-daemon residuals are reported as UNRESOLVED. See [hook lifecycle release notes](docs/release-0.7.0-rc.7.md).
+Experimental, default-off storage alpha. The owner explicitly accepted publication
+with incomplete acceptance: independent storage review remains **BLOCKED** and
+automatic WAL reclaim is **NOT_IMPLEMENTED/BLOCKED**. At a full WAL, intake fails
+closed. Backups are excluded and backup-dependent destructive operator commands
+are disabled. This tag does not activate databases, real capture, hooks or projects.
+See [alpha scope and limitations](docs/release-0.8.0-alpha.1.md).
+
+The rc.7 baseline adds readable ephemeral hook names, ai-factory grouping metadata, ownership-checked cleanup retries and cancellation forwarding. The optional Docker component includes these fixes on a fresh installation. Cleanup remains bounded by the original nine-second deadline; unavailable-daemon residuals are reported as UNRESOLVED. See [hook lifecycle release notes](docs/release-0.7.0-rc.7.md).
 
 The previous bugfix prerelease updates the optional Docker session guard with bounded
 identity from the current validated native event and discoverable enrolled
@@ -19,7 +26,7 @@ Native delivery and end-to-end checkpoint/resume remain NOT_TESTED for this prof
 - **[Full AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap and historical sources.
 - [Shared rules](rules/) · [Runtime helpers](runtime/README.md) · [Explicit policy adapters](adapters/README.md)
 
-Status: release candidate. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The final release package requires a separate hash-bound review before tagging/publication. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.
+Status: alpha; owner-authorized limited publication, not full acceptance. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The ordinary hash-bound review requirement is not reported as satisfied: the owner explicitly accepted this limited alpha publication while storage review remains BLOCKED. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.
 
 ## Native identity guidance in rc.6
 

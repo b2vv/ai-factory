@@ -1,0 +1,67 @@
+# Isolated integration-test stack for the Factory storage server (Stage 6 E2E).
+#
+# This is a THROWAWAY test fixture, NOT a distribution and NOT the dev harness
+# (deploy/dev/compose.yaml). It exists only to run `go test -tags integration` against REAL
+# PostgreSQL and MongoDB with synthetic credentials and dedicated, disposable volumes.
+#
+# Isolation guarantees (so it never touches the user's real databases or other stacks):
+#   - a unique compose project name (factory-storage-inttest) and dedicated bridge network;
+#   - dedicated NAMED VOLUMES (inttest_pgdata / inttest_mongodata), torn down with `down -v`;
+#   - host ports published to 127.0.0.1 ONLY and on non-default numbers (55432 / 57017), so
+#     they cannot collide with a real Postgres (5432) / Mongo (27017), the dev harness
+#     (8777/8778) or any other running stack;
+#   - synthetic throwaway credentials, defined here in the clear ON PURPOSE (test-only).
+#
+# Mongo runs as a SINGLE-NODE STANDALONE (no replica set), so write-concern "majority"
+# equals w:1 here; replica-set/quorum durability is explicitly NOT exercised by this stack.
+
+name: factory-storage-inttest
+
+services:
+  postgres:
+    image: postgres@sha256:5fdd7ebaa553af131db4021414d753791dce12e0b5ac1e27ca9ac57e3982e78a
+    pull_policy: never
+    platform: linux/amd64
+    environment:
+      POSTGRES_USER: factory_test
+      POSTGRES_PASSWORD: factory_test_synthetic
+      POSTGRES_DB: factory_test
+    command: ["-c", "fsync=on"]
+    ports:
+      - "127.0.0.1:${INTTEST_PG_PORT:-55432}:5432"
+    volumes:
+      - inttest_pgdata:/var/lib/postgresql/data
+    networks: [inttest]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U factory_test -d factory_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: "no"
+
+  mongo:
+    image: mongo@sha256:a3ba70fe8da14d155e158245fc89a9dd6adf92ae34976ebce24464a3c1573c78
+    pull_policy: never
+    platform: linux/amd64
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: factory_test
+      MONGO_INITDB_ROOT_PASSWORD: factory_test_synthetic
+    ports:
+      - "127.0.0.1:${INTTEST_MONGO_PORT:-57017}:27017"
+    volumes:
+      - inttest_mongodata:/data/db
+    networks: [inttest]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: "no"
+
+networks:
+  inttest:
+    driver: bridge
+
+volumes:
+  inttest_pgdata:
+  inttest_mongodata:

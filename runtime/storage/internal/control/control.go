@@ -41,6 +41,9 @@
 package control
 
 import (
+	"aifactory.local/storage/internal/budget"
+	"aifactory.local/storage/internal/config"
+	"aifactory.local/storage/internal/meter"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
@@ -49,6 +52,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"syscall"
 
 	"aifactory.local/storage/internal/registry"
@@ -63,18 +67,21 @@ var ErrBlocked = errors.New("control: registry BLOCKED; durable authority is cor
 type mutationKind string
 
 const (
-	kMint        mutationKind = "mint_project"
-	kEnroll      mutationKind = "enroll_location"
-	kSetConsent  mutationKind = "set_consent"
-	kIssueGrant  mutationKind = "issue_grant"
-	kRevokeGrant mutationKind = "revoke_grant"
-	kBarrierProj mutationKind = "delete_project_barrier"
-	kBarrierSess mutationKind = "delete_session_barrier"
+	kWorkflowPrepare mutationKind = "workflow_prepare"
+	kWorkflowFlip    mutationKind = "workflow_flip"
+	kMint            mutationKind = "mint_project"
+	kEnroll          mutationKind = "enroll_location"
+	kSetConsent      mutationKind = "set_consent"
+	kIssueGrant      mutationKind = "issue_grant"
+	kRevokeGrant     mutationKind = "revoke_grant"
+	kBarrierProj     mutationKind = "delete_project_barrier"
+	kBarrierSess     mutationKind = "delete_session_barrier"
 )
 
 // mutation is the serialized form of one authority change (the WAL payload).
 type mutation struct {
 	Kind        mutationKind      `json:"kind"`
+	Workflow    *WorkflowReceipt  `json:"workflow,omitempty"`
 	UUID        string            `json:"uuid,omitempty"`
 	Label       string            `json:"label,omitempty"`
 	Loc         registry.Location `json:"loc,omitempty"`
@@ -132,18 +139,25 @@ type metaFile struct {
 
 // Durable is the durable control registry.
 type Durable struct {
-	mu          sync.Mutex
-	reg         *registry.Registry
-	ret         *retention.Manager
-	w           *wal.WAL
-	lock        *os.File // exclusive cross-process ownership of stateDir (flock), held for lifetime
-	stateDir    string
-	metaPath    string
-	highWater   uint64
-	delEpoch    int64
-	appendable  bool
-	blocked     bool
-	blockReason string
+	externalActive    bool
+	budget            *budget.Ledger
+	mu                sync.Mutex
+	capacityCheck     func(int64) error
+	reserved          atomic.Int64
+	externalReserved  atomic.Int64
+	workflowPrepared  map[string]WorkflowReceipt
+	workflowCompleted map[string]WorkflowReceipt
+	reg               *registry.Registry
+	ret               *retention.Manager
+	w                 *wal.WAL
+	lock              *os.File // exclusive cross-process ownership of stateDir (flock), held for lifetime
+	stateDir          string
+	metaPath          string
+	highWater         uint64
+	delEpoch          int64
+	appendable        bool
+	blocked           bool
+	blockReason       string
 }
 
 // opened is the shared result of acquiring exclusive ownership of stateDir, opening the
@@ -258,7 +272,14 @@ func Open(stateDir string) (*Durable, error) {
 // records, a corrupt/ambiguous log, or an unreadable marker all return an error instead of
 // resetting authority. Only a genuinely empty, clean, never-initialized directory is
 // initialized. On success it returns an appendable Durable holding the exclusive lock.
-func Initialize(stateDir string) (*Durable, error) {
+func Initialize(stateDir string) (*Durable, error) { return initialize(stateDir, nil) }
+
+// InitializeBudgeted admits the control marker and fixed accounting file while
+// holding the first owner's lock, before writing either nonempty metadata file.
+func InitializeBudgeted(stateDir string, cfg config.Config) (*Durable, error) {
+	return initialize(stateDir, &cfg)
+}
+func initialize(stateDir string, cfg *config.Config) (*Durable, error) {
 	o, err := prepare(stateDir)
 	if err != nil {
 		return nil, err
@@ -278,9 +299,36 @@ func Initialize(stateDir string) (*Durable, error) {
 		d.closeAll()
 		return nil, errors.New("control: cannot initialize; durable authority records are present without an init marker - recovery is required, refusing a permissive reset that could bypass prior revocations/deletion barriers")
 	default:
+		if cfg != nil {
+			sample, e := budget.LocalSample(stateDir, cfg.LiveCapBytes)
+			if e != nil {
+				d.closeAll()
+				return nil, e
+			}
+			var used int64
+			for _, n := range sample.Components {
+				used += n
+			}
+			raw, _ := json.Marshal(metaFile{Initialized: true, HighWater: 0})
+			if a := config.NewAccountant(*cfg).AdmitGrowth(config.Usage{LiveBytes: used, FreeBytes: sample.Free}, 0, budget.FileBytes+int64(len(raw))); !a.Allowed {
+				d.closeAll()
+				return nil, fmt.Errorf("%w: %s", ErrCapacity, a.Reason)
+			}
+		}
 		if err := writeMeta(d.metaPath, metaFile{Initialized: true, HighWater: 0}); err != nil {
 			d.closeAll()
 			return nil, err
+		}
+		if cfg != nil {
+			l, e := budget.Initialize(filepath.Join(stateDir, "budget.bin"), budget.Policy{LiveCap: cfg.LiveCapBytes, Headroom: cfg.FreeHeadroom}, func() (budget.Sample, error) { return budget.LocalSample(stateDir, cfg.LiveCapBytes) })
+			if e != nil {
+				d.closeAll()
+				return nil, e
+			}
+			if e = l.Close(); e != nil {
+				d.closeAll()
+				return nil, e
+			}
 		}
 		d.appendable = true
 		return d, nil
@@ -322,6 +370,10 @@ func (d *Durable) releaseLock() {
 
 // closeAll releases the WAL and the exclusive lock (used on error paths during open).
 func (d *Durable) closeAll() {
+	if d.budget != nil {
+		_ = d.budget.Close()
+		d.budget = nil
+	}
 	if d.w != nil {
 		_ = d.w.Close()
 	}
@@ -329,6 +381,7 @@ func (d *Durable) closeAll() {
 }
 
 func (d *Durable) block(reason string) {
+	d.reg.Block()
 	d.blocked = true
 	d.blockReason = reason
 	d.appendable = false
@@ -337,16 +390,21 @@ func (d *Durable) block(reason string) {
 // Close releases the underlying WAL files and the exclusive state lock, so a successor
 // process (or a restart) can reopen the same state directory.
 func (d *Durable) Close() error {
+	var budgetErr error
+	if d.budget != nil {
+		budgetErr = d.budget.Close()
+		d.budget = nil
+	}
 	var err error
 	if d.w != nil {
 		err = d.w.Close()
 	}
 	d.releaseLock()
-	return err
+	return errors.Join(err, budgetErr)
 }
 
-// Registry exposes the in-memory authority for authorization checks. When BLOCKED it is
-// an empty registry, so authz fails closed (no grants -> denied).
+// Registry exposes in-memory authority. Callers MUST gate access with Blocked;
+// a live persistence failure can retain previously loaded grants until recovery.
 func (d *Durable) Registry() *registry.Registry { return d.reg }
 
 // Retention exposes the deletion-barrier/serve/restore gate.
@@ -383,6 +441,10 @@ func (d *Durable) replay(recs []wal.Record) error {
 // mutation methods (ordered relative to persistence per the ordering contract).
 func (d *Durable) apply(actor registry.Principal, m mutation) error {
 	switch m.Kind {
+	case kWorkflowPrepare:
+		return d.applyWorkflowPrepare(m.Workflow)
+	case kWorkflowFlip:
+		return d.applyWorkflowFlip(actor, m.Workflow)
 	case kMint:
 		return d.reg.MintProject(actor, m.UUID, m.Label)
 	case kEnroll:
@@ -406,8 +468,82 @@ func (d *Durable) apply(actor registry.Principal, m mutation) error {
 	}
 }
 
+// ErrCapacity means the mutation was refused before its WAL write. Authority
+// remains fail-closed if a reducing operation was already applied in memory.
+var ErrCapacity = errors.New("control: capacity unavailable; mutation not persisted")
+
+// SetCapacityCheck is configured before serving requests. The callback runs under
+// the control mutex and must not read control authority or acquire that mutex.
+func (d *Durable) SetCapacityCheck(check func(int64) error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	d.capacityCheck = check
+}
+func (d *Durable) ReservedBytes() int64 { return d.reserved.Load() }
+
+// ReserveExternalBytes is called under WithStableAuthority or CutoverWorkflow's
+// fence, BEFORE an external data/staging write. A refusal does not acknowledge
+// data or change authority. Keep the reservation on ambiguous/partial failures.
+// This is a minimum known-byte plan, not a DB allocator bound or durable ledger.
+func (d *Durable) ReserveExternalBytes(cost int64) error {
+	if cost < 0 {
+		return fmt.Errorf("%w: negative external plan", ErrCapacity)
+	}
+	if e := d.admitGrowth(cost, 0); e != nil {
+		return fmt.Errorf("%w: %v", ErrCapacity, e)
+	}
+	if d.budget != nil {
+		key, e := newKey()
+		if e != nil {
+			return e
+		}
+		if e = d.budget.Reserve(budget.Evidence{Kind: "external", KeyHash: budgetHash([]byte(key))}, cost); e != nil {
+			return fmt.Errorf("%w: %v", ErrCapacity, e)
+		}
+	}
+	d.externalActive = true
+	d.externalReserved.Add(cost)
+	d.reserved.Add(cost)
+	return nil
+}
+
+func (d *Durable) admitMutation(cost int64) error { return d.admitGrowth(cost, cost) }
+func (d *Durable) admitGrowth(cost, walGrowth int64) error {
+	if d.capacityCheck != nil {
+		return d.capacityCheck(cost)
+	}
+	// Standalone operator state uses the same default local limits. A server
+	// overrides this with its whole-state and configured backend measurement.
+	u, err := meter.Measure(d.stateDir, filepath.Join(d.stateDir, "wal"), 0)
+	if err != nil {
+		return err
+	}
+	cfg := config.Default()
+	if d.budget != nil {
+		policy := d.budget.Snapshot().Policy
+		cfg.LiveCapBytes = policy.LiveCap
+		cfg.FreeHeadroom = policy.Headroom
+		if policy.WALCap > 0 {
+			cfg.WALBytes = policy.WALCap
+		}
+	} else {
+		u.LiveBytes += d.externalReserved.Load()
+		u.FreeBytes -= d.externalReserved.Load()
+	}
+	if u.FreeBytes < 0 {
+		u.FreeBytes = 0
+	}
+	if a := config.NewAccountant(cfg).AdmitGrowth(u, walGrowth, cost); !a.Allowed {
+		return errors.New(a.Reason)
+	}
+	return nil
+}
+
+var ErrPersistence = errors.New("control: persistence outcome uncertain; inspect recovered authority before retry")
+
 // persist writes the mutation to the durable WAL and advances the high-water marker.
-// It returns an error if the record could not be durably accepted.
+// An error is NOT proof of non-acceptance: an operator-authorized mutation may
+// already be durable and replay after restart. Fail closed until recovery reconciles it.
 func (d *Durable) persist(m mutation) error {
 	payload, err := json.Marshal(m)
 	if err != nil {
@@ -417,16 +553,40 @@ func (d *Durable) persist(m mutation) error {
 	if err != nil {
 		return err
 	}
+	// Include the metadata staging file at its largest sequence representation.
+	meta, _ := json.Marshal(metaFile{Initialized: true, HighWater: ^uint64(0)})
+	cost := wal.RecordCost(key, payload) + int64(len(meta))
+	if err := d.admitMutation(cost); err != nil {
+		d.block("control capacity unavailable; recover before serving authority")
+		return fmt.Errorf("%w: %v", ErrCapacity, err)
+	}
+	// A failed append can still consume space. Concurrent measurements must not
+	// reuse this reservation even when persistence reports an uncertain outcome.
+	if d.budget != nil {
+		if e := d.budget.Reserve(budget.Evidence{Kind: "control", KeyHash: budgetHash([]byte(key)), PayloadHash: budgetHash(payload)}, cost); e != nil {
+			d.block("control accounting unavailable; preserve state and reconcile")
+			return fmt.Errorf("%w: %v", ErrCapacity, e)
+		}
+	}
+	d.reserved.Add(cost)
 	rcpt, err := d.w.Accept(key, payload)
 	if err != nil {
-		return err
+		d.block("control persistence failed; restart/recover before serving authority")
+		return fmt.Errorf("%w: %v", ErrPersistence, err)
 	}
 	// Durably accepted. Advance the marker so a later total loss of the log is detected
 	// (meta > recovered max => BLOCKED) rather than mistaken for first-time init.
 	if rcpt.Seq > d.highWater {
 		d.highWater = rcpt.Seq
 		if err := writeMeta(d.metaPath, metaFile{Initialized: true, HighWater: d.highWater}); err != nil {
-			return fmt.Errorf("control: record durable (seq %d) but high-water marker update failed: %w", rcpt.Seq, err)
+			d.block("durable control mutation requires recovery after metadata failure")
+			return fmt.Errorf("%w: record durable (seq %d), marker update failed: %v", ErrPersistence, rcpt.Seq, err)
+		}
+	}
+	if d.budget != nil {
+		if e := d.budget.Finish(); e != nil {
+			d.block("control accounting commit uncertain")
+			return fmt.Errorf("%w: %v", ErrPersistence, e)
 		}
 	}
 	return nil

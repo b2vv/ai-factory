@@ -8,6 +8,8 @@ package workflow
 
 import (
 	"errors"
+	"math"
+	"sync"
 
 	"aifactory.local/storage/internal/registry"
 )
@@ -29,7 +31,7 @@ type Task struct {
 // Store is the PG-backed structured store (faked in tests).
 type Store interface {
 	Available() bool
-	Get(project, id string) (Task, bool)
+	Get(project, id string) (Task, bool, error)
 	CAS(project string, t Task, expectedVersion int64) error
 }
 
@@ -58,6 +60,9 @@ func New(reg *registry.Registry, store Store) *Manager { return &Manager{reg: re
 // between the epoch check and the commit: the authority is re-verified at commit time
 // and a concurrent flip blocks until the commit completes.
 func (m *Manager) Write(project, id string, expectedVersion, writerEpoch int64, fields map[string]string) error {
+	if expectedVersion < 0 || expectedVersion == math.MaxInt64 {
+		return ErrStaleVersion
+	}
 	// Fail-fast pre-checks (cheap rejects before taking the authority lock).
 	owner, epoch, ok := m.reg.WorkflowAuthority(project)
 	if !ok {
@@ -78,7 +83,10 @@ func (m *Manager) Write(project, id string, expectedVersion, writerEpoch int64, 
 		if !m.store.Available() {
 			return ErrBlockedPGDown
 		}
-		cur, _ := m.store.Get(project, id)
+		cur, _, err := m.store.Get(project, id)
+		if err != nil {
+			return err
+		}
 		if cur.Version != expectedVersion {
 			return ErrStaleVersion
 		}
@@ -137,23 +145,42 @@ func (m *Manager) DisablePG(actor registry.Principal, project, verifiedExportHas
 
 // MemStore is an in-memory fake Store for the hermetic suite (no real PostgreSQL).
 type MemStore struct {
+	mu    sync.RWMutex
 	up    bool
-	tasks map[string]Task
+	tasks map[[2]string]Task
 }
 
-func NewMemStore() *MemStore { return &MemStore{up: true, tasks: map[string]Task{}} }
+func NewMemStore() *MemStore { return &MemStore{up: true, tasks: map[[2]string]Task{}} }
 
-func (s *MemStore) SetAvailable(b bool) { s.up = b }
-func (s *MemStore) Available() bool     { return s.up }
-func (s *MemStore) Get(project, id string) (Task, bool) {
-	t, ok := s.tasks[project+"/"+id]
-	return t, ok
+func (s *MemStore) SetAvailable(b bool) { s.mu.Lock(); defer s.mu.Unlock(); s.up = b }
+func (s *MemStore) Available() bool     { s.mu.RLock(); defer s.mu.RUnlock(); return s.up }
+func cloneTask(t Task) Task {
+	fields := make(map[string]string, len(t.Fields))
+	for k, v := range t.Fields {
+		fields[k] = v
+	}
+	t.Fields = fields
+	return t
+}
+func (s *MemStore) Get(project, id string) (Task, bool, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if !s.up {
+		return Task{}, false, ErrBlockedPGDown
+	}
+	t, ok := s.tasks[[2]string{project, id}]
+	return cloneTask(t), ok, nil
 }
 func (s *MemStore) CAS(project string, t Task, expectedVersion int64) error {
-	cur := s.tasks[project+"/"+t.ID]
-	if cur.Version != expectedVersion {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if !s.up {
+		return ErrBlockedPGDown
+	}
+	cur := s.tasks[[2]string{project, t.ID}]
+	if expectedVersion < 0 || expectedVersion == math.MaxInt64 || t.Version != expectedVersion+1 || cur.Version != expectedVersion {
 		return ErrStaleVersion
 	}
-	s.tasks[project+"/"+t.ID] = t
+	s.tasks[[2]string{project, t.ID}] = cloneTask(t)
 	return nil
 }

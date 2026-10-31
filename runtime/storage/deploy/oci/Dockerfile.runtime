@@ -1,0 +1,3 @@
+FROM scratch
+COPY factory /factory
+ENTRYPOINT ["/factory"]

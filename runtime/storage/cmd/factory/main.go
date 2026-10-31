@@ -16,13 +16,21 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
 
 	"aifactory.local/storage/internal/api"
+	"aifactory.local/storage/internal/archive"
+	"aifactory.local/storage/internal/budgetenv"
 	"aifactory.local/storage/internal/config"
 	"aifactory.local/storage/internal/control"
+	"aifactory.local/storage/internal/ingest"
+	"aifactory.local/storage/internal/meter"
+	"aifactory.local/storage/internal/registry"
+	"aifactory.local/storage/internal/search"
+	"aifactory.local/storage/internal/workflow"
 )
 
 type operatorToken struct {
@@ -50,12 +58,17 @@ func run() error {
 		return errors.New("-state is required")
 	}
 
+	cfg, err := config.Load(*cfgPath, os.Getenv)
+	if err != nil {
+		return err
+	}
+
 	// A: initialization is an explicit, separate operator gesture. Normal startup never
 	// creates authority; `-init` creates a brand-new registry and exits. It refuses to run
 	// against any non-pristine state (existing marker, surviving records, or a
 	// corrupt/ambiguous log), so it can never become a recovery bypass.
 	if *doInit {
-		ctl, err := control.Initialize(*state)
+		ctl, err := control.InitializeBudgeted(*state, cfg)
 		if err != nil {
 			return err
 		}
@@ -82,11 +95,6 @@ func run() error {
 		return err
 	}
 
-	cfg, err := config.Load(*cfgPath, os.Getenv)
-	if err != nil {
-		return err
-	}
-
 	// Normal startup opens EXISTING state. An uninitialized or mistyped -state path does not
 	// silently initialize: control.Open returns a BLOCKED registry, surfaced on /health and
 	// denying all authority, until an operator runs `-init` (for a genuinely new dir) or
@@ -101,7 +109,119 @@ func run() error {
 		fmt.Fprintln(os.Stderr, "factory: control registry BLOCKED:", reason)
 	}
 
+	var budgetEnv *budgetenv.Environment
+	if blocked, _ := ctl.Blocked(); !blocked {
+		budgetEnv, err = budgetenv.Open(*state, &cfg)
+		if err != nil {
+			return err
+		}
+		defer budgetEnv.Close()
+		if err = ctl.AttachBudget(budgetEnv.DetachLedger()); err != nil {
+			return err
+		}
+	}
 	srv := api.New(ctl, cfg, tok.ID, tok.Secret)
+
+	// Composition root: open the REAL backends when enabled. An enabled-but-unreachable
+	// backend is a hard startup error (fail-closed) - never a fabricated healthy and never
+	// an in-memory fake substitution in DB mode. A background pinger refreshes availability
+	// so /health reflects the live backend state and flips to down on a runtime outage.
+	pingCtx, pingStop := context.WithCancel(context.Background())
+	defer pingStop()
+	var mongoStore *archive.MongoStore
+	var pgStore *workflow.PGStore
+	if cfg.MongoEnabled {
+		openCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		mongoStore, err = archive.OpenMongo(openCtx, cfg.MongoURI, cfg.MongoDB, cfg.MongoCollection)
+		cancel()
+		if err != nil {
+			return fmt.Errorf("archive backend (mongo) enabled but unreachable: %w", err)
+		}
+		defer mongoStore.Close()
+	}
+	if cfg.PostgresEnabled {
+		openCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		pgStore, err = workflow.OpenPostgres(openCtx, cfg.PostgresDSN)
+		cancel()
+		if err != nil {
+			return fmt.Errorf("workflow backend (postgres) enabled but unreachable: %w", err)
+		}
+		defer pgStore.Close()
+	}
+	stateDir := *state
+	ingWalDir := filepath.Join(stateDir, "ingest", "wal")
+	if budgetEnv != nil {
+		srv.SetSharedUsageMeter(budgetEnv.Usage)
+	} else {
+		srv.SetSharedUsageMeter(func() (config.Usage, error) { return measureUsage(stateDir, ingWalDir, mongoStore, pgStore) })
+	}
+	required, indexMarkerErr := search.Required(*state)
+	if indexMarkerErr != nil {
+		return indexMarkerErr
+	}
+	srv.SetSearchRequired(required)
+	if pgStore != nil {
+		indexCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		index, indexErr := search.Open(indexCtx, cfg.PostgresDSN)
+		cancel()
+		if indexErr != nil {
+			return fmt.Errorf("derived search index startup failed: %w", indexErr)
+		}
+		defer index.Close()
+		// A blocked registry still exposes health, but cannot start indexing. Its
+		// capability marker is admitted after recovery on the next ordinary startup.
+		if blocked, _ := ctl.Blocked(); !blocked {
+			if err := ctl.WithStableAuthority(registry.Principal{Kind: registry.Operator}, func(_ *registry.Registry) error {
+				if e := search.MarkRequiredBudgeted(*state, ctl.ReserveExternalBytes); e != nil {
+					return e
+				}
+				return ctl.FinishExternal()
+			}); err != nil {
+				return err
+			}
+		}
+		srv.SetSearchStore(index)
+	}
+	srv.SetAvailability(archiveProbe(mongoStore), pgProbe(pgStore))
+	if pgStore != nil {
+		srv.SetWorkflowStore(pgStore)
+	}
+	if mongoStore != nil || pgStore != nil {
+		go pingLoop(pingCtx, mongoStore, pgStore)
+	}
+
+	// Archive access/replay remains available when new capture is disabled. The
+	// capture endpoints enforce CaptureEnabled independently; current consent/barriers
+	// still govern every replay and read of previously accepted records.
+	if cfg.MongoEnabled {
+		ingWalDir := filepath.Join(*state, "ingest", "wal")
+		ing, ierr := ingest.Open(ingWalDir, config.NewAccountant(cfg), mongoStore)
+		if ierr != nil {
+			return fmt.Errorf("capture ingestion WAL open failed: %w", ierr)
+		}
+		if ctl.Budget() != nil {
+			if e := ing.SetBudget(ctl.Budget()); e != nil {
+				ing.Close()
+				return e
+			}
+		}
+		srv.SetIngestor(ing)
+		// R5: background drain/replay worker. It projects WAL records to the archive WITHOUT a
+		// new producer request — a startup replay plus a periodic cycle, so records left durable
+		// by a crash (accepted but not yet archive-committed) or by a transient Mongo outage are
+		// drained on recovery. It shares the server mutation lock (via DrainOnce) so it can never
+		// publish while a purge holds it, and it releases the lock during its backoff sleep.
+		//
+		// Shutdown ordering (V2 P2): the worker is STOPPED and JOINED before the ingestor/WAL is
+		// closed, so it can never drain against a closed WAL. The worker's stop+join defer is
+		// registered AFTER ing.Close's defer, so (LIFO) it runs FIRST on return.
+		defer ing.Close()
+		workerCtx, workerStop := context.WithCancel(pingCtx)
+		workerDone := make(chan struct{})
+		go func() { defer close(workerDone); drainWorker(workerCtx, srv) }()
+		defer func() { workerStop(); <-workerDone }()
+	}
+
 	ln, err := net.Listen("tcp", *listen)
 	if err != nil {
 		return err
@@ -126,6 +246,100 @@ func run() error {
 			return nil
 		}
 		return err
+	}
+}
+
+// measureUsage computes live D4 capacity usage including BOTH enabled DB backends toward the
+// live-data cap: the Mongo archive (storageSize+indexSize) and the PostgreSQL index/working
+// copy (pg_database_size). A measurement error (filesystem or either dbStats) is returned so
+// admission fails closed (never read as unlimited).
+func measureUsage(stateDir, walDir string, store *archive.MongoStore, pg *workflow.PGStore) (config.Usage, error) {
+	var extra int64
+	if store != nil {
+		mctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		sz, err := store.StorageBytes(mctx)
+		cancel()
+		if err != nil {
+			return config.Usage{}, fmt.Errorf("archive storage size: %w", err)
+		}
+		extra += sz
+	}
+	if pg != nil {
+		pctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		sz, err := pg.StorageBytes(pctx)
+		cancel()
+		if err != nil {
+			return config.Usage{}, fmt.Errorf("workflow (postgres) storage size: %w", err)
+		}
+		extra += sz
+	}
+	return meter.Measure(stateDir, walDir, extra)
+}
+
+// archiveProbe/pgProbe expose a store's live availability as a probe func (nil when the
+// backend is disabled, which /health reports as down).
+func archiveProbe(s *archive.MongoStore) func() bool {
+	if s == nil {
+		return nil
+	}
+	return s.Available
+}
+
+func pgProbe(s *workflow.PGStore) func() bool {
+	if s == nil {
+		return nil
+	}
+	return s.Available
+}
+
+// pingLoop periodically refreshes each enabled backend's availability so /health reflects
+// the live state (and a runtime outage flips it to down within one interval).
+func pingLoop(ctx context.Context, m *archive.MongoStore, p *workflow.PGStore) {
+	t := time.NewTicker(2 * time.Second)
+	defer t.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-t.C:
+			if m != nil {
+				pc, cancel := context.WithTimeout(ctx, 3*time.Second)
+				_ = m.Ping(pc)
+				cancel()
+			}
+			if p != nil {
+				pc, cancel := context.WithTimeout(ctx, 3*time.Second)
+				_ = p.Ping(pc)
+				cancel()
+			}
+		}
+	}
+}
+
+// drainWorker periodically projects durable-accepted WAL records to the archive via the
+// server's shared, lock-serialized DrainOnce. On success it uses a short base interval; on an
+// error (archive unavailable / BLOCKED journal) it backs off up to a cap. It NEVER holds the
+// mutation lock during the backoff sleep (DrainOnce takes and releases it per cycle). The
+// serve-gate inside DrainOnce quarantines revoked/barred records, so the worker never
+// publishes something a purge/revoke withheld.
+func drainWorker(ctx context.Context, srv *api.Server) {
+	const base, max = 2 * time.Second, 30 * time.Second
+	backoff := base
+	for {
+		if _, err := srv.DrainOnce(); err != nil {
+			if backoff *= 2; backoff > max {
+				backoff = max
+			}
+		} else {
+			backoff = base
+		}
+		// Derived PG failures never undo or hold Mongo archive commitment.
+		_, _ = srv.IndexOnce()
+		select {
+		case <-ctx.Done():
+			return
+		case <-time.After(backoff):
+		}
 	}
 }
 
