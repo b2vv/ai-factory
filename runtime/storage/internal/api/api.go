@@ -545,7 +545,7 @@ func (s *Server) handleCaptureClaudeCode(w http.ResponseWriter, r *http.Request)
 		writeErr(w, http.StatusBadRequest, "project and source_instance query params are required")
 		return
 	}
-	body, err := io.ReadAll(io.LimitReader(r.Body, 8<<20))
+	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 8<<20))
 	if err != nil {
 		writeErr(w, http.StatusBadRequest, "cannot read body")
 		return

@@ -1,4 +1,4 @@
-# AI Factory — 0.8.0-alpha.1
+# AI Factory — 0.8.0-alpha.1 + import-safety patch
 
 Experimental, default-off storage alpha. The owner explicitly accepted publication
 with incomplete acceptance: independent storage review remains **BLOCKED** and
@@ -6,6 +6,10 @@ automatic WAL reclaim is **NOT_IMPLEMENTED/BLOCKED**. At a full WAL, intake fail
 closed. Backups are excluded and backup-dependent destructive operator commands
 are disabled. This tag does not activate databases, real capture, hooks or projects.
 See [alpha scope and limitations](docs/release-0.8.0-alpha.1.md).
+The untagged follow-up adds conservative known-credential withholding before WAL
+and refuses unsupported Claude shapes. It does not guarantee detection of all
+secrets or implement a native Codex adapter. See the
+[adapter contract](runtime/storage/internal/capture/PROVIDER-ADAPTER-JUSTIFICATION.md).
 
 The rc.7 baseline adds readable ephemeral hook names, ai-factory grouping metadata, ownership-checked cleanup retries and cancellation forwarding. The optional Docker component includes these fixes on a fresh installation. Cleanup remains bounded by the original nine-second deadline; unavailable-daemon residuals are reported as UNRESOLVED. See [hook lifecycle release notes](docs/release-0.7.0-rc.7.md).
 

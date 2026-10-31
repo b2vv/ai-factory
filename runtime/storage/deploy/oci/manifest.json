@@ -5,9 +5,9 @@
   "platform_note": "Other architectures are NOT_TESTED. The verification run below was produced under linux/amd64 emulation on an arm64 host (functional check only).",
   "dockerfile": "deploy/oci/Dockerfile.runtime",
   "source_binding": {
-    "base_commit": "66a5c06",
+    "base_commit": "686184a3199cfd730508beac453239e0b7ac2b53",
     "base_ref": "origin/main",
-    "candidate_state": "Owner-authorized 0.8.0-alpha.1 source; experimental/default-off, full acceptance incomplete. The annotated Git tag binds committed source; no OCI registry publication or activation.",
+    "candidate_state": "Owner-authorized untagged import-safety patch after v0.8.0-alpha.1. The alpha.1 tag remains immutable; use the exact patch commit and rebuilt binary. No activation.",
     "module": "aifactory.local/storage",
     "go_directive": "go 1.23",
     "go_mod_sha256": "35e98e4e5597ca96b69d7770e8d70d4a7dda5323b73215344e2b74f36585d492",
@@ -43,7 +43,7 @@
     }
   },
   "built_image": {
-    "note": "Historical local-build observations only; current source/tag and external author-test evidence bind this alpha. Independent storage review remains BLOCKED.",
+    "note": "Historical alpha build observations only; they do not bind the new sanitizer executable. Rebuild from the exact patch commit before runtime use. Independent review remains BLOCKED.",
     "image_config_id": "sha256:8c23b24fc106af8fc5d598d33ea89271a097af887b99fcd17217b0a372ee2722",
     "saved_tar_sha256_observed": "821dca92cc32cf81129558c258614fa2c51b38d9a901e304e398f690a304a712",
     "offline_flow_verified": "docker save -> remove tag -> docker load (no implicit pull) -> run -init (INITIALIZED) -> run + GET /health == 200 (mode=file-only, databases+capture disabled by default)"

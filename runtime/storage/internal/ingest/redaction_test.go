@@ -21,15 +21,20 @@ func TestRedactionBeforeWAL(t *testing.T) {
 	fx := capture.ProviderFixture{
 		Provider: "synthetic", SourceInstance: "inst-1", Project: "p",
 		Messages: []capture.FixtureMessage{{
-			SessionID: "s", MessageID: "m1", Seq: 1, Role: "user", Text: "hello", Kind: "message",
+			SessionID: "s", MessageID: "m1", Seq: 1, Role: "user", Text: "password=embedded-credential-canary", Kind: "message",
 			HiddenReasoning: cot, Secrets: map[string]string{"api_key": key},
 		}},
 	}
 	recs, red := capture.Adapt(fx)
-	if len(red) != 2 {
-		t.Fatalf("expected hidden_reasoning + secrets redactions, got %v", red)
+	if len(red) != 3 {
+		t.Fatalf("expected structured and embedded-text redactions, got %v", red)
 	}
 
+	cc, _, err := capture.AdaptClaudeCodeJSONL([]byte(`{"type":"user","uuid":"m2","sessionId":"s","message":{"role":"user","content":[{"type":"text","text":"Authorization: Bearer embedded-claude-canary"}]}}`), "p", "inst-1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	recs = append(recs, cc...)
 	dir := filepath.Join(t.TempDir(), "wal")
 	store := archive.NewMemStore()
 	ing, err := Open(dir, config.NewAccountant(config.Default()), store)
@@ -38,7 +43,7 @@ func TestRedactionBeforeWAL(t *testing.T) {
 	}
 	for i := range recs {
 		recs[i].ConsentEpoch = 1
-		if _, err := ing.Accept("k", recs[i], bigUsage()); err != nil {
+		if _, err := ing.Accept(archive.IdentityKey(recs[i]), recs[i], bigUsage()); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -47,7 +52,7 @@ func TestRedactionBeforeWAL(t *testing.T) {
 	}
 	ing.Close()
 
-	forbidden := [][]byte{[]byte(cot), []byte(key)}
+	forbidden := [][]byte{[]byte(cot), []byte(key), []byte("embedded-credential-canary"), []byte("embedded-claude-canary")}
 
 	// 1) Raw WAL files on disk must not contain the prohibited values.
 	entries, _ := os.ReadDir(dir)
@@ -77,6 +82,6 @@ func TestRedactionBeforeWAL(t *testing.T) {
 	}
 
 	// 3) Structural guarantee: archive.Record has no field that could carry the prohibited
-	// data (hidden reasoning / secrets are dropped by the adapter before a record exists), so
-	// nothing downstream (WAL, Mongo, logs) can contain it. The handler logs no payloads.
+	// structured data. Known text patterns are separately withheld; unknown free-text
+	// secrets are not guaranteed to be detected. The handler logs no payloads.
 }

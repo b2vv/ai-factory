@@ -16,9 +16,9 @@
 //	                         {"type":"tool_result", ...} ] }}  // internal - DROPPED
 //
 // Only user-visible text blocks of user/assistant messages are captured as original history;
-// thinking and tool internals are redacted BEFORE a record exists. Lines that are not
-// user/assistant messages (summaries, meta, system) are skipped (summaries are never
-// original history, D5). Malformed lines fail the parse (fail-closed), never silently.
+// thinking and tool internals are redacted BEFORE a record exists. Recognized summary
+// and system events are skipped (not original history, D5). Unknown event/block shapes
+// fail the entire parse. Known credential indicators withhold the joined visible text.
 package capture
 
 import (
@@ -62,10 +62,17 @@ func AdaptClaudeCodeJSONL(data []byte, project, sourceInstance string) ([]archiv
 		}
 		var l ccLine
 		if err := json.Unmarshal(raw, &l); err != nil {
-			return nil, nil, fmt.Errorf("claude-code JSONL line %d: malformed: %w", lineNo, err)
+			return nil, nil, fmt.Errorf("claude-code JSONL line %d: malformed or unsupported shape", lineNo)
 		}
-		if l.Type != "user" && l.Type != "assistant" {
-			continue // not an original user/assistant message (meta/summary/system): skip
+		switch l.Type {
+		case "summary", "system":
+			continue // explicitly recognized non-conversation events
+		case "user", "assistant":
+		default:
+			return nil, nil, fmt.Errorf("claude-code JSONL line %d: unsupported event type", lineNo)
+		}
+		if l.UUID == "" || l.SessionID == "" || l.Message.Role != l.Type || len(l.Message.Content) == 0 {
+			return nil, nil, fmt.Errorf("claude-code JSONL line %d: missing identity or unsupported message shape", lineNo)
 		}
 		var parts []string
 		for _, c := range l.Message.Content {
@@ -79,11 +86,15 @@ func AdaptClaudeCodeJSONL(data []byte, project, sourceInstance string) ([]archiv
 			case "tool_use", "tool_result":
 				red = append(red, Redaction{MessageID: l.UUID, Field: c.Type})
 			default:
-				red = append(red, Redaction{MessageID: l.UUID, Field: "content:" + c.Type})
+				return nil, nil, fmt.Errorf("claude-code JSONL line %d: unsupported content type", lineNo)
 			}
 		}
 		if len(parts) == 0 {
 			continue // nothing user-visible after redaction
+		}
+		text, withheld := SanitizeText(strings.Join(parts, "\n"))
+		if withheld {
+			red = append(red, Redaction{MessageID: l.UUID, Field: SanitizerVersion})
 		}
 		seq++
 		recs = append(recs, archive.Record{
@@ -96,7 +107,7 @@ func AdaptClaudeCodeJSONL(data []byte, project, sourceInstance string) ([]archiv
 			ParentID:       l.ParentUUID,
 			Type:           archive.TypeMessage,
 			Role:           l.Message.Role,
-			Text:           strings.Join(parts, "\n"),
+			Text:           text,
 		})
 	}
 	if err := sc.Err(); err != nil {

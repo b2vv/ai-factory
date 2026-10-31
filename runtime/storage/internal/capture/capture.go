@@ -64,6 +64,10 @@ func Adapt(f ProviderFixture) ([]archive.Record, []Redaction) {
 		if len(m.Secrets) > 0 {
 			red = append(red, Redaction{MessageID: m.MessageID, Field: "secrets"})
 		}
+		text, withheld := SanitizeText(m.Text)
+		if withheld {
+			red = append(red, Redaction{MessageID: m.MessageID, Field: SanitizerVersion})
+		}
 		// The record is built WITHOUT the prohibited fields; they never enter the record and
 		// therefore never reach the WAL/archive.
 		recs = append(recs, archive.Record{
@@ -76,7 +80,7 @@ func Adapt(f ProviderFixture) ([]archive.Record, []Redaction) {
 			ParentID:       m.ParentID,
 			Type:           recordType(m.Kind),
 			Role:           m.Role,
-			Text:           m.Text,
+			Text:           text,
 			Edited:         m.Edited,
 			Withdrawn:      m.Withdrawn,
 		})

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "version": "0.8.0-alpha.1",
-  "status": "ALPHA_EXPERIMENTAL_DEFAULT_OFF_OWNER_ACCEPTED_LIMITATIONS",
+  "version": "0.8.0-alpha.1+import-safety.1",
+  "status": "ALPHA_EXPERIMENTAL_UNTAGGED_IMPORT_SAFETY_PATCH",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
   "components": {
@@ -114,7 +114,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "365166196cadb1362b6559282a9b29d38bd9e7477e4a88e477158e36de826dc0",
+      "sha256": "8c48bd5f02ae4e4fda7d176a9c50c43569d15cc40d1170dda81c615f677bbc6e",
       "component": "core"
     },
     {
@@ -945,7 +945,7 @@
     {
       "path": "runtime/storage/deploy/oci/manifest.json",
       "component": "storage",
-      "sha256": "ac0980b0ed6e752340ef324e8853af2cbe58bd2ba4817700f6e55b22c4ce7615"
+      "sha256": "7c04ef4e1900f876d5d42bcb41eb059e00fc5dcbc2cce13632b441af528dff27"
     },
     {
       "path": "runtime/storage/deploy/test/compose.yaml",
@@ -980,7 +980,7 @@
     {
       "path": "runtime/storage/internal/api/api.go",
       "component": "storage",
-      "sha256": "d12f8174d325d91ad1e16caa8ded6e15a08d48db392f83a2cd8e6ffbcae076a8"
+      "sha256": "39ec31d54217561d446e8286f7b634109107db33b6e7e2b799e61d049ab9899b"
     },
     {
       "path": "runtime/storage/internal/api/api_test.go",
@@ -1041,6 +1041,11 @@
       "path": "runtime/storage/internal/api/fresh_review_test.go",
       "component": "storage",
       "sha256": "251fe5ba3fdee69c36c7b8a24b01b957de09d743d6b1d8cee21cbd5ecc5d45bd"
+    },
+    {
+      "path": "runtime/storage/internal/api/import_safety_test.go",
+      "component": "storage",
+      "sha256": "f1f7bbaac4e5df5dc9bcc07abafd36d6aad96b198499e37295cef5825e280c2d"
     },
     {
       "path": "runtime/storage/internal/api/lifecycle_test.go",
@@ -1250,12 +1255,12 @@
     {
       "path": "runtime/storage/internal/capture/PROVIDER-ADAPTER-JUSTIFICATION.md",
       "component": "storage",
-      "sha256": "3866ccf82730cdd87567f0e5c4db091260bc3291de28f7034254ca15e36b0048"
+      "sha256": "f145f89bc874c849a668e0b811b06dab4594c540252ab1b0d2fcb956dc7e3963"
     },
     {
       "path": "runtime/storage/internal/capture/capture.go",
       "component": "storage",
-      "sha256": "dcd4bd332c92c7918aa7325a9a3f76375a9a113248572b50d9d8b4902eb9f342"
+      "sha256": "5ec5e266c70933bd86127dab0bfeb24114e31c46f7545b598de005a677f1e89e"
     },
     {
       "path": "runtime/storage/internal/capture/capture_test.go",
@@ -1265,7 +1270,17 @@
     {
       "path": "runtime/storage/internal/capture/claudecode.go",
       "component": "storage",
-      "sha256": "b8053de4e4d132b911ac4b3bbc4a989b1314ba1077422d65c710695b09fff6a8"
+      "sha256": "b59fe4e551a05a755ceab6c7c9eda3ae5fb9eabcb608854e0a2a0601ff9c7745"
+    },
+    {
+      "path": "runtime/storage/internal/capture/sanitize.go",
+      "component": "storage",
+      "sha256": "0e65bad49f98975a124be736fb4c2307eea34a4cee316032d578dad8a75727ac"
+    },
+    {
+      "path": "runtime/storage/internal/capture/sanitize_test.go",
+      "component": "storage",
+      "sha256": "5aab12b150e152688333b7deb90d2e3ad68463b98ef42f8c23a2ab1ff203bfa9"
     },
     {
       "path": "runtime/storage/internal/config/config.go",
@@ -1445,7 +1460,7 @@
     {
       "path": "runtime/storage/internal/ingest/redaction_test.go",
       "component": "storage",
-      "sha256": "69594e8710e7fb690b36c1f3ecb642a4499039004bc6a6e4bb6485bcafcc6407"
+      "sha256": "3240c43d3b44f45224a325a029f1cd7260a5f1dfccbb65e64fd405d78aca5b0c"
     },
     {
       "path": "runtime/storage/internal/ingest/review_regression_test.go",
@@ -3383,6 +3398,7 @@
     "full_acceptance": "NOT_GREEN",
     "automatic_reclaim": "NOT_IMPLEMENTED_BLOCKED",
     "backups": "EXCLUDED_DESTRUCTIVE_DEPENDENT_CLI_DISABLED",
-    "activation": "DEFAULT_OFF"
+    "activation": "DEFAULT_OFF",
+    "patch": "Owner-authorized 2026-10-31 known-credential pre-WAL withholding and strict unsupported-format refusal; no new tag, no runtime activation; review remains BLOCKED."
   }
 }
