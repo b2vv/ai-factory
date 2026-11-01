@@ -3270,6 +3270,11 @@
       "component": "core"
     },
     {
+      "path": "tests/connect/test_connect_project.py",
+      "sha256": "2fe29e15ca7dc7efc0548badb440282108494a89d259235e1b9b72f3585cdde0",
+      "component": "core"
+    },
+    {
       "path": "tests/constraints/test_evidence.py",
       "sha256": "e9ecad4ca4b05e11195d7f01a7f438350198f6aa21af6083033f2f645457d7cf",
       "component": "core"
@@ -3417,6 +3422,11 @@
     {
       "path": "tests/session-size/test_session_guard.py",
       "sha256": "d8e4c52da77f12a98d89c15068db63a69b6779a7a295a933998602c0a0231c42",
+      "component": "core"
+    },
+    {
+      "path": "tools/connect-project.py",
+      "sha256": "cce5c950bf629a5a0a6e9f39e7f512ed3027256006b36c29d89dda71a74f5a54",
       "component": "core"
     },
     {
