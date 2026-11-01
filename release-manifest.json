@@ -86,6 +86,13 @@
         "core"
       ],
       "activation": "Experimental/default-off alpha: explicit optional component only; no DB/capture/hook/project activation. Automatic reclaim NOT_IMPLEMENTED/BLOCKED; independent storage review BLOCKED; backups excluded. See docs/release-0.8.0-alpha.1.md."
+    },
+    "capture-bridge": {
+      "required": false,
+      "dependencies": [
+        "core"
+      ],
+      "activation": "project-scoped Claude Code Stop hook, loopback POST only; not wired by default"
     }
   },
   "independent_review": "AF14/15 and bounded AF16 native pilot ACCEPTED in their exact scopes; stricter packaged Git behavior and final rc3 integration/package review PENDING; global activation NOT_RUN; storage alpha review BLOCKED, not GREEN; owner explicitly accepted limited alpha publication",
@@ -906,6 +913,26 @@
       "path": "runtime/storage/cmd/workflow-operator/main.go",
       "component": "storage",
       "sha256": "fee404595a4ae8b66f0e4ddffa1e3e79845a80287d1e35d14ae942c38f6be345"
+    },
+    {
+      "path": "runtime/storage/deploy/capture-bridge/README.md",
+      "sha256": "4ec5c90fab9eeb2018dd0c46bea6b7c4c64eead924cceca080e604dc753345c4",
+      "component": "capture-bridge"
+    },
+    {
+      "path": "runtime/storage/deploy/capture-bridge/capture_bridge.py",
+      "sha256": "f45b31577e400101da3a5dfda997fbba63568a35654394f974ca33ff4740860b",
+      "component": "capture-bridge"
+    },
+    {
+      "path": "runtime/storage/deploy/capture-bridge/claude-code-stop-hook.sh",
+      "sha256": "8e349b0953b82b7e625c8abb1b392aa737f65ec635763ab636b7150c3a97f5a5",
+      "component": "capture-bridge"
+    },
+    {
+      "path": "runtime/storage/deploy/capture-bridge/test_capture_bridge.py",
+      "sha256": "4ed7f3fd63840927318568b4574a6dac585f3e521d115236dc2d5097d5879c75",
+      "component": "capture-bridge"
     },
     {
       "path": "runtime/storage/deploy/dev/Dockerfile",
