@@ -921,7 +921,7 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/capture_bridge.py",
-      "sha256": "f45b31577e400101da3a5dfda997fbba63568a35654394f974ca33ff4740860b",
+      "sha256": "e5b06882012ed0e64dfd09837058d9623ce1ab92fa884d9f83288c1ee223af9b",
       "component": "capture-bridge"
     },
     {

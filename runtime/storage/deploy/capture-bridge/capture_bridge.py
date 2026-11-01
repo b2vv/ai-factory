@@ -188,9 +188,24 @@ def main():
             status["error"] = "no transcript_path"
             emit_status(status, status_file); return
 
-        objs, skipped = read_transcript(tp)
+        # The Stop hook can fire before the final assistant message is flushed to the
+        # transcript (a short/fast turn). Re-read a few times (bounded, well under the hook
+        # timeout) until a final assistant message with visible text appears; the loop exits
+        # as soon as one is found. Always exits 0 and never blocks the session.
+        attempts = int(os.environ.get("AF_CAPTURE_READ_ATTEMPTS", "6"))
+        delay = float(os.environ.get("AF_CAPTURE_READ_DELAY", "0.4"))
+        prompt = assistant = None
+        stats = {"unrecognized_line_types": {}, "unknown_block_types": {}, "other_session_lines": 0}
+        skipped = 0
+        for attempt in range(max(1, attempts)):
+            objs, skipped = read_transcript(tp)
+            prompt, assistant, stats = select_turn(objs, session_id)
+            if assistant is not None:
+                break
+            if attempt + 1 < attempts:
+                time.sleep(delay)
+        status["read_attempts"] = attempt + 1
         status["skipped_unparseable_lines"] = skipped
-        prompt, assistant, stats = select_turn(objs, session_id)
         status["unrecognized_line_types"] = stats["unrecognized_line_types"]
         status["unknown_block_types"] = stats["unknown_block_types"]
         status["other_session_lines"] = stats["other_session_lines"]
