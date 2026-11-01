@@ -481,7 +481,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "7af38a63f8e1d1ab275891d88b5ae4d7a97f0bb5f0afc9454449786b7b6ab462",
+      "sha256": "f848b63c4176bb071d0a358c5d8a6db71dee966002a2b44bb6f42a8299a2aac1",
       "component": "core"
     },
     {
@@ -531,7 +531,7 @@
     },
     {
       "path": "provenance/skill-registry.json",
-      "sha256": "7ef0eb5977f78a3318693c716c76a8daea707fe8277eac05e503dc2a0c3d2e58",
+      "sha256": "0c27d0714e6fd4d620adb36cf03f9a6c710590ac710ca8406bc8c91cacbd2f48",
       "component": "core"
     },
     {
@@ -2165,6 +2165,11 @@
       "component": "graphify"
     },
     {
+      "path": "skills/inspector-review/SKILL.md",
+      "sha256": "1662123b9be58a285efb8bbb3b4ddc04e052f9dad51c02dfc084de0293c3a8ad",
+      "component": "skills"
+    },
+    {
       "path": "skills/interface-review/SKILL.md",
       "sha256": "ebb3271f2e6d56ee8063ca251469b625358d6a43b956a558b9c3e73169741221",
       "component": "skills"
@@ -2401,7 +2406,7 @@
     },
     {
       "path": "skills/step-back-review/SKILL.md",
-      "sha256": "4bb4d02fef6464b14efd65c7e756ce0f141bb8e6f34bbb165495022091b53901",
+      "sha256": "cd593b3467d38dc2db550a3b72c0aeb0c62c5fad78d474d708fb94f0c6374c94",
       "component": "skills"
     },
     {

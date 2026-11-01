@@ -114,6 +114,26 @@ Add a concise section to the **existing** review or task record (not a new docum
 - The contract or artifact the next task must receive.
 
 
+## When to hand off to inspector-review
+
+This skill judges a change against the plan and responsibility boundaries. When the work is
+already implemented and the open question is whether it *actually landed in the project*, that is
+a different job — the `inspector-review` skill. Hand off only when one of these concrete risks is
+named:
+
+- The work is implemented and claimed ready, but its real integration still needs checking.
+- The change spans several components, or the path from implementation to installation and use.
+- There is doubt that a local PASS means the whole task is done: the capability may be unwired,
+  manual steps may remain, or only isolated tests were run.
+- The owner explicitly asks for an independent look at finished work.
+
+During conception or planning, keep the check here — do not hand off. Do not auto-run the
+inspector on every minor change. When a named risk **and** permission to delegate review both
+hold, run one clean inspector (fresh context, primary requirements and the exact diff, no
+author conclusions). Otherwise, briefly propose a run with the specific reason, and wait. Re-run
+only after relevant fixes or a direct owner request. This is a pointer, not a required gate.
+
+
 ## Behavioural expectations (self-check)
 
 1. A locally correct change breaks an explicitly agreed downstream task → detect the conflict

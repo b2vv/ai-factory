@@ -142,8 +142,13 @@
     },
     {
       "destination": "skills/step-back-review/SKILL.md",
-      "sha256": "4bb4d02fef6464b14efd65c7e756ce0f141bb8e6f34bbb165495022091b53901",
+      "sha256": "cd593b3467d38dc2db550a3b72c0aeb0c62c5fad78d474d708fb94f0c6374c94",
       "kind": "Owner-authorized authored first-party skill (step-back-review); distinct from upstream MIT adaptation; built from task-artifacts/skills-audit-20261029/STEP-BACK-REVIEW-requirements.md; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/inspector-review/SKILL.md",
+      "sha256": "1662123b9be58a285efb8bbb3b4ddc04e052f9dad51c02dfc084de0293c3a8ad",
+      "kind": "Owner-authorized authored first-party skill (inspector-review); narrow post-completion integration inspector, distinct from upstream MIT adaptation; references step-back-review hand-off; see PROVENANCE.md"
     }
   ],
   "adaptations": [

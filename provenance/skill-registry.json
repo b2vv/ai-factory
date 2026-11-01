@@ -335,6 +335,13 @@
       "provenance": "authorized-additions.json"
     },
     {
+      "id": "inspector-review",
+      "name": "inspector-review",
+      "path": "skills/inspector-review/SKILL.md",
+      "status": "INCLUDED",
+      "provenance": "authorized-additions.json"
+    },
+    {
       "id": "synced/snapshot-01/built-in-browser",
       "name": "built-in-browser",
       "path": "skills/synced/snapshot-01/built-in-browser/SKILL.md",
