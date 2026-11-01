@@ -3271,7 +3271,7 @@
     },
     {
       "path": "tests/connect/test_connect_project.py",
-      "sha256": "2fe29e15ca7dc7efc0548badb440282108494a89d259235e1b9b72f3585cdde0",
+      "sha256": "2f7c4d3245be1b78acfde8a8e6027066ae9a1396b5f463f55681d42ea1582041",
       "component": "core"
     },
     {
@@ -3426,7 +3426,7 @@
     },
     {
       "path": "tools/connect-project.py",
-      "sha256": "cce5c950bf629a5a0a6e9f39e7f512ed3027256006b36c29d89dda71a74f5a54",
+      "sha256": "d7516e81b93078d9b3b04b9554343582e64f26030e2d21d454e449a395d49314",
       "component": "core"
     },
     {

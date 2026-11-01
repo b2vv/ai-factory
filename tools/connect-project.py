@@ -14,8 +14,14 @@ What it does, idempotently:
   * Ensures `CLAUDE.local.md` imports `@AGENTS.local.md`.
   * Appends the local entrypoint paths to `.gitignore` (deduplicated), preserving existing rules.
   * Verifies the project pin/adapter/manifest identity against the installed kit (hashes from the
-    real files) and reports mismatches. It never mints grants, never enables capture, never
-    touches hooks/permissions/MCP/credentials/consent.
+    real files) and reports mismatches. With the explicit opt-in `--reconcile-identity` it also
+    rewrites ONLY the managed identity fields (version + release-manifest sha256) of known
+    pin/package schemas to the installed kit, preserving history (`previous_pin`), caches and notes.
+    The source `commit` is never guessed: since the installed kit records no verified commit, a stale
+    `commit` is demoted to an explicit UNVERIFIED marker with the old SHA kept in `commit_superseded`,
+    rather than left beside the refreshed hashes as if current. Unknown formats/schemas are reported
+    before any write, never guessed. It never mints grants,
+    never enables capture, never touches hooks/permissions/MCP/credentials/consent.
 
 Only the delimited managed block is ever rewritten; everything outside it is preserved
 byte-for-byte. A re-run with unchanged inputs writes nothing. A pre-existing *unmanaged* Factory
@@ -167,12 +173,33 @@ def git_tracked(git_root, relpath):
         return False
 
 
+PIN_LOCATIONS = (
+    ".ai/project/ai-factory-pin.json",
+    ".ai/agents/ai-factory-package.json",
+    "work/rules/ai-factory-package.json",
+    "docs/development/ai-factory-package.json",
+)
+
+
+def identity_shape(obj):
+    """Known pin/package identity shapes → (block_key, version_key, manifest_sha_key). Else None.
+
+    Only these two reviewed schemas are reconciled; any other shape is reported, never guessed.
+    """
+    if obj.get("schema") == "ai-factory-pin/1" and isinstance(obj.get("source"), dict):
+        return ("source", "version", "release_manifest_file_sha256")
+    if obj.get("schema_version") == 1 and isinstance(obj.get("package"), dict):
+        return ("package", "version", "release_manifest_sha256")
+    return None
+
+
 def verify_consistency(project_root, kit):
-    """Report whether project pin/adapter/manifest record the installed kit identity. Read-only."""
+    """Report whether project pin/adapter/manifest record the installed kit identity. Read-only.
+
+    This is the no-update MISMATCH report; the actual rewrite is `reconcile_identity` (opt-in).
+    """
     findings = []
-    # pin (either schema)
-    for rel in (".ai/project/ai-factory-pin.json", ".ai/agents/ai-factory-package.json",
-                "work/rules/ai-factory-package.json", "docs/development/ai-factory-package.json"):
+    for rel in PIN_LOCATIONS:
         p = project_root / rel
         if not p.exists():
             continue
@@ -181,13 +208,101 @@ def verify_consistency(project_root, kit):
         except Exception:
             findings.append(f"pin {rel}: UNREADABLE")
             continue
-        blk = d.get("source") or d.get("package") or {}
-        rec_mani = blk.get("release_manifest_file_sha256") or blk.get("release_manifest_sha256")
-        ok = (blk.get("version") == kit["version"] and rec_mani == kit["release_manifest_sha256"])
+        shape = identity_shape(d)
+        if not shape:
+            findings.append(f"pin {rel}: UNKNOWN schema (not reconcilable without review)")
+            continue
+        bk, vk, mk = shape
+        blk = d.get(bk, {})
+        ok = (blk.get(vk) == kit["version"] and blk.get(mk) == kit["release_manifest_sha256"])
         findings.append(f"pin {rel}: version/manifest {'MATCH' if ok else 'MISMATCH'} installed kit")
     if not findings:
         findings.append("pin: none found in this checkout")
     return findings
+
+
+def reconcile_identity(project_root, kit, apply):
+    """Rewrite ONLY the managed identity fields (version + release-manifest sha256) of known
+    pin/package files to the installed kit, from the real installed state.
+
+    Preserves every other byte: user text, `previous_pin`/history, `cache.required_files`, notes,
+    install receipts, and `commit` (the source git commit is NOT derivable from the installed kit,
+    so it is never guessed — only reported). A file whose formatting is not canonical, whose schema
+    is unknown, or whose identity block/keys are absent is REPORTED and left untouched (shown before
+    any write, never guessed). The edit is surgical and idempotent: a re-run after a successful
+    reconcile writes nothing. Returns (results, wrote_any).
+    """
+    results = []
+    wrote = False
+    want_version = kit["version"]
+    want_manifest = kit["release_manifest_sha256"]
+    for rel in PIN_LOCATIONS:
+        p = project_root / rel
+        if not p.exists():
+            continue
+        raw = p.read_text()
+        try:
+            obj = json.loads(raw)
+        except Exception:
+            results.append({"file": rel, "status": "conflict",
+                            "detail": "UNREADABLE JSON — shown, not written"})
+            continue
+        canon = json.dumps(obj, indent=2, ensure_ascii=False) + ("\n" if raw.endswith("\n") else "")
+        if canon != raw:
+            results.append({"file": rel, "status": "conflict",
+                            "detail": "non-canonical formatting — reconcile skipped to avoid "
+                                      "reformatting the file (shown, not written)"})
+            continue
+        shape = identity_shape(obj)
+        if not shape:
+            results.append({"file": rel, "status": "conflict",
+                            "detail": "UNKNOWN pin/package schema — shown, not written; reconcile manually"})
+            continue
+        bk, vk, mk = shape
+        block = obj[bk]
+        if vk not in block or mk not in block:
+            results.append({"file": rel, "status": "conflict",
+                            "detail": f"identity keys `{vk}`/`{mk}` absent in `{bk}` — shown, not written"})
+            continue
+        changes = []
+        if block.get(vk) != want_version:
+            changes.append({"key": f"{bk}.{vk}", "old": block.get(vk), "new": want_version})
+        if want_manifest is not None and block.get(mk) != want_manifest:
+            changes.append({"key": f"{bk}.{mk}", "old": block.get(mk), "new": want_manifest})
+        # The installed kit records no verified git commit (install is keyed on version + manifest
+        # digest, not a SHA). So a stale `commit` must NOT sit next to the refreshed hashes as if it
+        # were current: demote it to an explicit unverified marker and keep the old SHA in history.
+        # We never guess a SHA. Idempotent: once commit is null, there is nothing left to demote.
+        commit_demote = ("commit" in block and block.get("commit") is not None)
+        if commit_demote:
+            changes.append({"key": f"{bk}.commit", "old": block.get("commit"), "new": None,
+                            "reason": "UNVERIFIED_FOR_CURRENT_PACKAGE (installed kit has no commit link); "
+                                      "old value preserved in commit_superseded"})
+        entry = {"file": rel, "changes": changes}
+        if not changes:
+            entry["status"] = "match"
+            results.append(entry)
+            continue
+        if apply:
+            block[vk] = want_version
+            if want_manifest is not None:
+                block[mk] = want_manifest
+            if commit_demote:
+                block["commit_superseded"] = block["commit"]
+                block["commit"] = None
+                block["commit_status"] = ("UNVERIFIED_FOR_CURRENT_PACKAGE: the installed kit records no "
+                                          "git commit; reconcile against a verified release commit before "
+                                          "relying on it. Previous value preserved in commit_superseded.")
+            p.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + ("\n" if raw.endswith("\n") else ""))
+            wrote = True
+            entry["status"] = "updated"
+        else:
+            entry["status"] = "would-update"
+        results.append(entry)
+    if not results:
+        results.append({"file": None, "status": "none",
+                        "detail": "no pin/package file found in this checkout"})
+    return results, wrote
 
 
 def main(argv=None):
@@ -198,6 +313,10 @@ def main(argv=None):
     ap.add_argument("--search-contract", help="path to the read-only search contract (e.g. .ai/project/capture-search.md)")
     ap.add_argument("--gitignore-extra", action="append", default=[], help="extra local path to gitignore (repeatable)")
     ap.add_argument("--git-root", help="git root to check tracked-status against (default: --project)")
+    ap.add_argument("--reconcile-identity", action="store_true",
+                    help="also reconcile stale pin/adapter/manifest identity (version + release-manifest "
+                         "sha) to the installed kit; preserves history and unknown shapes. Without this "
+                         "flag the pin is only reported (MISMATCH), never rewritten.")
     ap.add_argument("--apply", action="store_true", help="write changes (default: dry-run plan)")
     a = ap.parse_args(argv)
 
@@ -256,6 +375,16 @@ def main(argv=None):
                                        "no automatic `git rm` is run.")
 
     report["consistency"] = verify_consistency(project, kit)
+
+    # Opt-in: actually reconcile stale identity fields. Conflicts/unknowns are surfaced BEFORE any
+    # write so they are shown, never guessed. Writing only happens with --apply AND this flag.
+    if a.reconcile_identity:
+        recon, _ = reconcile_identity(project, kit, apply=a.apply)
+        report["identity_reconcile"] = recon
+        for r in recon:
+            if r.get("status") == "conflict":
+                report["conflicts"].append(
+                    f"pin {r['file']}: {r['detail']}")
 
     if a.apply:
         if agents_action != "noop":

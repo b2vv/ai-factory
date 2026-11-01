@@ -167,6 +167,118 @@ class ConnectProject(unittest.TestCase):
         self.assertFalse((self.proj / "AGENTS.local.md").exists())
         self.assertIn("PLANNED", rep["status"])
 
+    # ---- identity reconciliation (stale pin/adapter/manifest) ----
+
+    def _write_stale_pin(self, rel, schema):
+        """Write a stale pin/package file with history + caches that MUST be preserved verbatim."""
+        p = self.proj / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        if schema == "pin":
+            obj = {
+                "schema": "ai-factory-pin/1",
+                "note": "Local ignored connection.",
+                "source": {
+                    "repo": "/some/repo",
+                    "commit": "0000000000000000000000000000000000000000",
+                    "version": "0.7.0-OLD",
+                    "release_manifest_file_sha256": "deadbeef" * 8,
+                },
+                "managed_root": str(self.kit),
+                "previous_pin": {"schema": "ai-factory-pin/1", "source": {"version": "0.6.0-HIST"}},
+            }
+        else:
+            obj = {
+                "schema_version": 1,
+                "package": {
+                    "repository": "https://example/repo",
+                    "commit": "1111111111111111111111111111111111111111",
+                    "version": "0.7.0-OLD",
+                    "release_manifest_sha256": "cafebabe" * 8,
+                },
+                "cache": {"required_files": {"README.md": "f00df00d" * 8}},
+                "previous_connection": {"version": "0.6.0-HIST"},
+            }
+        p.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n")
+        return p
+
+    def _installed_identity(self):
+        inst = json.loads((self.kit / ".ai-factory-state" / "installed.json").read_text())
+        import hashlib
+        mani = hashlib.sha256((self.kit / "release-manifest.json").read_bytes()).hexdigest()
+        return inst["version"], mani
+
+    # dry-run shows the identity changes but writes nothing
+    def test_reconcile_dry_run_shows_changes_writes_nothing(self):
+        p = self._write_stale_pin(".ai/project/ai-factory-pin.json", "pin")
+        before = p.read_bytes()
+        rc, rep = run(self.base_args() + ["--reconcile-identity"])  # no --apply
+        self.assertEqual(p.read_bytes(), before)  # nothing written
+        recon = rep["identity_reconcile"]
+        self.assertEqual(recon[0]["status"], "would-update")
+        keys = {c["key"] for c in recon[0]["changes"]}
+        # version + manifest sha refreshed; stale commit demoted (never guessed)
+        self.assertEqual(keys, {"source.version", "source.release_manifest_file_sha256", "source.commit"})
+
+    # apply reconciles identity to installed kit; preserves commit, history, notes
+    def test_reconcile_apply_updates_identity_preserves_rest(self):
+        for rel, schema in ((".ai/project/ai-factory-pin.json", "pin"),
+                            ("work/rules/ai-factory-package.json", "pkg")):
+            p = self._write_stale_pin(rel, schema)
+            run(self.base_args() + ["--reconcile-identity", "--apply"])
+            obj = json.loads(p.read_text())
+            want_v, want_m = self._installed_identity()
+            blk = obj.get("source") or obj.get("package")
+            self.assertEqual(blk["version"], want_v)  # identity updated
+            mk = "release_manifest_file_sha256" if "source" in obj else "release_manifest_sha256"
+            self.assertEqual(blk[mk], want_m)
+            # commit NOT guessed: demoted to null + explicit unverified marker, old SHA kept in history
+            self.assertIsNone(blk["commit"])
+            self.assertIn("UNVERIFIED_FOR_CURRENT_PACKAGE", blk["commit_status"])
+            self.assertIn(blk["commit_superseded"][:4], ("0000", "1111"))
+            # history + caches preserved
+            txt = p.read_text()
+            self.assertIn("0.6.0-HIST", txt)
+            self.assertNotIn("0.7.0-OLD", txt)  # the only replaced identity value
+
+    # re-run after a successful reconcile writes nothing (idempotent)
+    def test_reconcile_idempotent(self):
+        p = self._write_stale_pin(".ai/project/ai-factory-pin.json", "pin")
+        run(self.base_args() + ["--reconcile-identity", "--apply"])
+        after1 = p.read_bytes()
+        rc, rep = run(self.base_args() + ["--reconcile-identity", "--apply"])
+        self.assertEqual(p.read_bytes(), after1)
+        self.assertEqual(rep["identity_reconcile"][0]["status"], "match")
+
+    # no-update mode: MISMATCH is reported, and the file is NOT rewritten
+    def test_mismatch_reported_without_reconcile(self):
+        p = self._write_stale_pin(".ai/project/ai-factory-pin.json", "pin")
+        before = p.read_bytes()
+        rc, rep = run(self.base_args() + ["--apply"])  # apply, but NO --reconcile-identity
+        self.assertEqual(p.read_bytes(), before)  # not rewritten
+        self.assertNotIn("identity_reconcile", rep)  # reconciler not even invoked
+        self.assertTrue(any("MISMATCH" in f for f in rep["consistency"]))
+
+    # unknown schema: shown as a conflict before write, never guessed/rewritten
+    def test_reconcile_unknown_schema_reported_not_written(self):
+        p = self.proj / ".ai/project/ai-factory-pin.json"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps({"schema": "something-else/9", "x": 1}, indent=2) + "\n")
+        before = p.read_bytes()
+        rc, rep = run(self.base_args() + ["--reconcile-identity", "--apply"])
+        self.assertEqual(p.read_bytes(), before)  # not written
+        self.assertEqual(rep["identity_reconcile"][0]["status"], "conflict")
+        self.assertTrue(any("UNKNOWN pin/package schema" in c for c in rep["conflicts"]))
+
+    # non-canonical formatting: reported, not reformatted
+    def test_reconcile_noncanonical_reported_not_written(self):
+        p = self.proj / ".ai/project/ai-factory-pin.json"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text('{"schema":"ai-factory-pin/1","source":{"version":"x","release_manifest_file_sha256":"y"}}')
+        before = p.read_bytes()
+        rc, rep = run(self.base_args() + ["--reconcile-identity", "--apply"])
+        self.assertEqual(p.read_bytes(), before)  # not reformatted
+        self.assertEqual(rep["identity_reconcile"][0]["status"], "conflict")
+
 
 if __name__ == "__main__":
     unittest.main()
