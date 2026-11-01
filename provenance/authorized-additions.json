@@ -147,7 +147,7 @@
     },
     {
       "destination": "skills/inspector-review/SKILL.md",
-      "sha256": "1662123b9be58a285efb8bbb3b4ddc04e052f9dad51c02dfc084de0293c3a8ad",
+      "sha256": "84d715fdfedf30b3b238ab39c81a90aa1879e24e86219ff7c4038c4543dfb57a",
       "kind": "Owner-authorized authored first-party skill (inspector-review); narrow post-completion integration inspector, distinct from upstream MIT adaptation; references step-back-review hand-off; see PROVENANCE.md"
     }
   ],

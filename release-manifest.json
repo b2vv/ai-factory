@@ -481,7 +481,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "f848b63c4176bb071d0a358c5d8a6db71dee966002a2b44bb6f42a8299a2aac1",
+      "sha256": "82fef1123558843b443cf91d3b86dec0637e3c9831bd3fc92449e97eb4a47a6a",
       "component": "core"
     },
     {
@@ -2166,7 +2166,7 @@
     },
     {
       "path": "skills/inspector-review/SKILL.md",
-      "sha256": "1662123b9be58a285efb8bbb3b4ddc04e052f9dad51c02dfc084de0293c3a8ad",
+      "sha256": "84d715fdfedf30b3b238ab39c81a90aa1879e24e86219ff7c4038c4543dfb57a",
       "component": "skills"
     },
     {

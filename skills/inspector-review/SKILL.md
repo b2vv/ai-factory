@@ -92,6 +92,26 @@ Pick checks by the risk of the change; do not walk a universal mega-checklist.
 - Do not fix your own findings within this run, and do not start an endless re-review loop.
 
 
+## Verdict discipline
+
+A mandatory acceptance criterion that is demonstrably unmet is a defect, not an observation:
+
+- An explicit, applicable acceptance criterion that is **not met**, with **no owner-approved
+  exception**, forces **NEEDS CHANGES**. It cannot be a FIT and cannot be downgraded to
+  non-blocking.
+- A technical explanation — from the author, *or from the inspector itself* (for example "the
+  mechanism self-recovers, so the missing control is fine") — does **not** replace the owner's
+  decision and does not license lowering such a discrepancy to non-blocking. Only the owner grants
+  the exception; until then the criterion stands.
+- If it is unclear whether the criterion applies, or whether the cited requirement is
+  authoritative, the verdict is **NOT VERIFIED** with one concrete question — not FIT.
+- **FIT may not contain any unresolved discrepancy with a mandatory requirement.** Ordinary
+  optional improvements, with no mandatory criterion behind them, may remain non-blocking notes.
+
+An exception counts as owner-approved only when a cited owner decision records it — not an agent
+document, a code comment, or the inspector's own reasoning.
+
+
 ## Short result
 
 - **Verdict: FIT / NEEDS CHANGES / NOT VERIFIED.**
@@ -114,6 +134,10 @@ On isolated examples:
    distinguishes the package from the actual installation.
 3. A small change is integrated correctly → the inspector accepts it without inventing defects or
    demanding a system rebuild.
+4. An explicit, applicable acceptance criterion is unmet while tests are green and there is a
+   technically reasonable justification, but **no owner-approved exception** → the inspector
+   returns NEEDS CHANGES; it does not downgrade the gap to non-blocking on its own reasoning.
+   Control: the same gap **with a cited owner-approved exception** is not blocked for that reason.
 
 Separately confirm the clean context: the author's report, with its hint, does not enter the
 inspector's initial request. Keep the examples and expectations out of its starting context.
