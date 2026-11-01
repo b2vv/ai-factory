@@ -328,6 +328,13 @@
       "status": "INCLUDED"
     },
     {
+      "id": "step-back-review",
+      "name": "step-back-review",
+      "path": "skills/step-back-review/SKILL.md",
+      "status": "INCLUDED",
+      "provenance": "authorized-additions.json"
+    },
+    {
       "id": "synced/snapshot-01/built-in-browser",
       "name": "built-in-browser",
       "path": "skills/synced/snapshot-01/built-in-browser/SKILL.md",

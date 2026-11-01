@@ -139,6 +139,11 @@
       "destination": "ai-factory/reference-anti-patterns.md",
       "sha256": "70d148987e4154ce8882949be1ae9a02154b25ca6184e65dd14bf705a81ea82f",
       "kind": "Owner-authorized authored cross-skill reference anti-pattern rules (4-field template + a11y REQUIREMENT-vs-preference split); first-party, distinct from upstream MIT adaptation; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/step-back-review/SKILL.md",
+      "sha256": "4bb4d02fef6464b14efd65c7e756ce0f141bb8e6f34bbb165495022091b53901",
+      "kind": "Owner-authorized authored first-party skill (step-back-review); distinct from upstream MIT adaptation; built from task-artifacts/skills-audit-20261029/STEP-BACK-REVIEW-requirements.md; see PROVENANCE.md"
     }
   ],
   "adaptations": [

@@ -474,7 +474,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "53adaf328a141b5b6fb737555c3a2835a3326a3139fbf9b9a73bb8be7e79829e",
+      "sha256": "7af38a63f8e1d1ab275891d88b5ae4d7a97f0bb5f0afc9454449786b7b6ab462",
       "component": "core"
     },
     {
@@ -524,7 +524,7 @@
     },
     {
       "path": "provenance/skill-registry.json",
-      "sha256": "ad1d32f245d96c2ce44e52fe52e1ac4f8c60c20efb3376c7fc628a30edceaec2",
+      "sha256": "7ef0eb5977f78a3318693c716c76a8daea707fe8277eac05e503dc2a0c3d2e58",
       "component": "core"
     },
     {
@@ -2370,6 +2370,11 @@
     {
       "path": "skills/ship/teach/agents/openai.yaml",
       "sha256": "5856f3ae8aec742f1499c640aecdd5f1d6af5fa210a7c6ec794de8263a6f733f",
+      "component": "skills"
+    },
+    {
+      "path": "skills/step-back-review/SKILL.md",
+      "sha256": "4bb4d02fef6464b14efd65c7e756ce0f141bb8e6f34bbb165495022091b53901",
       "component": "skills"
     },
     {
