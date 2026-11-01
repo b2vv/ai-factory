@@ -3393,6 +3393,11 @@
       "component": "core"
     },
     {
+      "path": "tools/connect-skills.sh",
+      "sha256": "0c6d19a8883bf2f9b656ad99191834c82cba49a87aca49250f8fb5dea48cf7a1",
+      "component": "core"
+    },
+    {
       "path": "tools/export_release.py",
       "sha256": "2e03d1255180ef455f97f5234a1f7cc0342d560a4b1bb9fddfab78416edee3f2",
       "component": "core"
