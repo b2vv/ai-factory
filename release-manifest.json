@@ -472,7 +472,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "bfa5c00fd6175d4b7dbef3e3377d03b3127d7e31d420e4d97fa4c84f18535d23",
+      "sha256": "56c81c2a6b98dbff17c615d228bf78a8fffdf2bc8b720b8d19b170e6132240b8",
       "component": "core"
     },
     {
@@ -512,7 +512,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "65615cafd6bfe197164e4e69b6cbcdc713265695f92e77a1497fe2685d5ccd9d",
+      "sha256": "a9fe64bb45dbb8d25322a7af34ce71b3a32c9f31622f559eb02f8f788e1e1375",
       "component": "core"
     },
     {
@@ -1132,7 +1132,7 @@
     },
     {
       "path": "skills/pattern-architecture-review/SKILL.md",
-      "sha256": "010dd2712ea5040bc11f7b756a2f465aa810eeb56816fe9edaa4ee56f587fa56",
+      "sha256": "b3d1e4ff1f133b6d191464a73f212e015ca853acff9cdf077f2ea86fe96bf5ae",
       "component": "skills"
     },
     {

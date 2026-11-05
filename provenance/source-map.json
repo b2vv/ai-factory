@@ -1686,11 +1686,12 @@
       "source": "~/.agents/skills/pattern-architecture-review/SKILL.md",
       "destination": "skills/pattern-architecture-review/SKILL.md",
       "source_sha256": "ea547aa56bd0af1ecadd26fb206134cc17f2a2dd8e8aea50ceaa6253b9a55966",
-      "sha256": "010dd2712ea5040bc11f7b756a2f465aa810eeb56816fe9edaa4ee56f587fa56",
+      "sha256": "b3d1e4ff1f133b6d191464a73f212e015ca853acff9cdf077f2ea86fe96bf5ae",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
+        "Owner-authorized original architecture-review guidance: record boundary rules, actual check coverage, exceptions and revision-bound execution evidence; inspect uncovered areas separately without inferring violations from missing coverage. No project source or third-party text copied; original source identity is unchanged."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pattern-architecture-review/SKILL.md"

@@ -105,6 +105,32 @@ Check dependency direction and real boundaries, not folder names:
 
 Do not demand layers, interfaces, DI containers or ports for every call. Propose a boundary only when it isolates independent policy, change or an external detail. Check the project's already documented decisions.
 
+### Evidence for architectural boundaries
+
+For each important boundary in the agreed review scope, record in the existing
+review report:
+
+- **Rule:** the required dependency or behavior constraint and its source. The
+  project's documented contract takes precedence over generic architecture advice.
+- **Actual coverage:** the check's location and what its implementation inspects
+  and asserts, including selected packages, layers and dependency types. Inspect
+  the check itself; its name or presence does not establish enforcement.
+- **Exceptions and gaps:** exclusions, allowlists, skip conditions and unexamined
+  paths. Distinguish an exception authorized by the project contract from a gap
+  in the check; neither alone establishes a code violation.
+- **Execution evidence:** command, result and tested revision, including a diff
+  fingerprint for relevant uncommitted changes. State whether it ran on the
+  reviewed version; absent or mismatched evidence remains NOT_TESTED, and an
+  execution blocker is reported explicitly.
+
+Inspect uncovered areas separately through scoped code inspection or an applicable
+check within the task's authorization. Cite the evidence and its limits; leave
+unverified areas explicit rather than treating them as either defects or verified
+compliance. For example, a layer-specific import check does not prove boundaries
+in excluded adapters, and allowing only standard-library imports does not prove
+absence of I/O. Report a violation only when evidence demonstrates a breach of
+the applicable rule; report missing coverage separately.
+
 **Done when:** Clean Code and Clean Architecture recommendations are separate from GoF and KISS/DRY/SOLID and have local evidence.
 
 
