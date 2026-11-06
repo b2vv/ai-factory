@@ -5,7 +5,8 @@
 # install this hook); cwd is NEVER used to infer the project.
 #
 #   AF_CAPTURE_PROJECT               DG project UUID (explicit operator mapping)   [required]
-#   AF_CAPTURE_OPERATOR_SECRET_FILE  path to the 0600 operator.json ({"id","secret"}) [required]
+#   AF_CAPTURE_AGENT_CREDENTIAL_FILE private JSON {principal_id,epoch,secret}
+#   AF_CAPTURE_OPERATOR_SECRET_FILE  legacy operator JSON; choose exactly ONE credential mode
 #   AF_CAPTURE_ENDPOINT              default http://127.0.0.1:8780
 #   AF_CAPTURE_SOURCE                default claude-code-dg
 #   AF_CAPTURE_STATUS_FILE           optional path for an appended, payload/secret-free status log

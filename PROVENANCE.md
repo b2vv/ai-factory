@@ -179,3 +179,12 @@ operations; isolated full-stack rehearsal evidence and independent acceptance ar
 maintained outside the portable distribution. Packaging this work does not assert
 that live migration, native-agent access, project capture, publication or consumer
 upgrades have occurred. Final acceptance binds exact reviewed bytes separately.
+
+## Unreleased project-scoped capture
+
+Owner-authorized first-party API authorization, bridge transport and synthetic tests
+reuse the existing grant registry, writer fence and ingestion pipeline. No external
+source, host configuration, credential or private transcript is included. Operator
+transport compatibility is retained; persistent project activation and installed-kit
+updates are separate actions. Synthetic fixture and mutation evidence do not claim
+native agent discovery or deployment of these changed bytes.

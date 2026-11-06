@@ -445,3 +445,27 @@ most 240 original Unicode runes. Literal search centers the normalized match;
 token search centers a literal query fragment when available and labels that
 basis. Prefix fallback is explicitly marked; it does not claim a visible token
 match. Full original hit payloads and IDs remain unchanged.
+
+## Project-scoped capture authorization
+
+POST `/v1/capture`, `/v1/capture/claude-code` and `/v1/capture/codex-event`
+accept a current agent grant with `capture` for the requested project. This grants
+capture across providers/source instances in that project, not reads or administration.
+The existing operator-header transport remains compatible. Header presence selects
+operator mode; invalid/empty operator credentials never fall back to agent mode.
+Duplicate authentication headers are rejected. A valid operator credential takes
+precedence over stray single-valued agent fields.
+
+Agent authorization precedes metering and is repeated while the server mutation
+and durable authority writer locks are held, before recovery/reservation/acceptance.
+Revocation cannot interleave with an accepted batch; a later revoke prevents future
+acceptance, not already accepted work. Consent, redaction, retention, capacity,
+idempotency and source-identity checks remain mandatory. A deleted session is refused
+before both legacy and v2 intake. A mixed batch can retain its accepted prefix; the
+response includes only that prefix's receipts. Capture-only clients receive status
+and receipts but no raw backend diagnostics; operator diagnostics remain available.
+
+The bridge supports exactly one private agent or legacy operator credential file.
+This implementation does not create credentials, broaden grants, install hooks,
+change consent, initiate backfill or upgrade installed kits. Those actions require
+separate explicit target-specific approval and verification.

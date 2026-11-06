@@ -4,12 +4,13 @@ Delivers REAL current Claude Code messages (the turn's human prompt + the final 
 answer) to the running AI Factory storage engine via its supported provider endpoint
 `POST /v1/capture/claude-code`. This is the delivery bridge only; the vetted Go adapter
 (`internal/capture`, provider `claude-code`) stays the sole authority for redaction and
-credential sanitization before anything reaches the WAL/archive. No Go code is changed.
+credential sanitization before anything reaches the WAL/archive.
 
 ## Files
 - `capture_bridge.py` — selection + normalization + POST + visible status (all logic; unit-tested).
 - `claude-code-stop-hook.sh` — thin `Stop`-hook wrapper that execs the Python with `-I`.
 - `test_capture_bridge.py` — normalizer/selector contract tests (`python3 -I test_capture_bridge.py`).
+- `test_capture_auth.py` — subprocess/loopback authentication tests with synthetic credentials.
 
 ## How it is wired (project-scoped only; never global)
 Add a `Stop` hook to the target project's `.claude/settings.json` (or `settings.local.json`),
@@ -19,22 +20,39 @@ the project**:
 | env | meaning |
 |-----|---------|
 | `AF_CAPTURE_PROJECT` (required) | storage project UUID — the explicit operator mapping |
-| `AF_CAPTURE_OPERATOR_SECRET_FILE` (required) | path to the 0600 `operator.json` (`{"id","secret"}`) |
+| `AF_CAPTURE_AGENT_CREDENTIAL_FILE` | private scoped credential JSON: `principal_id`, positive integer `epoch`, nonempty `secret` |
+| `AF_CAPTURE_OPERATOR_SECRET_FILE` | legacy operator credential file; choose exactly one credential mode |
 | `AF_CAPTURE_ENDPOINT` | default `http://127.0.0.1:8780` |
 | `AF_CAPTURE_SOURCE` | `source_instance`, default `claude-code-dg` |
 | `AF_CAPTURE_STATUS_FILE` | optional append-only status log (payload/secret-free) |
 
-## Authentication — IMPORTANT, this is a temporary risk, NOT least privilege
-The storage capture endpoints (`/v1/capture`, `/v1/capture/claude-code`, `/v1/capture/codex-event`)
-are all **operator-only** (`requireOperator`). The registry defines an agent `capture` op
-(`OpCapture`) but **no HTTP route authorizes capture with an agent/project-scoped token**.
-Therefore this hook must present the **bootstrap operator secret**, which grants full
-control-plane authority (mint/consent/grant/revoke/purge), not merely capture on one project.
-Exposing it to a local hook script is an accepted **temporary risk**, not least privilege.
-Mitigations in place: read at call time from a 0600 file, sent only to `127.0.0.1`, never
-printed/logged/committed. Removing this risk requires a storage change: an agent-token capture
-route (`OpCapture` on the HTTP capture handlers) so a project-scoped credential can replace the
-operator secret. That change is out of scope here and is noted for a future narrow patch.
+## Authentication and rollout boundary
+The three capture endpoints accept an existing project-scoped agent grant with the
+`capture` operation through `X-Principal-Id`, `X-Grant-Epoch` and `X-Secret`. The
+bridge reads these fields from `AF_CAPTURE_AGENT_CREDENTIAL_FILE` at call time.
+Keep the file private (0600); never put credential values in settings or Git.
+Exactly one of the agent and operator credential file settings must be selected.
+Malformed or conflicting configuration refuses delivery; there is no fallback.
+
+A capture-only grant permits ingestion within its granted project across the
+supported providers and source instances. It does not permit archive reads, search,
+consent changes, grant administration or deletion. Scope is enforced by the server,
+not inferred from cwd or trusted from the caller's project UUID. Revoked or stale
+grants fail closed. Authorization is repeated under the writer fence before any
+new durable acceptance, alongside the existing consent and retention checks.
+A completed revoke blocks subsequent acceptance; it does not undo work already
+accepted before the revoke. Consent and deletion gates still govern publication.
+
+The existing operator transport remains supported for compatibility. An explicitly
+present operator header takes precedence, including empty/invalid values; it never
+falls back to an agent credential. Duplicate authentication headers are rejected.
+A valid operator header is not demoted by stray single-valued agent headers.
+Operator credentials retain full control-plane authority and are not the scoped
+mode. New installations should use capture-only project credentials after explicit
+approval. This source change does not issue keys, install hooks or activate consent.
+Deploy the compatible server and bridge before selecting scoped mode; older servers
+refuse agent capture. Keep existing working integrations until their scoped replacement
+has passed verification. No historical backfill is performed by this bridge.
 
 ## Privacy / safety guarantees
 - **Non-text payload never leaves the process.** `thinking`, `tool_use`, `tool_result` blocks

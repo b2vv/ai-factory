@@ -510,13 +510,14 @@ func (s *Server) handleWhoami(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// handleCapture ingests a SYNTHETIC provider fixture (operator-authenticated). It enforces,
+// handleCapture ingests a SYNTHETIC provider fixture (capture-authorized). It enforces,
 // BEFORE any durable accept: the project exists, capture consent for (project, provider) is
 // enabled, and no project deletion barrier exists; and it drops prohibited fields via the
 // adapter. Accepted records are stamped with the current consent epoch (for the revocation
 // cutoff) and drained to the archive.
 func (s *Server) handleCapture(w http.ResponseWriter, r *http.Request) {
-	if !s.requireOperator(w, r) {
+	if r.Method != http.MethodPost {
+		writeErr(w, 405, "POST required")
 		return
 	}
 	if s.ing == nil || !s.cfg.CaptureEnabled {
@@ -532,19 +533,23 @@ func (s *Server) handleCapture(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "project and provider are required")
 		return
 	}
+	if !s.requireCapture(w, r, fx.Project) {
+		return
+	}
 	recs, red := capture.Adapt(fx)
 	times := make([]*time.Time, len(fx.Messages))
 	for n, m := range fx.Messages {
 		times[n] = m.SourceEventTime
 	}
-	s.ingestRecordsWithTimes(w, fx.Project, fx.Provider, recs, red, times)
+	s.ingestRecordsWithTimes(w, r, fx.Project, fx.Provider, recs, red, times)
 }
 
 // handleCaptureClaudeCode ingests a SYNTHETIC Claude Code transcript (JSONL raw body) via
 // the provider-specific parser. project and source_instance come from query params; the
 // provider is fixed to "claude-code". Same consent/barrier/capacity/redaction gates apply.
 func (s *Server) handleCaptureClaudeCode(w http.ResponseWriter, r *http.Request) {
-	if !s.requireOperator(w, r) {
+	if r.Method != http.MethodPost {
+		writeErr(w, 405, "POST required")
 		return
 	}
 	if s.ing == nil || !s.cfg.CaptureEnabled {
@@ -557,6 +562,9 @@ func (s *Server) handleCaptureClaudeCode(w http.ResponseWriter, r *http.Request)
 		writeErr(w, http.StatusBadRequest, "project and source_instance query params are required")
 		return
 	}
+	if !s.requireCapture(w, r, project) {
+		return
+	}
 	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 8<<20))
 	if err != nil {
 		writeErr(w, http.StatusBadRequest, "cannot read body")
@@ -567,7 +575,7 @@ func (s *Server) handleCaptureClaudeCode(w http.ResponseWriter, r *http.Request)
 		writeErr(w, http.StatusBadRequest, "claude-code transcript parse failed: "+perr.Error())
 		return
 	}
-	s.ingestRecords(w, project, "claude-code", recs, red)
+	s.ingestRecords(w, r, project, "claude-code", recs, red)
 }
 
 // ingestRecords is the shared gate+accept+drain path for any producer of archive records.
@@ -582,10 +590,10 @@ func (s *Server) handleCaptureClaudeCode(w http.ResponseWriter, r *http.Request)
 // barrier install, or purge that completed while this request was measuring is observed by the
 // re-check (request refused), and once past the re-check no purge/revoke can interleave before
 // the write — closing the "capture writes payload after purge" window.
-func (s *Server) ingestRecords(w http.ResponseWriter, project, provider string, recs []archive.Record, red []capture.Redaction) {
-	s.ingestRecordsWithTimes(w, project, provider, recs, red, nil)
+func (s *Server) ingestRecords(w http.ResponseWriter, request *http.Request, project, provider string, recs []archive.Record, red []capture.Redaction) {
+	s.ingestRecordsWithTimes(w, request, project, provider, recs, red, nil)
 }
-func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, project, provider string, recs []archive.Record, red []capture.Redaction, sourceTimes []*time.Time) {
+func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, request *http.Request, project, provider string, recs []archive.Record, red []capture.Redaction, sourceTimes []*time.Time) {
 	if len(sourceTimes) != 0 && len(sourceTimes) != len(recs) {
 		writeErr(w, 400, "source time alignment invalid")
 		return
@@ -621,11 +629,16 @@ func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, project, provider
 	base := s.reservationTotal()
 	u, merr := s.measure()
 	if merr != nil {
-		writeJSON(w, http.StatusServiceUnavailable, map[string]any{"accepted": 0, "attempt_receipts": attemptReceipts, "error": "capacity measurement failed; capture refused (fail-closed): " + merr.Error()})
+		writeJSON(w, http.StatusServiceUnavailable, map[string]any{"accepted": 0, "attempt_receipts": attemptReceipts, "error": "capacity measurement failed; capture refused (fail-closed): " + s.captureDiagnostic(request, merr)})
 		return
 	}
 
 	s.withArchiveWriter(w, project, func(w http.ResponseWriter, tx *control.ArchiveTransaction) {
+		// Both server and durable authority locks remain held through acceptance.
+		if !s.requireCapture(w, request, project) {
+			outcome = "cancelled"
+			return
+		}
 		// RE-CHECK the gate under the lock (authority may have changed while measuring).
 		c := s.ctl.Registry().ConsentEpoch(project, provider, "capture")
 		if !c.Enabled {
@@ -644,7 +657,7 @@ func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, project, provider
 			for n := range recs {
 				recs[n].ConsentEpoch = c.Epoch
 			}
-			if s.captureMetadata(w, tx, recs, red, attemptReceipts, sourceTimes) {
+			if s.captureMetadata(w, request, tx, recs, red, attemptReceipts, sourceTimes) {
 				outcome = "complete"
 			}
 			return
@@ -659,6 +672,11 @@ func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, project, provider
 		receipts := []string{}
 		for _, rec := range recs {
 			rec.ConsentEpoch = c.Epoch
+			if !s.publishGate(rec) {
+				outcome = "cancelled"
+				writeJSON(w, 409, map[string]any{"accepted": accepted, "receipts": receipts, "attempt_receipts": attemptReceipts, "error": "capture record denied by current retention policy"})
+				return
+			}
 			key := archive.IdentityKey(rec)
 			// Reserve everything accepted since THIS request measured (other concurrent requests AND
 			// earlier records of this batch) against the shared live/free budget (V2-1 + V3-1). The
@@ -676,10 +694,10 @@ func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, project, provider
 				// A same-identity replay with a DIFFERENT payload is a conflict (409), not a
 				// silently-dropped duplicate; capacity/other errors stay 503.
 				if errors.Is(err, wal.ErrKeyConflict) {
-					writeJSON(w, http.StatusConflict, map[string]any{"accepted": accepted, "receipts": receipts, "outcome": "inspect_receipts", "attempt_receipts": attemptReceipts, "error": err.Error()})
+					writeJSON(w, http.StatusConflict, map[string]any{"accepted": accepted, "receipts": receipts, "outcome": "inspect_receipts", "attempt_receipts": attemptReceipts, "error": s.captureDiagnostic(request, err)})
 					return
 				}
-				writeJSON(w, http.StatusServiceUnavailable, map[string]any{"accepted": accepted, "receipts": receipts, "outcome": "inspect_receipts", "attempt_receipts": attemptReceipts, "error": err.Error()})
+				writeJSON(w, http.StatusServiceUnavailable, map[string]any{"accepted": accepted, "receipts": receipts, "outcome": "inspect_receipts", "attempt_receipts": attemptReceipts, "error": s.captureDiagnostic(request, err)})
 				return
 			}
 			receipts = append(receipts, key)
@@ -688,7 +706,7 @@ func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, project, provider
 		committed, derr := s.ing.DrainGated(s.publishGate)
 		resp := map[string]any{"accepted": accepted, "committed": committed, "receipts": receipts, "redactions": red}
 		if derr != nil {
-			resp["drain_error"] = derr.Error()
+			resp["drain_error"] = s.captureDiagnostic(request, derr)
 		}
 		outcome = "complete"
 		writeJSON(w, http.StatusOK, resp)

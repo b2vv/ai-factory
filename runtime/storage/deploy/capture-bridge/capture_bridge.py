@@ -172,12 +172,13 @@ def main():
     project = os.environ.get("AF_CAPTURE_PROJECT", "")
     source = os.environ.get("AF_CAPTURE_SOURCE", "claude-code-dg")
     secret_file = os.environ.get("AF_CAPTURE_OPERATOR_SECRET_FILE", "")
+    agent_file = os.environ.get("AF_CAPTURE_AGENT_CREDENTIAL_FILE", "")
     status_file = os.environ.get("AF_CAPTURE_STATUS_FILE", "")
     status = {"ts": int(time.time()), "source": source, "delivered": False}
 
     try:
-        if not project or not secret_file:
-            status["error"] = "missing project/secret_file config"
+        if not project or bool(secret_file) == bool(agent_file):
+            status["error"] = "project and exactly one credential file are required"
             emit_status(status, status_file); return
         ev = json.loads(sys.stdin.read())
         status["event"] = ev.get("hook_event_name")
@@ -216,17 +217,34 @@ def main():
             emit_status(status, status_file); return
 
         body = ("\n".join(to_line(r) for r in out_recs)).encode("utf-8")
-        with open(secret_file, "r", encoding="utf-8") as f:
-            secret = json.load(f).get("secret") or ""
-        if not secret:
-            status["error"] = "empty operator secret"
-            emit_status(status, status_file); return
+        with open(agent_file or secret_file, "r", encoding="utf-8") as f:
+            credential = json.load(f)
+        if agent_file:
+            if (not isinstance(credential, dict)
+                    or not isinstance(credential.get("principal_id"), str)
+                    or not credential["principal_id"].strip()
+                    or type(credential.get("epoch")) is not int
+                    or credential["epoch"] <= 0
+                    or not isinstance(credential.get("secret"), str)
+                    or not credential["secret"].strip()):
+                status["error"] = "invalid scoped capture credential"
+                emit_status(status, status_file); return
+            headers = {"X-Principal-Id": credential["principal_id"],
+                       "X-Grant-Epoch": str(credential["epoch"]),
+                       "X-Secret": credential["secret"]}
+        else:
+            secret = credential.get("secret") or ""
+            if not secret:
+                status["error"] = "empty operator secret"
+                emit_status(status, status_file); return
+            headers = {"X-Operator-Secret": secret}
 
         url = "%s/v1/capture/claude-code?project=%s&source_instance=%s" % (
             endpoint, urllib.parse.quote(project, safe=""), urllib.parse.quote(source, safe=""))
         req = urllib.request.Request(url, data=body, method="POST")
         req.add_header("Content-Type", "application/x-ndjson")
-        req.add_header("X-Operator-Secret", secret)
+        for name, value in headers.items():
+            req.add_header(name, value)
         try:
             resp = urllib.request.urlopen(req, timeout=5)
             payload = json.loads(resp.read().decode("utf-8") or "{}")

@@ -20,7 +20,7 @@ func (s *Server) withArchiveWriter(w http.ResponseWriter, project string, action
 		}
 	})
 }
-func (s *Server) captureMetadata(w http.ResponseWriter, tx *control.ArchiveTransaction, records []archive.Record, red []capture.Redaction, attempts []string, sourceTimes []*time.Time) bool {
+func (s *Server) captureMetadata(w http.ResponseWriter, request *http.Request, tx *control.ArchiveTransaction, records []archive.Record, red []capture.Redaction, attempts []string, sourceTimes []*time.Time) bool {
 	accepted := 0
 	receipts := []string{}
 	fail := func(err error) bool {
@@ -28,7 +28,7 @@ func (s *Server) captureMetadata(w http.ResponseWriter, tx *control.ArchiveTrans
 		if errors.Is(err, archive.ErrIDConflict) || errors.Is(err, wal.ErrKeyConflict) || errors.Is(err, errMetadataPolicy) {
 			code = 409
 		}
-		writeJSON(w, code, map[string]any{"accepted": accepted, "receipts": receipts, "attempt_receipts": attempts, "outcome": "inspect_receipts", "error": err.Error()})
+		writeJSON(w, code, map[string]any{"accepted": accepted, "receipts": receipts, "attempt_receipts": attempts, "outcome": "inspect_receipts", "error": s.captureDiagnostic(request, err)})
 		return false
 	}
 	if err := s.ing.RecoverEnvelope(tx, s.publishGate); err != nil {

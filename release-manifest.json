@@ -116,7 +116,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "a6ee655a1881f492da3ca713ba80d9a5c038ab92a1821265c3da0a6e34c62f9c",
+      "sha256": "be07dc83b603b88dae8489ec128031699aa204247941d77c388dbe4ccd1c0b62",
       "component": "core"
     },
     {
@@ -752,7 +752,7 @@
     {
       "path": "runtime/storage/TAKEOVER-CONTRACT.md",
       "component": "storage",
-      "sha256": "8655a19d41aa9b122b764e9ee89cc42cbd234b9944128caa99cb8015359d27de"
+      "sha256": "a5ff24ffdcea5e2cdee4d4c722feb2bf2d0f10735f5be7f1feef4c0ffc792a73"
     },
     {
       "path": "runtime/storage/THIRD-PARTY/THIRD-PARTY-NOTICES.md",
@@ -956,18 +956,23 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/README.md",
-      "sha256": "4ec5c90fab9eeb2018dd0c46bea6b7c4c64eead924cceca080e604dc753345c4",
+      "sha256": "fc7250d70186933e64425b9e4d83e675593b9713cf2e41842adc81688e4c7531",
       "component": "capture-bridge"
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/capture_bridge.py",
-      "sha256": "e5b06882012ed0e64dfd09837058d9623ce1ab92fa884d9f83288c1ee223af9b",
+      "sha256": "53cfa71cd6c3fb2860fc644fd6127bbdd670db3e1d1bdb94a30ea173c41e2901",
       "component": "capture-bridge"
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/claude-code-stop-hook.sh",
-      "sha256": "8e349b0953b82b7e625c8abb1b392aa737f65ec635763ab636b7150c3a97f5a5",
+      "sha256": "cbeaa240938833f6128f43e4c8afe8ca5288f77d20793f705c6d9fa025aa569e",
       "component": "capture-bridge"
+    },
+    {
+      "path": "runtime/storage/deploy/capture-bridge/test_capture_auth.py",
+      "component": "storage",
+      "sha256": "ae25c2346e0979f063ba2764a50b649d074816cdb2ea766034fff50248df1370"
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/test_capture_bridge.py",
@@ -1047,7 +1052,7 @@
     {
       "path": "runtime/storage/internal/api/api.go",
       "component": "storage",
-      "sha256": "04331b3ceb0d9ddf66308b41a3fc296ba4856752db3ac56e1d553b00508ff0b6"
+      "sha256": "7b7cc273b487e36d827ec6b4865e0faea5c4967f1b7c016a984e5d72e0301a70"
     },
     {
       "path": "runtime/storage/internal/api/api_test.go",
@@ -1075,9 +1080,14 @@
       "sha256": "e6808e157714e205add8b628f6dedc8feba1c7836acc5e85cd47be661af9691b"
     },
     {
+      "path": "runtime/storage/internal/api/capture_authorization.go",
+      "component": "storage",
+      "sha256": "d5e7ba4e28955afb194c592de5b6cce4fe70a779373c7bd015242076e1ce93c6"
+    },
+    {
       "path": "runtime/storage/internal/api/codex_capture.go",
       "component": "storage",
-      "sha256": "1e08388a9b1352dc87558100f086dd7e878e5e90ea89be07bd322857f405ee4c"
+      "sha256": "e366b03de0208346e87fb424afe56e6fece9f25caa7bf28f6169f820c3171c2d"
     },
     {
       "path": "runtime/storage/internal/api/codex_event_integration_test.go",
@@ -1162,7 +1172,7 @@
     {
       "path": "runtime/storage/internal/api/metadata_capture.go",
       "component": "storage",
-      "sha256": "529c38b6a5e3491aa1fc715d3c68d5cfd9190f7b8999c470e3cfe83c58731ec7"
+      "sha256": "fa058f80b8ccf6d0645b15181cde3149211e274d652dc6cc2a17630794b1f876"
     },
     {
       "path": "runtime/storage/internal/api/metadata_capture_test.go",
@@ -1228,6 +1238,36 @@
       "path": "runtime/storage/internal/api/review_regression_test.go",
       "component": "storage",
       "sha256": "d080ab800232deb30a2be5ec3af37d8d537342cd4da5592d17e440b9f5f680ad"
+    },
+    {
+      "path": "runtime/storage/internal/api/scoped_capture_denial_test.go",
+      "component": "storage",
+      "sha256": "45046ff42c28638361f0520b2f2c8563eb84ea355d0855fd38448ee7e3a82ca3"
+    },
+    {
+      "path": "runtime/storage/internal/api/scoped_capture_diagnostics_test.go",
+      "component": "storage",
+      "sha256": "f410822547adf85be12aeafa98a0d81c849cee477e020c3313efbacdbf65237c"
+    },
+    {
+      "path": "runtime/storage/internal/api/scoped_capture_integration_test.go",
+      "component": "storage",
+      "sha256": "be3deedc761d34bb17a0e55e1dbc605ef0599a18db5ccea3a1030f6a7d7305de"
+    },
+    {
+      "path": "runtime/storage/internal/api/scoped_capture_policy_test.go",
+      "component": "storage",
+      "sha256": "6cc3635a46390c166656accf3bc33988dda15052c436c4e08d9b5e79ec221105"
+    },
+    {
+      "path": "runtime/storage/internal/api/scoped_capture_serialization_test.go",
+      "component": "storage",
+      "sha256": "1c59b410a8c5e394cd3dd6350e816c7384c3b528d117120f4b74765432c532d9"
+    },
+    {
+      "path": "runtime/storage/internal/api/scoped_capture_test.go",
+      "component": "storage",
+      "sha256": "fded54f590beadd56eb53fb8f4e2e9680ba9cefe7fbf9275ae448ff360136852"
     },
     {
       "path": "runtime/storage/internal/api/search.go",
