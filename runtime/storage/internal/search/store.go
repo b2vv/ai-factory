@@ -20,7 +20,7 @@ import (
 	"golang.org/x/text/unicode/norm"
 )
 
-const SchemaVersion = 1
+const SchemaVersion = 2
 const MaxWindow = 100
 const MaxTextBytes = 8 << 20
 
@@ -30,8 +30,9 @@ type Reference struct {
 }
 
 type Store struct {
-	pool    *pgxpool.Pool
-	timeout time.Duration
+	schemaVersion int
+	pool          *pgxpool.Pool
+	timeout       time.Duration
 }
 
 func hash(s string) string               { b := sha256.Sum256([]byte(s)); return hex.EncodeToString(b[:]) }
@@ -57,11 +58,11 @@ func Open(ctx context.Context, dsn string) (*Store, error) {
 		pool.Close()
 		return nil, e
 	}
-	if version != SchemaVersion {
+	if version != 1 && version != SchemaVersion {
 		pool.Close()
 		return nil, fmt.Errorf("search: unsupported index schema %d", version)
 	}
-	return &Store{pool: pool, timeout: 3 * time.Second}, nil
+	return &Store{pool: pool, timeout: 3 * time.Second, schemaVersion: version}, nil
 }
 
 func (s *Store) Close() { s.pool.Close() }
@@ -106,7 +107,11 @@ func (s *Store) Purge(project string) error {
 		return e
 	}
 	defer tx.Rollback(ctx)
-	for _, table := range []string{"archive_index", "document_index"} {
+	tables := []string{"archive_index", "document_index"}
+	if s.schemaVersion == 2 {
+		tables = append(tables, "archive_checkpoint")
+	}
+	for _, table := range tables {
 		if _, e = tx.Exec(ctx, "DELETE FROM "+table+" WHERE project_hash=$1 AND project=$2", hash(project), project); e != nil {
 			return e
 		}

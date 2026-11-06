@@ -11,7 +11,10 @@
 // caller BEFORE acceptance (see the API capture handler).
 package capture
 
-import "aifactory.local/storage/internal/archive"
+import (
+	"aifactory.local/storage/internal/archive"
+	"time"
+)
 
 // ProviderFixture is a synthetic, provider-shaped input. It is NOT a real transcript.
 type ProviderFixture struct {
@@ -24,15 +27,16 @@ type ProviderFixture struct {
 // FixtureMessage is one synthetic message. Fields that are prohibited from capture are
 // present in the fixture shape only so the adapter can demonstrably DROP them.
 type FixtureMessage struct {
-	SessionID string `json:"session_id"`
-	MessageID string `json:"message_id"`
-	Seq       int    `json:"seq"`
-	ParentID  string `json:"parent_id"`
-	Role      string `json:"role"` // "user" | "assistant"
-	Text      string `json:"text"`
-	Kind      string `json:"kind"` // "message" (original history) | "summary" (interim)
-	Edited    bool   `json:"edited"`
-	Withdrawn bool   `json:"withdrawn"`
+	SourceEventTime *time.Time `json:"source_event_time,omitempty"`
+	SessionID       string     `json:"session_id"`
+	MessageID       string     `json:"message_id"`
+	Seq             int        `json:"seq"`
+	ParentID        string     `json:"parent_id"`
+	Role            string     `json:"role"` // "user" | "assistant"
+	Text            string     `json:"text"`
+	Kind            string     `json:"kind"` // "message" (original history) | "summary" (interim)
+	Edited          bool       `json:"edited"`
+	Withdrawn       bool       `json:"withdrawn"`
 
 	// Prohibited fields (P4/P5): MUST be dropped by the adapter before any record exists.
 	HiddenReasoning string            `json:"hidden_reasoning,omitempty"`

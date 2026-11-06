@@ -71,3 +71,28 @@ func Add(total, value, limit int64) (int64, error) {
 	}
 	return total + value, nil
 }
+
+// ArchiveMetadata extends the unchanged v1 projection representation. It bills
+// the metadata fields and every declared ordinal/time index entry plus row key.
+func ArchiveMetadata(key, projectHash, project, generation, metadataHash string, ordinal int64, captured, event *string) int64 {
+	row := struct {
+		MetadataHash, SourceGeneration string
+		SourceOrdinal                  int64
+		CapturedKey, SourceTimeKey     *string
+	}{metadataHash, generation, ordinal, captured, event}
+	total := size(row) + size([]any{projectHash, project, generation, ordinal, key})
+	for _, v := range []*string{captured, event} {
+		if v != nil {
+			total += size([]string{projectHash, generation, *v, key})
+		}
+	}
+	return total
+}
+func ArchiveCheckpoint(projectHash, project, sourceGeneration, projectionGeneration, policy string, ordinal int64, complete bool) int64 {
+	row := struct {
+		ProjectHash, Project, SourceGeneration, ProjectionGeneration, PolicyRevision string
+		Ordinal                                                                      int64
+		Complete                                                                     bool
+	}{projectHash, project, sourceGeneration, projectionGeneration, policy, ordinal, complete}
+	return size(row) + size(projectHash)
+}

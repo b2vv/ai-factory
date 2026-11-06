@@ -126,6 +126,9 @@ func (s *PGStore) migrate(ctx context.Context) error {
 		return err
 	}
 	for _, name := range names {
+		if name == ArchiveMetadataMigration {
+			continue
+		} // explicit control-witness upgrade only
 		var exists bool
 		if err := s.pool.QueryRow(mctx, `SELECT EXISTS(SELECT 1 FROM schema_migrations WHERE name=$1)`, name).Scan(&exists); err != nil {
 			return err

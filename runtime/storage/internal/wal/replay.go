@@ -16,6 +16,7 @@ import (
 
 // Record is one accepted WAL record with its payload.
 type Record struct {
+	Version uint8 // 1 is legacy; 2 is the inactive metadata frame format.
 	Seq     uint64
 	Key     string
 	Payload []byte
@@ -43,7 +44,7 @@ func Accepted(dir string) ([]Record, Report, error) {
 			// A validated replay frame must be readable; if not, do not guess.
 			return nil, rep, fmt.Errorf("wal: validated frame at offset %d is unreadable", d.Offset)
 		}
-		recs = append(recs, Record{Seq: seq, Key: key, Payload: payload})
+		recs = append(recs, Record{Seq: seq, Key: key, Payload: payload, Version: frameVersion(data[d.Offset])})
 	}
 	sort.Slice(recs, func(i, j int) bool { return recs[i].Seq < recs[j].Seq })
 	return recs, rep, nil
@@ -68,7 +69,7 @@ func readFramePayload(data []byte, off int64) ([]byte, string, uint64, bool) {
 		return nil, "", 0, false
 	}
 	b := data[off:]
-	if len(b) < 1+8+4+4+4 || b[0] != frameMagic {
+	if len(b) < 1+8+4+4+4 || frameVersion(b[0]) == 0 {
 		return nil, "", 0, false
 	}
 	seq := binary.BigEndian.Uint64(b[1:9])

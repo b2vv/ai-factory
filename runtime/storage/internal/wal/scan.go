@@ -117,7 +117,7 @@ func (s *Scanner) Next(maxRecords int, maxBytes int64) ([]Record, bool, error) {
 			return nil, false, fmt.Errorf("wal: damaged accept at %d; preserve + BLOCKED", s.index*acceptSize)
 		}
 		payload, _ := payloadOf(frameBytes)
-		recs = append(recs, Record{Seq: seq, Key: fr.key, Payload: payload})
+		recs = append(recs, Record{Seq: seq, Key: fr.key, Payload: payload, Version: frameVersion(frameBytes[0])})
 		spent += cost
 		s.index++
 		s.off += int64(length)

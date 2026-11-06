@@ -9,6 +9,7 @@ import (
 	"aifactory.local/storage/internal/workflow"
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -17,6 +18,10 @@ import (
 	"syscall"
 	"time"
 )
+
+const backupDependentMigrationsEnabled = false
+
+var errBackupDeferred = errors.New("migration-operator: deferred by release scope; backup-dependent operations are disabled")
 
 func privateFile(path string, max int64) (*os.File, error) {
 	fd, e := syscall.Open(path, syscall.O_RDONLY|syscall.O_NOFOLLOW, 0)
@@ -40,9 +45,22 @@ func run(args []string, out io.Writer) error {
 	sourcePath := fs.String("sources-file", "", "project to dedicated source path/revision JSON")
 	to := fs.Int("to", -1, "target schema, only 0 supported")
 	ack := fs.Bool("ack-derived-data-removal", false, "acknowledge verified derived table removal")
+	archiveMode := fs.Bool("archive-metadata-v2", false, "explicit archive metadata upgrade")
+	apply := fs.Bool("apply", false, "apply archive metadata upgrade")
+	project := fs.String("project", "", "archive project")
+	configPath := fs.String("config", "", "private explicit backend configuration")
 	exclusive := fs.Bool("exclusive-window", false, "external DB and source edits frozen")
 	if e := fs.Parse(args); e != nil {
 		return e
+	}
+	if *archiveMode {
+		if fs.NArg() != 0 || !*apply || !*exclusive || *state == "" || *project == "" || *configPath == "" || *to != -1 || *ack {
+			return fmt.Errorf("archive upgrade requires explicit apply, exclusive window, state, project and private config")
+		}
+		return runArchiveMigration(*state, *project, *configPath, out)
+	}
+	if !backupDependentMigrationsEnabled {
+		return errBackupDeferred
 	}
 	if fs.NArg() != 0 || *to != 0 || !*ack || !*exclusive || *state == "" {
 		return fmt.Errorf("explicit schema 0, removal acknowledgement and exclusive window required")
@@ -94,11 +112,11 @@ func run(args []string, out io.Writer) error {
 	return json.NewEncoder(out).Encode(map[string]any{"status": "rolled_back", "from": "verified_workflow_and_optional_derived_index", "to": 0, "migration": "0001_workflow.sql"})
 }
 func main() {
-	fmt.Fprintln(os.Stderr, "migration-operator: deferred by release scope; backup-dependent operations are disabled")
-	os.Exit(2)
-
 	if e := run(os.Args[1:], os.Stdout); e != nil {
 		fmt.Fprintln(os.Stderr, e)
+		if errors.Is(e, errBackupDeferred) {
+			os.Exit(2)
+		}
 		os.Exit(1)
 	}
 }

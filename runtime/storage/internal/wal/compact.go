@@ -142,8 +142,8 @@ func writeGeneration(dir string, recs []Record, keep func(key string, payload []
 			continue
 		}
 		res.Kept++
-		fb := frameBytes(rec.Seq, []byte(rec.Key), rec.Payload)
-		frameCRC := crc32.Checksum(fb[1:len(fb)-4], crcTab)
+		fb := frameBytesVersion(rec.Seq, []byte(rec.Key), rec.Payload, rec.Version)
+		frameCRC := frameChecksum(fb)
 		keyHash := crc32.Checksum([]byte(rec.Key), crcTab)
 
 		if _, err := intents.Write(intentBytes(rec.Seq, off, uint64(len(fb)), frameCRC)); err != nil {

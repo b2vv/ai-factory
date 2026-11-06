@@ -91,7 +91,7 @@ func (i *Ingestor) reclaimBudgetedLocked(eligible func(archive.Record) bool, pea
 			continue
 		}
 		var r archive.Record
-		if err = json.Unmarshal(rc.Payload, &r); err != nil {
+		if err = decodeWALRecord(rc, &r); err != nil {
 			i.mu.Unlock()
 			return CompactOutcome{}, err
 		}
@@ -109,6 +109,18 @@ func (i *Ingestor) reclaimBudgetedLocked(eligible func(archive.Record) bool, pea
 			return CompactOutcome{}, e
 		}
 		if found && stored == r {
+			if rc.Version == 2 {
+				same, e := i.verifyEnvelopeSource(rc)
+				if e != nil {
+					i.reclaimScan = nil
+					i.reclaimAfter = 0
+					i.mu.Unlock()
+					return CompactOutcome{}, e
+				}
+				if !same {
+					continue
+				}
+			}
 			drop[archive.IdentityKey(r)] = r
 		}
 	}
@@ -129,9 +141,13 @@ func (i *Ingestor) reclaimBudgetedLocked(eligible func(archive.Record) bool, pea
 		}
 		return CompactOutcome{}, fmt.Errorf("ingest: reclaim refused on BLOCKED WAL")
 	}
+	formats := map[string]uint8{}
+	for _, rc := range all {
+		formats[rc.Key] = rc.Version
+	}
 	keepRaw := func(key string, payload []byte) bool {
 		var r archive.Record
-		if json.Unmarshal(payload, &r) != nil {
+		if decodeWALRecord(wal.Record{Key: key, Payload: payload, Version: formats[key]}, &r) != nil {
 			return true
 		}
 		stored, ok := drop[archive.IdentityKey(r)]

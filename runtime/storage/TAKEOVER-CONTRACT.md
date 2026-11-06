@@ -12,8 +12,10 @@ ID. Mongo performs an indexed keyset scan with at most 1000 records / 8 MiB per
 window and an operation deadline. A response contains at most the requested limit
 (default 100, maximum 1000). Filtering and retention run before exposing records.
 `next_cursor` is an authenticated encrypted continuation bound to project and
-filters. Follow it even when a filtered window has no hits. `total` is present only
-when `total_exact` is true; a partial window does not claim a global count. Search is
+filters. Follow it even when a filtered window has no hits. `total_exact` is false: there is no cross-store snapshot count. For compatibility,
+`total` and `observed_matching_count` are returned only when the first raw window
+is terminal; they count matching authorized records observed in that window, not
+a global exact total. `total_basis` is `observed_authorized_window`. Search is
 labelled `literal_substring_nfc_casefold`: NFC and Unicode case folding affect only
 comparison copies, never original payload or identity bytes. This is not tokenized
 full-text or stemming. Mixed English/Ukrainian synthetic fixtures use Unicode escapes
@@ -319,3 +321,127 @@ WAL durability, authorization, revocation and deletion barriers remain required.
 Automatic DrainOnce reclaim wiring remains unapplied after a renewed approval
 review rejection. Explicit synthetic maintenance tests do not establish automatic
 reclamation acceptance. The separate independent security review remains blocked.
+
+## Authoritative record retrieval
+
+`GET /v1/archive/message?project=...&source_instance=...&session_id=...&message_id=...`
+requires the existing `archive.query` grant. A search-only grant cannot fetch records;
+this endpoint does not expand grants. Each identity parameter must occur at most once
+and contain valid UTF-8 with at most 4096 bytes. Project, session and message are required; an omitted
+or empty source instance selects the historical empty-source identity. IDs are exact,
+including Unicode, without normalization or trimming. URL-encode parameter values.
+
+A 200 response has `project`, `record` (the unchanged authoritative archive record),
+and `derived: false`. Preserve `Type`: a summary record is not an original message.
+The identity tuple is project/source instance/session/message; Provider is returned
+as provenance but is not another component of the existing archive identity.
+Missing and policy-withheld records both return 404 with `error: not_found`.
+Backend failure returns 503; current authorization and retention are checked after
+lookup under the authority fence. No PostgreSQL index or schema migration is needed.
+
+For `/v1/search/query`, matching uses NFC/casefold tokenized `simple` full-text search;
+multiple query words are ANDed. It examines up to 100 raw candidates per request,
+ordered by identity hash, not message time. Always follow a nonempty `next_cursor`,
+even after an empty or short `hits` array; stop only when the cursor is absent/empty.
+A bounded client that stops early must report incomplete traversal. Preserve project,
+query and credentials on continuation. `/v1/archive/query` instead uses literal
+substring matching and the separately documented `archive.query` permission.
+
+Traversal is live, not a snapshot: inserts before the cursor can be missed during a
+scan and current deletions/revocations can remove later results. A terminal cursor
+means this traversal ended, not that capture is complete or the index is current.
+Legacy pagination establishes no global freshness watermark, timestamp ordering,
+or exact search total. The explicitly activated metadata protocol below provides
+a committed-source checkpoint; it never proves capture completeness.
+
+## Bounded parent context
+
+`GET /v1/archive/context` accepts the same identity parameters and `archive.query`
+permission as exact retrieval, plus a unique integer `limit` (default 10, 1..50).
+`records` are returned anchor-first in `anchor_to_parent` order, following only
+ParentID in the same project/source instance/session. This is not neighboring-turn
+or chronological order: imported Seq values can repeat across batches/turns.
+
+Responses explicitly have `incomplete: true`: absent parent provenance cannot prove
+that the beginning of a conversation was captured. `stop_reason` is `no_parent`,
+`unavailable`, `cycle`, `limit` or `byte_limit`. Missing and withheld parents both
+stop at the visible prefix with `unavailable`; missing/withheld anchor returns the
+same 404 as exact retrieval. A deeper backend failure behind a withheld parent is
+not exposed. A reachable backend failure returns redacted 503.
+
+Serialized record bytes are capped at 8 MiB (HTTP envelope overhead is additional).
+An oversized visible anchor returns an empty array with `byte_limit`; its payload
+is never truncated. Current authorization and retention are reapplied under the
+final authority fence. This is a live read, not a cross-request snapshot or proof
+of capture completeness. Existing record bytes and identity are unchanged.
+
+## Explicit archive metadata activation
+
+The versioned envelope stores metadata outside the original Record. Historical
+Record bytes, identity and RecordHash are unchanged. A source generation and
+monotonic committed ordinal identify accepted source operations; captured_at is
+archive intake time, source_event_time is supplied reliable event time. Migration
+marks historical timestamps unknown rather than inferring them from sequence,
+file time or migration time. Native adapters without reliable event timestamps
+continue to produce unknown source time.
+
+The WAL reads mixed legacy F and v2 G frames; G CRC binds the version. A durable
+control migration witness protects compatibility even after intake reclamation.
+Migration 0003 additionally makes older PG readers refuse. An old image cannot
+be used as an in-place downgrade after activation.
+
+The offline migration-operator requires -archive-metadata-v2 -apply
+-exclusive-window, explicit state/project and private config file. Stop the server
+and external writers first. It opens existing intake files, drains legacy intake,
+resumes exact durable reservations, attaches metadata with original-payload CAS,
+upgrades derived schema explicitly, rebuilds the checkpoint and marks readiness
+only after required proofs. Repeating it resumes safely; an ambiguous failure
+requires inspecting current state before further action. Search-required config
+cannot complete with PG disabled. Source-only readiness is allowed only when no
+index is required. Legacy backup-dependent destructive modes remain disabled.
+
+A live upgrade additionally requires an independently checked complete recovery
+set and isolated restore/rehearsal using exact images. The existing logical backup
+format does not include envelope/control/intake/ledger state and is insufficient
+for v2 recovery. A coordinated cold set must preserve all databases, authority,
+WAL, accounting, configuration and authentication. Restore is a full-set operation
+under a frozen writer window, never a control-only rollback or old-image swap.
+If writes resume after rehearsal, take a fresh coordinated set at final cutover.
+Do not restore a stale set over later grants, revocations, deletions or accepted
+writes. These requirements do not claim that a live rehearsal has been performed.
+
+## Freshness and recent queries
+
+GET /v1/archive/freshness?project=... requires archive.query and reports
+index_state: not_activated, migration_incomplete, unavailable, building, behind,
+recovering or caught_up. The basis is committed_source_checkpoint. A checkpoint
+binds source generation, committed ordinal, policy revision and projection
+generation. Late writes move the committed bound; policy changes require rebuild.
+Persisted pending projection work reports recovering. capture_completeness remains
+unknown: caught_up means only that the index covers this archive's committed
+source, not that all native conversations were captured.
+
+GET /v1/search/query?project=...&sort=recent requires search. time_field defaults
+to source_event_time; captured_at is an explicit alternative. Unknown selected
+timestamps are excluded. Optional since is inclusive RFC3339 with timezone.
+Ordering is selected timestamp descending, identity hash ascending for ties.
+The first request requires a caught-up complete checkpoint. Its encrypted cursor
+pins a committed source upper bound, project, query, provider, selected field and
+since. Later writes are excluded, while current authorization still applies.
+Policy or projection generation changes return 409 and require restarting.
+Malformed or mismatched cursors return 400; unavailable source/index returns 503.
+
+Each request examines at most 100 raw candidates before token matching. Continue
+through empty pages while next_cursor is nonempty. Source payload and metadata
+are revalidated; missing or changed source rows are withheld with incomplete=true.
+Returned hit bytes are bounded at 8 MiB before response-envelope overhead. A single
+oversized hit fails closed. A byte-limited page resumes before its unserved hit.
+This is committed_upper_bound_live_authorization, not a historical permission or
+cross-request database snapshot. total_exact is false; no SQL count is exposed.
+
+All archive/search hit responses include source-derived snippets keyed by canonical
+identity, after final authorization and retention filtering. Snippets contain at
+most 240 original Unicode runes. Literal search centers the normalized match;
+token search centers a literal query fragment when available and labels that
+basis. Prefix fallback is explicitly marked; it does not claim a visible token
+match. Full original hit payloads and IDs remain unchanged.

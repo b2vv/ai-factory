@@ -85,46 +85,54 @@ type Receipt struct {
 // WAL is the append-only journal. Not safe for concurrent writers by design: the
 // API is the single journal writer (PLAN §6.2); callers serialize.
 type WAL struct {
-	dir        string
-	data       *os.File
-	intents    *os.File
-	accepts    *os.File
-	seq        uint64
-	chainCRC   uint32
-	dedup      map[string]uint64   // EXACT key -> seq; rebuilt from authoritative records on Open
-	dedupHash  map[string][32]byte // EXACT key -> sha256(payload); detects same-key/different-payload CONFLICT
-	appendable bool                // false until a clean/applied recovery; blocks appends after ambiguity
+	dir          string
+	data         *os.File
+	intents      *os.File
+	accepts      *os.File
+	seq          uint64
+	chainCRC     uint32
+	dedup        map[string]uint64 // EXACT key -> seq; rebuilt from authoritative records on Open
+	dedupVersion map[string]uint8
+	dedupHash    map[string][32]byte // EXACT key -> sha256(payload); detects same-key/different-payload CONFLICT
+	appendable   bool                // false until a clean/applied recovery; blocks appends after ambiguity
 }
 
 // Open creates/opens a WAL in dir and restores authoritative state (sequence, accept
 // chain, exact-key dedup) from the validated journal. If recovery is clean the WAL is
 // immediately appendable; if a truncation is pending or the journal is ambiguous, the
 // caller MUST run RecoverPlan+Apply before appending.
-func Open(dir string) (*WAL, error) {
-	if err := os.MkdirAll(dir, 0o700); err != nil {
-		return nil, err
+func Open(dir string) (*WAL, error) { return openWAL(dir, false) }
+func openWAL(dir string, existing bool) (*WAL, error) {
+	if !existing {
+		if err := os.MkdirAll(dir, 0o700); err != nil {
+			return nil, err
+		}
 	}
 	// Converge any interrupted compaction flip to a single generation BEFORE opening journal
 	// descriptors, so RecoverPlan never sees a half-installed mixture of old and new files.
 	if err := resumeCompaction(dir); err != nil {
 		return nil, fmt.Errorf("wal: resume of interrupted compaction failed: %w", err)
 	}
-	d, err := os.OpenFile(filepath.Join(dir, "data"), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o600)
+	flags := os.O_RDWR | os.O_APPEND
+	if !existing {
+		flags |= os.O_CREATE
+	}
+	d, err := os.OpenFile(filepath.Join(dir, "data"), flags, 0o600)
 	if err != nil {
 		return nil, err
 	}
-	in, err := os.OpenFile(filepath.Join(dir, "intents"), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o600)
+	in, err := os.OpenFile(filepath.Join(dir, "intents"), flags, 0o600)
 	if err != nil {
 		d.Close()
 		return nil, err
 	}
-	a, err := os.OpenFile(filepath.Join(dir, "accepts"), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o600)
+	a, err := os.OpenFile(filepath.Join(dir, "accepts"), flags, 0o600)
 	if err != nil {
 		d.Close()
 		in.Close()
 		return nil, err
 	}
-	w := &WAL{dir: dir, data: d, intents: in, accepts: a, dedup: map[string]uint64{}, dedupHash: map[string][32]byte{}}
+	w := &WAL{dir: dir, data: d, intents: in, accepts: a, dedup: map[string]uint64{}, dedupHash: map[string][32]byte{}, dedupVersion: map[string]uint8{}}
 
 	// C: a newly CREATED file's directory entry is not durable until the directory itself
 	// is fsync'd; a crash after creating "data"/"intents"/"accepts" but before the parent
@@ -132,7 +140,7 @@ func Open(dir string) (*WAL, error) {
 	// so its directory entry is covered by the SAME single directory fsync (appendCommitted
 	// then only appends to an existing inode and needs no further directory sync). Any
 	// fsync failure is PROPAGATED, never swallowed.
-	ci, err := os.OpenFile(filepath.Join(dir, "committed.idx"), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o600)
+	ci, err := os.OpenFile(filepath.Join(dir, "committed.idx"), flags, 0o600)
 	if err != nil {
 		w.Close()
 		return nil, err
@@ -156,6 +164,10 @@ func Open(dir string) (*WAL, error) {
 	}
 	for k, h := range rep.keyHash {
 		w.dedupHash[k] = h
+	}
+	w.dedupVersion = map[string]uint8{}
+	for k, v := range rep.keyVersion {
+		w.dedupVersion[k] = v
 	}
 	// Fold in the durable exact-key dedup index, reconciled against the authoritative
 	// journal (survives compaction; never manufactures acceptance the journal denies).
@@ -206,14 +218,24 @@ func (w *WAL) Close() error {
 }
 
 func frameBytes(seq uint64, key, payload []byte) []byte {
+	return frameBytesVersion(seq, key, payload, 1)
+}
+func frameBytesVersion(seq uint64, key, payload []byte, version uint8) []byte {
 	b := make([]byte, 0, 1+8+4+4+len(key)+len(payload)+4)
-	b = append(b, frameMagic)
+	magic := byte(frameMagic)
+	if version == 2 {
+		magic = frameMagicV2
+	}
+	b = append(b, magic)
 	b = binary.BigEndian.AppendUint64(b, seq)
 	b = binary.BigEndian.AppendUint32(b, uint32(len(key)))
 	b = binary.BigEndian.AppendUint32(b, uint32(len(payload)))
 	b = append(b, key...)
 	b = append(b, payload...)
-	body := b[1:] // seq..payload
+	body := b[1:] // legacy seq..payload
+	if version == 2 {
+		body = b
+	}
 	b = binary.BigEndian.AppendUint32(b, crc32.Checksum(body, crcTab))
 	return b
 }
@@ -223,6 +245,9 @@ func frameBytes(seq uint64, key, payload []byte) []byte {
 // Duplicate=true (F7 dedup). The caller MUST have performed admission
 // (config.Accountant) before calling Accept.
 func (w *WAL) Accept(key string, payload []byte) (Receipt, error) {
+	return w.acceptVersion(key, payload, 1)
+}
+func (w *WAL) acceptVersion(key string, payload []byte, version uint8) (Receipt, error) {
 	if key == "" {
 		return Receipt{}, errors.New("wal: empty idempotency key")
 	}
@@ -237,6 +262,10 @@ func (w *WAL) Accept(key string, payload []byte) (Receipt, error) {
 	// silently acknowledged as a duplicate (that would hide an edit/withdrawal or an identity
 	// collision and the new payload would never reach the archive).
 	if seq, ok := w.dedup[key]; ok {
+		storedVersion := w.dedupVersion[key]
+		if storedVersion != version {
+			return Receipt{Seq: seq, Key: key}, ErrVersionConflict
+		}
 		h := sha256.Sum256(payload)
 		if stored, had := w.dedupHash[key]; had && stored != h {
 			return Receipt{Seq: seq, Key: key}, ErrKeyConflict
@@ -248,8 +277,8 @@ func (w *WAL) Accept(key string, payload []byte) (Receipt, error) {
 	if err != nil {
 		return Receipt{}, err
 	}
-	fb := frameBytes(w.seq+1, []byte(key), payload)
-	frameCRC := crc32.Checksum(fb[1:len(fb)-4], crcTab)
+	fb := frameBytesVersion(w.seq+1, []byte(key), payload, version)
+	frameCRC := frameChecksum(fb)
 	seq := w.seq + 1
 
 	// 1) Reserve: record the authoritative frame span BEFORE writing the frame, so
@@ -293,6 +322,7 @@ func (w *WAL) Accept(key string, payload []byte) (Receipt, error) {
 	w.chainCRC = acceptChain(w.chainCRC, seq, uint64(off), frameCRC, keyHash)
 	w.dedup[key] = seq
 	w.dedupHash[key] = sha256.Sum256(payload)
+	w.dedupVersion[key] = version
 
 	// 4) Persist the exact key to the compaction-surviving dedup index. A failure here
 	//    does NOT un-accept the record (frame+accept are durable and will replay/rebuild
@@ -475,6 +505,7 @@ type Report struct {
 	seq            uint64
 	chain          uint32
 	dedup          map[string]uint64
+	keyVersion     map[string]uint8
 	keyHash        map[string][32]byte // validated exact key -> sha256(payload), for conflict detection on replay
 	seqKeys        map[uint64]string   // validated journal sequence -> exact key, used to reconcile the dedup index
 	truncIntentsAt int64               // intents byte offset to truncate to when a tail frame is dropped; -1 if none
@@ -518,7 +549,7 @@ func RecoverPlan(dir string) (Report, error) {
 		return Report{}, err
 	}
 
-	rep := Report{TruncateAt: -1, dedup: map[string]uint64{}, keyHash: map[string][32]byte{}, seqKeys: map[uint64]string{}, truncIntentsAt: -1}
+	rep := Report{keyVersion: map[string]uint8{}, TruncateAt: -1, dedup: map[string]uint64{}, keyHash: map[string][32]byte{}, seqKeys: map[uint64]string{}, truncIntentsAt: -1}
 
 	// Parse reservations in order, validating each record's integrity CRC and requiring
 	// strictly increasing sequence and non-overlapping, ordered data spans. A corrupt,
@@ -638,6 +669,7 @@ func RecoverPlan(dir string) (Report, error) {
 			rep.seqKeys[fr.seq] = fr.key
 			if pay, ok := payloadOf(data[r.off:spanEnd]); ok {
 				rep.keyHash[fr.key] = sha256.Sum256(pay)
+				rep.keyVersion[fr.key] = frameVersion(data[r.off])
 			}
 			if fr.seq > rep.seq {
 				rep.seq = fr.seq
@@ -718,6 +750,10 @@ func (w *WAL) Apply(rep Report) (string, error) {
 	for k, h := range rep.keyHash {
 		w.dedupHash[k] = h
 	}
+	w.dedupVersion = map[string]uint8{}
+	for k, v := range rep.keyVersion {
+		w.dedupVersion[k] = v
+	}
 	foldCommitted(w.dir, w.dedup, rep.seqKeys)
 	w.appendable = true
 	return "OK", nil
@@ -730,11 +766,11 @@ func parseFrameSpan(b []byte, wantCRC uint32) (frame, bool) {
 	if len(b) < 1+8+4+4+4 {
 		return frame{}, false
 	}
-	if b[0] != frameMagic {
+	if frameVersion(b[0]) == 0 {
 		return frame{}, false
 	}
 	bodyEnd := len(b) - 4
-	if crc32.Checksum(b[1:bodyEnd], crcTab) != wantCRC {
+	if frameChecksum(b) != wantCRC {
 		return frame{}, false
 	}
 	if binary.BigEndian.Uint32(b[bodyEnd:]) != wantCRC {

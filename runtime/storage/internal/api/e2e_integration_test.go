@@ -356,3 +356,70 @@ func mustFetch(t *testing.T, s archive.Store, project string) []archive.Record {
 	}
 	return r
 }
+
+func TestE2EArchiveMessageRetrieval(t *testing.T) {
+	ts, _ := e2eServer(t)
+	if code, _ := op(t, ts, "/v1/projects", map[string]string{"UUID": "fetch-project", "Label": "fetch"}); code != 201 {
+		t.Fatal(code)
+	}
+	if code, _ := op(t, ts, "/v1/consent", map[string]any{"Project": "fetch-project", "Provider": "synthetic", "Capability": "capture", "Enabled": true}); code != 200 {
+		t.Fatal(code)
+	}
+	code, g := op(t, ts, "/v1/grants", map[string]any{"principal_id": "fetch-agent", "kind": "agent", "projects": []string{"fetch-project"}, "ops": []string{"archive.query"}, "secret": "synthetic-fetch"})
+	if code != 201 {
+		t.Fatal(code)
+	}
+	epoch := fmt.Sprint(int64(g["epoch"].(float64)))
+	if code, b := op(t, ts, "/v1/capture", fixture("fetch-project")); code != 200 || b["committed"] != float64(2) {
+		t.Fatal(code, b)
+	}
+	for _, tc := range []struct{ id, text, kind string }{{"m1", "hello archive", "message"}, {"m2", "a summary", "summary"}} {
+		path := "/v1/archive/message?project=fetch-project&source_instance=inst-1&session_id=s1&message_id=" + tc.id
+		code, b := agentGet(t, ts, path, "fetch-agent", epoch, "synthetic-fetch")
+		if code != 200 {
+			t.Fatal(code, b)
+		}
+		rec := b["record"].(map[string]any)
+		if rec["Text"] != tc.text || rec["Type"] != tc.kind || rec["MessageID"] != tc.id || rec["SourceInstance"] != "inst-1" {
+			t.Fatal(rec)
+		}
+		code, _ = agentGet(t, ts, strings.Replace(path, "inst-1", "other-source", 1), "fetch-agent", epoch, "synthetic-fetch")
+		if code != 404 {
+			t.Fatalf("foreign source: %d", code)
+		}
+	}
+	if code, _ := op(t, ts, "/v1/consent", map[string]any{"Project": "fetch-project", "Provider": "synthetic", "Capability": "capture", "Enabled": false}); code != 200 {
+		t.Fatal(code)
+	}
+	if code, _ := agentGet(t, ts, "/v1/archive/message?project=fetch-project&source_instance=inst-1&session_id=s1&message_id=m1", "fetch-agent", epoch, "synthetic-fetch"); code != 404 {
+		t.Fatalf("revoked capture: %d", code)
+	}
+}
+
+func TestE2EArchiveContext(t *testing.T) {
+	ts, _ := e2eServer(t)
+	if code, _ := op(t, ts, "/v1/projects", map[string]string{"UUID": "context-project", "Label": "context"}); code != 201 {
+		t.Fatal(code)
+	}
+	if code, _ := op(t, ts, "/v1/consent", map[string]any{"Project": "context-project", "Provider": "synthetic", "Capability": "capture", "Enabled": true}); code != 200 {
+		t.Fatal(code)
+	}
+	code, g := op(t, ts, "/v1/grants", map[string]any{"principal_id": "context-agent", "kind": "agent", "projects": []string{"context-project"}, "ops": []string{"archive.query"}, "secret": "synthetic-context"})
+	if code != 201 {
+		t.Fatal(code)
+	}
+	epoch := fmt.Sprint(int64(g["epoch"].(float64)))
+	f := fixture("context-project")
+	f["messages"].([]map[string]any)[1]["parent_id"] = "m1"
+	if code, b := op(t, ts, "/v1/capture", f); code != 200 {
+		t.Fatal(code, b)
+	}
+	code, b := agentGet(t, ts, "/v1/archive/context?project=context-project&source_instance=inst-1&session_id=s1&message_id=m2", "context-agent", epoch, "synthetic-context")
+	if code != 200 {
+		t.Fatal(code, b)
+	}
+	rows := b["records"].([]any)
+	if len(rows) != 2 || rows[0].(map[string]any)["MessageID"] != "m2" || rows[1].(map[string]any)["MessageID"] != "m1" || b["stop_reason"] != "no_parent" {
+		t.Fatal(b)
+	}
+}

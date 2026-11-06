@@ -107,6 +107,29 @@ func run() error {
 	if blocked, reason := ctl.Blocked(); blocked {
 		// Start anyway so /health is observable, but make the fail-closed state loud.
 		fmt.Fprintln(os.Stderr, "factory: control registry BLOCKED:", reason)
+		if cfg.MongoEnabled {
+			return errors.New("archive startup refused while control authority is blocked")
+		}
+	}
+
+	metadataActive := false
+	if blocked, _ := ctl.Blocked(); !blocked {
+		for _, project := range ctl.Registry().Projects() {
+			state, active, err := ctl.ArchiveState(project)
+			if err != nil {
+				return err
+			}
+			if !active {
+				continue
+			}
+			metadataActive = true
+			if !state.MigrationComplete {
+				return errors.New("archive metadata migration incomplete; resume offline migration")
+			}
+		}
+		if metadataActive && !cfg.MongoEnabled {
+			return errors.New("archive metadata requires enabled authoritative source")
+		}
 	}
 
 	var budgetEnv *budgetenv.Environment
@@ -155,6 +178,30 @@ func run() error {
 	} else {
 		srv.SetSharedUsageMeter(func() (config.Usage, error) { return measureUsage(stateDir, ingWalDir, mongoStore, pgStore) })
 	}
+	var ing *ingest.Ingestor
+	if cfg.MongoEnabled {
+		openIntake := ingest.Open
+		if metadataActive {
+			openIntake = ingest.OpenExisting
+		}
+		ing, err = openIntake(ingWalDir, config.NewAccountant(cfg), mongoStore)
+		if err != nil {
+			return fmt.Errorf("capture ingestion WAL open failed: %w", err)
+		}
+		defer ing.Close()
+		if ctl.Budget() != nil {
+			if err := ing.SetBudget(ctl.Budget()); err != nil {
+				return err
+			}
+		}
+		srv.SetIngestor(ing)
+	}
+	if blocked, _ := ctl.Blocked(); !blocked {
+		if err := srv.RecoverArchive(); err != nil {
+			return err
+		}
+	}
+
 	required, indexMarkerErr := search.Required(*state)
 	if indexMarkerErr != nil {
 		return indexMarkerErr
@@ -168,6 +215,12 @@ func run() error {
 			return fmt.Errorf("derived search index startup failed: %w", indexErr)
 		}
 		defer index.Close()
+		srv.SetSearchStore(index)
+		if blocked, _ := ctl.Blocked(); !blocked {
+			if err := srv.RecoverIndex(); err != nil {
+				return err
+			}
+		}
 		// A blocked registry still exposes health, but cannot start indexing. Its
 		// capability marker is admitted after recovery on the next ordinary startup.
 		if blocked, _ := ctl.Blocked(); !blocked {
@@ -182,6 +235,14 @@ func run() error {
 		}
 		srv.SetSearchStore(index)
 	}
+	if pgStore == nil {
+		if blocked, _ := ctl.Blocked(); !blocked {
+			if err := srv.RecoverIndex(); err != nil {
+				return err
+			}
+		}
+	}
+
 	srv.SetAvailability(archiveProbe(mongoStore), pgProbe(pgStore))
 	if pgStore != nil {
 		srv.SetWorkflowStore(pgStore)
@@ -193,19 +254,7 @@ func run() error {
 	// Archive access/replay remains available when new capture is disabled. The
 	// capture endpoints enforce CaptureEnabled independently; current consent/barriers
 	// still govern every replay and read of previously accepted records.
-	if cfg.MongoEnabled {
-		ingWalDir := filepath.Join(*state, "ingest", "wal")
-		ing, ierr := ingest.Open(ingWalDir, config.NewAccountant(cfg), mongoStore)
-		if ierr != nil {
-			return fmt.Errorf("capture ingestion WAL open failed: %w", ierr)
-		}
-		if ctl.Budget() != nil {
-			if e := ing.SetBudget(ctl.Budget()); e != nil {
-				ing.Close()
-				return e
-			}
-		}
-		srv.SetIngestor(ing)
+	if ing != nil {
 		// R5: background drain/replay worker. It projects WAL records to the archive WITHOUT a
 		// new producer request — a startup replay plus a periodic cycle, so records left durable
 		// by a crash (accepted but not yet archive-committed) or by a transient Mongo outage are
@@ -215,7 +264,6 @@ func run() error {
 		// Shutdown ordering (V2 P2): the worker is STOPPED and JOINED before the ingestor/WAL is
 		// closed, so it can never drain against a closed WAL. The worker's stop+join defer is
 		// registered AFTER ing.Close's defer, so (LIFO) it runs FIRST on return.
-		defer ing.Close()
 		workerCtx, workerStop := context.WithCancel(pingCtx)
 		workerDone := make(chan struct{})
 		go func() { defer close(workerDone); drainWorker(workerCtx, srv) }()

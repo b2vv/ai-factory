@@ -37,7 +37,11 @@ func (s *PGStore) LogicalBytes(ctx context.Context, limit int64) (int64, error) 
 	if total > limit {
 		return 0, fmt.Errorf("workflow: logical inventory exceeds cap")
 	}
-	for _, table := range []string{"schema_migrations", "workflow_tasks", "archive_index", "document_index"} {
+	var metadataSchema bool
+	if e := s.pool.QueryRow(ctx, `SELECT to_regclass('archive_checkpoint') IS NOT NULL`).Scan(&metadataSchema); e != nil {
+		return 0, e
+	}
+	for _, table := range []string{"schema_migrations", "workflow_tasks", "archive_index", "document_index", "archive_checkpoint"} {
 		var exists bool
 		if e := s.pool.QueryRow(ctx, `SELECT to_regclass($1) IS NOT NULL`, table).Scan(&exists); e != nil {
 			return 0, e
@@ -53,6 +57,11 @@ func (s *PGStore) LogicalBytes(ctx context.Context, limit int64) (int64, error) 
 			query = `SELECT project,id,version,fields FROM workflow_tasks`
 		case "archive_index":
 			query = `SELECT key_hash,project_hash,project,identity,payload_hash,terms::text,tsvector_to_array(terms) FROM archive_index`
+			if metadataSchema {
+				query = `SELECT key_hash,project_hash,project,identity,payload_hash,terms::text,tsvector_to_array(terms),metadata_hash,source_generation,source_ordinal,captured_key,source_time_key FROM archive_index`
+			}
+		case "archive_checkpoint":
+			query = `SELECT project_hash,project,source_generation,projection_generation,policy_revision,ordinal,complete FROM archive_checkpoint`
 		case "document_index":
 			query = `SELECT key_hash,project_hash,project,identity,data FROM document_index`
 		}
@@ -87,9 +96,33 @@ func (s *PGStore) LogicalBytes(ctx context.Context, limit int64) (int64, error) 
 			case "archive_index":
 				var key, ph, project, identity, payload, terms string
 				var lexemes []string
-				e = rows.Scan(&key, &ph, &project, &identity, &payload, &terms, &lexemes)
+				var metadataHash, generation, captured, event *string
+				var ordinal *int64
+				if metadataSchema {
+					e = rows.Scan(&key, &ph, &project, &identity, &payload, &terms, &lexemes, &metadataHash, &generation, &ordinal, &captured, &event)
+				} else {
+					e = rows.Scan(&key, &ph, &project, &identity, &payload, &terms, &lexemes)
+				}
 				if e == nil {
 					cost = logical.ArchiveIndex(key, ph, project, identity, payload, terms, lexemes)
+					if metadataHash != nil {
+						if generation == nil || ordinal == nil || *ordinal <= 0 {
+							rows.Close()
+							return 0, fmt.Errorf("workflow: invalid metadata inventory")
+						}
+						cost += logical.ArchiveMetadata(key, ph, project, *generation, *metadataHash, *ordinal, captured, event)
+					} else if generation != nil || ordinal != nil || captured != nil || event != nil {
+						rows.Close()
+						return 0, fmt.Errorf("workflow: unversioned metadata inventory")
+					}
+				}
+			case "archive_checkpoint":
+				var ph, project, source, projection, policy string
+				var ordinal int64
+				var complete bool
+				e = rows.Scan(&ph, &project, &source, &projection, &policy, &ordinal, &complete)
+				if e == nil {
+					cost = logical.ArchiveCheckpoint(ph, project, source, projection, policy, ordinal, complete)
 				}
 			case "document_index":
 				var key, ph, project, identity string

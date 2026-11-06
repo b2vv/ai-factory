@@ -13,7 +13,7 @@ import (
 // SchemaLogicalBytes reserves the versioned collection and index definitions even
 // before creation. Physical allocator blocks and the database journal are excluded.
 func SchemaLogicalBytes() int64 {
-	return int64(len(`logical-v1:archive:compound_id(p,si,s,m);project_session_seq(project,session_id,seq);archive_page_v1(project,session_id,seq,source_instance,message_id)`))
+	return int64(len(`logical-v1:archive:compound_id(p,si,s,m);project_session_seq(project,session_id,seq);archive_page_v1(project,session_id,seq,source_instance,message_id);archive_metadata_v2_order(project,archive_metadata.generation,archive_metadata.ordinal):unique:partial_metadata_exists`))
 }
 
 // LogicalBytes streams canonical managed records with a bounded cursor. Unknown
@@ -43,7 +43,12 @@ func (s *MongoStore) LogicalBytes(ctx context.Context, limit int64) (int64, erro
 		if !bytes.Equal(canonical, cursor.Current) || doc.ID != idOf(doc.toRecord()) {
 			return 0, fmt.Errorf("archive: unknown logical representation")
 		}
-		total, e = logical.Add(total, ReservationBytes(doc.toRecord()), limit)
+		if doc.Metadata != nil {
+			if _, e = doc.envelope(); e != nil {
+				return 0, e
+			}
+		}
+		total, e = logical.Add(total, documentReservationBytes(doc), limit)
 		if e != nil {
 			return 0, e
 		}

@@ -18,6 +18,7 @@ import (
 	"strconv"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"aifactory.local/storage/internal/archive"
 	"aifactory.local/storage/internal/authz"
@@ -85,6 +86,9 @@ func (s *Server) DrainOnce() (int, error) {
 	}
 	s.mutate.Lock()
 	defer s.mutate.Unlock()
+	if err := s.recoverArchiveLocked(); err != nil {
+		return 0, err
+	}
 	n := 0
 	err := s.ctl.WithStableAuthority(s.operatorPrincipal(), func(_ *registry.Registry) error {
 		var e error
@@ -172,6 +176,9 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("/v1/capture/claude-code", s.handleCaptureClaudeCode)
 	mux.HandleFunc("/v1/capture/codex-event", s.handleCaptureCodexEvent)
 	mux.HandleFunc("/v1/archive/query", s.handleArchiveQuery)
+	mux.HandleFunc("/v1/archive/message", s.handleArchiveMessage)
+	mux.HandleFunc("/v1/archive/context", s.handleArchiveContext)
+	mux.HandleFunc("/v1/archive/freshness", s.handleArchiveFreshness)
 	mux.HandleFunc("/v1/search/query", s.handleSearchQuery)
 	mux.HandleFunc("/v1/documents/query", s.handleDocumentQuery)
 	mux.HandleFunc("GET /v1/ingest/{receipt}", s.handleIngestReceipt)
@@ -526,7 +533,11 @@ func (s *Server) handleCapture(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	recs, red := capture.Adapt(fx)
-	s.ingestRecords(w, fx.Project, fx.Provider, recs, red)
+	times := make([]*time.Time, len(fx.Messages))
+	for n, m := range fx.Messages {
+		times[n] = m.SourceEventTime
+	}
+	s.ingestRecordsWithTimes(w, fx.Project, fx.Provider, recs, red, times)
 }
 
 // handleCaptureClaudeCode ingests a SYNTHETIC Claude Code transcript (JSONL raw body) via
@@ -572,6 +583,20 @@ func (s *Server) handleCaptureClaudeCode(w http.ResponseWriter, r *http.Request)
 // re-check (request refused), and once past the re-check no purge/revoke can interleave before
 // the write — closing the "capture writes payload after purge" window.
 func (s *Server) ingestRecords(w http.ResponseWriter, project, provider string, recs []archive.Record, red []capture.Redaction) {
+	s.ingestRecordsWithTimes(w, project, provider, recs, red, nil)
+}
+func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, project, provider string, recs []archive.Record, red []capture.Redaction, sourceTimes []*time.Time) {
+	if len(sourceTimes) != 0 && len(sourceTimes) != len(recs) {
+		writeErr(w, 400, "source time alignment invalid")
+		return
+	}
+	for _, value := range sourceTimes {
+		if value != nil && value.IsZero() {
+			writeErr(w, 400, "source event time must be known or omitted")
+			return
+		}
+	}
+
 	if !s.ctl.Registry().HasProject(project) {
 		writeErr(w, http.StatusBadRequest, "unknown project")
 		return
@@ -600,7 +625,7 @@ func (s *Server) ingestRecords(w http.ResponseWriter, project, provider string, 
 		return
 	}
 
-	s.withAuthority(w, func(w http.ResponseWriter) {
+	s.withArchiveWriter(w, project, func(w http.ResponseWriter, tx *control.ArchiveTransaction) {
 		// RE-CHECK the gate under the lock (authority may have changed while measuring).
 		c := s.ctl.Registry().ConsentEpoch(project, provider, "capture")
 		if !c.Enabled {
@@ -612,6 +637,21 @@ func (s *Server) ingestRecords(w http.ResponseWriter, project, provider string, 
 			if b.Project == project && b.Scope == retention.ScopeProject {
 				outcome = "cancelled"
 				writeJSON(w, 409, map[string]any{"error": "project has a deletion barrier; capture refused", "attempt_receipts": attemptReceipts})
+				return
+			}
+		}
+		if tx != nil {
+			for n := range recs {
+				recs[n].ConsentEpoch = c.Epoch
+			}
+			if s.captureMetadata(w, tx, recs, red, attemptReceipts, sourceTimes) {
+				outcome = "complete"
+			}
+			return
+		}
+		for _, value := range sourceTimes {
+			if value != nil {
+				writeErr(w, 503, "source event time requires metadata migration")
 				return
 			}
 		}
@@ -685,7 +725,7 @@ func (s *Server) handleArchiveQuery(w http.ResponseWriter, r *http.Request) {
 	var after *archive.Position
 	if raw := r.URL.Query().Get("cursor"); raw != "" {
 		c, e := s.decodeCursor(raw)
-		if e != nil || c.Project != project || c.Query != query || c.Provider != provider || offset != 0 {
+		if e != nil || c.Time != nil || c.Project != project || c.Query != query || c.Provider != provider || offset != 0 {
 			writeErr(w, 400, "invalid or mismatched cursor")
 			return
 		}
@@ -719,9 +759,15 @@ func (s *Server) handleArchiveQuery(w http.ResponseWriter, r *http.Request) {
 		if page == nil {
 			page = []archive.Hit{}
 		}
-		resp := map[string]any{"project": project, "offset": offset, "limit": limit, "hits": page, "total_exact": !window.More && after == nil, "search_mode": "literal_substring_nfc_casefold"}
+		resp := map[string]any{"project": project, "offset": offset, "limit": limit, "hits": page, "total_exact": false, "consistency": "live_non_snapshot", "total_basis": "observed_authorized_window", "search_mode": "literal_substring_nfc_casefold"}
+		snippetRecords := make([]archive.Record, 0, len(page))
+		for _, hit := range page {
+			snippetRecords = append(snippetRecords, hit.Record)
+		}
+		resp["snippets"] = sourceSnippets(snippetRecords, query, false)
 		if !window.More && after == nil {
 			resp["total"] = len(hits)
+			resp["observed_matching_count"] = len(hits)
 		}
 		if hi < len(hits) || window.More {
 			var pos archive.Position

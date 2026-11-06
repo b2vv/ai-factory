@@ -80,7 +80,7 @@ func PendingLogicalBytes(dir string, limit int64, store archive.Store) (int64, e
 			continue
 		}
 		var r archive.Record
-		if e = json.Unmarshal(rc.Payload, &r); e != nil {
+		if e = decodeWALRecord(rc, &r); e != nil {
 			return 0, e
 		}
 		id := archive.IdentityKey(r)
@@ -88,16 +88,47 @@ func PendingLogicalBytes(dir string, limit int64, store archive.Store) (int64, e
 			continue
 		}
 		seen[id] = true
-		stored, found, e := store.Lookup(r)
-		if e != nil {
-			return 0, e
-		}
-		if found && stored != r {
-			return 0, fmt.Errorf("ingest: conflicting archive inventory")
-		}
 		cost := int64(64)
-		if !found {
-			cost += archive.ReservationBytes(r)
+		if rc.Version == 2 {
+			source, ok := store.(archive.MetadataStore)
+			if !ok {
+				return 0, ErrMetadataTransaction
+			}
+			expected, e := archive.DecodeEnvelope(rc.Version, rc.Payload)
+			if e != nil {
+				return 0, e
+			}
+			stored, found, e := source.LookupEnvelope(r)
+			if e != nil {
+				return 0, e
+			}
+			if found {
+				a, e := archive.EncodeEnvelope(stored)
+				if e != nil {
+					return 0, e
+				}
+				b, _ := archive.EncodeEnvelope(expected)
+				if string(a) != string(b) {
+					return 0, fmt.Errorf("ingest: conflicting metadata inventory")
+				}
+			} else {
+				n, e := archive.EnvelopeReservationBytes(expected)
+				if e != nil {
+					return 0, e
+				}
+				cost += n
+			}
+		} else {
+			stored, found, e := store.Lookup(r)
+			if e != nil {
+				return 0, e
+			}
+			if found && stored != r {
+				return 0, fmt.Errorf("ingest: conflicting archive inventory")
+			}
+			if !found {
+				cost += archive.ReservationBytes(r)
+			}
 		}
 		if total > limit || cost > limit-total {
 			return 0, budget.ErrCapacity

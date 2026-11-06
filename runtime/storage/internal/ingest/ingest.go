@@ -94,14 +94,28 @@ func (i *Ingestor) rebuildIdentIndex() error {
 	var pendingBytes int64
 	for _, rc := range recs {
 		var r archive.Record
-		if json.Unmarshal(rc.Payload, &r) != nil {
+		if err := decodeWALRecord(rc, &r); err != nil {
+			if rc.Version != 1 {
+				return err
+			}
 			continue
 		}
 		ident := archive.IdentityKey(r)
-		idx[ident] = sha256.Sum256(rc.Payload)
+		original, _ := json.Marshal(r)
+		idx[ident] = sha256.Sum256(original)
 		if rc.Seq > i.committed {
 			if _, exists := pending[ident]; !exists {
 				cost := archive.ReservationBytes(r)
+				if rc.Version == 2 {
+					e, err := archive.DecodeEnvelope(rc.Version, rc.Payload)
+					if err != nil {
+						return err
+					}
+					cost, err = archive.EnvelopeReservationBytes(e)
+					if err != nil {
+						return err
+					}
+				}
 				pending[ident] = cost
 				pendingBytes += cost
 			}
@@ -118,7 +132,16 @@ func (i *Ingestor) rebuildIdentIndex() error {
 // loads the durable archive-committed watermark, so Drain commits each record exactly once
 // regardless of whether the archive store itself deduplicates.
 func Open(dir string, acct *config.Accountant, store archive.Store) (*Ingestor, error) {
-	w, err := wal.Open(dir)
+	return openIngestor(dir, acct, store, false)
+}
+func openIngestor(dir string, acct *config.Accountant, store archive.Store, existing bool) (*Ingestor, error) {
+	var w *wal.WAL
+	var err error
+	if existing {
+		w, err = wal.OpenExisting(dir)
+	} else {
+		w, err = wal.Open(dir)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -384,8 +407,11 @@ func (i *Ingestor) DrainGated(gate func(archive.Record) bool) (int, error) {
 		if rec.Seq <= i.committed {
 			continue // already handled (progress checkpoint skip; store idempotency is the real redelivery guard)
 		}
+		if rec.Version != 1 {
+			return n, ErrMetadataTransaction
+		}
 		var r archive.Record
-		if err := json.Unmarshal(rec.Payload, &r); err != nil {
+		if err := decodeWALRecord(rec, &r); err != nil {
 			return n, fmt.Errorf("ingest: corrupt WAL payload at seq %d: %w", rec.Seq, err)
 		}
 		publish := gate == nil || gate(r)
@@ -586,7 +612,7 @@ func (i *Ingestor) compactPeakLocked(keep func(archive.Record) bool, peak int64)
 	for _, rc := range recs0 {
 		keepIt := true
 		var r archive.Record
-		if json.Unmarshal(rc.Payload, &r) == nil {
+		if decodeWALRecord(rc, &r) == nil {
 			keepIt = keep(r)
 		} else {
 			residualUnparseable++
@@ -598,9 +624,13 @@ func (i *Ingestor) compactPeakLocked(keep func(archive.Record) bool, peak int64)
 	// Reserve old+new generation and checkpoint/sentinel bytes before changing
 	// the watermark or closing the live WAL. No extra scratch allowance is hidden.
 	budget := wal.MaintenanceBudget{MaxInputBytes: i.acct.WALMaintenanceLimit(), MaxPeakBytes: peak}
+	formats := map[string]uint8{}
+	for _, rc := range recs0 {
+		formats[rc.Key] = rc.Version
+	}
 	keepRaw := func(key string, payload []byte) bool {
 		var r archive.Record
-		if json.Unmarshal(payload, &r) != nil {
+		if decodeWALRecord(wal.Record{Key: key, Payload: payload, Version: formats[key]}, &r) != nil {
 			return true
 		}
 		return keep(r)
@@ -624,7 +654,7 @@ func (i *Ingestor) compactPeakLocked(keep func(archive.Record) bool, peak int64)
 		return CompactOutcome{}, err
 	}
 	res, cerr := wal.CompactWithin(i.dir, keepRaw, budget)
-	w, oerr := wal.Open(i.dir)
+	w, oerr := wal.OpenExisting(i.dir)
 	if oerr != nil {
 		return CompactOutcome{}, fmt.Errorf("ingest: reopen after compaction failed: %w", oerr)
 	}
@@ -831,6 +861,17 @@ func (i *Ingestor) RecordState(key, project string) (RecordState, error) {
 		if stored != *matched {
 			return RecordState{}, archive.ErrIDConflict
 		}
+		for _, rc := range recs {
+			if rc.Seq == matchedSeq && rc.Version == 2 {
+				same, e := i.verifyEnvelopeSource(rc)
+				if e != nil {
+					return RecordState{}, e
+				}
+				if !same {
+					return RecordState{}, archive.ErrIDConflict
+				}
+			}
+		}
 		st.State = "archive_committed"
 		return st, nil
 	}
@@ -846,7 +887,7 @@ func (i *Ingestor) resolveReceipt(recs []wal.Record, key string) (*archive.Recor
 	for idx := range recs {
 		if recs[idx].Key == key {
 			var r archive.Record
-			if e := json.Unmarshal(recs[idx].Payload, &r); e != nil {
+			if e := decodeWALRecord(recs[idx], &r); e != nil {
 				return nil, 0, fmt.Errorf("ingest: corrupt WAL payload for receipt: %w", e)
 			}
 			return &r, recs[idx].Seq, nil
@@ -854,7 +895,7 @@ func (i *Ingestor) resolveReceipt(recs []wal.Record, key string) (*archive.Recor
 	}
 	for idx := range recs {
 		var r archive.Record
-		if e := json.Unmarshal(recs[idx].Payload, &r); e != nil {
+		if e := decodeWALRecord(recs[idx], &r); e != nil {
 			return nil, 0, fmt.Errorf("ingest: corrupt WAL payload for receipt: %w", e)
 		}
 		if archive.IdentityKey(r) == key {

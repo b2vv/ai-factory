@@ -138,3 +138,44 @@ project mapping or host credential is included. The portable helper is shipped
 through the existing explicit component installer; installed host policy overlays
 remain separate. The new metadata does not replace historical source identities
 or imply independent acceptance of unrelated capabilities.
+
+## Unreleased authoritative archive retrieval
+
+Owner-authorized first-party HTTP adapter, behavioral tests and contract clarification
+for exact archive-record retrieval. Reuses existing archive identity, Mongo lookup,
+authorization and retention; no external source or dependency is imported. No schema,
+historical record hash, grant, installed package or live service is changed. Local
+execution evidence and independent review bind the task snapshot separately; this
+entry is not a release or acceptance claim for remaining retrieval/freshness work.
+
+## Unreleased inactive WAL format foundation
+
+First-party dual-frame codec and synthetic corruption/retry/compatibility tests,
+implemented for the owner-authorized archive work. No upstream code is imported.
+Legacy frame bytes are retained; current production writers are not switched.
+The compatibility reader fixture is built from this repository's existing source
+revision and kept in local task evidence, not imported as a second package source.
+This foundation does not activate metadata migration, backup/restore or rollout.
+
+## Unreleased archive metadata and recovery integration
+
+Owner-authorized first-party implementation extends the earlier retrieval and WAL
+foundation snapshots with bounded parent-chain context, a versioned metadata
+sidecar, committed source and derived-index checkpoints, explicit offline migration,
+recent/since queries and source-derived match snippets. Record identity and legacy
+record hashes remain unchanged. Historical event/capture times remain unknown;
+index freshness does not assert capture completeness. No new dependency, copied
+upstream implementation, credential or project-specific payload is included.
+
+The earlier inactive-foundation description applies to that historical slice. The
+current metadata intake path uses version-2 frames only under the persisted
+migration witness and budget/recovery protocol. Migration requires an exclusive
+writer window and complete verified recovery material. Downgrade is a coordinated
+restore of the complete pre-migration state, not an old-image replacement or a
+control-only rollback. The existing logical backup command is not a substitute.
+
+Synthetic process tests cover interrupted source, schema, marker and projection
+operations; isolated full-stack rehearsal evidence and independent acceptance are
+maintained outside the portable distribution. Packaging this work does not assert
+that live migration, native-agent access, project capture, publication or consumer
+upgrades have occurred. Final acceptance binds exact reviewed bytes separately.

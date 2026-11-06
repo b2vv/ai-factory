@@ -40,20 +40,21 @@ type docID struct {
 // mongoDoc is the BSON projection of Record. Identity lives in the compound _id; the
 // top-level fields are retained for querying/ordering.
 type mongoDoc struct {
-	ID             docID      `bson:"_id"`
-	Project        string     `bson:"project"`
-	Provider       string     `bson:"provider"`
-	SourceInstance string     `bson:"source_instance"`
-	SessionID      string     `bson:"session_id"`
-	MessageID      string     `bson:"message_id"`
-	Seq            int        `bson:"seq"`
-	ParentID       string     `bson:"parent_id"`
-	Type           RecordType `bson:"type"`
-	Role           string     `bson:"role"`
-	Text           string     `bson:"text"`
-	Edited         bool       `bson:"edited"`
-	Withdrawn      bool       `bson:"withdrawn"`
-	ConsentEpoch   int64      `bson:"consent_epoch"`
+	ID             docID        `bson:"_id"`
+	Project        string       `bson:"project"`
+	Provider       string       `bson:"provider"`
+	SourceInstance string       `bson:"source_instance"`
+	SessionID      string       `bson:"session_id"`
+	MessageID      string       `bson:"message_id"`
+	Seq            int          `bson:"seq"`
+	ParentID       string       `bson:"parent_id"`
+	Type           RecordType   `bson:"type"`
+	Role           string       `bson:"role"`
+	Text           string       `bson:"text"`
+	Edited         bool         `bson:"edited"`
+	Withdrawn      bool         `bson:"withdrawn"`
+	ConsentEpoch   int64        `bson:"consent_epoch"`
+	Metadata       *metadataDoc `bson:"archive_metadata,omitempty"`
 }
 
 func idOf(r Record) docID {

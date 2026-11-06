@@ -67,33 +67,42 @@ var ErrBlocked = errors.New("control: registry BLOCKED; durable authority is cor
 type mutationKind string
 
 const (
-	kWorkflowPrepare mutationKind = "workflow_prepare"
-	kWorkflowFlip    mutationKind = "workflow_flip"
-	kMint            mutationKind = "mint_project"
-	kEnroll          mutationKind = "enroll_location"
-	kSetConsent      mutationKind = "set_consent"
-	kIssueGrant      mutationKind = "issue_grant"
-	kRevokeGrant     mutationKind = "revoke_grant"
-	kBarrierProj     mutationKind = "delete_project_barrier"
-	kBarrierSess     mutationKind = "delete_session_barrier"
+	kArchiveProjection mutationKind = "archive_metadata_v2_projection"
+	kArchiveReady      mutationKind = "archive_metadata_v2_ready"
+	kArchiveReserve    mutationKind = "archive_metadata_v2_reserve"
+	kArchiveCommit     mutationKind = "archive_metadata_v2_commit"
+	kArchiveCancel     mutationKind = "archive_metadata_v2_cancel"
+	kArchiveBegin      mutationKind = "archive_metadata_v2_begin"
+	kWorkflowPrepare   mutationKind = "workflow_prepare"
+	kWorkflowFlip      mutationKind = "workflow_flip"
+	kMint              mutationKind = "mint_project"
+	kEnroll            mutationKind = "enroll_location"
+	kSetConsent        mutationKind = "set_consent"
+	kIssueGrant        mutationKind = "issue_grant"
+	kRevokeGrant       mutationKind = "revoke_grant"
+	kBarrierProj       mutationKind = "delete_project_barrier"
+	kBarrierSess       mutationKind = "delete_session_barrier"
 )
 
 // mutation is the serialized form of one authority change (the WAL payload).
 type mutation struct {
-	Kind        mutationKind      `json:"kind"`
-	Workflow    *WorkflowReceipt  `json:"workflow,omitempty"`
-	UUID        string            `json:"uuid,omitempty"`
-	Label       string            `json:"label,omitempty"`
-	Loc         registry.Location `json:"loc,omitempty"`
-	Confirm     bool              `json:"confirm,omitempty"`
-	Project     string            `json:"project,omitempty"`
-	Provider    string            `json:"provider,omitempty"`
-	Capability  string            `json:"capability,omitempty"`
-	Enabled     bool              `json:"enabled,omitempty"`
-	Grant       grantDTO          `json:"grant,omitempty"`
-	PrincipalID string            `json:"principal_id,omitempty"`
-	SessionID   string            `json:"session_id,omitempty"`
-	DelEpoch    int64             `json:"del_epoch,omitempty"`
+	ArchiveProjection *ArchiveProjection `json:"archive_projection,omitempty"`
+	ArchiveOperation  *ArchiveOperation  `json:"archive_operation,omitempty"`
+	Kind              mutationKind       `json:"kind"`
+	ArchiveGeneration string             `json:"archive_generation,omitempty"`
+	Workflow          *WorkflowReceipt   `json:"workflow,omitempty"`
+	UUID              string             `json:"uuid,omitempty"`
+	Label             string             `json:"label,omitempty"`
+	Loc               registry.Location  `json:"loc,omitempty"`
+	Confirm           bool               `json:"confirm,omitempty"`
+	Project           string             `json:"project,omitempty"`
+	Provider          string             `json:"provider,omitempty"`
+	Capability        string             `json:"capability,omitempty"`
+	Enabled           bool               `json:"enabled,omitempty"`
+	Grant             grantDTO           `json:"grant,omitempty"`
+	PrincipalID       string             `json:"principal_id,omitempty"`
+	SessionID         string             `json:"session_id,omitempty"`
+	DelEpoch          int64              `json:"del_epoch,omitempty"`
 }
 
 // grantDTO is a JSON-safe projection of registry.Grant.
@@ -139,6 +148,7 @@ type metaFile struct {
 
 // Durable is the durable control registry.
 type Durable struct {
+	archiveStates     map[string]ArchiveState
 	externalActive    bool
 	budget            *budget.Ledger
 	mu                sync.Mutex
@@ -441,6 +451,20 @@ func (d *Durable) replay(recs []wal.Record) error {
 // mutation methods (ordered relative to persistence per the ordering contract).
 func (d *Durable) apply(actor registry.Principal, m mutation) error {
 	switch m.Kind {
+	case kArchiveProjection:
+		return d.applyArchiveProjection(m)
+	case kArchiveReady:
+		state, ok := d.archiveStates[m.Project]
+		if !ok || state.Generation != m.ArchiveGeneration || state.Pending != nil || state.MigrationComplete {
+			return ErrBlocked
+		}
+		state.MigrationComplete = true
+		d.archiveStates[m.Project] = state
+		return nil
+	case kArchiveReserve, kArchiveCommit, kArchiveCancel:
+		return d.applyArchivePhase(m)
+	case kArchiveBegin:
+		return d.applyArchiveBegin(m.Project, m.ArchiveGeneration)
 	case kWorkflowPrepare:
 		return d.applyWorkflowPrepare(m.Workflow)
 	case kWorkflowFlip:
@@ -452,17 +476,20 @@ func (d *Durable) apply(actor registry.Principal, m mutation) error {
 		return err
 	case kSetConsent:
 		_, err := d.reg.SetConsent(actor, m.Project, m.Provider, m.Capability, m.Enabled)
-		return err
+		if err != nil {
+			return err
+		}
+		return d.advanceArchivePolicy(m.Project)
 	case kIssueGrant:
 		return d.reg.IssueGrant(actor, m.Grant.toGrant())
 	case kRevokeGrant:
 		return d.reg.RevokeGrant(actor, m.PrincipalID)
 	case kBarrierProj:
 		d.ret.DeleteProject(m.Project, m.DelEpoch)
-		return nil
+		return d.advanceArchivePolicy(m.Project)
 	case kBarrierSess:
 		d.ret.DeleteSession(m.Project, m.SessionID, m.DelEpoch)
-		return nil
+		return d.advanceArchivePolicy(m.Project)
 	default:
 		return fmt.Errorf("control: unknown mutation kind %q", m.Kind)
 	}
@@ -690,12 +717,19 @@ func (d *Durable) SetConsent(actor registry.Principal, project, provider, capabi
 		if err := d.persist(m); err != nil {
 			return 0, err
 		}
-		return d.reg.SetConsent(actor, project, provider, capability, true)
+		epoch, err := d.reg.SetConsent(actor, project, provider, capability, true)
+		if err != nil {
+			return epoch, err
+		}
+		return epoch, d.advanceArchivePolicy(project)
 	}
 	// authority-reducing (revoke): apply first (immediate), then persist
 	epoch, err := d.reg.SetConsent(actor, project, provider, capability, false)
 	if err != nil {
 		return 0, err
+	}
+	if err := d.advanceArchivePolicy(project); err != nil {
+		return epoch, err
 	}
 	if perr := d.persist(m); perr != nil {
 		return epoch, perr // in-memory stays revoked (safe); not acknowledged
@@ -761,6 +795,9 @@ func (d *Durable) DeleteProjectBarrier(actor registry.Principal, project string)
 	d.delEpoch++
 	b := d.ret.DeleteProject(project, d.delEpoch)
 	m := mutation{Kind: kBarrierProj, Project: project, DelEpoch: d.delEpoch}
+	if err := d.advanceArchivePolicy(project); err != nil {
+		return b, err
+	}
 	if perr := d.persist(m); perr != nil {
 		return b, perr // barrier active in memory (deny); not acknowledged
 	}
@@ -779,6 +816,9 @@ func (d *Durable) DeleteSessionBarrier(actor registry.Principal, project, sessio
 	d.delEpoch++
 	b := d.ret.DeleteSession(project, session, d.delEpoch)
 	m := mutation{Kind: kBarrierSess, Project: project, SessionID: session, DelEpoch: d.delEpoch}
+	if err := d.advanceArchivePolicy(project); err != nil {
+		return b, err
+	}
 	if perr := d.persist(m); perr != nil {
 		return b, perr
 	}

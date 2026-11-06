@@ -89,8 +89,9 @@ type Store interface {
 // idempotency contract (identity dedup + conflict), matching MongoStore, so tests exercise
 // the real redelivery semantics rather than an append-only approximation.
 type MemStore struct {
-	up   bool
-	recs map[string][]Record
+	metadata map[string]Metadata
+	up       bool
+	recs     map[string][]Record
 }
 
 func NewMemStore() *MemStore { return &MemStore{up: true, recs: map[string][]Record{}} }
@@ -133,6 +134,9 @@ func (s *MemStore) Purge(project, session string) (int, error) {
 	list := s.recs[project]
 	if session == "" {
 		n := len(list)
+		for _, r := range list {
+			delete(s.metadata, IdentityKey(r))
+		}
 		delete(s.recs, project)
 		return n, nil
 	}
@@ -140,6 +144,7 @@ func (s *MemStore) Purge(project, session string) (int, error) {
 	removed := 0
 	for _, r := range list {
 		if r.SessionID == session {
+			delete(s.metadata, IdentityKey(r))
 			removed++
 			continue
 		}

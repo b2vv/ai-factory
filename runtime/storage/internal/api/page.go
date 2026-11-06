@@ -7,12 +7,14 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"io"
 )
 
 type pageCursor struct {
+	Time                     *timeCursor `json:",omitempty"`
 	Project, Query, Provider string
 	IndexAfter               string `json:",omitempty"`
 	After                    archive.Position
@@ -26,7 +28,18 @@ func (s *Server) cursorCipher() (cipher.AEAD, error) {
 	}
 	return cipher.NewGCM(b)
 }
+func recentBinding(value string) string {
+	digest := sha256.Sum256([]byte(value))
+	return hex.EncodeToString(digest[:])
+}
 func (s *Server) encodeCursor(c pageCursor) (string, error) {
+	if c.Time != nil {
+		c.Project, c.Query, c.Provider = recentBinding(c.Project), recentBinding(c.Query), recentBinding(c.Provider)
+		copy := *c.Time
+		copy.Checkpoint.Project = ""
+		c.Time = &copy
+	}
+
 	a, e := s.cursorCipher()
 	if e != nil {
 		return "", e

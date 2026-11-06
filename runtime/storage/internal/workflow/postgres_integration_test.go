@@ -231,7 +231,7 @@ func TestRollbackRefusesNonemptyDerivedIndexBeforeAnyDrop(t *testing.T) {
 	if e = s.pool.QueryRow(ctx, `SELECT count(*) FROM archive_index WHERE key_hash=$1`, project).Scan(&count); e != nil || count != 1 {
 		t.Fatal("refusal changed index", count, e)
 	}
-	if e = s.pool.QueryRow(ctx, `SELECT count(*) FROM schema_migrations`).Scan(&count); e != nil || count != SchemaVersion() {
+	if e = s.pool.QueryRow(ctx, `SELECT count(*) FROM schema_migrations`).Scan(&count); e != nil || count != DefaultSchemaVersion {
 		t.Fatal("refusal changed schema", count, e)
 	}
 }

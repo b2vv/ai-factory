@@ -10,6 +10,7 @@ import (
 	"aifactory.local/storage/internal/archive"
 	"aifactory.local/storage/internal/authz"
 	"aifactory.local/storage/internal/config"
+	"aifactory.local/storage/internal/control"
 	"aifactory.local/storage/internal/documents"
 	"aifactory.local/storage/internal/registry"
 	"aifactory.local/storage/internal/retention"
@@ -44,14 +45,29 @@ func (s *Server) IndexOnce() (int, error) {
 	s.mutate.Lock()
 	defer s.mutate.Unlock()
 	count := 0
-	e := s.ctl.WithStableAuthority(s.operatorPrincipal(), func(reg *registry.Registry) error {
-		projects := reg.Projects()
-		sort.Strings(projects)
-		if len(projects) == 0 {
-			return nil
+	projects := s.ctl.Registry().Projects()
+	sort.Strings(projects)
+	if len(projects) == 0 {
+		return 0, nil
+	}
+	project := projects[s.indexProject%len(projects)]
+	s.indexProject = (s.indexProject + 1) % len(projects)
+	e := s.ctl.WithArchiveWriter(s.operatorPrincipal(), project, func(tx *control.ArchiveTransaction) error {
+		if tx != nil {
+			state, err := tx.State()
+			if err != nil {
+				return err
+			}
+			if !state.MigrationComplete {
+				return search.ErrCheckpoint
+			}
+			source, ok := s.ing.Store().(search.MetadataSource)
+			if !ok {
+				return search.ErrCheckpoint
+			}
+			count, err = s.searchStore.ProjectArchive(tx, source, s.publishGate)
+			return err
 		}
-		project := projects[s.indexProject%len(projects)]
-		s.indexProject = (s.indexProject + 1) % len(projects)
 		window, e := s.ing.Store().Scan(project, s.indexAfter[project])
 		if e != nil {
 			return e
@@ -128,6 +144,10 @@ func sourceIdentity(raw, project string) (archive.Record, error) {
 	return archive.Record{Project: fields[0], SourceInstance: fields[1], SessionID: fields[2], MessageID: fields[3]}, nil
 }
 func (s *Server) handleSearchQuery(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Query().Has("sort") || r.URL.Query().Has("since") || r.URL.Query().Has("time_field") {
+		s.handleRecentSearch(w, r)
+		return
+	}
 	if r.Method != http.MethodGet {
 		writeErr(w, 405, "GET required")
 		return
@@ -195,7 +215,7 @@ func (s *Server) handleSearchQuery(w http.ResponseWriter, r *http.Request) {
 			writeErr(w, 503, "continuation unavailable")
 			return
 		}
-		writeJSON(w, 200, map[string]any{"project": project, "search_mode": "tokenized_simple_nfc_casefold", "hits": visible, "next_cursor": token, "derived": true})
+		writeJSON(w, 200, map[string]any{"project": project, "search_mode": "tokenized_simple_nfc_casefold", "hits": visible, "snippets": sourceSnippets(visible, query, true), "next_cursor": token, "derived": true, "total_exact": false, "consistency": "live_non_snapshot"})
 	})
 }
 
@@ -277,7 +297,7 @@ func (s *Server) indexContinuation(r *http.Request, project, query, kind string)
 		return "", nil
 	}
 	c, e := s.decodeCursor(raw)
-	if e != nil || c.Project != project || c.Query != query || c.Provider != kind || len(c.IndexAfter) != 64 {
+	if e != nil || c.Time != nil || c.Project != project || c.Query != query || c.Provider != kind || len(c.IndexAfter) != 64 {
 		return "", fmt.Errorf("invalid scoped cursor")
 	}
 	if _, e = hex.DecodeString(c.IndexAfter); e != nil {
@@ -290,4 +310,39 @@ func (s *Server) nextIndexCursor(project, query, kind, next string) (string, err
 		return "", nil
 	}
 	return s.encodeCursor(pageCursor{Project: project, Query: query, Provider: kind, IndexAfter: next})
+}
+
+// RecoverIndex reconciles persisted index requests before startup can create an
+// unrelated marker intent. It does not start a new rebuild or scan.
+func (s *Server) RecoverIndex() error {
+	s.mutate.Lock()
+	defer s.mutate.Unlock()
+	for _, project := range s.ctl.Registry().Projects() {
+		if err := s.ctl.WithArchiveWriter(s.operatorPrincipal(), project, func(tx *control.ArchiveTransaction) error {
+			if tx == nil {
+				return nil
+			}
+			op, err := tx.RecoveryProjection()
+			if err != nil || op == nil {
+				return err
+			}
+			if s.searchStore == nil || s.ing == nil {
+				return search.ErrCheckpoint
+			}
+			source, ok := s.ing.Store().(search.MetadataSource)
+			if !ok {
+				return search.ErrCheckpoint
+			}
+			return s.searchStore.RecoverProjection(tx, source, s.publishGate)
+		}); err != nil {
+			return err
+		}
+	}
+	if ledger := s.ctl.Budget(); ledger != nil {
+		pending := ledger.Snapshot().Pending
+		if len(pending) == 1 && pending[0].Evidence.Kind == "archive-index-v2" {
+			return s.ctl.RecoverUnreservedArchiveIntent(s.operatorPrincipal())
+		}
+	}
+	return nil
 }
