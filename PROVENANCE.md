@@ -267,3 +267,11 @@ kit update, project rollout, capture, grant or native discovery is implied.
 Split epoch compatibility treats an owned, non-writable public grant-version file
 as metadata while keeping actual secrets/JSON credentials private. Explicit live
 compatibility tests do not change file permissions or substitute credentials.
+
+## Unreleased shared source update guidance
+
+Owner-directed original guidance separates shared file routing, explicit reviewed
+Git fast-forwards and consumer reloads. Native Git commands are tested in isolated
+synthetic repositories; no background updater, hook or scheduler is introduced.
+Global alias and project-local connection changes remain separately authorized
+local operations. Package integrity and historical source identities are retained.

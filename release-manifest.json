@@ -133,12 +133,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "88eb91095f6c5c4b7836f457d66c50c3a219d11dc48b91039ef6471b8e21e248",
+      "sha256": "422734a0dd6e6869a3da0f00b0946e943328ab4ea69095ca714f3b3794004479",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "c67f6c8e89aacba64242d6b4821e327b4a69f47b21ef53e41b48b11eb3e210c8",
+      "sha256": "3df0424988d9cfd56ed1e3f5df4c8c15486a1ee312b262bfb4474b0773766db7",
       "component": "core"
     },
     {
@@ -367,6 +367,11 @@
       "component": "core"
     },
     {
+      "path": "docs/shared-source-mode.md",
+      "component": "core",
+      "sha256": "7f46519cb7be5d0ec36fe071aa40e89fd69e13b5650ebd64c74befa9f9a09094"
+    },
+    {
       "path": "docs/translations/en/ai-factory/history.md",
       "sha256": "f106a3cbe16f5d5e60772689a5f85c9bc1089b3d1d896210ddc9fc782f077be0",
       "component": "core"
@@ -513,7 +518,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "6fdce174d0b002db28a1ea87cf1c4b9e8ec253d093b8f4e69a1453d0b4e56bff",
+      "sha256": "209871b164bfa9d5fee8173f56857e234b44dbafdce7c0029eaf307aa2c359bc",
       "component": "core"
     },
     {

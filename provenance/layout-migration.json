@@ -58,9 +58,10 @@
         "Reviewed main integration; original source identity retained.",
         "Owner-authorized UI measurement integration; original historical hash retained.",
         "Owner-authorized read-only archive routing; historical source hash retained.",
-        "Owner-authorized read-only archive routing; historical source hash retained."
+        "Owner-authorized read-only archive routing; historical source hash retained.",
+        "Owner-authorized shared-source update guidance; immutable historical source identities retained."
       ],
-      "new_sha256": "88eb91095f6c5c4b7836f457d66c50c3a219d11dc48b91039ef6471b8e21e248"
+      "new_sha256": "422734a0dd6e6869a3da0f00b0946e943328ab4ea69095ca714f3b3794004479"
     },
     {
       "old_path": "README.md",
