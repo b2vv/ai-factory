@@ -100,6 +100,16 @@
         "core"
       ],
       "activation": "source helper only; explicit hook trust and native acceptance required"
+    },
+    "search-client": {
+      "required": false,
+      "dependencies": [
+        "core"
+      ],
+      "runtime": [
+        "Python >=3.9"
+      ],
+      "activation": "Explicit local search-only binding required; no credentials, grants, hooks or server activation."
     }
   },
   "independent_review": "AF14/15 and bounded AF16 native pilot ACCEPTED in their exact scopes; stricter packaged Git behavior and final rc3 integration/package review PENDING; global activation NOT_RUN; storage alpha review BLOCKED, not GREEN; owner explicitly accepted limited alpha publication",
@@ -113,7 +123,7 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "48029c3469989956bd5e23f40b9a5dd3558dc35aeb4d4eb51b9de73691961a6c",
+      "sha256": "1f63e0606a894472bd69928407ddce49851932c41ced81ab1f098f21d83fd930",
       "component": "core"
     },
     {
@@ -123,7 +133,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "7e4abf3ec8cc17e6230aac1f4bdeeb4eb6af276824350aeea76ac9edbcc488db",
+      "sha256": "2ac0d51c63b67fc517af2916e03c3bb487e91591371c5bf10c872d0695d70955",
       "component": "core"
     },
     {
@@ -503,7 +513,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "848a9ed18bbd5a98158c3368c277846b1362dadeded4d8e1b54bd6399f9f7491",
+      "sha256": "f9be239c0454e1b0c13b7b231694fbfc0f4385cee2de73f36963cff1d4dcccd5",
       "component": "core"
     },
     {
@@ -532,6 +542,11 @@
       "component": "core"
     },
     {
+      "path": "provenance/search-client.json",
+      "component": "core",
+      "sha256": "1616bede3e4417371f231ae948868a6bb3c4dc2cbc5c973c41ff7c4b998e8bb7"
+    },
+    {
       "path": "provenance/security-sources.json",
       "sha256": "833acc0e4489861161d1e5e798ab05421ad276373a02c0be366f21e8d4d89856",
       "component": "core"
@@ -548,7 +563,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "88649889c102af6b2c322f63c2bb5685c771f1474a70774e725d6ea358544760",
+      "sha256": "85feaac9f6e05dabe14986e52bc6683b61fa1531b0f39c1eb6505c0b9b4b682a",
       "component": "core"
     },
     {
@@ -558,18 +573,23 @@
     },
     {
       "path": "rules/README.md",
-      "sha256": "934bed423df7cc3ccb9ce49312e152e33e50a62b4d53f261c2bfd26df3541948",
+      "sha256": "26c635af25a816b69e70556be4559da3979d2836da8dd58ddab30a476216ac00",
       "component": "core"
     },
     {
       "path": "rules/agent-entry.md",
-      "sha256": "1dbc5f3bc128de346e4dc7c61facf91c22865ff552da28b03d34710d056c7681",
+      "sha256": "c854b22a344e66660584b393213c49bacc84ac64ab5d5029237c7d86c611ae6c",
       "component": "core"
     },
     {
       "path": "rules/agent-stream-to-file.md",
       "sha256": "e5229cd7a191652f0275dd8dcd54976070324a41660812eb91e33aefc2061bd4",
       "component": "core"
+    },
+    {
+      "path": "rules/archive-search.md",
+      "component": "core",
+      "sha256": "162808191c1dbc1adae57d5ebade4038c9cbe0e40b962d38b0da50a12bdd7b5a"
     },
     {
       "path": "rules/multi-model-roles.md",
@@ -1070,6 +1090,26 @@
       "path": "runtime/storage/deploy/oci/manifest.json",
       "component": "storage",
       "sha256": "759e21b3e12671044b088c5400635efe3a023efcbcec0ad1eae024ea256598d2"
+    },
+    {
+      "path": "runtime/storage/deploy/search-client/README.md",
+      "component": "search-client",
+      "sha256": "0bf0efe31da5eeb2ff8ec006b6d754493deb622ed549954bbde075730e61f1a5"
+    },
+    {
+      "path": "runtime/storage/deploy/search-client/archive_search.py",
+      "component": "search-client",
+      "sha256": "ea1e9323ac440cdd931fdd43a43c63189d35874b56f877e532205d6c4c9d8fa6"
+    },
+    {
+      "path": "runtime/storage/deploy/search-client/search-routes.example.json",
+      "component": "search-client",
+      "sha256": "9071d84aa1d73408bb414645a6b58556b900f97445c765431c04351e8236e00a"
+    },
+    {
+      "path": "runtime/storage/deploy/search-client/test_archive_search.py",
+      "component": "search-client",
+      "sha256": "4e742be7e0ec77fbe914a8720f1eea28bf3f4f11d6750280f239257bd18de71f"
     },
     {
       "path": "runtime/storage/deploy/test/compose.yaml",
@@ -3963,7 +4003,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "0eb228a50c9b7c8f767373175cec6f79dac908308535541dd613e5f4c357e2ae",
+      "sha256": "9bdca49fbfcb36a37573faa7f3356d75fcf2e348209d768682f2443429e50baa",
       "component": "core"
     },
     {

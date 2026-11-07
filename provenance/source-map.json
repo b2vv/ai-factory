@@ -4297,13 +4297,14 @@
       "source": "~/.agents/rules/README.md",
       "destination": "rules/README.md",
       "source_sha256": "645b0ee343fa2d9ab8184854c78a589dc9a1b65ee7b5f36ff3da1f2a73e892eb",
-      "sha256": "934bed423df7cc3ccb9ce49312e152e33e50a62b4d53f261c2bfd26df3541948",
+      "sha256": "26c635af25a816b69e70556be4559da3979d2836da8dd58ddab30a476216ac00",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "0.4 layout relocation: package links/test imports updated; see layout migration map",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
+        "Owner-authorized canonical read-only archive routing; immutable upstream/source identity retained."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/rules/README.md"
@@ -4375,7 +4376,7 @@
       "source": "~/.agents/AGENTS.md",
       "destination": "rules/agent-entry.md",
       "source_sha256": "b7dffab20ba9d6cc341173912fe192e4df217023a922299f338b3407b915b4fa",
-      "sha256": "1dbc5f3bc128de346e4dc7c61facf91c22865ff552da28b03d34710d056c7681",
+      "sha256": "c854b22a344e66660584b393213c49bacc84ac64ab5d5029237c7d86c611ae6c",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4383,7 +4384,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized original addition: the 'Resume a prior task when the user asks to continue' rule authored in-repo as a before-skill session-recovery rule; not derived from the named source bytes, so source_sha256 is unchanged."
+        "Owner-authorized original addition: the 'Resume a prior task when the user asks to continue' rule authored in-repo as a before-skill session-recovery rule; not derived from the named source bytes, so source_sha256 is unchanged.",
+        "Owner-authorized canonical read-only archive routing; immutable upstream/source identity retained."
       ],
       "category": "canonical-instructions-and-guides",
       "previous_release_destination": "collection/agents/AGENTS.md"

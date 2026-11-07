@@ -231,3 +231,17 @@ generator are excluded; unique WIP remains in a verified private recovery archiv
 No private paths, mappings, payloads, host configuration or third-party source is
 shipped. Source hashes are bound in `provenance/manual-store-contract.json`;
 fixture evidence and independent acceptance are separate from native execution.
+
+## Unreleased read-only search client
+
+Owner-authorized first-party candidate archive SHA256
+`ff0466aa3b57c6a5c98097d9efb94ce98d2a37fc0b31bdee02f2f04333978b7b`
+is selectively adapted as an optional standalone search client. Existing candidate
+transport/pagination tests are retained; explicit existing split-file bindings and
+actual source/snippet wire types receive regression tests. No third-party source,
+private configuration, credentials or conversation payload is included.
+
+Canonical archive guidance is restored from the documented owner-authored shared
+search overlay, with live traversal limits corrected. Historical source hashes and
+notices remain unchanged; adapted bytes are separately bound. No installed hybrid
+kit update, project rollout, capture, grant or native discovery is implied.

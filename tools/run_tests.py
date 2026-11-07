@@ -57,6 +57,12 @@ with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
             print('\n=== isolated catcher fixture: '+name+' ===',flush=True)
             result=subprocess.run([sys.executable,'-B',str(catcher/name)],env=env,cwd=root)
             failures += result.returncode != 0
+    if args.suite != 'storage':
+        search_client=root/'runtime/storage/deploy/search-client'
+        if (search_client/'test_archive_search.py').exists():
+            print('\n=== isolated search client fixture ===',flush=True)
+            result=subprocess.run([sys.executable,'-B','-m','unittest','discover','-s',str(search_client),'-p','test_*.py','-v'],env=env,cwd=root)
+            failures += result.returncode != 0
     go_result=run_storage_go_suite(root, env)
     failures += go_result != 0
     if go_result==2: print('storage required suite: BLOCKED (not executed)',flush=True)

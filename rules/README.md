@@ -17,6 +17,8 @@ Edit files **here** (the physical source); Obsidian displays them through the sy
 
 
 ## Files
+- [`archive-search.md`](archive-search.md) — scoped read-only historical lookup;
+  bounded live pagination, no new grants or capture.
 - [`typescript-pocock-idioms.md`](typescript-pocock-idioms.md) — Matt Pocock / TotalTypeScript idioms (a distillation).
 - [`subagent-orchestration-ledger.md`](subagent-orchestration-ledger.md) — durable ledger,
   4-status protocol, brief-file handoff.

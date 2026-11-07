@@ -85,6 +85,12 @@ restarted paused work on the next `/clear`. Working-file mechanics: [`rules/agen
 ---
 
 
+### 4. Retrieve earlier conversation context when needed
+
+Follow [read-only archive search](archive-search.md) when a prior conversation or
+decision is needed. Resolve the current project route first; missing access blocks
+only that lookup, never authorizes another project grant or a new credential.
+
 ## How to add a rule
 
 1. A file in `rules/`, an entry in [`rules/README.md`](README.md).
