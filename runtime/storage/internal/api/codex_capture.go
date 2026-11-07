@@ -8,6 +8,14 @@ import (
 
 // Explicit capture-authorized transport for selected documented events, not a hook installer.
 func (s *Server) handleCaptureCodexEvent(w http.ResponseWriter, r *http.Request) {
+	s.handleCodexEvent(w, r, false)
+}
+
+func (s *Server) handleCaptureCodexSnapshot(w http.ResponseWriter, r *http.Request) {
+	s.handleCodexEvent(w, r, true)
+}
+
+func (s *Server) handleCodexEvent(w http.ResponseWriter, r *http.Request, snapshots bool) {
 	if r.Method != http.MethodPost {
 		writeErr(w, http.StatusMethodNotAllowed, "POST required")
 		return
@@ -25,10 +33,17 @@ func (s *Server) handleCaptureCodexEvent(w http.ResponseWriter, r *http.Request)
 		writeErr(w, 400, "Codex event body unreadable or too large")
 		return
 	}
-	recs, red, err := capture.AdaptCodexEvent(body, project, source)
+	adapt, provider := capture.AdaptCodexEvent, capture.CodexEventProvider
+	if snapshots {
+		adapt, provider = capture.AdaptCodexSnapshotEvent, capture.CodexSnapshotProvider
+	}
+	recs, red, err := adapt(body, project, source)
 	if err != nil {
 		writeErr(w, 400, err.Error())
 		return
 	}
-	s.ingestRecords(w, r, project, capture.CodexEventProvider, recs, red)
+	if snapshots {
+		w.Header().Set("X-AF-Codex-Contract", "2")
+	}
+	s.ingestRecords(w, r, project, provider, recs, red)
 }

@@ -36,7 +36,7 @@ func scopedFixture(t *testing.T, metadata bool, meter func() (config.Usage, erro
 		if e := c.MintProject(op, p, "fixture"); e != nil {
 			t.Fatal(e)
 		}
-		for _, provider := range []string{"synthetic", "claude-code", "codex-hook-v1"} {
+		for _, provider := range []string{"synthetic", "claude-code", "codex-hook-v1", "codex-hook-v2"} {
 			if _, e := c.SetConsent(op, p, provider, "capture", true); e != nil {
 				t.Fatal(e)
 			}
@@ -83,6 +83,10 @@ func scopedRequest(t *testing.T, f captureFixture, route, project string, h map[
 		path += "/codex-event?project=" + project + "&source_instance=fixture"
 		body = `{"hook_event_name":"UserPromptSubmit","session_id":"s","turn_id":"turn","prompt":"visible"}`
 	}
+	if route == "codex-v2" {
+		path += "/codex-event-v2?project=" + project + "&source_instance=fixture"
+		body = `{"schema_version":2,"hook_event_name":"UserPromptSubmit","session_id":"s","turn_id":"turn","prompt":"visible"}`
+	}
 	req, e := http.NewRequest("POST", f.ts.URL+path, strings.NewReader(body))
 	if e != nil {
 		t.Fatal(e)
@@ -103,7 +107,7 @@ func scopedRequest(t *testing.T, f captureFixture, route, project string, h map[
 }
 func TestScopedCaptureProviderAndPolicyMatrix(t *testing.T) {
 	for _, metadata := range []bool{false, true} {
-		for _, route := range []string{"generic", "claude", "codex"} {
+		for _, route := range []string{"generic", "claude", "codex", "codex-v2"} {
 			for _, scenario := range []string{"valid", "operator", "foreign", "unknown-project", "wrong-op", "bad-secret", "stale", "revoked", "missing", "empty-operator", "bad-operator", "consent", "barrier"} {
 				name := route + "/" + scenario
 				if metadata {
@@ -161,6 +165,9 @@ func TestScopedCaptureProviderAndPolicyMatrix(t *testing.T) {
 						if route == "codex" {
 							provider = "codex-hook-v1"
 						}
+						if route == "codex-v2" {
+							provider = "codex-hook-v2"
+						}
 						if _, e := f.ctl.SetConsent(op, "p", provider, "capture", false); e != nil {
 							t.Fatal(e)
 						}
@@ -208,7 +215,7 @@ func TestScopedCaptureProviderAndPolicyMatrix(t *testing.T) {
 
 func TestScopedCaptureRechecksAuthorityAfterMeter(t *testing.T) {
 	for _, metadata := range []bool{false, true} {
-		for _, route := range []string{"generic", "claude", "codex"} {
+		for _, route := range []string{"generic", "claude", "codex", "codex-v2"} {
 			for _, change := range []string{"revoke", "rotate", "consent", "barrier"} {
 				name := route + "/" + change
 				if metadata {
@@ -235,6 +242,9 @@ func TestScopedCaptureRechecksAuthorityAfterMeter(t *testing.T) {
 						}
 						if route == "codex" {
 							provider = "codex-hook-v1"
+						}
+						if route == "codex-v2" {
+							provider = "codex-hook-v2"
 						}
 						mutation = func() error { _, e := f.ctl.SetConsent(op, "p", provider, "capture", false); return e }
 					}

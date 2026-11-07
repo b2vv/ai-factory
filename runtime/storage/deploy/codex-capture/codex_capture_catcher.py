@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 # Codex lifecycle-event capture catcher (delivery only) -> AI Factory storage
-# POST /v1/capture/codex-event. The vetted Go adapter (internal/capture, provider
-# "codex-hook-v1", AdaptCodexEvent) remains the SOLE authority for redaction +
+# POST /v1/capture/codex-event-v2. The vetted Go adapter (internal/capture, provider
+# "codex-hook-v2", AdaptCodexSnapshotEvent) remains the SOLE authority for redaction +
 # credential sanitization (known-credentials-v1) before anything reaches the WAL/archive;
 # this catcher only selects a project, normalizes the documented event, and transmits.
 #
 # Hook contract (verified against the official docs, learn.chatgpt.com/docs/hooks, and the
-# running server source internal/capture/codex_event.go @ b1c195e):
+# versioned server contract internal/capture/codex_event.go):
 #   Common stdin fields on every command hook: session_id, transcript_path, cwd,
 #   hook_event_name, model.
 #   UserPromptSubmit adds: turn_id, prompt, permission_mode.
 #   Stop             adds: turn_id, stop_hook_active, last_assistant_message, permission_mode.
 #   (SubagentStop also carries last_assistant_message+turn_id; it is deliberately IGNORED here
 #    so a sub-agent message is never recorded as a top-level turn.)
-# The server accepts ONLY the documented subset below; field names are NOT invented.
+# Factory adds schema_version=2 to the documented native subset. This is a transport
+# envelope field, not a native hook field. The server assigns sanitized snapshot identity.
 #
 # Design points enforced here (see README.md):
 #  - This mapping mode supports global or project-local hooks. Its explicit operator
@@ -117,12 +118,12 @@ def normalize_event(ev):
     """Map a documented Codex hook event to the exact server body.
 
     Returns (role, body) on success and (reason, None) on a no-op, so the caller tests
-    `body is None`. body is the JSON the server's AdaptCodexEvent accepts:
-      UserPromptSubmit -> {hook_event_name, session_id, turn_id, prompt}
-      Stop             -> {hook_event_name, session_id, turn_id, last_assistant_message}
-    Exactly one of prompt / last_assistant_message is set, as the server requires; every
-    other stdin field (cwd, transcript_path, model, permission_mode, stop_hook_active, ...)
-    is dropped and never transmitted."""
+    `body is None`. body is the JSON the server's AdaptCodexSnapshotEvent accepts:
+      UserPromptSubmit -> {schema_version=2, hook_event_name, session_id, turn_id, prompt}
+      Stop -> {schema_version=2, hook_event_name, session_id, turn_id,
+               last_assistant_message, stop_hook_active}
+    Exactly one text field is set. cwd, transcript_path, model and permission_mode
+    are never transmitted. Both initial and continued Stops are snapshot candidates."""
     if not isinstance(ev, dict):
         return "event not an object", None
     event = ev.get("hook_event_name")
@@ -137,17 +138,17 @@ def normalize_event(ev):
         prompt = ev.get("prompt")
         if not isinstance(prompt, str) or prompt == "":
             return "empty prompt", None
-        return "user", {"hook_event_name": "UserPromptSubmit", "session_id": session_id,
+        return "user", {"schema_version": 2, "hook_event_name": "UserPromptSubmit", "session_id": session_id,
                         "turn_id": turn_id, "prompt": prompt}
-    # Continued Stop is not supported by the current immutable turn/assistant API.
-    # Skipping it is a known completeness limit that blocks activation.
-    if ev.get("stop_hook_active") is True:
-        return "continued stop unsupported", None
+    # Both initial and continued Stops are distinct snapshot candidates. The server
+    # assigns identity after sanitization; this flag is never used as deduplication.
+    if type(ev.get("stop_hook_active")) is not bool:
+        return "bad stop flag", None
     # Stop
     msg = ev.get("last_assistant_message")
     if not isinstance(msg, str) or msg == "":
         return "empty assistant message", None
-    return "assistant", {"hook_event_name": "Stop", "session_id": session_id,
+    return "assistant", {"schema_version": 2, "stop_hook_active": ev["stop_hook_active"], "hook_event_name": "Stop", "session_id": session_id,
                          "turn_id": turn_id, "last_assistant_message": msg}
 
 
@@ -180,7 +181,7 @@ def post_event(endpoint, project, source, headers, body, timeout=5, opener=None)
     if opener is None:
         opener = urllib.request.build_opener(
             urllib.request.ProxyHandler({}), NoRedirect()).open
-    url = "%s/v1/capture/codex-event?project=%s&source_instance=%s" % (
+    url = "%s/v1/capture/codex-event-v2?project=%s&source_instance=%s" % (
         endpoint, urllib.parse.quote(project, safe=""), urllib.parse.quote(source, safe=""))
     req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), method="POST")
     req.add_header("Content-Type", "application/json")
@@ -197,6 +198,8 @@ def post_event(endpoint, project, source, headers, body, timeout=5, opener=None)
                 or safe_count(payload.get("committed")) is None
                 or not isinstance(payload.get("redactions"), list)):
             return {"error": "invalid capture response"}
+        if resp.getheader("X-AF-Codex-Contract") != "2":
+            return {"error": "capture contract not acknowledged"}
         return {"http_status": resp.getcode(), "accepted": safe_count(payload.get("accepted")),
                 "committed": safe_count(payload.get("committed")),
                 "redactions": len(payload.get("redactions") or []), "delivered": True}

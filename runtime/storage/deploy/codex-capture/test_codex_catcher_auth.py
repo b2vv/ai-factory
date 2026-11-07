@@ -41,6 +41,7 @@ class Handler(BaseHTTPRequestHandler):
         })
         self.send_response(RESPONSE["code"])
         self.send_header("Content-Type", "application/json")
+        self.send_header("X-AF-Codex-Contract", "2")
         self.end_headers()
         self.wfile.write(json.dumps(RESPONSE["body"]).encode("utf-8"))
 
@@ -80,7 +81,7 @@ def setup(tmp):
 
 def event(cwd, text="payload-text-SECRET-NEVER-ECHOED"):
     return json.dumps({"hook_event_name": "Stop", "session_id": "thr_x", "turn_id": "turn_x",
-                       "last_assistant_message": text, "cwd": cwd})
+                       "last_assistant_message": text, "stop_hook_active": False, "cwd": cwd})
 
 
 def main():
@@ -111,7 +112,7 @@ def main():
                 check("%s: agent epoch = own key" % key, rec.get("epoch") == str(creds[key]["epoch"]))
                 check("%s: agent secret = own key" % key, rec.get("secret") == creds[key]["secret"])
                 check("%s: NO operator header sent" % key, rec.get("operator") is None)
-                check("%s: endpoint path is codex-event" % key, rec.get("path") == "/v1/capture/codex-event")
+                check("%s: endpoint path is codex-event" % key, rec.get("path") == "/v1/capture/codex-event-v2")
 
             # 2. Isolation: project A's cwd never sends project B's credential.
             RECORDED.clear()

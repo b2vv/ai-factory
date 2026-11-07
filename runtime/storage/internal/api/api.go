@@ -175,6 +175,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("/v1/capture", s.handleCapture)
 	mux.HandleFunc("/v1/capture/claude-code", s.handleCaptureClaudeCode)
 	mux.HandleFunc("/v1/capture/codex-event", s.handleCaptureCodexEvent)
+	mux.HandleFunc("/v1/capture/codex-event-v2", s.handleCaptureCodexSnapshot)
 	mux.HandleFunc("/v1/archive/query", s.handleArchiveQuery)
 	mux.HandleFunc("/v1/archive/message", s.handleArchiveMessage)
 	mux.HandleFunc("/v1/archive/context", s.handleArchiveContext)

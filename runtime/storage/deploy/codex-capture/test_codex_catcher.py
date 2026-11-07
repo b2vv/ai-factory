@@ -64,7 +64,7 @@ def test_normalize():
     role, body = c.normalize_event(up)
     check("UserPromptSubmit role=user", role == "user")
     check("prompt body exact keys",
-          body == {"hook_event_name": "UserPromptSubmit", "session_id": "thr_1",
+          body == {"schema_version": 2, "hook_event_name": "UserPromptSubmit", "session_id": "thr_1",
                    "turn_id": "turn_1", "prompt": "hello"})
     check("prompt body has no assistant field", "last_assistant_message" not in body)
 
@@ -73,7 +73,7 @@ def test_normalize():
     role, body = c.normalize_event(stop)
     check("Stop role=assistant", role == "assistant")
     check("stop body exact keys",
-          body == {"hook_event_name": "Stop", "session_id": "thr_1", "turn_id": "turn_1",
+          body == {"schema_version": 2, "stop_hook_active": False, "hook_event_name": "Stop", "session_id": "thr_1", "turn_id": "turn_1",
                    "last_assistant_message": "done"})
     check("stop body has no prompt field", "prompt" not in body)
 
@@ -142,12 +142,12 @@ def test_run_no_ops_make_no_network():
         check("unsupported event: no network", s.get("delivered") is False and "http_status" not in s)
 
         s = noop_status(json.dumps({"hook_event_name": "Stop", "session_id": "a", "turn_id": "b",
-                                    "last_assistant_message": "x", "cwd": "/w/elsewhere"}))
+                                    "last_assistant_message": "x", "stop_hook_active": False, "cwd": "/w/elsewhere"}))
         check("cwd not mapped -> skipped, no network",
               s.get("skipped") == "cwd not mapped" and "http_status" not in s)
 
         s = noop_status(json.dumps({"hook_event_name": "Stop", "session_id": "a", "turn_id": "b",
-                                    "last_assistant_message": "x", "cwd": "/w/courses"}))
+                                    "last_assistant_message": "x", "stop_hook_active": False, "cwd": "/w/courses"}))
         # credential_file does not exist yet -> credential error, still no network
         check("missing credential -> error, no network",
               "error" in s and "http_status" not in s)

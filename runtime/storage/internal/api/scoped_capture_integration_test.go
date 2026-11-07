@@ -24,7 +24,7 @@ func TestScopedCaptureRealDatabases(t *testing.T) {
 	if uri == "" || dsn == "" {
 		t.Skip("isolated Mongo/PG required; not native-agent evidence")
 	}
-	for _, route := range []string{"generic", "claude", "codex"} {
+	for _, route := range []string{"generic", "claude", "codex", "codex-v2"} {
 		t.Run(route, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 			defer cancel()
@@ -80,6 +80,9 @@ func TestScopedCaptureRealDatabases(t *testing.T) {
 			}
 			if route == "codex" {
 				provider = "codex-hook-v1"
+			}
+			if route == "codex-v2" {
+				provider = "codex-hook-v2"
 			}
 			if _, e = c.SetConsent(op, "p", provider, "capture", true); e != nil {
 				t.Fatal(e)

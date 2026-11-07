@@ -204,3 +204,14 @@ a delivery helper for a separately deployed storage API; the Go server is not
 included in the catcher component; it remains a separate storage component. Fixture evidence does not prove
 native event delivery, final-answer completeness or installed hook trust. Shipping
 these sources enables no capture, grants, credentials, hooks or consumer update.
+
+
+## Unreleased Codex Stop snapshots
+
+Owner-authorized first-party v2 intake and catcher correction follows an isolated
+native CLI experiment confirming changed Stop text under the same turn identity.
+No transcript, private fixture payload, host configuration or credential is included.
+Separate namespaced IDs preserve historical archive identity; digests use only
+server-sanitized text. The unchanged v1 adapter remains supported. Native observer
+evidence, source tests, independent review and production activation have distinct
+scopes; no source publication establishes live capture or complete transcripts.

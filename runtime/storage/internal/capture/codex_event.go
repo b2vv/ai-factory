@@ -1,8 +1,10 @@
 package capture
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"regexp"
 
 	"aifactory.local/storage/internal/archive"
@@ -57,4 +59,52 @@ func AdaptCodexEvent(data []byte, project, sourceInstance string) ([]archive.Rec
 		red = append(red, Redaction{MessageID: id, Field: SanitizerVersion})
 	}
 	return []archive.Record{{Project: project, Provider: CodexEventProvider, SourceInstance: sourceInstance, SessionID: e.Session, MessageID: id, ParentID: parent, Seq: seq, Role: role, Type: archive.TypeMessage, Text: clean}}, red, nil
+}
+
+// CodexSnapshotProvider is an opt-in contract for distinct sanitized Stop snapshots.
+// Provider is not part of archive identity: v2 IDs are separately namespaced.
+const CodexSnapshotProvider = "codex-hook-v2"
+
+// AdaptCodexSnapshotEvent preserves all distinct Stop texts, including continuations.
+// It cannot determine which concurrent Stop callback ends a turn. Seq remains a
+// role position, not callback order. The flag validates the native shape only and
+// never alters immutable record content for an otherwise identical snapshot.
+func AdaptCodexSnapshotEvent(data []byte, project, sourceInstance string) ([]archive.Record, []Redaction, error) {
+	var shape struct {
+		Version int             `json:"schema_version"`
+		Event   string          `json:"hook_event_name"`
+		Active  json.RawMessage `json:"stop_hook_active"`
+	}
+	if json.Unmarshal(data, &shape) != nil || shape.Version != 2 {
+		return nil, nil, errors.New("Codex snapshot schema_version must be integer 2")
+	}
+	switch shape.Event {
+	case "Stop":
+		var active bool
+		if len(shape.Active) == 0 || string(shape.Active) == "null" || json.Unmarshal(shape.Active, &active) != nil {
+			return nil, nil, errors.New("Codex snapshot Stop requires boolean stop_hook_active")
+		}
+	case "UserPromptSubmit":
+		if len(shape.Active) != 0 {
+			return nil, nil, errors.New("Codex snapshot prompt cannot carry stop_hook_active")
+		}
+	default:
+		return nil, nil, errors.New("unsupported Codex snapshot event")
+	}
+	records, red, err := AdaptCodexEvent(data, project, sourceInstance)
+	if err != nil {
+		return nil, nil, err
+	}
+	rec := &records[0]
+	rec.Provider = CodexSnapshotProvider
+	rec.MessageID = "v2/" + rec.MessageID
+	if rec.Role == "assistant" {
+		digest := sha256.Sum256([]byte(rec.Text))
+		rec.MessageID += fmt.Sprintf("/%x", digest)
+		rec.ParentID = "v2/" + rec.ParentID
+	}
+	for i := range red {
+		red[i].MessageID = rec.MessageID
+	}
+	return records, red, nil
 }
