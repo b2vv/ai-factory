@@ -29,7 +29,9 @@ concurrent rotation may cause a denied request; stop and re-establish the bindin
 through its authorized setup, never try another credential automatically.
 
 Configuration must be an owned regular file, not writable by group/others.
-Credentials must additionally have no group/other permissions (0600 or 0400).
+Secrets and JSON credentials must additionally have no group/other permissions
+(0600 or 0400). A split epoch is public grant-version metadata: it may be readable
+by group/others (0644), but must remain owned and not writable by them.
 All configured path components are opened without following symlinks. Paths must
 be absolute and canonical, without `..`. JSON/split shapes cannot be mixed.
 

@@ -6,9 +6,9 @@
   "scope": "Optional source client and canonical guidance only; no installation, access, capture or native acceptance implied.",
   "files": {
     "rules/archive-search.md": "162808191c1dbc1adae57d5ebade4038c9cbe0e40b962d38b0da50a12bdd7b5a",
-    "runtime/storage/deploy/search-client/archive_search.py": "ea1e9323ac440cdd931fdd43a43c63189d35874b56f877e532205d6c4c9d8fa6",
-    "runtime/storage/deploy/search-client/README.md": "0bf0efe31da5eeb2ff8ec006b6d754493deb622ed549954bbde075730e61f1a5",
-    "runtime/storage/deploy/search-client/test_archive_search.py": "4e742be7e0ec77fbe914a8720f1eea28bf3f4f11d6750280f239257bd18de71f",
+    "runtime/storage/deploy/search-client/archive_search.py": "f504a39fd5a8cc9f9fc6844d2b2c5a6d93240063f4f293a17a6b615b460d1bd8",
+    "runtime/storage/deploy/search-client/test_archive_search.py": "3c7e6839e4ae3727963b0ca371bee57ed49c74b43a5b87909320f29026a30f40",
+    "runtime/storage/deploy/search-client/README.md": "eeb11e96e03e7062fb2d321b69320dc9f963feb74078131eb38eda1eaec15975",
     "runtime/storage/deploy/search-client/search-routes.example.json": "9071d84aa1d73408bb414645a6b58556b900f97445c765431c04351e8236e00a"
   }
 }

@@ -134,7 +134,7 @@ class SearchTests(unittest.TestCase):
             with self.subTest(fault=fault), FixtureServer([]) as server:
                 secret_file, epoch_file = self.split_route(server.server.server_port)
                 if fault == "missing": epoch_file.unlink()
-                elif fault == "public": epoch_file.chmod(0o644)
+                elif fault == "public": secret_file.chmod(0o644)
                 else:
                     epoch_file.unlink(); epoch_file.symlink_to(self.credential)
                 out, code = client.search("courses", "x", routes_path=self.routes)
@@ -250,6 +250,30 @@ class SearchTests(unittest.TestCase):
             out, code = self.run_search(server)
             self.assertEqual((code, out["stop_reason"]), (1, "invalid_json"))
             self.assertEqual(out["hits"], [])
+
+    def test_public_owned_epoch_is_metadata_and_authenticates(self):
+        with FixtureServer([page([hit()])]) as server:
+            secret_file, epoch_file = self.split_route(server.server.server_port)
+            epoch_file.chmod(0o644)
+            before = epoch_file.read_bytes()
+            out, code = client.search("courses", "staff-tidy", routes_path=self.routes)
+            self.assertEqual(code, 0)
+            self.assertEqual(server.requests[0][2]["X-Grant-Epoch"], "1")
+            self.assertEqual(epoch_file.read_bytes(), before)
+            self.assertEqual(epoch_file.stat().st_mode & 0o777, 0o644)
+
+    def test_writable_epoch_and_public_auth_secrets_are_refused(self):
+        for fault in ["epoch-writable", "secret-readable", "json-readable"]:
+            with self.subTest(fault=fault), FixtureServer([]) as server:
+                secret_file, epoch_file = self.split_route(server.server.server_port)
+                if fault == "epoch-writable": epoch_file.chmod(0o666)
+                elif fault == "secret-readable": secret_file.chmod(0o644)
+                else:
+                    self.configure(server.server.server_port)
+                    self.credential.chmod(0o644)
+                out, code = client.search("courses", "x", routes_path=self.routes)
+                self.assertEqual((code, out["stop_reason"]), (1, "unsafe_configured_file"))
+                self.assertEqual(server.requests, [])
 
     def test_empty_intermediate_page_is_followed(self):
         with FixtureServer([page([], "cursor-a"), page([hit()])]) as server:

@@ -132,8 +132,8 @@ def load_route(alias, routes_path):
     else:
         # Existing search-only split files: remove at most one conventional line ending.
         # Never strip arbitrary whitespace, combine formats or retry another binding.
-        def line(path, cap):
-            raw = owned_file(path, cap, True)
+        def line(path, cap, private=True):
+            raw = owned_file(path, cap, private)
             if raw.endswith(b"\r\n"):
                 raw = raw[:-2]
             elif raw.endswith(b"\n"):
@@ -143,7 +143,7 @@ def load_route(alias, routes_path):
             except UnicodeError:
                 raise Refused("invalid_credential") from None
         secret = line(route["secret_file"], 4098)
-        epoch_text = line(route["epoch_file"], 21)
+        epoch_text = line(route["epoch_file"], 21, private=False)
         if not epoch_text or not epoch_text.isascii() or not epoch_text.isdecimal():
             raise Refused("invalid_credential")
         epoch = int(epoch_text)

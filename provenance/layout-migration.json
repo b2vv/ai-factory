@@ -57,9 +57,10 @@
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Reviewed main integration; original source identity retained.",
         "Owner-authorized UI measurement integration; original historical hash retained.",
+        "Owner-authorized read-only archive routing; historical source hash retained.",
         "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "aa836043a34e6349d63a787d29052dbaed600f367c076cf52b6b3ae88976eed7"
+      "new_sha256": "88eb91095f6c5c4b7836f457d66c50c3a219d11dc48b91039ef6471b8e21e248"
     },
     {
       "old_path": "README.md",

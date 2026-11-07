@@ -133,7 +133,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "aa836043a34e6349d63a787d29052dbaed600f367c076cf52b6b3ae88976eed7",
+      "sha256": "88eb91095f6c5c4b7836f457d66c50c3a219d11dc48b91039ef6471b8e21e248",
       "component": "core"
     },
     {
@@ -513,7 +513,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "7a60b3678f229db80f5f95786cf087621d86cd9cc56e28013092db4943a392a9",
+      "sha256": "6fdce174d0b002db28a1ea87cf1c4b9e8ec253d093b8f4e69a1453d0b4e56bff",
       "component": "core"
     },
     {
@@ -544,7 +544,7 @@
     {
       "path": "provenance/search-client.json",
       "component": "core",
-      "sha256": "1616bede3e4417371f231ae948868a6bb3c4dc2cbc5c973c41ff7c4b998e8bb7"
+      "sha256": "8f67a612a7152952bf2bd4f16fac104c354aedfccfe7385feb88adf07e9f0b8d"
     },
     {
       "path": "provenance/security-sources.json",
@@ -1094,12 +1094,12 @@
     {
       "path": "runtime/storage/deploy/search-client/README.md",
       "component": "search-client",
-      "sha256": "0bf0efe31da5eeb2ff8ec006b6d754493deb622ed549954bbde075730e61f1a5"
+      "sha256": "eeb11e96e03e7062fb2d321b69320dc9f963feb74078131eb38eda1eaec15975"
     },
     {
       "path": "runtime/storage/deploy/search-client/archive_search.py",
       "component": "search-client",
-      "sha256": "ea1e9323ac440cdd931fdd43a43c63189d35874b56f877e532205d6c4c9d8fa6"
+      "sha256": "f504a39fd5a8cc9f9fc6844d2b2c5a6d93240063f4f293a17a6b615b460d1bd8"
     },
     {
       "path": "runtime/storage/deploy/search-client/search-routes.example.json",
@@ -1109,7 +1109,7 @@
     {
       "path": "runtime/storage/deploy/search-client/test_archive_search.py",
       "component": "search-client",
-      "sha256": "4e742be7e0ec77fbe914a8720f1eea28bf3f4f11d6750280f239257bd18de71f"
+      "sha256": "3c7e6839e4ae3727963b0ca371bee57ed49c74b43a5b87909320f29026a30f40"
     },
     {
       "path": "runtime/storage/deploy/test/compose.yaml",

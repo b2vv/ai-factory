@@ -263,3 +263,7 @@ Canonical archive guidance is restored from the documented owner-authored shared
 search overlay, with live traversal limits corrected. Historical source hashes and
 notices remain unchanged; adapted bytes are separately bound. No installed hybrid
 kit update, project rollout, capture, grant or native discovery is implied.
+
+Split epoch compatibility treats an owned, non-writable public grant-version file
+as metadata while keeping actual secrets/JSON credentials private. Explicit live
+compatibility tests do not change file permissions or substitute credentials.
