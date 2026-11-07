@@ -23,11 +23,12 @@ elif a[0]=='inspect':
     print('error calling len: len of nil pointer',file=sys.stderr);sys.exit(1)
   print('created|'+s['image']+'|'+s['user']+'|none|true|'+('true' if mode=='badpolicy' else 'false')+'|2000000000|2147483648|2147483648|128|["ALL"]|["no-new-privileges"]|rw,noexec,nosuid,size=268435456|python3|0|0|0|0||private')
  elif 'range .Mounts' in fmt:
+  if s['validator'] and os.environ.get('POST_WORKER_FAULT')=='deadline':Path(os.environ['DEADLINE_MARKER']).touch()
   for m in s['mounts']:
    d=dict(x.split('=',1) for x in m.split(',') if '=' in x);print('bind|'+d['src']+'|'+d['dst']+'|'+('false' if 'readonly' in m else 'true'))
  elif 'range .Config.Env' in fmt:
   for v in s['env']+['PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin','SEMGREP_IN_DOCKER=1','SEMGREP_USER_AGENT_APPEND=Docker','PYTHONIOENCODING=utf8','PYTHONUNBUFFERED=1']:print(v)
- elif 'ExitCode' in fmt:print('exited|0|'+('true' if mode=='oom' else 'false')+'|false')
+ elif 'ExitCode' in fmt:print('exited|'+str(s.get('exit',0))+'|'+('true' if mode=='oom' else 'false')+'|false')
  else:print('[{}]')
 elif a[0]=='start':
  if mode=='hang':time.sleep(30)
@@ -38,12 +39,24 @@ elif a[0]=='start':
   mounts=[dict(x.split('=',1) for x in m.split(',') if '=' in x) for m in s['mounts']]
   code=next(m['src'] for m in mounts if m['dst']=='/code');result=next(m['src'] for m in mounts if m['dst']=='/result.json')
   sys.exit(subprocess.call([sys.executable,code+'/validate.py','--mode',s['args'][s['args'].index('--mode')+1],'--input',result]))
+ if mode=='execute':
+  import subprocess
+  mounts=[dict(x.split('=',1) for x in m.split(',') if '=' in x) for m in s['mounts']]
+  mapping={m['dst']:m['src'] for m in mounts}
+  args=s['args'][s['args'].index('/code/entry.py')+1:]
+  args=[mapping.get(x,x) for x in args]
+  r=subprocess.run([sys.executable,'-B',mapping['/code']+'/entry.py',*args],capture_output=True)
+  s['exit']=r.returncode;state.write_text(json.dumps(s))
+  sys.stdout.buffer.write(b'PRIVATE_SENTINEL' if os.environ.get('POST_WORKER_FAULT')=='invalid' else r.stdout)
+  sys.stderr.buffer.write(r.stderr);sys.exit(r.returncode)
+ if mode=='fixedfailure':print(os.environ['FAKE_ERROR']);sys.exit(2)
+ if mode=='privatefailure':print(json.dumps({'systemMessage':'AI Factory handoff BLOCKED: STATE_UNAVAILABLE: PRIVATE_SENTINEL'}));sys.exit(2)
  if mode=='malformed':print('not-json')
  elif mode=='empty':pass
  elif mode=='wrongshape':print('[]')
  elif mode=='oversize':print('x'*65537)
  else:print(json.dumps({'status':'OK','result':{'checkpoint_id':'a'*32+'-1-'+'b'*12}}))
 elif a[0]=='rm':
- if mode=='cleanupfail':sys.exit(1)
+ if mode=='cleanupfail' or os.environ.get('POST_WORKER_FAULT')=='cleanup':sys.exit(1)
  print('c'*64)
 else:sys.exit(2)

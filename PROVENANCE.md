@@ -220,3 +220,14 @@ Native verification exposed Go empty-slice JSON null responses. The first-party
 catcher accepts explicit null as zero redactions while retaining field-presence
 and type checks. Synthetic loopback fixtures now use the actual Go response shape;
 no source IDs, records, transport authority or server schema change.
+
+## Unreleased selective session-store recovery
+
+Owner-authorized selective adaptation of preserved repository WIP adds explicit
+manual stores, an enrolled-registry manual adapter and conservative diagnostics
+when persistence may precede failed delivery. Existing continuation, identity and
+transport guards are retained. The older duplicated policy profile and unfinished
+generator are excluded; unique WIP remains in a verified private recovery archive.
+No private paths, mappings, payloads, host configuration or third-party source is
+shipped. Source hashes are bound in `provenance/manual-store-contract.json`;
+fixture evidence and independent acceptance are separate from native execution.

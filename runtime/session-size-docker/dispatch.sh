@@ -24,7 +24,17 @@ while [ "$#" -gt 0 ]; do
  shift 2
 done
 required=1;[ "$mode" != hook ] || [ -n "$pointer" ] || required=0
-fail() { if [ "$required" = 1 ];then echo 'BLOCKED required handoff' >&2;exit 2;else echo 'UNKNOWN optional monitoring' >&2;exit 0;fi; }
+stage=preflight;receipt_ready=0;worker_started=0;phase=worker
+fail() {
+ # Fixed metadata only: never echo worker output, checkpoint IDs or input.
+ if [ "$receipt_ready" = 1 ];then
+  printf '{"status":"FAILED","stage":"%s","worker_started":%s}\n' "$stage" "$worker_started" > "$work/failure-status.json" || :
+ fi
+ if [ "$worker_started" = 1 ] && [ "$required" = 1 ];then
+  echo 'BLOCKED HANDOFF_OUTCOME_UNCERTAIN: state may already have persisted. Reconcile this invocation receipt before retrying; do not create another checkpoint blindly, select latest, or clear state.' >&2
+ fi
+ if [ "$required" = 1 ];then echo 'BLOCKED required handoff' >&2;exit 2;else echo 'UNKNOWN optional monitoring' >&2;exit 0;fi
+}
 case "$host" in claude|codex) ;;*) fail;;esac
 case $0 in /*) code=${0%/*};;*) code=$PWD/${0%/*};;esac
 command -v docker >/dev/null 2>&1 || fail
@@ -44,9 +54,28 @@ run() {
 }
 . "$code/cleanup.sh"
 
+# Never relay arbitrary worker output. Exact fixed diagnostics only, on stderr.
+relay_failure() {
+ [ -f "$work/result.json" ] && [ "$(wc -c < "$work/result.json")" -le 4096 ] || return 0
+ result=$(cat "$work/result.json")
+ for reason in \
+  'STATE_UNAVAILABLE: the exact state is missing or oversized.' \
+  'INCOMPLETE_CHECKPOINT: this is an unfinished draft, not a resumable handoff. Do not resume it, reconstruct work from the draft, or infer the task from Git history. Ask the user one clear question about the intended task before taking any action.'
+ do
+  message="AI Factory handoff BLOCKED: $reason"
+  if [ "$result" = "{\"systemMessage\": \"$message\"}" ] || [ "$result" = "{\"status\": \"BLOCKED\", \"diagnostic\": \"$message\"}" ];then
+   printf '%s\n' "$message" >&2
+   echo 'Use the same trusted manual.sh mapping as native.sh. Reconcile the exact checkpoint; do not select latest, import another store, or clear the handoff requirement.' >&2
+   return 0
+  fi
+ done
+}
+
 trap 'cleanup || :; fail 2>&5' INT TERM HUP
 trap 'cleanup || :' EXIT
 run sh "$code/preflight.sh" "$root" "$store" "$work" "$code" "$transcript" || fail
+receipt_ready=1
+stage=worker_prepare
 identity_dir=$(mktemp -d "$work/identity.XXXXXXXX") || fail
 suffix=${identity_dir##*.};rmdir "$identity_dir"
 name=ai-factory-$host-worker-$suffix;validator=ai-factory-$host-validator-$suffix
@@ -63,17 +92,22 @@ set -- "$@" --entrypoint python3 "$image" -B /code/entry.py "$mode" --root "$roo
 [ -z "$leaf" ] || set -- "$@" --store-leaf "$leaf"
 [ -z "$match" ] || set -- "$@" --match "$match"
 created=1
+stage=worker_create
 run docker "$@" > "$work/create.out" 2> "$work/create.err" || { cleanup || :;fail; }
 cid=$(cat "$work/create.out")
 verify() {
+stage=${phase}_inspect
 run docker inspect "$cid" > "$work/inspect.json" 2> "$work/inspect.err" || { cleanup || :;fail; }
+stage=${phase}_policy
 fmt='{{.State.Status}}|{{.Config.Image}}|{{.Config.User}}|{{.HostConfig.NetworkMode}}|{{.HostConfig.ReadonlyRootfs}}|{{.HostConfig.Privileged}}|{{.HostConfig.NanoCpus}}|{{.HostConfig.Memory}}|{{.HostConfig.MemorySwap}}|{{.HostConfig.PidsLimit}}|{{json .HostConfig.CapDrop}}|{{json .HostConfig.SecurityOpt}}|{{index .HostConfig.Tmpfs "/tmp"}}|{{.Path}}|{{if .HostConfig.CapAdd}}{{len .HostConfig.CapAdd}}{{else}}0{{end}}|{{if .HostConfig.Devices}}{{len .HostConfig.Devices}}{{else}}0{{end}}|{{if .HostConfig.DeviceRequests}}{{len .HostConfig.DeviceRequests}}{{else}}0{{end}}|{{if .HostConfig.PortBindings}}{{len .HostConfig.PortBindings}}{{else}}0{{end}}|{{.HostConfig.PidMode}}|{{.HostConfig.IpcMode}}'
 run docker inspect --format "$fmt" "$cid" > "$work/policy.txt" 2> "$work/policy.err" || { cleanup || :;fail; }
 expected="created|$image|$(id -u):$(id -g)|none|true|false|2000000000|2147483648|2147483648|128|[\"ALL\"]|[\"no-new-privileges\"]|rw,noexec,nosuid,size=268435456|python3|0|0|0|0||private"
 [ "$(cat "$work/policy.txt")" = "$expected" ] || { cleanup || :;fail; }
+stage=${phase}_mounts
 run docker inspect --format '{{range .Mounts}}{{.Type}}|{{.Source}}|{{.Destination}}|{{.RW}}{{println}}{{end}}' "$cid" > "$work/mounts.raw" 2> "$work/mounts.err" || { cleanup || :;fail; }
 sed '/^$/d' "$work/mounts.raw" | LC_ALL=C sort > "$work/mounts.txt"
 cmp "$work/mounts.txt" "$work/mounts.expected" || { cleanup || :;fail; }
+stage=${phase}_environment
 run docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' "$cid" > "$work/env.raw" 2> "$work/env.err" || { cleanup || :;fail; }
 sed '/^$/d' "$work/env.raw" | LC_ALL=C sort > "$work/env.txt"
 printf '%s\n' 'HOME=/tmp' 'PYTHONDONTWRITEBYTECODE=1' 'GIT_CONFIG_NOSYSTEM=1' 'DOCKER_OTEL_RESOURCE_ATTRIBUTES=' 'DD_SERVICE=' 'TSAN_OPTIONS=' 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' 'SEMGREP_IN_DOCKER=1' 'SEMGREP_USER_AGENT_APPEND=Docker' 'PYTHONIOENCODING=utf8' 'PYTHONUNBUFFERED=1' | LC_ALL=C sort > "$work/env.expected"
@@ -81,22 +115,30 @@ cmp "$work/env.txt" "$work/env.expected" || { cleanup || :;fail; }
 }
 { printf 'bind|%s|/code|false\n' "$code";printf 'bind|%s|%s|false\n' "$root" "$root";printf 'bind|%s|%s|true\n' "$store" "$store";printf 'bind|%s/input.json|/input.json|false\n' "$work";[ -z "$transcript" ] || printf 'bind|%s|%s|false\n' "$transcript" "$transcript"; } | LC_ALL=C sort > "$work/mounts.expected"
 verify || { cleanup || :;fail; }
-run docker start -a "$cid" > "$work/result.json" 2> "$work/worker.err" || { cleanup || :;fail; }
+stage=worker_start;worker_started=1
+run docker start -a "$cid" > "$work/result.json" 2> "$work/worker.err" || { relay_failure;cleanup || :;fail; }
+stage=${phase}_terminal
 run docker inspect --format '{{.State.Status}}|{{.State.ExitCode}}|{{.State.OOMKilled}}|{{.State.Dead}}' "$cid" > "$work/terminal.txt" 2> "$work/terminal.err" || { cleanup || :;fail; }
 [ "$(cat "$work/terminal.txt")" = 'exited|0|false|false' ] || { cleanup || :;fail; }
+stage=validator_prepare;phase=validator
 # Validate captured bytes in an independent, source-free container before delivery.
 set -- create --pull never --name "$validator" --label com.docker.compose.project=ai-factory --label com.docker.compose.service=validator --label com.docker.compose.oneoff=False --label com.docker.compose.config-hash=ai-factory-ephemeral-v1 --label "ai-factory.invocation=$name" --platform linux/amd64 --network none --read-only --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges --cpus 2 --memory 2g --memory-swap 2g --pids-limit 128 --tmpfs /tmp:rw,noexec,nosuid,size=268435456 --log-driver local --log-opt max-size=1m --log-opt max-file=1 --log-opt compress=false --env HOME=/tmp --env PYTHONDONTWRITEBYTECODE=1 --env GIT_CONFIG_NOSYSTEM=1 --env DOCKER_OTEL_RESOURCE_ATTRIBUTES= --env DD_SERVICE= --env TSAN_OPTIONS= --mount "type=bind,src=$code,dst=/code,readonly" --mount "type=bind,src=$work/result.json,dst=/result.json,readonly" --entrypoint python3 "$image" -B /code/validate.py --mode "$mode" --input /result.json
 # Keep worker evidence separate from the validator's inspect evidence.
 run mkdir "$work/worker" || { cleanup || :;fail; }
 for f in inspect.json policy.txt mounts.txt env.txt terminal.txt;do run cp "$work/$f" "$work/worker/$f" || { cleanup || :;fail; };done
 validator_created=1
+stage=validator_create
 run docker "$@" > "$work/validator-create.out" 2> "$work/validator-create.err" || { cleanup || :;fail; }
 cid=$(cat "$work/validator-create.out")
 { printf 'bind|%s|/code|false\n' "$code";printf 'bind|%s/result.json|/result.json|false\n' "$work"; } | LC_ALL=C sort > "$work/mounts.expected"
 verify || { cleanup || :;fail; }
+stage=validator_start
 run docker start -a "$cid" > "$work/validation.txt" 2> "$work/validation.err" || { cleanup || :;fail; }
+stage=${phase}_terminal
 run docker inspect --format '{{.State.Status}}|{{.State.ExitCode}}|{{.State.OOMKilled}}|{{.State.Dead}}' "$cid" > "$work/terminal.txt" 2> "$work/terminal.err" || { cleanup || :;fail; }
 [ "$(cat "$work/terminal.txt")" = 'exited|0|false|false' ] && [ "$(cat "$work/validation.txt")" = VALID ] || { cleanup || :;fail; }
+stage=cleanup
 cleanup || fail
 trap - INT TERM HUP
-cat "$work/result.json"
+stage=delivery
+cat "$work/result.json" || fail

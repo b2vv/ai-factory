@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "base": "c86abe9507ef4a16e62acae6c1678eb99a9782f7",
+  "origin": "Owner-designated uncommitted first-party repository WIP; historical authorship not independently authenticated.",
+  "scope": "Selective functional adaptation; no policy profile generator, enrollment or deployment.",
+  "files": [
+    {
+      "path": "runtime/session-size-docker/manual.sh",
+      "inherited_wip_sha256": "372a5d8637beeb291ba4b878887eb30bac66466f3428d7acc76b0599c304ff8d",
+      "adapted_sha256": "372a5d8637beeb291ba4b878887eb30bac66466f3428d7acc76b0599c304ff8d"
+    },
+    {
+      "path": "runtime/session-size-docker/dispatch.sh",
+      "inherited_wip_sha256": "74b7df7d20ae9192de47f0e5b25348bc7bd046d9060881c80f4adece7b8888c0",
+      "adapted_sha256": "32397182a1690977559332ae1fb001ce98c842fec7130ccf629e246b33fd2de8"
+    },
+    {
+      "path": "runtime/session-size-docker/guard.py",
+      "inherited_wip_sha256": "2fc03a9dc8fbcd04b9e043c279fe5767d342fba01468778062f182f4eee3f1f4",
+      "adapted_sha256": "b691d14aa2519944af7e96208874b5a3eaad4fbcacdb686220c419e491e9fc61"
+    }
+  ]
+}

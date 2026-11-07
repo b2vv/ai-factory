@@ -513,6 +513,11 @@ def event_locked(store, host, payload, pointer=None):
                          'incomplete draft is never resumed. '
                          'Supply sanitized JSON on stdin: goal, done, pending, evidence, constraints '
                          '(strings, <=1600 characters each); keep evidence paths/revision, not dumps. '
+                         'For a registry-selected checkpoint or exact resume, use '
+                         'sh "$AI_FACTORY_HOOK_HOME/manual.sh" checkpoint "$HOST" "$REGISTRY" '
+                         '"$RECEIPT_PARENT" "$SESSION_ID" with the same enrolled host/session as native.sh. '
+                         'manual.sh resume takes the exact checkpoint ID as its final argument; '
+                         'it never imports another store or selects latest. '
                          'Checkpoint after meaningful progress and refresh at safe boundary before leaving.')
             st['introduced'] = 'native-identity-v1'
         if size is None and not st.get('size_unknown'):
@@ -582,9 +587,15 @@ def main():
     ap.add_argument('--session')
     ap.add_argument('--cwd', default=os.getcwd())
     ap.add_argument('--id')
-    ap.add_argument('--store', type=Path, default=DEFAULT_STORE)
+    ap.add_argument('--store', type=Path)
     ap.add_argument('--match')
     a = ap.parse_args()
+    if a.mode != 'hook':
+        if a.store is None or not a.store.is_absolute():
+            print('BLOCKED EXPLICIT_STORE_REQUIRED: manual checkpoint, resume, resolve and candidates must use the same explicit absolute store as the active hook. No state was changed.', file=sys.stderr)
+            return 2
+    elif a.store is None:
+        a.store = DEFAULT_STORE
     try:
         if a.mode == 'hook':
             # Bound payload memory; never persist tool inputs/outputs or prompts.

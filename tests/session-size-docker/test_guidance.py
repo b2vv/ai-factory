@@ -23,6 +23,8 @@ class Guidance(unittest.TestCase):
         self.assertIn('--root "$TRUSTED_ROOT"', text)
         self.assertIn('--work "$NEW_RECEIPT_DIR"', text)
         self.assertIn('--pointer "$EXACT_HANDOFF_ID"', text)
+        self.assertIn('sh "$AI_FACTORY_HOOK_HOME/manual.sh" checkpoint', text)
+        self.assertIn('same enrolled host/session', text)
         self.assertNotIn('guard.py', text)
         self.assertNotIn('--cwd', text)
         self.assertNotIn('$(unsafe)', text)

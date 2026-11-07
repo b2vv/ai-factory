@@ -7,3 +7,6 @@
 - `legacy/session-size/session_guard.py`: retained original default home-store contract.
 
 Legacy modules are explicit compatibility variants, not aliases for portable modules. Their behavior and tests are preserved; selecting a file is not authorization to run it or register callbacks. No live hook migration occurs. Existing releases keep their own immutable paths. Use an exact runtime path and report it; never select a helper by basename alone.
+
+The optional Docker session helper also provides `session-size-docker/manual.sh`
+for an already enrolled host/session mapping; see the [store and uncertain-outcome contract](../docs/session-size-docker.md#manual-operations-use-the-enrolled-store). No enrollment or host registration is implicit.

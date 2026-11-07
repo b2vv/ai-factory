@@ -229,3 +229,31 @@ nine-second deadline can still leave a residual: no bounded client can guarantee
 otherwise. Preserve the receipt and inspect exact ownership before any separately
 authorized removal. There is no background sweeper or broad prefix-based deletion.
 Existing event evidence remains available; cleanup does not read transcripts.
+
+## Manual operations use the enrolled store
+
+The portable `manual.sh` adapter selects the same existing host/session registry
+record used by `native.sh`; it does not enroll, grant trust or choose a latest
+checkpoint. Use the exact approved registry and receipt parent from the installed
+native command. These are placeholders, not required environment variables:
+
+```sh
+sh "$CODE/manual.sh" checkpoint "$HOST" "$REGISTRY" "$RECEIPT_PARENT" "$SESSION_ID" < summary.json
+printf '{}\n' | sh "$CODE/manual.sh" resume "$HOST" "$REGISTRY" "$RECEIPT_PARENT" "$FRESH_SESSION_ID" "$EXACT_HANDOFF_ID"
+```
+
+Direct Docker `guard.py` manual commands require an explicit absolute `--store`;
+only its hook mode retains the historical default. The legacy helper is unchanged.
+Existing `af.sh` candidates/continue and exact resume routes remain available.
+Never copy a checkpoint from another store to satisfy a missing handoff.
+
+A required operation can persist state before output validation, cleanup or delivery
+fails. After any worker-start attempt, failure reports `HANDOFF_OUTCOME_UNCERTAIN`:
+reconcile that invocation's private receipt and exact checkpoint before retrying.
+This warning is conservative; it does not prove a write occurred. The receipt's
+`failure-status.json` records only a fixed stage and whether start was attempted.
+Optional monitoring failures remain advisory. Only exact allowlisted fixed worker
+diagnostics reach stderr; arbitrary output and private identifiers are withheld.
+
+These changes are portable source only. Fixture tests do not establish installed
+profile behavior, real Docker isolation, native resume or consumer upgrades.

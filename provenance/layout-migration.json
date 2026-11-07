@@ -56,7 +56,7 @@
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Reviewed main integration; original source identity retained."
       ],
-      "new_sha256": "8daaee519fe353238cda5474ec1382b10bb27c85063ced0e20869a9e5248a589"
+      "new_sha256": "7e4abf3ec8cc17e6230aac1f4bdeeb4eb6af276824350aeea76ac9edbcc488db"
     },
     {
       "old_path": "README.md",
