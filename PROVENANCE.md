@@ -249,3 +249,17 @@ and explicitly stable fixture text. Unsupported paint, runtime state and unknown
 fixtures remain untested. Synthetic child-frame evidence does not establish
 whole-page visual quality, top-level responsive/zoom behavior, native skill
 selection or deployment to installed projects. No host activation is included.
+
+## Unreleased read-only search client
+
+Owner-authorized first-party candidate archive SHA256
+`ff0466aa3b57c6a5c98097d9efb94ce98d2a37fc0b31bdee02f2f04333978b7b`
+is selectively adapted as an optional standalone search client. Existing candidate
+transport/pagination tests are retained; explicit existing split-file bindings and
+actual source/snippet wire types receive regression tests. No third-party source,
+private configuration, credentials or conversation payload is included.
+
+Canonical archive guidance is restored from the documented owner-authored shared
+search overlay, with live traversal limits corrected. Historical source hashes and
+notices remain unchanged; adapted bytes are separately bound. No installed hybrid
+kit update, project rollout, capture, grant or native discovery is implied.

@@ -17,9 +17,10 @@
       "new_path": ".gitignore",
       "action": "updated",
       "transformations": [
-        "Current user-authorized takeover correction; immutable original hash retained."
+        "Current user-authorized takeover correction; immutable original hash retained.",
+        "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "48029c3469989956bd5e23f40b9a5dd3558dc35aeb4d4eb51b9de73691961a6c"
+      "new_sha256": "1f63e0606a894472bd69928407ddce49851932c41ced81ab1f098f21d83fd930"
     },
     {
       "old_path": "AGENTS.md",
@@ -55,9 +56,10 @@
         "0.7.0-rc.7 owner-authorized ephemeral lifecycle provenance; historical source hashes retained.",
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Reviewed main integration; original source identity retained.",
-        "Owner-authorized UI measurement integration; original historical hash retained."
+        "Owner-authorized UI measurement integration; original historical hash retained.",
+        "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "770e6e1600b50153409fd6b0eb8a7611f27501d040be3814eecd8a443057fd42"
+      "new_sha256": "aa836043a34e6349d63a787d29052dbaed600f367c076cf52b6b3ae88976eed7"
     },
     {
       "old_path": "README.md",
@@ -100,9 +102,10 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Current user-authorized takeover correction; immutable original hash retained."
+        "Current user-authorized takeover correction; immutable original hash retained.",
+        "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "1dbc5f3bc128de346e4dc7c61facf91c22865ff552da28b03d34710d056c7681"
+      "new_sha256": "c854b22a344e66660584b393213c49bacc84ac64ab5d5029237c7d86c611ae6c"
     },
     {
       "old_path": "collection/agents/ai-factory-plan.md",
@@ -428,9 +431,10 @@
       "transformations": [
         "relative links and explicit package command paths remapped; instruction body retained",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
+        "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "934bed423df7cc3ccb9ce49312e152e33e50a62b4d53f261c2bfd26df3541948"
+      "new_sha256": "26c635af25a816b69e70556be4559da3979d2836da8dd58ddab30a476216ac00"
     },
     {
       "old_path": "collection/agents/rules/agent-stream-to-file.md",
@@ -2885,7 +2889,6 @@
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
         "0.6.1 documentation hygiene and provenance",
         "0.7.0 targeted adoption and exact provenance checks",
-        "0.7.0 targeted adoption and exact provenance checks",
         "Unreleased owner-authorized task-branch routing correction",
         "AI-assisted onboarding documentation and accurate helper command paths",
         "Proposed authored security adoption documentation; source payload preserved",
@@ -2901,9 +2904,10 @@
         "Refresh current source-map digest for the owner-authorized architecture boundary evidence guidance.",
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Reviewed main integration; original source identity retained.",
-        "Owner-authorized UI measurement integration; original historical hash retained."
+        "Owner-authorized UI measurement integration; original historical hash retained.",
+        "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "97711f2661ec31435543f51b58c1a440a89e1527cb1bfe9b3b764bb86dde41d5"
+      "new_sha256": "c58359f29e6aea7d15dc78a7bffcda61460916b40ca1f995b95472a0bcdef944"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -3236,9 +3240,10 @@
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending",
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Reviewed main integration; original source identity retained.",
-        "Owner-authorized UI measurement integration; original historical hash retained."
+        "Owner-authorized UI measurement integration; original historical hash retained.",
+        "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "ed4561bae33d4237065ffc85ba01a42aa5ac02f92838afb147a850ea56a71c46"
+      "new_sha256": "b612d3e62d05f602405be37297e378bf1047e5ba4c971648196e98a9e6641914"
     },
     {
       "old_path": "tools/test_collection.py",
@@ -3247,7 +3252,6 @@
       "action": "relocated-and-updated",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
-        "Owner-authorized UI measurement integration; original historical hash retained.",
         "Owner-authorized UI measurement integration; original historical hash retained."
       ],
       "new_sha256": "0c1582100560d04802d2534ce7d725041a84b559525ec875ced8f470333772b9"

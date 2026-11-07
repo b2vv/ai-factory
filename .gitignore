@@ -9,3 +9,6 @@ local/
 evidence/
 CLAUDE.local.md
 AGENTS.local.md
+
+# Local search bindings contain host paths; never ship them.
+/runtime/storage/deploy/search-client/search-routes.json
