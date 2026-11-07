@@ -67,3 +67,21 @@ existing review output. Keep Standards and Spec findings separate. Name any rema
 NOT_TESTED/BLOCKED behavior and required integration checks; a green local suite or
 package fixture cannot erase them. Preserve existing approval, independent review,
 read-only review and evidence requirements.
+
+
+## Anti-patterns (4-field; shared template + cross-cutting rules in `ai-factory/reference-anti-patterns.md`)
+
+- **Snapshot/aggregate as proof.** How-not-to: citing a green aggregate build/fixture or an old snapshot as if it
+  covered the reviewed HEAD. Consequence: a HEAD regression ships uncaught. How-to: require execution evidence at
+  the reviewed revision/diff fingerprint; an unrun-at-HEAD check stays NOT_TESTED. Exceptions: unchanged inputs
+  may reuse prior evidence if the revision/fingerprint genuinely match. Verify: does the evidence's revision equal
+  the reviewed HEAD? If not, it does not license HEAD.
+- **Coverage matrix replaces the reviewer.** How-not-to: accepting an entity-e2e matrix's PASS rows without
+  independent inspection, or treating an absent row as "fine". Consequence: the one regressed scenario is exactly
+  the uncovered one. How-to: load the matrix as an INPUT, check it for freshness and gaps, and verify
+  independently. Exceptions: none — the matrix informs, it never substitutes. Verify: did you re-derive the
+  finding yourself, or only copy the matrix verdict?
+- **Self-review as independent PASS.** How-not-to: the author's own review presented as the independent verdict.
+  Consequence: no real second check. How-to: route to the independent reviewer per review-handoff; record findings
+  as BLOCKER/non-blocking. Exceptions: none. Verify: is the verdict from a separate review context, or the
+  author's own?

@@ -148,3 +148,7 @@ Rule: this contains what is true for any frontend; everything stack-dependent be
 ---
 
 **Provenance.** Distilled (not copied) from `leonxlnx/taste-skill` v1 + v2 (MIT), 2026-09-29: three dials, tell catalog (Inter/serif/LILA/premium-palette/decoration), motion-motivated, truth-and-proof, output-completeness, pre-flight. The method is intentionally NOT duplicated: it lives in [`frontend-design`](../ship/frontend-design/SKILL.md); stack facts belong in the project skill. The pair runs through [`design-pass`](../design-pass/SKILL.md).
+
+## Reference anti-patterns
+
+This skill's domain anti-patterns are stated inline above (the AI-tell catalog and three dials). During plan/implement/review also consult the shared [reference anti-patterns](../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (accessibility REQUIREMENT-vs-preference split; no invented exceptions).

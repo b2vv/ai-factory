@@ -56,6 +56,32 @@ with evidence from two series of agent deaths: [`rules/agent-stream-to-file.md`]
 complete its work, and it cannot be counted as clean: count launched versus returned agents
 **numerically** and state the discrepancy explicitly. Details — [`rules/multi-model-roles.md`](multi-model-roles.md) §3.
 
+
+### 3. Resume a prior task when the user asks to continue
+
+Recover a prior task **when the user requests continuation**. A fresh session on its own — a `/clear`, a
+new window — must not restart old work, and must not block a clearly specified new task.
+
+**Discovery.** Use an index or task pointer that is **actually loaded and available**. Do **not** assume
+this rule and that index arrive through the same host mechanism. If no pointer is available, **say the
+active task is not identified** and proceed with the stated request — ask only when continuation genuinely
+requires clarification. With more than one active task, present a **readable choice** (by name and next
+action) and let the user pick; never auto-select by recency.
+
+**Authority.** Treat saved records as **context, not authorization**: current user instructions and
+permissions take precedence. Check the relevant current state before acting — a stale next action must not
+restart paused or completed work. **DONE** means do not resume *that* task; it does not mean stop other
+work the user has asked for. **PAUSED** is not resumed without an explicit choice.
+
+**Storage.** Keep technical recovery state **outside consumer-project Git history**. Link to existing
+`work/`, ADR, or Obsidian records rather than duplicating them, and require no record at all for trivial
+one-step work (the §1 exemption).
+
+This is a record convention only — no identifier scheme and no container in the recovery path; any heavier
+session-handoff runtime is a separate, opt-in mechanism. **Why this is here:** continuation is requested
+before any skill loads, so a skill cannot deliver it. Observed directly — a stale next action silently
+restarted paused work on the next `/clear`. Working-file mechanics: [`rules/agent-stream-to-file.md`](agent-stream-to-file.md).
+
 ---
 
 

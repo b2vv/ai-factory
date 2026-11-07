@@ -30,7 +30,7 @@ Name the artifact type (`page` / `system`), audience, primary task, change bound
 - **Method:** read [frontend-design](../ship/frontend-design/SKILL.md). Use project decisions already found; do not repeat discovery. Make a compact plan for composition, hierarchy, typography, spacing and narrow-screen behavior. Name closed and open axes. One distinctive technique or aesthetic risk is appropriate only within the brief; do not invent a new style for a targeted change or reconstruction.
 - **Visual filter:** read [anti-slop-design](../anti-slop-design/SKILL.md), announce the design read and justify applicable dials from the brief. Its catalog checks appropriateness; it is not a reason to replace the project's style.
 
-Briefly record the plan and acceptance criteria before coding. For large work, use the repository's established note format; for small work, a message is sufficient, without extra files.
+Read the task record's CURRENT acceptance criteria (feature-lifecycle "one primary task record") as the baseline; do not re-derive a parallel acceptance. PROPOSE UI-observable checks (viewport/state) as additions — proposed, not adopted. UX does not itself change the agreed acceptance/scope; a scope change is agreed by the owner first, then recorded. When there is no task record (small work with no durable record), a short message is sufficient, without extra files.
 
 
 ## 3. Priority and limits of general rules
@@ -57,7 +57,7 @@ Before delivery, read and apply the [shared viewport contract](references/viewpo
 | Journey | The primary action fulfills its promise and gives feedback; back/cancel works, an error does not erase input. Walk the primary path and relevant error/retry path. Long text, empty and overflowing data do not break the screen. |
 | Motion and scale | If animation exists, it explains an action/state, does not obstruct and respects reduced motion. Separately check text enlargement to 200% and reflow at a narrow viewport; do not count one as the other. |
 
-This is a baseline check of changed UI, not WCAG certification. For specific criteria and sources, use applicable sections of the [ux-review rules](../ux-review/references/rules.md), considering conformance level and exceptions. Do not claim full conformance from a screenshot or one automated scan.
+This is a baseline check of changed UI, not WCAG certification. For specific criteria and sources, use applicable sections of the [ux-review rules](../ux-review/references/rules.md), considering conformance level and exceptions. Also consult the shared [reference anti-patterns](../../ai-factory/reference-anti-patterns.md) (4-field template + the a11y REQUIREMENT-vs-preference split) and, for evidence capture, the **Anti-patterns** section of [browser state evidence](references/browser-state-evidence.md): a screenshot is evidence only for the expectation actually checked in it, and `prefers-reduced-motion` is honored. An a11y REQUIREMENT is not downgraded to PASS by a stylistic preference. Do not claim full conformance from a screenshot or one automated scan.
 
 
 ## 5. Browser → findings → fixes → recheck

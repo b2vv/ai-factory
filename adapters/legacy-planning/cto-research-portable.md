@@ -76,4 +76,4 @@ The skill is complete when **all** of these hold:
 - [ ] “Architectural fact #1” is named.
 - [ ] The repo contract file (`AGENT.md` / `AGENTS.md`) contains a pointer to the briefing.
 
-Next is the plan (`spec-flow`, if present in this repo). The briefing does not make decisions by itself.
+LINK this briefing in the task record so the next stages read it instead of re-collecting. Next is the plan (`spec-flow`, if present in this repo). The spec author AND `plan-critique` both consume this research — not the planning gate alone. The briefing does not make decisions by itself.

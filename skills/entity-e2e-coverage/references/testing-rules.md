@@ -46,3 +46,20 @@ Practical implications: after create, wait for the corresponding POST response; 
 - Makefile, `e2e-local`, `e2e-reset`, `drain-queue`, `check-generated`, `check`: `make check` and `make e2e-local` include deleting postgres/redis/media volumes of the same compose project, including development data. Drain deletes queue keys and requires an exclusive session. `check-generated` writes generated files. Current authorization with an understanding of these consequences and coordination are required; this skill does not run them automatically.
 
 Do not copy Cassiopeia's shared-session rules or Cargo's two test environments into Courses. A full gate, a targeted regression and a manual check provide different scopes of evidence; name the actual scope.
+
+
+## Anti-patterns (4-field; shared template + cross-cutting rules in `ai-factory/reference-anti-patterns.md`)
+
+- **Rewriting expected to fit actual.** How-not-to: changing the expected value/snapshot to match what the UI/API
+  returned. Consequence: the test certifies the bug. How-to: take expectations from the spec/QA/an independent
+  fixture; a defect means FAIL, not an updated expectation. Exceptions: none — changing a requirement needs the
+  acceptance owner's decision. Verify: did the expected value come from the contract, or from the output under
+  test?
+- **Edit check standing in for the read-only view.** How-not-to: proving a field from the edit input instead of
+  the read surface. Consequence: a view-rendering defect goes unseen. How-to: open the actual read surface and
+  check visible values; prefill is a separate row. Exceptions: a list cell counts only for fields/states it
+  actually displays. Verify: is the evidence from the read surface named in the row, or from a different mode?
+- **Stale evidence carried over.** How-not-to: reusing a prior run's PASS after code changed. Consequence: the new
+  revision has no real coverage. How-to: rerun affected assertions; record run id + revision + diff fingerprint.
+  Exceptions: unchanged inputs may reuse evidence if the fingerprint matches. Verify: does the row's fingerprint
+  equal the current diff? If not, it is NOT_TESTED at HEAD.

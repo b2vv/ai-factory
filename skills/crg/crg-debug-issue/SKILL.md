@@ -23,3 +23,7 @@ Keep this workflow read-only unless the user has authorized implementation. Buil
 4. Use `detect_changes_tool(base="<verified-ref>", changed_files=["relative/path"], include_source=false, repo_root="/absolute/repo", detail_level="minimal")` and `get_impact_radius_tool(changed_files=["relative/path"], repo_root="/absolute/repo", detail_level="minimal")` only if they help test a concrete hypothesis.
 
 Return the hypothesis, current file:line evidence, a deterministic reproduction/check, and what remains unverified. A recent change or graph score alone is not a root cause.
+
+## Reference anti-patterns
+
+This skill's domain anti-patterns are stated inline above (its cause-not-symptom and evidence rules). During plan/implement/review also consult the shared [reference anti-patterns](../../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (accessibility REQUIREMENT-vs-preference split; no invented exceptions).

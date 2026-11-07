@@ -114,3 +114,7 @@ Full guidance — voice, controls, errors, empty states, register — is in [`WR
 ---
 
 **Provenance.** Adapted from `anthropics/skills` → `skills/frontend-design` (upstream `2235be7c60`, 2026-06-09), restructured 2026-08-11 against `writing-great-skills`: the process became steps with completion criteria, the page/system branch was added, and the copy guidance moved to `WRITING.md`. Upstream terms remain in `LICENSE.txt`. Re-syncing means merging by hand — diff against that commit, not against `main`.
+
+## Reference anti-patterns
+
+This skill's domain anti-patterns are stated inline above (its taste and method guidance). During plan/implement/review also consult the shared [reference anti-patterns](../../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (accessibility REQUIREMENT-vs-preference split; no invented exceptions).

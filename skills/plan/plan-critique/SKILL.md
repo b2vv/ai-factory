@@ -80,6 +80,8 @@ The skill is complete when **all** of the following hold:
 - [ ] Every blocking finding is either incorporated into the plan or recorded as deliberately accepted — with a reason.
 - [ ] State the final count of open blocking findings (zero → plan ready for `plan-defense`).
 
+During the critique, consult the shared [reference anti-patterns](../../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (no invented exceptions). The four-lens catalog above (AI-slop, logical gaps, unnecessary complexity, edge cases) is this skill's domain anti-pattern set.
+
 ## Clean critic input
 
 Give the selected independent critic the exact artifact, accepted contract, scoped snapshot and raw supporting evidence. Keep the author's proposed verdict, persuasive summary and private reasoning out of the initial packet; preserve relevant factual constraints and raw prior findings. Classify findings as actionable, contract misunderstanding, accepted tradeoff or unsupported, with evidence for each disposition. This refines the existing four-lens/local reviewer route; it does not authorize duplicate reviewers, a different model, paid API fallback or an automatic review loop. Missing authorized execution remains BLOCKED.

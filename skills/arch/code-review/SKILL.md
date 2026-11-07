@@ -24,6 +24,8 @@ Pin the requested scope before launching reviewers:
 
 Record the selected scope and file list once for both reviewers. Validate any required ref and report an empty review only after checking all inputs in that scope. If the request explicitly includes both branch and local changes, include both and label their origin. Do not silently discard local changes because a committed diff is empty.
 
+Also load, when present, the task record's acceptance criteria and the entity-e2e coverage matrix as an INPUT. Check the matrix for freshness (tested revision / diff fingerprint vs the reviewed HEAD) and gaps, and verify coverage independently — the matrix informs the review, it does NOT replace the reviewer's own check or authorize skipping it. Write findings (`file:line` + impact + verification, each marked BLOCKER or non-blocking, including UNRESOLVED) back into the task record's review-handoff package.
+
 ### 2. Identify the spec source
 
 Look for the originating spec, in this order:
@@ -59,7 +61,7 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 
 ### Required behavior-coverage check
 
-Before dispatch, read [behavior coverage](references/behavior-coverage.md) in full.
+Before dispatch, read [behavior coverage](references/behavior-coverage.md) in full, including its **Anti-patterns** section, and the shared [reference anti-patterns](../../../ai-factory/reference-anti-patterns.md) (4-field template + cross-cutting rules). A coverage matrix or green aggregate never substitutes for independent verification at the reviewed HEAD.
 For changed guards, filters, serializers and invariants, apply its individual
 mutation and CI-running coverage requirements to the pinned scope. Assign one
 coordinated runner in an authorized disposable copy; give both reviewers this

@@ -23,3 +23,7 @@ Keep this workflow read-only unless the user has authorized implementation. Buil
 4. Verify concrete findings against current files. Static test links are not executed test coverage. Report PROVEN/SUSPECTED, file:line, remaining checks and graph scope/limitations; give a verdict only within the repository's review contract.
 
 The author's self-check does not satisfy an independent-review gate. A reviewer needs a fresh context, the contract and raw evidence; changing the tool or model alone is insufficient.
+
+## Reference anti-patterns
+
+This skill's domain anti-patterns are stated inline above (its independent-review and evidence rules). During plan/implement/review also consult the shared [reference anti-patterns](../../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (accessibility REQUIREMENT-vs-preference split; no invented exceptions).

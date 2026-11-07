@@ -91,3 +91,7 @@ The skill is complete when **all** of the following hold:
 - [ ] Created content contains no invented standards: every line comes from disk, is `⚠️ absent`,
       or is a `TODO:` question for a person. Count these labels.
 - [ ] In initialization mode, the contract file points to the manifest and briefing.
+
+## Reference anti-patterns
+
+This skill's domain anti-patterns are stated inline above (its gate and manifest checks). During plan/implement/review also consult the shared [reference anti-patterns](../../../ai-factory/reference-anti-patterns.md) for the 4-field template and the cross-cutting rules (accessibility REQUIREMENT-vs-preference split; no invented exceptions).

@@ -17,6 +17,8 @@ Rules live in [`references/rules.md`](references/rules.md), each in the format
 **HOW TO CHECK field is mandatory**: a rule without a way to check it on this screen is a hypothesis dressed as
 a rule and cannot support a gate. Do not report a rule you cannot check on the artifact.
 
+During the rule pass and before gating, consult the shared [reference anti-patterns](../../ai-factory/reference-anti-patterns.md) (the 4-field template and the a11y REQUIREMENT-vs-preference split) and the **Anti-patterns** section of [`references/rules.md`](references/rules.md). An a11y REQUIREMENT is never downgraded to PASS by a stylistic or density preference, and no exception is invented that is not already written down.
+
 
 ## When to apply
 
@@ -30,6 +32,7 @@ a final interface-readiness gate before delivery. Not palette/typography selecti
 0. **Scope.** Name the artifact (live page / screenshot / prototype / multistep flow), **viewports**
    (read and apply the [shared viewport contract](../design-pass/references/viewport-coverage.md): phone, tablet portrait, tablet landscape, desktop at 100%; text enlargement/reflow separately), and **who/why** (role + user task).
    Without a user task, half the heuristics are meaningless.
+   When a task record exists, load its acceptance criteria (feature-lifecycle "one primary task record") as the baseline, not a fresh standalone list. Ranked violations and any UX acceptance are PROPOSED additions for agreement; ux-review does not itself rewrite the agreed acceptance/scope. Role + task are still required.
 
 1. **Evidence, not memory.** For a live/visual target, capture it (actually inspected screenshots of every applicable surface × baseline viewport under the shared contract);
    for a flow, walk the steps. Each violation must rest on what was *seen* (element, screen, step),
