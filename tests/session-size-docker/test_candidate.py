@@ -9,7 +9,7 @@ sys.path.insert(0,(CODE + ''));import guard,entry
 from types import SimpleNamespace
 class Resume(unittest.TestCase):
  def setUp(self):
-  self.tmp=tempfile.TemporaryDirectory(dir=tempfile.gettempdir());self.store=Path(self.tmp.name);self.key='b'*32;self.token='a'*32+'-1-'+'c'*12;self.st={};self.obj={'id':self.token,'complete':True,'created':time.time(),'depth':0,'snapshot':{'root':'/fixture'},'summary':{f:'synthetic' for f in guard.FIELDS}}
+  self.tmp=tempfile.TemporaryDirectory(dir=tempfile.gettempdir());self.store=Path(self.tmp.name);self.key='b'*32;self.token='a'*32+'-1-'+'c'*12;self.st={};self.obj={'id':self.token,'host':'codex','complete':True,'created':time.time(),'depth':0,'snapshot':{'root':'/fixture'},'summary':{f:'synthetic' for f in guard.FIELDS}}
   self.record=self.store/(self.token+'.json');self.claim=self.store/('claim-'+self.token+'.json');self.save()
  def tearDown(self):self.tmp.cleanup()
  def save(self):self.record.write_text(json.dumps(self.obj))

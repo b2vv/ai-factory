@@ -192,7 +192,7 @@ class IdentityDelivery(unittest.TestCase):
     def resume_fixture(self, summary):
         token = 'a'*32 + '-1-' + 'b'*12
         self.args.pointer = token
-        obj = {'id': token, 'complete': True, 'created': time.time(), 'depth': 0,
+        obj = {'id': token, 'host': self.args.host, 'complete': True, 'created': time.time(), 'depth': 0,
                'snapshot': {'root': str(self.root)}, 'summary': summary}
         (self.store/(token+'.json')).write_text(json.dumps(obj, ensure_ascii=False))
         return token

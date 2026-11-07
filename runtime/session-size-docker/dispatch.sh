@@ -11,14 +11,15 @@ if [ "$mode" = optional ]; then
  [ "$#" -eq 0 ] && [ -z "$pointer" ] || { echo 'BLOCKED explicit request in optional mode' >&2;exit 2; }
  exit 0
 fi
-case "$mode" in hook|checkpoint|resume) ;;*) echo 'BLOCKED mode' >&2;exit 2;;esac
-root=;store=;leaf=;work=;host=;session=;transcript=
+case "$mode" in hook|checkpoint|resume|resolve|candidates) ;;*) echo 'BLOCKED unsupported mode: expected hook|checkpoint|resume|resolve|candidates' >&2;exit 2;;esac
+root=;store=;leaf=;work=;host=;session=;transcript=;match=
 while [ "$#" -gt 0 ]; do
  [ "$#" -ge 2 ] || exit 2
  case "$1" in
  --root) [ -z "$root" ] || exit 2;root=$2;; --store) [ -z "$store" ] || exit 2;store=$2;;
  --store-leaf) [ -z "$leaf" ] && [ "$2" = state ] || exit 2;leaf=$2;; --work) [ -z "$work" ] || exit 2;work=$2;; --host) [ -z "$host" ] || exit 2;host=$2;;
  --session) [ -z "$session" ] || exit 2;session=$2;; --transcript) [ -z "$transcript" ] || exit 2;transcript=$2;;
+ --match) [ -z "$match" ] && [ "$mode" = candidates ] || exit 2;match=$2;;
  --pointer) [ -z "$pointer" ] || [ "$pointer" = "$2" ] || exit 2;pointer=$2;;*) exit 2;;esac
  shift 2
 done
@@ -60,6 +61,7 @@ fi
 set -- "$@" --entrypoint python3 "$image" -B /code/entry.py "$mode" --root "$root" --store "$store" --host "$host" --session "$session" --pointer "$pointer" --input /input.json
 [ -z "$transcript" ] || set -- "$@" --transcript "$transcript"
 [ -z "$leaf" ] || set -- "$@" --store-leaf "$leaf"
+[ -z "$match" ] || set -- "$@" --match "$match"
 created=1
 run docker "$@" > "$work/create.out" 2> "$work/create.err" || { cleanup || :;fail; }
 cid=$(cat "$work/create.out")

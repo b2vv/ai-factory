@@ -61,6 +61,41 @@ printf '{}\n' | sh "$CODE/dispatch.sh" resume --root "$REPO" --store "$STATE_ENV
   --session "$NEW_SESSION_ID" --pointer "$EXACT_CHECKPOINT_ID"
 ```
 
+### Convenience front-end (af.sh)
+
+`af.sh` is an optional operator convenience over the two scripts above. It removes
+repeated manual path configuration and per-operation receipt-directory bookkeeping by
+deriving one private layout from a single base (`AF_HOME` or `--home`, default
+`$HOME/.agents/ai-factory`: `registry/`, `receipts/`, `store-envelope/` with its
+`state` leaf, and a `trusted-roots` file) and minting a fresh private receipt directory
+per call. It changes no safety contract and delegates to `bind-session.sh` /
+`dispatch.sh` with their full checks. Naming `--repo` does **not** grant trust:
+`enroll` refuses a repository that is not already an approved trusted root unless the
+separate, explicit `--approve-root` action is given (naming a path and approving its
+connection are distinct). It registers no hook, grants no Git trust, reads no
+transcript, and never selects a "latest" checkpoint.
+
+```sh
+sh "$CODE/af.sh" enroll     --repo "$REPO" --session "$SESSION_ID" --transcript "$TRANSCRIPT_FILE" --approve-root --host codex
+sh "$CODE/af.sh" checkpoint --repo "$REPO" --session "$SESSION_ID" --host codex <<'JSON'
+{"goal":"...","done":"...","pending":"...","evidence":"...","constraints":"..."}
+JSON
+sh "$CODE/af.sh" resume     --repo "$REPO" --session "$NEW_SESSION_ID" --host codex   # auto-resolve, no ID
+sh "$CODE/af.sh" resume     --repo "$REPO" --session "$NEW_SESSION_ID" --pointer "$EXACT_ID"  # explicit ID
+```
+
+### Unambiguous auto-resume (resolve)
+
+`resolve` (also `dispatch.sh resolve`, and `af.sh resume` without `--pointer`)
+auto-resumes a handoff only when project, session and checkpoint identity resolve to a
+**single** completed checkpoint whose snapshot exactly matches the current repository
+state (root, branch, HEAD and dirty fingerprint), is unexpired, within the depth limit,
+and not claimed by another session. This is not "latest" selection: zero matches return
+`NO_RESUMABLE_CHECKPOINT` and more than one return `AMBIGUOUS_CHECKPOINTS`, and in both
+cases the agent must ask the user one clear question rather than infer a task from Git
+history or an incomplete draft. An incomplete draft is never resumable
+(`INCOMPLETE_CHECKPOINT`); it is a prompt to ask the user, not a task to reconstruct.
+
 The returned context is data, not evidence that a model consumed it. No latest-ID
 selection, transcript reads, automatic project discovery or global configuration
 writer exists. Registration rollback means reverting only the reviewed definition
@@ -142,7 +177,7 @@ receipt from a separate installed profile does not establish this package's beha
 
 ## Verification inputs for subsequent source changes
 
-`tools/run_tests.py` runs the offline suites; run `tests/packaging` explicitly too.
+`tools/run_tests.py` runs the offline suites, including connection, packaging and catcher fixtures.
 The historical translation fixtures require `AI_FACTORY_TRANSLATION_BASELINE`
 (original commit `2c0960885926075502a319a19eafbed901690dde`) and
 `AI_FACTORY_HISTORY_BASELINE` (commit `12f51ed23cf664ac3b70e219a2d1a59a54bfeceb`).

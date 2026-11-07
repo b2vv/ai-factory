@@ -42,10 +42,18 @@ def execute(args,raw):
         if args.mode=='checkpoint':
             if len(raw)>16000:raise ValueError('summary too large')
             return {'checkpoint_id':guard.checkpoint(store,args.host,sid,str(cwd),payload)}
+        if args.mode=='resolve':
+            # No explicit pointer: auto-resume only an unambiguous completed checkpoint.
+            if args.pointer:raise ValueError('explicit handoff ID required')
+            return {'context':guard.resolve(store,args.host,sid,str(cwd))}
+        if args.mode=='candidates':
+            # Read-only listing for the task-selection question. Never binds, claims or resumes; no pointer.
+            if args.pointer:raise ValueError('explicit handoff ID required')
+            return {'candidates':guard.candidates(store,args.host,sid,str(cwd),getattr(args,'match',None))}
         return {'context':guard.resume(store,args.pointer,args.host,sid,str(cwd))}
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('mode',choices=['hook','checkpoint','resume']);p.add_argument('--root',required=True);p.add_argument('--store',required=True);p.add_argument('--host',choices=['codex','claude'],required=True);p.add_argument('--session');p.add_argument('--pointer');p.add_argument('--transcript');p.add_argument('--input',required=True);p.add_argument('--store-leaf',choices=['state'])
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=['hook','checkpoint','resume','resolve','candidates']);p.add_argument('--root',required=True);p.add_argument('--store',required=True);p.add_argument('--host',choices=['codex','claude'],required=True);p.add_argument('--session');p.add_argument('--pointer');p.add_argument('--transcript');p.add_argument('--input',required=True);p.add_argument('--store-leaf',choices=['state']);p.add_argument('--match')
     a=p.parse_args()
     try:
         with open(a.input,'rb') as f:raw=f.read(8_000_001)
