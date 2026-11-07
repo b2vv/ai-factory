@@ -974,7 +974,7 @@
       "source": "~/.agents/skills/anti-slop-design/SKILL.md",
       "destination": "skills/anti-slop-design/SKILL.md",
       "source_sha256": "feeaa8863d5e41439dd574a10bf23d1ec08d09d679822c9cb2c905553396f571",
-      "sha256": "d9a53d78c393007deefd14bfeb5d3e0251b6d59cfd4f9303770d60f6cb600fd7",
+      "sha256": "f47e729faea5693827879d40d0d39e07fb6363cffbd4cae7d6770b1986ec32a5",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -982,7 +982,8 @@
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
-        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
+        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/anti-slop-design/SKILL.md"
@@ -1474,7 +1475,7 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "c98b0230bac7c940019a063ffa17b3edef4fb4de89304423f89ef4ac6b9ba490",
+      "sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -1485,7 +1486,8 @@
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
-        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
+        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1708,7 +1710,7 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "ebb3271f2e6d56ee8063ca251469b625358d6a43b956a558b9c3e73169741221",
+      "sha256": "d0af0ed1ca274cfd0478240b1edccf22773e33def4061a6bf8acd60edd4ef262",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
@@ -1716,7 +1718,8 @@
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
-        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
+        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"
@@ -2014,10 +2017,11 @@
       "source": "~/.agents/skills/reference-ui-reconstruction/SKILL.md",
       "destination": "skills/reference-ui-reconstruction/SKILL.md",
       "source_sha256": "ed6723c80f0d694cf670e2919b7321b4742b81340cde827783ba9760cf45b3c8",
-      "sha256": "0a0cd190e5982bb6a999aa754a75ab6a1f282d3adef58ba1af00f9cb8b21e6f5",
+      "sha256": "022f21acf136fac39270e9e9dea3cf2e753728341672ff3b0ab076492cd5fa17",
       "source_mode": "0o644",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/reference-ui-reconstruction/SKILL.md"
@@ -2036,13 +2040,14 @@
       "source": "~/.agents/skills/ship/frontend-design/SKILL.md",
       "destination": "skills/ship/frontend-design/SKILL.md",
       "source_sha256": "0bf4156e15de358351d8964a85cf38a67b518d79f678bd2cce41a2fbd4495450",
-      "sha256": "aca3c0fa5d99e6265bc9f628f614abb49a28cb827b114d7dc7af16a3f7dfe9a8",
+      "sha256": "e65df615c31a49a562794f27e66e538c933a051761c1118c6e3fd4c3080fb007",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
-        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
+        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/frontend-design/SKILL.md"
@@ -3898,7 +3903,7 @@
       "source": "~/.agents/skills/ux-review/SKILL.md",
       "destination": "skills/ux-review/SKILL.md",
       "source_sha256": "af2e4fddf30ce8465f332de91d1f4360dfe140e474e1027d92f10e557a5f5462",
-      "sha256": "845b05edeaf273d97c943014c888d1a5b2ff98efadeeccf4f79fda8c98097c59",
+      "sha256": "60feceeddc321595e0208c80222610da1dd8b3f192e728b26e14afbfdae54408",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -3908,7 +3913,8 @@
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
-        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
+        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/SKILL.md"

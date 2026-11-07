@@ -72,7 +72,7 @@
     },
     {
       "destination": "skills/design-pass/references/browser-state-evidence.md",
-      "sha256": "151150283b28b41dd4e2db495d9c706dccc3fe61cce26d9b5aa6a2f53d4ad2a0",
+      "sha256": "a2e0035aa62a9d59f998838d8c640c5495546ded7904eae42f33efc1eb7c1418",
       "kind": "selective authored adaptation with retained MIT notice"
     },
     {
@@ -149,15 +149,30 @@
       "destination": "skills/inspector-review/SKILL.md",
       "sha256": "84d715fdfedf30b3b238ab39c81a90aa1879e24e86219ff7c4038c4543dfb57a",
       "kind": "Owner-authorized authored first-party skill (inspector-review); narrow post-completion integration inspector, distinct from upstream MIT adaptation; references step-back-review hand-off; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ui-measurements/SKILL.md",
+      "sha256": "ade6fd5a99261b76416aa300985c59174e07a844e862b5d23578da65527e05f4",
+      "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ui-measurements/references/contract.md",
+      "sha256": "fd96e0394a7ec8116f7579bb235f5b763b14f16dac3eaa8cfc02e9c405bd6c1f",
+      "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ui-measurements/scripts/measure-ui.cjs",
+      "sha256": "cab6c21ff5843f2cbdb500a050a663c972919b45d5c0e0157d9e839d8af3bb91",
+      "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
     }
   ],
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "dc496074caa850a633c6825bdb824a332b9778e755004ff160a82a88293b675f",
+      "before_sha256": "e3363847fb52ab0b2c0d256662d66710bc9476e247dfe5cdb5e7b02f2cfcbdbe",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "c98b0230bac7c940019a063ffa17b3edef4fb4de89304423f89ef4ac6b9ba490"
+      "after_sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681"
     },
     {
       "destination": "skills/plan/plan-critique/SKILL.md",

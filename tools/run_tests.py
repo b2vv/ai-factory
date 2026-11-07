@@ -40,7 +40,7 @@ env.update(GIT_CONFIG_GLOBAL=os.devnull,GIT_CONFIG_NOSYSTEM='1',PYTHONDONTWRITEB
 with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
     env['GIT_TEMPLATE_DIR']=temp
     failures=0
-    for directory in ([] if args.suite=='storage' else ['tests/onboarding','tests/review','tests/session-size','tests/session-size-docker','tests/legacy-review','tests/legacy-session','tests/install','tests/collection','tests/checkpoint','tests/constraints','tests/scanners','tests/connect','tests/packaging']):
+    for directory in ([] if args.suite=='storage' else ['tests/onboarding','tests/review','tests/session-size','tests/session-size-docker','tests/legacy-review','tests/legacy-session','tests/install','tests/collection','tests/checkpoint','tests/constraints','tests/ui-measurements','tests/scanners','tests/connect','tests/packaging']):
         print('\n=== isolated suite: '+directory+' ===',flush=True)
         result=subprocess.run([sys.executable,'-B','-m','unittest','discover','-s',str(root/directory),'-p','test_*.py','-v'],env=env,cwd=root)
         failures += result.returncode != 0

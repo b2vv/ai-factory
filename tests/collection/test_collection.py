@@ -9,6 +9,10 @@ class FullCollectionTests(unittest.TestCase):
         m,files,_=kit.payload(ROOT,['collection'])
         for r in json.loads((ROOT/'provenance/source-map.json').read_text())['files']:
             self.assertEqual(r['sha256'],kit.digest(files[r['destination']]))
+    def test_original_inventory_and_authored_skills_remain_distinct(self):
+        report=verify_collection.verify(ROOT)
+        self.assertEqual(report['accounted_shared'],84)
+        self.assertEqual(report['authorized_added_skills'],4)
     def test_restricted_and_external_not_present(self):
         m=json.loads((ROOT/'provenance/source-map.json').read_text())
         self.assertEqual({'shared'},{b['group'] for b in m['bundles']})

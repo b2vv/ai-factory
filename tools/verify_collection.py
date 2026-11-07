@@ -51,7 +51,7 @@ def verify(root):
         for label,pat in [('absolute-home',r'/Users/[A-Za-z]|/home/[A-Za-z]'),('access-token',r'gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{24,}|AKIA[A-Z0-9]{16}')]:
             if re.search(pat,t):issues.append(label+': '+name)
         if re.search(r'-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----',t) and not (p.name=='test_session_guard.py' and 'MII' not in t):issues.append('private-key marker: '+name)
-    return {'status':'PASS' if not issues else 'FAIL','source_files':len(recorded),'accounted_shared':len(shared),'authorized_added_skills':1,'included_skills':sum(b['status']=='INCLUDED' for b in m['bundles']),'excluded_license':sum(b['status']=='EXCLUDED_EXPLICIT_LICENSE_RESTRICTION' for b in m['bundles']),'pending_scope':sum(b['status']=='PENDING_CONFIDENTIAL_SCOPE' for b in m['bundles']),'issues':issues,'runtime':'NOT_TESTED','independent_review':'PENDING'}
+    return {'status':'PASS' if not issues else 'FAIL','source_files':len(recorded),'accounted_shared':len(shared),'authorized_added_skills':sum(Path(r['destination']).name=='SKILL.md' for r in additions['files']),'included_skills':sum(b['status']=='INCLUDED' for b in m['bundles']),'excluded_license':sum(b['status']=='EXCLUDED_EXPLICIT_LICENSE_RESTRICTION' for b in m['bundles']),'pending_scope':sum(b['status']=='PENDING_CONFIDENTIAL_SCOPE' for b in m['bundles']),'issues':issues,'runtime':'NOT_TESTED','independent_review':'PENDING'}
 
 if __name__=='__main__':
     import argparse

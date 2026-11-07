@@ -54,9 +54,10 @@
         "0.7.0-rc.6 owner-authorized bugfix prerelease framing; historical source identity preserved.",
         "0.7.0-rc.7 owner-authorized ephemeral lifecycle provenance; historical source hashes retained.",
         "Current user-authorized takeover correction; immutable original hash retained.",
-        "Reviewed main integration; original source identity retained."
+        "Reviewed main integration; original source identity retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "7e4abf3ec8cc17e6230aac1f4bdeeb4eb6af276824350aeea76ac9edbcc488db"
+      "new_sha256": "770e6e1600b50153409fd6b0eb8a7611f27501d040be3814eecd8a443057fd42"
     },
     {
       "old_path": "README.md",
@@ -503,9 +504,10 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Current user-authorized takeover correction; immutable original hash retained."
+        "Current user-authorized takeover correction; immutable original hash retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "d9a53d78c393007deefd14bfeb5d3e0251b6d59cfd4f9303770d60f6cb600fd7"
+      "new_sha256": "f47e729faea5693827879d40d0d39e07fb6363cffbd4cae7d6770b1986ec32a5"
     },
     {
       "old_path": "collection/agents/skills/arch/caveman/SKILL.md",
@@ -903,9 +905,10 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Current user-authorized takeover correction; immutable original hash retained."
+        "Current user-authorized takeover correction; immutable original hash retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "c98b0230bac7c940019a063ffa17b3edef4fb4de89304423f89ef4ac6b9ba490"
+      "new_sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681"
     },
     {
       "old_path": "collection/agents/skills/entity-e2e-coverage/SKILL.md",
@@ -1089,9 +1092,10 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Current user-authorized takeover correction; immutable original hash retained."
+        "Current user-authorized takeover correction; immutable original hash retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "ebb3271f2e6d56ee8063ca251469b625358d6a43b956a558b9c3e73169741221"
+      "new_sha256": "d0af0ed1ca274cfd0478240b1edccf22773e33def4061a6bf8acd60edd4ef262"
     },
     {
       "old_path": "collection/agents/skills/pattern-architecture-review/SKILL.md",
@@ -1339,9 +1343,10 @@
       "new_path": "skills/reference-ui-reconstruction/SKILL.md",
       "action": "moved",
       "transformations": [
-        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes."
+        "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "0a0cd190e5982bb6a999aa754a75ab6a1f282d3adef58ba1af00f9cb8b21e6f5"
+      "new_sha256": "022f21acf136fac39270e9e9dea3cf2e753728341672ff3b0ab076492cd5fa17"
     },
     {
       "old_path": "collection/agents/skills/ship/frontend-design/LICENSE.txt",
@@ -1359,9 +1364,10 @@
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Current user-authorized takeover correction; immutable original hash retained."
+        "Current user-authorized takeover correction; immutable original hash retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "aca3c0fa5d99e6265bc9f628f614abb49a28cb827b114d7dc7af16a3f7dfe9a8"
+      "new_sha256": "e65df615c31a49a562794f27e66e538c933a051761c1118c6e3fd4c3080fb007"
     },
     {
       "old_path": "collection/agents/skills/ship/frontend-design/WRITING.md",
@@ -2852,9 +2858,10 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Current user-authorized takeover correction; immutable original hash retained."
+        "Current user-authorized takeover correction; immutable original hash retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "845b05edeaf273d97c943014c888d1a5b2ff98efadeeccf4f79fda8c98097c59"
+      "new_sha256": "60feceeddc321595e0208c80222610da1dd8b3f192e728b26e14afbfdae54408"
     },
     {
       "old_path": "collection/agents/skills/ux-review/references/rules.md",
@@ -2893,9 +2900,10 @@
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Refresh current source-map digest for the owner-authorized architecture boundary evidence guidance.",
         "Current user-authorized takeover correction; immutable original hash retained.",
-        "Reviewed main integration; original source identity retained."
+        "Reviewed main integration; original source identity retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "88649889c102af6b2c322f63c2bb5685c771f1474a70774e725d6ea358544760"
+      "new_sha256": "97711f2661ec31435543f51b58c1a440a89e1527cb1bfe9b3b764bb86dde41d5"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -3227,9 +3235,10 @@
         "0.7.0 targeted adoption and exact provenance checks",
         "Unreleased original scanner baseline: explicit runtime, private rules, separate DB snapshots and static/mock tests; runtime acceptance pending",
         "Current user-authorized takeover correction; immutable original hash retained.",
-        "Reviewed main integration; original source identity retained."
+        "Reviewed main integration; original source identity retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "0eb228a50c9b7c8f767373175cec6f79dac908308535541dd613e5f4c357e2ae"
+      "new_sha256": "ed4561bae33d4237065ffc85ba01a42aa5ac02f92838afb147a850ea56a71c46"
     },
     {
       "old_path": "tools/test_collection.py",
@@ -3237,9 +3246,11 @@
       "new_path": "tests/collection/test_collection.py",
       "action": "relocated-and-updated",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "Owner-authorized UI measurement integration; original historical hash retained.",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "98a1aa3b89f9228db264624995cebb2789f8f0911b401ce5b54e50b1f3ec2e6b"
+      "new_sha256": "0c1582100560d04802d2534ce7d725041a84b559525ec875ced8f470333772b9"
     },
     {
       "old_path": "tools/test_kit.py",
@@ -3258,9 +3269,10 @@
       "action": "updated",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
-        "0.7.0 targeted adoption and exact provenance checks"
+        "0.7.0 targeted adoption and exact provenance checks",
+        "Owner-authorized UI measurement integration; original historical hash retained."
       ],
-      "new_sha256": "9481d1f1ab77ec2d929f82bf9ae27da313771b9324928f1573c8ebd5f2b57e2a"
+      "new_sha256": "43d05b7ea84a39b22d84fe4e90522f37fc088b8a73f1cb0ef8d67d9395d52b95"
     },
     {
       "old_path": "tools/verify_release.py",

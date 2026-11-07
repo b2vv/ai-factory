@@ -7,9 +7,9 @@ license: Adapted from leonxlnx/taste-skill (MIT); see Provenance.
 
 # anti-slop-design — AI-tell catalog + gate
 
-These are **facts and a gate**, not a method. The method—when to branch (page vs system), what is already decided, where the risk lies—is in [`frontend-design`](../ship/frontend-design/SKILL.md). This skill supplies concrete criteria for that method: a list of machine clichés and a mechanical check before “done”.
+This is a **contextual visual-heuristic catalog and gate**, not a method or an accessibility standard. The method—when to branch (page vs system), what is already decided, where the risk lies—is in [`frontend-design`](../ship/frontend-design/SKILL.md). This skill supplies concrete criteria for that method: a list of common defaults and a context-sensitive check before “done”.
 
-**Nothing here triggers automatically.** First read the brief, then extract only what fits. A rule without context is slop too.
+**Nothing here triggers automatically.** First read the brief, then extract only what fits. Apply [design-pass priority](../design-pass/SKILL.md#3-priority-and-limits-of-general-rules) in standalone use too: mandatory project/function/accessibility requirements are distinct from aesthetic preferences. Every aesthetic heuristic below permits a documented project/brief/reference reason; it is not a universal ban. A rule without context is slop too.
 
 ---
 
@@ -57,33 +57,33 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 
 ### 2.1 Typography
 
-- **Inter is not the default.** First consider `Geist`, `Outfit`, `Cabinet Grotesk`, `Satoshi`, or an appropriate brand font. _Override:_ Inter is fine for neutral/Linear-style or public-sector/a11y.
-- **Serif is emphatically not the default.** “Feels creative/premium” is NOT a reason. “Creative brief = serif” is the most common AI tell. _Override:_ only when the brand explicitly names serif, or the aesthetic is genuinely editorial/luxury/heritage AND you can explain why this particular serif. **Banned as defaults:** `Fraunces`, `Instrument_Serif`.
-- **Headline emphasis** uses italic/bold in the SAME font, not a random serif word inserted into sans (or vice versa). Mixed emphasis is amateurish.
-- **Italic descender clearance:** an italic word with `y g j p q` at `leading-none` clips descenders; use at least `leading-[1.1]` + `pb-1`.
+- **For an open typography axis**, choose a family that serves the brief. Inter, system fonts and more distinctive families are all valid; keep established fonts and do not install a new one to satisfy this catalog.
+- **Serif is a choice, not an automatic premium signal.** Editorial, luxury, heritage or a named reference can justify it. Fraunces and Instrument Serif are examples of common defaults, not universally banned fonts; explain the fit instead of mechanically rotating families.
+- **Headline emphasis:** prefer a coherent treatment; mixed families can be intentional when the reference or project typography supports them. Do not change an established hierarchy to satisfy this preference.
+- **Italic descender clearance:** inspect actual ink at the chosen font, size and scale. Tight line boxes can clip descenders, but CSS line-height alone does not prove it; neither a fixed line-height nor padding recipe guarantees clearance. A box-fit measurement does not measure glyph ink.
 
 
 ### 2.2 Color
 
-- **At most 1 accent.** Saturation < 80% by default.
+- **Accent restraint:** one accent can be a useful starting point for a simple page. Multiple brand accents, charts and semantic success/warning/error colors can be correct; preserve their roles and measured contrast. Saturation counts are preferences, not accessibility measurements.
 - **LILA rule:** “AI Purple / blue glow” is not the default. A neutral base (Zinc/Slate/Stone) + one high-contrast accent (Emerald, Electric Blue, Deep Rose, Burnt Orange). _Override:_ accept a brand's request for purple, but with intent, not a generic gradient.
 - **Consistency lock:** use the chosen accent across the ENTIRE page. A warm-gray page does not get a blue CTA in section 7. One palette per project, without switching between warm↔cool grays.
-- **Premium-consumer ban** (the second most common tell): for cookware/wellness/artisan/luxury, the LLM default is beige/cream + brass/clay/oxblood + espresso. **Banned as a default reach.** Rotate instead: Cold Luxury (silver/chrome/smoke), Forest (green/bone/amber), Black-and-Tan, Cobalt+Cream, Terracotta+Slate, or pure monochrome + one pop. Do not use the same warm-craft palette twice in a row. _Override:_ the brand explicitly names these colors.
+- **Premium-consumer default warning**: for cookware/wellness/artisan/luxury, the LLM default is beige/cream + brass/clay/oxblood + espresso. Question that default on an open axis; other possible directions include: Cold Luxury (silver/chrome/smoke), Forest (green/bone/amber), Black-and-Tan, Cobalt+Cream, Terracotta+Slate, or pure monochrome + one pop. Do not choose or reject a palette solely because it appeared in another project; judge this brief and system. _Override:_ the brand explicitly names these colors.
 
 
 ### 2.3 Layout
 
 - **Anti-center:** at `DESIGN_VARIANCE > 4`, avoid a centered hero; use split 50/50, left text/right asset, asymmetric whitespace, scroll-pin. _Override:_ editorial/manifesto/launch, where the message itself is the design.
 - **Zigzag cap:** no 3+ consecutive sections with the same image+text split.
-- **Eyebrow cap (mechanical):** the number of `uppercase tracking` microlabels above headings ≤ ceil(sections / 3). The hero counts as 1.
-- **Section-layout variety:** for 8 sections, at least 4 different layout families.
+- **Eyebrow restraint:** counting repeated `uppercase tracking` microlabels can expose monotony; a suggested starting point is ≤ ceil(sections / 3), not a universal limit.
+- **Section-layout variety:** consider variation where it supports the content; stable repeated structure is often correct in a system. No minimum family count is mandatory.
 
 
 ### 2.4 Materiality and decoration
 
-- **Cards only when elevation conveys real hierarchy.** Otherwise group with `border-t`/`divide-y`/space.
-- **Tint shadows to the background color**: no pure-black drop shadows on light backgrounds.
-- **One corner-radius system** across the entire screen.
+- **Cards should communicate grouping or hierarchy.** Borders, spacing and flatter surfaces can serve the same purpose; use the established component system.
+- **Shadows** should fit the theme and surface hierarchy; tinted shadows and restrained black-alpha shadows can both be appropriate.
+- **One coherent corner-radius token system**, which may use several values for different component roles; do not flatten it to one radius.
 - **Banned decorative slop** (default off; only with a real semantic reason): version footers on marketing (`v1.4.2`, `Build 0048`, `last sync 4s ago`), scroll cues (`Scroll ↓`), section-number eyebrows (`00 / INDEX`, `06 · how it works`), decorative strips at the bottom of the hero (`BRAND. MOTION. SPATIAL.`), fake photo-credit captions (`Field study no. 12 · Ines Caetano`), pills/labels over images, decorative dots, locale/city/weather strips without a global-context reason.
 
 
@@ -96,40 +96,40 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 
 ### 2.6 Motion
 
-- **Motion motivated (mandatory):** before any animation, ask “what does it communicate?”. Valid: hierarchy / storytelling / feedback / state change. Invalid: “looks cool”. GSAP everywhere because it is available is amateurish.
-- **Motion claimed = motion shown:** if `MOTION_INTENSITY > 4`, the page must actually move (hero entry, key-section scroll reveal, CTA hover physics). Static output claiming `7` is broken. If working motion is beyond scope, lower the dial to 3 and deliver a clean static result.
+- **Motion motivated (when motion is in scope):** before any animation, ask “what does it communicate?”. Valid: hierarchy / storytelling / feedback / state change. Invalid: “looks cool”. GSAP everywhere because it is available is amateurish.
+- **Motion claimed = evidence:** a dial does not require adding animation. Describe existing/approved motion honestly; keep static work static when appropriate. Verify any claimed behavior and its reduced-motion path with available interaction evidence; no video or animated demo is required.
 - Honor **`prefers-reduced-motion`** for all applicable animations regardless of the dial: remove or simplify nonessential motion while preserving clear feedback.
-- **No `window.addEventListener('scroll')`**: only `useScroll()` / ScrollTrigger / IntersectionObserver / CSS scroll-driven. `useEffect` animations require strict cleanup.
-- **Spring, not linear** for microinteractions (e.g. `type:"spring", stiffness:100, damping:20`).
+- **Scroll behavior:** reuse the project stack; prefer efficient native/CSS mechanisms where suitable. A justified scroll listener is not universally forbidden: verify its scheduling, cleanup and actual performance rather than forcing a new animation dependency.
+- **Timing:** choose easing for the interaction; springs, linear progress and static feedback have different valid uses. A timing preference is not a readiness blocker.
 
 
 ### 2.7 Output and dependencies
 
 - **No placeholders:** no `// TODO: add actual code`, `...`, “rest stays the same”. A complete working implementation.
-- **Dependency verification:** before importing a library, check `package.json`; if absent, first provide the installation command rather than assuming availability.
+- **Dependency verification:** before importing a library, check `package.json`; if absent, use an existing alternative or propose the smallest justified dependency under the project authorization; do not install it implicitly.
 
 ---
 
 
 ## 3. Pre-flight gate (before “done”)
 
-Mechanical, not eyeballed. A failed box means not done.
+Record observed evidence, not an automatic style score. Applicable functional/accessibility requirements and agreed acceptance block readiness when failed or untested; contextual preferences require a reasoned design decision. Use [ui-measurements](../ui-measurements/SKILL.md) only for missing supported measurements in the existing evidence record. Do not count unsupported contrast, glyph clipping or unvisited states as PASS.
 
 - [ ] **Design read** announced (§0)?
 - [ ] **Dials** explicit and justified by the brief, not a silent baseline?
-- [ ] **ZERO em-dash (`—`)** anywhere on screen (headings, pills, body, quotes, attribution, alt)?
-- [ ] **Theme lock**: one theme across the screen, no section flipping into inversion midway?
-- [ ] **Color lock**: one accent used consistently in all sections? **Shape lock**: one radius?
-- [ ] **CTA contrast** WCAG AA 4.5:1, label does not wrap to 2 lines on desktop, no two CTAs with the same intent?
-- [ ] **Serif / premium palette**: if used, not banned-as-default (or explicitly justified by the brand and different from the previous project)?
-- [ ] **Eyebrow count ≤ ceil(sections/3)**; no section-numbering eyebrows, decorative strips, scroll cues, version footers or fake photo credits?
-- [ ] **Real images** (gen-tool → seed → explicit placeholder slot), no div-based fake screenshots or hand-rolled decorative SVG?
+- [ ] **Punctuation and typography** follow the project voice and content; no universal zero-em-dash rule?
+- [ ] **Theme coherence** follows supported project themes/reference; deliberate section inversion is allowed when justified?
+- [ ] **Color/shape coherence**: accents, semantic colors and radius variants follow the established system?
+- [ ] **CTA legibility and intent**: applicable contrast threshold/source and measured paint recorded (normal/large text, target level and legitimate exceptions distinguished); wrapping fits the agreed layout; repeated actions serve the journey?
+- [ ] **Typography/palette** follows the actual brief and established system, with a reason for open choices rather than a rule to differ from another project?
+- [ ] **Decoration and repetition** have a reason in the brief/content; numeric caps are diagnostic preferences, while fabricated proof remains prohibited?
+- [ ] **Assets** are appropriate and honestly represented; existing SVG/CSS illustrations are allowed, and generated mockups are not evidence of a real product?
 - [ ] **Copy self-audit**: every visible line reread, no broken/hallucinated phrases; no fabricated evidence?
 - [ ] **Motion motivated** (each animation justified in one sentence) and **claimed = shown**?
-- [ ] **Reduced motion** checked for all applicable animations; no `scroll` listener; `useEffect` cleanup present?
+- [ ] **Reduced motion** checked for applicable animations; existing scroll/animation mechanisms are justified, efficient and cleaned up?
 - [ ] **Mobile collapse** explicit; height does not clip content or actions when the viewport changes, the keyboard appears or text is enlarged? Use full-height only when the layout needs it, with the current stack's tools.
-- [ ] **Empty / loading / error** states provided?
-- [ ] **Icons** from an allowed library (Phosphor / Tabler / Radix / Lucide), not hand-rolled paths?
+- [ ] **Applicable** empty/loading/error states verified; no nonexistent async states invented?
+- [ ] **Icons** follow project assets/library conventions; do not add a library or replace valid custom SVG for this catalog?
 - [ ] **No placeholders / TODO**; dependencies checked?
 
 ---
@@ -143,7 +143,7 @@ This catalog is **generic**. Within a real product, most axes are already decide
 - **Theme mechanism** (e.g. `[data-theme]` instead of `dark:`) and **styling idiom** (e.g. `clsx` instead of `tv()`) come from the project, not here. Check only themes supported by the project through its mechanism; this skill does not require adding light/dark or dark-only mode.
 - **Stack specifics** (RAC primitives, `text-p13/p14` = size, a ban on raw `<input>`, inventory-first deduplication) belong in the **local project skill**, not here.
 
-Rule: this contains what is true for any frontend; everything stack-dependent belongs in a project skill that **extends** this and `frontend-design`.
+This catalog contains contextual visual defaults, not truths or mandatory bans for every frontend. Stack decisions belong in the project; applicable accessibility/function requirements are assessed under the UX lens, not waived by a visual override.
 
 ---
 

@@ -103,6 +103,8 @@ Keep a `reference-parity.md` or equivalent note when the work is substantial. It
 
 **Done when:** another screen can reuse the extracted system without re-guessing the reference decisions.
 
+For selected geometry or supported paint, conditionally reuse [ui-measurements](../ui-measurements/SKILL.md) with the same reference viewport/state and existing evidence. Existing visual diffs remain authoritative for visual comparison; numeric box fit does not prove pixel parity, glyph-ink clearance or unchanged business data. Do not duplicate an existing reliable check.
+
 ## Hard guards
 
 - A screenshot is evidence, not permission to redesign.
@@ -114,4 +116,4 @@ Keep a `reference-parity.md` or equivalent note when the work is substantial. It
 
 ## Handoff to `design-pass`
 
-After this skill produces the reference sheet and parity constraints, continue with `design-pass` for the project-aware design method and anti-slop gate. In a reference-driven task, the reference sheet closes the aesthetic axes; `frontend-design` may improve implementation quality but must not override measured reference facts without an explicit deviation.
+After this skill produces the reference sheet and parity constraints, continue with `design-pass` for the project-aware design method and anti-slop gate. In a reference-driven task, the reference sheet closes the aesthetic axes within applicable accessibility/function and mandatory project requirements; record and resolve a conflict rather than silently reproducing a defect or waiving a requirement. Stylistic preferences about fonts, accents, radii or motion cannot override a faithful approved reference. Within those boundaries, `frontend-design` may improve implementation quality but must not override measured reference facts without an explicit deviation.

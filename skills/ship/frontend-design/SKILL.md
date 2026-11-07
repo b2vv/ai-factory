@@ -6,7 +6,9 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
-Work as the design lead at a small studio known for giving every client a visual identity that could not be mistaken for anyone else's. This client has already rejected proposals that felt templated. Make deliberate, opinionated choices specific to this brief, and take one real aesthetic risk you can justify.
+Work from the actual brief, audience and existing system. Make deliberate choices specific to this brief. Aesthetic risk is optional within genuinely open axes; targeted work and exact reconstruction do not require one.
+
+For targeted changes or faithful reconstruction, retain closed axes and reuse established decisions. Do not invent a new signature, font, palette or motion to satisfy a planning completion line; record an already-decided axis as such.
 
 ## 1. Name the artifact, then take the branch
 
@@ -69,7 +71,7 @@ Now review the plan: work through a similar brief in your head and see whether y
 
 **Done when:** each axis either differs from the defaults above, or carries a written reason for matching one.
 
-> **Pair (added 2026-09-29):** the concrete, itemised version of these defaults — the AI-tell catalogue (Inter/serif bans, the LILA purple-glow rule, the premium-consumer beige+brass ban, decoration clichés, copy clichés, motion rules) plus a mechanical pre-flight gate — lives in [`anti-slop-design`](../../anti-slop-design/SKILL.md). This skill owns the *method* (branch, find-what's-decided, spend-the-remaining-axes, take one risk); that skill owns the *facts and the gate*. Load it here and run its §3 pre-flight before step 6. In a project, the project's own token/stack facts win over both.
+> **Pair (added 2026-09-29):** the concrete, itemised version of these defaults — the AI-tell catalogue (Inter/serif bans, the LILA purple-glow rule, the premium-consumer beige+brass ban, decoration clichés, copy clichés, motion rules) plus a mechanical pre-flight gate — lives in [`anti-slop-design`](../../anti-slop-design/SKILL.md). This skill owns the *method* (branch, find-what's-decided, spend-the-remaining-axes, take one risk); that skill owns the *contextual visual catalog and gate*. Applicable accessibility/function requirements take priority over aesthetic defaults. Load it here and run its §3 pre-flight before step 6. In a project, the project's own token/stack facts win over both.
 
 ## 5. Build to the plan
 
@@ -85,9 +87,9 @@ Do this planning and iteration in your thinking. Show the human ideas only once 
 
 Critique it as you build, not after. A picture is worth a thousand tokens: take a screenshot if the environment allows one — a browser tool, a component workbench, a dev server.
 
-Check, on the screenshot rather than from memory: it holds at a mobile width; keyboard focus is visible; reduced motion is respected. In the system branch also check the states — empty, loading, error, and the longest realistic content — because those are where systems actually break and where a design that looked finished stops being one.
+Inspect appearance at the relevant viewport rather than from memory. Verify keyboard focus and reduced-motion behavior with actual interactions/settings and their expected outcomes; a screenshot alone proves neither. In the system branch also check the states — empty, loading, error, and the longest realistic content — because those are where systems actually break and where a design that looked finished stops being one.
 
-Run the [`anti-slop-design`](../../anti-slop-design/SKILL.md) §3 pre-flight here as the mechanical last filter (em-dash count, theme/colour/shape locks, eyebrow count, motion-claimed-equals-shown, no fabricated proof, no placeholders). A failed box means not done.
+Run the [`anti-slop-design`](../../anti-slop-design/SKILL.md) §3 pre-flight as a contextual final lens. Typography, accent/radius counts and motion defaults are preferences; preserve justified project/reference choices. Applicable functional/accessibility requirements and agreed acceptance remain blocking. For a supported measurement gap, reuse [ui-measurements](../../ui-measurements/SKILL.md) through the existing browser evidence route; do not duplicate scans or infer behavior from a screenshot.
 
 Then apply Chanel's advice: before leaving the house, look in the mirror and take one accessory off. Cut the decoration that does not serve the brief.
 
@@ -103,7 +105,7 @@ Then apply Chanel's advice: before leaving the house, look in the mirror and tak
 
 **Match complexity to the vision.** Maximalist directions need elaborate execution; minimal directions need precision in spacing, type, and detail. Elegance is executing the chosen vision well.
 
-**Spend boldness in one place.** Let the signature be the one memorable thing and keep everything around it quiet. Not taking a risk is itself a risk — but two risks compete and both lose.
+**Spend boldness where the brief permits.** A coherent existing system or faithful reconstruction can be the right result without a new signature or aesthetic risk.
 
 ## Copy is design material
 

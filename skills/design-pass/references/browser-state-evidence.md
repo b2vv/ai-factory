@@ -19,6 +19,18 @@ Map acceptance → existing story/state or E2E scenario → runtime evidence wit
 Map each affected acceptance criterion to the most appropriate existing level and actual evidence: unit/component tests for component logic, contracts and interactions; Storybook for isolated states and any interaction, visual or a11y checks already configured; E2E for integrated flow/result. Inspect existing scripts/configuration before assuming Storybook addons or tests exist. Do not duplicate identical assertions across levels. Explain omitted relevant levels; retain mandatory local gates even where coverage overlaps. Unit/component PASS does not prove the persisted entity view or entire flow. A story can exercise configured interactions and accessibility, but does not by itself establish cross-route persistence/integration.
 
 
+## Conditional selected measurements
+
+When existing current-state Storybook/E2E/a11y evidence leaves a relevant numeric
+gap, use [ui-measurements](../../ui-measurements/SKILL.md) in the same authorized
+browser context. Attach its expected/actual selected-box, supported contrast or
+stable-fixture observations to the existing route/state/viewport/revision record;
+do not create a second scan, state matrix or acceptance contract. Keep unsupported
+paint, unresolved runtime state and dynamic values NOT_TESTED. A computed ratio
+or box PASS is not evidence of glyph ink, overlays, keyboard access, business
+backend truth or whole-screen conformance. Inspect and recheck those with the
+existing appropriate tools; one defect remains one finding.
+
 ## Anti-patterns (4-field; shared template + cross-cutting rules in `ai-factory/reference-anti-patterns.md`)
 
 - **Screenshot without checking the expectation.** How-not-to: attaching a screenshot as evidence without

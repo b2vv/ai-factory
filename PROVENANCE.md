@@ -231,3 +231,21 @@ generator are excluded; unique WIP remains in a verified private recovery archiv
 No private paths, mappings, payloads, host configuration or third-party source is
 shipped. Source hashes are bound in `provenance/manual-store-contract.json`;
 fixture evidence and independent acceptance are separate from native execution.
+
+## Unreleased conditional UI measurements
+
+Owner-authorized first-party helper, synthetic layout/boundary fixtures and scoped
+routing corrections implement the requested measurement idea without importing
+unslop source, video, animation demonstrations, external scripts or new packages.
+The new authored skill is recorded separately from the original shared-definition
+inventory in the existing authorized-additions/skill registry. Existing upstream
+identities and license notices remain unchanged; aesthetic catalog adaptations
+preserve their notices and do not claim a new upstream sync.
+
+W3C WCAG 2.2 contrast/reflow documentation is a normative reference for threshold
+selection and scoped exceptions, not copied implementation or conformance proof.
+The dependency-free browser function reads selected CSSOM geometry/simple paint
+and explicitly stable fixture text. Unsupported paint, runtime state and unknown
+fixtures remain untested. Synthetic child-frame evidence does not establish
+whole-page visual quality, top-level responsive/zoom behavior, native skill
+selection or deployment to installed projects. No host activation is included.

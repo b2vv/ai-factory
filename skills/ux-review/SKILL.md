@@ -74,13 +74,19 @@ For UI regression review of a branch or PR, take the changed screens/components 
 
 ## Priority when layers disagree
 
-**project > skill rules > generic.** Canonical repository tokens, patterns and standards (local
+**For contextual heuristics: project > catalog > generic.** Canonical repository tokens, patterns and standards (local
 design skill, `CLAUDE.md`/`AGENTS.md`, design system) **override** a generic rule where they cover it
 (e.g. a project intentionally keeps a button enabled+no-op rather than `disabled`: this is a
 project decision, not a violation). The skill rule applies where the project is silent. Where sources themselves conflict
 (e.g. WCAG minimum touch target 24px vs Apple HIG 44px), name both thresholds and the applicable context;
 do not pretend there is a single number.
 
+
+## Measurement and rule priority
+
+Project tokens/patterns and authoritative references override generic aesthetic defaults, not applicable accessibility or functional requirements. A project convention or reference does not by itself justify marking an identified requirement failure PASS. Distinguish the target level and documented criterion exceptions from style preferences about fonts, accents, radii or motion.
+
+Conditionally reuse [ui-measurements](../ui-measurements/SKILL.md) for missing selected geometry, supported contrast or stable-fixture observations. Prefer existing current project/a11y measurements; merge observations into the same route/state/viewport evidence and one finding per defect. The helper's numeric PASS is not WCAG conformance, a keyboard/visual check or proof of live business-data invariance. Unsupported paint or unstable data stays NOT_TESTED.
 
 ## Honesty
 

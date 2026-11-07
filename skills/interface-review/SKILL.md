@@ -26,7 +26,7 @@ lens, invoke the corresponding skill directly (`ux-review` for usability, `anti-
 
 1. **Project layer (when in a repository).** Load the local design skill / tokens / `CLAUDE.md`/
    `AGENTS.md`. It **overrides** generic rules where they overlap (e.g. deliberate enabled+no-op instead of `disabled`
-   is a project decision, not a violation). Same precedence as every lens: **project > rules > generic**.
+   is a project decision, not a violation). For contextual design defaults: **project > catalog > generic**. Applicable accessibility/function requirements retain their own authority; neither a project aesthetic nor a reference waives them.
 
 2. **Visual lens — [`anti-slop-design`](../anti-slop-design/SKILL.md).** Machine-generated visual cliches +
    §3 pre-flight as a gate. Owns: template typography, decoration, generic palette, “AI appearance”.
@@ -48,6 +48,12 @@ lens, invoke the corresponding skill directly (`ux-review` for usability, `anti-
    - **One observed defect = one finding** under the most specific lens; do NOT add severities.
    - Rank together (blocker / major / minor), most severe first.
 
+
+## Measurement and rule priority
+
+Project tokens/patterns and authoritative references override generic aesthetic defaults, not applicable accessibility or functional requirements. A project convention or reference does not by itself justify marking an identified requirement failure PASS. Distinguish the target level and documented criterion exceptions from style preferences about fonts, accents, radii or motion.
+
+Conditionally reuse [ui-measurements](../ui-measurements/SKILL.md) for missing selected geometry, supported contrast or stable-fixture observations. Prefer existing current project/a11y measurements; merge observations into the same route/state/viewport evidence and one finding per defect. The helper's numeric PASS is not WCAG conformance, a keyboard/visual check or proof of live business-data invariance. Unsupported paint or unstable data stays NOT_TESTED.
 
 ## Report and gate
 

@@ -35,7 +35,7 @@ Read the task record's CURRENT acceptance criteria (feature-lifecycle "one prima
 
 ## 3. Priority and limits of general rules
 
-The explicit user request defines the goal. For visual decisions: **authoritative reference > project > method > generic defaults**. The project defines implementation approach; a reference does not authorize replacing the stack. Name any conflict between the reference and canonical system and record the required deviation; do not silently rewrite global tokens.
+The explicit user request defines the goal. Applicable accessibility and functional requirements remain mandatory; aesthetic resemblance does not waive them. For otherwise open visual decisions: **authoritative reference > project > method > generic defaults**. The project defines implementation approach; a reference does not authorize replacing the stack. Name any conflict between the reference and canonical system and record the required deviation; do not silently rewrite global tokens.
 
 In this process, helper-skill rules about specific fonts, accent counts, themes, radii, punctuation, icon libraries, CSS classes or mandatory motion are conditional heuristics. Do not turn them into universal blockers. Explain an appropriate exception; do not change branding, text or semantic state colors for a mechanical checkbox. Apply general UX patterns to the task too, not as orders to always add a sidebar, modal or split a form.
 
@@ -53,7 +53,7 @@ Before delivery, read and apply the [shared viewport contract](references/viewpo
 | Hierarchy | The screen's purpose and primary action are clear; secondary actions do not compete; headings, grouping, alignment and spacing rhythm agree. No clipped text, accidental wraps or decoration without a function. |
 | Responsiveness | All four baseline viewports from the shared contract preserve meaning, order and access to actions. Navigation, tables, modals and sticky elements behave explicitly; no accidental horizontal overflow. Also check an intermediate width near a changed breakpoint. |
 | States | For changed controls: rest, hover where a pointer exists, pressed/selected, visible focus, disabled and pending where applicable. For data/forms: loading, empty/no-results, error with recovery, success. Do not add a nonexistent asynchronous state to static content. |
-| Accessibility | Semantic headings and controls, accessible names and labels, meaningful alt, logical keyboard order, visible unobscured focus. For dialogs: entry, dismissal and focus return. Measure contrast rather than judging by impression; state is not conveyed by color alone. |
+| Accessibility | Semantic headings and controls, accessible names and labels, meaningful alt, logical keyboard order, visible unobscured focus. For dialogs: entry, dismissal and focus return. Measure contrast with a reliable tool for the actual paint; unsupported paint remains NOT_TESTED rather than an invented ratio; state is not conveyed by color alone. |
 | Journey | The primary action fulfills its promise and gives feedback; back/cancel works, an error does not erase input. Walk the primary path and relevant error/retry path. Long text, empty and overflowing data do not break the screen. |
 | Motion and scale | If animation exists, it explains an action/state, does not obstruct and respects reduced motion. Separately check text enlargement to 200% and reflow at a narrow viewport; do not count one as the other. |
 
@@ -64,7 +64,7 @@ This is a baseline check of changed UI, not WCAG certification. For specific cri
 
 Before the pass, make a compact inventory of new/changed UI states in the current plan/report. If scope includes a popover, active trigger or chips, explicit visual coverage is required for each state; a closed/default screenshot does not prove them. Mark inapplicable items N/A with a reason; required but unavailable items BLOCKED.
 
-1. **Determine capabilities.** Use an actually available browser tool, local test runner or project tools. Do not assume a particular MCP, Playwright, browser or image viewer is available. Find the documented launch command; do not install a new verification stack merely for this skill.
+1. **Determine capabilities.** Use an actually available browser tool, local test runner or project tools. For a relevant measurement gap, conditionally use [ui-measurements](../ui-measurements/SKILL.md): selected box fit, supported text contrast or explicitly stable fixture values. Reuse existing current Storybook/E2E/a11y evidence first; do not run a duplicate scan. Its numeric observations supplement the same state/evidence record and do not replace either review lens. Do not assume a particular MCP, Playwright, browser or image viewer is available. Find the documented launch command; do not install a new verification stack merely for this skill.
 2. **Open the result.** Start or use the local application and open the changed route with reproducible data. For redesigns, capture the before state where possible. Check font/asset loading and related runtime errors.
 3. **Look and interact.** Capture and actually inspect screenshots of each applicable surface in all four baseline viewports under the shared contract; record exact CSS dimensions, scale and evidence. Also inspect below-the-fold content. Walk the journey, keyboard interactions, states and scaling from §4. A static screenshot does not confirm behavior, and a created but unviewed file does not confirm visual quality.
 4. **Compare.** With a reference, use the same viewport and state, side-by-side/overlay/diff as available. Without one, compare against the plan, criteria and project system. Start with large proportions and hierarchy, then typography, spacing and details.
@@ -83,7 +83,7 @@ If a tool, launch, data or access is blocked, perform available independent chec
 - project constraints, plan and applicable criteria are recorded;
 - implementation passes appropriate project checks;
 - the current result has been inspected in a browser at every applicable baseline viewport under the shared contract, with the primary journey and applicable states checked;
-- any reference has been compared at the target viewport, with differences described;
+- any reference has been compared at the target viewport, with differences described; relevant measurements are bound to the same route/state/fixture/revision, and unsupported or missing checks stay NOT_TESTED;
 - applicable anti-slop pre-flight and UX pass are complete; blocker/major findings are fixed and rechecked. The only exception is a limitation explicitly accepted by the user with a date and impact, with status “done with limitations”. Merely recording a defect does not mean it is accepted.
 
 At the end, briefly report what changed and why; which screens/journeys/viewports were checked; where evidence is; and what remains. Use **PASS / FAIL / NOT_TESTED / N/A** for checks, with grounds (a required untested check blocks the gate: **BLOCKED**). Untested is not PASS; explain inapplicability for N/A. If a key check is blocked, status is “implemented, verification incomplete”, with a specific next step instead of unconditional “done”.

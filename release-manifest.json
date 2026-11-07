@@ -123,7 +123,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "7e4abf3ec8cc17e6230aac1f4bdeeb4eb6af276824350aeea76ac9edbcc488db",
+      "sha256": "770e6e1600b50153409fd6b0eb8a7611f27501d040be3814eecd8a443057fd42",
       "component": "core"
     },
     {
@@ -488,7 +488,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "efbebf7963cc52baa0f714e2ecda819178b96f30c0417ddf5ad210c206b81b09",
+      "sha256": "9f8f093d7166b97efe789f699f0117c62eb472076ca83027bdf97a485aafcea6",
       "component": "core"
     },
     {
@@ -503,7 +503,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "848a9ed18bbd5a98158c3368c277846b1362dadeded4d8e1b54bd6399f9f7491",
+      "sha256": "4f730ac99aff8fd93b2fe6476cbfe9489d2d587b2b755200f5a737824f753dd7",
       "component": "core"
     },
     {
@@ -543,12 +543,12 @@
     },
     {
       "path": "provenance/skill-registry.json",
-      "sha256": "0c27d0714e6fd4d620adb36cf03f9a6c710590ac710ca8406bc8c91cacbd2f48",
+      "sha256": "dff4128e442e75a247a444a613490c26f226372ef117c8642286f9ec792033ad",
       "component": "core"
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "88649889c102af6b2c322f63c2bb5685c771f1474a70774e725d6ea358544760",
+      "sha256": "97711f2661ec31435543f51b58c1a440a89e1527cb1bfe9b3b764bb86dde41d5",
       "component": "core"
     },
     {
@@ -2238,7 +2238,7 @@
     },
     {
       "path": "skills/anti-slop-design/SKILL.md",
-      "sha256": "d9a53d78c393007deefd14bfeb5d3e0251b6d59cfd4f9303770d60f6cb600fd7",
+      "sha256": "f47e729faea5693827879d40d0d39e07fb6363cffbd4cae7d6770b1986ec32a5",
       "component": "skills"
     },
     {
@@ -2528,12 +2528,12 @@
     },
     {
       "path": "skills/design-pass/SKILL.md",
-      "sha256": "c98b0230bac7c940019a063ffa17b3edef4fb4de89304423f89ef4ac6b9ba490",
+      "sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681",
       "component": "skills"
     },
     {
       "path": "skills/design-pass/references/browser-state-evidence.md",
-      "sha256": "151150283b28b41dd4e2db495d9c706dccc3fe61cce26d9b5aa6a2f53d4ad2a0",
+      "sha256": "a2e0035aa62a9d59f998838d8c640c5495546ded7904eae42f33efc1eb7c1418",
       "component": "skills"
     },
     {
@@ -2643,7 +2643,7 @@
     },
     {
       "path": "skills/interface-review/SKILL.md",
-      "sha256": "ebb3271f2e6d56ee8063ca251469b625358d6a43b956a558b9c3e73169741221",
+      "sha256": "d0af0ed1ca274cfd0478240b1edccf22773e33def4061a6bf8acd60edd4ef262",
       "component": "skills"
     },
     {
@@ -2768,7 +2768,7 @@
     },
     {
       "path": "skills/reference-ui-reconstruction/SKILL.md",
-      "sha256": "0a0cd190e5982bb6a999aa754a75ab6a1f282d3adef58ba1af00f9cb8b21e6f5",
+      "sha256": "022f21acf136fac39270e9e9dea3cf2e753728341672ff3b0ab076492cd5fa17",
       "component": "skills"
     },
     {
@@ -2778,7 +2778,7 @@
     },
     {
       "path": "skills/ship/frontend-design/SKILL.md",
-      "sha256": "aca3c0fa5d99e6265bc9f628f614abb49a28cb827b114d7dc7af16a3f7dfe9a8",
+      "sha256": "e65df615c31a49a562794f27e66e538c933a051761c1118c6e3fd4c3080fb007",
       "component": "skills"
     },
     {
@@ -3587,6 +3587,21 @@
       "component": "skills"
     },
     {
+      "path": "skills/ui-measurements/SKILL.md",
+      "component": "skills",
+      "sha256": "ade6fd5a99261b76416aa300985c59174e07a844e862b5d23578da65527e05f4"
+    },
+    {
+      "path": "skills/ui-measurements/references/contract.md",
+      "component": "skills",
+      "sha256": "fd96e0394a7ec8116f7579bb235f5b763b14f16dac3eaa8cfc02e9c405bd6c1f"
+    },
+    {
+      "path": "skills/ui-measurements/scripts/measure-ui.cjs",
+      "component": "skills",
+      "sha256": "cab6c21ff5843f2cbdb500a050a663c972919b45d5c0e0157d9e839d8af3bb91"
+    },
+    {
       "path": "skills/utils/migrate-to-shoehorn/SKILL.md",
       "sha256": "89a1bb70d06670f43fc0d60555303cff9389fd2249cb55675ecba78a50c7d132",
       "component": "skills"
@@ -3688,7 +3703,7 @@
     },
     {
       "path": "skills/ux-review/SKILL.md",
-      "sha256": "845b05edeaf273d97c943014c888d1a5b2ff98efadeeccf4f79fda8c98097c59",
+      "sha256": "60feceeddc321595e0208c80222610da1dd8b3f192e728b26e14afbfdae54408",
       "component": "skills"
     },
     {
@@ -3728,7 +3743,7 @@
     },
     {
       "path": "tests/collection/test_collection.py",
-      "sha256": "98a1aa3b89f9228db264624995cebb2789f8f0911b401ce5b54e50b1f3ec2e6b",
+      "sha256": "0c1582100560d04802d2534ce7d725041a84b559525ec875ced8f470333772b9",
       "component": "core"
     },
     {
@@ -3942,6 +3957,21 @@
       "component": "core"
     },
     {
+      "path": "tests/ui-measurements/cases.cjs",
+      "component": "core",
+      "sha256": "a3a54c19ff605211feef17b319dd5a242286da19499da4c3ccf1ec49c23900e4"
+    },
+    {
+      "path": "tests/ui-measurements/test_browser.py",
+      "component": "core",
+      "sha256": "bcb239aa925f62cbd2876b786672b3a24c337bca17d5397238b91e5f2d3059c1"
+    },
+    {
+      "path": "tests/ui-measurements/test_node.py",
+      "component": "core",
+      "sha256": "e6e8bacf8b6b7a60e8f6117a6cea2ea8c1a6bbbc79022604923151f0dd7ae767"
+    },
+    {
       "path": "tools/connect-project.py",
       "sha256": "10570e6b5e223d6cef36019727fda94fbdf1bfaca45c3ee66ada51ab889ba81c",
       "component": "core"
@@ -3963,12 +3993,12 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "0eb228a50c9b7c8f767373175cec6f79dac908308535541dd613e5f4c357e2ae",
+      "sha256": "ed4561bae33d4237065ffc85ba01a42aa5ac02f92838afb147a850ea56a71c46",
       "component": "core"
     },
     {
       "path": "tools/verify_collection.py",
-      "sha256": "9481d1f1ab77ec2d929f82bf9ae27da313771b9324928f1573c8ebd5f2b57e2a",
+      "sha256": "43d05b7ea84a39b22d84fe4e90522f37fc088b8a73f1cb0ef8d67d9395d52b95",
       "component": "core"
     },
     {
