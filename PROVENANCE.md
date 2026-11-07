@@ -138,3 +138,19 @@ project mapping or host credential is included. The portable helper is shipped
 through the existing explicit component installer; installed host policy overlays
 remain separate. The new metadata does not replace historical source identities
 or imply independent acceptance of unrelated capabilities.
+
+## Unreleased takeover corrections
+
+The user authorized Codex to take over inherited guidance and helper changes in the
+existing checkout. Historical per-file authorship and claimed prior authorization
+of the inherited WIP are not independently authenticated. Current review covers
+portable anti-pattern guidance, session continuation, installed-kit connection
+verification and diagnostics. Immutable upstream identities and license notices
+are retained. Private task evidence is excluded from distribution.
+
+The Codex capture catcher originates from this repository's commit `4f38684` and
+receives first-party transport, input and status hardening in this takeover. It is
+a delivery helper for a separately deployed storage API; the Go server is not
+included in this checkout's catcher component. Fixture evidence does not prove
+native event delivery, final-answer completeness or installed hook trust. Shipping
+these sources enables no capture, grants, credentials, hooks or consumer update.
