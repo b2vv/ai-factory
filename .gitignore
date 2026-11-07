@@ -7,3 +7,5 @@ __pycache__/
 *.key
 local/
 evidence/
+CLAUDE.local.md
+AGENTS.local.md
