@@ -196,7 +196,8 @@ def post_event(endpoint, project, source, headers, body, timeout=5, opener=None)
         if (not isinstance(payload, dict)
                 or safe_count(payload.get("accepted")) is None
                 or safe_count(payload.get("committed")) is None
-                or not isinstance(payload.get("redactions"), list)):
+                or "redactions" not in payload
+                or (payload["redactions"] is not None and not isinstance(payload["redactions"], list))):
             return {"error": "invalid capture response"}
         if resp.getheader("X-AF-Codex-Contract") != "2":
             return {"error": "capture contract not acknowledged"}

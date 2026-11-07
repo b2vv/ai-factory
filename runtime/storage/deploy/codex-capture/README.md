@@ -36,7 +36,9 @@ POST /v1/capture/codex-event-v2 requires separate codex-hook-v2 capture consent.
 There is no v1 fallback. An old server returns 404 without accepting a legacy
 record. Delivery is reported only after a valid success response with the
 X-AF-Codex-Contract: 2 acknowledgement. It means the server accepted the request;
-committed counts and independent retrieval determine archive availability.
+committed counts and independent retrieval determine archive availability. The API
+serializes an empty Go redaction slice as null; null and arrays are accepted,
+but an omitted redactions field or another type is an invalid response.
 
 The server sanitizes text using known-credentials-v1 before assigning v2 IDs:
 - prompt: v2/<turn_id>/prompt;

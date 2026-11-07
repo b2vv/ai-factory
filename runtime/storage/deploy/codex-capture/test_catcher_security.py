@@ -35,6 +35,19 @@ class Security(unittest.TestCase):
    self.assertEqual(calls,[c.ENDPOINT+"/v1/capture/codex-event-v2?project=p&source_instance=s"])
    self.assertNotIn("PRIVATE_CANARY",json.dumps(status))
 
+ def test_go_nil_redactions_means_zero_redactions(self):
+  class Response:
+   def read(self,*a):return b'{"accepted":1,"committed":1,"redactions":null}'
+   def getcode(self):return 200
+   def getheader(self,name):return "2"
+  status=c.post_event(c.ENDPOINT,"p","s",{},{},opener=lambda *a,**k:Response())
+  self.assertTrue(status.get("delivered",False));self.assertEqual(status["redactions"],0)
+ def test_missing_redactions_is_not_an_empty_go_slice(self):
+  class Response:
+   def read(self,*a):return b'{"accepted":1,"committed":1}'
+   def getcode(self):return 200
+   def getheader(self,name):return "2"
+  self.assertFalse(c.post_event(c.ENDPOINT,"p","s",{},{},opener=lambda *a,**k:Response()).get("delivered",False))
  def test_old_server_404_does_not_fallback(self):
   calls=[]
   def opener(req,**kwargs):

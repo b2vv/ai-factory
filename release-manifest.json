@@ -123,7 +123,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "2992cfb299f1e794c3f6f426a7e583a8927b13be3fe43d8534dd86e7c7d59b96",
+      "sha256": "8daaee519fe353238cda5474ec1382b10bb27c85063ced0e20869a9e5248a589",
       "component": "core"
     },
     {
@@ -503,7 +503,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "6adf87dda9a03e94f527269b3b9307bdf8994f584a72601be5adcd01c6ee1d7f",
+      "sha256": "73de574504c43b3ec6115290fa69873218fabcca7aeef36aee1a2e7fa991f7ae",
       "component": "core"
     },
     {
@@ -994,7 +994,7 @@
     {
       "path": "runtime/storage/deploy/codex-capture/README.md",
       "component": "codex-capture",
-      "sha256": "4104eb00718419444d5cf4711245e4feb5637a9ff43dc45a38c9f58ec22ced6a"
+      "sha256": "75e369f98b9a0b4cb29a35d62f8d5f0ca196ccd9e4d0bb1d740d55aed9b6b7af"
     },
     {
       "path": "runtime/storage/deploy/codex-capture/codex-capture-hook.sh",
@@ -1004,12 +1004,12 @@
     {
       "path": "runtime/storage/deploy/codex-capture/codex_capture_catcher.py",
       "component": "codex-capture",
-      "sha256": "d5895b1028e1b18f714f200d2333683e2ebd61bc67f4861e90903fa1feb0e6e0"
+      "sha256": "709aa5b93f4bfecd8c3fc15280bfce8aab52548af2f7704210503e71d71e9d5f"
     },
     {
       "path": "runtime/storage/deploy/codex-capture/test_catcher_security.py",
       "component": "codex-capture",
-      "sha256": "3d2217670d5cecd7af67f71e3371eaea3957d66ab18605fa2b6918b6257bc5dd"
+      "sha256": "87ddaa6af4cc6bf37e4bbad325c3fd4c251305d482e5310b4f3147db23e8ba1f"
     },
     {
       "path": "runtime/storage/deploy/codex-capture/test_codex_catcher.py",
@@ -1019,7 +1019,7 @@
     {
       "path": "runtime/storage/deploy/codex-capture/test_codex_catcher_auth.py",
       "component": "codex-capture",
-      "sha256": "c238ff802f92f1339734d1d17195621909ddec3f2d98f6c8155bfcfd1ad6e3ec"
+      "sha256": "985d53ea5dc400e294fe7f67c58157371ebd6297828985859aaddaa5da57219a"
     },
     {
       "path": "runtime/storage/deploy/dev/Dockerfile",

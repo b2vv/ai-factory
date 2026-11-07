@@ -215,3 +215,8 @@ Separate namespaced IDs preserve historical archive identity; digests use only
 server-sanitized text. The unchanged v1 adapter remains supported. Native observer
 evidence, source tests, independent review and production activation have distinct
 scopes; no source publication establishes live capture or complete transcripts.
+
+Native verification exposed Go empty-slice JSON null responses. The first-party
+catcher accepts explicit null as zero redactions while retaining field-presence
+and type checks. Synthetic loopback fixtures now use the actual Go response shape;
+no source IDs, records, transport authority or server schema change.

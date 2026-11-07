@@ -12,7 +12,7 @@ import codex_capture_catcher as c  # noqa: E402
 
 FAILS = []
 RECORDED = []          # one dict per received request
-RESPONSE = {"code": 200, "body": {"accepted": 1, "committed": 1, "redactions": []}}
+RESPONSE = {"code": 200, "body": {"accepted": 1, "committed": 1, "redactions": None}}
 
 
 def check(name, cond):
@@ -102,7 +102,7 @@ def main():
                 ("dg", "/w/dg", "uuid-dg", "codex-dg"),
             ]:
                 RECORDED.clear()
-                RESPONSE["code"], RESPONSE["body"] = 200, {"accepted": 1, "committed": 1, "redactions": []}
+                RESPONSE["code"], RESPONSE["body"] = 200, {"accepted": 1, "committed": 1, "redactions": None}
                 s = c.run(event(cwd), env)
                 rec = RECORDED[-1] if RECORDED else {}
                 check("%s: delivered committed=1" % key, s.get("delivered") and s.get("committed") == 1)
