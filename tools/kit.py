@@ -314,6 +314,52 @@ def rollback(root,txid,expected_plan):
         return {'status':'ROLLED_BACK','transaction':txid}
 
 
+def blocked_reason(exc):
+    # Specific, actionable category WITHOUT echoing any path, name or file content.
+    if isinstance(exc, json.JSONDecodeError):
+        return 'MALFORMED_JSON: a manifest, checksum or receipt file is not valid JSON.'
+    if isinstance(exc, OSError):
+        return 'IO_ERROR: a filesystem operation failed; inspect the receipt and permissions, do not force.'
+    if isinstance(exc, (KeyError, TypeError)):
+        return 'MALFORMED_METADATA: required manifest/receipt fields are missing or the wrong type.'
+    msg = str(exc)
+    groups = [
+        (('explicit canonical absolute path required', 'symlink refused', 'noncanonical release path',
+          'invalid release path', 'sensitive/reserved release path', 'choose a dedicated toolkit directory',
+          'root is not a directory', 'source and destination must not overlap', 'file in destination parent'),
+         'UNSAFE_OR_INVALID_PATH: a path is non-canonical, a symlink, reserved, or source/destination overlap; fix the path, do not weaken the guard.'),
+        (('stale or wrong plan', 'plan changed before lock', 'plan never executes', 'stale rollback plan',
+          'rollback state changed', 'plan id and exclusive writer window required'),
+         'STALE_OR_MISSING_PLAN: recompute the plan and re-run with the fresh --plan-id and --exclusive-window.'),
+        (('unfinished transaction: rollback first',),
+         'UNFINISHED_TRANSACTION: a previous transaction did not finish; roll it back before planning again.'),
+        (('local edit or unmanaged collision',),
+         'LOCAL_EDIT_COLLISION: a managed file was modified or an unmanaged file is in the way; reconcile it before install/update.'),
+        (('concurrent edit', 'concurrent change blocks rollback', 'post-write mismatch', 'invalid replacement bytes',
+          'baseline changed', 'corrupt backup', 'missing/corrupt backup'),
+         'CONCURRENT_OR_CORRUPT_STATE: files changed under the operation or a backup is missing/corrupt; do not force, inspect the receipt.'),
+        (('use update for managed installation',),
+         'ALREADY_INSTALLED: this root already has a managed install; use "update" instead of "install".'),
+        (('use install for new destination',),
+         'NOT_INSTALLED: this root has no managed install yet; use "install" instead of "update".'),
+        (('transaction required', 'invalid transaction id', 'receipt/root mismatch',
+          'rollback must target latest/pending transaction', 'rollback state mismatch', 'receipt integrity mismatch'),
+         'INVALID_TRANSACTION: the transaction id/receipt does not match this root or is not the latest/pending one.'),
+        (('state directory must be private and owned',),
+         'STATE_PERMISSIONS: the .ai-factory-state directory must be private (0700) and owned by the current user.'),
+        (('missing release manifest', 'unsupported release schema', 'unknown component', 'component dependency cycle',
+          'invalid dependencies', 'duplicate/invalid component path', 'release hash mismatch', 'missing checksums',
+          'invalid checksums', 'checksum inventory mismatch', 'unlisted package file', 'checksum mismatch',
+          'symlink in package', 'invalid root Git metadata file', 'missing metadata',
+          'nonregular/hardlinked/oversized file refused', 'package required'),
+         'INVALID_PACKAGE: the release package failed integrity/inventory verification; re-export or re-fetch it.'),
+    ]
+    for needles, reason in groups:
+        if any(msg.startswith(n) for n in needles):
+            return reason
+    return 'INVALID_OR_UNSAFE_INPUT: validation rejected the input/state; inspect the receipt without forcing.'
+
+
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('action',nargs='?',default='plan',choices=['plan','install','update','rollback'])
@@ -340,8 +386,8 @@ def main():
                 if a.action=='update' and not current(a.root)['files']:raise ValueError('use install for new destination')
                 out=apply(a.package,a.root,a.component,a.plan_id)
         print(json.dumps(out,indent=2));return 0
-    except (ValueError,OSError,KeyError,TypeError,json.JSONDecodeError):
-        print(json.dumps({'status':'BLOCKED','reason':'invalid/stale input, unsafe path, conflict, lock or IO failure; preserve receipt and inspect without forcing'}));return 1
+    except (ValueError,OSError,KeyError,TypeError,json.JSONDecodeError) as exc:
+        print(json.dumps({'status':'BLOCKED','reason':blocked_reason(exc)}));return 1
 
 
 if __name__=='__main__':sys.exit(main())

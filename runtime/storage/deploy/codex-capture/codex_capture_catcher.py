@@ -16,9 +16,8 @@
 # The server accepts ONLY the documented subset below; field names are NOT invented.
 #
 # Design points enforced here (see README.md):
-#  - Codex installs a SINGLE global hooks.json, so project membership cannot come from a
-#    per-project env like the Claude bridge. It comes from an EXPLICIT operator-authored
-#    mapping file (AF_CODEX_CATCHER_MAP): cwd selects which mapping ROW to use; it never
+#  - This mapping mode supports global or project-local hooks. Its explicit operator
+#    mapping file (AF_CODEX_CATCHER_MAP) selects a row from cwd; it never
 #    grants authority. The server independently authorizes the row's scoped credential
 #    against the row's project UUID (requireCapture -> authz.Authorize ... OpCapture).
 #  - A cwd that matches no mapped project root is a NO-OP: nothing is read, nothing is sent.
@@ -29,10 +28,38 @@
 #    sanitizes. The catcher's own visible status carries NO message text and NO secret.
 #  - Fail-safe: any error -> compact status + exit 0. A Codex command hook must never block
 #    or fail the turn.
-import sys, json, os, time, re, urllib.request, urllib.parse, urllib.error
+import sys, json, os, time, re, stat, urllib.request, urllib.parse, urllib.error
 
 EVENT_ID = re.compile(r"^[A-Za-z0-9_-]{1,160}$")  # mirrors server codex_event.go eventID
 SUPPORTED_EVENTS = ("UserPromptSubmit", "Stop")
+ENDPOINT = "http://127.0.0.1:8780"
+MAX_INPUT = 1024 * 1024
+MAX_RESPONSE = 64 * 1024
+
+def canonical_path(value):
+    if not isinstance(value, str) or not os.path.isabs(value):
+        raise ValueError("absolute path required")
+    if os.path.normpath(value) != value or os.path.realpath(value) != value:
+        raise ValueError("canonical path without symlinks required")
+    return value
+
+def read_json_file(path, limit):
+    canonical_path(str(path))
+    fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
+    with os.fdopen(fd, "r", encoding="utf-8") as stream:
+        info = os.fstat(stream.fileno())
+        if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1:
+            raise ValueError("regular unlinked-once file required")
+        text = stream.read(limit + 1)
+    if len(text) > limit:
+        raise ValueError("file exceeds limit")
+    return json.loads(text)
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
 
 
 def load_mapping(path):
@@ -41,8 +68,7 @@ def load_mapping(path):
     (longest-prefix wins). Raises ValueError on a malformed file; the caller turns that into
     a no-op status. The mapping holds UUIDs and credential-file paths and is kept OUT of the
     repository (local, operator-authored)."""
-    with open(path, "r", encoding="utf-8") as f:
-        raw = json.load(f)
+    raw = read_json_file(path, 256 * 1024)
     rows = raw.get("projects") if isinstance(raw, dict) else raw
     if not isinstance(rows, list) or not rows:
         raise ValueError("mapping has no projects")
@@ -56,6 +82,10 @@ def load_mapping(path):
         cred = r.get("credential_file")
         if not all(isinstance(v, str) and v.strip() for v in (root, project, source, cred)):
             raise ValueError("mapping row missing root/project/source_instance/credential_file")
+        canonical_path(root)
+        canonical_path(cred)
+        if root == os.sep or any(row["root"] == root for row in out):
+            raise ValueError("ambiguous mapping root")
         out.append({
             "root": os.path.normpath(root),
             "project": project,
@@ -72,7 +102,10 @@ def select_project(cwd, rows):
     boundary, so /a/courses never matches a root of /a/cours."""
     if not isinstance(cwd, str) or not cwd:
         return None
-    c = os.path.normpath(cwd)
+    try:
+        c = canonical_path(cwd)
+    except ValueError:
+        return None
     for row in rows:  # already longest-first
         root = row["root"]
         if c == root or c.startswith(root + os.sep):
@@ -98,7 +131,7 @@ def normalize_event(ev):
     session_id = ev.get("session_id")
     turn_id = ev.get("turn_id")
     if (not isinstance(session_id, str) or not isinstance(turn_id, str)
-            or not EVENT_ID.match(session_id) or not EVENT_ID.match(turn_id)):
+            or not EVENT_ID.fullmatch(session_id) or not EVENT_ID.fullmatch(turn_id)):
         return "bad session/turn id", None
     if event == "UserPromptSubmit":
         prompt = ev.get("prompt")
@@ -106,6 +139,10 @@ def normalize_event(ev):
             return "empty prompt", None
         return "user", {"hook_event_name": "UserPromptSubmit", "session_id": session_id,
                         "turn_id": turn_id, "prompt": prompt}
+    # Continued Stop is not supported by the current immutable turn/assistant API.
+    # Skipping it is a known completeness limit that blocks activation.
+    if ev.get("stop_hook_active") is True:
+        return "continued stop unsupported", None
     # Stop
     msg = ev.get("last_assistant_message")
     if not isinstance(msg, str) or msg == "":
@@ -130,10 +167,19 @@ def agent_headers(credential):
             "X-Secret": credential["secret"]}
 
 
-def post_event(endpoint, project, source, headers, body, timeout=5, opener=urllib.request.urlopen):
+def safe_count(value):
+    return value if type(value) is int and 0 <= value <= 1000000 else None
+
+
+def post_event(endpoint, project, source, headers, body, timeout=5, opener=None):
     """POST one event to the server. Returns a status dict fragment with http_status and the
     server's accepted/committed/redactions counts, or an error (never the response body, which
     could echo input)."""
+    if endpoint != ENDPOINT:
+        return {"error": "endpoint refused"}
+    if opener is None:
+        opener = urllib.request.build_opener(
+            urllib.request.ProxyHandler({}), NoRedirect()).open
     url = "%s/v1/capture/codex-event?project=%s&source_instance=%s" % (
         endpoint, urllib.parse.quote(project, safe=""), urllib.parse.quote(source, safe=""))
     req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), method="POST")
@@ -142,9 +188,17 @@ def post_event(endpoint, project, source, headers, body, timeout=5, opener=urlli
         req.add_header(name, value)
     try:
         resp = opener(req, timeout=timeout)
-        payload = json.loads(resp.read().decode("utf-8") or "{}")
-        return {"http_status": resp.getcode(), "accepted": payload.get("accepted"),
-                "committed": payload.get("committed"),
+        raw = resp.read(MAX_RESPONSE + 1)
+        if len(raw) > MAX_RESPONSE:
+            return {"error": "response exceeds limit"}
+        payload = json.loads(raw.decode("utf-8") or "{}")
+        if (not isinstance(payload, dict)
+                or safe_count(payload.get("accepted")) is None
+                or safe_count(payload.get("committed")) is None
+                or not isinstance(payload.get("redactions"), list)):
+            return {"error": "invalid capture response"}
+        return {"http_status": resp.getcode(), "accepted": safe_count(payload.get("accepted")),
+                "committed": safe_count(payload.get("committed")),
                 "redactions": len(payload.get("redactions") or []), "delivered": True}
     except urllib.error.HTTPError as e:
         return {"http_status": e.code, "error": "http %d" % e.code}  # body not echoed
@@ -171,20 +225,22 @@ def run(stdin_text, env):
     endpoint = env.get("AF_CODEX_ENDPOINT", "http://127.0.0.1:8780")
     map_path = env.get("AF_CODEX_CATCHER_MAP", "")
     status = {"ts": int(time.time()), "delivered": False}
+    if len(stdin_text) > MAX_INPUT:
+        status["error"] = "event exceeds limit"
+        return status
     try:
         ev = json.loads(stdin_text)
     except Exception:
         status["error"] = "unparseable event"
         return status
-    status["event"] = ev.get("hook_event_name") if isinstance(ev, dict) else None
+    event = ev.get("hook_event_name") if isinstance(ev, dict) else None
+    status["event"] = event if event in SUPPORTED_EVENTS else "unsupported"
 
     role, body = normalize_event(ev)
     if body is None:
         status["skipped"] = role  # reason string; no payload
         return status
     status["role"] = role
-    status["session_id"] = body["session_id"]
-    status["turn_id"] = body["turn_id"]
 
     if not map_path:
         status["error"] = "no mapping configured"
@@ -200,15 +256,12 @@ def run(stdin_text, env):
     if row is None:
         status["skipped"] = "cwd not mapped"  # unknown project -> never captured
         return status
-    status["project"] = row["project"]
-    status["source"] = row["source_instance"]
 
     try:
-        with open(row["credential_file"], "r", encoding="utf-8") as f:
-            credential = json.load(f)
+        credential = read_json_file(row["credential_file"], 16 * 1024)
         headers = agent_headers(credential)
     except ValueError as e:
-        status["error"] = str(e)
+        status["error"] = "invalid scoped capture credential"
         return status
     except Exception as e:
         status["error"] = "credential unreadable: %s" % type(e).__name__
@@ -221,7 +274,7 @@ def run(stdin_text, env):
 def main():
     status_file = os.environ.get("AF_CODEX_STATUS_FILE", "")
     try:
-        status = run(sys.stdin.read(), os.environ)
+        status = run(sys.stdin.read(MAX_INPUT + 1), os.environ)
     except SystemExit:
         raise
     except Exception as e:

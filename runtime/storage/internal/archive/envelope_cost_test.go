@@ -19,9 +19,9 @@ func TestEnvelopeReservationRetainsRecordAndMetadataLiability(t *testing.T) {
 			t.Fatalf("metadata/index liability omitted: %d %v", cost, err)
 		}
 		larger := e
-		larger.Record.Text += "Unicode Ж🙂"
+		larger.Record.Text += "Unicode é🙂"
 		grown, err := archive.EnvelopeReservationBytes(larger)
-		if err != nil || grown-cost != int64(len("Unicode Ж🙂")) {
+		if err != nil || grown-cost != int64(len("Unicode é🙂")) {
 			t.Fatalf("UTF-8 payload charge: %d %v", grown-cost, err)
 		}
 		retry, err := archive.EnvelopeReservationBytes(e)

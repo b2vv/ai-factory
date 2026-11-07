@@ -43,11 +43,11 @@ Source for all 10: https://www.nngroup.com/articles/ten-usability-heuristics/
 
 
 ## 3. WCAG 2.2 (UX-related SC)
-[wcag] 2.5.8 Target Size (Min) AA — targets ≥24×24 CSS px or sufficient spacing → violation: a <24px click target without a spacing/inline/UA/essential exception → https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+[wcag] 2.5.8 Target Size (Min) AA — targets ≥24×24 CSS px or sufficient spacing → violation: a <24px click target without a spacing/equivalent/inline/UA/essential exception → https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
 [wcag] 2.5.5 Target Size (Enhanced) AAA — targets ≥44×44 CSS px → violation (AAA): below 44px for primary actions → https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html
 [wcag] 2.4.7 Focus Visible AA — visible focus indicator → violation: outline:none without a replacement; invisible focus → https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html
 [wcag] 2.4.11 Focus Not Obscured (Min) AA — focused element at least partially visible → violation: sticky header/banner obscures focus → https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html
-[wcag] 3.2.3 Consistent Navigation AA — repeated navigation in the same order → violation: navigation items change order/location across pages → https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html
+[wcag] 3.2.3 Consistent Navigation AA — repeated navigation retains the same relative order across a set of pages unless the user initiates the change → violation: unrequested changes to that relative order → https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html
 [wcag] 3.2.4 Consistent Identification AA — components with the same function identified consistently → violation: the same action has different labels/icons → https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html
 [wcag] 3.2.6 Consistent Help A — help/contact in the same location on all pages → violation: help link “jumps” → https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html
 [wcag] 3.3.1 Error Identification A — erroneous field identified, error described in text → violation: only a red border without text; color-only error → https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html
@@ -157,9 +157,9 @@ targets or has agreed — no taste/brand/density exception) or **preference** (a
 success criterion), per the central doc's cross-cutting rule 1. An AAA criterion out of scope at an AA target is
 scoped-out, not a "preference"; name the applicable threshold rather than dismissing it.
 
-- **Navigation / IA (§6).** How-not-to: nav items that change order or location across pages (3.2.3). How-to:
-  keep repeated navigation in a consistent order and place. Exceptions [REQUIREMENT]: none at taste level.
-  Verify: diff the nav across pages — reordering is a violation, not a redesign choice.
+- **Navigation / IA (§6).** How-not-to: unrequested changes to the relative order of repeated navigation across a set of pages (3.2.3). How-to:
+  preserve that relative order. Exceptions [REQUIREMENT]: user-initiated changes are permitted by the criterion.
+  Verify repeated items and user initiation across pages; stable location is a project usability preference, not the literal 3.2.3 requirement.
 - **Forms + validation (§4, WCAG 3.3.x).** How-not-to: a color-only error with no text (3.3.1); losing entered
   values on error. How-to: identify the erroneous field in text beside it; keep the form editable with values
   intact. Exceptions [REQUIREMENT]: none for the text identification. Verify: with color removed, is the error

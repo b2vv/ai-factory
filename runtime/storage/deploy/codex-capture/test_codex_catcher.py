@@ -39,6 +39,7 @@ def mapping_four(tmp):
 
 def test_routing():
     with tempfile.TemporaryDirectory() as tmp:
+        tmp = os.path.realpath(tmp)
         rows = c.load_mapping(mapping_four(tmp))
         # longest-prefix: the nested cassiopeia root sorts before shorter roots
         check("mapping loads 4 rows", len(rows) == 4)
@@ -130,6 +131,7 @@ def test_run_no_ops_make_no_network():
     endpoint at a black-hole and ensure post is never reached by asserting delivered is False and
     no http_status is set (post_event would set http_status or an http/post error)."""
     with tempfile.TemporaryDirectory() as tmp:
+        tmp = os.path.realpath(tmp)
         mp = mapping_four(tmp)
         env = {"AF_CODEX_ENDPOINT": "http://127.0.0.1:0", "AF_CODEX_CATCHER_MAP": mp}
 
@@ -157,6 +159,7 @@ def test_run_no_ops_make_no_network():
 def test_status_no_leak():
     """A no-op status must never contain the prompt text or anything secret-shaped."""
     with tempfile.TemporaryDirectory() as tmp:
+        tmp = os.path.realpath(tmp)
         mp = mapping_four(tmp)
         env = {"AF_CODEX_CATCHER_MAP": mp}
         secret_prompt = "SENSITIVE-PROMPT-TEXT-SHOULD-NEVER-APPEAR"

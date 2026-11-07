@@ -31,9 +31,14 @@ def make_kit(base, version="0.8.0-alpha.1+codex-events.1", manifest_body="M1"):
     (root / "rules" / "agent-entry.md").write_text("# entry rules\n")
     (root / "release-manifest.json").write_text(json.dumps({"schema_version": 2, "version": version, "body": manifest_body}))
     txid = "a" * 32
-    (root / ".ai-factory-state" / "receipts" / f"{txid}.json").write_text("{}")
-    (root / ".ai-factory-state" / "installed.json").write_text(json.dumps(
-        {"version": version, "components": ["core", "capture-bridge"], "latest": txid, "files": {}}))
+    (root / ".ai-factory-state").chmod(0o700)
+    (root / "checksums.sha256").write_text("synthetic fixture\n")
+    files={n:cp.installer.signature(root/n) for n in ["rules/agent-entry.md","release-manifest.json","checksums.sha256"]}
+    installed={"version":version,"components":["core","capture-bridge"],"latest":txid,"files":files}
+    manifest=cp.installer.read_json(root/"release-manifest.json")
+    plan={"root":str(root),"version":version,"components":installed["components"],"files":files,"release_sha256":cp.installer.digest(cp.installer.encode(manifest))}
+    cp.installer.write_tx(root/".ai-factory-state/receipts"/(txid+".json"),{"id":txid,"status":"APPLIED","plan":plan})
+    (root/".ai-factory-state/installed.json").write_text(json.dumps(installed))
     return root
 
 
@@ -46,7 +51,7 @@ def run(args):
 
 class ConnectProject(unittest.TestCase):
     def setUp(self):
-        self.tmp = Path(tempfile.mkdtemp())
+        self.tmp = Path(tempfile.mkdtemp()).resolve()
         self.kit = make_kit(self.tmp)
         self.proj = self.tmp / "project"
         self.proj.mkdir()
@@ -56,6 +61,112 @@ class ConnectProject(unittest.TestCase):
         for k, v in kw.items():
             a += [f"--{k.replace('_','-')}", v]
         return a
+
+    def test_import_comment_and_prefix_are_not_imports(self):
+        for text in ["# @AGENTS.local.md\n", "@AGENTS.local.md.other\n"]:
+            new, action = cp.ensure_claude_import(text)
+            self.assertNotEqual(action, "present")
+            self.assertIn("\n@AGENTS.local.md\n", new)
+
+    def test_symlink_target_refused_without_writes(self):
+        victim=self.tmp/"victim";victim.write_text("original")
+        (self.proj/"AGENTS.local.md").symlink_to(victim)
+        with self.assertRaises(ValueError):run(self.base_args()+["--apply"])
+        self.assertEqual(victim.read_text(),"original")
+        self.assertFalse((self.proj/"CLAUDE.local.md").exists())
+
+    def test_consistent_noncanonical_transaction_refused(self):
+        state=self.kit/'.ai-factory-state';original=cp.installer.read_tx(next((state/'receipts').glob('*.json')));current=json.loads((state/'installed.json').read_text())
+        current['latest']='not-a-transaction';original['id']=current['latest'];cp.installer.write_tx(state/'receipts/not-a-transaction.json',original);(state/'installed.json').write_text(json.dumps(current))
+        with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        self.assertFalse((self.proj/'AGENTS.local.md').exists())
+
+    def test_kit_baseline_drift_refused(self):
+        from unittest.mock import patch
+        original=cp.verify_consistency
+        def drift(*args):
+            result=original(*args);make_kit(self.tmp,version='updated');return result
+        with patch.object(cp,'verify_consistency',side_effect=drift):
+            with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        self.assertFalse((self.proj/'AGENTS.local.md').exists())
+
+    def test_state_owner_refused(self):
+        from unittest.mock import patch
+        uid=cp.os.getuid()
+        with patch.object(cp.os,'getuid',return_value=uid+1):
+            with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        self.assertFalse((self.proj/'AGENTS.local.md').exists())
+
+    def test_each_receipt_binding_refused(self):
+        receipt=next((self.kit/'.ai-factory-state/receipts').glob('*.json'))
+        original=cp.installer.read_tx(receipt)
+        from copy import deepcopy
+        for field in ['status','id','root','files','version','components']:
+            data=deepcopy(original)
+            if field in ['status','id']:data[field]='wrong'
+            else:data['plan'][field]={'wrong':{}} if field=='files' else ['wrong'] if field=='components' else 'wrong'
+            cp.installer.write_tx(receipt,data)
+            with self.subTest(field=field),self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+            self.assertFalse((self.proj/'AGENTS.local.md').exists())
+        cp.installer.write_tx(receipt,original)
+
+    def test_required_inventory_and_manifest_bindings(self):
+        state=self.kit/'.ai-factory-state';receipt=next((state/'receipts').glob('*.json'));original=cp.installer.read_tx(receipt);installed=json.loads((state/'installed.json').read_text())
+        from copy import deepcopy
+        for field in ['required','version','digest']:
+            data=deepcopy(original);current=deepcopy(installed)
+            if field=='required':
+                current['files'].pop('checksums.sha256');data['plan']['files'].pop('checksums.sha256')
+            elif field=='version':current['version']='wrong';data['plan']['version']='wrong'
+            else:data['plan']['release_sha256']='wrong'
+            cp.installer.write_tx(receipt,data);(state/'installed.json').write_text(json.dumps(current))
+            with self.subTest(field=field),self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        cp.installer.write_tx(receipt,original);(state/'installed.json').write_text(json.dumps(installed))
+
+    def test_invalid_transaction_and_state_mode_refused(self):
+        state=self.kit/'.ai-factory-state';installed=json.loads((state/'installed.json').read_text());bad=dict(installed,latest='../wrong');(state/'installed.json').write_text(json.dumps(bad))
+        with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        (state/'installed.json').write_text(json.dumps(installed));state.chmod(0o755)
+        with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        state.chmod(0o700)
+
+    def test_tampered_file_or_mode_refused(self):
+        entry=self.kit/'rules/agent-entry.md';before=entry.read_bytes()
+        for mode,body in [(0o600,before),(0o644,b'changed')]:
+            entry.chmod(mode);entry.write_bytes(body)
+            with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+            self.assertFalse((self.proj/'AGENTS.local.md').exists())
+        entry.chmod(0o644);entry.write_bytes(before)
+
+    def test_pending_install_refused(self):
+        (self.kit/'.ai-factory-state/pending.json').write_text('{"id":"pending"}')
+        with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+
+    def test_stale_baseline_refused_before_first_write(self):
+        from unittest.mock import patch
+        target=self.proj/'CLAUDE.local.md';target.write_text('user content')
+        original=cp.verify_consistency
+        def drift(*args):
+            result=original(*args);target.write_text('concurrent edit');return result
+        with patch.object(cp,'verify_consistency',side_effect=drift):
+            with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        self.assertFalse((self.proj/'AGENTS.local.md').exists())
+        self.assertEqual(target.read_text(),'concurrent edit')
+
+    def test_crlf_prefix_preserved(self):
+        prefix=b'user rules  \r\n\r\n';target=self.proj/'AGENTS.local.md';target.write_bytes(prefix)
+        run(self.base_args()+['--apply'])
+        self.assertTrue(target.read_bytes().startswith(prefix))
+
+    def test_receipt_integrity_refused(self):
+        p=next((self.kit/'.ai-factory-state/receipts').glob('*.json'));d=json.loads(p.read_text());d['integrity']='bad';p.write_text(json.dumps(d))
+        with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        self.assertFalse((self.proj/'AGENTS.local.md').exists())
+
+    def test_missing_receipt_refused(self):
+        next((self.kit/".ai-factory-state/receipts").glob("*.json")).unlink()
+        with self.assertRaises(ValueError):run(self.base_args()+["--apply"])
+        self.assertFalse((self.proj/"AGENTS.local.md").exists())
 
     # 1. missing local files -> created and wired
     def test_missing_files_created(self):
@@ -100,6 +211,36 @@ class ConnectProject(unittest.TestCase):
         # the old import is not duplicated: it still appears exactly once
         self.assertEqual(txt.count("/Users/someone/.local/share/ai-factory-kit/rules/agent-entry.md"), 1)
 
+    def test_conflict_refuses_all_writes(self):
+        old = "@/old/rules/agent-entry.md\n"
+        (self.proj / "AGENTS.local.md").write_text(old)
+        rc, rep = run(self.base_args() + ["--apply"])
+        self.assertNotEqual(rc, 0)
+        self.assertEqual((self.proj / "AGENTS.local.md").read_text(), old)
+        self.assertFalse((self.proj / "CLAUDE.local.md").exists())
+        self.assertFalse((self.proj / ".gitignore").exists())
+
+    def test_malformed_markers_refuse_all_writes(self):
+        for old in (cp.BEGIN, cp.END, cp.END + cp.BEGIN,
+                    cp.BEGIN + cp.BEGIN + cp.END, cp.BEGIN + cp.END + cp.END):
+            with self.subTest(old=old):
+                (self.proj / "AGENTS.local.md").write_text(old)
+                rc, rep = run(self.base_args() + ["--apply"])
+                self.assertNotEqual(rc, 0)
+                self.assertEqual((self.proj / "AGENTS.local.md").read_text(), old)
+                self.assertFalse((self.proj / "CLAUDE.local.md").exists())
+
+    def test_later_pin_conflict_preserves_earlier_pin(self):
+        pin = self._write_stale_pin(cp.PIN_LOCATIONS[0], "pin")
+        before = pin.read_bytes()
+        other = self.proj / cp.PIN_LOCATIONS[-1]
+        other.parent.mkdir(parents=True)
+        other.write_text('{"unknown": true}\n')
+        rc, rep = run(self.base_args() + ["--apply", "--reconcile-identity"])
+        self.assertNotEqual(rc, 0)
+        self.assertEqual(pin.read_bytes(), before)
+        self.assertFalse((self.proj / "AGENTS.local.md").exists())
+
     # 5. re-run with unchanged inputs writes nothing
     def test_rerun_idempotent(self):
         run(self.base_args() + ["--apply"])
@@ -131,8 +272,8 @@ class ConnectProject(unittest.TestCase):
     def test_worktree_absolute_adapter(self):
         wt = self.tmp / "worktree"
         wt.mkdir()
-        abs_adapter = "/Users/strelia/projects/dg/.ai/project/adapter.md"
-        abs_search = "/Users/strelia/projects/dg/.ai/project/capture-search.md"
+        abs_adapter = "/fixture/operator-project/.ai/project/adapter.md"
+        abs_search = "/fixture/operator-project/.ai/project/capture-search.md"
         rc, rep = run(["--managed-root", str(self.kit), "--project", str(wt), "--git-root", str(wt),
                        "--adapter", abs_adapter, "--search-contract", abs_search, "--apply"])
         txt = (wt / "AGENTS.local.md").read_text()

@@ -188,3 +188,19 @@ source, host configuration, credential or private transcript is included. Operat
 transport compatibility is retained; persistent project activation and installed-kit
 updates are separate actions. Synthetic fixture and mutation evidence do not claim
 native agent discovery or deployment of these changed bytes.
+
+## Unreleased takeover corrections
+
+The user authorized Codex to take over inherited guidance and helper changes in the
+existing checkout. Historical per-file authorship and claimed prior authorization
+of the inherited WIP are not independently authenticated. Current review covers
+portable anti-pattern guidance, session continuation, installed-kit connection
+verification and diagnostics. Immutable upstream identities and license notices
+are retained. Private task evidence is excluded from distribution.
+
+The Codex capture catcher originates from this repository's commit `4f38684` and
+receives first-party transport, input and status hardening in this takeover. It is
+a delivery helper for a separately deployed storage API; the Go server is not
+included in the catcher component; it remains a separate storage component. Fixture evidence does not prove
+native event delivery, final-answer completeness or installed hook trust. Shipping
+these sources enables no capture, grants, credentials, hooks or consumer update.

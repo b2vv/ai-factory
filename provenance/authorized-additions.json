@@ -137,7 +137,7 @@
     },
     {
       "destination": "ai-factory/reference-anti-patterns.md",
-      "sha256": "70d148987e4154ce8882949be1ae9a02154b25ca6184e65dd14bf705a81ea82f",
+      "sha256": "7bf1e5c83ed5fb0e2d756b4b060e4e1bcbd9aa04488860b48200609420404f25",
       "kind": "Owner-authorized authored cross-skill reference anti-pattern rules (4-field template + a11y REQUIREMENT-vs-preference split); first-party, distinct from upstream MIT adaptation; see PROVENANCE.md"
     },
     {

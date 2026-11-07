@@ -236,10 +236,10 @@ def validate_summary(data):
     return data
 
 
-def write_record(store, key, st, root, summary, complete):
+def write_record(store, key, st, root, summary, complete, host):
     st['generation'] += 1
     token = f"{key}-{st['generation']}-{uuid.uuid4().hex[:12]}"
-    obj = {'id': token, 'created': time.time(), 'snapshot': snapshot(root),
+    obj = {'id': token, 'host': host, 'created': time.time(), 'snapshot': snapshot(root),
            'depth': st['depth'], 'complete': complete, 'summary': summary}
     atomic(token_path(store, token), obj)
     st['pointer'] = token
@@ -253,15 +253,17 @@ def checkpoint(store, host, sid, cwd, summary):
         p, st = state_for(store, key)
         if st.get('pointer'):
             old = read_json(token_path(store, st['pointer']))
-            if old['complete'] and old['summary'] == summary and old['snapshot'] == snapshot(root):
+            if old.get('host') == host and old['complete'] and old['summary'] == summary and old['snapshot'] == snapshot(root):
                 return old['id']
-        obj = write_record(store, key, st, root, summary, True)
+        obj = write_record(store, key, st, root, summary, True, host)
         atomic(p, st)
         return obj['id']
 
 
 def resume_locked(store, token, host, sid, cwd, key, st, identity_text=''):
     obj = read_json(token_path(store, token))
+    if obj.get('host') != host:
+        raise ValueError('handoff host mismatch or legacy host unknown')
     if obj.get('id') != token or not obj.get('complete'):
         raise ValueError('handoff incomplete')
     if token.startswith(key + '-'):
@@ -306,6 +308,122 @@ def resume(store, token, host, sid, cwd):
     with locked(store):
         _, st = state_for(store, key)
         return resume_locked(store, token, host, sid, cwd, key, st)
+
+
+CANDIDATE_LIMIT = 8
+GIST_LEN = 240
+MATCH_LEN = 200
+
+
+def candidates(store, host, sid, cwd, match=None):
+    """Read-only task-selection listing for the fresh (post-/clear or successor) session.
+
+    Lists the COMPLETED checkpoints that belong to this host and this repository ROOT so the agent
+    can offer the user a human-readable choice. It is NOT an auto-binding mechanism: a shared root
+    and even an exact snapshot match do NOT prove a checkpoint is the task the user means to
+    continue, so this never resumes, never writes, never claims, and never picks by recency. The
+    human reads the goal gist and picks the exact id; only then does `resume_locked` run, with its
+    full safeguards (snapshot/claim/depth/expiry) re-checked AT SELECTION TIME. Anchors on
+    (host, root); state match is REPORTED per candidate as `status` (`resumable` vs
+    `snapshot_mismatch`), not silently filtered, so a drifted working tree is visible rather than a
+    checkpoint vanishing. Reads only the external store; creates nothing in any consumer project.
+
+    `total` reports how many eligible checkpoints exist so an 8-item page never hides that more are
+    reachable; `match` (id prefix or case-insensitive goal substring, bounded) narrows to an
+    intended older task without ever auto-selecting it. Returns {'total', 'returned', 'items'}."""
+    key, _ = identity(host, sid, cwd)
+    needle = (match or '').strip().lower()[:MATCH_LEN] or None
+    with locked(store):
+        current = snapshot(cwd)
+        out = []
+        for p in sorted(safe_path(store).glob('*.json')):
+            name = p.name[:-len('.json')]
+            # Only exact checkpoint tokens; skip session-*/claim-* and malformed names.
+            if not re.fullmatch(r'[a-f0-9]{32}-[1-9][0-9]*-[a-f0-9]{12}', name):
+                continue
+            # A session never offers its own checkpoints; incomplete drafts never qualify.
+            if name.startswith(key + '-'):
+                continue
+            try:
+                obj = read_json(p)
+            except (ValueError, json.JSONDecodeError, OSError):
+                continue
+            if obj.get('id') != name or obj.get('host') != host or not obj.get('complete'):
+                continue
+            snap = obj.get('snapshot') or {}
+            # (host, root) anchor: same repository, any state. State match is reported, not required.
+            if snap.get('root') != current.get('root'):
+                continue
+            created = obj.get('created', 0)
+            if not isinstance(created, (int, float)) or time.time() - created > TTL or created > time.time() + 60:
+                continue
+            if obj.get('depth', 0) >= MAX_DEPTH:
+                continue
+            claim = store / ('claim-' + name + '.json')
+            if claim.exists():
+                try:
+                    if read_json(claim).get('target') != key:
+                        continue  # already owned by a different session
+                except (ValueError, json.JSONDecodeError, OSError):
+                    continue
+            goal = diagnostic_text((obj.get('summary') or {}).get('goal', ''), GIST_LEN)
+            if needle and needle not in name.lower() and needle not in goal.lower():
+                continue
+            out.append({'id': name, 'created': float(created),
+                        'snapshot_matches': snap == current,
+                        'status': 'resumable' if snap == current else 'snapshot_mismatch',
+                        'goal': goal})
+        # Newest-first is a reading convenience for the human, never an auto-selection.
+        out.sort(key=lambda c: c['created'], reverse=True)
+        return {'total': len(out), 'returned': min(len(out), CANDIDATE_LIMIT),
+                'items': out[:CANDIDATE_LIMIT]}
+
+
+def resolve(store, host, sid, cwd):
+    """Resume ONLY when exactly one completed checkpoint matches the current repository state.
+
+    This is an explicit operator opt-in ("resolve the single checkpoint for this repo state"),
+    NOT the fresh-session entry path and NOT a trustworthy intended-task binding: a lone
+    snapshot match does not prove the checkpoint is the task the user means to continue (an
+    unrelated checkpoint saved against the same tree would match too). Zero or multiple matches
+    raise so the caller asks instead of inventing work; it never selects the latest or guesses.
+    The post-/clear entry path uses `candidates` (human picks, including Start fresh), never this."""
+    key, _ = identity(host, sid, cwd)
+    with locked(store):
+        _, st = state_for(store, key)
+        current = snapshot(cwd)
+        candidates = []
+        for p in sorted(safe_path(store).glob('*.json')):
+            name = p.name[:-len('.json')]
+            # Only exact checkpoint tokens; skip session-*/claim-* and malformed names.
+            if not re.fullmatch(r'[a-f0-9]{32}-[1-9][0-9]*-[a-f0-9]{12}', name):
+                continue
+            # A session never resumes its own checkpoint; incomplete drafts never qualify.
+            if name.startswith(key + '-'):
+                continue
+            try:
+                obj = read_json(p)
+            except (ValueError, json.JSONDecodeError, OSError):
+                continue
+            if obj.get('id') != name or obj.get('host') != host or not obj.get('complete'):
+                continue
+            # Unambiguous = same project root AND exact repository state (branch/HEAD/dirty).
+            if obj.get('snapshot') != current:
+                continue
+            created = obj.get('created', 0)
+            if time.time() - created > TTL or created > time.time() + 60:
+                continue
+            if obj.get('depth', 0) >= MAX_DEPTH:
+                continue
+            claim = store / ('claim-' + name + '.json')
+            if claim.exists() and read_json(claim).get('target') != key:
+                continue  # already owned by a different session
+            candidates.append(name)
+        if not candidates:
+            raise ValueError('no resumable checkpoint for this identity')
+        if len(candidates) > 1:
+            raise ValueError('ambiguous resumable checkpoints for this identity')
+        return resume_locked(store, candidates[0], host, sid, cwd, key, st)
 
 
 def output(event, text):
@@ -385,7 +503,15 @@ def event_locked(store, host, payload, pointer=None):
                          'NEW_RECEIPT_DIR must be fresh and private. For a legacy store without the state '
                          'leaf, omit --store-leaf state and use its approved store path. '
                          'Resume uses the same shell interface with resume and --pointer "$EXACT_HANDOFF_ID"' +
-                         '. Supply sanitized JSON on stdin: goal, done, pending, evidence, constraints '
+                         '. In a fresh session (for example after /clear) when the user asks to continue, use the '
+                         'same interface with continue: it only LISTS this project root\'s completed checkpoints '
+                         'as a task-selection question and never auto-resumes, never binds by recency or by a lone '
+                         'snapshot match. Show the items plus "start fresh"; the user picks one exact ID, which you '
+                         'then resume with --pointer "$EXACT_HANDOFF_ID". An item marked snapshot_mismatch is not '
+                         'resumable as-is: restore the recorded repository state or re-checkpoint current work, do '
+                         'not force it. If total exceeds the page, narrow with --match to reach an older task; an '
+                         'incomplete draft is never resumed. '
+                         'Supply sanitized JSON on stdin: goal, done, pending, evidence, constraints '
                          '(strings, <=1600 characters each); keep evidence paths/revision, not dumps. '
                          'Checkpoint after meaningful progress and refresh at safe boundary before leaving.')
             st['introduced'] = 'native-identity-v1'
@@ -398,7 +524,7 @@ def event_locked(store, host, payload, pointer=None):
             # this boundary: its semantics may be stale even if Git did not change.
             previous = read_json(token_path(store, st['pointer'])) if st.get('pointer') else None
             summary = previous['summary'] if previous else {f: 'UNKNOWN — current agent must supply sanitized summary' for f in FIELDS}
-            obj = write_record(store, key, st, root, summary, False)
+            obj = write_record(store, key, st, root, summary, False, host)
             st['level'] = level
             texts.append(f"Transcript {size} bytes; {'prepare handoff' if level == 1 else 'soft limit reached'}. "
                          f"Atomic draft {obj['id']} saved (INCOMPLETE). At the next safe boundary, "
@@ -418,11 +544,13 @@ def handoff_diagnostic(exc):
     known = {
         'native identity context exceeds delivery limit': 'NATIVE_CONTEXT_TOO_LARGE: combined resume context exceeds the delivery limit; no claim was written. Reconcile the exact checkpoint without reusing older identity.',
         'current native identity unavailable': 'CURRENT_NATIVE_IDENTITY_UNAVAILABLE: cannot confirm the current native host/session_id/root; do not reuse older context or guess an ID.',
-        'handoff already consumed by another session': 'CHECKPOINT_CLAIMED_BY_OTHER: this checkpoint already belongs to another session. Verify the exact ID or choose another? Do not transfer the claim or continue automatically.',
+        'handoff already consumed by another session': 'CHECKPOINT_CLAIMED_BY_OTHER: this checkpoint already belongs to another session. Do not transfer the claim or continue automatically. Ask the user to confirm the exact ID or name another.',
         'partial resume state; manual reconciliation required': 'CLAIM_STATE_MISMATCH: the claim and session state do not agree; manually reconcile the exact checkpoint. Do not clear markers.',
-        'explicit handoff ID required': 'INVALID_CHECKPOINT_ID: an explicit checkpoint ID is required; do not select latest.',
+        'explicit handoff ID required': 'INVALID_CHECKPOINT_ID: a complete, explicit checkpoint ID is required; never select the latest or guess one. If you do not have an exact ID, ask the user for it.',
         'host/session required': 'MISSING_HOST_SESSION: the hook payload does not contain a valid host/session identity.',
-        'handoff incomplete': 'INCOMPLETE_CHECKPOINT: a completed exact checkpoint is required.',
+        'handoff incomplete': 'INCOMPLETE_CHECKPOINT: this is an unfinished draft, not a resumable handoff. Do not resume it, reconstruct work from the draft, or infer the task from Git history. Ask the user one clear question about the intended task before taking any action.',
+        'no resumable checkpoint for this identity': 'NO_RESUMABLE_CHECKPOINT: no completed checkpoint matches this project and the current repository state. Do not infer a task from Git history or an incomplete draft. Ask the user one clear question about what to work on.',
+        'ambiguous resumable checkpoints for this identity': 'AMBIGUOUS_CHECKPOINTS: more than one completed checkpoint matches; identity does not resolve to a single one. Do not choose automatically. Ask the user which exact checkpoint ID to resume.',
         'handoff expired or future dated': 'CHECKPOINT_TIME_INVALID: the checkpoint time is outside the allowed window; manual reconciliation is required.',
         'root/branch/HEAD/dirty snapshot mismatch; reconcile manually': 'SNAPSHOT_MISMATCH: root/branch/HEAD/dirty have changed; reconcile the exact checkpoint without continuing automatically.',
         'fresh session required; same-session resume refused': 'SOURCE_SESSION_REFUSED: the source session cannot consume its own checkpoint.',
@@ -449,12 +577,13 @@ def handoff_diagnostic(exc):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('mode', choices=['hook', 'checkpoint', 'resume'])
+    ap.add_argument('mode', choices=['hook', 'checkpoint', 'resume', 'resolve', 'candidates'])
     ap.add_argument('--host', required=True, choices=['claude', 'codex'])
     ap.add_argument('--session')
     ap.add_argument('--cwd', default=os.getcwd())
     ap.add_argument('--id')
     ap.add_argument('--store', type=Path, default=DEFAULT_STORE)
+    ap.add_argument('--match')
     a = ap.parse_args()
     try:
         if a.mode == 'hook':
@@ -470,6 +599,10 @@ def main():
             if len(raw) > 16000:
                 raise ValueError('summary too large')
             print(checkpoint(a.store, a.host, a.session, a.cwd, json.loads(raw)))
+        elif a.mode == 'resolve':
+            print(resolve(a.store, a.host, a.session, a.cwd))
+        elif a.mode == 'candidates':
+            print(json.dumps(candidates(a.store, a.host, a.session, a.cwd, a.match), ensure_ascii=False))
         else:
             print(resume(a.store, a.id, a.host, a.session, a.cwd))
     except LockBusy:

@@ -29,7 +29,7 @@ Accessibility splits into two kinds, and they are governed differently:
   contrast, Target Size (Minimum) 2.5.8), PLUS any AAA criterion the project targets or has separately agreed
   (e.g. Target Size (Enhanced) 2.5.5, 44×44). An in-scope criterion carries **no exception at the level of taste,
   brand or density**. The only deviations are the carve-outs the specific SC itself defines (e.g. 2.5.8's own
-  spacing / inline / UA / essential carve-outs). An in-scope REQUIREMENT is never downgraded to PASS by appeal
+  spacing / equivalent / inline / UA / essential carve-outs). An in-scope REQUIREMENT is never downgraded to PASS by appeal
   to "it looks better" or "the design is dense".
 - **PREFERENCES** — genuine stylistic/visual choices that are NOT WCAG success criteria at all (motion flourish,
   exact spacing aesthetics, decorative polish). These may carry real exceptions, documented per the template.
@@ -42,8 +42,9 @@ Accessibility splits into two kinds, and they are governed differently:
 (c) a color-only error. Consequence: a person who relies on touch accuracy or non-color cues cannot complete the
 task, or an agreed conformance obligation is silently dropped.
 **How-to:** for 2.5.8 (AA) a target **≥24×24 CSS px passes on size alone**; a smaller target passes only if it
-meets the SC's spacing carve-out (a 24px-diameter circle centred on the target does not intersect another
-target's circle) or the inline/UA/essential carve-outs. For 2.5.5 (AAA, 44×44), meet it when the project targets
+meets the SC's spacing carve-out (a 24px-diameter circle centred on the target bounding box intersects neither another
+target nor the corresponding circle of another undersized target), or the equivalent-control, inline,
+user-agent-control or essential exceptions. For 2.5.5 (AAA, 44×44), meet it when the project targets
 AAA or has agreed it. Put a text error beside any color cue.
 **Exceptions:** only the carve-outs a specific SC defines, applied to the target's actual geometry. An AAA item
 being out of scope at an AA target is *scoping*, not a taste exception — and does not license calling it a

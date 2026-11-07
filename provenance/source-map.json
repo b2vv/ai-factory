@@ -981,7 +981,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/anti-slop-design/SKILL.md"
@@ -1007,8 +1008,9 @@
       "transformations": [
         "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved.",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/code-review/SKILL.md"
@@ -1051,7 +1053,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/codebase-design/SKILL.md"
@@ -1127,7 +1130,8 @@
       "transformations": [
         "source/alias local links mapped to included portable destination",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/domain-modeling/SKILL.md"
@@ -1160,7 +1164,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/improve-codebase-architecture/SKILL.md"
@@ -1197,7 +1202,8 @@
         "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved.",
         "Owner-authorized rc.5 semantic critique clarifications: conditional CI coverage, author-owned refactoring and correlated-oracle evidence.",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/tdd/SKILL.md"
@@ -1242,7 +1248,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/crg/crg-debug-issue/SKILL.md"
@@ -1279,7 +1286,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/crg/crg-review-changes/SKILL.md"
@@ -1292,7 +1300,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/implement-spec/SKILL.md"
@@ -1315,7 +1324,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/implement/SKILL.md"
@@ -1340,7 +1350,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/spec-flow/SKILL.md"
@@ -1353,7 +1364,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/to-spec/SKILL.md"
@@ -1418,7 +1430,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/triage/SKILL.md"
@@ -1441,7 +1454,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/deliver/wayfinder/SKILL.md"
@@ -1469,8 +1483,9 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1484,8 +1499,9 @@
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/SKILL.md"
@@ -1554,7 +1570,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/entity-e2e-coverage/references/testing-rules.md"
@@ -1698,7 +1715,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"
@@ -1707,11 +1725,12 @@
       "source": "~/.agents/skills/pattern-architecture-review/SKILL.md",
       "destination": "skills/pattern-architecture-review/SKILL.md",
       "source_sha256": "ea547aa56bd0af1ecadd26fb206134cc17f2a2dd8e8aea50ceaa6253b9a55966",
-      "sha256": "010dd2712ea5040bc11f7b756a2f465aa810eeb56816fe9edaa4ee56f587fa56",
+      "sha256": "b3d1e4ff1f133b6d191464a73f212e015ca853acff9cdf077f2ea86fe96bf5ae",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
+        "Owner-authorized original architecture-review guidance: record boundary rules, actual check coverage, exceptions and revision-bound execution evidence; inspect uncovered areas separately without inferring violations from missing coverage. No project source or third-party text copied; original source identity is unchanged."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/pattern-architecture-review/SKILL.md"
@@ -1748,7 +1767,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/ask-matt/SKILL.md"
@@ -1787,7 +1807,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/cto-research/SKILL.md"
@@ -1869,7 +1890,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/plan/plan-critique/SKILL.md"
@@ -2019,7 +2041,8 @@
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/frontend-design/SKILL.md"
@@ -2089,7 +2112,8 @@
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/prototype/SKILL.md"
@@ -2168,7 +2192,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/ship-report/SKILL.md"
@@ -3680,7 +3705,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/repo-bootstrap/SKILL.md"
@@ -3852,7 +3878,8 @@
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/writing-for-agents/SKILL.md"
@@ -3879,8 +3906,9 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
-        "Owner-authorized 2026-10-29 skill-alignment adaptation: feature-lifecycle hand-off wiring (task-record acceptance/coverage/findings propagation) and Full-tracker planning-gate alignment; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/APPLY-RESULTS.md.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/SKILL.md"
@@ -3889,12 +3917,14 @@
       "source": "~/.agents/skills/ux-review/references/rules.md",
       "destination": "skills/ux-review/references/rules.md",
       "source_sha256": "86360cabff2457f170bc4c38d3a6c69859425f817f36e425c701b9e9455d19b6",
-      "sha256": "2208e9bdac0430e3120bb6bdc87072639fd05db45729c382cc84e2bf1ce1b80a",
+      "sha256": "5861726dc1a52a444767793b17fb6901adbbe2dd31e4a15a4f8f925b332fa76d",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized 2026-10-29 P3 reference anti-pattern wiring: added/linked the 4-field anti-pattern sections and routing to ai-factory/reference-anti-patterns.md; normative contracts and immutable source identities preserved; authored adaptation, not original bytes. See task-artifacts/skills-audit-20261029/PROPOSAL-P3.md."
+        "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
+        "Current user-authorized takeover correction; original source digest retained.",
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/references/rules.md"

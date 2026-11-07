@@ -1,6 +1,6 @@
 # Codex capture catcher (lifecycle-event delivery)
 
-Delivers REAL current Codex CLI turns (the turn's user prompt + the final assistant answer)
+Implements delivery of supplied Codex lifecycle events (user prompts and assistant Stop text)
 to the running AI Factory storage engine via its supported provider endpoint
 `POST /v1/capture/codex-event`. This is the delivery catcher only; the vetted Go adapter
 (`internal/capture`, provider `codex-hook-v1`, `AdaptCodexEvent`) stays the sole authority
@@ -15,10 +15,10 @@ difference is the Codex hook transport and the way a project is selected.
 - `test_codex_catcher.py` — routing / normalization / sanitization contract tests (`python3 -I test_codex_catcher.py`).
 - `test_codex_catcher_auth.py` — loopback auth / isolation / denial tests with a synthetic server and synthetic credentials.
 
-## Verified hook contract (not invented)
+## Expected hook contract; native verification pending
 Field names are taken from the official docs <https://learn.chatgpt.com/docs/hooks> and the
 running server source (`internal/capture/codex_event.go`, built from `b1c195e` into the
-deployed image `sha256:8eaa1669`). Confirmed with Codex CLI `0.163.0`.
+deployed image `sha256:8eaa1669`). The original implementation targeted Codex CLI `0.163.0`; actual native event emission and continued Stop behavior remain unverified.
 
 Common stdin fields on every command hook: `session_id`, `transcript_path`, `cwd`,
 `hook_event_name`, `model`. Event-specific:
@@ -32,13 +32,12 @@ Two events per turn share one `session_id` + `turn_id`; the server links them
 (`turn_id/prompt`, `turn_id/assistant`, parent = `turn_id/prompt`). `SubagentStop` also
 carries `last_assistant_message` but is **ignored** so a sub-agent message is never recorded
 as a top-level turn. Every other field (`cwd` beyond routing, `transcript_path`, `model`,
-`permission_mode`, `stop_hook_active`) is dropped and never transmitted. `session_id`/`turn_id`
+`permission_mode`) is dropped and never transmitted. A Stop with `stop_hook_active=true` is skipped; this guard does not prove a nonrecursive Stop is the final answer. `session_id`/`turn_id`
 must match `^[A-Za-z0-9_-]{1,160}$` (server `eventID`); a non-match is a quiet no-op.
 
 ## How a project is selected (explicit mapping, never cwd-inferred authority)
-Codex installs a SINGLE global `~/.codex/hooks.json`, so — unlike the per-project Claude
-bridge — the project cannot come from a per-project env. It comes from an explicit,
-operator-authored mapping file given by `AF_CODEX_CATCHER_MAP`:
+Codex supports user and project hook sources. This shared-hook design uses an explicit
+operator mapping file given by `AF_CODEX_CATCHER_MAP`:
 
 ```json
 { "projects": [
@@ -53,8 +52,7 @@ The event's own `cwd` field selects the single row whose `root` is `cwd` or a pa
 (longest-prefix, on a directory boundary). A `cwd` under no mapped root is a **no-op**:
 nothing is read or sent. `cwd` only picks the row — the server independently authorizes the
 row's scoped credential against the row's project UUID (`requireCapture` →
-`authz.Authorize(..., OpCapture)`), so a wrong or spoofed `cwd` cannot capture into a project
-the credential is not granted for. Keep the mapping file local (not committed); it holds
+`authz.Authorize(..., OpCapture)`), but a spoofed `cwd` can select another mapped credential readable by this process. The mapping is routing, not isolation from untrusted same-user events. Keep the mapping file local (not committed); it holds
 UUIDs and credential-file paths.
 
 ## Credentials (least privilege)
@@ -69,13 +67,15 @@ A capture-only grant permits ingestion within its granted project only. It does 
 archive reads, search, consent changes, grant administration or deletion. Revoked or stale
 grants fail closed. Scope is enforced by the server, not trusted from the caller.
 
+## Transport and status boundaries
+The destination is pinned to `http://127.0.0.1:8780`. Other `AF_CODEX_ENDPOINT` values are refused before network access. Proxy environment variables and HTTP redirects are disabled.
+
 ## Privacy / safety guarantees
 - **Server is the redaction authority.** The prompt / assistant text is forwarded verbatim;
   the Go adapter applies `known-credentials-v1` before the WAL. The catcher never claims to
   sanitize conversation content.
 - **Visible status, no secrets/payload.** Each run emits one compact JSON status line to
-  stderr (and to `AF_CODEX_STATUS_FILE` if set) with `event`, `role`, `project`,
-  `source`, `session_id`, `turn_id`, `delivered`, `http_status`, `accepted`, `committed`,
+  stderr (and to `AF_CODEX_STATUS_FILE` if set) with a supported-event enum, `role`, `delivered`, `http_status`, bounded integer `accepted` and `committed`,
   `redactions`, and a `skipped`/`error` REASON — never message text, never the secret,
   never the server response body.
 - **Nothing blocks the turn.** Any error (unparseable event, bad mapping, unreadable
@@ -93,6 +93,14 @@ explicitly authorized operation. Shipping this directory changes no hook config 
 ## Scope
 Codex CLI only. No backfill, no other providers, no transcript/rollout file reading, no
 Markdown-export parsing, no global hook activation, no Go/adapter change, no image rebuild.
-Real native Codex emission is **NOT_TESTED** here until the Codex usage limit lifts and hook
-trust is established by the owner; the server path is proven by the tests and by the
-synthetic integration test `internal/api/codex_event_integration_test.go`.
+Real native Codex emission is **NOT_TESTED**. Continued Stop events with changed text share an immutable server identity and can return 409; final-answer completeness is therefore not established. Activation is blocked pending installed-host contract verification and isolated native tests. Fixture success is helper evidence only. The loopback auth fixture substitutes its ephemeral endpoint only inside the test; production endpoint rejection and redirect/proxy behavior are covered separately.
+
+Mapping roots and credential paths must be canonical absolute paths without symlink components. Duplicate roots are refused. Input, mapping, credential and response reads are bounded; invalid success responses do not count as delivered.
+
+The installed CLI reports version `0.163.0`. The current [official hooks reference](https://developers.openai.com/codex/hooks)
+defines `stop_hook_active` as a turn already continued by Stop, not a duplicate callback.
+Other matching hooks may request continuation, and the catcher cannot determine that outcome
+from its own concurrent callback. The existing API uses one immutable assistant identity per
+turn: identical replays deduplicate, changed replays conflict, and continued Stops are currently
+skipped. This is an explicit capture-completeness blocker, not supported final-answer capture.
+A native test and a reviewed contract for continued answers are required before activation.

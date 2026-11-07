@@ -30,14 +30,14 @@ func TestRealIndexSourceHashRebuildAndBoundedPagination(t *testing.T) {
 	s := realStore(t)
 	project := fmt.Sprintf("search_%d", time.Now().UnixNano())
 	defer s.Purge(project)
-	r := archive.Record{Project: project, SourceInstance: "synthetic", SessionID: "s", MessageID: "m", Text: "English \u0406\u0308\u0416\u0410 CAF\u00c9", ConsentEpoch: 1}
+	r := archive.Record{Project: project, SourceInstance: "synthetic", SessionID: "s", MessageID: "m", Text: "English \u0399\u0308\u0396\u0391 CAF\u00c9", ConsentEpoch: 1}
 	if e := s.Put(r); e != nil {
 		t.Fatal(e)
 	}
 	if ok, e := s.Matches(r); e != nil || !ok {
 		t.Fatal(ok, e)
 	}
-	refs, _, e := s.Window(project, "\u0457\u0436\u0430 cafe\u0301", "")
+	refs, _, e := s.Window(project, "\u03ca\u03b6\u03b1 cafe\u0301", "")
 	if e != nil || len(refs) != 1 {
 		t.Fatal(refs, e)
 	}
@@ -59,7 +59,7 @@ func TestRealIndexSourceHashRebuildAndBoundedPagination(t *testing.T) {
 	if e = s.Put(r); e != nil {
 		t.Fatal(e)
 	}
-	refs, _, e = s.Window(project, "\u0457\u0436\u0430 cafe\u0301", "")
+	refs, _, e = s.Window(project, "\u03ca\u03b6\u03b1 cafe\u0301", "")
 	if e != nil || len(refs) != 1 || refs[0].PayloadHash != RecordHash(r) {
 		t.Fatal("rebuild differs", refs, e)
 	}

@@ -119,7 +119,7 @@ func mustFetch(t *testing.T, s Store, project string) []Record {
 
 func TestMongoWindowUnicodeOriginalProvenance(t *testing.T) {
 	s := newMongoStore(t)
-	original := "English \u0406\u0308\u0416\u0410 Cafe\u0301"
+	original := "English \u0399\u0308\u0396\u0391 Cafe\u0301"
 	r := rec("normalization", "s", "m", original)
 	r.SourceInstance = "synthetic-source"
 	if e := s.Put(r); e != nil {
@@ -129,7 +129,7 @@ func TestMongoWindowUnicodeOriginalProvenance(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	hits := Query(window.Records, "\u0457\u0436\u0430 caf\u00e9", "")
+	hits := Query(window.Records, "\u03ca\u03b6\u03b1 caf\u00e9", "")
 	if len(hits) != 1 || hits[0].Text != original || hits[0].SourceInstance != r.SourceInstance || hits[0].MessageID != r.MessageID {
 		t.Fatalf("normalization lost original/provenance: %+v", hits)
 	}

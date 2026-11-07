@@ -93,6 +93,13 @@
         "core"
       ],
       "activation": "project-scoped Claude Code Stop hook, loopback POST only; not wired by default"
+    },
+    "codex-capture": {
+      "required": false,
+      "dependencies": [
+        "core"
+      ],
+      "activation": "source helper only; explicit hook trust and native acceptance required"
     }
   },
   "independent_review": "AF14/15 and bounded AF16 native pilot ACCEPTED in their exact scopes; stricter packaged Git behavior and final rc3 integration/package review PENDING; global activation NOT_RUN; storage alpha review BLOCKED, not GREEN; owner explicitly accepted limited alpha publication",
@@ -106,7 +113,7 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "a1bd564a62214b0a18e05b60a8b5ea10feffc822eabb317a738b15ffce5118b2",
+      "sha256": "48029c3469989956bd5e23f40b9a5dd3558dc35aeb4d4eb51b9de73691961a6c",
       "component": "core"
     },
     {
@@ -116,7 +123,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "be07dc83b603b88dae8489ec128031699aa204247941d77c388dbe4ccd1c0b62",
+      "sha256": "b74050731813bdadf15c9ed75869a9501f74b0c3266e2ef3955f0a155d95745c",
       "component": "core"
     },
     {
@@ -206,7 +213,7 @@
     },
     {
       "path": "ai-factory/reference-anti-patterns.md",
-      "sha256": "70d148987e4154ce8882949be1ae9a02154b25ca6184e65dd14bf705a81ea82f",
+      "sha256": "7bf1e5c83ed5fb0e2d756b4b060e4e1bcbd9aa04488860b48200609420404f25",
       "component": "core"
     },
     {
@@ -342,7 +349,7 @@
     {
       "path": "docs/session-size-docker.md",
       "component": "core",
-      "sha256": "7f10bd4886a2aff272b35940f83a4ff6f72a932f3723727d7fdacb0f2741e7ba"
+      "sha256": "d1a95c19a0b23be22a20d39df2804d83b8733dfcc29fbe2182aabfaa7397d134"
     },
     {
       "path": "docs/session-size.md",
@@ -481,7 +488,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "82fef1123558843b443cf91d3b86dec0637e3c9831bd3fc92449e97eb4a47a6a",
+      "sha256": "efbebf7963cc52baa0f714e2ecda819178b96f30c0417ddf5ad210c206b81b09",
       "component": "core"
     },
     {
@@ -496,7 +503,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "bfa5c00fd6175d4b7dbef3e3377d03b3127d7e31d420e4d97fa4c84f18535d23",
+      "sha256": "9bba7c37ff046f90978d0150eb6dfc5860469aea38e79895c8b2a0ddd9ff5cd8",
       "component": "core"
     },
     {
@@ -536,7 +543,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "9605a2199fecb4657be9d0e0dc7a6e596daff32fdbc23c4ab3684a687d94cb91",
+      "sha256": "88649889c102af6b2c322f63c2bb5685c771f1474a70774e725d6ea358544760",
       "component": "core"
     },
     {
@@ -685,6 +692,11 @@
       "component": "scanners"
     },
     {
+      "path": "runtime/session-size-docker/af.sh",
+      "sha256": "fe106471d4e044034d650c940c1b860b1cc7851e5ca917873368794db87d952a",
+      "component": "session-guard-docker"
+    },
+    {
       "path": "runtime/session-size-docker/bind-session.sh",
       "component": "session-guard-docker",
       "sha256": "eac314d5191b30f955fa6e2baf0500d49ecf62da11ee5e653a15ba0093eb9d96"
@@ -697,17 +709,17 @@
     {
       "path": "runtime/session-size-docker/dispatch.sh",
       "component": "session-guard-docker",
-      "sha256": "ae2d6eb0e4365b0ee622caf21163e4eff74b04425f55afe3d4d35c4edf1e1e72"
+      "sha256": "08279fa28a6c5905442dae41df67430c87cd3c68cdc3b3b9b400b047fa4b89d0"
     },
     {
       "path": "runtime/session-size-docker/entry.py",
       "component": "session-guard-docker",
-      "sha256": "1e93f5cd37333649984ac43f411dd6dbbc9cc914786f931b1f805aa0254b0109"
+      "sha256": "abd57bf399cc750fa39a05596c355d8669a9f5bac8ca5ee635f4eb644fc7d358"
     },
     {
       "path": "runtime/session-size-docker/guard.py",
       "component": "session-guard-docker",
-      "sha256": "c87b56f1ea5cca88f7e506865ccc68d67fbc41e86f04b6340d06109c727464b7"
+      "sha256": "92780b6090e1795cba70b456e8325dadf8837006bde0dccbd1e39d7fbbddd56b"
     },
     {
       "path": "runtime/session-size-docker/mapping-lib.sh",
@@ -742,7 +754,7 @@
     {
       "path": "runtime/session-size-docker/validate.py",
       "component": "session-guard-docker",
-      "sha256": "16369eb669ef7eed07e91784aab9752ca5f02ef9f2e43b38da2c8cdd756e9bf5"
+      "sha256": "bd4e94da05a597c721e07a3f3457b7a817ccfac824d77199332c6de0323f4bbc"
     },
     {
       "path": "runtime/session-size/session_guard.py",
@@ -978,6 +990,36 @@
       "path": "runtime/storage/deploy/capture-bridge/test_capture_bridge.py",
       "sha256": "4ed7f3fd63840927318568b4574a6dac585f3e521d115236dc2d5097d5879c75",
       "component": "capture-bridge"
+    },
+    {
+      "path": "runtime/storage/deploy/codex-capture/README.md",
+      "component": "codex-capture",
+      "sha256": "7d96fa00d2be3c69420e9d840fd17a33d33db753cbacd6967dd7a17f3e39dfab"
+    },
+    {
+      "path": "runtime/storage/deploy/codex-capture/codex-capture-hook.sh",
+      "component": "codex-capture",
+      "sha256": "c1f4e65c9d74bdc3edfbac12e78c2c443b7c72feb8fb98d84b23eb0211ab7cbd"
+    },
+    {
+      "path": "runtime/storage/deploy/codex-capture/codex_capture_catcher.py",
+      "component": "codex-capture",
+      "sha256": "f7cf36495d7ef955fa585960aeb40f432d6e3b79f8e4b9a4f0caeb06aafae083"
+    },
+    {
+      "path": "runtime/storage/deploy/codex-capture/test_catcher_security.py",
+      "component": "codex-capture",
+      "sha256": "b4c54aee400b3ecc56a01e933f6c31ae7c43d0ceacb974713aa552189221676e"
+    },
+    {
+      "path": "runtime/storage/deploy/codex-capture/test_codex_catcher.py",
+      "component": "codex-capture",
+      "sha256": "5fe775afd07752c12bbccab4e0ec80a2a0fd88e75594c662591e4dac3dfb4c3c"
+    },
+    {
+      "path": "runtime/storage/deploy/codex-capture/test_codex_catcher_auth.py",
+      "component": "codex-capture",
+      "sha256": "ae1cbf0961143c8e8a4e15df2e0deb855da5ff14bc035d4312849d03494b4c96"
     },
     {
       "path": "runtime/storage/deploy/dev/Dockerfile",
@@ -1317,7 +1359,7 @@
     {
       "path": "runtime/storage/internal/archive/envelope_cost_test.go",
       "component": "storage",
-      "sha256": "071407a171e2427def28cf4cafc573cdad83f096e046f3d04555e13cd50e0162"
+      "sha256": "5e499eef9827617b55f9523417a8ea29bf3bedb1034d0b099b6ffb9c2ff32515"
     },
     {
       "path": "runtime/storage/internal/archive/envelope_mongo.go",
@@ -1367,7 +1409,7 @@
     {
       "path": "runtime/storage/internal/archive/metadata_test.go",
       "component": "storage",
-      "sha256": "44ae0e2709308b54bc403016f900cd0eaa67a7344727b8b1e4036b8bc5c5223c"
+      "sha256": "dc936c5bb3c0d5b240cbdad2820056de0f43c44c5d9526106672c1cb4ae7f99f"
     },
     {
       "path": "runtime/storage/internal/archive/mongo.go",
@@ -1377,7 +1419,7 @@
     {
       "path": "runtime/storage/internal/archive/mongo_integration_test.go",
       "component": "storage",
-      "sha256": "2181dbd8449396ae38c8abd462a903996547c82ae88a1a774ba83da79397d654"
+      "sha256": "3fa0162923b5bcac9d3a55a55e400e0f537a4e52dcf0cbf617568d0b420f014f"
     },
     {
       "path": "runtime/storage/internal/archive/mongo_window.go",
@@ -1387,7 +1429,7 @@
     {
       "path": "runtime/storage/internal/archive/normalization_test.go",
       "component": "storage",
-      "sha256": "dd7f068b3cd1a9eec06cbc42cdfb12d6589add44f029e605c68938280c417a81"
+      "sha256": "449d0322e013aa684cdd67376081b19f7f5c3da5d5ddc90f74741e87ab94c153"
     },
     {
       "path": "runtime/storage/internal/archive/snippet.go",
@@ -1972,7 +2014,7 @@
     {
       "path": "runtime/storage/internal/search/store_integration_test.go",
       "component": "storage",
-      "sha256": "ff6254aaf8c44dc2bcb0d907c502f7ad21c88f74b6b89a9b3f164c50385bc243"
+      "sha256": "8c65da86359b08d2e6a6bde6c906bf9a0cd6e16a11e54534c0ba00a106c16f65"
     },
     {
       "path": "runtime/storage/internal/search/time_window.go",
@@ -2596,7 +2638,7 @@
     },
     {
       "path": "skills/pattern-architecture-review/SKILL.md",
-      "sha256": "010dd2712ea5040bc11f7b756a2f465aa810eeb56816fe9edaa4ee56f587fa56",
+      "sha256": "b3d1e4ff1f133b6d191464a73f212e015ca853acff9cdf077f2ea86fe96bf5ae",
       "component": "skills"
     },
     {
@@ -3641,7 +3683,7 @@
     },
     {
       "path": "skills/ux-review/references/rules.md",
-      "sha256": "2208e9bdac0430e3120bb6bdc87072639fd05db45729c382cc84e2bf1ce1b80a",
+      "sha256": "5861726dc1a52a444767793b17fb6901adbbe2dd31e4a15a4f8f925b332fa76d",
       "component": "skills"
     },
     {
@@ -3691,12 +3733,12 @@
     },
     {
       "path": "tests/collection/test_layout_integrity.py",
-      "sha256": "6aa8cc88c415df110f728398a4b95ac2b709c9ea6e154a792828a015bd820cd4",
+      "sha256": "f67aecb1288cac271ad30313935ae5cc8daad27ecfe8038180afc51a52324760",
       "component": "core"
     },
     {
       "path": "tests/connect/test_connect_project.py",
-      "sha256": "2f7c4d3245be1b78acfde8a8e6027066ae9a1396b5f463f55681d42ea1582041",
+      "sha256": "d47607d57690e4b7f5437b18dcb163a0a4173c418787d9adebaed94f26387fbc",
       "component": "core"
     },
     {
@@ -3712,6 +3754,11 @@
     {
       "path": "tests/install/test_kit.py",
       "sha256": "7a9fdf8e6a4c9fb11aa6589fbc3f5c9d0f3834ffd724f824557da5452c6d299f",
+      "component": "core"
+    },
+    {
+      "path": "tests/install/test_kit_diagnostics.py",
+      "sha256": "141723d4f308627a30ae253a9ff15831219572e8b1f294ebca98d42959a685f6",
       "component": "core"
     },
     {
@@ -3805,9 +3852,19 @@
       "sha256": "14d257ce2235c7ec1018c8ae0b04b569b077382e3b228947b9bf850d6b92febf"
     },
     {
+      "path": "tests/session-size-docker/test_af_wrapper.py",
+      "sha256": "85f3a389f9c50a1941c3692936b70048e448a32057d5fa8bc745afaed413c38d",
+      "component": "core"
+    },
+    {
       "path": "tests/session-size-docker/test_candidate.py",
       "component": "core",
-      "sha256": "8393206a212611a9e2d147adfb16509ee0f51938855fbbdb851b84ed0f388509"
+      "sha256": "7b30f90a8f48abbd28a3db2319e1b12e66ebabea73fc686ec964b6d210e80ffc"
+    },
+    {
+      "path": "tests/session-size-docker/test_continuation_flow.py",
+      "component": "session-guard-docker",
+      "sha256": "90e043f4241e67fdd9812d72b24e306e35687945816a1a7a5e4680c146a87611"
     },
     {
       "path": "tests/session-size-docker/test_enrolled.py",
@@ -3827,7 +3884,7 @@
     {
       "path": "tests/session-size-docker/test_identity.py",
       "component": "core",
-      "sha256": "0818031264bc40b253f5fa4339e18328ddefb8a27b513122bb2ec067a5d9b1b1"
+      "sha256": "c9b2a48b9caed1f1848b1fc3e2dea0204947825a11e0989844dd00f960817165"
     },
     {
       "path": "tests/session-size-docker/test_layout.py",
@@ -3845,13 +3902,18 @@
       "sha256": "f0e5660d37564a9aa5244794248bc8f60d39369ef726aafe18086d5cf1a34a73"
     },
     {
+      "path": "tests/session-size-docker/test_resolve.py",
+      "sha256": "33cb844bc841dbf16939218e6b1083ffd0122af478489d4bb79c37389d601466",
+      "component": "core"
+    },
+    {
       "path": "tests/session-size/test_session_guard.py",
       "sha256": "d8e4c52da77f12a98d89c15068db63a69b6779a7a295a933998602c0a0231c42",
       "component": "core"
     },
     {
       "path": "tools/connect-project.py",
-      "sha256": "d7516e81b93078d9b3b04b9554343582e64f26030e2d21d454e449a395d49314",
+      "sha256": "10570e6b5e223d6cef36019727fda94fbdf1bfaca45c3ee66ada51ab889ba81c",
       "component": "core"
     },
     {
@@ -3866,12 +3928,12 @@
     },
     {
       "path": "tools/kit.py",
-      "sha256": "b2a17e14fbad6e4a7ac3f454ce0f0e8c678c9286336fd32e2753573240766c41",
+      "sha256": "51a63ed601880c759010da0eb0d52376231dfbaf85a50817ec732e407eb521be",
       "component": "core"
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "78a878543009f6724151fd4b6169491f9947f5bfe288900d4191c2469ed9a13f",
+      "sha256": "0eb228a50c9b7c8f767373175cec6f79dac908308535541dd613e5f4c357e2ae",
       "component": "core"
     },
     {

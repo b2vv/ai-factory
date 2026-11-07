@@ -40,7 +40,7 @@ env.update(GIT_CONFIG_GLOBAL=os.devnull,GIT_CONFIG_NOSYSTEM='1',PYTHONDONTWRITEB
 with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
     env['GIT_TEMPLATE_DIR']=temp
     failures=0
-    for directory in ([] if args.suite=='storage' else ['tests/onboarding','tests/review','tests/session-size','tests/session-size-docker','tests/legacy-review','tests/legacy-session','tests/install','tests/collection','tests/checkpoint','tests/constraints','tests/scanners']):
+    for directory in ([] if args.suite=='storage' else ['tests/onboarding','tests/review','tests/session-size','tests/session-size-docker','tests/legacy-review','tests/legacy-session','tests/install','tests/collection','tests/checkpoint','tests/constraints','tests/scanners','tests/connect','tests/packaging']):
         print('\n=== isolated suite: '+directory+' ===',flush=True)
         result=subprocess.run([sys.executable,'-B','-m','unittest','discover','-s',str(root/directory),'-p','test_*.py','-v'],env=env,cwd=root)
         failures += result.returncode != 0
@@ -51,6 +51,12 @@ with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
         print('\n=== storage operator helper suite ===',flush=True)
         opr=subprocess.run([sys.executable,'-B','-m','unittest','discover','-s',str(opdir),'-p','test_*.py','-v'],env=env,cwd=str(opdir))
         failures += opr.returncode != 0
+    if args.suite != 'storage':
+        catcher=root/'runtime/storage/deploy/codex-capture'
+        for name in ['test_codex_catcher.py','test_codex_catcher_auth.py','test_catcher_security.py']:
+            print('\n=== isolated catcher fixture: '+name+' ===',flush=True)
+            result=subprocess.run([sys.executable,'-B',str(catcher/name)],env=env,cwd=root)
+            failures += result.returncode != 0
     go_result=run_storage_go_suite(root, env)
     failures += go_result != 0
     if go_result==2: print('storage required suite: BLOCKED (not executed)',flush=True)

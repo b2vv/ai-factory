@@ -86,7 +86,7 @@ func TestEnvelopeRejectsInvalidMetadata(t *testing.T) {
 
 func TestEnvelopeCanonicalizesTimesWithoutChangingRecord(t *testing.T) {
 	local := time.Date(2026, 11, 5, 14, 0, 0, 0, time.FixedZone("offset", 7200))
-	e := archive.Envelope{Version: 2, Record: archive.Record{Project: "p", SessionID: "s", MessageID: "m", Text: "\u0407\u0436\u0430\u043a"}, Metadata: archive.Metadata{Generation: "g", Ordinal: 1, CapturedAt: &local, SourceEventTime: &local}}
+	e := archive.Envelope{Version: 2, Record: archive.Record{Project: "p", SessionID: "s", MessageID: "m", Text: "\u03aa\u03b6\u03b1\u03ba"}, Metadata: archive.Metadata{Generation: "g", Ordinal: 1, CapturedAt: &local, SourceEventTime: &local}}
 	raw, err := archive.EncodeEnvelope(e)
 	if err != nil {
 		t.Fatal(err)

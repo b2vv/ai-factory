@@ -86,8 +86,10 @@ def event(cwd, text="payload-text-SECRET-NEVER-ECHOED"):
 def main():
     srv = start_server()
     endpoint = "http://127.0.0.1:%d" % srv.server_address[1]
+    c.ENDPOINT = endpoint  # synthetic listener only; production pin tested separately
     try:
         with tempfile.TemporaryDirectory() as tmp:
+            tmp = os.path.realpath(tmp)
             mp, creds = setup(tmp)
             env = {"AF_CODEX_ENDPOINT": endpoint, "AF_CODEX_CATCHER_MAP": mp}
 

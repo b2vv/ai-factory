@@ -7,7 +7,14 @@ class LayoutIntegrityTests(unittest.TestCase):
   for r in m['files']:
    p=ROOT/r['new_path'];self.assertTrue(p.is_file())
    if r['new_sha256']:self.assertEqual(r['new_sha256'],hashlib.sha256(p.read_bytes()).hexdigest())
-  skills=list(ROOT.rglob('SKILL.md'));self.assertEqual(74,len(skills));self.assertTrue((ROOT/'skills/constraint-driven-development/SKILL.md').is_file());self.assertTrue(all(p.is_relative_to(ROOT/'skills') for p in skills))
+  skills=list(ROOT.rglob('SKILL.md'))
+  sources=json.loads((ROOT/'provenance/source-map.json').read_text())['files']
+  additions=json.loads((ROOT/'provenance/authorized-additions.json').read_text())['files']
+  expected={row['destination'] for row in sources+additions if row['destination'].endswith('/SKILL.md')}
+  self.assertEqual(expected,{str(p.relative_to(ROOT)) for p in skills})
+  for name in ['constraint-driven-development','inspector-review','step-back-review']:
+   self.assertTrue((ROOT/'skills'/name/'SKILL.md').is_file())
+  self.assertTrue(all(p.is_relative_to(ROOT/'skills') for p in skills))
   registry=json.loads((ROOT/'provenance/skill-registry.json').read_text());ids=[b['id'] for b in registry['skills']];self.assertEqual(len(ids),len(set(ids)))
  def test_runtime_variants_and_notices_preserved_byte_for_byte(self):
   m=json.loads((ROOT/'provenance/layout-migration.json').read_text());rows={r['old_path']:r for r in m['files']}
