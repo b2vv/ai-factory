@@ -152,7 +152,7 @@
     },
     {
       "destination": "skills/ui-measurements/SKILL.md",
-      "sha256": "ade6fd5a99261b76416aa300985c59174e07a844e862b5d23578da65527e05f4",
+      "sha256": "991bff8dc27b8fdd9059cf4d00b74f05b60de7ee218911da68ca2c8794b7bb99",
       "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
     },
     {
@@ -169,10 +169,10 @@
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "e3363847fb52ab0b2c0d256662d66710bc9476e247dfe5cdb5e7b02f2cfcbdbe",
+      "before_sha256": "eec1ec78c448511c7e5b3e4932bac7eb4579ea9da7f0b1a0eaaf9a78e057c7dc",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681"
+      "after_sha256": "203f7a6ed2a93a02c58ff68fa529b333a6a680651624959d8aa52989a937ec4a"
     },
     {
       "destination": "skills/plan/plan-critique/SKILL.md",

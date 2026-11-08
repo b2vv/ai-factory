@@ -15,6 +15,9 @@ helper. It does not authorize navigation, test data changes or host registration
 1. In the **existing** [browser evidence record](../design-pass/references/browser-state-evidence.md),
    select the route, state/role, fixture, revision/dirty scope and affected targets.
    Use the shared viewport contract; one measured viewport does not close others.
+   Where the UI depends on data/input, cover relevant empty/populated and
+   disabled/enabled pairs with the facade; one state does not prove the other.
+   Use authorized fixtures/interactions; changing live data needs its own permission.
 2. Confirm the agreed expectation and a tool that can actually measure it. Use
    [the invocation contract](references/contract.md) only if the project lacks an
    equivalent current check. Wait for the named state with the existing runner;
@@ -38,9 +41,25 @@ helper. It does not authorize navigation, test data changes or host registration
   none of these. Use only an x-axis check for page horizontal overflow: ordinary
   vertical page scrolling is not a defect. Two-dimensional exceptions apply only
   to the relevant content, not automatically its surrounding controls.
+  **A fit PASS is not a pointer-target-size check:** even a 10-by-10 CSS px
+  control can fit its contents. For target size, use separate bounds and interaction
+  evidence for the actual active area, not an inner icon or an assumed wrapper.
+  A padded wrapper counts only where pointer input actually activates the intended
+  action; verify that behavior, including overlapping/intercepting surfaces. Record
+  the applicable project/WCAG criterion and any justified exception (for example
+  spacing, equivalent control, inline, user-agent control or essential presentation).
+  Do not infer a violation from an inner box below 24 CSS px, or a pass from wrapper
+  dimensions alone. See [WCAG 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html).
 - **Contrast:** only supported opaque, solid sRGB leaf-text paint. Unsupported
   effects or pseudo-text paint, text outside its background box, unresolved fonts, hidden/content-visibility ancestors and active
-  animations produce NOT_TESTED. Reuse a reliable existing tool for other paint.
+  animations produce NOT_TESTED. Non-unit opacity on the text or an ancestor
+  yields NOT_TESTED for unsupported compositing (zero opacity is unrendered).
+  This is independent of disabled semantics: an enabled dimmed target may be
+  NOT_TESTED, while supported opaque text in an inactive control may get a numeric
+  result. The helper does not inspect disabled/aria-disabled or establish inactivity.
+  Verify actual inactive status before applying the relevant contrast exception;
+  appearance or opacity alone is insufficient. Check the applicable enabled state
+  separately. Reuse a reliable existing tool for other paint.
   Choose the applicable normal/large text and AA/AAA threshold, or explicit project
   minimum, **before** calling; supply its source. The helper compares that declared
   minimum without rounding, but does not decide applicability, inactive-control/

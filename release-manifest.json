@@ -133,7 +133,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "3aefecf976873df6a444919cfe2b9a6e53347dc969ac9d49c6da8fdfa2ab1c4e",
+      "sha256": "454f88944a486eec7c60b15ab8b29b66c25b6b45b77f5523cd490ef3ead60c82",
       "component": "core"
     },
     {
@@ -508,7 +508,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "9f8f093d7166b97efe789f699f0117c62eb472076ca83027bdf97a485aafcea6",
+      "sha256": "8dfc4a1d7908a7ba14c71e3bb76113aa906b294f17b3a5305e666c7b594918c4",
       "component": "core"
     },
     {
@@ -523,7 +523,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "41d1a5ff4dff487d6d961d4f4cda2e7ab9ab393c76fb6848882f8c9f17a5d376",
+      "sha256": "50b949febccd4d7d203c19b96dca393bdbc5dbd2004fcb471ca7b970ab7ef424",
       "component": "core"
     },
     {
@@ -573,7 +573,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "c58359f29e6aea7d15dc78a7bffcda61460916b40ca1f995b95472a0bcdef944",
+      "sha256": "35a92d6b6f4789591aafd282f9a963475f4397901d0a62507c8d77da84869fe5",
       "component": "core"
     },
     {
@@ -2578,7 +2578,7 @@
     },
     {
       "path": "skills/design-pass/SKILL.md",
-      "sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681",
+      "sha256": "203f7a6ed2a93a02c58ff68fa529b333a6a680651624959d8aa52989a937ec4a",
       "component": "skills"
     },
     {
@@ -3639,7 +3639,7 @@
     {
       "path": "skills/ui-measurements/SKILL.md",
       "component": "skills",
-      "sha256": "ade6fd5a99261b76416aa300985c59174e07a844e862b5d23578da65527e05f4"
+      "sha256": "991bff8dc27b8fdd9059cf4d00b74f05b60de7ee218911da68ca2c8794b7bb99"
     },
     {
       "path": "skills/ui-measurements/references/contract.md",
@@ -4019,7 +4019,7 @@
     {
       "path": "tests/ui-measurements/test_browser.py",
       "component": "core",
-      "sha256": "bcb239aa925f62cbd2876b786672b3a24c337bca17d5397238b91e5f2d3059c1"
+      "sha256": "97018aa2990e43c73544dda8c088eae2c565b5c19db9da6501881f863e24e2c8"
     },
     {
       "path": "tests/ui-measurements/test_node.py",

@@ -62,4 +62,25 @@ class BrowserMeasurements(unittest.TestCase):
   body='<style>#before::before{content:"prefix";color:white}#after::after{content:"suffix";color:white}</style><p id="before" style="background:white;color:black">Text</p><p id="after" style="background:white;color:black">Text</p>'
   checks=[{'id':n,'kind':'contrast','selector':'#'+n,'minimum':4.5,'source':'agreed threshold'} for n in ['before','after']]
   r=self.observe(checks,body=body);self.assertEqual([x['status'] for x in r['checks']],['NOT_TESTED','NOT_TESTED'])
+ def test_opacity_and_inactive_semantics_are_independent(self):
+  body='<button disabled><span id="inactive" style="display:inline-block;background:white;color:black">Inactive</span></button><button><span id="enabled" style="display:inline-block;background:white;color:black">Enabled</span></button><button style="opacity:.5"><span id="dimmed" style="display:inline-block;background:white;color:black">Dimmed enabled</span></button><button style="opacity:0"><span id="transparent" style="display:inline-block;background:white;color:black">Transparent</span></button>'
+  checks=[{'id':n,'kind':'contrast','selector':'#'+n,'minimum':4.5,'source':'numeric fixture comparison, not inactive applicability'} for n in ['inactive','enabled','dimmed','transparent']]
+  r=self.observe(checks,body=body)
+  self.assertEqual([x['status'] for x in r['checks']],['PASS','PASS','NOT_TESTED','NOT_TESTED'])
+  self.assertEqual(r['checks'][0]['actual']['ratio'],21)
+  self.assertEqual(r['checks'][2]['reason'],'unsupported-compositing')
+  self.assertEqual(r['checks'][3]['reason'],'unrendered-target')
+ def test_fit_does_not_establish_pointer_target_area(self):
+  body='<button id="tiny" style="padding:0;border:0;width:10px;height:10px"></button><button id="padded" style="padding:15px;border:0"><span id="icon" style="display:block;width:10px;height:10px"></span></button><div id="passive" style="width:48px;height:48px"><button id="inner" style="padding:0;border:0;width:10px;height:10px"></button></div>'
+  checks=[{'id':n,'kind':'fit','selector':'#'+n} for n in ['tiny','padded','icon','passive','inner']]
+  r=self.observe(checks,body=body)
+  self.assertEqual([x['status'] for x in r['checks']],['PASS']*5)
+  self.assertEqual([(x['actual']['clientWidth'],x['actual']['clientHeight']) for x in r['checks']],[(10,10),(40,40),(10,10),(48,48),(10,10)])
+ def test_padding_needs_hit_testing_and_activation_evidence(self):
+  # Synthetic coordinate dispatch verifies fixture routing, not trusted/native input.
+  body='<button id="action" style="padding:15px;border:0"><span style="display:block;width:10px;height:10px"></span></button><div id="wrapper" style="width:48px;height:48px"><button id="inner" style="padding:0;border:0;width:10px;height:10px"></button></div><p id="evidence"></p>'
+  extra="const d=w.document;let action=0,inner=0;d.getElementById('action').addEventListener('click',()=>action++);d.getElementById('inner').addEventListener('click',()=>inner++);const hit=(id,x,y)=>{const r=d.getElementById(id).getBoundingClientRect();const n=d.elementFromPoint(r.left+x,r.top+y);n.dispatchEvent(new w.MouseEvent('click',{bubbles:true,clientX:r.left+x,clientY:r.top+y}));return n.id;};const a=hit('action',2,2);const b=hit('wrapper',30,30);d.getElementById('evidence').textContent=JSON.stringify({actionHit:a,actionCalls:action,wrapperHit:b,innerCalls:inner});"
+  expected='{"actionHit":"action","actionCalls":1,"wrapperHit":"wrapper","innerCalls":0}'
+  r=self.observe([{'id':'routing','kind':'text','selector':'#evidence','expected':expected,'fixture':{'stable':True,'id':'layout-v1','source':'synthetic-coordinate-dispatch-v1'}}],body=body,extra=extra)
+  self.assertEqual(r['checks'][0]['status'],'PASS')
 if __name__=='__main__':unittest.main(verbosity=2)

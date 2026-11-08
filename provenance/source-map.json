@@ -1475,7 +1475,7 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681",
+      "sha256": "203f7a6ed2a93a02c58ff68fa529b333a6a680651624959d8aa52989a937ec4a",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -1487,7 +1487,8 @@
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
         "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
-        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained."
+        "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained.",
+        "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"

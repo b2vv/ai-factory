@@ -61,9 +61,10 @@
         "Owner-authorized read-only archive routing; historical source hash retained.",
         "Owner-authorized shared-source update guidance; immutable historical source identities retained.",
         "Owner-directed managed-kit methodology recovery; historical identities retained.",
-        "Owner-directed managed-kit methodology recovery; historical identities retained."
+        "Owner-directed managed-kit methodology recovery; historical identities retained.",
+        "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained."
       ],
-      "new_sha256": "3aefecf976873df6a444919cfe2b9a6e53347dc969ac9d49c6da8fdfa2ab1c4e"
+      "new_sha256": "454f88944a486eec7c60b15ab8b29b66c25b6b45b77f5523cd490ef3ead60c82"
     },
     {
       "old_path": "README.md",
@@ -914,9 +915,10 @@
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Current user-authorized takeover correction; immutable original hash retained.",
-        "Owner-authorized UI measurement integration; original historical hash retained."
+        "Owner-authorized UI measurement integration; original historical hash retained.",
+        "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained."
       ],
-      "new_sha256": "82d3ffc29dbf3fbb71aa363435c764f1595e2c6f570f2f7d583da8d625e27681"
+      "new_sha256": "203f7a6ed2a93a02c58ff68fa529b333a6a680651624959d8aa52989a937ec4a"
     },
     {
       "old_path": "collection/agents/skills/entity-e2e-coverage/SKILL.md",

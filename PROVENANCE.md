@@ -289,3 +289,15 @@ recovery artifacts are excluded from this portable package.
 The existing capture-bridge authorization fixture is assigned to the capture-bridge
 component rather than the unrelated storage server, preserving the helper's regression
 coverage in a normal global-kit update without installing server components.
+
+
+## UI state and measurement interpretation clarification
+
+Owner-authorized first-party guidance selectively adapts the useful state-pairing
+idea from local skill edits. Empty/populated and disabled/enabled coverage remains
+conditional on the actual UI and authorized fixtures. Opacity/compositing is distinct
+from inactive semantics and contrast applicability. Box fit does not establish a
+pointer target's active area. Synthetic browser regressions cover these boundaries,
+including coordinate hit-testing with synthetic event dispatch, not trusted native
+pointer input or WCAG conformance. No helper behavior, host setup or installed kit
+is changed by this source delta. Original provenance and license notices remain.
