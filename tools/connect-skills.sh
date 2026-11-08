@@ -69,6 +69,14 @@ find "$src" -name SKILL.md -type f | while IFS= read -r skill_md; do
   tgt_dir="$target/$rel_dir"
 
   if [ -L "$tgt_dir" ]; then
+    if [ ! -d "$tgt_dir" ] || [ ! -f "$tgt_dir/SKILL.md" ]; then
+      echo "CONFLICT $rel_dir (dangling or missing skill target; preserved)"; conflicts=$((conflicts+1)); continue
+    fi
+    resolved=$(CDPATH= cd -- "$tgt_dir" && pwd -P)
+    expected=$(CDPATH= cd -- "$kit_dir" && pwd -P)
+    if [ "$resolved" != "$expected" ]; then
+      echo "CONFLICT $rel_dir (symlink targets another location; preserved)"; conflicts=$((conflicts+1)); continue
+    fi
     echo "ALREADY  $rel_dir -> $(readlink "$tgt_dir")"; already=$((already+1)); continue
   fi
   if [ ! -e "$tgt_dir" ]; then

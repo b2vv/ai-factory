@@ -29,7 +29,7 @@ Native delivery and end-to-end checkpoint/resume remain NOT_TESTED for this prof
 
 - **[All 73 original skills](skills/)** — one canonical editable tree; groups, references, scripts, assets and synced variants are preserved.
 - **[Full AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap and historical sources.
-- [Shared source mode](docs/shared-source-mode.md) — opt-in latest reviewed local main, guarded Git updates and consumer reload boundaries.
+- [Managed kit connections](docs/managed-kit-connections.md) — one complete kit update, global skills, and project rules in AGENTS.local.md. Earlier shared-source guidance is withdrawn.
 - [Shared rules](rules/) · [Runtime helpers](runtime/README.md) · [Explicit policy adapters](adapters/README.md)
 
 Status: alpha; owner-authorized limited publication, not full acceptance. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The ordinary hash-bound review requirement is not reported as satisfied: the owner explicitly accepted this limited alpha publication while storage review remains BLOCKED. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.

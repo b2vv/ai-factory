@@ -133,12 +133,12 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "422734a0dd6e6869a3da0f00b0946e943328ab4ea69095ca714f3b3794004479",
+      "sha256": "3aefecf976873df6a444919cfe2b9a6e53347dc969ac9d49c6da8fdfa2ab1c4e",
       "component": "core"
     },
     {
       "path": "README.md",
-      "sha256": "3df0424988d9cfd56ed1e3f5df4c8c15486a1ee312b262bfb4474b0773766db7",
+      "sha256": "669e8c10242f9ef07eec880b66093bfe5635bb5aa8b099f00d77adf4ad661d0b",
       "component": "core"
     },
     {
@@ -287,6 +287,11 @@
       "component": "core"
     },
     {
+      "path": "docs/managed-kit-connections.md",
+      "component": "core",
+      "sha256": "10e8b1368d518afcf18edb5b91d073d57ce338e14677f1136b11e315e2cff913"
+    },
+    {
       "path": "docs/migration-0.4.md",
       "sha256": "1551b559a9f48def912b6499357a5148dbb3adcb3f1b18f1898a6f33e1ac0be1",
       "component": "core"
@@ -369,7 +374,7 @@
     {
       "path": "docs/shared-source-mode.md",
       "component": "core",
-      "sha256": "7f46519cb7be5d0ec36fe071aa40e89fd69e13b5650ebd64c74befa9f9a09094"
+      "sha256": "366caf76ed587ddac175a9e6901cf961f601af197900d938d7ad211c3ed96cb3"
     },
     {
       "path": "docs/translations/en/ai-factory/history.md",
@@ -518,7 +523,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "209871b164bfa9d5fee8173f56857e234b44dbafdce7c0029eaf307aa2c359bc",
+      "sha256": "41d1a5ff4dff487d6d961d4f4cda2e7ab9ab393c76fb6848882f8c9f17a5d376",
       "component": "core"
     },
     {
@@ -1018,7 +1023,7 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/test_capture_auth.py",
-      "component": "storage",
+      "component": "capture-bridge",
       "sha256": "ae25c2346e0979f063ba2764a50b649d074816cdb2ea766034fff50248df1370"
     },
     {
@@ -3812,13 +3817,18 @@
       "component": "core"
     },
     {
+      "path": "tests/connect/test_connect_skills.py",
+      "component": "core",
+      "sha256": "ed58aea7889b3b0c1ef034991ed863d3d49964e3fd75d42176b2a768d23126dc"
+    },
+    {
       "path": "tests/constraints/test_evidence.py",
       "sha256": "e9ecad4ca4b05e11195d7f01a7f438350198f6aa21af6083033f2f645457d7cf",
       "component": "core"
     },
     {
       "path": "tests/install/test_components.py",
-      "sha256": "3ccdcef1880fac7d097bd03f584fe400a81bfd84edd174ee6695fb653145330f",
+      "sha256": "cd54f9364dbac1efdbd8db41c3fbcced9ff904f8cac3c91d611ef8afd56d42b4",
       "component": "core"
     },
     {
@@ -4023,7 +4033,7 @@
     },
     {
       "path": "tools/connect-skills.sh",
-      "sha256": "0c6d19a8883bf2f9b656ad99191834c82cba49a87aca49250f8fb5dea48cf7a1",
+      "sha256": "55f33986e0f75e4de3a39cb5d19ecb402a2cfc2fe2787ddd043096b1431d2bd2",
       "component": "core"
     },
     {

@@ -59,9 +59,11 @@
         "Owner-authorized UI measurement integration; original historical hash retained.",
         "Owner-authorized read-only archive routing; historical source hash retained.",
         "Owner-authorized read-only archive routing; historical source hash retained.",
-        "Owner-authorized shared-source update guidance; immutable historical source identities retained."
+        "Owner-authorized shared-source update guidance; immutable historical source identities retained.",
+        "Owner-directed managed-kit methodology recovery; historical identities retained.",
+        "Owner-directed managed-kit methodology recovery; historical identities retained."
       ],
-      "new_sha256": "422734a0dd6e6869a3da0f00b0946e943328ab4ea69095ca714f3b3794004479"
+      "new_sha256": "3aefecf976873df6a444919cfe2b9a6e53347dc969ac9d49c6da8fdfa2ab1c4e"
     },
     {
       "old_path": "README.md",

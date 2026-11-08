@@ -275,3 +275,17 @@ Git fast-forwards and consumer reloads. Native Git commands are tested in isolat
 synthetic repositories; no background updater, hook or scheduler is introduced.
 Global alias and project-local connection changes remain separately authorized
 local operations. Package integrity and historical source identities are retained.
+
+## Managed-kit methodology correction
+
+Owner-directed recovery withdraws the shared-source/project-local skill-link route
+as an integration error. Existing design measurements and read-only search are
+retained. The connector now distinguishes real installed targets from dangling or
+wrong-location links; synthetic tests cover preserved conflicts and valid aliases.
+Historical source identities, prior receipts and unreceipted-overlay evidence remain
+preserved; no installer state is rewritten to manufacture acceptance. Private host
+recovery artifacts are excluded from this portable package.
+
+The existing capture-bridge authorization fixture is assigned to the capture-bridge
+component rather than the unrelated storage server, preserving the helper's regression
+coverage in a normal global-kit update without installing server components.

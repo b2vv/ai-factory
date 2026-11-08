@@ -15,3 +15,9 @@ class ComponentTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    p=Path(d).resolve();self.fixture(p,{'core':{},'leaf':{'dependencies':['missing']}})
    with self.assertRaises(ValueError):kit.payload(p,['leaf'])
+
+ def test_capture_bridge_includes_its_auth_fixture_without_storage(self):
+  root=Path(__file__).resolve().parents[2];_,files,selected=kit.payload(root,['capture-bridge'])
+  self.assertNotIn('storage',selected)
+  self.assertIn('runtime/storage/deploy/capture-bridge/capture_bridge.py',files)
+  self.assertIn('runtime/storage/deploy/capture-bridge/test_capture_auth.py',files)
