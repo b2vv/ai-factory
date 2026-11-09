@@ -126,6 +126,11 @@ Repository instructions and the selected SKILL.md define current requirements; S
 
 ## Minimal context handoff
 
+[One task index and explicit continuation](task-continuation.md) connects the existing
+index to the primary task/phase record. Reconcile pointers at start, handoff and
+closeout. Agenda prioritization, per-task READY, delivery state and final verdict
+remain distinct; no new tracker or automatic task executor is introduced.
+
 Use the project's existing plan/journal/ledger. No new mandatory file is needed. Before handoff or session completion, add:
 
 | Field | Sufficient content |

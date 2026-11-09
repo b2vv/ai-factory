@@ -11,6 +11,7 @@ What it does, idempotently:
   * Writes a single delimited *managed block* into `AGENTS.local.md` that points at the
     canonical kit (`--managed-root`), imports the kit entry rules (`@<root>/rules/agent-entry.md`),
     and references the project adapter and the capture-search contract (by path, never copied).
+  * Optionally points to an existing --task-index, retained unless explicitly changed/cleared; never creates a tracker.
   * Ensures `CLAUDE.local.md` imports `@AGENTS.local.md`.
   * Appends the local entrypoint paths to `.gitignore` (deduplicated), preserving existing rules.
   * Verifies the project pin/adapter/manifest identity against the installed kit (hashes from the
@@ -106,7 +107,7 @@ def kit_identity(managed_root):
     }
 
 
-def build_block(kit, adapter_rel, search_rel, project_root):
+def build_block(kit, adapter_rel, search_rel, project_root, task_index=None):
     """The managed block body (no markers). Deterministic given inputs."""
     lines = [
         "## AI Factory connection (managed)",
@@ -125,6 +126,14 @@ def build_block(kit, adapter_rel, search_rel, project_root):
         f"@{kit['entry_rules']}",
         "",
     ]
+    if task_index:
+        lines.extend([
+            '<!-- ai-factory-task-index: ' + json.dumps(task_index) + ' -->',
+            f"Task index (existing navigation, not authorization): `{task_index}`. "
+            "Read its explicit primary task/phase pointer before continuation; never select by recency. "
+            "Keep readiness, handoff and evidence in that primary record; do not create a second tracker.",
+            "",
+        ])
     if adapter_rel:
         lines.append(f"Project adapter (local routing, authoritative over kit defaults): `{adapter_rel}`.")
     else:
@@ -142,6 +151,38 @@ def build_block(kit, adapter_rel, search_rel, project_root):
             "contract found). Do not invent credentials or substitute the operator secret."
         )
     return "\n".join(lines).rstrip() + "\n"
+
+
+def task_index_pointer(project, existing, requested=None, clear=False):
+    """Retain only a deliberately recorded pointer inside our managed block; never infer a path."""
+    validate_markers(existing)
+    prior = None
+    if existing and BEGIN in existing:
+        body = existing.split(BEGIN, 1)[1].split(END, 1)[0]
+        lines = [line for line in body.splitlines() if 'ai-factory-task-index:' in line]
+        if len(lines) > 1:
+            raise ValueError('ambiguous managed task index')
+        if lines:
+            match = re.fullmatch(r'<!-- ai-factory-task-index: (.+) -->', lines[0])
+            if not match:
+                raise ValueError('invalid managed task index marker')
+            prior = json.loads(match.group(1))
+            if not isinstance(prior, str):
+                raise ValueError('invalid managed task index')
+    value = None if clear else (requested if requested is not None else prior)
+    if value is None:
+        return None, None
+    if not re.fullmatch(r'[A-Za-z0-9_./ -]+', value) or Path(value).suffix != '.md':
+        raise ValueError('task index must be a plain project-relative Markdown path')
+    rel = installer.relative(value)
+    if value in ('AGENTS.local.md', 'CLAUDE.local.md'):
+        raise ValueError('task index must not be a generated entrypoint')
+    path = installer.absolute(project / rel)
+    raw = installer.regular(path)
+    if raw is None or len(raw) > 524288:
+        raise ValueError('missing or oversized task index; no tracker is created')
+    raw.decode('utf-8')
+    return value, (path, installer.signature(path))
 
 
 def validate_markers(text):
@@ -363,6 +404,9 @@ def main(argv=None):
     ap.add_argument("--project", required=True, help="project root: a checkout OR an explicit worktree path")
     ap.add_argument("--adapter", help="project-relative (or absolute, for a worktree) path to the local adapter")
     ap.add_argument("--search-contract", help="path to the read-only search contract (e.g. .ai/project/capture-search.md)")
+    group = ap.add_mutually_exclusive_group()
+    group.add_argument("--task-index", help="existing project-relative Markdown task index; retained on future reconnects")
+    group.add_argument("--clear-task-index", action="store_true", help="remove only the managed task-index pointer; leave its file untouched")
     ap.add_argument("--gitignore-extra", action="append", default=[], help="extra local path to gitignore (repeatable)")
     ap.add_argument("--git-root", help="git root to check tracked-status against (default: --project)")
     ap.add_argument("--reconcile-identity", action="store_true",
@@ -401,8 +445,6 @@ def main(argv=None):
                 search_rel = cand
                 break
 
-    block_body = build_block(kit, adapter_rel, search_rel, project)
-
     # --- AGENTS.local.md ---
     agents_p = project / "AGENTS.local.md"
     agents_text = read_text(agents_p) if agents_p.exists() else None
@@ -415,6 +457,11 @@ def main(argv=None):
         report["conflicts"].append(str(exc))
         print(json.dumps(report, indent=2, ensure_ascii=False))
         return 1
+    task_index, pointer_baseline = task_index_pointer(project, agents_text, a.task_index, a.clear_task_index)
+    if pointer_baseline:
+        baseline[pointer_baseline[0]] = pointer_baseline[1]
+    report["task_index"] = task_index
+    block_body = build_block(kit, adapter_rel, search_rel, project, task_index)
     conflicts = detect_unmanaged_import(agents_text)
     for c in conflicts:
         report["conflicts"].append(f"AGENTS.local.md has an UNMANAGED kit import outside the managed block: `{c}` "

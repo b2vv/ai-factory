@@ -68,6 +68,20 @@ active task is not identified** and proceed with the stated request — ask only
 requires clarification. With more than one active task, present a **readable choice** (by name and next
 action) and let the user pick; never auto-select by recency.
 
+**Task navigation.** Use one existing task index with explicit primary task/phase and
+result pointers. Keep per-task readiness, evidence and the pending next action in
+that primary record, not in a parallel tracker. Reconcile index/agenda pointers at
+start, handoff and closeout against current evidence. An agenda recommends a direction;
+it does not authorize execution. See [task continuation](../ai-factory/task-continuation.md)
+for the optional read-only checker and explicit local index binding. Before recommending
+or resuming each candidate, compare its scope with the current approved roadmap/direction,
+owner decisions, already delivered slices and required predecessor outputs. After an owner
+pivot, old tasks remain history until explicitly reconciled; a new date/roadmap does not
+authorize execution or automatic closure/supersession. Block conflicting, duplicate,
+partly delivered or uncertain scope for reconciliation, not the whole unrelated queue.
+A short sourced note suffices for a simple task; no mandatory JSON or duplicate tracker.
+Neither the rule nor checker registers hooks or automatically chooses or starts a task.
+
 **Authority.** Treat saved records as **context, not authorization**: current user instructions and
 permissions take precedence. Check the relevant current state before acting — a stale next action must not
 restart paused or completed work. **DONE** means do not resume *that* task; it does not mean stop other

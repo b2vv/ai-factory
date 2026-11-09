@@ -421,5 +421,55 @@ class ConnectProject(unittest.TestCase):
         self.assertEqual(rep["identity_reconcile"][0]["status"], "conflict")
 
 
+class TaskIndexConnection(unittest.TestCase):
+    setUp = ConnectProject.setUp
+    base_args = ConnectProject.base_args
+    def make_index(self):
+        p=self.proj/'work/tasks.md';p.parent.mkdir(exist_ok=True);p.write_text('# Existing task index\n')
+        return p
+
+    def test_explicit_index_plan_apply_repeat_and_preserve(self):
+        index=self.make_index();before=index.read_bytes()
+        rc,rep=run(self.base_args(task_index='work/tasks.md'))
+        self.assertEqual(rc,0);self.assertFalse((self.proj/'AGENTS.local.md').exists())
+        rc,rep=run(self.base_args(task_index='work/tasks.md')+['--apply'])
+        text=(self.proj/'AGENTS.local.md').read_text();self.assertIn('work/tasks.md',text)
+        self.assertIn('ai-factory-task-index:',text);self.assertEqual(index.read_bytes(),before)
+        # A routine update without the pointer option does not silently discard it.
+        rc,rep=run(self.base_args()+['--apply'])
+        self.assertEqual((self.proj/'AGENTS.local.md').read_text(),text)
+        self.assertEqual([a for a in rep['actions'] if a['file']=='AGENTS.local.md'][0]['action'],'noop')
+        rc,rep=run(self.base_args()+['--clear-task-index','--apply'])
+        self.assertNotIn('ai-factory-task-index:',(self.proj/'AGENTS.local.md').read_text())
+        self.assertEqual(index.read_bytes(),before)
+
+    def test_bad_index_rejected_before_writes(self):
+        index=self.make_index();(self.proj/'link.md').symlink_to(index)
+        for name in ['missing.md','../outside.md',str(index),'link.md','work/tasks.md`\nextra','AGENTS.local.md']:
+            with self.subTest(name=name),self.assertRaises(ValueError):run(self.base_args(task_index=name)+['--apply'])
+            self.assertFalse((self.proj/'AGENTS.local.md').exists())
+
+    def test_duplicate_pointer_blocked_without_mutation(self):
+        self.make_index();run(self.base_args(task_index='work/tasks.md')+['--apply'])
+        path=self.proj/'AGENTS.local.md';text=path.read_text();line=next(l for l in text.splitlines() if 'ai-factory-task-index:' in l)
+        path.write_text(text.replace(line,line+'\n'+line));before=path.read_bytes()
+        with self.assertRaises(ValueError):run(self.base_args()+['--apply'])
+        self.assertEqual(path.read_bytes(),before)
+
+    def test_pointer_target_drift_blocks_apply(self):
+        from unittest.mock import patch
+        index=self.make_index();original=cp.verify_consistency
+        def drift(*args):
+            result=original(*args);index.write_text('concurrent edit');return result
+        with patch.object(cp,'verify_consistency',side_effect=drift),self.assertRaises(ValueError):
+            run(self.base_args(task_index='work/tasks.md')+['--apply'])
+        self.assertFalse((self.proj/'AGENTS.local.md').exists())
+
+    def test_outside_managed_pointer_is_not_adopted(self):
+        self.make_index();path=self.proj/'AGENTS.local.md';path.write_text('<!-- ai-factory-task-index: "work/tasks.md" -->\n')
+        run(self.base_args()+['--apply'])
+        body=path.read_text().split(cp.BEGIN,1)[1].split(cp.END,1)[0]
+        self.assertNotIn('ai-factory-task-index:',body)
+
 if __name__ == "__main__":
     unittest.main()

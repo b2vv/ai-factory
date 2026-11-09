@@ -133,7 +133,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "454f88944a486eec7c60b15ab8b29b66c25b6b45b77f5523cd490ef3ead60c82",
+      "sha256": "b5fea6f9b188ee60349b47939f5b61aa1aeba623b1e1e7dcaea968c01481f291",
       "component": "core"
     },
     {
@@ -247,8 +247,13 @@
       "component": "core"
     },
     {
+      "path": "ai-factory/task-continuation.md",
+      "sha256": "5ec93a81736c1e274248269462d6590dedbc17dcd920caa6ebeac6a69e21271d",
+      "component": "core"
+    },
+    {
       "path": "ai-factory/workflow.md",
-      "sha256": "4bce411153c51f4a6c7a2498ac18354b30c85871e675fc0017a33b9e4557bacf",
+      "sha256": "02d97f11a2f11976f4d1e521d8c349fc8401aa6f58d034bf779c029f926449f5",
       "component": "core"
     },
     {
@@ -289,7 +294,7 @@
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "10e8b1368d518afcf18edb5b91d073d57ce338e14677f1136b11e315e2cff913"
+      "sha256": "db6124d846f11da00777e8d4c0f1b619c4ece86f4c894f5c6c4903803a6c401b"
     },
     {
       "path": "docs/migration-0.4.md",
@@ -447,6 +452,11 @@
       "component": "core"
     },
     {
+      "path": "examples/checkpoint/pending-action.json",
+      "sha256": "259a76fae5de26d5867143f182cb4f54c3e42e837ffc130389af3919cc8ef0b5",
+      "component": "core"
+    },
+    {
       "path": "examples/checkpoint/record.json",
       "sha256": "e906cce582d6696f0773daca3ad25caef139978ded63c39f17af8bbf59a68b48",
       "component": "core"
@@ -523,7 +533,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "50b949febccd4d7d203c19b96dca393bdbc5dbd2004fcb471ca7b970ab7ef424",
+      "sha256": "746b4875ffd663a9f4fa2d551953e87c47a96e235825e7c0079e6bc5844c6c8b",
       "component": "core"
     },
     {
@@ -573,7 +583,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "35a92d6b6f4789591aafd282f9a963475f4397901d0a62507c8d77da84869fe5",
+      "sha256": "3bcdd8bfa588ab74dd6170a4b3b56b8c562ff8dbe584f5d67179bcf0f05bcc2a",
       "component": "core"
     },
     {
@@ -588,7 +598,7 @@
     },
     {
       "path": "rules/agent-entry.md",
-      "sha256": "c854b22a344e66660584b393213c49bacc84ac64ab5d5029237c7d86c611ae6c",
+      "sha256": "60f131cd3259a740ad19191939c4844bf5ed5662e7252b94972abdba28ceaf36",
       "component": "core"
     },
     {
@@ -624,6 +634,11 @@
     {
       "path": "runtime/README.md",
       "sha256": "2df0e4659e921c926b17a351929989df73cfb7700ffb486111346ab269be5e1e",
+      "component": "core"
+    },
+    {
+      "path": "runtime/checkpoint/pending_action.py",
+      "sha256": "98603e98755cac89738d7b41650b592d16685ee329f5ec2a4c7d751c5f94a341",
       "component": "core"
     },
     {
@@ -3787,8 +3802,18 @@
       "component": "core"
     },
     {
+      "path": "tests/checkpoint/test_pending_action.py",
+      "sha256": "18ce636768979c68d3ac070f47531ab1fd9fed908b73c2725a8a3303319fae61",
+      "component": "core"
+    },
+    {
       "path": "tests/checkpoint/test_precode.py",
       "sha256": "31ae741a9660421fd97321045380564a2439e3ce355c7af5ab0907560bb80a38",
+      "component": "core"
+    },
+    {
+      "path": "tests/checkpoint/test_task_order.py",
+      "sha256": "41c9dbbbe5f21a874962440aac72901859b5d6dcecbf7452177624c523c49b5b",
       "component": "core"
     },
     {
@@ -3813,7 +3838,7 @@
     },
     {
       "path": "tests/connect/test_connect_project.py",
-      "sha256": "d47607d57690e4b7f5437b18dcb163a0a4173c418787d9adebaed94f26387fbc",
+      "sha256": "e53aa6c259cd17de432f0c4b249588592220354461f0861636f375b198be9063",
       "component": "core"
     },
     {
@@ -4028,7 +4053,7 @@
     },
     {
       "path": "tools/connect-project.py",
-      "sha256": "10570e6b5e223d6cef36019727fda94fbdf1bfaca45c3ee66ada51ab889ba81c",
+      "sha256": "9c3554b497e3bfc3423f888dc7efc676b891854c61b71c03f72116158e449372",
       "component": "core"
     },
     {

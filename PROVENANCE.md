@@ -301,3 +301,23 @@ pointer target's active area. Synthetic browser regressions cover these boundari
 including coordinate hit-testing with synthetic event dispatch, not trusted native
 pointer input or WCAG conformance. No helper behavior, host setup or installed kit
 is changed by this source delta. Original provenance and license notices remain.
+
+## Unreleased explicit task continuation
+
+Owner-authorized first-party implementation transfers the useful explicit-primary-
+record and pending-action ideas from the owner's Courses/DG workflow, without
+copying their hook bodies, project data, host paths, vault content or configuration.
+The read-only checker, synthetic fixtures and retained connector pointer use the
+existing Factory readiness/review contracts. The portable schema is deliberately
+versioned separately from historical local hook bindings. No scheduler, hook,
+store migration or consumer rollout is installed. Historical source identities and
+license notices remain unchanged. Fixture and scoped Factory pilot evidence do not
+prove native fresh-session delivery, truthful evidence or independent reviewers.
+
+The continued owner-requested ordering scope adds optional quoted evidence for
+roadmap/task alignment, delivered-work overlap, predecessor outputs and explicit
+supersession/owner constraints. The checker validates supplied claims and source
+bindings, not semantic truth or missing contradictions. Synthetic blind-agent
+scenario packets remain in private task evidence; no real product content is
+imported. Existing calls need no new boilerplate and retain their legacy digest
+when no ordering block is supplied. No live host activation is performed.

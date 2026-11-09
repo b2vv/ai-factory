@@ -76,6 +76,15 @@ requires a reviewed surgical migration, not duplicate imports or replacement of
 whole local files. Keep local entry files private through the supported ignore
 rules. Preserve existing project author changes and stronger local acceptance.
 
+For explicit task navigation, add `--task-index work/tasks.md` (or the project's
+existing Markdown index) to the connector plan, review it, then apply. The target
+must already exist inside the project; its bytes are never copied or rewritten.
+The managed block retains this pointer on later reconnects without the flag. Use
+`--clear-task-index` to remove only that pointer, or `--task-index` to change it.
+Missing, ambiguous or changed inputs block the affected connection. This delivers
+navigation through AGENTS.local.md, not a second tracker, automatic task selection
+or hook registration. See [task continuation](../ai-factory/task-continuation.md).
+
 The installer does not clean project AGENTS.md or project-local symlinks. Retire
 only proven task-owned blocks/links with exact baseline guards and recoverable
 backups. Do not repeat cleanup another project agent already completed. Resolve

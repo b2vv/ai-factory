@@ -64,7 +64,7 @@
         "Owner-directed managed-kit methodology recovery; historical identities retained.",
         "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained."
       ],
-      "new_sha256": "454f88944a486eec7c60b15ab8b29b66c25b6b45b77f5523cd490ef3ead60c82"
+      "new_sha256": "b5fea6f9b188ee60349b47939f5b61aa1aeba623b1e1e7dcaea968c01481f291"
     },
     {
       "old_path": "README.md",
@@ -110,7 +110,7 @@
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "c854b22a344e66660584b393213c49bacc84ac64ab5d5029237c7d86c611ae6c"
+      "new_sha256": "60f131cd3259a740ad19191939c4844bf5ed5662e7252b94972abdba28ceaf36"
     },
     {
       "old_path": "collection/agents/ai-factory-plan.md",
@@ -415,7 +415,7 @@
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
       ],
-      "new_sha256": "4bce411153c51f4a6c7a2498ac18354b30c85871e675fc0017a33b9e4557bacf"
+      "new_sha256": "02d97f11a2f11976f4d1e521d8c349fc8401aa6f58d034bf779c029f926449f5"
     },
     {
       "old_path": "collection/agents/obsidian-cheatsheet.md",
@@ -2913,7 +2913,7 @@
         "Owner-authorized UI measurement integration; original historical hash retained.",
         "Owner-authorized read-only archive routing; historical source hash retained."
       ],
-      "new_sha256": "c58359f29e6aea7d15dc78a7bffcda61460916b40ca1f995b95472a0bcdef944"
+      "new_sha256": "3bcdd8bfa588ab74dd6170a4b3b56b8c562ff8dbe584f5d67179bcf0f05bcc2a"
     },
     {
       "old_path": "docs/capabilities.md",
