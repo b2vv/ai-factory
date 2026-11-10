@@ -191,6 +191,21 @@ func TestProcessMetadataWorkerRecoversPostListenInsertOutage(t *testing.T) {
 		}
 		time.Sleep(50 * time.Millisecond)
 	}
+	// Source commitment precedes asynchronous derived indexing; wait for its own
+	// exact watermark instead of assuming observing the source proves the index.
+	for {
+		cp, found, err := f.index.Checkpoint("p")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if found && cp.Complete && cp.Ordinal == 1 && cp.SourceGeneration == "generation" {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("worker index did not catch committed source", cp)
+		}
+		time.Sleep(50 * time.Millisecond)
+	}
 	stop()
 	ctl, err := control.Open(f.state)
 	if err != nil {

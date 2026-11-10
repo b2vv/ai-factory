@@ -28,7 +28,7 @@ func TestStartupRecoveryOrderingContract(t *testing.T) {
 	var recovery []token.Pos
 	ast.Inspect(run.Body, func(n ast.Node) bool {
 		if call, ok := n.(*ast.CallExpr); ok {
-			if id, ok := call.Fun.(*ast.Ident); ok && id.Name == "drainWorker" {
+			if id, ok := call.Fun.(*ast.Ident); ok && id.Name == "drainWorkerProjects" {
 				worker = call.Pos()
 			}
 			if s, ok := call.Fun.(*ast.SelectorExpr); ok && s.Sel.Name == "Listen" {

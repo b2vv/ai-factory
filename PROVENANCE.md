@@ -347,3 +347,9 @@ No additional third-party source, credentials or product transcript is imported.
 Scoped S1 source Spec/Standards accepted local integration and finite mutation proof.
 Metadata bindings do not imply whole-storage acceptance, external CI, installation
 or production activation; private calibration sources and measurements are excluded.
+
+The first-party S1 activation follow-up bounds metadata projection work and catch-up
+pacing without removing fenced ledger accounting. A distinct initial-consent journal
+kind preserves the original index only for verified first-ever activation; historical
+v1 replay and later invalidation retain their semantics. Independent scoped review
+and layered local tests do not certify whole-storage acceptance or production rollout.

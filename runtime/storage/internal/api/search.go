@@ -30,26 +30,27 @@ func (s *Server) SetSearchStore(store *search.Store) {
 // changes archive commitment or workflow authority. Restart resets only the scan
 // position: idempotent upserts rebuild from authoritative Mongo, without WAL
 // retention depending on PG availability. Privacy mutations share this fence.
+// IndexOnceProgress reports only successful metadata checkpoint advancement.
+// Legacy scan counts are not a catch-up signal: they can revisit matching rows.
 func (s *Server) IndexOnce() (int, error) {
+	n, _, err := s.IndexOnceProgress()
+	return n, err
+}
+func (s *Server) IndexOnceProgress() (int, bool, error) {
 	if s.searchStore == nil || s.ing == nil {
-		return 0, nil
+		return 0, false, nil
 	}
 	if s.measure == nil {
-		return 0, fmt.Errorf("index: capacity metering unavailable")
-	}
-	base := s.reservationTotal()
-	usage, measureErr := s.measure()
-	if measureErr != nil {
-		s.indexFailed.Store(true)
-		return 0, measureErr
+		return 0, false, fmt.Errorf("index: capacity metering unavailable")
 	}
 	s.mutate.Lock()
 	defer s.mutate.Unlock()
 	count := 0
+	metadataAdvanced := false
 	projects := s.ctl.Registry().Projects()
 	sort.Strings(projects)
 	if len(projects) == 0 {
-		return 0, nil
+		return 0, false, nil
 	}
 	project := projects[s.indexProject%len(projects)]
 	s.indexProject = (s.indexProject + 1) % len(projects)
@@ -66,8 +67,16 @@ func (s *Server) IndexOnce() (int, error) {
 			if !ok {
 				return search.ErrCheckpoint
 			}
-			count, err = s.searchStore.ProjectArchiveWithGate(tx, source, s.publishEnvelopeGate(tx))
+			count, err = s.searchStore.ProjectArchiveSliceWithGate(tx, source, s.publishEnvelopeGate(tx), 1)
+			metadataAdvanced = err == nil && count > 0
 			return err
+		}
+		// Metadata admission above uses the fenced ledger, which performs its own
+		// complete measurements. Legacy admission retains its usage/base accounting.
+		base := s.reservationTotal()
+		usage, measureErr := s.measure()
+		if measureErr != nil {
+			return measureErr
 		}
 		window, e := s.ing.Store().Scan(project, s.indexAfter[project])
 		if e != nil {
@@ -135,7 +144,7 @@ func (s *Server) IndexOnce() (int, error) {
 		return nil
 	})
 	s.indexFailed.Store(e != nil)
-	return count, e
+	return count, metadataAdvanced && e == nil, e
 }
 func sourceIdentity(raw, project string) (archive.Record, error) {
 	var fields []string

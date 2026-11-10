@@ -1,6 +1,6 @@
 # S1 — Automatic archive session summaries
 
-Status: IMPLEMENTED_SOURCE_ACCEPTED. Owner confirmed the proposed test seams and local explicitly
+Status: IMPLEMENTED_SOURCE_ACCEPTED; runtime activation authorized and tracked separately. Owner confirmed the proposed test seams and local explicitly
 extractive generation on 2026-11-10. Independent scoped Spec and Standards accept
 the implementation. Production activation remains OFF/unapproved; live calibration
 is PARTIAL. Whole-storage alpha acceptance remains BLOCKED.
@@ -1021,7 +1021,7 @@ from this limited evidence alone. Private sources, IDs, transcripts, credentials
 consumer names and aggregate business measurements stay out of this portable package.
 
 
-## Final source acceptance and remaining operational limits
+## Original source acceptance snapshot before the activation request
 
 Independent Spec: ACCEPT. Independent Standards: ACCEPT, zero open blockers within
 the agreed S1 inventory. The whole-storage alpha verdict remains BLOCKED and is not
@@ -1096,3 +1096,65 @@ assertions. The affected clock packet detected all eight tested regressions acro
 passing baselines; repeated constructor comparisons are not added to the earlier 285
 unique-variant count. Scoped Spec and Standards both ACCEPT with zero remaining blockers.
 No production activation, external CI or whole-storage acceptance is implied.
+
+
+## Authorized activation follow-up
+
+The owner subsequently authorized activation, commit and push. The original accepted
+S1 implementation was committed separately. Runtime rollout discovered a real
+responsiveness problem on an isolated restored archive: metadata projection could
+hold shared writer locks across 100 separately metered records. The bounded follow-up
+inspects one metadata record per writer transaction and marks any uninspected tail
+incomplete. General coordinator callers retain the original 100-record default.
+Mandatory ledger accounting remains; metadata uses its authoritative fenced ledger
+rather than an additional unfenced preflight. Legacy usage/base admission is retained.
+
+Only successful metadata checkpoint advancement is a catch-up signal. Legacy scans
+can revisit matching rows and never trigger fast pacing. The worker captures a finite
+project sweep (at most 64 calls), checks cancellation between steps, releases locks
+between records and permits eight short 25ms progress intervals before the ordinary
+backoff. Quiet work and errors retain backoff. These are work bounds, not hard
+wall-clock latency guarantees; IO and retained recovery may take longer.
+
+### First-ever summary enable preserves the original index
+
+The distinct retained kind `summary_initial_consent_v2` is permitted only for disabled
+summary consent at epoch zero with revoked-through zero and no prior activation.
+It retains the existing archive policy revision because no automatic extract could
+have been authorized by that scope before its first activation. The new committed
+baseline excludes historical messages. Existing migration, generation, ordinal,
+time, pending-operation, ledger and policy-exhaustion checks remain mandatory.
+
+Every historical `summary_consent_v1` record retains its original policy increment
+on replay. Repeated enables, revokes and regrants also retain invalidation/rebuild
+behavior. The initial exception is explicit in the retained kind; it is never inferred
+while replaying a historical v1 witness. Previous S1 readers must refuse the new kind,
+so post-activation flag-off/recovery requires the compatible updated binary. The flag
+is not a downgrade or an instruction to remove retained records.
+
+Metadata readiness is per project. A ready global schema or another migrated project
+does not prove that a newly connected legacy archive has its own complete witness.
+Before activation, use the existing explicit offline metadata migration where needed,
+with an exclusive writer window, verified backup/restore rehearsal and preservation
+of original content and identities. Startup and consent do not silently migrate it.
+
+The current follow-up source and compatibility have independent scoped Spec and
+Standards ACCEPT. Current root, API and control tests passed across explicitly layered
+runs with actual isolated MongoDB/PostgreSQL; unchanged packages retain their prior
+full-module evidence. A combined API package-timeout run remains NOTPASS, followed by
+a passing same-byte API-only rerun. No timeout or infrastructure failure counts as a
+passing baseline or a detected mutation.
+
+The bounded-index packet has 16 detected comparisons and three passing baselines.
+The first-enable packet has seven detected comparisons, one independently supported
+redundancy and two passing baselines: the retained prior-epoch-zero check plus
+PlanSummaryConsent's expected-step equality independently enforce epoch one. These
+packets are separate from the earlier 285-variant inventory; counts are not combined
+into a claim of exhaustive mutation coverage. Actual prior-S1-reader positive/refusal
+and compatible flag-off/restart proofs passed on isolated state.
+
+Final exact package export and metadata verification PASS: 847 files, 581 links
+and ten exporter fixtures, with no installation or release. Source acceptance does not certify external CI,
+whole-storage alpha acceptance or an unobserved production result. The owner authorized
+runtime activation separately; its backups, per-consumer operations and live evidence
+remain private operational records rather than portable package data.

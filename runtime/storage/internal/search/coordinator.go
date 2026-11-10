@@ -160,6 +160,15 @@ func (s *Store) ProjectArchive(tx *control.ArchiveTransaction, source MetadataSo
 	return s.ProjectArchiveWithGate(tx, source, func(e archive.Envelope) (bool, error) { return gate(e.Record), nil })
 }
 func (s *Store) ProjectArchiveWithGate(tx *control.ArchiveTransaction, source MetadataSource, gate EnvelopeGate) (int, error) {
+	return s.ProjectArchiveSliceWithGate(tx, source, gate, 100)
+}
+
+// ProjectArchiveSliceWithGate bounds records inspected while the caller holds
+// shared authority locks. The limit bounds work count, not IO wall time.
+func (s *Store) ProjectArchiveSliceWithGate(tx *control.ArchiveTransaction, source MetadataSource, gate EnvelopeGate, limit int) (int, error) {
+	if limit < 1 || limit > 100 {
+		return 0, ErrCheckpoint
+	}
 	if tx == nil || source == nil || gate == nil {
 		return 0, ErrCheckpoint
 	}
@@ -210,6 +219,10 @@ func (s *Store) ProjectArchiveWithGate(tx *control.ArchiveTransaction, source Me
 	}
 	if len(window.Records) == 0 && window.More {
 		return 0, ErrCheckpoint
+	}
+	if len(window.Records) > limit {
+		window.Records = window.Records[:limit]
+		window.More = true
 	}
 	summarySeen := false
 	for i, e := range window.Records {

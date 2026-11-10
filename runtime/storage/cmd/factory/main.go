@@ -296,7 +296,10 @@ func run() error {
 		// registered AFTER ing.Close's defer, so (LIFO) it runs FIRST on return.
 		workerCtx, workerStop := context.WithCancel(pingCtx)
 		workerDone := make(chan struct{})
-		go func() { defer close(workerDone); drainWorker(workerCtx, srv) }()
+		go func() {
+			defer close(workerDone)
+			drainWorkerProjects(workerCtx, srv, func() int { return len(ctl.Registry().Projects()) })
+		}()
 		defer func() { workerStop(); <-workerDone }()
 	}
 
@@ -407,10 +410,16 @@ func pingLoop(ctx context.Context, m *archive.MongoStore, p *workflow.PGStore) {
 // serve-gate inside DrainOnce quarantines revoked/barred records, so the worker never
 // publishes something a purge/revoke withheld.
 func drainWorker(ctx context.Context, srv *api.Server) {
+	drainWorkerProjects(ctx, srv, func() int { return 1 })
+}
+
+func drainWorkerProjects(ctx context.Context, srv *api.Server, projectCount func() int) {
 	const base, max = 2 * time.Second, 30 * time.Second
 	backoff := base
+	busySweeps := 0
 	for {
-		if _, err := srv.DrainOnce(); err != nil {
+		_, drainErr := srv.DrainOnce()
+		if drainErr != nil {
 			if backoff *= 2; backoff > max {
 				backoff = max
 			}
@@ -418,13 +427,45 @@ func drainWorker(ctx context.Context, srv *api.Server) {
 			backoff = base
 		}
 		// Derived PG failures never undo or hold Mongo archive commitment.
-		_, _ = srv.IndexOnce()
+		advanced, indexErr := indexSweep(ctx, projectCount(), srv.IndexOnceProgress)
+		delay, nextBusy := nextIndexDelay(backoff, drainErr == nil, indexErr == nil, advanced, busySweeps)
+		busySweeps = nextBusy
 		select {
 		case <-ctx.Done():
 			return
-		case <-time.After(backoff):
+		case <-time.After(delay):
 		}
 	}
+}
+
+func nextIndexDelay(backoff time.Duration, drainOK, indexOK, advanced bool, busySweeps int) (time.Duration, int) {
+	if drainOK && indexOK && advanced && busySweeps < 8 {
+		return 25 * time.Millisecond, busySweeps + 1
+	}
+	return backoff, 0
+}
+
+// Each call releases the server/control locks. Finite sweeps and bursts let
+// cancellation, capture and quiet/error backoff run between catch-up steps.
+func indexSweep(ctx context.Context, projects int, step func() (int, bool, error)) (bool, error) {
+	if projects < 1 {
+		projects = 1
+	}
+	if projects > 64 {
+		projects = 64
+	}
+	advanced := false
+	for n := 0; n < projects; n++ {
+		if err := ctx.Err(); err != nil {
+			return advanced, err
+		}
+		_, progress, err := step()
+		if err != nil {
+			return advanced, err
+		}
+		advanced = advanced || progress
+	}
+	return advanced, nil
 }
 
 // requireLoopback rejects a non-loopback bind so the default deployment is local-only.

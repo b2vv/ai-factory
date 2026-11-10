@@ -9,11 +9,13 @@ import (
 	"aifactory.local/storage/internal/registry"
 	"aifactory.local/storage/internal/workflow"
 	"context"
+	"errors"
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -193,6 +195,14 @@ func TestMetadataHiddenPageProgressIsIncompleteAndRetryable(t *testing.T) {
 }
 
 func TestMetadataCoordinatorAdvancesHiddenPagesAndResetsPolicy(t *testing.T) {
+	testMetadataCoordinatorSlices(t, 100)
+}
+
+func TestMetadataCoordinatorSingleRecordSlicesPreserveHiddenTailAndRecovery(t *testing.T) {
+	testMetadataCoordinatorSlices(t, 1)
+}
+
+func testMetadataCoordinatorSlices(t *testing.T, limit int) {
 	index := metadataStore(t)
 	root := t.TempDir()
 	d, err := control.Initialize(filepath.Join(root, "control"))
@@ -233,9 +243,30 @@ func TestMetadataCoordinatorAdvancesHiddenPagesAndResetsPolicy(t *testing.T) {
 	}); err != nil {
 		t.Fatal(err)
 	}
+	if limit == 1 {
+		observed := &sliceObservedSource{MetadataSource: source}
+		before := l.Snapshot()
+		for _, invalid := range []int{0, 101} {
+			err := d.WithArchiveTransaction(op, "p", func(tx *control.ArchiveTransaction) error {
+				_, err := index.ProjectArchiveSliceWithGate(tx, observed, func(archive.Envelope) (bool, error) {
+					t.Fatal("invalid limit reached policy gate")
+					return false, nil
+				}, invalid)
+				return err
+			})
+			_, found, readErr := index.Checkpoint("p")
+			if !errors.Is(err, ErrCheckpoint) || readErr != nil || found || observed.reads != 0 || !reflect.DeepEqual(before, l.Snapshot()) {
+				t.Fatal("invalid limit caused effects", invalid, err, readErr, observed.reads)
+			}
+		}
+	}
 	run := func(gate func(archive.Record) bool) error {
 		return d.WithArchiveTransaction(op, "p", func(tx *control.ArchiveTransaction) error {
-			_, err := index.ProjectArchive(tx, source, gate)
+			if limit == 100 {
+				_, err := index.ProjectArchiveWithGate(tx, source, func(e archive.Envelope) (bool, error) { return gate(e.Record), nil })
+				return err
+			}
+			_, err := index.ProjectArchiveSliceWithGate(tx, source, func(e archive.Envelope) (bool, error) { return gate(e.Record), nil }, limit)
 			return err
 		})
 	}
@@ -244,11 +275,13 @@ func TestMetadataCoordinatorAdvancesHiddenPagesAndResetsPolicy(t *testing.T) {
 		t.Fatal(err)
 	}
 	first, found, err := index.Checkpoint("p")
-	if err != nil || !found || first.Ordinal != 100 || first.Complete {
+	if err != nil || !found || first.Ordinal != int64(limit) || first.Complete {
 		t.Fatal(first, found, err)
 	}
-	if err := run(gate); err != nil {
-		t.Fatal(err)
+	for cycle := 0; cycle < (151-1)/limit; cycle++ {
+		if err := run(gate); err != nil {
+			t.Fatal(err)
+		}
 	}
 	done, _, err := index.Checkpoint("p")
 	if err != nil || done.Ordinal != 151 || !done.Complete || done.ProjectionGeneration != first.ProjectionGeneration {
@@ -265,7 +298,7 @@ func TestMetadataCoordinatorAdvancesHiddenPagesAndResetsPolicy(t *testing.T) {
 		t.Fatal(err)
 	}
 	reset, _, err := index.Checkpoint("p")
-	if err != nil || reset.Ordinal != 100 || reset.Complete || reset.ProjectionGeneration == first.ProjectionGeneration || reset.PolicyRevision == first.PolicyRevision {
+	if err != nil || reset.Ordinal != int64(limit) || reset.Complete || reset.ProjectionGeneration == first.ProjectionGeneration || reset.PolicyRevision == first.PolicyRevision {
 		t.Fatal(reset, err)
 	}
 	refs, _, err = index.Window("p", "needle", "")
@@ -330,4 +363,19 @@ func TestMetadataReadbackRejectsStaleDerivedColumns(t *testing.T) {
 			t.Fatal("retry accepted stale column", assignment)
 		}
 	}
+}
+
+// Observe both discovery and source resolution without changing their semantics.
+type sliceObservedSource struct {
+	MetadataSource
+	reads int
+}
+
+func (s *sliceObservedSource) ScanEnvelopes(p, g string, after, through int64) (archive.EnvelopeWindow, error) {
+	s.reads++
+	return s.MetadataSource.ScanEnvelopes(p, g, after, through)
+}
+func (s *sliceObservedSource) LookupEnvelope(r archive.Record) (archive.Envelope, bool, error) {
+	s.reads++
+	return s.MetadataSource.LookupEnvelope(r)
 }

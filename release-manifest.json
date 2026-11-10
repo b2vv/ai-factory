@@ -112,7 +112,7 @@
       "activation": "Explicit local search-only binding required; no credentials, grants, hooks or server activation."
     }
   },
-  "independent_review": "AF14/15 and bounded AF16 native pilot ACCEPTED in their exact scopes; stricter packaged Git behavior and final rc3 integration/package review PENDING; global activation NOT_RUN; storage alpha review BLOCKED, not GREEN; owner explicitly accepted limited alpha publication; S1 local extractive source: scoped Spec/Standards ACCEPT with local integration and finite mutation evidence; live calibration PARTIAL, external CI/rollout NOT_TESTED; whole-storage remains BLOCKED.",
+  "independent_review": "AF14/15 and bounded AF16 native pilot ACCEPTED in their exact scopes; stricter packaged Git behavior and final rc3 integration/package review PENDING; global activation NOT_RUN; storage alpha review BLOCKED, not GREEN; owner explicitly accepted limited alpha publication; S1 local extractive source: scoped Spec/Standards ACCEPT with local integration and finite mutation evidence; live calibration PARTIAL, external CI/rollout NOT_TESTED; whole-storage remains BLOCKED.; S1 activation follow-up: independently accepted bounded metadata catch-up and versioned first-enable policy preservation; layered local regression/compatibility and finite affected proof; production operations tracked separately.",
   "host_acceptance": "NOT_TESTED; no global/project activation",
   "provenance_file": "provenance/source-map.json",
   "files": [
@@ -133,7 +133,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "ac2d6799cbad60cfc37b95e8970d8e55a3b0d1810d4c33cd65486edf3c020e96",
+      "sha256": "33655c0dea01aebe79a992aa04c6f588dcdc1e2153a4ce840d5388c1bd4ea2bc",
       "component": "core"
     },
     {
@@ -538,7 +538,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "4ac056bbce5a90fcbe48ed214a2e5719a7db514071e066f6eca4590a42edee74",
+      "sha256": "5459ebd80e31302d9f3e87ace651c575b9faab618ec366024db9a41c00b03164",
       "component": "core"
     },
     {
@@ -834,7 +834,7 @@
     {
       "path": "runtime/storage/SESSION-SUMMARIES.md",
       "component": "storage",
-      "sha256": "81be5bcef2e0a20ade3e1927d6cf192c9b66f995d2d28a8d2e05222de0391bd5"
+      "sha256": "10516d04cb840f99db4471b9c73b9f99d29949a43fdb37276ee37bc07bc8fa97"
     },
     {
       "path": "runtime/storage/TAKEOVER-CONTRACT.md",
@@ -977,9 +977,14 @@
       "sha256": "13a8a80740f086f86f87a848b866d7019c331ff732de991f4bcf7277033ed59b"
     },
     {
+      "path": "runtime/storage/cmd/factory/index_sweep_test.go",
+      "component": "storage",
+      "sha256": "3b69f9e11bc2b05eed771f3d5a474338c03befdb493f644f3e00b4b920151354"
+    },
+    {
       "path": "runtime/storage/cmd/factory/main.go",
       "component": "storage",
-      "sha256": "5694bd0fb866c1cf2e9b8d9bdbb3db8a081a609d95d1f08d4e12897e2d2390f0"
+      "sha256": "d50ebecb7fc6a3143d27182765a00d666b1f165ebba3fc469da441c85e059406"
     },
     {
       "path": "runtime/storage/cmd/factory/metadata_startup_process_test.go",
@@ -989,7 +994,7 @@
     {
       "path": "runtime/storage/cmd/factory/metadata_worker_process_test.go",
       "component": "storage",
-      "sha256": "917f34382a813e7cb9a2672ae4c58a4b065bf1c7e704b047a97d1df5b6f22127"
+      "sha256": "1fbf5d96a439062d4aba59f449606d0c9a605a00833b2b872e27482e275b8b13"
     },
     {
       "path": "runtime/storage/cmd/factory/smoke_test.go",
@@ -999,7 +1004,7 @@
     {
       "path": "runtime/storage/cmd/factory/startup_order_test.go",
       "component": "storage",
-      "sha256": "41a50431773bb7babdb07c7074b0838842d52de0e9f96810688bc243db7de9c7"
+      "sha256": "150c5ea09d51c8a907c5d274f03b7bb64299d9dc2fc454cdab7f0c1c2b37f073"
     },
     {
       "path": "runtime/storage/cmd/factory/summary_worker_lifecycle_test.go",
@@ -1284,7 +1289,7 @@
     {
       "path": "runtime/storage/internal/api/fresh_review_test.go",
       "component": "storage",
-      "sha256": "251fe5ba3fdee69c36c7b8a24b01b957de09d743d6b1d8cee21cbd5ecc5d45bd"
+      "sha256": "64286ac6c2c3e3c96fe18c8f6568e0491de13e18cdf06c773273cd2e04648ffc"
     },
     {
       "path": "runtime/storage/internal/api/freshness.go",
@@ -1329,7 +1334,7 @@
     {
       "path": "runtime/storage/internal/api/metadata_index_integration_test.go",
       "component": "storage",
-      "sha256": "123d3722b3954239a0802ec9e92c8914f7a747c0c46d3a3340e6f588e1154e9a"
+      "sha256": "496b3b5908bba03fffaa0eb94a5df1442ff69ba4c016a8d9997ee3aac79c255d"
     },
     {
       "path": "runtime/storage/internal/api/observability_test.go",
@@ -1419,7 +1424,7 @@
     {
       "path": "runtime/storage/internal/api/search.go",
       "component": "storage",
-      "sha256": "2d9f24d1126d2594b621fb792be146497d52975ae0ec13c942cdad3bd0b9e632"
+      "sha256": "cd115ed3756e4cca4b7d111f034884c7c3c638e92d4e294a4462b3fc702acd1f"
     },
     {
       "path": "runtime/storage/internal/api/search_integration_test.go",
@@ -1469,7 +1474,7 @@
     {
       "path": "runtime/storage/internal/api/summary_search_integration_test.go",
       "component": "storage",
-      "sha256": "531a67cc70393be65acf13919bbbe673b02e8f8a5af9e0978ff76e65c6fca2a5"
+      "sha256": "9694366fb1259c2d2f8ad893ea9c6015c5773660b580c58fc5fb8d1291fdfed3"
     },
     {
       "path": "runtime/storage/internal/api/summary_worker.go",
@@ -1824,7 +1829,7 @@
     {
       "path": "runtime/storage/internal/control/control.go",
       "component": "storage",
-      "sha256": "0c30838f7cfc0587b54d424a660290146e9a4d43788719b123dd894a4fe66ab4"
+      "sha256": "3a2a8758ae203274756e7e3c352062ee67e04d8e64309b4bccf5503fa18640bf"
     },
     {
       "path": "runtime/storage/internal/control/control_test.go",
@@ -1864,17 +1869,22 @@
     {
       "path": "runtime/storage/internal/control/summary_consent.go",
       "component": "storage",
-      "sha256": "25a206bdfb8f28d1b5c66ca1ff9d37c48bc7a26082f5b64514a81bcff7c52d78"
+      "sha256": "e4725c64d18ca9eeade3de123a59fec8e00a69d3cd1e280d0204cfa45de6654f"
     },
     {
       "path": "runtime/storage/internal/control/summary_consent_test.go",
       "component": "storage",
-      "sha256": "414a89447d447ae62a46fdb5b8ed4a919b0fc80f46c5ce3ef9a0b12cddd4519d"
+      "sha256": "e9283d101615dfdc66dff40b1fc3b3eb9bd69634754a043497a0c2de9fb7c526"
     },
     {
       "path": "runtime/storage/internal/control/summary_fault_test.go",
       "component": "storage",
       "sha256": "18342bc740bea068ff700e35073df97c2d28f0cdbcc3771d738470ab64ad5eae"
+    },
+    {
+      "path": "runtime/storage/internal/control/summary_initial_test.go",
+      "component": "storage",
+      "sha256": "c89baa70db39943c350b08bdef0b38e8215b3c692995b6c28a72c6f415597cda"
     },
     {
       "path": "runtime/storage/internal/control/summary_policy.go",
@@ -2189,7 +2199,7 @@
     {
       "path": "runtime/storage/internal/search/coordinator.go",
       "component": "storage",
-      "sha256": "19fe50482b1fb98d29a59586691fc51b971e8859036defc674bcde95b6425bd6"
+      "sha256": "35fda6ddd096c4d404b3772141d32303ccaa3aea77f86f6d226268a59ed194d1"
     },
     {
       "path": "runtime/storage/internal/search/coordinator_fault_integration_test.go",
@@ -2234,7 +2244,7 @@
     {
       "path": "runtime/storage/internal/search/metadata_integration_test.go",
       "component": "storage",
-      "sha256": "ceb7474afa4a5a012ec3459e002b36da3a46a5597940defb40a6c9bcacc3e66d"
+      "sha256": "adec4d1adf6129b812b505b351cf8ca536cf8b1535f9c3a3dc4f89e6a0c0e13d"
     },
     {
       "path": "runtime/storage/internal/search/store.go",

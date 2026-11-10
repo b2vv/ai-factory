@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"sync"
 	"testing"
 )
 
@@ -85,15 +86,16 @@ func TestFreshBlockedAuthorityMustNotTerminallyQuarantine(t *testing.T) {
 type freshSlowLookup struct {
 	*archive.MemStore
 	entered, release chan struct{}
+	once             sync.Once
 }
 
 func (s *freshSlowLookup) Lookup(r archive.Record) (archive.Record, bool, error) {
-	close(s.entered)
+	s.once.Do(func() { close(s.entered) })
 	<-s.release
 	return s.MemStore.Lookup(r)
 }
 func TestFreshReceiptRechecksRevokedGrantAfterIO(t *testing.T) {
-	store := &freshSlowLookup{archive.NewMemStore(), make(chan struct{}), make(chan struct{})}
+	store := &freshSlowLookup{MemStore: archive.NewMemStore(), entered: make(chan struct{}), release: make(chan struct{})}
 	ts, _, i, d := captureServer(t, store, nil)
 	op := registry.Principal{ID: "op", Kind: registry.Operator}
 	if e := d.MintProject(op, "p", "p"); e != nil {

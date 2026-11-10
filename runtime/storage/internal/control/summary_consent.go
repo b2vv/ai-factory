@@ -29,6 +29,10 @@ type summaryConsentMutation struct {
 
 const kSummaryConsent mutationKind = "summary_consent_v1"
 
+// A distinct kind makes previous S1 readers refuse instead of replaying the old
+// unconditional policy increment with different semantics.
+const kSummaryInitialConsent mutationKind = "summary_initial_consent_v2"
+
 var errSummaryConsent = errors.New("control: invalid summary consent or activation")
 
 // ErrSummaryTerminal identifies a retained fail-closed revocation, not transient IO.
@@ -75,6 +79,11 @@ func (d *Durable) applySummaryConsent(m mutation) error {
 		return errSummaryConsent
 	}
 	c := d.reg.ConsentEpoch(m.Project, m.Provider, "summary")
+	initial := m.Kind == kSummaryInitialConsent
+	_, hadActivation := d.summaryActivations[summaryScope{m.Project, m.Provider}]
+	if initial && (!m.Enabled || m.SummaryConsent.Terminal || c.Enabled || c.Epoch != 0 || c.RevokedThrough != 0 || hadActivation || m.SummaryConsent.Epoch != 1) {
+		return errSummaryConsent
+	}
 	step, err := PlanSummaryConsent(c, m.Enabled)
 	if err != nil || m.SummaryConsent.Epoch != step.Epoch {
 		return errSummaryConsent
@@ -112,7 +121,13 @@ func (d *Durable) applySummaryConsent(m mutation) error {
 		detached.At = detached.At.UTC()
 		d.summaryActivations[summaryScope{m.Project, m.Provider}] = detached
 	}
-	policyErr := d.advanceArchivePolicy(m.Project)
+	// No prior summary authority exists on this explicit first-ever transition.
+	// Its baseline excludes history; existing original rows remain valid. V1
+	// journal records and every later transition retain their policy increment.
+	var policyErr error
+	if !initial {
+		policyErr = d.advanceArchivePolicy(m.Project)
+	}
 	if m.SummaryConsent.Terminal {
 		d.block(ErrSummaryTerminal.Error())
 		return ErrSummaryTerminal
@@ -139,6 +154,12 @@ func (d *Durable) setSummaryConsent(project, provider string, enabled bool) (int
 	}
 	m := mutation{Kind: kSummaryConsent, Project: project, Provider: provider, Capability: "summary", Enabled: enabled, SummaryConsent: &summaryConsentMutation{Epoch: step.Epoch}}
 	if enabled {
+		if !c.Enabled && c.Epoch == 0 && c.RevokedThrough == 0 {
+			if _, exists := d.summaryActivations[summaryScope{project, provider}]; exists {
+				return 0, errSummaryConsent
+			}
+			m.Kind = kSummaryInitialConsent
+		}
 		state, ok := d.archiveStates[project]
 		if !ok || !state.MigrationComplete || state.Pending != nil || state.PolicyRevision == math.MaxUint64 || d.budget == nil || len(d.budget.Snapshot().Pending) != 0 {
 			return 0, errSummaryConsent

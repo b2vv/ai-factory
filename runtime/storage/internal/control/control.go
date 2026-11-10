@@ -479,7 +479,7 @@ func (d *Durable) apply(actor registry.Principal, m mutation) error {
 	case kEnroll:
 		_, err := d.reg.EnrollLocation(actor, m.UUID, m.Loc, m.Confirm)
 		return err
-	case kSummaryConsent:
+	case kSummaryConsent, kSummaryInitialConsent:
 		return d.applySummaryConsent(m)
 	case kSetConsent:
 		if m.Capability == "summary" {

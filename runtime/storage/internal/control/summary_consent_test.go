@@ -263,7 +263,7 @@ func TestSummaryWitnessRefusedByActualOldOperator(t *testing.T) {
 		t.Fatal(e)
 	}
 	out, e = run()
-	if e == nil || !strings.Contains(string(out), `unknown mutation kind "summary_consent_v1"`) {
+	if e == nil || !strings.Contains(string(out), `unknown mutation kind "summary_initial_consent_v2"`) {
 		t.Fatalf("old reader did not refuse new retained witness: %s %v", out, e)
 	}
 	if _, e = os.Stat(filepath.Join(dir, "ingest")); !os.IsNotExist(e) {
@@ -615,5 +615,68 @@ func TestSummaryReplayRefusesPendingArchiveOperation(t *testing.T) {
 	}
 	if e == nil || !strings.Contains(e.Error(), "invalid summary consent or activation") {
 		t.Fatal("grant overtook pending source on replay", e)
+	}
+}
+
+func TestSummaryFirstEnableKeepsExistingProjectionPolicy(t *testing.T) {
+	d, dir, op := summaryControl(t)
+	defer func() { d.Close() }()
+	before, _, err := d.ArchiveState("p")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = d.SetConsent(op, "p", "synthetic", "summary", true); err != nil {
+		t.Fatal(err)
+	}
+	after, _, err := d.ArchiveState("p")
+	if err != nil || after.PolicyRevision != before.PolicyRevision {
+		t.Fatal("first activation invalidated original projection", before.PolicyRevision, after.PolicyRevision, err)
+	}
+	if err = d.Close(); err != nil {
+		t.Fatal(err)
+	}
+	d, err = control.Open(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	reopened, _, err := d.ArchiveState("p")
+	if err != nil || reopened.PolicyRevision != before.PolicyRevision {
+		t.Fatal("first activation replay changed policy", reopened, err)
+	}
+	attachArchiveLedger(t, d, dir)
+	for step, enabled := range []bool{true, false, true} {
+		if _, err = d.SetConsent(op, "p", "synthetic", "summary", enabled); err != nil {
+			t.Fatal(err)
+		}
+		got, _, err := d.ArchiveState("p")
+		if err != nil || got.PolicyRevision != before.PolicyRevision+uint64(step+1) {
+			t.Fatal("repeat/revoke/regrant skipped policy invalidation", step, got, err)
+		}
+	}
+}
+
+func TestSummaryHistoricalV1FirstEnableStillIncrementsPolicyOnReplay(t *testing.T) {
+	d, dir, _ := summaryControl(t)
+	before, _, _ := d.ArchiveState("p")
+	if err := d.Close(); err != nil {
+		t.Fatal(err)
+	}
+	raw := []byte(`{"kind":"summary_consent_v1","project":"p","provider":"synthetic","capability":"summary","enabled":true,"summary_consent":{"epoch":1,"activation":{"project":"p","provider":"synthetic","generation":"g","ordinal":0,"at":"2026-01-01T00:00:00Z","consent_epoch":1}}}`)
+	w, err := wal.Open(filepath.Join(dir, "wal"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = w.Accept("historical-first-enable", raw); err != nil {
+		t.Fatal(err)
+	}
+	w.Close()
+	reopened, err := control.Open(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer reopened.Close()
+	got, _, err := reopened.ArchiveState("p")
+	if err != nil || got.PolicyRevision != before.PolicyRevision+1 {
+		t.Fatal("historical v1 replay semantics changed", got, err)
 	}
 }

@@ -149,9 +149,14 @@ func TestMetadataRuntimeIndexUsesCommittedSourceCheckpoint(t *testing.T) {
 	for n := 0; n < 103; n++ {
 		add(fmt.Sprintf("page-%03d", n))
 	}
-	for n := 0; n < 2; n++ {
-		if _, err := srv.IndexOnce(); err != nil {
-			t.Fatal(err)
+	for n := 0; n < 103; n++ {
+		if count, err := srv.IndexOnce(); err != nil || count > 1 {
+			t.Fatal("incremental index slice", count, err)
+		}
+		if n == 1 {
+			if code, _ := agentQuery(t, ts.URL, "/v1/search/query?project=p&sort=recent&time_field=captured_at&q=needle", "metadata-reader", epoch, "synthetic-only"); code != 503 {
+				t.Fatal("unfinished incremental index claimed query readiness", code)
+			}
 		}
 	}
 	code, first := agentQuery(t, ts.URL, "/v1/search/query?project=p&sort=recent&time_field=captured_at&q=needle", "metadata-reader", epoch, "synthetic-only")
@@ -226,7 +231,7 @@ func TestMetadataRuntimeIndexUsesCommittedSourceCheckpoint(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	for n := 0; n < 2; n++ {
+	for n := 0; n < 3; n++ {
 		if _, err := srv.IndexOnce(); err != nil {
 			t.Fatal(err)
 		}
@@ -299,9 +304,13 @@ func TestMetadataRuntimeIndexUsesCommittedSourceCheckpoint(t *testing.T) {
 	if code, body := agentQuery(t, ts.URL, "/v1/archive/freshness?project=p", "metadata-reader", epoch, "synthetic-only"); code != 200 || body["index_state"] != "behind" {
 		t.Fatal("stale policy reported fresh", code, body)
 	}
-	for n := 0; n < 3; n++ {
-		if _, err := srv.IndexOnce(); err != nil {
-			t.Fatal(err)
+	currentState, _, err := ctl.ArchiveState("p")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for n := int64(0); n < currentState.CommittedOrdinal; n++ {
+		if count, err := srv.IndexOnce(); err != nil || count > 1 {
+			t.Fatal("hidden policy rebuild slice", count, err)
 		}
 	}
 	next, _, err := index.Checkpoint("p")
