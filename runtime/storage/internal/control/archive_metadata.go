@@ -10,16 +10,18 @@ import (
 // ArchiveState is control authority for an explicitly activated metadata epoch.
 // This API is not wired to the running server or operator activation yet.
 type ArchiveState struct {
-	Projection        *ArchiveProjection
-	Pending           *ArchiveOperation
-	Last              *ArchiveOperation
-	LastCommitted     bool
-	Version           int
-	Generation        string
-	MigrationComplete bool
-	NextOrdinal       int64
-	CommittedOrdinal  int64
-	PolicyRevision    uint64
+	ProjectionCancellationBytes int64 `json:",omitempty"`
+	ProjectionCancelled         bool  `json:",omitempty"`
+	Projection                  *ArchiveProjection
+	Pending                     *ArchiveOperation
+	Last                        *ArchiveOperation
+	LastCommitted               bool
+	Version                     int
+	Generation                  string
+	MigrationComplete           bool
+	NextOrdinal                 int64
+	CommittedOrdinal            int64
+	PolicyRevision              uint64
 }
 
 func validArchiveGeneration(g string) bool { return len(g) > 0 && len(g) <= 128 && utf8.ValidString(g) }

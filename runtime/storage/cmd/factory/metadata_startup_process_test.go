@@ -171,9 +171,10 @@ func (f *metadataProcessFixture) closeWriter(t *testing.T) {
 		t.Fatal(e)
 	}
 }
-func (f *metadataProcessFixture) start(t *testing.T, bin string) (string, func()) {
+func (f *metadataProcessFixture) start(t *testing.T, bin string, extra ...string) (string, func()) {
 	t.Helper()
-	cmd := exec.Command(bin, "-state", f.state, "-config", f.configPath, "-operator-token", f.token, "-listen", "127.0.0.1:0")
+	args := append([]string{"-state", f.state, "-config", f.configPath, "-operator-token", f.token, "-listen", "127.0.0.1:0"}, extra...)
+	cmd := exec.Command(bin, args...)
 	out, e := cmd.StdoutPipe()
 	if e != nil {
 		t.Fatal(e)
@@ -183,12 +184,18 @@ func (f *metadataProcessFixture) start(t *testing.T, bin string) (string, func()
 	if e = cmd.Start(); e != nil {
 		t.Fatal(e)
 	}
+	ready := false
 	t.Cleanup(func() {
 		if cmd.Process != nil {
 			cmd.Process.Kill()
 		}
+		if !ready {
+			cmd.Wait()
+			t.Logf("startup diagnostics: %s", diagnostics.String())
+		}
 	})
 	addr := awaitListen(t, out, cmd)
+	ready = true
 	stopped := false
 	stop := func() {
 		if stopped {

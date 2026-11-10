@@ -25,6 +25,7 @@ const MaxWindow = 100
 const MaxTextBytes = 8 << 20
 
 type Reference struct {
+	Key         string `json:"-"`
 	Identity    string
 	PayloadHash string
 }
@@ -37,7 +38,9 @@ type Store struct {
 
 func hash(s string) string               { b := sha256.Sum256([]byte(s)); return hex.EncodeToString(b[:]) }
 func RecordHash(r archive.Record) string { b, _ := json.Marshal(r); return hash(string(b)) }
-func normalized(s string) string         { return norm.NFC.String(cases.Fold().String(norm.NFC.String(s))) }
+func normalized(s string) string {
+	return norm.NFC.String(cases.Fold().String(norm.NFC.String(tokenBoundaries(s))))
+}
 
 // The derived index has its own schema/version because workflow ownership and
 // workflow rollback must not implicitly own or drop search projections.
@@ -145,6 +148,10 @@ func (s *Store) Window(project, query, after string) (refs []Reference, next str
 		if e = rows.Scan(&key, &ref.Identity, &ref.PayloadHash, &matched); e != nil {
 			return nil, "", e
 		}
+		if key != hash(ref.Identity) {
+			return nil, "", ErrCheckpoint
+		}
+		ref.Key = key
 		if count == MaxWindow {
 			next = last
 			break

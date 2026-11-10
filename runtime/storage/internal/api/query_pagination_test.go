@@ -7,6 +7,8 @@ package api_test
 import (
 	"fmt"
 	"net/http"
+	"net/url"
+	"strings"
 	"testing"
 
 	"aifactory.local/storage/internal/archive"
@@ -93,5 +95,43 @@ func TestS4ArchiveQueryPaginationBounded(t *testing.T) {
 		if code, _ := agentQuery(t, ts.URL, "/v1/archive/query?project=p&"+bad, "a1", epoch, "sek"); code != http.StatusBadRequest {
 			t.Fatalf("%q must be 400, got %d", bad, code)
 		}
+	}
+}
+
+func TestArchiveQueryContinuesMaximumEscapedIdentity(t *testing.T) {
+	store := archive.NewMemStore()
+	ts, _, _, ctl := captureServer(t, store, nil)
+	op := registry.Principal{Kind: registry.Operator}
+	if err := ctl.MintProject(op, "p", "fixture"); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ctl.SetConsent(op, "p", "synthetic", "capture", true); err != nil {
+		t.Fatal(err)
+	}
+	_, grant := do(t, http.MethodPost, ts.URL+"/v1/grants", opHdr(), map[string]any{"principal_id": "wide-reader", "kind": "agent", "projects": []string{"p"}, "ops": []string{"archive.query"}, "secret": "synthetic-secret"})
+	epoch := itoa(int64(grant["epoch"].(float64)))
+	id := strings.Repeat("\x01", 4096)
+	for n := 1; n <= 2; n++ {
+		r := archive.Record{Project: "p", Provider: "synthetic", SourceInstance: id, SessionID: id, MessageID: id, Seq: n, Type: archive.TypeMessage, Role: "user", Text: "bounded fixture", ConsentEpoch: 1}
+		if n == 2 {
+			r.MessageID = strings.Repeat("\x02", 4096)
+		}
+		if err := store.Put(r); err != nil {
+			t.Fatal(err)
+		}
+	}
+	code, first := agentQuery(t, ts.URL, "/v1/archive/query?project=p&limit=1", "wide-reader", epoch, "synthetic-secret")
+	cursor, ok := first["next_cursor"].(string)
+	if code != 200 || !ok || cursor == "" {
+		t.Fatal("first page did not continue", code)
+	}
+	code, last := agentQuery(t, ts.URL, "/v1/archive/query?project=p&limit=1&cursor="+url.QueryEscape(cursor), "wide-reader", epoch, "synthetic-secret")
+	hits, ok := last["hits"].([]any)
+	if code != 200 || !ok || len(hits) != 1 {
+		t.Fatal("supported escaped identity cursor rejected", code)
+	}
+	record := hits[0].(map[string]any)
+	if record["MessageID"] != strings.Repeat("\x02", 4096) || last["next_cursor"] != nil {
+		t.Fatal("cursor repeated or skipped a record")
 	}
 }

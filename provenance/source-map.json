@@ -4210,7 +4210,7 @@
       "source": "~/.agents/ai-factory/roadmap.md",
       "destination": "ai-factory/roadmap.md",
       "source_sha256": "950c4e69053cd36d879e9033ef2f3b03da54c9cf33994f9b23ad56cd79dc9ab9",
-      "sha256": "a88c2402fa2abecee8613defc96a2cee4753908ee1deb8e45c16742ea0dee482",
+      "sha256": "320502f0fa2cf3e888bbe5c4196efe4a9175756bd9308c8e095d45224a546710",
       "source_mode": "0o644",
       "transformations": [
         "home path and machine identifiers normalized",
@@ -4220,7 +4220,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
+        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
+        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/roadmap.md"

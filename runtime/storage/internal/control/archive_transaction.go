@@ -47,7 +47,7 @@ func (t *ArchiveTransaction) ready() error {
 }
 func archiveRecordHash(r archive.Record) string { raw, _ := json.Marshal(r); return budgetHash(raw) }
 func operationEnvelope(op *ArchiveOperation, r archive.Record) (archive.Envelope, error) {
-	if op == nil || archive.IdentityKey(op.Identity) != archive.IdentityKey(r) || op.RecordHash != archiveRecordHash(r) {
+	if op == nil || archive.IdentityKey(op.Identity) != archive.IdentityKey(r) || op.RecordHash != archiveRecordHash(r) || (op.Metadata.DerivedKind != "" && (op.Identity.Provider != r.Provider || op.Identity.ConsentEpoch != r.ConsentEpoch || op.Identity.Type != r.Type)) {
 		return archive.Envelope{}, archive.ErrIDConflict
 	}
 	e := archive.Envelope{Version: 2, Record: r, Metadata: op.Metadata}
@@ -70,6 +70,10 @@ func phaseKey(kind mutationKind, op *ArchiveOperation) string {
 	return fmt.Sprintf("archive-v2:%s:%d:%s:%s", budgetHash([]byte(op.Identity.Project)), op.Metadata.Ordinal, op.Metadata.Generation, kind)
 }
 func (t *ArchiveTransaction) Reserve(r archive.Record, sourceTime *time.Time, legacy bool) (archive.Envelope, error) {
+	return t.reserve(r, sourceTime, legacy, "")
+}
+
+func (t *ArchiveTransaction) reserve(r archive.Record, sourceTime *time.Time, legacy bool, derivedKind string) (archive.Envelope, error) {
 	if err := t.ready(); err != nil {
 		return archive.Envelope{}, err
 	}
@@ -82,7 +86,7 @@ func (t *ArchiveTransaction) Reserve(r archive.Record, sourceTime *time.Time, le
 		if err != nil {
 			return archive.Envelope{}, err
 		}
-		if legacy != e.Metadata.Legacy {
+		if legacy != e.Metadata.Legacy || derivedKind != e.Metadata.DerivedKind {
 			return archive.Envelope{}, archive.ErrIDConflict
 		}
 		if sourceTime != nil && e.Metadata.SourceEventTime != nil && !sourceTime.Equal(*e.Metadata.SourceEventTime) {
@@ -98,7 +102,7 @@ func (t *ArchiveTransaction) Reserve(r archive.Record, sourceTime *time.Time, le
 	if legacy == state.MigrationComplete || state.NextOrdinal < 1 || state.NextOrdinal == math.MaxInt64 {
 		return archive.Envelope{}, errors.New("control: archive reservation unavailable")
 	}
-	m := archive.Metadata{Generation: state.Generation, Ordinal: state.NextOrdinal, Legacy: legacy, SourceEventTime: sourceTime}
+	m := archive.Metadata{Generation: state.Generation, Ordinal: state.NextOrdinal, Legacy: legacy, SourceEventTime: sourceTime, DerivedKind: derivedKind}
 	if !legacy {
 		now := time.Now().UTC()
 		m.CapturedAt = &now
@@ -113,6 +117,12 @@ func (t *ArchiveTransaction) Reserve(r archive.Record, sourceTime *time.Time, le
 		return archive.Envelope{}, err
 	}
 	op := &ArchiveOperation{Identity: archive.Record{Project: r.Project, SourceInstance: r.SourceInstance, SessionID: r.SessionID, MessageID: r.MessageID}, RecordHash: archiveRecordHash(r), Metadata: e.Metadata, EnvelopeHash: budgetHash(raw)}
+	if derivedKind != "" {
+		op.Identity.Provider = r.Provider
+		op.Identity.Type = r.Type
+		op.Identity.Role = r.Role
+		op.Identity.ConsentEpoch = r.ConsentEpoch
+	}
 	cost, err := archive.EnvelopeReservationBytes(e)
 	if err != nil {
 		return archive.Envelope{}, err
@@ -215,6 +225,20 @@ func (d *Durable) applyArchivePhase(m mutation) error {
 	}
 	switch m.Kind {
 	case kArchiveReserve:
+		if op.Metadata.DerivedKind != "" {
+			if op.Metadata.DerivedKind != archive.DerivedSessionExtract || op.Metadata.Legacy || op.Identity.Type != archive.TypeSummary {
+				return ErrBlocked
+			}
+			a, exists := d.summaryActivations[summaryScope{m.Project, op.Identity.Provider}]
+			c := d.reg.ConsentEpoch(m.Project, op.Identity.Provider, "summary")
+			captured := d.reg.ConsentEpoch(m.Project, op.Identity.Provider, "capture")
+			if !exists || !c.Enabled || c.Epoch != a.ConsentEpoch || a.Generation != state.Generation || !captured.Enabled || op.Identity.ConsentEpoch <= captured.RevokedThrough || op.Identity.ConsentEpoch > captured.Epoch {
+				return ErrBlocked
+			}
+			if _, err := archive.EncodeEnvelope(archive.Envelope{Version: 2, Record: op.Identity, Metadata: op.Metadata}); err != nil {
+				return ErrBlocked
+			}
+		}
 		if state.Pending != nil || op.Metadata.Ordinal != state.NextOrdinal || state.NextOrdinal == math.MaxInt64 {
 			return ErrBlocked
 		}

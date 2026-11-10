@@ -30,6 +30,7 @@ import (
 	"aifactory.local/storage/internal/meter"
 	"aifactory.local/storage/internal/registry"
 	"aifactory.local/storage/internal/search"
+	"aifactory.local/storage/internal/summary"
 	"aifactory.local/storage/internal/workflow"
 )
 
@@ -52,6 +53,16 @@ func run() error {
 	tokenPath := flag.String("operator-token", "", "path to the 0600 operator token file {id,secret} (required)")
 	doInit := flag.Bool("init", false, "explicit first-time operator initialization of -state, then exit (refuses to reset existing/partial/corrupt state)")
 	devAllowNonLoopback := flag.Bool("dev-allow-nonloopback", false, "DEV/TEST ONLY: permit a non-loopback -listen bind (e.g. 0.0.0.0 inside a container whose port is published ONLY to the host's 127.0.0.1). Normal startup stays loopback-only by default; this must be set EXPLICITLY. It changes nothing about authentication/authorization - operator and agent credentials are still required and checked.")
+	extracts := flag.Bool("session-extracts", false, "opt in to asynchronous local prefix extracts; existing summary consent and metadata schema required")
+	extractPlan := summary.DefaultConfig()
+	extractOptions := summary.DefaultExtractOptions()
+	flag.DurationVar(&extractPlan.ActiveAfter, "extract-active-after", extractPlan.ActiveAfter, "active-session eligibility deadline from first uncovered capture")
+	flag.DurationVar(&extractPlan.IdleAfter, "extract-idle-after", extractPlan.IdleAfter, "idle-session eligibility deadline from last uncovered capture")
+	extractPoll := flag.Duration("extract-poll", 5*time.Second, "bounded session discovery interval; backlog adds latency")
+	flag.IntVar(&extractPlan.MaxInputBytes, "extract-max-input", extractPlan.MaxInputBytes, "whole-record input byte safeguard")
+	flag.IntVar(&extractPlan.MaxReferenceBytes, "extract-max-references", extractPlan.MaxReferenceBytes, "coverage reference byte cap")
+	flag.IntVar(&extractOptions.MaxExcerptBytes, "extract-max-excerpt", extractOptions.MaxExcerptBytes, "literal UTF-8 prefix bytes per source")
+	flag.IntVar(&extractOptions.MaxDocumentBytes, "extract-max-document", extractOptions.MaxDocumentBytes, "complete extract document byte admission cap")
 	flag.Parse()
 
 	if *state == "" {
@@ -61,6 +72,19 @@ func run() error {
 	cfg, err := config.Load(*cfgPath, os.Getenv)
 	if err != nil {
 		return err
+	}
+
+	if err := extractPlan.Validate(); err != nil {
+		return err
+	}
+	if _, err := summary.ExtractiveVersion(extractOptions); err != nil {
+		return err
+	}
+	if *extractPoll <= 0 {
+		return errors.New("extract-poll must be positive")
+	}
+	if *extracts && !cfg.MongoEnabled {
+		return errors.New("session-extracts requires the enabled Mongo archive")
 	}
 
 	// A: initialization is an explicit, separate operator gesture. Normal startup never
@@ -251,6 +275,12 @@ func run() error {
 		go pingLoop(pingCtx, mongoStore, pgStore)
 	}
 
+	if *extracts {
+		if err := srv.ConfigureSummaries(extractPlan, extractOptions); err != nil {
+			return err
+		}
+	}
+
 	// Archive access/replay remains available when new capture is disabled. The
 	// capture endpoints enforce CaptureEnabled independently; current consent/barriers
 	// still govern every replay and read of previously accepted records.
@@ -268,6 +298,12 @@ func run() error {
 		workerDone := make(chan struct{})
 		go func() { defer close(workerDone); drainWorker(workerCtx, srv) }()
 		defer func() { workerStop(); <-workerDone }()
+	}
+
+	if *extracts {
+		stopExtracts := startSessionExtractWorker(pingCtx, srv, *extractPoll)
+		// LIFO: stop/join generation before drain and before intake/control close.
+		defer stopExtracts()
 	}
 
 	ln, err := net.Listen("tcp", *listen)
@@ -430,4 +466,31 @@ func readOperatorToken(path string) (operatorToken, error) {
 		return operatorToken{}, errors.New("operator token: id and secret are required")
 	}
 	return tok, nil
+}
+
+// Generation never runs in a capture request. Cancellation is checked between
+// bounded reads; legacy backend calls may overrun by their existing timeout.
+func sessionExtractWorker(ctx context.Context, srv *api.Server, poll time.Duration) {
+	for {
+		if ctx.Err() != nil {
+			return
+		}
+		_, _ = srv.SummaryOnce(ctx, time.Now().UTC())
+		timer := time.NewTimer(poll)
+		select {
+		case <-ctx.Done():
+			timer.Stop()
+			return
+		case <-timer.C:
+		}
+	}
+}
+
+// Own the worker lifetime: cancellation stops the next safe boundary, and joining
+// preserves resource-close ordering even while a legacy source call finishes.
+func startSessionExtractWorker(parent context.Context, srv *api.Server, poll time.Duration) func() {
+	ctx, cancel := context.WithCancel(parent)
+	done := make(chan struct{})
+	go func() { defer close(done); sessionExtractWorker(ctx, srv, poll) }()
+	return func() { cancel(); <-done }
 }

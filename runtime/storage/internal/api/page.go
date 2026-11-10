@@ -13,6 +13,9 @@ import (
 	"io"
 )
 
+const maxCursorPlaintext = 192 << 10
+const maxCursorEncoded = 256 << 10
+
 type pageCursor struct {
 	Time                     *timeCursor `json:",omitempty"`
 	Project, Query, Provider string
@@ -52,11 +55,14 @@ func (s *Server) encodeCursor(c pageCursor) (string, error) {
 	if e != nil {
 		return "", e
 	}
+	if len(b) > maxCursorPlaintext || base64.RawURLEncoding.EncodedLen(len(b)+a.NonceSize()+a.Overhead()) > maxCursorEncoded {
+		return "", errors.New("cursor too large")
+	}
 	return base64.RawURLEncoding.EncodeToString(a.Seal(n, n, b, nil)), nil
 }
 func (s *Server) decodeCursor(v string) (pageCursor, error) {
 	var c pageCursor
-	if len(v) > 8192 {
+	if len(v) > maxCursorEncoded {
 		return c, errors.New("cursor too large")
 	}
 	a, e := s.cursorCipher()
@@ -64,12 +70,15 @@ func (s *Server) decodeCursor(v string) (pageCursor, error) {
 		return c, e
 	}
 	b, e := base64.RawURLEncoding.DecodeString(v)
-	if e != nil || len(b) < a.NonceSize() {
+	if e != nil || len(b) < a.NonceSize() || len(b) > maxCursorPlaintext+a.NonceSize()+a.Overhead() {
 		return c, errors.New("invalid cursor")
 	}
 	plain, e := a.Open(nil, b[:a.NonceSize()], b[a.NonceSize():], nil)
 	if e != nil {
 		return c, errors.New("invalid cursor")
+	}
+	if len(plain) > maxCursorPlaintext {
+		return c, errors.New("cursor too large")
 	}
 	e = json.Unmarshal(plain, &c)
 	return c, e

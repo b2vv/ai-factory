@@ -136,6 +136,10 @@ func (s *Store) PutEnvelope(e archive.Envelope, c Checkpoint) error {
 	if err != nil {
 		return err
 	}
+	text, err := ProjectionText(e)
+	if err != nil {
+		return err
+	}
 	if e.Record.Project != c.Project || e.Metadata.Generation != c.SourceGeneration || e.Metadata.Ordinal <= c.Ordinal {
 		return ErrCheckpoint
 	}
@@ -160,7 +164,7 @@ func (s *Store) PutEnvelope(e archive.Envelope, c Checkpoint) error {
 	identity := archive.IdentityKey(e.Record)
 	if action == CheckpointVerifyRetry {
 		var exact bool
-		err := tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM archive_index WHERE key_hash=$1 AND project=$2 AND identity=$3 AND payload_hash=$4 AND metadata_hash=$5 AND source_generation=$6 AND source_ordinal=$7 AND project_hash=$8 AND captured_key IS NOT DISTINCT FROM $9 AND source_time_key IS NOT DISTINCT FROM $10 AND terms=to_tsvector('simple',$11))`, hash(identity), c.Project, identity, RecordHash(e.Record), mh, c.SourceGeneration, e.Metadata.Ordinal, hash(c.Project), captured, event, normalized(e.Record.Text)).Scan(&exact)
+		err := tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM archive_index WHERE key_hash=$1 AND project=$2 AND identity=$3 AND payload_hash=$4 AND metadata_hash=$5 AND source_generation=$6 AND source_ordinal=$7 AND project_hash=$8 AND captured_key IS NOT DISTINCT FROM $9 AND source_time_key IS NOT DISTINCT FROM $10 AND terms=to_tsvector('simple',$11))`, hash(identity), c.Project, identity, RecordHash(e.Record), mh, c.SourceGeneration, e.Metadata.Ordinal, hash(c.Project), captured, event, normalized(text)).Scan(&exact)
 		if err != nil {
 			return err
 		}
@@ -171,7 +175,7 @@ func (s *Store) PutEnvelope(e archive.Envelope, c Checkpoint) error {
 	}
 
 	result, err := tx.Exec(ctx, `INSERT INTO archive_index(key_hash,project_hash,project,identity,payload_hash,terms,metadata_hash,source_generation,source_ordinal,captured_key,source_time_key) VALUES($1,$2,$3,$4,$5,to_tsvector('simple',$6),$7,$8,$9,$10,$11)
- ON CONFLICT(key_hash) DO UPDATE SET payload_hash=excluded.payload_hash,terms=excluded.terms,metadata_hash=excluded.metadata_hash,source_generation=excluded.source_generation,source_ordinal=excluded.source_ordinal,captured_key=excluded.captured_key,source_time_key=excluded.source_time_key WHERE archive_index.identity=excluded.identity AND archive_index.project=excluded.project`, hash(identity), hash(c.Project), c.Project, identity, RecordHash(e.Record), normalized(e.Record.Text), mh, c.SourceGeneration, e.Metadata.Ordinal, captured, event)
+ ON CONFLICT(key_hash) DO UPDATE SET payload_hash=excluded.payload_hash,terms=excluded.terms,metadata_hash=excluded.metadata_hash,source_generation=excluded.source_generation,source_ordinal=excluded.source_ordinal,captured_key=excluded.captured_key,source_time_key=excluded.source_time_key WHERE archive_index.identity=excluded.identity AND archive_index.project=excluded.project`, hash(identity), hash(c.Project), c.Project, identity, RecordHash(e.Record), normalized(text), mh, c.SourceGeneration, e.Metadata.Ordinal, captured, event)
 	if err != nil {
 		return err
 	}
@@ -225,7 +229,13 @@ func (s *Store) ProjectionReservationBytes(e archive.Envelope, c Checkpoint) (in
 	if err != nil {
 		return 0, err
 	}
-	base, err := s.ReservationBytes(e.Record)
+	text, err := ProjectionText(e)
+	if err != nil {
+		return 0, err
+	}
+	costRecord := e.Record
+	costRecord.Text = text
+	base, err := s.ReservationBytes(costRecord)
 	if err != nil {
 		return 0, err
 	}
@@ -284,6 +294,10 @@ func (s *Store) MatchesEnvelope(e archive.Envelope, c Checkpoint) (bool, error) 
 	if err != nil {
 		return false, err
 	}
+	text, err := ProjectionText(e)
+	if err != nil {
+		return false, err
+	}
 	current, found, err := s.Checkpoint(c.Project)
 	if err != nil || !found {
 		return false, err
@@ -295,7 +309,7 @@ func (s *Store) MatchesEnvelope(e archive.Envelope, c Checkpoint) (bool, error) 
 	defer cancel()
 	var matches bool
 	identity := archive.IdentityKey(e.Record)
-	err = s.pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM archive_index WHERE key_hash=$1 AND project_hash=$2 AND project=$3 AND identity=$4 AND payload_hash=$5 AND metadata_hash=$6 AND source_generation=$7 AND source_ordinal=$8 AND captured_key IS NOT DISTINCT FROM $9 AND source_time_key IS NOT DISTINCT FROM $10 AND terms=to_tsvector('simple',$11))`, hash(identity), hash(c.Project), c.Project, identity, RecordHash(e.Record), mh, e.Metadata.Generation, e.Metadata.Ordinal, captured, event, normalized(e.Record.Text)).Scan(&matches)
+	err = s.pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM archive_index WHERE key_hash=$1 AND project_hash=$2 AND project=$3 AND identity=$4 AND payload_hash=$5 AND metadata_hash=$6 AND source_generation=$7 AND source_ordinal=$8 AND captured_key IS NOT DISTINCT FROM $9 AND source_time_key IS NOT DISTINCT FROM $10 AND terms=to_tsvector('simple',$11))`, hash(identity), hash(c.Project), c.Project, identity, RecordHash(e.Record), mh, e.Metadata.Generation, e.Metadata.Ordinal, captured, event, normalized(text)).Scan(&matches)
 	return matches, err
 }
 

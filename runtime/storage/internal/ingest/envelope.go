@@ -219,3 +219,13 @@ func (i *Ingestor) AcceptedEnvelope(identity archive.Record) (archive.Envelope, 
 	}
 	return archive.Envelope{}, false, nil
 }
+
+// KnownAcceptedIdentity is only a positive hint from the existing canonical
+// receipt index. False never proves journal absence or authorizes cancellation;
+// normal durable acceptance still enforces complete WAL uniqueness/integrity.
+func (i *Ingestor) KnownAcceptedIdentity(r archive.Record) bool {
+	i.mu.Lock()
+	defer i.mu.Unlock()
+	_, known := i.identHash[archive.IdentityKey(r)]
+	return known
+}

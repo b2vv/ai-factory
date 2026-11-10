@@ -15,10 +15,13 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+	"unicode/utf8"
 
 	"aifactory.local/storage/internal/archive"
 	"aifactory.local/storage/internal/authz"
@@ -47,24 +50,28 @@ import (
 // RE-CHECKED under mutate after measuring, so a revoke/barrier/purge that completed while a
 // request was measuring cannot be bypassed.
 type Server struct {
-	attempts         attemptBook
-	searchStore      *search.Store
-	searchRequired   bool
-	indexAfter       map[string]*archive.Position
-	indexProject     int
-	indexFailed      atomic.Bool
-	indexReserved    atomic.Int64
-	workflowStore    workflow.Store
-	workflowReserved atomic.Int64
-	ctl              *control.Durable
-	cfg              config.Config
-	opID             string
-	opSec            string
-	mongoUp          func() bool                  // real archive-backend availability (nil => treated as down)
-	pgUp             func() bool                  // real workflow-backend availability (nil => treated as down)
-	ing              *ingest.Ingestor             // archive ingestion path (nil when Mongo is disabled)
-	measure          func() (config.Usage, error) // live capacity measurement (nil => fail-closed)
-	mutate           sync.Mutex                   // serializes capture/consent/barrier/purge/drain (R1/R5/R7)
+	// Trusted verification clock dependency; nil uses wall UTC. Configure before
+	// concurrent use; it is not exposed through HTTP or runtime configuration.
+	summaryProofClock func() time.Time
+	summaryWorker     summaryWorkerState
+	attempts          attemptBook
+	searchStore       *search.Store
+	searchRequired    bool
+	indexAfter        map[string]*archive.Position
+	indexProject      int
+	indexFailed       atomic.Bool
+	indexReserved     atomic.Int64
+	workflowStore     workflow.Store
+	workflowReserved  atomic.Int64
+	ctl               *control.Durable
+	cfg               config.Config
+	opID              string
+	opSec             string
+	mongoUp           func() bool                  // real archive-backend availability (nil => treated as down)
+	pgUp              func() bool                  // real workflow-backend availability (nil => treated as down)
+	ing               *ingest.Ingestor             // archive ingestion path (nil when Mongo is disabled)
+	measure           func() (config.Usage, error) // live capacity measurement (nil => fail-closed)
+	mutate            sync.Mutex                   // serializes capture/consent/barrier/purge/drain (R1/R5/R7)
 }
 
 // publishGate is the monotone consent+barrier serve-gate used BOTH by capture drains and the
@@ -247,6 +254,9 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	}
 	if s.isOperator(r) && s.searchRequired {
 		rep.Index = &health.Index{Enabled: s.searchStore != nil, LastCycleFailed: s.indexFailed.Load()}
+	}
+	if s.isOperator(r) && s.summaryWorker.enabled.Load() {
+		rep.SessionExtracts = &health.SessionExtracts{Enabled: true, LastCycleFailed: s.summaryWorker.failed.Load(), Kind: "extractive", CaptureCompleteness: "unknown"}
 	}
 	writeJSON(w, http.StatusOK, rep)
 }
@@ -610,6 +620,14 @@ func (s *Server) ingestRecordsWithTimes(w http.ResponseWriter, request *http.Req
 		writeErr(w, http.StatusBadRequest, "unknown project")
 		return
 	}
+	// Reserve the automatic-derivation namespace before attempts or durable intake.
+	// Historical colliding records remain readable; incoming retries are refused too.
+	for _, record := range recs {
+		if strings.HasPrefix(record.MessageID, archive.SessionExtractMessagePrefix) {
+			writeErr(w, 409, "message identity is reserved for automatic extracts")
+			return
+		}
+	}
 	attemptReceipts, finishAttempt, attemptErr := s.attempts.begin(recs)
 	if attemptErr != nil {
 		writeErr(w, 503, attemptErr.Error())
@@ -726,7 +744,22 @@ func (s *Server) handleArchiveQuery(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusServiceUnavailable, "archive is not enabled")
 		return
 	}
-	project := r.URL.Query().Get("project")
+	parsed, parseErr := url.ParseQuery(r.URL.RawQuery)
+	if parseErr != nil {
+		writeErr(w, 400, "invalid archive query")
+		return
+	}
+	for _, key := range []string{"project", "q", "provider", "cursor"} {
+		bound := 4096
+		if key == "cursor" {
+			bound = maxCursorEncoded
+		}
+		if len(parsed[key]) > 1 || len(parsed.Get(key)) > bound || !utf8.ValidString(parsed.Get(key)) {
+			writeErr(w, 400, "unique bounded archive query parameters required")
+			return
+		}
+	}
+	project := parsed.Get("project")
 	if project == "" {
 		writeErr(w, http.StatusBadRequest, "project query param required")
 		return
@@ -752,16 +785,38 @@ func (s *Server) handleArchiveQuery(w http.ResponseWriter, r *http.Request) {
 	}
 	window, err := s.ing.Store().Scan(project, after)
 	// Serialize the serve decision with revoke/barrier/purge, after bounded backend IO.
-	s.withAuthority(w, func(w http.ResponseWriter) {
+	var prepared map[string]preparedSummary
+	if err == nil {
+		window, prepared, err = s.prepareSummaryWindow(window)
+	}
+	s.withArchiveWriter(w, project, func(w http.ResponseWriter, tx *control.ArchiveTransaction) {
 		if err := authz.Authorize(s.ctl.Registry(), s.agentToken(r), project, registry.OpArchiveQuery); err != nil {
 			writeErr(w, 403, err.Error())
 			return
 		}
 		if err != nil {
-			writeErr(w, 503, "archive read failed: "+err.Error())
+			writeErr(w, 503, "archive read failed")
 			return
 		}
-		hits := archive.Query(s.ctl.Retention().Serve(window.Records, "capture"), query, provider)
+		hits := []archive.Hit{}
+		for _, record := range window.Records {
+			proof := prepared[archive.IdentityKey(record)]
+			allowed, policyErr := s.allowPreparedSummary(tx, record, proof)
+			if policyErr != nil {
+				writeErr(w, 503, "archive authority unavailable")
+				return
+			}
+			if !allowed {
+				continue
+			}
+			searchable := record
+			if proof.marked {
+				searchable.Text = proof.text
+			}
+			if len(archive.Query([]archive.Record{searchable}, query, provider)) == 1 {
+				hits = append(hits, archive.Hit{Record: record})
+			}
+		}
 		if window.More && offset > 0 && offset >= len(hits) {
 			writeErr(w, 400, "offset exceeds bounded window; use cursor pagination")
 			return
@@ -779,18 +834,18 @@ func (s *Server) handleArchiveQuery(w http.ResponseWriter, r *http.Request) {
 			page = []archive.Hit{}
 		}
 		resp := map[string]any{"project": project, "offset": offset, "limit": limit, "hits": page, "total_exact": false, "consistency": "live_non_snapshot", "total_basis": "observed_authorized_window", "search_mode": "literal_substring_nfc_casefold"}
-		snippetRecords := make([]archive.Record, 0, len(page))
+		snippets := make([]snippetReference, 0, len(page))
 		for _, hit := range page {
-			snippetRecords = append(snippetRecords, hit.Record)
+			snippets = append(snippets, preparedSnippet(hit.Record, prepared[archive.IdentityKey(hit.Record)], query, false))
 		}
-		resp["snippets"] = sourceSnippets(snippetRecords, query, false)
+		resp["snippets"] = snippets
 		if !window.More && after == nil {
 			resp["total"] = len(hits)
 			resp["observed_matching_count"] = len(hits)
 		}
 		if hi < len(hits) || window.More {
 			var pos archive.Position
-			if hi > 0 {
+			if hi > 0 && hi < len(hits) {
 				pos = archive.PositionOf(hits[hi-1].Record)
 			} else if len(window.Records) > 0 {
 				pos = archive.PositionOf(window.Records[len(window.Records)-1])

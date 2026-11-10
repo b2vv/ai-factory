@@ -7,6 +7,7 @@ import (
 
 	"aifactory.local/storage/internal/archive"
 	"aifactory.local/storage/internal/authz"
+	"aifactory.local/storage/internal/control"
 	"aifactory.local/storage/internal/registry"
 )
 
@@ -39,7 +40,11 @@ func (s *Server) handleArchiveMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	record, found, err := s.ing.Store().Lookup(identity)
-	s.withAuthority(w, func(w http.ResponseWriter) {
+	var prepared preparedSummary
+	if err == nil && found {
+		prepared, err = s.prepareSummary(record)
+	}
+	s.withArchiveWriter(w, identity.Project, func(w http.ResponseWriter, tx *control.ArchiveTransaction) {
 		if e := authz.Authorize(s.ctl.Registry(), s.agentToken(r), identity.Project, registry.OpArchiveQuery); e != nil {
 			writeErr(w, 403, e.Error())
 			return
@@ -48,10 +53,15 @@ func (s *Server) handleArchiveMessage(w http.ResponseWriter, r *http.Request) {
 			writeErr(w, 503, "archive read failed")
 			return
 		}
-		if !found || len(s.ctl.Retention().Serve([]archive.Record{record}, "capture")) == 0 {
+		allowed, policyErr := s.allowPreparedSummary(tx, record, prepared)
+		if policyErr != nil {
+			writeErr(w, 503, "archive authority unavailable")
+			return
+		}
+		if !found || !allowed {
 			writeErr(w, 404, "not_found")
 			return
 		}
-		writeJSON(w, 200, map[string]any{"project": identity.Project, "record": record, "derived": false})
+		writeJSON(w, 200, map[string]any{"project": identity.Project, "record": record, "derived": prepared.marked})
 	})
 }

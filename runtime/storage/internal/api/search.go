@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -65,7 +66,7 @@ func (s *Server) IndexOnce() (int, error) {
 			if !ok {
 				return search.ErrCheckpoint
 			}
-			count, err = s.searchStore.ProjectArchive(tx, source, s.publishGate)
+			count, err = s.searchStore.ProjectArchiveWithGate(tx, source, s.publishEnvelopeGate(tx))
 			return err
 		}
 		window, e := s.ing.Store().Scan(project, s.indexAfter[project])
@@ -178,10 +179,13 @@ func (s *Server) handleSearchQuery(w http.ResponseWriter, r *http.Request) {
 	}
 	refs, next, e := s.searchStore.Window(project, query, after)
 	records := []archive.Record{}
+	prepared := map[string]preparedSummary{}
+	summarySeen := false
+	used := 0
 	// Source validation happens before the final authority fence. Never serve the
 	// index's text or treat a missing/changed source as authoritative content.
 	if e == nil {
-		for _, ref := range refs {
+		for n, ref := range refs {
 			identity, err := sourceIdentity(ref.Identity, project)
 			if err != nil {
 				e = err
@@ -193,11 +197,38 @@ func (s *Server) handleSearchQuery(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 			if found && search.RecordHash(actual) == ref.PayloadHash {
+				if actual.Type == archive.TypeSummary && summarySeen {
+					next = refs[n-1].Key
+					break
+				}
+				raw, err := json.Marshal(actual)
+				if err != nil {
+					e = err
+					break
+				}
+				if len(raw) > archive.ScanBytes {
+					e = archive.ErrRecordTooLarge
+					break
+				}
+				if used+len(raw) > archive.ScanBytes {
+					next = refs[n-1].Key
+					break
+				}
+				used += len(raw)
+				if actual.Type == archive.TypeSummary {
+					summarySeen = true
+					proof, err := s.prepareSummary(actual)
+					if err != nil {
+						e = err
+						break
+					}
+					prepared[archive.IdentityKey(actual)] = proof
+				}
 				records = append(records, actual)
 			}
 		}
 	}
-	s.withAuthority(w, func(w http.ResponseWriter) {
+	s.withArchiveWriter(w, project, func(w http.ResponseWriter, tx *control.ArchiveTransaction) {
 		if err := authz.Authorize(s.ctl.Registry(), s.agentToken(r), project, registry.OpSearch); err != nil {
 			writeErr(w, 403, err.Error())
 			return
@@ -206,16 +237,26 @@ func (s *Server) handleSearchQuery(w http.ResponseWriter, r *http.Request) {
 			writeErr(w, 503, "search index or authoritative source unavailable")
 			return
 		}
-		visible := s.ctl.Retention().Serve(records, "capture")
-		if visible == nil {
-			visible = []archive.Record{}
+		visible := []archive.Record{}
+		snippets := []snippetReference{}
+		for _, record := range records {
+			proof := prepared[archive.IdentityKey(record)]
+			allowed, err := s.allowPreparedSummary(tx, record, proof)
+			if err != nil {
+				writeErr(w, 503, "archive authority unavailable")
+				return
+			}
+			if allowed {
+				visible = append(visible, record)
+				snippets = append(snippets, preparedSnippet(record, proof, query, true))
+			}
 		}
 		token, err := s.nextIndexCursor(project, query, "derived-archive", next)
 		if err != nil {
 			writeErr(w, 503, "continuation unavailable")
 			return
 		}
-		writeJSON(w, 200, map[string]any{"project": project, "search_mode": "tokenized_simple_nfc_casefold", "hits": visible, "snippets": sourceSnippets(visible, query, true), "next_cursor": token, "derived": true, "total_exact": false, "consistency": "live_non_snapshot"})
+		writeJSON(w, 200, map[string]any{"project": project, "search_mode": "tokenized_simple_nfc_casefold", "hits": visible, "snippets": snippets, "next_cursor": token, "derived": true, "total_exact": false, "consistency": "live_non_snapshot"})
 	})
 }
 
@@ -315,9 +356,15 @@ func (s *Server) nextIndexCursor(project, query, kind, next string) (string, err
 // RecoverIndex reconciles persisted index requests before startup can create an
 // unrelated marker intent. It does not start a new rebuild or scan.
 func (s *Server) RecoverIndex() error {
+	return s.recoverIndexContext(context.Background())
+}
+func (s *Server) recoverIndexContext(ctx context.Context) error {
 	s.mutate.Lock()
 	defer s.mutate.Unlock()
 	for _, project := range s.ctl.Registry().Projects() {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		if err := s.ctl.WithArchiveWriter(s.operatorPrincipal(), project, func(tx *control.ArchiveTransaction) error {
 			if tx == nil {
 				return nil
@@ -333,10 +380,13 @@ func (s *Server) RecoverIndex() error {
 			if !ok {
 				return search.ErrCheckpoint
 			}
-			return s.searchStore.RecoverProjection(tx, source, s.publishGate)
+			return s.searchStore.RecoverProjectionWithGate(tx, source, s.publishEnvelopeGateContext(ctx, tx))
 		}); err != nil {
 			return err
 		}
+	}
+	if err := ctx.Err(); err != nil {
+		return err
 	}
 	if ledger := s.ctl.Budget(); ledger != nil {
 		pending := ledger.Snapshot().Pending

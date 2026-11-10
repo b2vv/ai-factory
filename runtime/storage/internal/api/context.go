@@ -3,6 +3,7 @@ package api
 import (
 	"aifactory.local/storage/internal/archive"
 	"aifactory.local/storage/internal/authz"
+	"aifactory.local/storage/internal/control"
 	"aifactory.local/storage/internal/registry"
 	"encoding/json"
 	"net/http"
@@ -49,16 +50,18 @@ func (s *Server) handleArchiveContext(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	type outcome struct {
-		record archive.Record
-		found  bool
-		err    error
-		size   int
+		record   archive.Record
+		found    bool
+		err      error
+		size     int
+		prepared preparedSummary
 	}
 	outcomes := []outcome{}
 	seen := map[string]bool{}
 	reason := "limit"
 	bytes := 0
 	next := identity
+	summaryInspected := false
 	for len(outcomes) < limit {
 		if seen[next.MessageID] {
 			reason = "cycle"
@@ -67,7 +70,16 @@ func (s *Server) handleArchiveContext(w http.ResponseWriter, r *http.Request) {
 		seen[next.MessageID] = true
 		record, found, err := s.ing.Store().Lookup(next)
 		encoded, _ := json.Marshal(record)
-		outcomes = append(outcomes, outcome{record, found, err, len(encoded)})
+		var prepared preparedSummary
+		if err == nil && found && record.Type == archive.TypeSummary {
+			if summaryInspected {
+				reason = "derivation_limit"
+				break
+			}
+			summaryInspected = true
+			prepared, err = s.prepareSummary(record)
+		}
+		outcomes = append(outcomes, outcome{record: record, found: found, err: err, size: len(encoded), prepared: prepared})
 		if err != nil || !found {
 			reason = "unavailable"
 			break
@@ -77,13 +89,17 @@ func (s *Server) handleArchiveContext(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		bytes += len(encoded)
+		if prepared.marked {
+			reason = "derived_record"
+			break
+		}
 		if record.ParentID == "" {
 			reason = "no_parent"
 			break
 		}
 		next.MessageID = record.ParentID
 	}
-	s.withAuthority(w, func(w http.ResponseWriter) {
+	s.withArchiveWriter(w, identity.Project, func(w http.ResponseWriter, tx *control.ArchiveTransaction) {
 		if e := authz.Authorize(s.ctl.Registry(), s.agentToken(r), identity.Project, registry.OpArchiveQuery); e != nil {
 			writeErr(w, 403, e.Error())
 			return
@@ -95,7 +111,12 @@ func (s *Server) handleArchiveContext(w http.ResponseWriter, r *http.Request) {
 				writeErr(w, 503, "archive read failed")
 				return
 			}
-			if !o.found || len(s.ctl.Retention().Serve([]archive.Record{o.record}, "capture")) == 0 {
+			allowed, policyErr := s.allowPreparedSummary(tx, o.record, o.prepared)
+			if policyErr != nil {
+				writeErr(w, 503, "archive authority unavailable")
+				return
+			}
+			if !o.found || !allowed {
 				if n == 0 {
 					writeErr(w, 404, "not_found")
 					return
@@ -110,6 +131,6 @@ func (s *Server) handleArchiveContext(w http.ResponseWriter, r *http.Request) {
 			size += o.size
 			records = append(records, o.record)
 		}
-		writeJSON(w, 200, map[string]any{"project": identity.Project, "records": records, "derived": false, "order": "anchor_to_parent", "incomplete": true, "stop_reason": reason})
+		writeJSON(w, 200, map[string]any{"project": identity.Project, "records": records, "derived": len(outcomes) > 0 && outcomes[0].prepared.marked, "order": "anchor_to_parent", "incomplete": true, "stop_reason": reason})
 	})
 }

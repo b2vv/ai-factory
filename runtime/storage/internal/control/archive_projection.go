@@ -62,11 +62,13 @@ func validProjection(p ArchiveProjection, state ArchiveState, project string) bo
 }
 func (d *Durable) applyArchiveProjection(m mutation) error {
 	state, ok := d.archiveStates[m.Project]
-	if !ok || m.ArchiveProjection == nil || !validProjection(*m.ArchiveProjection, state, m.Project) {
+	if !ok || m.ArchiveProjection == nil || !validProjection(*m.ArchiveProjection, state, m.Project) || (m.ProjectionCancellationBytes != 0 && m.ProjectionCancellationBytes != projectionCancellationCost(*m.ArchiveProjection)) {
 		return ErrBlocked
 	}
 	detached := *m.ArchiveProjection
 	state.Projection = &detached
+	state.ProjectionCancelled = false
+	state.ProjectionCancellationBytes = m.ProjectionCancellationBytes
 	d.archiveStates[m.Project] = state
 	return nil
 }
@@ -74,7 +76,11 @@ func (t *ArchiveTransaction) ReserveProjection(p ArchiveProjection, cost int64) 
 	if err := t.ready(); err != nil {
 		return err
 	}
-	if !validProjection(p, t.d.archiveStates[t.project], t.project) || cost < 0 {
+	state := t.d.archiveStates[t.project]
+	if state.ProjectionCancelled && state.Projection != nil && *state.Projection == p {
+		return ErrBlocked
+	}
+	if !validProjection(p, state, t.project) || cost < 0 {
 		return ErrBlocked
 	}
 	evidence := projectionEvidence(p)
@@ -89,11 +95,16 @@ func (t *ArchiveTransaction) ReserveProjection(p ArchiveProjection, cost int64) 
 		}
 		return t.d.budget.Resume(evidence)
 	}
-	m := mutation{Kind: kArchiveProjection, Project: t.project, ArchiveProjection: &p}
+	cancelCost := projectionCancellationCost(p)
+	m := mutation{Kind: kArchiveProjection, Project: t.project, ArchiveProjection: &p, ProjectionCancellationBytes: cancelCost}
 	raw, _ := json.Marshal(m)
 	key := "archive-index-v2:" + evidence.PayloadHash
 	meta, _ := json.Marshal(metaFile{Initialized: true, HighWater: ^uint64(0)})
 	controlCost := wal.RecordCost(key, raw) + 2*int64(len(meta))
+	if cancelCost > math.MaxInt64-controlCost {
+		return ErrCapacity
+	}
+	controlCost += cancelCost
 	if cost > math.MaxInt64-controlCost {
 		return ErrCapacity
 	}
@@ -142,6 +153,12 @@ func (t *ArchiveTransaction) RecoveryProjection() (*ArchiveProjection, error) {
 	return &detached, nil
 }
 func (t *ArchiveTransaction) FinishProjection(p ArchiveProjection, verify func() error) error {
+	if err := t.ready(); err != nil {
+		return err
+	}
+	if t.d.archiveStates[t.project].ProjectionCancelled {
+		return ErrBlocked
+	}
 	if verify == nil {
 		return ErrBlocked
 	}

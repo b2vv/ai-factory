@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"syscall"
 	"testing"
 	"time"
@@ -509,7 +510,7 @@ func (s *sourceFault) LookupEnvelope(r archive.Record) (archive.Envelope, bool, 
 }
 
 func TestRecoverEnvelopeCompletesOrCancelsOwnedOperation(t *testing.T) {
-	for _, phase := range []string{"reserved", "accepted", "projected", "committed", "cancelled", "revoked"} {
+	for _, phase := range []string{"reserved", "accepted", "projected", "committed", "cancelled", "revoked", "gate-error"} {
 		t.Run(phase, func(t *testing.T) {
 			root := t.TempDir()
 			ctl, err := control.Initialize(filepath.Join(root, "ctl"))
@@ -575,6 +576,25 @@ func TestRecoverEnvelopeCompletesOrCancelsOwnedOperation(t *testing.T) {
 			}); err != nil {
 				t.Fatal(err)
 			}
+			if phase == "gate-error" {
+				before := l.Snapshot().Pending
+				injected := errors.New("synthetic derivation read unavailable")
+				err := ctl.WithArchiveTransaction(op, "p", func(tx *control.ArchiveTransaction) error {
+					return i.RecoverEnvelopeWithGate(tx, func(e archive.Envelope) (bool, error) {
+						if e.Version != 2 || e.Metadata.Ordinal != 1 || e.Metadata.CapturedAt == nil {
+							t.Fatal("gate lost authoritative metadata")
+						}
+						return false, injected
+					})
+				})
+				if !errors.Is(err, injected) || !reflect.DeepEqual(before, l.Snapshot().Pending) {
+					t.Fatal("transient gate denial cancelled intent", err)
+				}
+				records, err := source.Fetch("p")
+				if err != nil || len(records) != 0 {
+					t.Fatal("failed gate published source", err)
+				}
+			}
 			for retry := 0; retry < 2; retry++ {
 				if err := ctl.WithArchiveTransaction(op, "p", func(tx *control.ArchiveTransaction) error {
 					return i.RecoverEnvelope(tx, func(archive.Record) bool { return phase != "revoked" })
@@ -598,5 +618,43 @@ func TestRecoverEnvelopeCompletesOrCancelsOwnedOperation(t *testing.T) {
 				t.Fatal(records, err)
 			}
 		})
+	}
+}
+
+func TestKnownAcceptedIdentityTracksOnlyAcceptedCanonicalReceipts(t *testing.T) {
+	dir := t.TempDir()
+	source := archive.NewMemStore()
+	i, err := ingest.Open(dir, config.NewAccountant(config.Default()), source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := archive.Record{Project: "p", SourceInstance: "i", SessionID: "s", MessageID: "accepted", Type: archive.TypeMessage, Role: "user", Text: "synthetic source", ConsentEpoch: 1}
+	if i.KnownAcceptedIdentity(r) {
+		t.Fatal("new identity reported accepted")
+	}
+	if _, err = i.Accept("legacy-alias", r, config.Usage{FreeBytes: 1 << 40}); err != nil {
+		t.Fatal(err)
+	}
+	if !i.KnownAcceptedIdentity(r) {
+		t.Fatal("canonical accepted identity lost behind alias")
+	}
+	rejected := r
+	rejected.MessageID = "rejected"
+	if _, err = i.Accept("legacy-alias", rejected, config.Usage{FreeBytes: 1 << 40}); !errors.Is(err, wal.ErrKeyConflict) {
+		t.Fatal(err)
+	}
+	if i.KnownAcceptedIdentity(rejected) {
+		t.Fatal("rejected identity became receipt hint")
+	}
+	if err = i.Close(); err != nil {
+		t.Fatal(err)
+	}
+	i, err = ingest.Open(dir, config.NewAccountant(config.Default()), source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer i.Close()
+	if !i.KnownAcceptedIdentity(r) || i.KnownAcceptedIdentity(rejected) {
+		t.Fatal("receipt hint changed across reopen")
 	}
 }

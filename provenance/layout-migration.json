@@ -63,9 +63,10 @@
         "Owner-directed managed-kit methodology recovery; historical identities retained.",
         "Owner-directed managed-kit methodology recovery; historical identities retained.",
         "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained.",
-        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation."
+        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation.",
+        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
       ],
-      "new_sha256": "1e0b5d44b3a52cf1c3940e71f9ee41c3e22d00f264e37944329a07f53956f489"
+      "new_sha256": "ac2d6799cbad60cfc37b95e8970d8e55a3b0d1810d4c33cd65486edf3c020e96"
     },
     {
       "old_path": "README.md",
@@ -84,9 +85,10 @@
       "new_path": "checksums.sha256",
       "action": "regenerated-integrity-metadata",
       "transformations": [
-        "Recomputed from current payload; self-referential hash omitted."
+        "Recomputed from current payload; self-referential hash omitted.",
+        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
       ],
-      "new_sha256": null
+      "new_sha256": "a37c1b44bfe9fd1aeb50d3060027f294853d3fccaedccd3552a5586dc0aaf637"
     },
     {
       "old_path": "collection/README.md",
@@ -354,9 +356,10 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
+        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
+        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
       ],
-      "new_sha256": "a88c2402fa2abecee8613defc96a2cee4753908ee1deb8e45c16742ea0dee482"
+      "new_sha256": "320502f0fa2cf3e888bbe5c4196efe4a9175756bd9308c8e095d45224a546710"
     },
     {
       "old_path": "collection/agents/ai-factory/session-size/README.md",
@@ -2912,9 +2915,10 @@
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Reviewed main integration; original source identity retained.",
         "Owner-authorized UI measurement integration; original historical hash retained.",
-        "Owner-authorized read-only archive routing; historical source hash retained."
+        "Owner-authorized read-only archive routing; historical source hash retained.",
+        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
       ],
-      "new_sha256": "3bcdd8bfa588ab74dd6170a4b3b56b8c562ff8dbe584f5d67179bcf0f05bcc2a"
+      "new_sha256": "f09cc1753a91add74d20ec0a5cb8ea9bf1502b42798cc7488f1c19a540b0e810"
     },
     {
       "old_path": "docs/capabilities.md",
@@ -3077,9 +3081,10 @@
       "new_path": "release-manifest.json",
       "action": "regenerated-integrity-metadata",
       "transformations": [
-        "Recomputed from current payload; self-referential hash omitted."
+        "Recomputed from current payload; self-referential hash omitted.",
+        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
       ],
-      "new_sha256": null
+      "new_sha256": "e1bc410cc106613d8ab1eb4965b81ae236224b40a9dff7c7cb359ab9390d83c0"
     },
     {
       "old_path": "review/manifest.example.json",

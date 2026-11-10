@@ -6,13 +6,14 @@ import "aifactory.local/storage/internal/config"
 // durable control-registry state observable (no invisible failover): a BLOCKED registry
 // is surfaced explicitly rather than silently serving permissive defaults.
 type Report struct {
-	Index               *Index `json:"index,omitempty"`
-	Mode                Mode   `json:"mode"`
-	MongoEnabled        bool   `json:"mongo_enabled"`
-	PostgresEnabled     bool   `json:"postgres_enabled"`
-	CaptureEnabled      bool   `json:"capture_enabled"`
-	RegistryBlocked     bool   `json:"registry_blocked"`
-	RegistryBlockReason string `json:"registry_block_reason,omitempty"`
+	SessionExtracts     *SessionExtracts `json:"session_extracts,omitempty"`
+	Index               *Index           `json:"index,omitempty"`
+	Mode                Mode             `json:"mode"`
+	MongoEnabled        bool             `json:"mongo_enabled"`
+	PostgresEnabled     bool             `json:"postgres_enabled"`
+	CaptureEnabled      bool             `json:"capture_enabled"`
+	RegistryBlocked     bool             `json:"registry_blocked"`
+	RegistryBlockReason string           `json:"registry_block_reason,omitempty"`
 	// DBs disabled in this slice: the backends are present only as in-process fakes.
 	MongoUp    bool `json:"mongo_up"`
 	PostgresUp bool `json:"postgres_up"`
@@ -55,4 +56,13 @@ func Build(c config.Config, mongoUp, pgUp, registryBlocked bool, blockReason str
 type Index struct {
 	Enabled         bool `json:"enabled"`
 	LastCycleFailed bool `json:"last_cycle_failed"`
+}
+
+// SessionExtracts reports component configuration and the last bounded cycle,
+// never per-session freshness, backlog completion or native-capture completeness.
+type SessionExtracts struct {
+	Enabled             bool   `json:"enabled"`
+	LastCycleFailed     bool   `json:"last_cycle_failed"`
+	Kind                string `json:"kind"`
+	CaptureCompleteness string `json:"capture_completeness"`
 }

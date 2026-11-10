@@ -334,3 +334,16 @@ first-party guard fixes, without Docker dispatch, registry import or external co
 No credentials, transcript, private machine mapping or product content is included.
 Package verification and isolated execution do not activate hooks, modify trust,
 prove native receipt, publish a release or grant new user authority.
+
+
+## Local extractive session aids
+
+Owner-authorized first-party S1 work under runtime/storage. The optional pipeline
+reuses the existing Mongo archive, PostgreSQL projection and control/WAL protocol;
+Go standard-library extraction has no model provider or archive-text upload.
+Original Record identity and existing empty-metadata bytes are preserved. Task,
+review scopes and remaining acceptance gates are documented in SESSION-SUMMARIES.md.
+No additional third-party source, credentials or product transcript is imported.
+Scoped S1 source Spec/Standards accepted local integration and finite mutation proof.
+Metadata bindings do not imply whole-storage acceptance, external CI, installation
+or production activation; private calibration sources and measurements are excluded.

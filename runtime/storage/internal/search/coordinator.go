@@ -23,7 +23,17 @@ func envelopeDigest(e archive.Envelope) (string, error) {
 
 // RecoverProjection consumes the durable operation's original generation token.
 // The caller holds the control writer fence, including the current policy gate.
+type EnvelopeGate func(archive.Envelope) (bool, error)
+
+// Legacy gates remain compatible. Envelope gates distinguish permanent denial
+// from source/proof IO failure so recovery cannot cancel on an outage.
 func (s *Store) RecoverProjection(tx *control.ArchiveTransaction, source MetadataSource, gate func(archive.Record) bool) error {
+	if gate == nil {
+		return ErrCheckpoint
+	}
+	return s.RecoverProjectionWithGate(tx, source, func(e archive.Envelope) (bool, error) { return gate(e.Record), nil })
+}
+func (s *Store) RecoverProjectionWithGate(tx *control.ArchiveTransaction, source MetadataSource, gate EnvelopeGate) error {
 	if tx == nil || source == nil || gate == nil {
 		return ErrCheckpoint
 	}
@@ -31,16 +41,52 @@ func (s *Store) RecoverProjection(tx *control.ArchiveTransaction, source Metadat
 	if err != nil || op == nil {
 		return err
 	}
-	return s.applyProjection(tx, source, gate, *op, 0)
+	return s.applyProjectionWithGate(tx, source, gate, *op, 0)
 }
 func (s *Store) applyProjection(tx *control.ArchiveTransaction, source MetadataSource, gate func(archive.Record) bool, op control.ArchiveProjection, cost int64) error {
+	if gate == nil {
+		return ErrCheckpoint
+	}
+	return s.applyProjectionWithGate(tx, source, func(e archive.Envelope) (bool, error) { return gate(e.Record), nil }, op, cost)
+}
+func (s *Store) applyProjectionWithGate(tx *control.ArchiveTransaction, source MetadataSource, gate EnvelopeGate, op control.ArchiveProjection, cost int64) error {
+	saved, err := tx.RecoveryProjection()
+	if err != nil {
+		return err
+	}
+	if saved != nil {
+		if *saved != op {
+			return ErrCheckpoint
+		}
+		cancelled, err := tx.ProjectionCancellation(op)
+		if err != nil {
+			return err
+		}
+		state, err := tx.State()
+		if err != nil {
+			return err
+		}
+		if cancelled || op.Desired.SourceGeneration != state.Generation || op.Desired.PolicyRevision != strconv.FormatUint(state.PolicyRevision, 10) {
+			return s.cancelProjection(tx, op)
+		}
+	}
 	var e archive.Envelope
 	if op.Action == "project" {
 		actual, found, err := source.LookupEnvelope(op.Identity)
 		if err != nil {
 			return err
 		}
-		if !found || !gate(actual.Record) {
+		allowed := false
+		if found {
+			allowed, err = gate(actual)
+			if err != nil {
+				return err
+			}
+		}
+		if !found || !allowed {
+			if saved != nil {
+				return s.cancelProjection(tx, op)
+			}
 			return ErrCheckpoint
 		}
 		digest, err := envelopeDigest(actual)
@@ -48,6 +94,9 @@ func (s *Store) applyProjection(tx *control.ArchiveTransaction, source MetadataS
 			return err
 		}
 		if digest != op.EnvelopeHash {
+			if saved != nil {
+				return s.cancelProjection(tx, op)
+			}
 			return archive.ErrIDConflict
 		}
 		e = actual
@@ -105,10 +154,16 @@ func (s *Store) applyProjection(tx *control.ArchiveTransaction, source MetadataS
 // advance an incomplete checkpoint, and exhaustion alone permits completion.
 // No source timestamp, latest hit or row count is a completeness proof.
 func (s *Store) ProjectArchive(tx *control.ArchiveTransaction, source MetadataSource, gate func(archive.Record) bool) (int, error) {
+	if gate == nil {
+		return 0, ErrCheckpoint
+	}
+	return s.ProjectArchiveWithGate(tx, source, func(e archive.Envelope) (bool, error) { return gate(e.Record), nil })
+}
+func (s *Store) ProjectArchiveWithGate(tx *control.ArchiveTransaction, source MetadataSource, gate EnvelopeGate) (int, error) {
 	if tx == nil || source == nil || gate == nil {
 		return 0, ErrCheckpoint
 	}
-	if err := s.RecoverProjection(tx, source, gate); err != nil {
+	if err := s.RecoverProjectionWithGate(tx, source, gate); err != nil {
 		return 0, err
 	}
 	state, err := tx.State()
@@ -138,7 +193,7 @@ func (s *Store) ProjectArchive(tx *control.ArchiveTransaction, source MetadataSo
 		if err != nil {
 			return 0, err
 		}
-		if err := s.applyProjection(tx, source, gate, plan, cost); err != nil {
+		if err := s.applyProjectionWithGate(tx, source, gate, plan, cost); err != nil {
 			return 0, err
 		}
 		current = desired
@@ -156,13 +211,29 @@ func (s *Store) ProjectArchive(tx *control.ArchiveTransaction, source MetadataSo
 	if len(window.Records) == 0 && window.More {
 		return 0, ErrCheckpoint
 	}
+	summarySeen := false
+	for i, e := range window.Records {
+		if e.Record.Type != archive.TypeSummary {
+			continue
+		}
+		if summarySeen {
+			window.Records = window.Records[:i]
+			window.More = true
+			break
+		}
+		summarySeen = true
+	}
 	last := current.Ordinal
 	for n, e := range window.Records {
 		if e.Record.Project != project || e.Metadata.Generation != state.Generation || e.Metadata.Ordinal <= last || e.Metadata.Ordinal > state.CommittedOrdinal {
 			return n, ErrCheckpoint
 		}
 		last = e.Metadata.Ordinal
-		if !gate(e.Record) {
+		allowed, gateErr := gate(e)
+		if gateErr != nil {
+			return n, gateErr
+		}
+		if !allowed {
 			continue
 		}
 		desired := current
@@ -178,7 +249,7 @@ func (s *Store) ProjectArchive(tx *control.ArchiveTransaction, source MetadataSo
 		if err != nil {
 			return n, err
 		}
-		if err := s.applyProjection(tx, source, gate, plan, cost); err != nil {
+		if err := s.applyProjectionWithGate(tx, source, gate, plan, cost); err != nil {
 			return n, err
 		}
 		current = desired
@@ -197,7 +268,7 @@ func (s *Store) ProjectArchive(tx *control.ArchiveTransaction, source MetadataSo
 		if err != nil {
 			return len(window.Records), err
 		}
-		if err := s.applyProjection(tx, source, gate, control.ArchiveProjection{Action: action, Expected: current, Desired: desired}, cost); err != nil {
+		if err := s.applyProjectionWithGate(tx, source, gate, control.ArchiveProjection{Action: action, Expected: current, Desired: desired}, cost); err != nil {
 			return len(window.Records), err
 		}
 	}

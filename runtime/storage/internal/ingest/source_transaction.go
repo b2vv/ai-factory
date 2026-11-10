@@ -68,6 +68,15 @@ func (i *Ingestor) CommitEnvelope(tx *control.ArchiveTransaction, e archive.Enve
 // surviving intent. Callers hold the writer fence and provide a monotone policy
 // gate; unknown authority must fail before this method is called.
 func (i *Ingestor) RecoverEnvelope(tx *control.ArchiveTransaction, gate func(archive.Record) bool) error {
+	if gate == nil {
+		return ErrMetadataTransaction
+	}
+	return i.RecoverEnvelopeWithGate(tx, func(e archive.Envelope) (bool, error) { return gate(e.Record), nil })
+}
+
+// RecoverEnvelopeWithGate preserves temporary proof/read errors as unresolved
+// work. Only an explicit permanent denial may cancel a reserved source write.
+func (i *Ingestor) RecoverEnvelopeWithGate(tx *control.ArchiveTransaction, gate func(archive.Envelope) (bool, error)) error {
 	if tx == nil || gate == nil {
 		return ErrMetadataTransaction
 	}
@@ -109,7 +118,14 @@ func (i *Ingestor) RecoverEnvelope(tx *control.ArchiveTransaction, gate func(arc
 	if hex.EncodeToString(hash[:]) != op.EnvelopeHash {
 		return archive.ErrIDConflict
 	}
-	if phase == "cancelled" || phase == "reserved" && !gate(e.Record) {
+	allowed := true
+	if phase == "reserved" {
+		allowed, err = gate(e)
+		if err != nil {
+			return err
+		}
+	}
+	if phase == "cancelled" || !allowed {
 		return tx.Cancel(func(control.ArchiveOperation) error { return nil }, func() error { return i.MarkEnvelopeProcessed(e) })
 	}
 	// A committed source is verified again before its processing marker. Never

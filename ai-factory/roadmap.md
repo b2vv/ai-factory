@@ -142,3 +142,12 @@ Exact old commands, parameters, figures and limitations are retained in [E4/E5 h
 Controlled DB/log access is determined by the needs of the specific scenario and existing permissions, not merely a “frontend” or “SDK” label. The number of parallel agents/PRs is determined by task independence and available resources; 3–8 or 5–50 is not a standard.
 
 The 2026-10-14 pass changed only the plan. No projects, browser scenarios, CI, deployments or evals ran; configurations, plugins and implementation of plan items were not changed.
+
+
+<a id="archive-session-summaries"></a>
+
+## 7. Archive session summaries
+
+| ID | Task | Primary record / acceptance |
+|---|---|---|
+| E6.1 / S1 | Owner-requested asynchronous time-triggered session summaries; Mongo authority, PG search projection | [S1 spec, plan, readiness and evidence](../runtime/storage/SESSION-SUMMARIES.md). Current task state lives there; no second tracker. |

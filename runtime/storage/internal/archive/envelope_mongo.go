@@ -20,6 +20,7 @@ type metadataDoc struct {
 	CapturedAt      string `bson:"captured_at"`
 	SourceEventTime string `bson:"source_event_time"`
 	Legacy          bool   `bson:"legacy"`
+	DerivedKind     string `bson:"derived_kind,omitempty"`
 }
 
 func envelopeDoc(e Envelope) (mongoDoc, error) {
@@ -28,7 +29,7 @@ func envelopeDoc(e Envelope) (mongoDoc, error) {
 		return mongoDoc{}, err
 	}
 	d := toDoc(e.Record)
-	d.Metadata = &metadataDoc{Version: 2, Generation: e.Metadata.Generation, Ordinal: e.Metadata.Ordinal, Legacy: e.Metadata.Legacy}
+	d.Metadata = &metadataDoc{Version: 2, Generation: e.Metadata.Generation, Ordinal: e.Metadata.Ordinal, Legacy: e.Metadata.Legacy, DerivedKind: e.Metadata.DerivedKind}
 	if e.Metadata.CapturedAt != nil {
 		d.Metadata.CapturedAt = e.Metadata.CapturedAt.Format(time.RFC3339Nano)
 	}
@@ -42,7 +43,7 @@ func (d mongoDoc) envelope() (Envelope, error) {
 		return Envelope{Version: 1, Record: d.toRecord(), Metadata: Metadata{Legacy: true}}, nil
 	}
 	m := d.Metadata
-	e := Envelope{Version: m.Version, Record: d.toRecord(), Metadata: Metadata{Generation: m.Generation, Ordinal: m.Ordinal, Legacy: m.Legacy}}
+	e := Envelope{Version: m.Version, Record: d.toRecord(), Metadata: Metadata{Generation: m.Generation, Ordinal: m.Ordinal, Legacy: m.Legacy, DerivedKind: m.DerivedKind}}
 	for _, pair := range []struct {
 		raw    string
 		target **time.Time
@@ -186,6 +187,13 @@ func (s *MongoStore) ScanEnvelopes(project, generation string, after, through in
 
 // MetadataSchemaReady inspects the exact uniqueness/order contract without DDL.
 func (s *MongoStore) MetadataSchemaReady() (bool, error) {
+	return s.metadataIndexReady(false)
+}
+
+// SummarySchemaReady additionally requires binary scope ordering; it is inspection only.
+func (s *MongoStore) SummarySchemaReady() (bool, error) { return s.metadataIndexReady(true) }
+
+func (s *MongoStore) metadataIndexReady(requireSimple bool) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), s.opTimeout)
 	defer cancel()
 	cursor, err := s.coll.Indexes().List(ctx)
@@ -209,6 +217,19 @@ func (s *MongoStore) MetadataSchemaReady() (bool, error) {
 		actualPartial, partialOK := raw.Lookup("partialFilterExpression").DocumentOK()
 		if !unique || !keysOK || !partialOK || !bytes.Equal(keys, actualKeys) || !bytes.Equal(partial, actualPartial) {
 			return false, errors.New("archive: incompatible metadata index")
+		}
+		if requireSimple {
+			c := raw.Lookup("collation")
+			if c.Type != 0 {
+				d, ok := c.DocumentOK()
+				if !ok {
+					return false, errors.New("archive: incompatible summary index collation")
+				}
+				locale, _ := d.Lookup("locale").StringValueOK()
+				if locale != "simple" {
+					return false, errors.New("archive: summary scope requires simple collation")
+				}
+			}
 		}
 		return true, nil
 	}

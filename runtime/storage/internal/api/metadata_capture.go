@@ -5,6 +5,7 @@ import (
 	"aifactory.local/storage/internal/capture"
 	"aifactory.local/storage/internal/control"
 	"aifactory.local/storage/internal/wal"
+	"context"
 	"errors"
 	"net/http"
 	"time"
@@ -31,7 +32,7 @@ func (s *Server) captureMetadata(w http.ResponseWriter, request *http.Request, t
 		writeJSON(w, code, map[string]any{"accepted": accepted, "receipts": receipts, "attempt_receipts": attempts, "outcome": "inspect_receipts", "error": s.captureDiagnostic(request, err)})
 		return false
 	}
-	if err := s.ing.RecoverEnvelope(tx, s.publishGate); err != nil {
+	if err := s.ing.RecoverEnvelopeWithGate(tx, s.publishEnvelopeGate(tx)); err != nil {
 		return fail(err)
 	}
 	state, err := tx.State()
@@ -100,8 +101,22 @@ func (s *Server) RecoverArchive() error {
 	defer s.mutate.Unlock()
 	return s.recoverArchiveLocked()
 }
+func (s *Server) recoverArchiveContext(ctx context.Context) error {
+	s.mutate.Lock()
+	defer s.mutate.Unlock()
+	return s.recoverArchiveLockedContext(ctx)
+}
 func (s *Server) recoverArchiveLocked() error {
+	return s.recoverArchiveLockedContext(context.Background())
+}
+
+// Cancellation is observed between projects and at publication gates. An already
+// accepted recovery transaction may finish its consistency steps before returning.
+func (s *Server) recoverArchiveLockedContext(ctx context.Context) error {
 	for _, project := range s.ctl.Registry().Projects() {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		if err := s.ctl.WithArchiveWriter(s.operatorPrincipal(), project, func(tx *control.ArchiveTransaction) error {
 			if tx == nil {
 				return nil
@@ -116,10 +131,13 @@ func (s *Server) recoverArchiveLocked() error {
 			if s.ing == nil {
 				return errors.New("activated archive requires existing intake and source")
 			}
-			return s.ing.RecoverEnvelope(tx, s.publishGate)
+			return s.ing.RecoverEnvelopeWithGate(tx, s.publishEnvelopeGateContext(ctx, tx))
 		}); err != nil {
 			return err
 		}
+	}
+	if err := ctx.Err(); err != nil {
+		return err
 	}
 	if ledger := s.ctl.Budget(); ledger != nil {
 		pending := ledger.Snapshot().Pending

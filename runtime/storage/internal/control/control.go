@@ -86,23 +86,25 @@ const (
 
 // mutation is the serialized form of one authority change (the WAL payload).
 type mutation struct {
-	ArchiveProjection *ArchiveProjection `json:"archive_projection,omitempty"`
-	ArchiveOperation  *ArchiveOperation  `json:"archive_operation,omitempty"`
-	Kind              mutationKind       `json:"kind"`
-	ArchiveGeneration string             `json:"archive_generation,omitempty"`
-	Workflow          *WorkflowReceipt   `json:"workflow,omitempty"`
-	UUID              string             `json:"uuid,omitempty"`
-	Label             string             `json:"label,omitempty"`
-	Loc               registry.Location  `json:"loc,omitempty"`
-	Confirm           bool               `json:"confirm,omitempty"`
-	Project           string             `json:"project,omitempty"`
-	Provider          string             `json:"provider,omitempty"`
-	Capability        string             `json:"capability,omitempty"`
-	Enabled           bool               `json:"enabled,omitempty"`
-	Grant             grantDTO           `json:"grant,omitempty"`
-	PrincipalID       string             `json:"principal_id,omitempty"`
-	SessionID         string             `json:"session_id,omitempty"`
-	DelEpoch          int64              `json:"del_epoch,omitempty"`
+	ProjectionCancellationBytes int64                   `json:"projection_cancellation_bytes,omitempty"`
+	SummaryConsent              *summaryConsentMutation `json:"summary_consent,omitempty"`
+	ArchiveProjection           *ArchiveProjection      `json:"archive_projection,omitempty"`
+	ArchiveOperation            *ArchiveOperation       `json:"archive_operation,omitempty"`
+	Kind                        mutationKind            `json:"kind"`
+	ArchiveGeneration           string                  `json:"archive_generation,omitempty"`
+	Workflow                    *WorkflowReceipt        `json:"workflow,omitempty"`
+	UUID                        string                  `json:"uuid,omitempty"`
+	Label                       string                  `json:"label,omitempty"`
+	Loc                         registry.Location       `json:"loc,omitempty"`
+	Confirm                     bool                    `json:"confirm,omitempty"`
+	Project                     string                  `json:"project,omitempty"`
+	Provider                    string                  `json:"provider,omitempty"`
+	Capability                  string                  `json:"capability,omitempty"`
+	Enabled                     bool                    `json:"enabled,omitempty"`
+	Grant                       grantDTO                `json:"grant,omitempty"`
+	PrincipalID                 string                  `json:"principal_id,omitempty"`
+	SessionID                   string                  `json:"session_id,omitempty"`
+	DelEpoch                    int64                   `json:"del_epoch,omitempty"`
 }
 
 // grantDTO is a JSON-safe projection of registry.Grant.
@@ -148,26 +150,27 @@ type metaFile struct {
 
 // Durable is the durable control registry.
 type Durable struct {
-	archiveStates     map[string]ArchiveState
-	externalActive    bool
-	budget            *budget.Ledger
-	mu                sync.Mutex
-	capacityCheck     func(int64) error
-	reserved          atomic.Int64
-	externalReserved  atomic.Int64
-	workflowPrepared  map[string]WorkflowReceipt
-	workflowCompleted map[string]WorkflowReceipt
-	reg               *registry.Registry
-	ret               *retention.Manager
-	w                 *wal.WAL
-	lock              *os.File // exclusive cross-process ownership of stateDir (flock), held for lifetime
-	stateDir          string
-	metaPath          string
-	highWater         uint64
-	delEpoch          int64
-	appendable        bool
-	blocked           bool
-	blockReason       string
+	summaryActivations map[summaryScope]SummaryActivation
+	archiveStates      map[string]ArchiveState
+	externalActive     bool
+	budget             *budget.Ledger
+	mu                 sync.Mutex
+	capacityCheck      func(int64) error
+	reserved           atomic.Int64
+	externalReserved   atomic.Int64
+	workflowPrepared   map[string]WorkflowReceipt
+	workflowCompleted  map[string]WorkflowReceipt
+	reg                *registry.Registry
+	ret                *retention.Manager
+	w                  *wal.WAL
+	lock               *os.File // exclusive cross-process ownership of stateDir (flock), held for lifetime
+	stateDir           string
+	metaPath           string
+	highWater          uint64
+	delEpoch           int64
+	appendable         bool
+	blocked            bool
+	blockReason        string
 }
 
 // opened is the shared result of acquiring exclusive ownership of stateDir, opening the
@@ -451,6 +454,8 @@ func (d *Durable) replay(recs []wal.Record) error {
 // mutation methods (ordered relative to persistence per the ordering contract).
 func (d *Durable) apply(actor registry.Principal, m mutation) error {
 	switch m.Kind {
+	case kSummaryProjectionCancel:
+		return d.applyProjectionCancellation(m)
 	case kArchiveProjection:
 		return d.applyArchiveProjection(m)
 	case kArchiveReady:
@@ -474,7 +479,12 @@ func (d *Durable) apply(actor registry.Principal, m mutation) error {
 	case kEnroll:
 		_, err := d.reg.EnrollLocation(actor, m.UUID, m.Loc, m.Confirm)
 		return err
+	case kSummaryConsent:
+		return d.applySummaryConsent(m)
 	case kSetConsent:
+		if m.Capability == "summary" {
+			return d.applyLegacySummaryConsent(m)
+		}
 		_, err := d.reg.SetConsent(actor, m.Project, m.Provider, m.Capability, m.Enabled)
 		if err != nil {
 			return err
@@ -707,6 +717,9 @@ func (d *Durable) SetConsent(actor registry.Principal, project, provider, capabi
 	}
 	if actor.Kind != registry.Operator {
 		return 0, registry.ErrNotOperator
+	}
+	if capability == "summary" {
+		return d.setSummaryConsent(project, provider, enabled)
 	}
 	m := mutation{Kind: kSetConsent, Project: project, Provider: provider, Capability: capability, Enabled: enabled}
 	if enabled {

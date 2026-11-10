@@ -43,7 +43,11 @@ func (s *Server) handleRecentSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	for key, values := range q {
-		if !allowed[key] || len(values) != 1 || !utf8.ValidString(values[0]) || len(values[0]) > 8192 {
+		bound := 8192
+		if key == "cursor" {
+			bound = maxCursorEncoded
+		}
+		if !allowed[key] || len(values) != 1 || !utf8.ValidString(values[0]) || len(values[0]) > bound {
 			writeErr(w, 400, "unique bounded time-query parameters required")
 			return
 		}
@@ -119,6 +123,8 @@ func (s *Server) handleRecentSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	window, readErr := s.searchStore.TimeWindow(cursor.Checkpoint, field, since, cursor.After, cursor.Upper, query)
 	hits := []timedHit{}
+	prepared := map[string]preparedSummary{}
+	summarySeen := false
 	next := window.Next
 	used := 0
 	incomplete := false
@@ -153,6 +159,19 @@ func (s *Server) handleRecentSearch(w http.ResponseWriter, r *http.Request) {
 			}
 			if provider != "" && e.Record.Provider != provider {
 				continue
+			}
+			if e.Record.Type == archive.TypeSummary {
+				if summarySeen {
+					next = ref.Before
+					break
+				}
+				summarySeen = true
+				proof, err := s.prepareSummaryEnvelope(e, source)
+				if err != nil {
+					readErr = err
+					break
+				}
+				prepared[archive.IdentityKey(e.Record)] = proof
 			}
 			hit := timedHit{Record: e.Record, CapturedAt: e.Metadata.CapturedAt, SourceEventTime: e.Metadata.SourceEventTime}
 			raw, err := json.Marshal(hit)
@@ -201,7 +220,12 @@ func (s *Server) handleRecentSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		visible := []timedHit{}
 		for _, hit := range hits {
-			if len(s.ctl.Retention().Serve([]archive.Record{hit.Record}, "capture")) == 1 {
+			allowed, err := s.allowPreparedSummary(tx, hit.Record, prepared[archive.IdentityKey(hit.Record)])
+			if err != nil {
+				writeErr(w, 503, "archive authority unavailable")
+				return
+			}
+			if allowed {
 				visible = append(visible, hit)
 			}
 		}
@@ -214,10 +238,10 @@ func (s *Server) handleRecentSearch(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		snippetRecords := make([]archive.Record, 0, len(visible))
+		snippets := make([]snippetReference, 0, len(visible))
 		for _, hit := range visible {
-			snippetRecords = append(snippetRecords, hit.Record)
+			snippets = append(snippets, preparedSnippet(hit.Record, prepared[archive.IdentityKey(hit.Record)], query, true))
 		}
-		writeJSON(w, 200, map[string]any{"project": project, "search_mode": "tokenized_simple_nfc_casefold", "sort": "recent", "time_field": field, "since": canonicalSince, "unknown_times": "excluded", "hits": visible, "snippets": sourceSnippets(snippetRecords, query, true), "next_cursor": token, "derived": true, "total_exact": false, "incomplete": incomplete, "consistency": "committed_upper_bound_live_authorization"})
+		writeJSON(w, 200, map[string]any{"project": project, "search_mode": "tokenized_simple_nfc_casefold", "sort": "recent", "time_field": field, "since": canonicalSince, "unknown_times": "excluded", "hits": visible, "snippets": snippets, "next_cursor": token, "derived": true, "total_exact": false, "incomplete": incomplete, "consistency": "committed_upper_bound_live_authorization"})
 	})
 }

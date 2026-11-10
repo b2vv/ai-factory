@@ -8,12 +8,17 @@ import (
 	"time"
 )
 
+// DerivedSessionExtract is an authoritative marker set only by the internal writer.
+const DerivedSessionExtract = "session-extract/1"
+const SessionExtractMessagePrefix = "af-summary-v1/"
+
 type Metadata struct {
 	Generation      string     `json:"generation"`
 	Ordinal         int64      `json:"ordinal"`
 	CapturedAt      *time.Time `json:"captured_at"`
 	SourceEventTime *time.Time `json:"source_event_time"`
 	Legacy          bool       `json:"legacy"`
+	DerivedKind     string     `json:"derived_kind,omitempty"`
 }
 
 type Envelope struct {
@@ -59,6 +64,9 @@ func canonicalEnvelope(e Envelope) (Envelope, error) {
 	m := e.Metadata
 	if e.Version != 2 || m.Generation == "" || len(m.Generation) > 128 || m.Ordinal <= 0 {
 		return Envelope{}, errors.New("archive: invalid metadata version/order")
+	}
+	if m.DerivedKind != "" && (m.DerivedKind != DerivedSessionExtract || m.Legacy || e.Record.Type != TypeSummary || m.SourceEventTime != nil) {
+		return Envelope{}, errors.New("archive: invalid derived metadata")
 	}
 	if m.Legacy {
 		if m.CapturedAt != nil || m.SourceEventTime != nil {
