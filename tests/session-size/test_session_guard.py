@@ -35,6 +35,8 @@ class GuardTests(unittest.TestCase):
         self.store = self.base / 'state'
         self.transcript = self.base / 'transcript.jsonl'
         self.transcript.touch()
+        self.profile = self.base / 'profile.json'
+        self.profile.write_text(json.dumps({'schema': 1, 'managed_root': str(HELPER.parents[2]), 'store': str(self.store), 'roots': [str(self.repo)]}))
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -170,8 +172,8 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(3, state['depth'])
         self.assertEqual(token, state['resumed'])
         self.assertFalse((self.store / ('claim-' + token + '.json')).exists())
-        self.assertIn(SUMMARY['goal'], g.resume(self.store, token, 'claude', 'new', self.repo))
-        self.assertEqual('', g.resume(self.store, token, 'claude', 'new', self.repo))
+        with self.assertRaisesRegex(ValueError, 'partial resume state'):
+            g.resume(self.store, token, 'claude', 'new', self.repo)
         next_token = self.checkpoint('new')
         with self.assertRaisesRegex(ValueError, 'maximum handoff chain'):
             g.resume(self.store, next_token, 'claude', 'overflow', self.repo)
@@ -192,11 +194,11 @@ class GuardTests(unittest.TestCase):
 
     def test_huge_cli_payload_blocked(self):
         result = subprocess.run([sys.executable, '-B', str(HELPER), 'hook', '--host', 'claude',
-                                 '--store', str(self.store)], input=' ' * 8_000_001,
+                                 '--profile', str(self.profile)], input=' ' * 8_000_001,
                                 capture_output=True, text=True, timeout=15)
         self.assertEqual(0, result.returncode)
         self.assertIn('BLOCKED', json.loads(result.stdout)['systemMessage'])
-        self.assertIn('payload too large', result.stdout)
+        self.assertIn('No delivery is confirmed', result.stdout)
         self.assertFalse(self.store.exists())
 
     def test_restart_chain_limit(self):
@@ -278,7 +280,7 @@ class GuardTests(unittest.TestCase):
 
     def test_concurrent_subprocess_sessions_safe_retry(self):
         args = [sys.executable, '-B', str(HELPER), 'checkpoint', '--host', 'claude',
-                '--cwd', str(self.repo), '--store', str(self.store)]
+                '--cwd', str(self.repo), '--profile', str(self.profile)]
         children = [(str(i), subprocess.Popen(args + ['--session', str(i)], stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)) for i in range(4)]
         results = []
@@ -358,9 +360,11 @@ class GuardTests(unittest.TestCase):
     def test_parallel_duplicate_hooks_and_separate_roots(self):
         other = self.base / 'other'
         subprocess.run(['git', 'clone', '-q', str(self.repo), str(other)], check=True)
+        profile = json.loads(self.profile.read_text()); profile['roots'].append(str(other))
+        self.profile.write_text(json.dumps(profile))
         self.transcript.write_bytes(b'')
         with self.transcript.open('r+b') as f: f.truncate(g.LIMIT)
-        args = [sys.executable, '-B', str(HELPER), 'hook', '--host', 'claude', '--store', str(self.store)]
+        args = [sys.executable, '-B', str(HELPER), 'hook', '--host', 'claude', '--profile', str(self.profile)]
         children = []
         for root, sid in [(self.repo, 'same')] * 4 + [(self.repo, 'second'), (other, 'same')]:
             proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -380,7 +384,7 @@ class GuardTests(unittest.TestCase):
 
     def test_manual_busy_exit_is_retryable_without_success_id(self):
         args = [sys.executable, '-B', str(HELPER), 'checkpoint', '--host', 'claude',
-                '--session', 'manual', '--cwd', str(self.repo), '--store', str(self.store)]
+                '--session', 'manual', '--cwd', str(self.repo), '--profile', str(self.profile)]
         with g.locked(self.store):
             result = subprocess.run(args, input=json.dumps(SUMMARY), capture_output=True,
                                     text=True, timeout=5)
@@ -394,7 +398,7 @@ class GuardTests(unittest.TestCase):
 
 
 
-    def test_later_event_retries_interrupted_resume_claim(self):
+    def test_later_event_blocks_interrupted_resume_claim(self):
         token = self.checkpoint()
         payload = dict(hook_event_name='SessionStart', session_id='target', cwd=str(self.repo),
                        transcript_path=str(self.transcript))
@@ -405,8 +409,8 @@ class GuardTests(unittest.TestCase):
         with patch.object(g, 'atomic', side_effect=fail_claim), self.assertRaises(OSError):
             g.event(self.store, 'claude', payload, token)
         payload['hook_event_name'] = 'PostToolUse'
-        self.assertIn(SUMMARY['goal'], json.dumps(g.event(self.store, 'claude', payload, token)))
-        self.assertEqual({}, g.event(self.store, 'claude', payload, token))
+        with self.assertRaisesRegex(ValueError, 'partial resume state'):
+            g.event(self.store, 'claude', payload, token)
 
 
 class PortableStoreTests(unittest.TestCase):

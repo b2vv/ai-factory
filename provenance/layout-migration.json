@@ -36,7 +36,7 @@
       "old_path": "PROVENANCE.md",
       "old_sha256": "2d8a713b39377e7ce5397231600b9ac92e9cf3c2e7c04ba589405b95c09c025d",
       "new_path": "PROVENANCE.md",
-      "action": "updated",
+      "action": "updated-native-handoff",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
@@ -62,9 +62,10 @@
         "Owner-authorized shared-source update guidance; immutable historical source identities retained.",
         "Owner-directed managed-kit methodology recovery; historical identities retained.",
         "Owner-directed managed-kit methodology recovery; historical identities retained.",
-        "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained."
+        "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained.",
+        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation."
       ],
-      "new_sha256": "b5fea6f9b188ee60349b47939f5b61aa1aeba623b1e1e7dcaea968c01481f291"
+      "new_sha256": "1e0b5d44b3a52cf1c3940e71f9ee41c3e22d00f264e37944329a07f53956f489"
     },
     {
       "old_path": "README.md",
@@ -3128,19 +3129,22 @@
       "old_path": "session-size/session_guard.py",
       "old_sha256": "16bfb6b19123548647dc713890c448e97ce39e5e27c6ebfe64d91b6c7c0c0e47",
       "new_path": "runtime/session-size/session_guard.py",
-      "action": "moved",
-      "transformations": [],
-      "new_sha256": "16bfb6b19123548647dc713890c448e97ce39e5e27c6ebfe64d91b6c7c0c0e47"
+      "action": "updated-native-handoff",
+      "transformations": [
+        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation."
+      ],
+      "new_sha256": "2e015117162a5c9a8df48c3e1bd13ff26b191aded888fa3893a7553dcfed1165"
     },
     {
       "old_path": "session-size/test_session_guard.py",
       "old_sha256": "a5fad242992b6cacf2a9187844b04f3ba7c7f5d64bdafc3dd73a8ff9db880977",
       "new_path": "tests/session-size/test_session_guard.py",
-      "action": "relocated-and-updated",
+      "action": "updated-native-handoff",
       "transformations": [
-        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff."
+        "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
+        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation."
       ],
-      "new_sha256": "d8e4c52da77f12a98d89c15068db63a69b6779a7a295a933998602c0a0231c42"
+      "new_sha256": "aeca6cb72bb236fa2ea9b68514c65bd786872b6fb0fccae3c467df0d50d8cd1f"
     },
     {
       "old_path": "skills/acceptance-spec/SKILL.md",
@@ -3238,7 +3242,7 @@
       "old_path": "tools/run_tests.py",
       "old_sha256": "caaa9316353412d6a2cef24f63ec66f4e431521a9fed76cc5d4c092c9ba3c5cd",
       "new_path": "tools/run_tests.py",
-      "action": "updated",
+      "action": "updated-native-handoff",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
         "0.5 release evolution: checkpoint protocol/navigation or refreshed provenance",
@@ -3247,9 +3251,10 @@
         "Current user-authorized takeover correction; immutable original hash retained.",
         "Reviewed main integration; original source identity retained.",
         "Owner-authorized UI measurement integration; original historical hash retained.",
-        "Owner-authorized read-only archive routing; historical source hash retained."
+        "Owner-authorized read-only archive routing; historical source hash retained.",
+        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation."
       ],
-      "new_sha256": "b612d3e62d05f602405be37297e378bf1047e5ba4c971648196e98a9e6641914"
+      "new_sha256": "6a66c77773a3da5f29f7c4a664971d1f587a00031fca1818619635f063b71d52"
     },
     {
       "old_path": "tools/test_collection.py",

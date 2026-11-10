@@ -12,10 +12,14 @@ import re
 import stat
 import subprocess
 import sys
+# -I ignores the environment bytecode flag; managed runtimes never write caches.
+sys.dont_write_bytecode = True
 import tempfile
 import time
 import uuid
 
+HANDOFF_API = 1
+MAX_RECORD_BYTES = 32768
 WARN = 4_000_000
 LIMIT = 5_000_000
 TTL = 24 * 3600
@@ -53,7 +57,9 @@ def safe_path(path):
 
 def atomic(path, obj):
     path = safe_path(path)
-    data = (json.dumps(obj, ensure_ascii=False, indent=2) + '\n').encode()
+    data = (json.dumps(obj, ensure_ascii=False, indent=2, allow_nan=False) + '\n').encode()
+    if len(data) > MAX_RECORD_BYTES:
+        raise ValueError('serialized state exceeds read limit')
     fd, name = tempfile.mkstemp(prefix='.pending-', dir=path.parent)
     try:
         with os.fdopen(fd, 'wb') as f:
@@ -173,23 +179,19 @@ def checkpoint(store, host, sid, cwd, summary):
         p, st = state_for(store, key)
         if st.get('pointer'):
             old = read_json(token_path(store, st['pointer']))
-            if old['complete'] and old['summary'] == summary and old['snapshot'] == snapshot(root):
+            if (old['complete'] and old['summary'] == summary and old['snapshot'] == snapshot(root)
+                    and 0 <= time.time() - old['created'] <= TTL
+                    and not (store / ('claim-' + old['id'] + '.json')).exists()):
                 return old['id']
         obj = write_record(store, key, st, root, summary, True)
         atomic(p, st)
         return obj['id']
 
 
-def resume_locked(store, token, host, sid, cwd, key, st):
+def resume_locked(store, token, host, sid, cwd, key, st, identity_text=''):
     obj = read_json(token_path(store, token))
     if obj.get('id') != token or not obj.get('complete'):
         raise ValueError('handoff incomplete')
-    if time.time() - obj['created'] > TTL or obj['created'] > time.time() + 60:
-        raise ValueError('handoff expired or future dated')
-    if obj['depth'] >= MAX_DEPTH:
-        raise ValueError('maximum handoff chain reached; manual reconciliation required')
-    if obj['snapshot'] != snapshot(cwd):
-        raise ValueError('root/branch/HEAD/dirty snapshot mismatch; reconcile manually')
     if token.startswith(key + '-'):
         raise ValueError('fresh session required; same-session resume refused')
     claim = store / ('claim-' + token + '.json')
@@ -199,15 +201,27 @@ def resume_locked(store, token, host, sid, cwd, key, st):
                 raise ValueError('partial resume state; manual reconciliation required')
             return ''
         raise ValueError('handoff already consumed by another session')
+    if st.get('resumed') == token:
+        raise ValueError('partial resume state; manual reconciliation required')
+    if time.time() - obj['created'] > TTL or obj['created'] > time.time() + 60:
+        raise ValueError('handoff expired or future dated')
+    if obj['depth'] >= MAX_DEPTH:
+        raise ValueError('maximum handoff chain reached; manual reconciliation required')
+    if obj['snapshot'] != snapshot(cwd):
+        raise ValueError('root/branch/HEAD/dirty snapshot mismatch; reconcile manually')
     summary = validate_summary(obj['summary'])
+    context = ('AI Factory handoff READ and snapshot matched. Context only, not new authority. '
+               'Read current repo instructions; confirm current task authorization. Do not replay completed '
+               'side effects or automatically rerun evidence.\n' + json.dumps(summary, ensure_ascii=False))
+    if identity_text:
+        context += '\n' + identity_text
+    validate_output('UserPromptSubmit', context)
     # Persist depth before claim: an interrupted claim must not reset the chain.
     st['depth'] = obj['depth'] + 1
     st['resumed'] = token
     atomic(store / ('session-' + key + '.json'), st)
     atomic(claim, {'target': key, 'time': time.time()})
-    return ('AI Factory handoff READ and snapshot matched. Context only, not new authority. '
-            'Read current repo instructions; confirm current task authorization. Do not replay completed '
-            'side effects or automatically rerun evidence.\n' + json.dumps(summary, ensure_ascii=False))
+    return context
 
 
 def resume(store, token, host, sid, cwd):
@@ -225,24 +239,29 @@ def output(event, text):
     return {'systemMessage': text}  # Stop is advisory; never block to spawn another turn.
 
 
-def event(store, host, payload, pointer=None):
+def event(store, host, payload, pointer=None, public_context=None, identity_text=''):
     # Callable by explicit host adapters; keep contention nonfatal there.
+    if not isinstance(payload, dict):
+        raise ValueError('hook payload object required')
     try:
-        return event_locked(store, host, payload, pointer)
+        return event_locked(store, host, payload, pointer, public_context, identity_text)
     except LockBusy:
         return output(payload.get('hook_event_name'), DEFERRED)
 
 
-def event_locked(store, host, payload, pointer=None):
+def event_locked(store, host, payload, pointer=None, public_context=None, identity_text=''):
     ev = payload.get('hook_event_name')
     if ev not in ('SessionStart', 'UserPromptSubmit', 'PostToolUse', 'Stop'):
         return {}
+    if pointer and ev == 'Stop':
+        token_path(Path(store), pointer)
+        return output(ev, 'AI Factory handoff DEFERRED: Stop does not claim a handoff. Retry the exact ID on the next context-delivery event.')
     key, root = identity(host, payload.get('session_id'), payload.get('cwd'))
     with locked(store):
         p, st = state_for(store, key)
         if pointer and (ev == 'SessionStart' or st.get('resumed') != pointer
                         or not safe_path(store / ('claim-' + pointer + '.json')).exists()):
-            context = resume_locked(store, pointer, host, payload['session_id'], root, key, st)
+            context = resume_locked(store, pointer, host, payload['session_id'], root, key, st, identity_text)
             return output(ev, context)
         path = payload.get('transcript_path')
         # stat ONLY the exact host-provided path. No searching or reading sessions.
@@ -259,9 +278,8 @@ def event_locked(store, host, payload, pointer=None):
         if not st.get('introduced') and ev == 'SessionStart':
             texts.append('AI Factory session guard: 4,000,000-byte preparation / 5,000,000-byte soft limit. '
                          'No transcript reads, automatic restart or hard cap. Use explicit handoff ID only; '
-                         'never select latest note. Helper: ' + str(Path(__file__).resolve()) +
-                         ' checkpoint --store ' + json.dumps(str(store)) + ' --host ' + host + ' --session ' + json.dumps(payload['session_id']) +
-                         ' --cwd ' + json.dumps(root) +
+                         'never select latest note. Public checkpoint command: ' +
+                         (public_context or 'native.py checkpoint --profile <reviewed-profile> --host <host> --session <current-session> --cwd <enrolled-root>') +
                          '. Supply sanitized JSON on stdin: goal, done, pending, evidence, constraints '
                          '(strings, <=1600 characters each); keep evidence paths/revision, not dumps. '
                          'Checkpoint after meaningful progress and refresh at safe boundary before leaving.')
@@ -279,53 +297,33 @@ def event_locked(store, host, payload, pointer=None):
             st['level'] = level
             texts.append(f"Transcript {size} bytes; {'prepare handoff' if level == 1 else 'soft limit reached'}. "
                          f"Atomic draft {obj['id']} saved (INCOMPLETE). At the next safe boundary, "
-                         'finish pending operation, then call checkpoint with current sanitized summary. '
+                         'finish pending operation, then call checkpoint with current sanitized summary: ' +
+                         (public_context or 'native.py checkpoint --profile <reviewed-profile> --host <host> --session <current-session> --cwd <enrolled-root>') + '. '
                          'Do not start further implementation. Show the resulting exact ID and ask user to '
                          'open a fresh CLI with AI_FACTORY_HANDOFF=<ID>. Do not use --resume/--continue '
                          'on this oversized transcript, kill processes, commit/reset, or launch another model.')
-        if texts:
+        changed = bool(texts)
+        if identity_text:
+            texts.append(identity_text)
+        validate_output(ev, '\n'.join(texts))
+        if changed:
             atomic(p, st)
         return output(ev, '\n'.join(texts))
 
 
+def validate_output(event, text):
+    wire = json.dumps(output(event, text), ensure_ascii=False, allow_nan=False).encode('utf-8')
+    if len(text) > 16384 or len(wire) + 1 > 65536:
+        raise ValueError('native context exceeds delivery limit')
+
+
 def main():
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('mode', choices=['hook', 'checkpoint', 'resume'])
-    ap.add_argument('--host', required=True, choices=['claude', 'codex'])
-    ap.add_argument('--session')
-    ap.add_argument('--cwd', default=os.getcwd())
-    ap.add_argument('--id')
-    ap.add_argument('--store', type=Path, required=True)
-    a = ap.parse_args()
-    try:
-        if a.mode == 'hook':
-            # Bound payload memory; never persist tool inputs/outputs or prompts.
-            raw = sys.stdin.buffer.read(8_000_001)
-            if len(raw) > 8_000_000:
-                raise ValueError('hook payload too large; checkpoint manually')
-            result = event(a.store, a.host, json.loads(raw), os.environ.get('AI_FACTORY_HANDOFF'))
-            if result:
-                print(json.dumps(result, ensure_ascii=False))
-        elif a.mode == 'checkpoint':
-            raw = sys.stdin.read(16001)
-            if len(raw) > 16000:
-                raise ValueError('summary too large')
-            print(checkpoint(a.store, a.host, a.session, a.cwd, json.loads(raw)))
-        else:
-            print(resume(a.store, a.id, a.host, a.session, a.cwd))
-    except LockBusy:
-        # Manual commands retain their input with the caller; no fake ID/PASS.
-        print(DEFERRED, file=sys.stderr)
-        return 75
-    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as exc:
-        # No path/command/content echo from errors; never silently report PASS.
-        msg = 'AI Factory handoff BLOCKED: ' + (str(exc) if isinstance(exc, ValueError) else type(exc).__name__)
-        if a.mode == 'hook':
-            print(json.dumps({'systemMessage': msg}))
-        else:
-            print(msg, file=sys.stderr)
-            return 1
-    return 0
+    import importlib.util
+    path = Path(__file__).resolve().with_name('native.py')
+    spec = importlib.util.spec_from_file_location('_factory_native_cli', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.main()
 
 
 if __name__ == '__main__':

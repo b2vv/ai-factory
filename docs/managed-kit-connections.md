@@ -30,6 +30,14 @@ Source Git changes must not block product work merely because the source checkou
 is dirty or on a task branch. Runtime hooks, images, credentials, grants and data
 remain separately controlled; installing helper files does not activate them.
 
+For an explicitly registered non-Docker handoff connection, follow the
+[managed native handoff contract](managed-native-handoff.md). Initial registration
+is an explicit hash-bound companion step, not an installer side effect. Thereafter
+complete-component kit updates change the stable canonical runtime for every
+enrolled project; run the installed connect-handoff.py verify and reconcile its
+identity receipt as part of the update closeout. Do not silently remove its component
+or treat saved hook configuration as native-delivery proof.
+
 ## Recovery of inconsistent historical metadata
 
 Mismatch means BLOCKED, not permission to rewrite installed.json or forge a receipt.

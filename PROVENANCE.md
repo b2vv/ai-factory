@@ -321,3 +321,16 @@ bindings, not semantic truth or missing contradictions. Synthetic blind-agent
 scenario packets remain in private task evidence; no real product content is
 imported. Existing calls need no new boilerplate and retain their legacy digest
 when no ordering block is supplied. No live host activation is performed.
+
+## Managed non-Docker handoff connection
+
+Owner-authorized first-party profile adapter, guarded host-registration connector
+and isolated tests. The canonical portable guard is an explicit functional successor
+of its preserved historical source, not a byte-identical migration artifact. Exact
+input/output commitments are recorded in provenance/native-handoff.json; legacy
+runtime variants, notices and unrelated archive code retain their existing bytes.
+The native identity, delivery-bound and claim-order concepts reuse the existing
+first-party guard fixes, without Docker dispatch, registry import or external code.
+No credentials, transcript, private machine mapping or product content is included.
+Package verification and isolated execution do not activate hooks, modify trust,
+prove native receipt, publish a release or grant new user authority.

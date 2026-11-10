@@ -18,9 +18,19 @@ class LayoutIntegrityTests(unittest.TestCase):
   registry=json.loads((ROOT/'provenance/skill-registry.json').read_text());ids=[b['id'] for b in registry['skills']];self.assertEqual(len(ids),len(set(ids)))
  def test_runtime_variants_and_notices_preserved_byte_for_byte(self):
   m=json.loads((ROOT/'provenance/layout-migration.json').read_text());rows={r['old_path']:r for r in m['files']}
-  helpers=['onboarding/preflight.py','review/review_package.py','session-size/session_guard.py','collection/agents/ai-factory/review/review_package.py','collection/agents/ai-factory/session-size/session_guard.py']
+  helpers=['onboarding/preflight.py','review/review_package.py','collection/agents/ai-factory/review/review_package.py','collection/agents/ai-factory/session-size/session_guard.py']
   for n,r in rows.items():
    if n in helpers or any(s in Path(n).name.lower() for s in ['license','-ofl','notice']):self.assertEqual(r['old_sha256'],r['new_sha256'],n)
+ def test_native_successor_binds_original_and_current_portable_guard(self):
+  history=json.loads((ROOT/'provenance/layout-migration.json').read_text())
+  row=next(r for r in history['files'] if r['old_path']=='session-size/session_guard.py')
+  proof=json.loads((ROOT/'provenance/native-handoff.json').read_text())
+  self.assertEqual('16bfb6b19123548647dc713890c448e97ce39e5e27c6ebfe64d91b6c7c0c0e47',row['old_sha256'])
+  self.assertEqual(row['old_sha256'],proof['portable_guard_before_sha256'])
+  self.assertEqual(row['new_sha256'],proof['portable_guard_after_sha256'])
+  self.assertTrue(row['transformations']);self.assertNotEqual(row['old_sha256'],row['new_sha256'])
+  for path,digest in proof['files'].items():
+   self.assertEqual(digest,hashlib.sha256((ROOT/path).read_bytes()).hexdigest())
  @unittest.skipUnless(os.environ.get('AI_FACTORY_PREVIOUS_RELEASE'),'explicit previous release required; original-body comparison NOT_TESTED')
  def test_all_original_skill_bodies_only_link_targets_change(self):
   previous=Path(os.environ['AI_FACTORY_PREVIOUS_RELEASE']);m=json.loads((ROOT/'provenance/source-map.json').read_text());count=0

@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.8.0-alpha.1+codex-events.1",
+  "version": "0.8.0-alpha.1+native-handoff.1",
   "status": "ALPHA_EXPERIMENTAL_UNTAGGED_CODEX_EVENT_SUBSET",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -37,7 +37,7 @@
       "dependencies": [
         "core"
       ],
-      "activation": "manual explicit store; no callback registration"
+      "activation": "explicit profile-bound manual use or separately approved native hook registration; installation does not activate"
     },
     "graphify": {
       "required": false,
@@ -133,7 +133,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "b5fea6f9b188ee60349b47939f5b61aa1aeba623b1e1e7dcaea968c01481f291",
+      "sha256": "1e0b5d44b3a52cf1c3940e71f9ee41c3e22d00f264e37944329a07f53956f489",
       "component": "core"
     },
     {
@@ -294,7 +294,12 @@
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "db6124d846f11da00777e8d4c0f1b619c4ece86f4c894f5c6c4903803a6c401b"
+      "sha256": "c1d72c62e76ee9c13a12b5dfea495b461919ba7161d776d39acef71adf1db607"
+    },
+    {
+      "path": "docs/managed-native-handoff.md",
+      "component": "core",
+      "sha256": "e74a2241f9740ddceb99025749ba3a5363c7297ed2f88f24f3a962c780b5c722"
     },
     {
       "path": "docs/migration-0.4.md",
@@ -533,7 +538,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "746b4875ffd663a9f4fa2d551953e87c47a96e235825e7c0079e6bc5844c6c8b",
+      "sha256": "6aef6db2b0597ae276ace451bff561f035bcea12eddc415a19da2951f1ca0617",
       "component": "core"
     },
     {
@@ -545,6 +550,11 @@
       "path": "provenance/manual-store-contract.json",
       "component": "core",
       "sha256": "2bd406b7edb4e481e591e6522fe498650550b40ecd7fea93f78e02a57cd72b97"
+    },
+    {
+      "path": "provenance/native-handoff.json",
+      "component": "core",
+      "sha256": "dafe3b8c7782f9f6bc41e43264618774135d07ab2acbb78469fe28adb0cf8cb6"
     },
     {
       "path": "provenance/native-identity-guidance.json",
@@ -812,8 +822,13 @@
       "sha256": "bd4e94da05a597c721e07a3f3457b7a817ccfac824d77199332c6de0323f4bbc"
     },
     {
+      "path": "runtime/session-size/native.py",
+      "component": "session-guard",
+      "sha256": "15267c3a6a04230cf04aba5216df9f8d05c4f5d7aa22481201937457484d988c"
+    },
+    {
       "path": "runtime/session-size/session_guard.py",
-      "sha256": "16bfb6b19123548647dc713890c448e97ce39e5e27c6ebfe64d91b6c7c0c0e47",
+      "sha256": "2e015117162a5c9a8df48c3e1bd13ff26b191aded888fa3893a7553dcfed1165",
       "component": "session-guard"
     },
     {
@@ -3833,8 +3848,13 @@
     },
     {
       "path": "tests/collection/test_layout_integrity.py",
-      "sha256": "f67aecb1288cac271ad30313935ae5cc8daad27ecfe8038180afc51a52324760",
+      "sha256": "6e9b1ef023975ed8b7e9a1f45f585048440d195521d8f80d3848773e7a193f6a",
       "component": "core"
+    },
+    {
+      "path": "tests/connect-handoff/test_connect_handoff.py",
+      "component": "core",
+      "sha256": "0eda9408d1466e9ef5ad10ab42ec22ba907f86f51c8a36a9db2d81cb44878e22"
     },
     {
       "path": "tests/connect/test_connect_project.py",
@@ -3850,6 +3870,11 @@
       "path": "tests/constraints/test_evidence.py",
       "sha256": "e9ecad4ca4b05e11195d7f01a7f438350198f6aa21af6083033f2f645457d7cf",
       "component": "core"
+    },
+    {
+      "path": "tests/handoff-integration/test_installed_flow.py",
+      "component": "core",
+      "sha256": "f7e0ec6b20e72e4d6e29e11795b7b5ab93ebdca0b1bb448975cdf7b341624ca1"
     },
     {
       "path": "tests/install/test_components.py",
@@ -4032,8 +4057,13 @@
       "sha256": "26572676ec1312255262e3f92c64f53de746b00f5d6468e867cc75748e25af30"
     },
     {
+      "path": "tests/session-size/test_native.py",
+      "component": "core",
+      "sha256": "f9dbdc2c21574c75659e14b505ada5b9e045203e06ed717061e76127c5c51677"
+    },
+    {
       "path": "tests/session-size/test_session_guard.py",
-      "sha256": "d8e4c52da77f12a98d89c15068db63a69b6779a7a295a933998602c0a0231c42",
+      "sha256": "aeca6cb72bb236fa2ea9b68514c65bd786872b6fb0fccae3c467df0d50d8cd1f",
       "component": "core"
     },
     {
@@ -4050,6 +4080,11 @@
       "path": "tests/ui-measurements/test_node.py",
       "component": "core",
       "sha256": "e6e8bacf8b6b7a60e8f6117a6cea2ea8c1a6bbbc79022604923151f0dd7ae767"
+    },
+    {
+      "path": "tools/connect-handoff.py",
+      "component": "core",
+      "sha256": "81e256f6c09685391938085fca4ab8841159b544ec110437c327bc9c0bb64a1b"
     },
     {
       "path": "tools/connect-project.py",
@@ -4073,7 +4108,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "b612d3e62d05f602405be37297e378bf1047e5ba4c971648196e98a9e6641914",
+      "sha256": "6a66c77773a3da5f29f7c4a664971d1f587a00031fca1818619635f063b71d52",
       "component": "core"
     },
     {
