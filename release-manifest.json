@@ -138,7 +138,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "669e8c10242f9ef07eec880b66093bfe5635bb5aa8b099f00d77adf4ad661d0b",
+      "sha256": "92adddcdaa1fd8189bdd5fe96667c2f83ba8becb6fc68de8888c304eba0fc8ac",
       "component": "core"
     },
     {
@@ -643,7 +643,7 @@
     },
     {
       "path": "runtime/README.md",
-      "sha256": "2df0e4659e921c926b17a351929989df73cfb7700ffb486111346ab269be5e1e",
+      "sha256": "37e3871d6adb6ae93af19369b0b68f5d23b163c89b39128dd47e40c096e4a12b",
       "component": "core"
     },
     {

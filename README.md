@@ -1,274 +1,145 @@
-# AI Factory — 0.8.0-alpha.1 + import-safety patch
+# AI Factory
 
-Experimental, default-off storage alpha. The owner explicitly accepted publication
-with incomplete acceptance: independent storage review remains **BLOCKED** and
-automatic WAL reclaim is **NOT_IMPLEMENTED/BLOCKED**. At a full WAL, intake fails
-closed. Backups are excluded and backup-dependent destructive operator commands
-are disabled. This tag does not activate databases, real capture, hooks or projects.
-See [alpha scope and limitations](docs/release-0.8.0-alpha.1.md).
-The untagged follow-ups add an explicit [Codex lifecycle-event intake](runtime/storage/internal/capture/CODEX-EVENTS.md)
-(automatic recording OFF; real conversation validation pending), plus conservative known-credential withholding before WAL
-and refuses unsupported Claude shapes. It does not guarantee detection of all
-secrets or implement a native Codex adapter. See the
-[adapter contract](runtime/storage/internal/capture/PROVIDER-ADAPTER-JUSTIFICATION.md).
+AI Factory is a shared toolkit for developing software with AI coding agents. It
+combines reusable skills, a task workflow and local helpers so an agent can take a
+request from understanding and planning through implementation, testing and review,
+then leave enough evidence and context for the next session to continue.
 
-The rc.7 baseline adds readable ephemeral hook names, ai-factory grouping metadata, ownership-checked cleanup retries and cancellation forwarding. The optional Docker component includes these fixes on a fresh installation. Cleanup remains bounded by the original nine-second deadline; unavailable-daemon residuals are reported as UNRESOLVED. See [hook lifecycle release notes](docs/release-0.7.0-rc.7.md).
+Use it with an existing agent such as Codex or Claude Code. Factory does not replace
+the agent, supply a model, or build an application on its own. The agent follows the
+workflow; scripts automate specific checks and operations. Your project's rules and
+the task you approved remain in charge.
 
-The previous bugfix prerelease updates the optional Docker session guard with bounded
-identity from the current validated native event and discoverable enrolled
-registry guidance. Shell template names are placeholders, not required environment
-variables. Native resume validates delivery bounds before state or claim writes;
-repeat delivery preserves no-op behavior. The portable registry profile remains
-separate from installed host policy overlays.
+## What it helps you do
 
-Changes since rc.5 also include current-tree English adaptation, offline discovery
-response checks and language/framework review references. Translated labels and
-triggers may require migration for external callers using older localized names.
-Existing UI/review guidance and consumer pins are not automatically activated.
-Native delivery and end-to-end checkpoint/resume remain NOT_TESTED for this profile.
-
-- **[All 73 original skills](skills/)** — one canonical editable tree; groups, references, scripts, assets and synced variants are preserved.
-- **[Full AI Factory plan](ai-factory/ai-factory-plan.md)** — workflow, lifecycle, status, roadmap and historical sources.
-- [Managed kit connections](docs/managed-kit-connections.md) — one complete kit update, global skills, and project rules in AGENTS.local.md. Earlier shared-source guidance is withdrawn.
-- [Shared rules](rules/) · [Runtime helpers](runtime/README.md) · [Explicit policy adapters](adapters/README.md)
-
-Status: alpha; owner-authorized limited publication, not full acceptance. The scanner milestone passed independent code/runtime review for Docker-only linux/amd64 execution on macOS; this does not constitute acceptance of the entire backlog, native agent discovery or persistent project activation. The ordinary hash-bound review requirement is not reported as satisfied: the owner explicitly accepted this limited alpha publication while storage review remains BLOCKED. This structure does not authorize installs, hooks, MCP, model changes or product actions. Local project contracts and the current task take precedence.
-
-## Native identity guidance in rc.6
-
-This release includes event-bound native identity and registry-based manual
-checkpoint guidance. It does not automatically upgrade consumers. See the [identity contract](docs/session-size-docker.md#current-native-identity-and-manual-checkpoint-guidance)
-and [port provenance](provenance/native-identity-guidance.json). Installed host
-profiles and consumer pins are not changed by source publication.
-
-## What was adapted from ECC
-
-These are selective, independently authored adaptations of ideas following a source audit of
-[ECC `90606c8315ee09cafc303515c5f33024db6b9882`](https://github.com/affaan-m/ECC/tree/90606c8315ee09cafc303515c5f33024db6b9882),
-not an ECC installation or an import of its skill/hook pack. The implementation below is included in
-Factory commit `17a9527421e8fac3e43a16c287c404118699833c`; that source change is included in rc.6 without changing the immutable rc.5 tag.
-These capabilities do not move consumer pins or replace immutable caches.
-
-| Implemented capability | What the user gets | Evidence limits |
-|---|---|---|
-| [Offline discovery-response checker](docs/onboarding-helper.md) | Shared comparison of selected skills by name/path/enabled; declared inventory for Claude and Codex; a separate parser for a supplied Codex `skills/list` result | `RESPONSE_MATCH`: each selected skill appears exactly once at the expected enabled path; additional unselected skills are allowed. Digests bind bytes, not capture authenticity. There is no native Claude parser; capture authenticity, native discovery/invocation and model behavior are NOT_TESTED. The checker does not launch the host |
-| [Five language review/testing references](skills/arch/code-review/references/languages/index.md) | TypeScript: runtime boundary validation and wire contracts; PHP: DTO/ports and unit/integration; Python: fixture ownership, autospec/await and cleanup; Rust: ownership/unsafe contracts, properties/doctests; Go: bounded concurrency, cancellation, race/fuzz/golden obligations | Guidance for the existing TDD/review gates, not installed toolchains, compiled recipes or evidence that product tests were executed |
-| Optional framework references in the same index | React for confirmed TS/TSX; Laravel only for Laravel; Django/DRF or FastAPI only when supported by the actual stack | Normally the index + one language + zero/one framework. An unknown stack is UNKNOWN; no automatic loading of all references or framework installation |
-
-TypeScript primarily preserves the user-authorized portable intent of the
-Cassiopeia rules. MVC layout, service/naming conventions, libraries and versions are not
-imposed on other projects. The [TypeScript reference](skills/arch/code-review/references/languages/typescript.md)
-explicitly explains the conflict with the old forced-interface Pocock rule: the historical policy
-is retained in an English adaptation, and the current project convention takes precedence. Exact conceptual
-sources, per-file digests and exclusions are in
-[language provenance](provenance/language-reference-origins.json); the checker's
-origins and rights/limitations are in [PROVENANCE](PROVENANCE.md).
-
-Unsafe examples were not copied verbatim. Go guidance requires cancellation to reach
-the actual blocking operation and bounded fan-out; Rust rejects fabricated lifetimes
-from raw pointers and notes the `Debug` requirement for `unwrap_err`; FastAPI distinguishes transport from
-lifespan; Django does not call an external side effect idempotent without an appropriate
-contract. PHP cache/Composer commands are not described as read-only. Formatting does not
-replace lint/typecheck. Execution evidence is required separately for each recipe.
-
-**What Factory already had.** Core TDD, mutation/behavior coverage, snapshot-bound
-independent review, durable handoff, guarded installer/update/rollback and four
-viewport classes were not adopted anew or replaced with ECC. The existing
-[workflow](ai-factory/workflow.md), [behavior coverage](skills/arch/code-review/references/behavior-coverage.md)
-and [review handoff](ai-factory/review-handoff.md) remain the sole authority.
-
-**What was not adopted.** Wholesale skills/hooks installation, worktree orchestration,
-transcript learning/LLM summaries, auto-promotion, broad MCP defaults and claims of
-universal native parity. Budgeted context routing, matched behavioral eval and
-additional recipes for parked/rejected/validated ideas before they become tasks are only possible future
-work, **NOT_IMPLEMENTED in this delta**; the existing
-[lifecycle](ai-factory/feature-lifecycle.md) is unchanged. The presence of an upstream
-README or test fixtures is not evidence of productivity or safe runtime behavior.
-
-**Separate rollout checkpoint (2026-10-26).** Candidate `17a9527` was applied through
-approved tooling adapters in Cargo, Courses, Cassiopeia and dg; hash/path checks and
-repeat reconciliation/installer NOOP passed. The independent technical review was
-accepted; external final applied-snapshot reviews are still PENDING. In dg, after apply,
-unrelated work changed the product HEAD: tooling bytes were verified, but overall
-HEAD/WIP preservation is not reported as PASS. This is a dated report, not a live status service,
-native activation proof or permission to repeat the rollout. This docs delta does not
-change any of those pins or review verdicts.
-
-## Getting started with AI: three scenarios
-
-This repository contains workflow, skills, templates and offline helpers; it does not install Codex/Claude itself, the project's language, MCP/graph servers or models. Local helpers need no additional SaaS; AI access remains subject to your existing account/license, not a promise of free model calls.
-
-| Situation | Route and ready-to-use prompt |
+| Need | What Factory provides |
 |---|---|
-| Existing project | [AI-assisted onboarding](docs/guides/ai-assisted-onboarding.md#existing-project): read-only inventory → scoped adapter diff → approved apply → separate host proof |
-| Empty project | [Empty project](docs/guides/ai-assisted-onboarding.md#empty-project): first define the product/stack/acceptance, then minimal instructions; no automatic app bootstrap |
-| Another developer / machine | [New machine](docs/guides/ai-assisted-onboarding.md#new-machine): trusted private source → dedicated package root → selected host exposure → project adapter; no copying credentials |
+| Understand a repository before changing it | Read-only onboarding, project research and explicit routing to local instructions, architecture and tools |
+| Keep tasks aligned with the product direction | A task-readiness checkpoint and continuation rules that reconcile the existing task index, roadmap, decisions and delivered work |
+| Implement and verify a change | Planning, acceptance criteria, TDD and code-review skills, language-specific references, independent review and evidence-bound completion |
+| Improve a web interface | `design-pass` coordinates existing design, UX, interface and measurement skills; it checks rendered states and interactions, not just a successful build |
+| Continue after a session gets too large | File-based task records, plus optional native checkpoint/resume with an explicit ID and repository-state validation |
+| Find earlier conversations and decisions | An optional local archive with project-scoped capture and search, source references and locally generated session excerpts |
+| Keep several projects on one toolkit | A managed kit, shared global skill discovery, project-local connection files and guarded update/rollback tools |
 
-**What goes where.** Place the full verified package in a separate managed directory, for example `~/project-data/ai-factory-kit`. `~/.agents/skills` is the canonical shared host-facing store by this kit's convention; `~/.claude/skills` may use the same source only after checking conflicts and host support. `kit.py` does NOT publish skills there and deliberately rejects `~/.agents`, `~/.claude` or a directory named `skills` as an install root. There is no safe "install everything into home" command. The [layer and discovery map](docs/guides/ai-assisted-onboarding.md#destinations) explains exact-file fallback, variants/collisions and automation limits.
+The core workflow is useful without the archive, Docker or a graph server. Scanners,
+archive storage, capture hooks and native handoff are optional components with
+separate setup and verification.
 
-**Before any execution:** read the source/provenance and the scripts' effects; a checksum is not a signature or sandbox. Do not give the agent tokens, `.env`, keychain contents or session logs. [Security adoption](docs/guides/ai-assisted-onboarding.md#security-proposed) is still **PROPOSED**, not installed/enforced.
+## How a task moves through Factory
 
-Minimum requirements for helpers: Python **3.9+**, a POSIX filesystem; Git is required by review helpers/fixtures. macOS is the current verification environment; Linux is **NOT_TESTED**, Windows is **UNSUPPORTED** (`fcntl`). Product tools depend on its stack; Node/npm/Docker are not required for offline installation. Exact CLI versions/discovery/runtime capabilities must be verified on the target machine, not inherited from this README.
+1. **Read the project context.** Load its instructions, existing task record,
+   accepted decisions and relevant code. Use its own work protocol rather than
+   adding a competing one.
+2. **Agree on the change.** Identify scope, acceptance criteria, dependencies and
+   what needs independent review. A small edit stays small; risky changes need a
+   fuller plan. Record READY or the specific blocker before dependent work.
+3. **Implement and check.** Select the relevant skills, make the change, run the
+   applicable tests and inspect real UI behavior when the task affects UI.
+4. **Review and finish.** Bind findings and test results to the actual changed
+   files. Fix findings, recheck affected behavior and report what passed, failed or
+   remains untested. Commit, publication and deployment follow the task's authority.
+5. **Leave a usable continuation.** Update the existing task record with decisions,
+   evidence and the next action. If the product direction changes, reconcile old
+   tasks before resuming them; a new session does not automatically restart a queue.
 
-Tasks use a [task branch in the main repo](ai-factory/workflow.md#task-branches), with one writer and no automatic per-task worktree/clone. Foreign/unknown dirty WIP → STOP and coordinate; no stash/reset/commit to clear the tree. Runtime/test isolation is separate. Obtaining trusted AI Factory source for a new machine for the first time is not creating a per-task product clone.
+For example, a request to improve a table should first identify its existing UI
+contract and acceptance criteria. `design-pass` then covers empty and populated
+states, disabled and enabled controls, interaction and measurements. The result is
+a checked change and a report, not merely a new screenshot.
 
-## AI Factory as project-local agent tooling
+See the [workflow](ai-factory/workflow.md), [feature lifecycle](ai-factory/feature-lifecycle.md)
+and [task continuation contract](ai-factory/task-continuation.md) for the full rules.
 
-Factory can be organized as local tooling: pinned workflow/skills separate from
-project-specific settings. **Recommended layout**, provided it does not conflict with
-the existing integration:
+## How projects connect
 
-```text
-<project>/
-  .ai/
-    factory/   # managed snapshot of the selected Factory revision; do not edit manually
-    project/   # local paths, adapter/config and pin; preserve during update
-    README.md  # how the agent starts/resumes; where rules, tasks and evidence live
-```
-
-These destinations may remain local and ignored. First check what is already
-tracked and what `.ai/` contains: **gitignore does not remove already tracked files**. Do not blindly ignore
-all of `.ai/`, automatically untrack files or migrate existing
-AGENTS/adapter/pin/symlinks. For a new setup, select only the exact approved ignore paths.
-Do not store secrets, tokens, `.env`, auth/session stores here; ignored does not mean protected.
-
-**The agent needs an explicit entrypoint.** An arbitrary `.ai/` does not guarantee discovery or execution of
-the workflow. The user may add a short tracked pointer from root README/AGENTS,
-configure an entrypoint supported by their particular agent, or start each time with
-"Read `.ai/README.md` and apply its specified workflow to my task." A README for
-humans is not necessarily read automatically by an agent. Native skill invocation and explicit
-file reading are different evidence; neither pointer guarantees compliance with the rules.
-
-### What is implemented and what needs verification
-
-The [current installer](docs/portability-design.md), `tools/kit.py`, uses an explicit dedicated
-absolute target: plan/install/update/rollback, selected components, hashes, backups,
-receipts and guarded NOOP. It **has no separate `.ai` mode**, does not generate project config,
-change gitignore/AGENTS or register skills with the host. This layout recommendation alone
-does not establish installer/runtime acceptance.
-
-Before installation, the agent must read the source/provenance and the contract of the **selected revision**,
-verify support for target `.ai/factory/`, canonical paths without symlink components,
-no source/target overlap or unmanaged collisions, the required components and
-the writer window. The target must be a dedicated subtree, not the product repository root
-or all of `.ai/`. If the selected version does not support that target, leave the dependent setup
-BLOCKED or agree on an already supported external dedicated root; do not bypass guards.
-Do not create a second installer. The [onboarding guide](docs/guides/ai-assisted-onboarding.md)
-and [read-only preflight](docs/onboarding-helper.md) remain the established route.
-
-For project-local declarations, reuse the existing adapter,
-`ai-factory-manifest.json` and `ai-factory-package.json`, if present. For a new
-setup, agree on their paths in `.ai/project/` using the [manifest example](examples/onboarding/manifest.json)
-and [adapter template](templates/adapter-full.md), without a second source for the same rules.
-Do not move local overrides into `.ai/factory/`: an update must change only the managed
-package target and leave project config, task history and required gates unchanged.
-
-A pin is the exact commit of the selected trusted source, release manifest/hash and component set,
-not a floating branch or `latest`. An example of an existing exact pin:
-`1e5411f12677c45fd67b0900c77eb418a214d065` (merged scanner milestone before release); candidate status does not
-constitute independent acceptance of all capabilities. Before use, verify the specific
-release, required hashes and [provenance](PROVENANCE.md). A hash from the same unknown
-archive does not authenticate its author. An uncommitted checkout, including scanner additions,
-does not substitute for a pinned workflow release and is not activated by local setup.
-
-**New machine:** ignored files do not arrive with a clone. Separately preserve a non-secret
-bootstrap record containing trusted source/commit, manifest hash, components, layout and a backup of
-local config — in an approved private backup or as a minimal tracked manifest,
-as the team chooses. Restore the same pin through verified setup; custom config cannot
-be reconstructed from Factory core alone. Full trusted source is kept separately from
-the installed subset; subset metadata does not make it a full release. A new release
-is obtained and applied only through an explicit update with diff review, backup and preservation
-checks, without automatically overwriting local settings.
-
-### Prompt 1 — inspect and safely connect local tooling
+The current shared setup has three distinct layers:
 
 ```text
-Prepare AI Factory as local tooling for <PROJECT_ROOT>.
-Trusted source: <SOURCE + EXACT COMMIT + MANIFEST HASH>.
-Start read-only: read local AGENTS/CLAUDE, the current adapter/pin,
-README, git tracked/ignored state, relevant WIP and ownership. Do not read secrets.
-Do not assume integration is absent or migrate the existing setup automatically.
-Read root README, the onboarding guide, the installer contract and the source of the selected
-Factory release; verify hashes/provenance and support for the recommended
-.ai/factory/, .ai/project/, .ai/README.md. Do not invent an .ai installer mode.
-Use existing kit plan, preflight and change protocol where applicable.
-Before writing, show exact paths/components/entrypoint, ignore changes if needed,
-conflicts, diff, backup/rollback and what will remain local. Missing support
-or writer window means BLOCKED for the dependent setup; do not bypass guards.
-Only after the specific plan is approved, apply this setup and verify hashes,
-local preservation and repeat NOOP. Do not run product tools/scanners,
-dependency installs or hooks/MCP, or change permissions or model defaults.
+Factory source repository
+    -> verified release package -> one installed managed kit
+                                      |
+                                      +-> global agent skill discovery
+                                      +-> project A: AGENTS.local.md + local adapter
+                                      +-> project B: AGENTS.local.md + local adapter
 ```
 
-### Prompt 2 — start or resume a task
+- **Source repository:** where Factory itself is developed. A source edit or Git
+  push does not update the installed kit or activate anything in a product.
+- **Managed kit:** one dedicated installation containing the selected shared
+  components. Global skill discovery points here, not at a development checkout.
+- **Project connection:** `AGENTS.local.md` points to that kit and preserves local
+  workflow, task navigation and search routing; `CLAUDE.local.md` may import it.
+  Existing root `AGENTS.md` remains the project's own contract. Do not copy shared
+  skills or add per-project shared-skill symlinks.
 
-```text
-Read <PROJECT_ROOT>/.ai/README.md or the current approved entrypoint,
-local instructions/config and the pinned Factory workflow. Verify the pin and paths.
-Task: <GOAL or ID + CURRENT PLAN/REPORT>.
-Show scope/acceptance, root/branch/HEAD/relevant WIP, writer, small/full/resume,
-review route and pre-code READY/BLOCKED. Preserve local contracts and gates.
-On resume, reconcile current inputs and evidence; do not reopen unchanged completed work.
-Perform only the assigned scope; keep evidence and handoff in existing task artifacts.
-A missing shared file/required review means a specific BLOCKED, not an invented PASS.
-Do not update core/pin/config or run a scanner merely because you read the workflow.
-```
+**Update the kit once, then verify its consumers.** Use the normal reviewed
+`kit.py` update with the complete desired component set, backup and rollback.
+Reconcile project identity metadata where needed, preserving local adapters and
+rules. Projects use the stable installed path; hashes and receipts verify the bytes
+rather than requiring a separate checkout per project. This is not an automatic
+pull of remote `main`. Already-open sessions may need to reread instructions or
+restart at a safe boundary.
 
-### Prompt 3 — perform a verified package update
+Start with [managed kit connections](docs/managed-kit-connections.md) for the current
+installation/update contract. It supersedes historical per-project snapshot layout
+recommendations. The installer does not clean old project wiring, register hooks or
+prove that the agent actually invoked a skill.
 
-```text
-Prepare a local AI Factory update to <NEW EXACT COMMIT + MANIFEST HASH>.
-First, read-only, reconcile the current pin, managed state, full desired component set,
-new trusted source/provenance, relevant WIP and writer window.
-Verify update support in this version; use the existing kit plan/update,
-not a new installer. Show the diff/additions/removals/conflicts, backup and rollback.
-Record baseline hashes of project-local config/README/entrypoints; do not overwrite
-them from a core template. Local adapter incompatibility requires a separate explicit proposal.
-Only after the exact plan is approved, update the managed package target and approved
-pin metadata; preserve the rest of .ai/project/ and existing local rules/task history.
-Verify final hashes, local preservation and repeat NOOP. Concurrent changes
-or an unmanaged collision mean BLOCKED; no force/reset/untrack. Return the receipt,
-checks, limitations and next action; no product rollout/scans/commit/push.
-```
+## Optional archive and session continuity
 
-## One file — one role
+These solve different problems:
 
-`skills/` contains originals, not abbreviated portable replacements. `ai-factory/` is the full source plan. `docs/portable/` and `adapters/legacy-planning/` are explicitly separate inherited portable profiles; their behavioral differences are not silently merged. `runtime/legacy/` preserves original helper behavior, while portable review/session helpers have hardened Git reads and an explicit store. Tests for both variants live in `tests/`.
+- **Task record:** the project's existing plan/journal holds decisions, progress,
+  checks and the next action. It is the normal continuation route.
+- **Native handoff:** the [non-Docker runtime](docs/managed-native-handoff.md) stores
+  a bounded checkpoint and validates the exact ID and repository snapshot on resume.
+  It requires explicit registration; it does not launch a new model session.
+- **Conversation archive:** the [storage service](runtime/storage/TAKEOVER-CONTRACT.md)
+  stores original records in MongoDB. PostgreSQL supplies a derived search index;
+  it is not the authority for archived conversation text. Capture and search use
+  separate project-scoped access. The optional
+  [search client](runtime/storage/deploy/search-client/README.md) handles bounded
+  cursor traversal; an empty page is not necessarily the end of results.
+- **Session excerpts:** the [summary worker](runtime/storage/SESSION-SUMMARIES.md)
+  can create derived records in MongoDB and index them for search. Its default
+  scheduling is 30 minutes from the first uncovered message or 15 minutes of idle
+  time, whichever occurs first. It selects local excerpts, not LLM-written semantic
+  summaries, and retains source provenance. Activation is separate from installation;
+  a summary does not prove that capture contains the complete original conversation.
 
-84 internal source definitions accounted for: 73 included, 11 synced sets have an explicit outside-Service copy restriction and remain only in the [provenance inventory](provenance/source-map.json). External symlink targets and `b2b*` are not added. [Origins and notices](PROVENANCE.md).
+See [runtime helpers](runtime/README.md) for exact entry points and limits.
 
-## Safe use and updates
+## Where to start
 
-The [migration guide](docs/migration-0.4.md) explains exact paths, component selection, variants and migration from the old layout. The [installer contract](docs/portability-design.md) retains explicit planning, hash guards, backups and guarded rollback.
+| Goal | Read this |
+|---|---|
+| Connect an existing project or set up another machine | [AI-assisted onboarding](docs/guides/ai-assisted-onboarding.md), then [managed kit connections](docs/managed-kit-connections.md) |
+| Choose the workflow for a task | [Factory entry point](ai-factory/ai-factory-plan.md) and [workflow](ai-factory/workflow.md) |
+| Find a skill | [Canonical skills tree](skills/) and [skill routing map](ai-factory/workflow.md#skill-map) |
+| Understand checks before implementation | [Pre-code readiness](ai-factory/pre-code-checkpoint.md) |
+| Set up independent review | [Review handoff](ai-factory/review-handoff.md) |
+| Install, update or roll back the kit | [Installer contract](docs/portability-design.md) and [managed connections](docs/managed-kit-connections.md) |
+| Run optional security checks | [Scanner contract and limits](runtime/scanners/README.md) |
+| Check recorded capability evidence | [Dated capability registry](ai-factory/status.md#capabilities); source presence, installation and live verification are different |
+| Trace history and licensing | [Provenance and notices](PROVENANCE.md), [release notes](docs/release-0.8.0-alpha.1.md) and [layout migration](docs/migration-0.4.md) |
 
-```sh
-# Source checkout includes an exact, inert research archive; export only release files.
-# Choose a new destination outside this checkout. No archive scripts are executed.
-EXPORT_DIR="$(python3 -c 'from pathlib import Path; print(Path.cwd().parent / "ai-factory-release-export")')"
-python3 -B tools/export_release.py --root "$PWD" --destination "$EXPORT_DIR"
-python3 -B "$EXPORT_DIR/tools/verify_release.py" --root "$EXPORT_DIR"
-TOOLKIT_DIR="$(python3 -c 'from pathlib import Path; print(Path.cwd().parent / "ai-factory-toolkit-plan-only")')"
-python3 -B "$EXPORT_DIR/tools/kit.py" plan --package "$EXPORT_DIR" --root "$TOOLKIT_DIR" --component collection --component planning --component review --component session-guard
-```
+## Scope and requirements
 
-This example exports, verifies and performs a read-only installer plan; it does not install. The export destination must be new, and the toolkit root must be a separate dedicated directory. For the full regression suite, use `python3 -B "$EXPORT_DIR/tools/run_tests.py" --previous-release /absolute/path/to/verified-previous-release` only after selecting an actual immutable previous release. The placeholder is not a ready-to-run command; do not execute archive scripts.
+Factory is experimental. The storage alpha still has incomplete whole-system
+acceptance and operational limits, including no automatic WAL reclaim; see its
+[contract](runtime/storage/TAKEOVER-CONTRACT.md). Tests and reviews of a particular
+feature do not certify every component or every consumer project.
 
-`collection` is a compatibility component that includes the full skills and explicit legacy helpers; `skills` can be selected separately. `graphify` contains the sole canonical graphify skill, and `skills` depends on it. `planning` adds four **non-discovered adapter documents**, not a new SKILL tree. The installer resolves declared component dependencies and rejects cycles/unknown components; no network/tool installs/host registration.
+Offline kit helpers require Python 3.9+ and a POSIX filesystem; some helpers also
+require Git. macOS is the documented verification environment; Windows is
+unsupported. Storage uses Go, MongoDB and PostgreSQL; optional scanner/container
+work has its own requirements. Factory does not install model access, project
+language toolchains or MCP servers. Native discovery, hook delivery and actual
+model behavior need verification in the intended host.
 
-New installations and upgrades must use a dedicated root, not overlay `~/.agents`, `~/.claude` or a product repo. Supply the full desired component set. Exact-file reading does not prove native discovery; select qualified skill paths. `docs`, `import-memory`, `morning`, `skill-creator` each have two preserved synced versions; do not activate same-name variants simultaneously without explicit mapping.
-
-Product pins and immutable caches are updated through a separate approved rollout; publishing a shared release does not switch them automatically. The [full map of all 350 old files](provenance/layout-migration.json) records moved/deduplicated/revised destinations; no original skill was lost.
-
-## Pre-code readiness
-
-[One checkpoint per task](ai-factory/pre-code-checkpoint.md): acceptance, proportional grilling, dependencies, scoped impact and READY/BLOCKED. Small/resume remain proportional. Optional offline declaration/index validation and regression fixtures are included; no automatic CI or agent enforcement is claimed.
-
-Versioned [plan critic prompt](prompts/plan-critic.md), exact plan/snapshot binding and material-change rules extend that same checkpoint. No extra tracker, native registration or automatic reviewer dispatch.
-
-[Documentation hygiene](ai-factory/documentation-hygiene.md) clarifies the existing onboarding: factual drift, symlink routing, hook/CI coverage and scope provenance. This is a documentation addition; originals and runtime behavior are unchanged.
-
-[Selective constraint adoption](ai-factory/constraint-adoption.md) adds one skill and offline evidence checks, preserving existing Storybook/E2E and reviewer routes. Live model behavior and native discovery remain NOT_TESTED.
-
-## Offline scanner candidate
-
-[Product-neutral scanner baseline](runtime/scanners/README.md) adds an explicit runner, isolated Compose template, original direct-eval rules and a separate DB snapshot updater. Shipped image/DB pins are unresolved and block execution. Author unit/mock checks do not establish real scanner, read-only cache or Yarn dev-dependency acceptance; independent review remains pending. No product rollout or automatic activation.
+The [release manifest](release-manifest.json) identifies the package contents and
+components. Preserve source notices and review provenance before reuse. Checksums
+verify integrity, not authorship or permission to redistribute. Never place local
+credentials, host routes, private task evidence or session data in a portable
+release.
