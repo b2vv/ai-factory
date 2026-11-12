@@ -172,7 +172,35 @@ def state_path(paths):
     return paths['registration_root'] / installer.STATE
 
 
-def current(paths):
+def settings_drift_allowed(paths, receipt, path, signature, accepted_sha256):
+    target = str(paths['home'] / '.claude/settings.json')
+    actual = installer.signature(canonical(path))
+    if (path != target or not actual or actual['mode'] != signature['mode']
+            or actual['sha256'] != accepted_sha256):
+        return False
+    # Recover the exact registered document from integrity-checked transaction
+    # evidence. Never adopt changed hooks, permissions or authentication settings.
+    baseline = None
+    for file in sorted((state_path(paths) / 'receipts').glob('*.json')):
+        tx = installer.read_tx(file)
+        for entry in tx.get('plan', {}).get('changes', []):
+            if entry['path'] == path and entry['after'] == signature:
+                raw = base64.b64decode(entry['bytes'], validate=True)
+                if installer.digest(raw) != signature['sha256']:
+                    raise ValueError('invalid registered settings evidence')
+                baseline = strict_json(raw)
+    if baseline is None:
+        raise ValueError('registered settings baseline unavailable')
+    actual_doc = strict_json(installer.regular(canonical(path)))
+    # Only this reviewed, non-security setting may differ. No broad drift bypass.
+    before = dict(baseline)
+    after = dict(actual_doc)
+    before.pop('autoCompactWindow', None)
+    value = after.pop('autoCompactWindow', None)
+    return installer.encode(before) == installer.encode(after) and type(value) is int and value == 600000
+
+
+def current(paths, accepted_settings_sha256=None):
     state = state_path(paths)
     if (state / 'pending.json').exists():
         raise ValueError('pending registration: explicit rollback required')
@@ -189,7 +217,8 @@ def current(paths):
         raise ValueError('invalid current registration')
     for path, signature in receipt['files'].items():
         if installer.signature(canonical(path)) != signature:
-            raise ValueError('registered file drift')
+            if not accepted_settings_sha256 or not settings_drift_allowed(paths, receipt, path, signature, accepted_settings_sha256):
+                raise ValueError('registered file drift')
     return receipt
 
 
@@ -258,10 +287,12 @@ def edit_hooks(raw, host, wanted, prior, retires):
     return raw if raw is not None and strict_json(raw) == obj else encoded
 
 
-def plan(spec):
+def plan(spec, accepted_settings_sha256=None):
     paths = validate_spec(spec)
+    if accepted_settings_sha256 is not None and not re.fullmatch('[a-f0-9]{64}', accepted_settings_sha256):
+        raise ValueError('exact reviewed settings hash required')
     binding = kit_binding(paths['managed_root'])
-    prior = current(paths)
+    prior = current(paths, accepted_settings_sha256)
     if prior and (prior['spec']['home'] != spec['home'] or set(prior['spec']['hosts']) - set(spec['hosts'])):
         raise ValueError('cannot abandon previously owned host configuration')
     desired = {}
@@ -280,8 +311,12 @@ def plan(spec):
         target = paths['home'] / ('.claude/settings.json' if host == 'claude' else '.codex/hooks.json')
         canonical(str(target))
         raw = installer.regular(target)
-        desired[str(target)] = (edit_hooks(raw, host, command(paths, host), prior, spec.get('retire', [])),
-                                installer.signature(target)['mode'] if raw is not None else 0o600)
+        edited = edit_hooks(raw, host, command(paths, host), prior, spec.get('retire', []))
+        if accepted_settings_sha256 and host == 'claude':
+            if installer.encode(strict_json(edited)) != installer.encode(strict_json(raw)):
+                raise ValueError('reconciliation would change current settings')
+            edited = raw  # receipt-only reconciliation preserves exact user bytes
+        desired[str(target)] = (edited, installer.signature(target)['mode'] if raw is not None else 0o600)
     if prior and set(prior['files']) - set(desired):
         raise ValueError('cannot abandon an owned target')
     profile_before = installer.signature(paths['profile_path'])
@@ -295,9 +330,9 @@ def plan(spec):
         if before != after:
             changes.append({'path': target, 'before': before, 'after': after, 'bytes': base64.b64encode(raw).decode()})
     data = {'schema': 1, 'spec': spec, 'kit': binding, 'python_signature': python_signature(paths), 'files': files, 'changes': changes,
-            'prior': prior, 'commands': [{'host': h, 'event': e, 'command': command(paths, h)} for h in spec['hosts'] for e in EVENTS],
+            'accepted_settings_sha256': accepted_settings_sha256, 'prior': prior, 'commands': [{'host': h, 'event': e, 'command': command(paths, h)} for h in spec['hosts'] for e in EVENTS],
             'retired': spec.get('retire', [])}
-    result = {**data, 'plan_id': installer.digest(installer.encode(data)), 'status': 'PLANNED' if changes or (prior and (prior['kit'] != binding or prior['python_signature'] != python_signature(paths) or prior['spec'] != spec)) else 'NOOP'}
+    result = {**data, 'plan_id': installer.digest(installer.encode(data)), 'status': 'PLANNED' if changes or (prior and (prior['kit'] != binding or prior['python_signature'] != python_signature(paths) or prior['spec'] != spec or prior['files'] != files)) else 'NOOP'}
     # Bind the maximum journal size while planning, before creating state or publishing targets.
     prepare_transaction(result, '0' * 32)
     return result
@@ -342,10 +377,10 @@ def prepare_transaction(p, txid):
     return tx
 
 
-def apply(spec, expected_plan, exclusive_window=False):
+def apply(spec, expected_plan, exclusive_window=False, accepted_settings_sha256=None):
     if not exclusive_window:
         raise ValueError('exclusive writer window required')
-    p = plan(spec)
+    p = plan(spec, accepted_settings_sha256)
     if p['plan_id'] != expected_plan:
         raise ValueError('stale or wrong registration plan')
     if p['status'] == 'NOOP':
@@ -355,7 +390,7 @@ def apply(spec, expected_plan, exclusive_window=False):
     root.mkdir(mode=0o700, parents=True, exist_ok=True)
     private_directory(root)
     with installer.lock(root):
-        p = plan(spec)
+        p = plan(spec, accepted_settings_sha256)
         if p['plan_id'] != expected_plan:
             raise ValueError('registration plan changed before lock')
         state = state_path(paths)
@@ -442,15 +477,24 @@ def rollback(spec, txid, exclusive_window=False):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', nargs='?', default='plan', choices=('plan', 'apply', 'verify', 'rollback'))
+    parser.add_argument('mode', nargs='?', default='plan', choices=('plan', 'apply', 'verify', 'rollback', 'reconcile-plan', 'reconcile-apply'))
     parser.add_argument('--spec', required=True)
     parser.add_argument('--plan-id')
+    parser.add_argument('--accept-settings-sha256')
     parser.add_argument('--transaction')
     parser.add_argument('--exclusive-window', action='store_true')
     args = parser.parse_args(argv)
     try:
         spec = strict_json(installer.regular(canonical(args.spec)))
-        if args.mode == 'plan':
+        if args.accept_settings_sha256 and not args.mode.startswith('reconcile-'):
+            raise ValueError('settings acceptance requires explicit reconciliation')
+        if args.mode.startswith('reconcile-') and not args.accept_settings_sha256:
+            raise ValueError('reviewed settings hash required')
+        if args.mode == 'reconcile-plan':
+            result = plan(spec, args.accept_settings_sha256)
+        elif args.mode == 'reconcile-apply':
+            result = apply(spec, args.plan_id, args.exclusive_window, args.accept_settings_sha256)
+        elif args.mode == 'plan':
             result = plan(spec)
         elif args.mode == 'apply':
             result = apply(spec, args.plan_id, args.exclusive_window)

@@ -129,12 +129,13 @@ def event(profile_path, host, payload, pointer=None, store=None):
         if pointer:
             raise ValueError('explicit handoff outside enrolled root')
         return {}
-    current = identity_context(host, payload['session_id'], root, ev) if ev != 'Stop' else ''
+    current = (identity_context(host, payload['session_id'], root, ev)
+               if ev in ('SessionStart', 'UserPromptSubmit') or (pointer and ev == 'PostToolUse') else '')
     public = command(profile_path, host, payload['session_id'], root)
     # Reject excessive configuration/identity before any store mutation.
     guard.validate_output(ev, current + '\n' + public + '\n' + ('x' * 4096))
     return guard.event(Path(profile['store']), host, payload, pointer,
-                       public_context=public, identity_text=current)
+                       public_context=public, identity_text=current, host_managed=True)
 
 
 def main(argv=None):

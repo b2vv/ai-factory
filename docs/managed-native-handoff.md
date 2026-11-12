@@ -2,6 +2,40 @@
 
 This is an explicit companion to `kit.py` and `connect-project.py`, not an installer side effect. Package installation alone does not activate hooks. Native handoff uses the installed `runtime/session-size/native.py`, its canonical guard, one operator-selected private store, and an explicit enrolled-root profile. It does not call Docker, read transcripts, launch models, or choose the latest checkpoint.
 
+## Context capacity and hook output
+
+Native context capacity belongs to the host. A transcript's file size is not the
+model's current token occupancy: it includes service events, repeated hook output,
+encoded images and historical records that can survive compaction. The native
+route therefore does not stat/read the transcript, apply the legacy 4/5 MB
+thresholds, create byte-triggered drafts, or tell an agent to stop based on bytes.
+It does not infer tokens by filtering JSONL records or dividing bytes by a ratio.
+Use the host's supported auto-compaction setting instead. A configured target
+(such as 600,000 tokens in a supported Claude configuration) remains bounded by the
+actual model window; Factory does not change or certify that setting. Codex and
+Claude settings are independent. Manual checkpoint/resume remains available.
+
+Identity context is emitted at SessionStart and UserPromptSubmit, and as part of
+an actual explicit resume when needed. Routine PostToolUse/Stop calls are silent
+after one policy introduction; they can still retry an explicit pending handoff.
+Ordinary lock contention without an explicit handoff is silent, not a work stop.
+The policy introduction also corrects old 4/5 MB guidance in existing state without
+rewriting historical checkpoints, incomplete drafts or claims.
+
+Global hooks and retained project wrappers may both call the same runtime.
+Under the shared lock, repeated identity attempts with the same event and valid
+prompt/source metadata are coalesced for two seconds. Only a hash and timestamp
+are stored, never prompt text. Missing/malformed metadata is not deduplicated;
+changed event/source/prompt or an elapsed window permits fresh identity. This is
+best-effort output deduplication, not host-delivery acknowledgment. Explicit
+handoff validation and claim handling always occur first and remain unchanged.
+Do not delete project workflow hooks merely because they call the shared loader.
+
+The canonical guard's legacy callable byte monitor is retained for compatibility;
+the managed native entry point explicitly selects host-managed behavior. Historical
+Docker/legacy runtimes are not migrated or activated by this change. Native
+compaction and actual host receipt still require separate runtime verification.
+
 ## Initial connection
 
 First verify the exact package and install the complete selected component set into the stable managed root. The package must include both native.py and session_guard.py with supported handoff API version 1. Do not edit managed files by hand.
@@ -38,3 +72,21 @@ Rollback of registration and rollback of kit files are distinct. Follow the exis
 ## Evidence boundaries
 
 Isolated fixtures test schema/claims, upgrade/NOOP/rollback, failure injection and unrelated-hook preservation. They do not prove native discovery, trust, model access or delivered context. A source checkout with another writer is not an approved packaging input. Full source/release gates, exact independent final review, a live writer window and native output receipt remain separate prerequisites.
+
+### Explicit reconciliation of the reviewed Claude compaction setting
+
+When an owner has added `autoCompactWindow: 600000` after registration, normal
+plan/verify still rejects whole-file drift. The narrow `reconcile-plan` and
+`reconcile-apply` modes accept `--accept-settings-sha256 <reviewed-current-hash>`.
+They recover the registered settings from integrity-checked transaction evidence,
+require every other JSON value (including hooks and permissions) and file mode to
+be unchanged, and preserve the current settings bytes exactly. All other registered
+targets retain strict drift checks. Apply requires the exact plan ID and
+`--exclusive-window`; no settings, trust, session store, or claims are rewritten.
+A subsequent normal verify must be VERIFIED and normal plan NOOP.
+
+This is not a generic drift adoption option: missing baseline evidence, other
+settings edits, a different threshold, stale hash, changed hooks or pending
+transactions block reconciliation. Rolling back its receipt-only transaction
+restores the old registration receipt, including its previously stale relationship
+to the preserved user settings; it does not undo the owner's compaction setting.

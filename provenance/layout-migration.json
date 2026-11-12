@@ -64,9 +64,10 @@
         "Owner-directed managed-kit methodology recovery; historical identities retained.",
         "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained.",
         "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation.",
-        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
+        "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained.",
+        "Owner-authorized native-context correction; historical source identities retained."
       ],
-      "new_sha256": "33655c0dea01aebe79a992aa04c6f588dcdc1e2153a4ce840d5388c1bd4ea2bc"
+      "new_sha256": "280afd15e309a68cc05565494e89a46b2fd218be5159d2b9d0813568b8cd7188"
     },
     {
       "old_path": "README.md",
@@ -137,9 +138,10 @@
         "Unreleased owner-authorized task-branch routing correction",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
+        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
+        "Owner-authorized native-context correction; historical source identities retained."
       ],
-      "new_sha256": "2eda194dc8d490026da19f34a24d0a7a6154000681beb86bbfb6178e8877f9d2"
+      "new_sha256": "1a4e97622568147b6534114aad03b9c4ed7d88706b6d7d381ae6f58f3fc5a84b"
     },
     {
       "old_path": "collection/agents/ai-factory/crg.md",
@@ -3136,9 +3138,10 @@
       "new_path": "runtime/session-size/session_guard.py",
       "action": "updated-native-handoff",
       "transformations": [
-        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation."
+        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation.",
+        "Owner-authorized native host-managed context correction; legacy callable byte monitor retained; no transcript reads."
       ],
-      "new_sha256": "2e015117162a5c9a8df48c3e1bd13ff26b191aded888fa3893a7553dcfed1165"
+      "new_sha256": "b06a2e9b520887b834272e9f74660700703635d23c68f5fa86d0109631546e73"
     },
     {
       "old_path": "session-size/test_session_guard.py",
@@ -3147,9 +3150,10 @@
       "action": "updated-native-handoff",
       "transformations": [
         "Layout-aware metadata/tooling/test imports or explicitly labelled retained documentation; see scoped diff.",
-        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation."
+        "Owner-authorized managed non-Docker native handoff adapter, profile-bound CLI and guarded registration; historical source hash retained; no implicit host activation.",
+        "Owner-authorized native-context correction; historical source identities retained."
       ],
-      "new_sha256": "aeca6cb72bb236fa2ea9b68514c65bd786872b6fb0fccae3c467df0d50d8cd1f"
+      "new_sha256": "211074e7cade912124774280c56ac3d4ed6ebd64830685b3556516bc3220b46e"
     },
     {
       "old_path": "skills/acceptance-spec/SKILL.md",

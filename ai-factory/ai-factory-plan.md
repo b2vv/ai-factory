@@ -58,4 +58,4 @@ Canonical directory: `~/.agents/ai-factory/`. The old `~/.agents/ai-factory-plan
 
 ## Session size and explicit handoff
 
-[Session-size helper](../docs/legacy/session-size.md): 4 MB preparation, 5 MB soft threshold, an atomic checkpoint and explicit ID for a new session. This is not a hard cap or automatic model launch.
+[Managed native handoff](../docs/managed-native-handoff.md) uses explicit checkpoints and exact IDs for a new session. Context capacity and auto-compaction belong to the host, not transcript-file byte thresholds. The [legacy byte helper](../docs/legacy/session-size.md) is historical compatibility, not the current native policy. Neither route automatically launches a model.

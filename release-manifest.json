@@ -133,7 +133,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "33655c0dea01aebe79a992aa04c6f588dcdc1e2153a4ce840d5388c1bd4ea2bc",
+      "sha256": "280afd15e309a68cc05565494e89a46b2fd218be5159d2b9d0813568b8cd7188",
       "component": "core"
     },
     {
@@ -173,7 +173,7 @@
     },
     {
       "path": "ai-factory/ai-factory-plan.md",
-      "sha256": "2eda194dc8d490026da19f34a24d0a7a6154000681beb86bbfb6178e8877f9d2",
+      "sha256": "1a4e97622568147b6534114aad03b9c4ed7d88706b6d7d381ae6f58f3fc5a84b",
       "component": "core"
     },
     {
@@ -299,7 +299,7 @@
     {
       "path": "docs/managed-native-handoff.md",
       "component": "core",
-      "sha256": "e74a2241f9740ddceb99025749ba3a5363c7297ed2f88f24f3a962c780b5c722"
+      "sha256": "9ec6414cd32c336bbdc38f89a1e210d330d178b7bd42ee077e2b9825c71e8963"
     },
     {
       "path": "docs/migration-0.4.md",
@@ -538,7 +538,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "5459ebd80e31302d9f3e87ace651c575b9faab618ec366024db9a41c00b03164",
+      "sha256": "3f4d2e4004f8e6a4fc87718a2c853106b56933e17bd9f3bb8bede938b059459f",
       "component": "core"
     },
     {
@@ -554,7 +554,7 @@
     {
       "path": "provenance/native-handoff.json",
       "component": "core",
-      "sha256": "dafe3b8c7782f9f6bc41e43264618774135d07ab2acbb78469fe28adb0cf8cb6"
+      "sha256": "ded674952361fd3f36711abd5bd42802524b54f4b54d1c0ccbc9baf56ca88551"
     },
     {
       "path": "provenance/native-identity-guidance.json",
@@ -593,7 +593,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "f09cc1753a91add74d20ec0a5cb8ea9bf1502b42798cc7488f1c19a540b0e810",
+      "sha256": "8de70672a24f966cfc8e17010f99705e41129bc94cb75e795126dc75e317c93a",
       "component": "core"
     },
     {
@@ -824,11 +824,11 @@
     {
       "path": "runtime/session-size/native.py",
       "component": "session-guard",
-      "sha256": "15267c3a6a04230cf04aba5216df9f8d05c4f5d7aa22481201937457484d988c"
+      "sha256": "c8f05f2ada1d905de8c920f0865e36f453714f7f1393b3c14570b360b55dec2d"
     },
     {
       "path": "runtime/session-size/session_guard.py",
-      "sha256": "2e015117162a5c9a8df48c3e1bd13ff26b191aded888fa3893a7553dcfed1165",
+      "sha256": "b06a2e9b520887b834272e9f74660700703635d23c68f5fa86d0109631546e73",
       "component": "session-guard"
     },
     {
@@ -4069,7 +4069,7 @@
     {
       "path": "tests/connect-handoff/test_connect_handoff.py",
       "component": "core",
-      "sha256": "0eda9408d1466e9ef5ad10ab42ec22ba907f86f51c8a36a9db2d81cb44878e22"
+      "sha256": "2f895711fd4faaa313cc523719fae01b16477cb2687204832fd34088589ed998"
     },
     {
       "path": "tests/connect/test_connect_project.py",
@@ -4274,11 +4274,11 @@
     {
       "path": "tests/session-size/test_native.py",
       "component": "core",
-      "sha256": "f9dbdc2c21574c75659e14b505ada5b9e045203e06ed717061e76127c5c51677"
+      "sha256": "4fd589533d2023907ffa52f7688e205928d00fff408a4f5a19e2043c6b1eca4d"
     },
     {
       "path": "tests/session-size/test_session_guard.py",
-      "sha256": "aeca6cb72bb236fa2ea9b68514c65bd786872b6fb0fccae3c467df0d50d8cd1f",
+      "sha256": "211074e7cade912124774280c56ac3d4ed6ebd64830685b3556516bc3220b46e",
       "component": "core"
     },
     {
@@ -4299,7 +4299,7 @@
     {
       "path": "tools/connect-handoff.py",
       "component": "core",
-      "sha256": "81e256f6c09685391938085fca4ab8841159b544ec110437c327bc9c0bb64a1b"
+      "sha256": "ab05470a2585639134df5d718fba6a0e07539ae003b95a0ce2d699b67cc306ce"
     },
     {
       "path": "tools/connect-project.py",

@@ -87,7 +87,7 @@ class NativeTests(unittest.TestCase):
             return original(path,*args,**kwargs)
         with patch.object(Path,'lstat',denied):
             out=n.event(self.profile,'claude',payload)
-        self.assertIn('UNKNOWN',json.dumps(out));self.assertFalse(Path(payload['transcript_path']).exists())
+        self.assertIn('host-managed',json.dumps(out));self.assertFalse(Path(payload['transcript_path']).exists())
     def test_malformed_payload_no_private_echo(self):
         p=self.call('hook',input='{"private_value":"dont-echo-this",')
         self.assertEqual(0,p.returncode);self.assertIn('BLOCKED',p.stdout);self.assertNotIn('dont-echo-this',p.stdout+p.stderr)
@@ -149,15 +149,103 @@ class NativeTests(unittest.TestCase):
         with patch.object(g,'resume',None),self.assertRaisesRegex(ValueError,'incompatible'):
             n.load_profile(self.profile)
         self.assertFalse(self.store.exists())
-    def test_threshold_only_event_has_exact_profile_command(self):
+    def test_large_transcript_is_not_context_capacity(self):
         payload=self.payload(ev='PostToolUse')
         transcript=self.base/'synthetic-size-only'
-        with transcript.open('wb') as f:f.truncate(g.LIMIT)
+        with transcript.open('wb') as f:f.truncate(20_000_000)
         payload['transcript_path']=str(transcript)
-        out=n.event(self.profile,'claude',payload)
+        original=Path.lstat
+        def denied(path,*args,**kwargs):
+            if path == transcript:raise AssertionError('native must not stat transcript')
+            return original(path,*args,**kwargs)
+        with patch.object(Path,'lstat',denied):out=n.event(self.profile,'claude',payload)
         text=json.dumps(out)
-        self.assertIn('INCOMPLETE',text);self.assertIn(str(self.profile),text);self.assertIn('--profile',text)
-        self.assertNotIn('--store',text);self.assertNotIn('docker',text.lower())
+        self.assertNotIn('INCOMPLETE',text);self.assertIn(str(self.profile),text)
+        self.assertNotIn('Do not start further implementation',text)
+        self.assertNotIn('AI_FACTORY_NATIVE_IDENTITY',text)
+        for _ in range(139):self.assertEqual({},n.event(self.profile,'claude',payload))
+        records=[p for p in self.store.glob('*.json') if not p.name.startswith('session-')]
+        self.assertEqual([],records)
+    def test_service_images_and_tool_bytes_do_not_become_token_estimates(self):
+        transcript=self.base/'synthetic.jsonl'
+        records=[{'type':'api-request-start','metadata':'x'*100000},
+                 {'type':'attachment','content':{'type':'image','data':'y'*300000}},
+                 {'type':'assistant','message':{'content':[{'type':'tool_use','input':{'text':'z'*100000}}]}}]
+        transcript.write_text('\n'.join(json.dumps(r) for r in records)*10)
+        payload=self.payload();payload['transcript_path']=str(transcript)
+        original=Path.open
+        def refused(path,*args,**kwargs):
+            if path==transcript:raise AssertionError('transcript content read')
+            return original(path,*args,**kwargs)
+        with patch.object(Path,'open',refused):text=json.dumps(n.event(self.profile,'claude',payload))
+        self.assertIn('host-managed',text);self.assertNotIn('INCOMPLETE',text)
+    def test_duplicate_identity_attempts_and_fresh_boundaries(self):
+        payload=self.payload(ev='UserPromptSubmit');payload['prompt']='private synthetic prompt'
+        with patch.object(g.time,'time',return_value=100):
+            first=json.dumps(n.event(self.profile,'claude',payload))
+            self.assertIn('AI_FACTORY_NATIVE_IDENTITY',first)
+            self.assertEqual({},n.event(self.profile,'claude',payload))
+            payload['prompt']='different'
+            self.assertIn('AI_FACTORY_NATIVE_IDENTITY',json.dumps(n.event(self.profile,'claude',payload)))
+            start=self.payload();start['source']='compact'
+            self.assertIn('AI_FACTORY_NATIVE_IDENTITY',json.dumps(n.event(self.profile,'claude',start)))
+            self.assertEqual({},n.event(self.profile,'claude',start))
+        with patch.object(g.time,'time',return_value=103):
+            self.assertIn('AI_FACTORY_NATIVE_IDENTITY',json.dumps(n.event(self.profile,'claude',start)))
+        with patch.object(g.time,'time',return_value=99):
+            self.assertIn('AI_FACTORY_NATIVE_IDENTITY',json.dumps(n.event(self.profile,'claude',start)))
+        raw=''.join(p.read_text() for p in self.store.glob('session-*'))
+        self.assertNotIn('private synthetic prompt',raw)
+    def test_missing_identity_metadata_does_not_suppress(self):
+        for ev,field in [('SessionStart','source'),('UserPromptSubmit','prompt')]:
+            for value in [None,12,{}]:
+                payload=self.payload(ev=ev);payload[field]=value
+                for _ in range(2):
+                    self.assertIn('AI_FACTORY_NATIVE_IDENTITY',json.dumps(n.event(self.profile,'claude',payload)))
+    def test_native_contention_without_handoff_never_blocks_work(self):
+        with g.locked(self.store),patch.object(g,'LOCK_WAIT',0.01):
+            for ev in n.EVENTS:
+                self.assertEqual({},n.event(self.profile,'claude',self.payload(ev=ev)))
+        self.assertFalse(list(self.store.glob('*.json')))
+    def test_upgrade_preserves_old_draft_and_announces_policy(self):
+        payload=self.payload(ev='PostToolUse')
+        transcript=self.base/'legacy';transcript.write_text('')
+        with transcript.open('r+b') as f:f.truncate(g.LIMIT)
+        payload['transcript_path']=str(transcript)
+        g.event(self.store,'claude',payload)
+        key,_=g.identity('claude','source',self.roots[0]);path,st=g.state_for(self.store,key)
+        st['introduced']=True;g.atomic(path,st)
+        old=self.store/(st['pointer']+'.json');before=old.read_bytes()
+        text=json.dumps(n.event(self.profile,'claude',payload))
+        self.assertIn('old 4/5 MB',text);self.assertEqual(before,old.read_bytes())
+        after=g.read_json(path)
+        for field in ['pointer','generation','level','introduced']:self.assertEqual(st[field],after[field])
+        self.assertEqual({},n.event(self.profile,'claude',payload))
+    def test_dedup_cannot_hide_invalid_explicit_resume(self):
+        payload=self.payload(ev='UserPromptSubmit');payload['prompt']='same'
+        n.event(self.profile,'claude',payload)
+        for _ in range(2):
+            with self.assertRaises(ValueError):n.event(self.profile,'claude',payload,'not-valid')
+        token=g.checkpoint(self.store,'claude','old',self.roots[0],SUMMARY)
+        self.assertIn(SUMMARY['goal'],json.dumps(n.event(self.profile,'claude',payload,token)))
+    def test_compact_with_consumed_launch_pointer_restores_identity(self):
+        token=g.checkpoint(self.store,'claude','old',self.roots[0],SUMMARY)
+        payload=self.payload(sid='fresh');payload['source']='startup'
+        first=json.dumps(n.event(self.profile,'claude',payload,token))
+        self.assertIn(SUMMARY['goal'],first)
+        claims={p.name:p.read_bytes() for p in self.store.glob('claim-*')}
+        payload['source']='compact'
+        text=json.dumps(n.event(self.profile,'claude',payload,token))
+        self.assertIn('AI_FACTORY_NATIVE_IDENTITY',text);self.assertNotIn(SUMMARY['goal'],text)
+        self.assertEqual({},n.event(self.profile,'claude',payload,token))
+        self.assertEqual(claims,{p.name:p.read_bytes() for p in self.store.glob('claim-*')})
+    def test_invalid_output_does_not_save_dedup_marker(self):
+        payload=self.payload(ev='UserPromptSubmit');payload['prompt']='same'
+        key,_=g.identity('claude','source',self.roots[0])
+        with g.locked(self.store):
+            p,st=g.state_for(self.store,key)
+            with self.assertRaises(ValueError):g.native_context(p,st,'UserPromptSubmit',payload,None,'x'*20000)
+        self.assertFalse(list(self.store.glob('*.json')))
     def test_incompatible_exception_type_cli_is_bounded(self):
         directory=self.base/'incompatible/runtime/session-size';directory.mkdir(parents=True)
         (directory/'native.py').write_bytes((ROOT/'runtime/session-size/native.py').read_bytes())

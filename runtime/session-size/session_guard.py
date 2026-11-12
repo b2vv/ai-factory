@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Byte-sized, advisory handoffs. Never reads transcripts or starts model sessions."""
+"""Explicit handoffs; native context is host-managed. Legacy byte monitor is optional."""
 import argparse
 from contextlib import contextmanager
 import errno
@@ -26,6 +26,8 @@ TTL = 24 * 3600
 MAX_DEPTH = 3
 LOCK_WAIT = 1.0
 LOCK_POLL = 0.025
+IDENTITY_DEDUP_SECONDS = 2.0
+CONTEXT_POLICY = 'host-managed-v1'
 
 
 class LockBusy(Exception):
@@ -239,17 +241,20 @@ def output(event, text):
     return {'systemMessage': text}  # Stop is advisory; never block to spawn another turn.
 
 
-def event(store, host, payload, pointer=None, public_context=None, identity_text=''):
+def event(store, host, payload, pointer=None, public_context=None, identity_text='', host_managed=False):
     # Callable by explicit host adapters; keep contention nonfatal there.
     if not isinstance(payload, dict):
         raise ValueError('hook payload object required')
     try:
-        return event_locked(store, host, payload, pointer, public_context, identity_text)
+        return event_locked(store, host, payload, pointer, public_context, identity_text, host_managed)
     except LockBusy:
+        # Ordinary native monitoring has no pending handoff to block work on.
+        if host_managed and not pointer:
+            return {}
         return output(payload.get('hook_event_name'), DEFERRED)
 
 
-def event_locked(store, host, payload, pointer=None, public_context=None, identity_text=''):
+def event_locked(store, host, payload, pointer=None, public_context=None, identity_text='', host_managed=False):
     ev = payload.get('hook_event_name')
     if ev not in ('SessionStart', 'UserPromptSubmit', 'PostToolUse', 'Stop'):
         return {}
@@ -262,7 +267,12 @@ def event_locked(store, host, payload, pointer=None, public_context=None, identi
         if pointer and (ev == 'SessionStart' or st.get('resumed') != pointer
                         or not safe_path(store / ('claim-' + pointer + '.json')).exists()):
             context = resume_locked(store, pointer, host, payload['session_id'], root, key, st, identity_text)
-            return output(ev, context)
+            if context or not host_managed:
+                return output(ev, context)
+            # A consumed same-target pointer is a no-op, not a reason to lose
+            # startup/compact identity. The summary is never replayed.
+        if host_managed:
+            return native_context(p, st, ev, payload, public_context, identity_text)
         path = payload.get('transcript_path')
         # stat ONLY the exact host-provided path. No searching or reading sessions.
         size = None
@@ -309,6 +319,49 @@ def event_locked(store, host, payload, pointer=None, public_context=None, identi
         if changed:
             atomic(p, st)
         return output(ev, '\n'.join(texts))
+
+
+def native_context(path, state, event, payload, public_context, identity_text):
+    """No transcript access or token guess. Explicit resume is handled before here."""
+    texts = []
+    changed = False
+    if state.get('context_policy') != CONTEXT_POLICY:
+        texts.append('AI Factory native context is host-managed: transcript file bytes are not context tokens. '
+                     'The old 4/5 MB handoff thresholds do not apply to this native session. '
+                     'Use host auto-compaction; no byte-triggered stop or draft is required. '
+                     'Checkpoint meaningful progress explicitly before an intentional fresh-session handoff. '
+                     'Public checkpoint command: ' + (public_context or 'native.py checkpoint --profile <reviewed-profile> '
+                     '--host <host> --session <current-session> --cwd <enrolled-root>') +
+                     '. Supply sanitized JSON on stdin: goal, done, pending, evidence, constraints '
+                     '(strings, <=1600 characters each). Existing checkpoints/claims are not reset.')
+        state['context_policy'] = CONTEXT_POLICY
+        changed = True
+    if identity_text and event in ('SessionStart', 'UserPromptSubmit'):
+        # Duplicate global and project-wrapper delivery has no native event ID.
+        # A short bounded fingerprint window coalesces attempts, not acknowledged
+        # delivery. Do not store prompt text or deduplicate malformed metadata.
+        field = 'source' if event == 'SessionStart' else 'prompt'
+        value = payload.get(field)
+        fingerprint = None
+        if isinstance(value, str):
+            fingerprint = sha(json.dumps([event, value], ensure_ascii=True).encode())
+        previous = state.get('native_identity', {})
+        now = time.time()
+        previous_time = previous.get('at') if isinstance(previous, dict) else None
+        duplicate = (fingerprint is not None and isinstance(previous, dict)
+                     and previous.get('fingerprint') == fingerprint
+                     and type(previous_time) in (int, float)
+                     and 0 <= now - previous_time <= IDENTITY_DEDUP_SECONDS)
+        if not duplicate:
+            texts.append(identity_text)
+            if fingerprint is not None:
+                state['native_identity'] = {'fingerprint': fingerprint, 'at': now}
+                changed = True
+    text = '\n'.join(texts)
+    validate_output(event, text)
+    if changed:
+        atomic(path, state)
+    return output(event, text)
 
 
 def validate_output(event, text):

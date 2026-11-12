@@ -458,6 +458,49 @@ class RegistrationTests(unittest.TestCase):
             self.assertFalse(list(copied.rglob('__pycache__')))
             self.assertEqual(before, self.snapshot())
 
+    def test_explicit_reconcile_only_autocompact_preserves_bytes(self):
+        self.apply()
+        target = self.home / '.claude/settings.json'
+        doc = json.loads(target.read_bytes()); doc['autoCompactWindow'] = 600000
+        raw = json.dumps(doc, indent=3).encode(); target.write_bytes(raw)
+        with self.assertRaisesRegex(ValueError, 'registered file drift'): c.plan(self.spec)
+        sha = k.digest(raw)
+        p = c.plan(self.spec, sha)
+        self.assertEqual('PLANNED', p['status']); self.assertEqual([], p['changes'])
+        with self.assertRaises(ValueError): c.apply(self.spec, p['plan_id'], True, '0'*64)
+        result = c.apply(self.spec, p['plan_id'], True, sha)
+        self.assertEqual('APPLIED', result['status'])
+        self.assertEqual(raw, target.read_bytes())
+        self.assertEqual('VERIFIED', c.verify(self.spec)['status'])
+        self.assertEqual('NOOP', c.plan(self.spec)['status'])
+        c.rollback(self.spec, result['transaction'], True)
+        self.assertEqual(raw, target.read_bytes())
+        with self.assertRaisesRegex(ValueError, 'registered file drift'): c.verify(self.spec)
+
+    def test_reconcile_rejects_boolean_numeric_permission_drift(self):
+        target = self.home / '.claude/settings.json'
+        target.parent.mkdir(parents=True)
+        target.write_text(json.dumps({'permissions': {'flag': True}}))
+        self.apply()
+        doc = json.loads(target.read_bytes())
+        doc['autoCompactWindow'] = 600000
+        doc['permissions']['flag'] = 1
+        target.write_text(json.dumps(doc))
+        with self.assertRaises(ValueError): c.plan(self.spec, k.digest(target.read_bytes()))
+
+    def test_reconcile_rejects_other_drift_and_stale_hash(self):
+        self.apply()
+        target = self.home / '.claude/settings.json'
+        baseline = json.loads(target.read_bytes())
+        for extra in [{'permissions': {'defaultMode': 'bypassPermissions'}}, {'hooks': {}}, {'autoCompactWindow': 500000}]:
+            doc = dict(baseline); doc['autoCompactWindow'] = 600000; doc.update(extra)
+            target.write_text(json.dumps(doc))
+            with self.assertRaises(ValueError): c.plan(self.spec, k.digest(target.read_bytes()))
+        doc = dict(baseline); doc['autoCompactWindow'] = 600000; target.write_text(json.dumps(doc))
+        sha = k.digest(target.read_bytes()); p = c.plan(self.spec, sha)
+        target.write_text(json.dumps(doc, indent=1))
+        with self.assertRaises(ValueError): c.apply(self.spec, p['plan_id'], True, sha)
+
     def test_wrong_plan_and_exclusive_required(self):
         before = self.snapshot()
         with self.assertRaises(ValueError): c.apply(self.spec, '0' * 64, True)

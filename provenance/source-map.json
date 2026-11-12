@@ -3940,7 +3940,7 @@
       "source": "~/.agents/ai-factory/ai-factory-plan.md",
       "destination": "ai-factory/ai-factory-plan.md",
       "source_sha256": "38792d0770a46719fc3521bc239c3e7a67e80224507d3790884996b41f8fb5d4",
-      "sha256": "2eda194dc8d490026da19f34a24d0a7a6154000681beb86bbfb6178e8877f9d2",
+      "sha256": "1a4e97622568147b6534114aad03b9c4ed7d88706b6d7d381ae6f58f3fc5a84b",
       "source_mode": "0o644",
       "transformations": [
         "absolute shared-source Markdown links made relative",
@@ -3949,7 +3949,8 @@
         "Owner-authorized task-branch routing correction; main repository single writer; runtime isolation separated; original source hash retained",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
-        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
+        "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
+        "Owner-authorized native-context guidance: host compaction, not historical transcript-byte thresholds."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/ai-factory-plan.md"

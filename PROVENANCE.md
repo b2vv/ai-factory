@@ -353,3 +353,14 @@ pacing without removing fenced ledger accounting. A distinct initial-consent jou
 kind preserves the original index only for verified first-ever activation; historical
 v1 replay and later invalidation retain their semantics. Independent scoped review
 and layered local tests do not certify whole-storage acceptance or production rollout.
+
+
+## Native context-capacity correction
+
+Owner-authorized first-party correction separates host-managed token compaction
+from legacy transcript-byte monitoring. Shared native hooks no longer generate
+byte-triggered drafts or work stops. Bounded identity-output deduplication handles
+global/legacy wrapper duplication without storing prompt text. Explicit checkpoint,
+snapshot, claim and resume contracts remain unchanged. No transcript content,
+third-party code, host path or model configuration is added to the release.
+Synthetic evidence does not prove live host delivery or actual compaction timing.

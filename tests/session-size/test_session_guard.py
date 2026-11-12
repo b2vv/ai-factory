@@ -379,7 +379,8 @@ class GuardTests(unittest.TestCase):
             self.assertEqual(0, proc.returncode, err)
             self.assertNotIn('BLOCKED', out); self.assertNotIn('DEFERRED', out)
             texts.append(out)
-        self.assertEqual(3, sum('INCOMPLETE' in x for x in texts))
+        self.assertEqual(0, sum('INCOMPLETE' in x for x in texts))
+        self.assertEqual(3, sum('host-managed' in x for x in texts))
         self.assertEqual(3, len(list(self.store.glob('session-*.json'))))
 
     def test_manual_busy_exit_is_retryable_without_success_id(self):
