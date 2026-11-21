@@ -14,6 +14,10 @@ import (
 	"time"
 )
 
+// appMarker is the bundle content the owner must receive: React in the default build,
+// the fixed stub under -tags nobundle (the real bundle is then checked by the default build only).
+var appMarker = map[bool]string{true: "react", false: "nobundle test stub"}[bundled]
+
 func TestSharedDashboardBoundary(t *testing.T) {
 	const host = "dash.share.example.test"
 	useProjects(t, projectConfig{ID: "project-a", Name: "Project A", Root: "/srv/project-a"}, projectConfig{ID: "project-b", Name: "Project B", Root: "/srv/project-b"})
@@ -145,7 +149,7 @@ func TestSharedDashboardBoundary(t *testing.T) {
 		})
 	}
 	for _, route := range []struct{ path, marker string }{
-		{"/", "/app.js"}, {"/app.js", "react"}, {"/api/status", "PRIVATE_REVISION"}, {"/api/details/project-a", "PRIVATE_MARKDOWN"},
+		{"/", "/app.js"}, {"/app.js", appMarker}, {"/api/status", "PRIVATE_REVISION"}, {"/api/details/project-a", "PRIVATE_MARKDOWN"},
 	} {
 		req := httptest.NewRequest("GET", "http://"+host+route.path, nil)
 		req.Header.Set("Origin", "https://"+host)

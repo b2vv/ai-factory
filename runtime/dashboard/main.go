@@ -2,9 +2,6 @@ package main
 
 import (
 	"context"
-
-	"embed"
-
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -21,9 +18,6 @@ import (
 	"syscall"
 	"time"
 )
-
-//go:embed ui/index.html ui/style.css ui/dist/app.js
-var assets embed.FS
 
 type stage struct {
 	Name   string `json:"name"`

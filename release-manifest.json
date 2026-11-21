@@ -654,6 +654,16 @@
       "component": "dashboard"
     },
     {
+      "path": "runtime/dashboard/assets_bundle.go",
+      "sha256": "0084004db8d299e9b9822ba3b4d96333e8874bdde48f0f5113a5cbe625e1ca16",
+      "component": "dashboard"
+    },
+    {
+      "path": "runtime/dashboard/assets_nobundle.go",
+      "sha256": "8ed3c6bf5290694985e8f055577ea804ce18818f4f3173c6fe3a86316e82289d",
+      "component": "dashboard"
+    },
+    {
       "path": "runtime/dashboard/docker-local.sh",
       "sha256": "29a0b9cf651c74db58086e1acc091dd0c2c05dd4977fc3834c6be98cff5357f3",
       "component": "dashboard"
@@ -675,7 +685,7 @@
     },
     {
       "path": "runtime/dashboard/main.go",
-      "sha256": "e6b7a31ac73b1af8ffd798f520129c5496eef94757a6523415508061bf4cc1d1",
+      "sha256": "f789c8e43ef97280960795c3c2b106217e180997d1ec76bb54aa12502ed878f9",
       "component": "dashboard"
     },
     {
@@ -725,7 +735,7 @@
     },
     {
       "path": "runtime/dashboard/share_test.go",
-      "sha256": "42cad1b9e1eb9b66d082ef8221943902e8952063806c0137d8e6d7994e68d0a4",
+      "sha256": "491852e20acc6f92f5a380792e551cbb51108bc4658bcfe169f5a11e7fc260c3",
       "component": "dashboard"
     },
     {
@@ -4521,7 +4531,7 @@
     {
       "path": "tests/ui-measurements/test_browser.py",
       "component": "core",
-      "sha256": "ed2f2a1cc0211ce19846b4647d7a81d6a5c9c460a176be3db258551d935b7325"
+      "sha256": "f450c7b5f2925be4ee36bf530a926d087a2e07a0c03566be409ac5c3ba1ad560"
     },
     {
       "path": "tests/ui-measurements/test_node.py",
@@ -4570,7 +4580,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "bab911d27afa81b79b396c7ecb924b633657f2d064dd77e980306a5be82f6100",
+      "sha256": "1627d44e872ac795abbb8bb5fef7969f622130c7cadee6d21890b00cc4a2caca",
       "component": "core"
     },
     {

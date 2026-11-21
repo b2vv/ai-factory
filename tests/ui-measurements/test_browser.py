@@ -7,7 +7,8 @@ BODY='<div id="clip" style="width:60px;white-space:nowrap;overflow:hidden">A del
 class BrowserMeasurements(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  cls.chrome=os.environ.get('CHROME_BIN') or shutil.which('chromium') or shutil.which('google-chrome')
+  mac='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+  cls.chrome=os.environ.get('CHROME_BIN') or shutil.which('chromium') or shutil.which('google-chrome') or shutil.which('chrome') or (mac if os.access(mac,os.X_OK) else None)
   if not cls.chrome:
    if os.environ.get('AI_FACTORY_REQUIRE_UI_BROWSER')=='1':raise RuntimeError('Required Chrome/Chromium unavailable; set CHROME_BIN')
    raise unittest.SkipTest('NOT_TESTED real browser: no existing Chrome/Chromium configured')
