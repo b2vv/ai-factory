@@ -79,7 +79,9 @@ references should resolve inside the same reviewed installed kit.
 
 Use the existing `connect-project.py` plan/apply workflow after kit identity is valid.
 It writes the delimited connection block in AGENTS.local.md and a CLAUDE.local.md
-import. Preserve everything outside managed blocks. An unmanaged import conflict
+import. The block names the managed root and points agents to its `installed.json`
+`latest` for the current identity; it records no version, hash or commit, so a normal
+kit update leaves connected projects unchanged (a reconnect is a NOOP). Preserve everything outside managed blocks. An unmanaged import conflict
 requires a reviewed surgical migration, not duplicate imports or replacement of
 whole local files. Keep local entry files private through the supported ignore
 rules. Preserve existing project author changes and stronger local acceptance.

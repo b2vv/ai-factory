@@ -7,6 +7,7 @@ writes nothing, and hooks/credentials are never touched.
 """
 import io
 import json
+import re
 import sys
 import unittest
 from contextlib import redirect_stdout
@@ -266,19 +267,29 @@ class ConnectProject(unittest.TestCase):
         self.assertEqual(actions["AGENTS.local.md"], "noop")
         self.assertEqual(actions[".gitignore"], "noop")
 
-    # 6. kit update: only the managed block is refreshed to the new identity
-    def test_kit_update_refreshes_block(self):
+    # 6. kit update: the block is bound to no hash or version, so the project needs no rewrite
+    def test_kit_update_leaves_block_unchanged(self):
         run(self.base_args() + ["--apply"])
         user_tail = "\n# trailing user note kept\n"
         p = self.proj / "AGENTS.local.md"
         p.write_text(p.read_text() + user_tail)
+        before = p.read_bytes()
         # simulate a kit.py update: new version + manifest
         make_kit(self.tmp, version="0.9.0", manifest_body="M2")
         rc, rep = run(self.base_args() + ["--apply"])
-        txt = p.read_text()
-        self.assertIn("0.9.0", txt)                    # new identity in block
-        self.assertIn(user_tail.strip(), txt)          # user tail still present
-        self.assertEqual([x for x in rep["actions"] if x["file"] == "AGENTS.local.md"][0]["action"], "update-block")
+        self.assertEqual(rc, 0)
+        self.assertEqual(p.read_bytes(), before)
+        self.assertEqual([x for x in rep["actions"] if x["file"] == "AGENTS.local.md"][0]["action"], "noop")
+        self.assertEqual(rep["kit"]["version"], "0.9.0")   # the report still shows the live identity
+
+    def test_block_points_to_latest_without_hashes(self):
+        run(self.base_args() + ["--apply"])
+        text = (self.proj / "AGENTS.local.md").read_text()
+        block = text.split(cp.BEGIN, 1)[1].split(cp.END, 1)[0]
+        self.assertIsNone(re.search(r"[0-9a-f]{32,}", block))
+        self.assertNotIn("receipts/", block)
+        self.assertNotIn("0.8.0-alpha", block)
+        self.assertIn(f"`{self.kit}/.ai-factory-state/installed.json` (`latest`)", block)
 
     # 7. worktree: same step, adapter referenced by absolute path, no copy
     def test_worktree_absolute_adapter(self):

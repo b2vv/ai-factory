@@ -166,13 +166,10 @@ def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, glo
     lines = [
         "## AI Factory connection (managed)",
         "",
-        f"Canonical kit (single copy, not vendored here): `{kit['managed_root']}` — "
-        f"version `{kit['version']}`"
-        + (f", release-manifest sha256 `{kit['release_manifest_sha256']}`" if kit['release_manifest_sha256'] else "")
-        + ".",
-        f"Package-install receipt (the managed-root install, not a project transaction): "
-        f"`{kit['install_receipt']}`." if kit['install_receipt'] else
-        "Package-install receipt: (managed root reports no install transaction).",
+        f"Canonical kit (single copy, not vendored here): `{kit['managed_root']}` — always the latest "
+        "version installed there; this block is bound to no version, hash or commit.",
+        f"Current kit identity: read `{kit['managed_root']}/.ai-factory-state/installed.json` (`latest`) "
+        "and its receipt at the time of use.",
         "",
         "Kit entry rules (§subagent-stream-to-file / §silent-agent / §session-continuation) are "
         "imported from the canonical kit below; skill bodies are never copied into this project.",
