@@ -1,0 +1,146 @@
+{
+  "revision": "demo-sha-17",
+  "diff": "sha256:demo-diff-17",
+  "qa": [
+    {
+      "id": "QA-41",
+      "source": "Demo QA ticket 41: depot name must appear on detail and edit"
+    },
+    {
+      "id": "QA-42",
+      "source": "Demo QA ticket 42: region displays label, not identifier"
+    }
+  ],
+  "rows": [
+    {
+      "id": "created-persisted-name",
+      "qa_id": "QA-41",
+      "field": "name",
+      "expected": "Depot Cedar",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "storage",
+      "state": "created-persisted",
+      "action": "Save create, then independent read",
+      "assertion": "name equals Depot Cedar",
+      "channel": "api",
+      "required": true
+    },
+    {
+      "id": "created-persisted-region",
+      "qa_id": "QA-42",
+      "field": "region",
+      "expected": "r-17",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "storage",
+      "state": "created-persisted",
+      "action": "Save create, then independent read",
+      "assertion": "region equals r-17",
+      "channel": "api",
+      "required": true
+    },
+    {
+      "id": "created-view-name",
+      "qa_id": "QA-41",
+      "field": "name",
+      "expected": "Depot Cedar",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "detail",
+      "state": "created-view",
+      "action": "Open read-only detail after save",
+      "assertion": "name equals Depot Cedar",
+      "channel": "ui",
+      "required": true
+    },
+    {
+      "id": "created-view-region",
+      "qa_id": "QA-42",
+      "field": "region",
+      "expected": "Kyiv region",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "detail",
+      "state": "created-view",
+      "action": "Open read-only detail after save",
+      "assertion": "region equals Kyiv region",
+      "channel": "ui",
+      "required": true
+    },
+    {
+      "id": "edit-prefill-name",
+      "qa_id": "QA-41",
+      "field": "name",
+      "expected": "Depot Cedar",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "edit-form",
+      "state": "edit-prefill",
+      "action": "Open edit form",
+      "assertion": "name equals Depot Cedar",
+      "channel": "ui",
+      "required": true
+    },
+    {
+      "id": "edit-prefill-region",
+      "qa_id": "QA-42",
+      "field": "region",
+      "expected": "Kyiv region",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "edit-form",
+      "state": "edit-prefill",
+      "action": "Open edit form",
+      "assertion": "region equals Kyiv region",
+      "channel": "ui",
+      "required": true
+    },
+    {
+      "id": "updated-persisted-name",
+      "qa_id": "QA-41",
+      "field": "name",
+      "expected": "Depot Birch",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "storage",
+      "state": "updated-persisted",
+      "action": "Change name to Depot Birch, save and read",
+      "assertion": "name equals Depot Birch",
+      "channel": "api",
+      "required": true
+    },
+    {
+      "id": "updated-persisted-region",
+      "qa_id": "QA-42",
+      "field": "region",
+      "expected": "r-17",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "storage",
+      "state": "updated-persisted",
+      "action": "Change name to Depot Birch, save and read",
+      "assertion": "region equals r-17",
+      "channel": "api",
+      "required": true
+    },
+    {
+      "id": "updated-reloaded-view-name",
+      "qa_id": "QA-41",
+      "field": "name",
+      "expected": "Depot Birch",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "detail",
+      "state": "updated-reloaded-view",
+      "action": "Open read-only detail and reload after update",
+      "assertion": "name equals Depot Birch",
+      "channel": "ui",
+      "required": true
+    },
+    {
+      "id": "updated-reloaded-view-region",
+      "qa_id": "QA-42",
+      "field": "region",
+      "expected": "Kyiv region",
+      "expected_source": "Demo fixture contract: name Cedar -> Birch; region r-17 labelled Kyiv region",
+      "surface": "detail",
+      "state": "updated-reloaded-view",
+      "action": "Open read-only detail and reload after update",
+      "assertion": "region equals Kyiv region",
+      "channel": "ui",
+      "required": true
+    }
+  ]
+}

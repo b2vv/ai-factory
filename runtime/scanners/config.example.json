@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "sanitized_inputs_reviewed": false,
+  "root": "/absolute/product-root",
+  "files": {
+    "src/example.js": "REPLACE_WITH_SHA256",
+    "package.json": "REPLACE_WITH_SHA256",
+    "yarn.lock": "REPLACE_WITH_SHA256"
+  },
+  "reports": "/absolute/reports/new-run",
+  "db_store": "/absolute/factory-owned-db-store",
+  "db_snapshot": "REPLACE_WITH_SNAPSHOT_ID"
+}

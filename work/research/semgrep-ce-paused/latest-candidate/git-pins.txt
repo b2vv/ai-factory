@@ -1,0 +1,7 @@
+https://github.com/janestreet/memtrace.git#a88470c3de884182503ba5fcd4729e281e544731
+https://github.com/semgrep/obackward.git#6efca08b2a98317b1d705c1e88b8342ec558205c
+https://github.com/semgrep/ocaml-opentelemetry.git#c3a03bcc0afafea188b8aefa631788090f0b8fd4
+https://github.com/semgrep/ocaml.git#4046c817ed2ed5c2431300902d1bd306230bf3dd
+https://github.com/semgrep/pcre2-ocaml.git#b763e279b7aa624c9f1adf0afdd45ee7555e2460
+https://github.com/semgrep/pyro-caml.git#d6941d16419a7d73d60126a70400fdb4d207e2ab
+https://github.com/semgrep/semgrep-interfaces.git#7e509db48c700cae49fe0372e2aa0410fa86d867

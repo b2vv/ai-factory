@@ -1,0 +1,70 @@
+{
+  "references": [
+    {
+      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "target": "./src/ordering/GLOSSARY.md",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "target": "./src/billing/GLOSSARY.md",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/arch/domain-modeling/GLOSSARY-FORMAT.md",
+      "target": "./src/fulfillment/GLOSSARY.md",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/deliver/wayfinder/SKILL.md",
+      "target": "link",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/google-workspace/SKILL.md",
+      "target": "its link",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/report-writer.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    },
+    {
+      "file": "skills/synced/snapshot-01/deep-research/references/researcher.md",
+      "target": "URL",
+      "reason": "Inherited external/project/historical reference or template placeholder; not copied/installed."
+    }
+  ],
+  "policy": "Only inherited known external/placeholders; new unresolved links fail validation."
+}

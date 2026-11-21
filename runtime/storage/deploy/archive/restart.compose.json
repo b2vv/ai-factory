@@ -1,0 +1,13 @@
+{
+  "services": {
+    "postgres": {"restart": "unless-stopped"},
+    "mongo": {"restart": "unless-stopped"},
+    "factory": {
+      "restart": "unless-stopped",
+      "depends_on": {
+        "postgres": {"condition": "service_healthy"},
+        "mongo": {"condition": "service_healthy"}
+      }
+    }
+  }
+}

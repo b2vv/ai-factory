@@ -1,0 +1,7 @@
+#!/bin/sh
+# Intercept only the exact reviewed static-curl helper invocation.
+if [ "$#" = 4 ] && [ "$1" = -L ] && [ "$2" = -o ] && [ "$3" = curl-8.5.0.tar.gz ] && [ "$4" = https://curl.se/download/curl-8.5.0.tar.gz ]; then
+  cp /capture/curl/curl-8.5.0.tar.gz "$3"
+else
+  exec /usr/bin/curl "$@"
+fi

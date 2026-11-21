@@ -1,0 +1,5 @@
+# Experimental CE build preservation — PAUSED / SUPERSEDED
+
+28 selected authored files retained for private research history, plus this README and INDEX. Not a working release, not full backup, not approved to execute. Official-image CE use supersedes custom build for this integration. Earlier build attempts did not establish a successful clean offline replay. All original candidates, tests, reviews and runs remain local unchanged.
+
+LOCAL_TASK_ARTIFACTS and TASK_DOCKER_ENDPOINT are deliberately non-operational placeholders. This export excludes required source archives, binaries, helper source excerpt, caches, fixture payload and raw logs. Historical manifests retain original hashes; INDEX.json explicitly binds original versus sanitized bytes. No claim that old review accepts transformed bytes. Do not run scripts or tests as an operational builder; any future revival needs fresh review, complete inputs and separate authorization. No installed hooks or entrypoint references this directory.

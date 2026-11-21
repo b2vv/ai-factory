@@ -1,0 +1,1 @@
+{"name":"factory-local-dashboard","version":"0.1.0","private":true,"type":"module","scripts":{"build":"esbuild ui/app.jsx --bundle --minify --define:process.env.NODE_ENV='\"production\"' --outfile=ui/dist/app.js"},"dependencies":{"react":"19.2.7","react-dom":"19.2.7","react-markdown":"10.1.0"},"devDependencies":{"esbuild":"0.28.2"}}

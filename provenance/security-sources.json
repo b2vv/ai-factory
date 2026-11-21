@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "status": "PROPOSED_REFERENCE_ONLY_NOT_INSTALLED",
+  "integration": "authored non-discovered adapter; zero upstream payload in proposed package",
+  "sources": [
+    {
+      "repository": "https://github.com/openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "license": "Apache-2.0 (per-skill LICENSE.txt)",
+      "selected_skills": [
+        "security-best-practices",
+        "security-threat-model"
+      ],
+      "attribution": "OpenAI",
+      "notice_check": "No separate NOTICE in selected closure/tree at pinned commit; licenses retained in review evidence"
+    },
+    {
+      "repository": "https://github.com/trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "license": "CC-BY-SA-4.0 (repository LICENSE)",
+      "selected_skills": [
+        "differential-review",
+        "property-based-testing"
+      ],
+      "attribution": "Trail of Bits",
+      "notice_check": "No separate NOTICE in selected closure/tree at pinned commit; licenses retained in review evidence"
+    }
+  ],
+  "closure": [
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/LICENSE.txt",
+      "git_blob_sha1": "13e25df86ce06eb6488e6a6bc5c5847f5dedc352",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+      "bytes": 10776
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/SKILL.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/SKILL.md",
+      "git_blob_sha1": "45ccbd8d671c4c4cc3e7e0645a16a3f80ec50de7",
+      "sha256": "7b3dae1ffc5434d890f3c65c8f552af52d0307fab3b35dec13013c9ca3844c4f",
+      "bytes": 8612
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/agents/openai.yaml",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/agents/openai.yaml",
+      "git_blob_sha1": "1721736a914e6ce41da2e0e005f6a8e782f2e642",
+      "sha256": "6e9c6f2edce448eb2b589f81ad6e3f722665021785513bcbfd0bf7b86b529171",
+      "bytes": 237
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/golang-general-backend-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/golang-general-backend-security.md",
+      "git_blob_sha1": "85e9c6a1669e0d04af56c9a0bce113dd35e0248d",
+      "sha256": "a73c47c34497b120672d48411fe51dc90d426a571801a0b3f649e2ce4ec658b4",
+      "bytes": 38659
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/javascript-express-web-server-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/javascript-express-web-server-security.md",
+      "git_blob_sha1": "98d79067ffb784ce426394193e744ddc7f3c93be",
+      "sha256": "427835cbb5be7ba96172ea6ca9af80ddd4419c833e9ebf870996740c80d8406c",
+      "bytes": 49357
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/javascript-general-web-frontend-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/javascript-general-web-frontend-security.md",
+      "git_blob_sha1": "d8b696f363ea54661791c048ba19a57933d20825",
+      "sha256": "3a7bc7b3f6e7ff043db9dbaa8933894d7a19d987d0607e4ddae5d70184a63d63",
+      "bytes": 38638
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/javascript-jquery-web-frontend-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/javascript-jquery-web-frontend-security.md",
+      "git_blob_sha1": "3fd00db430ed55fafe50112b8d8b751fe82deec1",
+      "sha256": "bcbad2fa6c2a02709e47e889e70102c76886bf36bc798624d27db570eccf40da",
+      "bytes": 33581
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md",
+      "git_blob_sha1": "44cc8213b11feda2eac8283dfd6a11fe93a68965",
+      "sha256": "71c773f7a97ce60c853adfa100b3d88b3b7bc4c6b8acaef1432ffabd923ee182",
+      "bytes": 43423
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/javascript-typescript-react-web-frontend-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/javascript-typescript-react-web-frontend-security.md",
+      "git_blob_sha1": "33fb693282a40754a081a499cda3d471aa23da28",
+      "sha256": "d3030c0f24bddb56b9bbb91bbec1ee49eb7778bce4d3e0297b2641b2fc6b0d9c",
+      "bytes": 41686
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/javascript-typescript-vue-web-frontend-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/javascript-typescript-vue-web-frontend-security.md",
+      "git_blob_sha1": "be326548bf953b6d1918727d228449ab4cb5110d",
+      "sha256": "77c6a747f9f17e3df03aad0fcb20d99ac7898001b81aef8b80908e45ac14a688",
+      "bytes": 31445
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/python-django-web-server-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/python-django-web-server-security.md",
+      "git_blob_sha1": "0b9a89a73e0ff3a88ccb7837b56ad1a5f15259e0",
+      "sha256": "4fb69b5d45f10e588d1a8c35cdc5f59e18910f6b46a93e2d342d90f286f8dfd2",
+      "bytes": 38661
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/python-fastapi-web-server-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/python-fastapi-web-server-security.md",
+      "git_blob_sha1": "d394a55bb86b3b2e5c2b73e65cb115a2a0ce1c05",
+      "sha256": "7383c7f4fc271190b05e562ada7e825982a2c76b6c79a9f95a1da7687b65a616",
+      "bytes": 44926
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-best-practices/references/python-flask-web-server-security.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-best-practices/references/python-flask-web-server-security.md",
+      "git_blob_sha1": "adbc599aad8688a3446f5b595a1f4f0c1eac942f",
+      "sha256": "9606d69190c04c167fdeac57e61297547a57b0542fd89dede36f355970446929",
+      "bytes": 31748
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-threat-model/LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-threat-model/LICENSE.txt",
+      "git_blob_sha1": "13e25df86ce06eb6488e6a6bc5c5847f5dedc352",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+      "bytes": 10776
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-threat-model/SKILL.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-threat-model/SKILL.md",
+      "git_blob_sha1": "abd3c1c95d49c4e0e0664f198f4bf168c6291aec",
+      "sha256": "1283c0dd62a8104d9edda4583569b5d8510b4ddaa45120687c999250fd96bad2",
+      "bytes": 5561
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-threat-model/agents/openai.yaml",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-threat-model/agents/openai.yaml",
+      "git_blob_sha1": "d8b04e20a62688188f19bd396ae6b923841ddf8e",
+      "sha256": "3319b59736312abceca614e341c0e59cae47263e3b58a22b2b5ddf1e5fc8c227",
+      "bytes": 254
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-threat-model/references/prompt-template.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-threat-model/references/prompt-template.md",
+      "git_blob_sha1": "b6affb0d2f873ffe398f7a8df00095dc0ff01f59",
+      "sha256": "81a59aa3fb3ac3a739d6a26ab38e4015965f215581ee54becef21a2b121ec29b",
+      "bytes": 12642
+    },
+    {
+      "repo": "openai/skills",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "path": "skills/.curated/security-threat-model/references/security-controls-and-assets.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/security-threat-model/references/security-controls-and-assets.md",
+      "git_blob_sha1": "63d1455aeacfc97eaca4e371040dbadfbd791635",
+      "sha256": "d536cfa9acad2523dc39134bcf33b9566c29dd9a57b407cbc9901637230c6b98",
+      "bytes": 1680
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/LICENSE",
+      "git_blob_sha1": "3b7b82d0da2db857eda1a798dbd908ea136f07b5",
+      "sha256": "7abe19ec9bb73b36141b999b861d24ad855e808bafe0f81e84cce28556f6c297",
+      "bytes": 20131
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/agents/adversarial-modeler.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/agents/adversarial-modeler.md",
+      "git_blob_sha1": "b7c1dbace7a07650d504e6d9765b6de193a844f0",
+      "sha256": "f7be8413601990ceae260f2b1e3557f6d33022e7c4279eaedbed0a7d3bc919e6",
+      "bytes": 5746
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/skills/differential-review/SKILL.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/skills/differential-review/SKILL.md",
+      "git_blob_sha1": "536e9258092876017b098f1712a92e7d06bb1480",
+      "sha256": "f9af6a8193fc1a9f8ca3c54bb8d19095a5f20c9472ca6d014488bbde50b67da0",
+      "bytes": 7439
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/skills/differential-review/adversarial.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/skills/differential-review/adversarial.md",
+      "git_blob_sha1": "0176d374bc2d9d59f114b647cb21f0685bc7e9f3",
+      "sha256": "3cb823f38c6e551cbcf5f72325d2bb219dacdad774072519c31d50d92db19800",
+      "bytes": 5062
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/skills/differential-review/agents/openai.yaml",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/skills/differential-review/agents/openai.yaml",
+      "git_blob_sha1": "ba287073f8a5f482350b8149cf55a7ce101b2d68",
+      "sha256": "0279d56f88dc1a04d4b1941a25fa7672912a3ceb0557b13c38d069908b30ae61",
+      "bytes": 245
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/skills/differential-review/assets/trail-of-bits-mark.svg",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/skills/differential-review/assets/trail-of-bits-mark.svg",
+      "git_blob_sha1": "7cd6e7ca7348897984f2498f301a888bb2f3ca71",
+      "sha256": "4bf74c789b38dcf6ad762c136b6832363d27ae19fbaa9a18ec18d66ecce6ca05",
+      "bytes": 3084
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/skills/differential-review/methodology.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/skills/differential-review/methodology.md",
+      "git_blob_sha1": "71d9dc0babf1417ee79ec8d5214ea690d0c2fe6b",
+      "sha256": "16b335d24cf2145e3dc4a37f50056550d29db2efa20e6df78fec95ec1e6fb0b4",
+      "bytes": 6738
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/skills/differential-review/patterns.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/skills/differential-review/patterns.md",
+      "git_blob_sha1": "71078a725d986c90d014cceff0cc54414ad3b1a1",
+      "sha256": "52abb18abbc73502a3d3b2f36a7a035adc1db40fd812d1d5424cf065036a06e9",
+      "bytes": 6999
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/differential-review/skills/differential-review/reporting.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/differential-review/skills/differential-review/reporting.md",
+      "git_blob_sha1": "cb5e37b4eab89c429bf6f968d3e3482adaa39faa",
+      "sha256": "0016876dc6f158e926448bff1b6f634796757c7afe09dff177cfe30250724fc4",
+      "bytes": 7006
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/README.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/README.md",
+      "git_blob_sha1": "2c49678009a0e3e796a31dda185935497dec450a",
+      "sha256": "ffbe30eec09cc64fb1eae836b07ca1d82939bda3f1e6f0dceadcdd78793a3112",
+      "bytes": 15332
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/SKILL.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/SKILL.md",
+      "git_blob_sha1": "1cc39d8d8cba5955bf9c8d7c9a2aef348722a55e",
+      "sha256": "9448cacb65c6237a7c22dc59602667177ecae405524079ae9ff92240590b995a",
+      "bytes": 4306
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/agents/openai.yaml",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/agents/openai.yaml",
+      "git_blob_sha1": "fdde0c37ebd8f31ea34fd945a0c3b784d51defe7",
+      "sha256": "51d635deefa254d8cdf6dc56450851b6ec9545cd37f88a4eb4035cf3f2262fff",
+      "bytes": 254
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/assets/trail-of-bits-mark.svg",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/assets/trail-of-bits-mark.svg",
+      "git_blob_sha1": "7cd6e7ca7348897984f2498f301a888bb2f3ca71",
+      "sha256": "4bf74c789b38dcf6ad762c136b6832363d27ae19fbaa9a18ec18d66ecce6ca05",
+      "bytes": 3084
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/references/generating.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/references/generating.md",
+      "git_blob_sha1": "0133ccd27580a6f68d662807832de67cb1d91514",
+      "sha256": "c0e72dfc89babe3c32de718b81b94044362c85e776d7475e950dfeaab78bb58e",
+      "bytes": 2634
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/references/interpreting-failures.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/references/interpreting-failures.md",
+      "git_blob_sha1": "10aeac48d239da352206b8c49f72ee776e5ca5be",
+      "sha256": "dbae7db8773712ba03268a3d56ea5aa6720af0650a5189580bfd88aa2edc3f9a",
+      "bytes": 3426
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/references/libraries.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/references/libraries.md",
+      "git_blob_sha1": "6b9964a46c014f5ecee78cd356fb0bdc4cbcd830",
+      "sha256": "f7218acf8e668130ef3048983472579d04e12030c5401926f666363e5f69c686",
+      "bytes": 2952
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/references/refactoring.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/references/refactoring.md",
+      "git_blob_sha1": "d4be7fb1fd4f00e53fde109254dd6dc937248011",
+      "sha256": "6eb5c206f575704791f089608bb06e41d6eed91b9d3c7fb27912f969aed07a18",
+      "bytes": 4854
+    },
+    {
+      "repo": "trailofbits/skills",
+      "commit": "5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0",
+      "path": "plugins/property-based-testing/skills/property-based-testing/references/reviewing.md",
+      "url": "https://raw.githubusercontent.com/trailofbits/skills/5c99c03fb8a9ea568432ecbcba5d86e9f4ac2bf0/plugins/property-based-testing/skills/property-based-testing/references/reviewing.md",
+      "git_blob_sha1": "a2ca783a7dabaece9e383f0ace972bb4fe2f7881",
+      "sha256": "110b08118a1e7b1a2566def6e9d2a0bf43fc2deefce857d2ce3b4382b07bc774",
+      "bytes": 2859
+    }
+  ],
+  "closure_limits": [
+    "File closure is inspection evidence, not runnable plugin closure.",
+    "Differential adversarial-modeler agent text inspected; no registration. audit-context-building and issue-writer not imported or executed.",
+    "No marketplace metadata, command dispatch, hooks, scanners, upstream eval executables or CI settings imported.",
+    "OpenAI references include unsupported frameworks too; only matching references should be loaded.",
+    "Upstream license files and unmodified research copies remain in external review evidence, not package payload."
+  ],
+  "reuse_policy": "References only; no copied or translated upstream skill text. Future vendoring/adaptation requires explicit reviewed file selection and applicable license/notice handling; do not infer a permissive license for all skills.",
+  "planned_rule_vendor": {
+    "source": "secscan semgrep-rules",
+    "pin": "17e31e11",
+    "destination": "runtime/scanners/rules/semgrep-rules/",
+    "license": "LGPL-2.1 + Commons Clause",
+    "use_scope": "internal-use",
+    "status": "PLANNED_NOT_VENDORED",
+    "evidence": "Source, abbreviated pin and terms supplied by owner for this contract; no source files inspected or copied in this step.",
+    "required_before_vendor": "Separate change-protocol review: resolve full commit, exact file/hash closure, applicable licenses and notices; retain required notices. Update scanner manifest rule hashes and review scope plus release metadata.",
+    "activation": "Only explicitly hashed manifest rules are staged; this plan adds no rules and grants no scan authorization."
+  }
+}

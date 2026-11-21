@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "source_base_commit": "8697a62ef37d360297d32f31019cb68690fe43a9",
+  "origin": "Owner-authorized selective functional port of reviewed host-profile guidance; no policy/trust overlay imported.",
+  "reviewed_input_guard_sha256": "9169578714a30970dc13f54612e0b18833679b0929f84ae41e95d26d53466257",
+  "input_snapshot_sha256": "11e9498d2b4156c104576d032e1380ac123daa2e515ba3f8533547f85eb7a758",
+  "outputs": [
+    {
+      "path": "runtime/session-size-docker/guard.py",
+      "sha256": "c87b56f1ea5cca88f7e506865ccc68d67fbc41e86f04b6340d06109c727464b7"
+    },
+    {
+      "path": "tests/session-size-docker/test_identity.py",
+      "sha256": "ef4024b40174f4eff125f5736c3ebc3854865c73ee893d4f6d3f84ae2850247c"
+    },
+    {
+      "path": "tests/session-size-docker/test_guidance.py",
+      "sha256": "a1a64f234d0274faa0e3bfea10880bbd04d037ec3cc61d099a8eccf81327a4a0"
+    },
+    {
+      "path": "tests/collection/test_english_translation.py",
+      "sha256": "e88ac8a641ff3aff227e830de033204193b67e872dc8aa1893f176eb7e82431d"
+    },
+    {
+      "path": "docs/session-size-docker.md",
+      "sha256": "8917d5eb91665f9fa87b5a76513d784bf36ae67939c713b1142f0e6b2ac19706"
+    }
+  ],
+  "review_requirement": "Independent exact repository snapshot review; installed input acceptance is not portable acceptance.",
+  "historical_translation_scope": "Existing English provenance records remain exact historical migration evidence. They do not bind this subsequent functional delta. Historical proof uses immutable completed migration; separate live language audit remains mandatory.",
+  "native_acceptance": "NOT_TESTED for this portable profile; no end-to-end checkpoint/resume claim.",
+  "activation": "None; no hook registration, policy/trust change, consumer repin or installed runtime update."
+}

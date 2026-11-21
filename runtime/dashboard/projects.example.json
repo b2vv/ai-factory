@@ -1,0 +1,5 @@
+[
+  {"id": "project-a", "name": "Project A", "root": "/absolute/path/to/project-a"},
+  {"id": "project-b", "name": "Project B", "root": "/absolute/path/to/project-b",
+   "workflow": "Order: review, then merge, then manual QA. A rule, not the current state."}
+]

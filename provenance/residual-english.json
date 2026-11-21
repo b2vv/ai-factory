@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "history_commit": "12f51ed23cf664ac3b70e219a2d1a59a54bfeceb",
+  "history_manifest_sha256": "97609715691b8ceab85f93a41cd361f50616d5b7b4d83e41e1f18deed64eb7a6",
+  "files": [
+    {
+      "path": "PROVENANCE.md",
+      "before_sha256": "e3777dfb7f311281a531cd587622eef3854b354807f28bc6c4971f4961df9653",
+      "current_sha256": "6b71a8390aa72e0a34925eaa6e0714b64f49a11ad4a590543b1d98afe8a81be9"
+    },
+    {
+      "path": "README.md",
+      "before_sha256": "5fe5dd6bee3222b099ed1c78e49070ff7b5973a08590262ed830bdda0c9d4336",
+      "current_sha256": "1448c64d78876b24f5459886e261cdc6b2f65825b3d89efb748fb872798aca16"
+    },
+    {
+      "path": "adapters/legacy-planning/acceptance-spec-portable.md",
+      "before_sha256": "87573bf0588f4226f3467ea0a06c8405ac209ecebbd0697d4a23724ecc6775b0",
+      "current_sha256": "ddc0977c9fc9a67eda0968e39bafde4e25bc71b47c7f0fcabd865f328d75f77e"
+    },
+    {
+      "path": "adapters/legacy-planning/cto-research-portable.md",
+      "before_sha256": "e9a257eaf372379fa1b9283042f7ae833a30702b0338a12a75ba01e4366f074e",
+      "current_sha256": "bb3cf2a2d44fbca29915af3f1b4d5094d9c4eb0f9f359aa7bdee695e73b0da4b"
+    },
+    {
+      "path": "adapters/legacy-planning/plan-critique-portable.md",
+      "before_sha256": "17a87bc9795a7621cac491d76b4d9f79468858ed5735e2ff8d96b46d0aa0d04d",
+      "current_sha256": "3733c6f3b493623439842a19dec4b1c932d6cb48251fa3c3a54ff30fd05a170f"
+    },
+    {
+      "path": "adapters/legacy-planning/plan-defense-portable.md",
+      "before_sha256": "47df066bc9782a959461627599dd7fd2c76cd2defd3dd38d088b92efe2ddbadd",
+      "current_sha256": "a75a2c6e948571c5531c2775a8e61d56683f4329e177fadb63af4148a2035465"
+    },
+    {
+      "path": "ai-factory/ai-factory-plan.md",
+      "before_sha256": "7af05303aa72a801c01ca5e9e16255897686aab85f9eee78c871d3d75de8166a",
+      "current_sha256": "2eda194dc8d490026da19f34a24d0a7a6154000681beb86bbfb6178e8877f9d2"
+    },
+    {
+      "path": "ai-factory/pre-code-checkpoint.md",
+      "before_sha256": "265641c8faa54bc8d7d8b780716201f4d4d0edfc7f9080155d4725889bcac7d1",
+      "current_sha256": "dd29ff5706e6e339eda3d95b14723a7015ce73e2a8a5c3339e759e282b8a4abd"
+    },
+    {
+      "path": "ai-factory/repo-evidence.md",
+      "before_sha256": "66f21a694d2043e3aee1e4b10e216ab5b0251517f58fb355fa8fb5368e0e1bbe",
+      "current_sha256": "d65afd580d68e4a220a7dc8c6883e561d96d543d97de24100272ce4b5b5e8859"
+    },
+    {
+      "path": "ai-factory/workflow.md",
+      "before_sha256": "af757510334827fde624a18e31194e13d46f170b3c6288c329fa4ae7c3eb52e3",
+      "current_sha256": "4bce411153c51f4a6c7a2498ac18354b30c85871e675fc0017a33b9e4557bacf"
+    },
+    {
+      "path": "docs/legacy/starter-readme.md",
+      "before_sha256": "6329060b1357c88ca744fb691a44dc28912b85a941b0c1507fbccb7154a8c7b4",
+      "current_sha256": "d6f046ca50ef351b8a0684826769e8fc3f65ddddc3bdc9f9354a0c42c20aab2c"
+    },
+    {
+      "path": "docs/onboarding-helper.md",
+      "before_sha256": "33afa99b8d538d7f86ac42ffa509e3fb34e998b7eae8cbba082c9d33929d4eec",
+      "current_sha256": "29a3a9dd3f22d07e99b0b41d889e2b25d2d123438f30a1645f4f974c5ad8305e"
+    },
+    {
+      "path": "rules/agent-entry.md",
+      "before_sha256": "8fba1330a804e830e7ee6c25f6043be8d7f928dd72624f99883134d607376975",
+      "current_sha256": "7525a0b23b3d1797657c4c835a48cb71ced8f33d914c436be95f7136549c92cf"
+    },
+    {
+      "path": "rules/agent-stream-to-file.md",
+      "before_sha256": "4b35270e78dc9bfdf2ff849cfeca28266649e40dc380c0e2ef2aaa0c6110a7e0",
+      "current_sha256": "e5229cd7a191652f0275dd8dcd54976070324a41660812eb91e33aefc2061bd4"
+    },
+    {
+      "path": "rules/multi-model-roles.md",
+      "before_sha256": "908d20088fcc0c49a1316ee43e92d671448f2c9336ef287103b2df3cdc2a371f",
+      "current_sha256": "4f544c5735e214a732649c4643868b1d6822066da8494bd1b880285fec2da566"
+    },
+    {
+      "path": "rules/repo-standards-manifest.md",
+      "before_sha256": "fe4c59fa3705145be5d197e031a301274a0c00d1ad5d8d64cbba3c19d6b87b82",
+      "current_sha256": "e621f559373b5575840c96999b9c58ad55de4a7ad7e8285d2214269133c6ef12"
+    },
+    {
+      "path": "rules/subagent-orchestration-ledger.md",
+      "before_sha256": "03626da3bc9480b4a51c5837bba1c675366f408de23e6a685ef66f9bedba0af2",
+      "current_sha256": "e4f5ffe2554cdc6485ef95606ee660d3f551d55fe8a711f3f959d987c4f2d470"
+    },
+    {
+      "path": "rules/typescript-pocock-idioms.md",
+      "before_sha256": "06b659fe1b25ea31bd57b093b48646270ac08b05320798be4f50c94884266c42",
+      "current_sha256": "9a608e4fe0456a76bf09211b29c3a070bd24b4de7f7ddef44e45406e4dc25adf"
+    },
+    {
+      "path": "runtime/checkpoint/precode.py",
+      "before_sha256": "e3d7849f7de0278629d3616067c0d49bd02dabad26144b9234c4677a66dab4ff",
+      "current_sha256": "13c6977c9c00e1abdcdfc353eae755d595121c3ce56311a9121a5dafc51105ef"
+    },
+    {
+      "path": "skills/anti-slop-design/SKILL.md",
+      "before_sha256": "79bb55e04736785bdc2e52dc4edcbeb435ed0c263edd22f192b2d891a71aa550",
+      "current_sha256": "a55f78949064f01d108773c30dc09135ff1c9af39f19a05e4233a4b314fd6df2"
+    },
+    {
+      "path": "skills/arch/code-review/references/languages/typescript.md",
+      "before_sha256": "8cca261c747670906d0b0e3967fd2ff6c37ef9c7c9a8b479a881d060f217e73c",
+      "current_sha256": "15cff4a66987a902c7d1fd1eb4150692af163032bfda09204ba5db6cf2b817ba"
+    },
+    {
+      "path": "skills/deliver/spec-flow/SKILL.md",
+      "before_sha256": "18b9dfe1a3bc99a9e531a65246a59ed32641884bc885b0ea85681fa69ac79ccf",
+      "current_sha256": "8c7661b29dee85a217ae6e6f1867562f7e0c787d233819c21cccd42c5914d7b7"
+    },
+    {
+      "path": "skills/design-pass/SKILL.md",
+      "before_sha256": "264e87dd2651551a9901f549dcbc30c28ba77ac31c95b85e58e2be319f736864",
+      "current_sha256": "d8e5eacc22ae5adae0ce4c3f6b71193b05cf50511faf1f99d64952827d2f59ac"
+    },
+    {
+      "path": "skills/interface-review/SKILL.md",
+      "before_sha256": "a15f85159093600fd6151e924fb605666b8c24e962c9f81b93011ef632180ec4",
+      "current_sha256": "3974fb38ef092b6552c172574b63a8245757cf33f7ed2033c03ab185294d2f9d"
+    },
+    {
+      "path": "skills/plan/acceptance-spec/SKILL.md",
+      "before_sha256": "ca50e57454b1ebd51b8987591de6b40dc5ed18770af5ba4d10eef556e30424aa",
+      "current_sha256": "e89a3e1eaea24e3c368fbae7cedcca9ad535ffeea30ec126a09f7450abadc6c9"
+    },
+    {
+      "path": "skills/plan/cto-agenda/SKILL.md",
+      "before_sha256": "e6272cb4a21d118d05541a1d55dab619b787d3e279bd70b6cd31f641da323e40",
+      "current_sha256": "7bfdc7ee6bea244f39ffa85dceb8548d64469ab363d3fbbd17b8c0f4e38c6b4c"
+    },
+    {
+      "path": "skills/plan/cto-research/SKILL.md",
+      "before_sha256": "68d2b981b06afce7134128dcc5a5f7903409ee55e7a68f0350928923492881e5",
+      "current_sha256": "9f4eb1cd1967b6395f186ac95c40e921b53780d303100dfc918c8a484efebfb9"
+    },
+    {
+      "path": "skills/plan/plan-critique/SKILL.md",
+      "before_sha256": "e8323990106a6387c7478016ebf6f3b1efb406bdd862c8e2fdfeb3b12db6ce28",
+      "current_sha256": "35f38da3afdf028de92d4132853a99828c2fffc149f51d59cd104f78d56a7451"
+    },
+    {
+      "path": "skills/plan/plan-defense/SKILL.md",
+      "before_sha256": "bbfd8dac25c17be31d6277c447e007aae09a3077da2a2818ecbce81a8995d141",
+      "current_sha256": "437fe79900bd39816cd7aacc48f4b0197b2b73eca132c3efc6e40126d689fd5c"
+    },
+    {
+      "path": "skills/pt/ponytail-audit/SKILL.md",
+      "before_sha256": "de547672795a9867e101e835f48fe581aab05222daba58e2e86a497353357e5d",
+      "current_sha256": "ae9eabf2bbbf56e3e2df9024fa82d1f9d8e692e41e8fc86a5311840dbd37a74f"
+    },
+    {
+      "path": "skills/pt/ponytail-debt/SKILL.md",
+      "before_sha256": "7baa1a07c2891f3dd61b64d347281b081b88d00cb46450a65192d05447a9ce7a",
+      "current_sha256": "9190ee951d60b40928a175ec7501bcaf207b9f0708b3341ecb93aab3d69e246c"
+    },
+    {
+      "path": "skills/pt/ponytail-gain/SKILL.md",
+      "before_sha256": "f54f3a68b9ff52970e2c29e109084ad1e2ac5affdfa93689c6b657e6b25182fd",
+      "current_sha256": "aba73124028e3b988d1eb670d66fd34d710347f314f9e20bfb41486f506c55ce"
+    },
+    {
+      "path": "skills/pt/ponytail-help/SKILL.md",
+      "before_sha256": "7c06a141478320592edaa0a6795dcfae97fd5023ebb0b14ecb6bd2fbb27721ef",
+      "current_sha256": "5f58cc60243b59339dd51d60c9835ad4294e25a06f70a177e80c9223b6e0b102"
+    },
+    {
+      "path": "skills/pt/ponytail-review/SKILL.md",
+      "before_sha256": "863cc5f1de5f4c08b9498fd4d2a36f91027b8f1d59af4b0d39baa2abec2b4319",
+      "current_sha256": "9a3a4f622a4ef817df5703aac08f94154f483043693259c3497870429a1e1a59"
+    },
+    {
+      "path": "skills/pt/ponytail/SKILL.md",
+      "before_sha256": "f821bf2bdd6dca55d8b3da9aa4442b0016880252a91e74f1a32b60b26923cf32",
+      "current_sha256": "6903ba86333638b6d9dc0e7a38867b2690d698cc2e6fe12d8e012720eeff4142"
+    },
+    {
+      "path": "skills/ship/frontend-design/SKILL.md",
+      "before_sha256": "f37eb8eeb2b01f778aced9805cc72f162beac57c15c157b346c4ee73148c3bdd",
+      "current_sha256": "1da7d302523a3982ae3f68cc936f049ee808c383b72f693dcb7005a7c28be833"
+    },
+    {
+      "path": "skills/ship/post-deploy-check/SKILL.md",
+      "before_sha256": "50b0ecd2821588fe9a8cdd6159ce5fab56f0721dc14bc8b092fea25528de53af",
+      "current_sha256": "74343368ddb789086ab4956d618dabfcec055255d2663c5b04e1e7e5cbf0b0e7"
+    },
+    {
+      "path": "skills/ship/prototype/SKILL.md",
+      "before_sha256": "8c3164ed77409baee0037c70c46d9529c83b6bfba20953d1e8fe78af36c83942",
+      "current_sha256": "bddd4beab681c8b1f9d5ab6bb48492d0e2cc7594a47ff62f7944c6356e433d2e"
+    },
+    {
+      "path": "skills/ship/ship-report/SKILL.md",
+      "before_sha256": "f47f749aa9b24fee8546bfd811c3246b781dc385db6c2a468b544d88621fd61d",
+      "current_sha256": "d40a4468752ae544ff1807bf02a25670d645d29a6288b697de13ca34ac1fed48"
+    },
+    {
+      "path": "skills/utils/repo-bootstrap/SKILL.md",
+      "before_sha256": "1349eab9a25cd9db9859390330f6f4cbe544f8e09ff1456ef098abfeef9fb78b",
+      "current_sha256": "4ecd8a43c018bb823f86174a8dbb4497c14160ed9d0e6417900d83e03e681b0d"
+    },
+    {
+      "path": "skills/ux-review/SKILL.md",
+      "before_sha256": "ed121a0e57e2ec85a7fbe67201445366e0e51959741d2d61690dd986835a24a6",
+      "current_sha256": "2a5402f5bd169f83b29996b163b9034dc8fa602aa48aa2a2416941d31a7d18c1"
+    },
+    {
+      "path": "tests/checkpoint/test_precode.py",
+      "before_sha256": "d73df5e82da02a7a1cd6c7350eb4e719ed1b637b2c8823721d8ae3b42c47528d",
+      "current_sha256": "31ae741a9660421fd97321045380564a2439e3ce355c7af5ab0907560bb80a38"
+    },
+    {
+      "path": "tests/onboarding/test_discovery_check.py",
+      "before_sha256": "dc626e95de8059578bdc1dcb3678c76d64568b8461404889a8a20715746dcf66",
+      "current_sha256": "98931762d1d7f39978d85ac6dff46df337f9dd2dc9e518df4e70b37ddb6e76a5"
+    }
+  ],
+  "policy": "Exact current English migration; historical source bytes remain in the authenticated external baseline."
+}

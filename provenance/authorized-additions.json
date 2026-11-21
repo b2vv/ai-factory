@@ -1,0 +1,235 @@
+{
+  "schema": 1,
+  "authorization": "Selective adoption requested by owner; no upstream code execution or product rollout",
+  "upstream": {
+    "repository": "https://github.com/addyosmani/agent-skills",
+    "commit": "aeac41d4d005999432bb7312f7ff06383a91d59d",
+    "version": "0.6.13",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2025 Addy Osmani",
+    "sources": [
+      {
+        "path": "skills/constraint-driven-development/SKILL.md",
+        "sha256": "06479d4305f286d23cfb99f5dc85695896785269664e1f6a8d800e3b71e70c10"
+      },
+      {
+        "path": "skills/constraint-driven-development/references/floor-guard.md",
+        "sha256": "59715dc6c3c6c36ec9177f9ced65c379e80a4539b36115456666bfabc43a6a9c"
+      },
+      {
+        "path": "skills/browser-testing-with-devtools/SKILL.md",
+        "sha256": "4e3aacd6a380cd25bc6c2d67fdd1c926a9b22535b8a62109ecd33cefd909e3d9"
+      },
+      {
+        "path": "skills/frontend-ui-engineering/SKILL.md",
+        "sha256": "29a3e53d57c0a128831a20730ae874a8c4fda40c001fcdc15f8e9ad4b5f72f1b"
+      },
+      {
+        "path": "skills/doubt-driven-development/SKILL.md",
+        "sha256": "6fa1fcd8420c28daf7e53c5b08b0f20b907911efd2a6d9bce0b9740da20a4008"
+      },
+      {
+        "path": "skills/interview-me/SKILL.md",
+        "sha256": "ace4b675999bb504593d572e0f73f3d7e803ad6fddf318445598c82c11939db2"
+      },
+      {
+        "path": "evals/README.md",
+        "sha256": "60624a9ec6f798dc72575b42d1213e7db30b43f9064f76d8b61a173abfc3c15c"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7"
+      }
+    ]
+  },
+  "original_shared_definitions": 84,
+  "added_skill": "skills/constraint-driven-development/SKILL.md",
+  "files": [
+    {
+      "destination": "skills/constraint-driven-development/LICENSE.addyosmani",
+      "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7",
+      "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/constraint-driven-development/SKILL.md",
+      "sha256": "b25dc643572209eef60e0db487b13bd124d9f0415be177e92add5a971d93f48b",
+      "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/constraint-driven-development/references/floor-evidence.md",
+      "sha256": "b0de55b755cf4621c4f6ac952fd002f26a590d22d0eb0894e816fb7351d57b98",
+      "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/constraint-driven-development/references/provenance.md",
+      "sha256": "00f441083efe597b90a66a39d77d8e9e515d1293b67a52e820af541d18c502f9",
+      "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/design-pass/LICENSE.addyosmani",
+      "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7",
+      "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/design-pass/references/browser-state-evidence.md",
+      "sha256": "93ac16bec1cdaeb9047f29964b13c6fbac73e82013a192ba20977f909ff45511",
+      "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/plan/plan-critique/LICENSE.addyosmani",
+      "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7",
+      "kind": "selective authored adaptation with retained MIT notice"
+    },
+    {
+      "destination": "skills/arch/code-review/references/behavior-coverage.md",
+      "sha256": "f27495ff02f70e3a2023c1a29295df62df786a48369933d7d8ed8fd68cebeb71",
+      "kind": "Owner-authorized authored generic review coverage reference; distinct from upstream MIT adaptation; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/django.md",
+      "sha256": "a796265a41e2b2c161bd8cbb26fc9465e214d7b7ae005a1506c885f1dafda2ad",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/fastapi.md",
+      "sha256": "1c1d08717cea77a31f81be71344baebdfbef8ae9787137e0d4770b2164b8e7c9",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/laravel.md",
+      "sha256": "83a25b5889d5a6b3515ccd1e151d8f8558926978e342437e60c96617f926986e",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/frameworks/react.md",
+      "sha256": "e09ad7fff8f6acf07d0025dc9faed6c49b5a5becc9a81d6b3d478c2613f2b4b0",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/go.md",
+      "sha256": "b0db2d674402ecb99c260fc99f39dd1afac2a03fa2410d20e1cfa273c1c6d9fd",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/index.md",
+      "sha256": "776787c102925bc66db4daa18fdf2ae4e535fd3cda0f5dd18f78524b3838130b",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/php.md",
+      "sha256": "54f5860c99fdb53fd6814b02c35bff35a69582c4761abc1f19281f59e82c98b6",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/python.md",
+      "sha256": "ad0fa778377b822bcad71e37f5ae5ed4cf077f2fd92acb0c6a03a940c4a43d14",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/rust.md",
+      "sha256": "c76ef283d245ebd3e16cfd3f790046804885411424403d885459f492a7fa470b",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "skills/arch/code-review/references/languages/typescript.md",
+      "sha256": "15cff4a66987a902c7d1fd1eb4150692af163032bfda09204ba5db6cf2b817ba",
+      "kind": "Owner-authorized authored language reference; distinct from upstream MIT adaptation; see provenance/language-reference-origins.json"
+    },
+    {
+      "destination": "ai-factory/reference-anti-patterns.md",
+      "sha256": "7bf1e5c83ed5fb0e2d756b4b060e4e1bcbd9aa04488860b48200609420404f25",
+      "kind": "Owner-authorized authored cross-skill reference anti-pattern rules (4-field template + a11y REQUIREMENT-vs-preference split); first-party, distinct from upstream MIT adaptation; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/step-back-review/SKILL.md",
+      "sha256": "f123ef786ba43f5aa6b4419c4e48f71f8b3410fb60b07c8d72b9de7fee17626e",
+      "kind": "Owner-authorized authored first-party skill (step-back-review); distinct from upstream MIT adaptation; built from task-artifacts/skills-audit-20261029/STEP-BACK-REVIEW-requirements.md; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/inspector-review/SKILL.md",
+      "sha256": "b72751b22ac0c97f759901f34ec4c2098ea343227ca970d06e8d6074d4e39083",
+      "kind": "Owner-authorized authored first-party skill (inspector-review); narrow post-completion integration inspector, distinct from upstream MIT adaptation; references step-back-review hand-off; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ui-measurements/SKILL.md",
+      "sha256": "a15a2875787b81a913842127d404f00bd0aab4dde4f304a7d5dda470466bde70",
+      "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ui-measurements/references/contract.md",
+      "sha256": "8e718683db20e4b1f13919faa1355117d81302180c39f62abced329ca6c5f931",
+      "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ui-measurements/scripts/measure-ui.cjs",
+      "sha256": "07c14ce8b4c356200b2843767c6b490e0563f46914a001bb2ad12573e1d05c6e",
+      "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ux-review/references/rtl.md",
+      "sha256": "08b57445b2b9a48ebe91ca59c777d3e95ade938be7a19dc42306073202f818fb",
+      "kind": "Owner-authorized authored RTL review checklist, with Unslop CC BY 4.0 inspiration and source attribution documented in the reference."
+    },
+    {
+      "destination": "skills/ux-review/references/semantic-consistency.md",
+      "sha256": "2d9b7e0bfd5182f5492597424e8044cad09286d3e0cdfe6061c1bfd67c5198f5",
+      "kind": "Owner-authorized original semantic-consistency guidance (design skills); not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/anti-slop-design/references/concept-fit.md",
+      "sha256": "54573826ad63e3b090b5dfaa9dceffc9c08e18aa82e9e55f9016313eb656d578",
+      "kind": "Owner-authorized original semantic-consistency guidance (design skills); not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/interface-review/references/product-audit.md",
+      "sha256": "e977cb1f91ad521c5124b42db2ad962e9270e90a1f47cf2a573f05df959ef24d",
+      "kind": "Owner-authorized original semantic-consistency guidance (design skills); not upstream content; see PROVENANCE.md"
+    },
+    {
+      "destination": "skills/ui-audit/SKILL.md",
+      "sha256": "41164b289b46606de78dc7106201b1e2a076e1a2378079ff852c894e8d0e8f83",
+      "kind": "Owner-authorized authored first-party skill (ui-audit); read-only UI/UX problem finder with an owner confirmation loop, distinct from upstream MIT adaptation; hands confirmed problems to interface-review and design-pass; see PROVENANCE.md"
+    }
+  ],
+  "adaptations": [
+    {
+      "destination": "skills/design-pass/SKILL.md",
+      "before_sha256": "6af92321b159031471f50705c938e4de13528d943ed5c5e0836140deea1247aa",
+      "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
+      "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
+      "after_sha256": "f61806188de1c5f8e7383dfc6a8e2478849c6f0cfdcdc75e430574b428b07d76",
+      "prior_adaptation_hashes": [
+        {
+          "before_sha256": "b5e8f37db63c882d771558b46d582e99c99b9e833beb1df5363659928bd29adb",
+          "after_sha256": "a2b8c8c5875d7f4a495d6b55bc60ab33a93e010a1b87954a206cb56d195d894c"
+        },
+        {
+          "before_sha256": "f1d5bf3a4ed1f7217a00677bb9fba6722cdd8a9add613ec5b7e161e950e2c998",
+          "after_sha256": "608cab7c0323e7122dca05aa6ff25422dcaf3e117f59cd15170a77dfb140671d"
+        },
+        {
+          "before_sha256": "16050d2240014a19be12774c48ec93991166860b99e5da2ce41ef80afd3b2a3e",
+          "after_sha256": "18006094ab2304c4e64d76f403ef4f51033339a7ae0167451a2fbf50f1bc5d1a"
+        }
+      ]
+    },
+    {
+      "destination": "skills/plan/plan-critique/SKILL.md",
+      "before_sha256": "1ce7629dbb45edbe150b866f27b495c0ff81a72c128b3057265e919a4e788159",
+      "append": "\n## Clean critic input\n\nGive the selected independent critic the exact artifact, accepted contract, scoped snapshot and raw supporting evidence. Keep the author's proposed verdict, persuasive summary and private reasoning out of the initial packet; preserve relevant factual constraints and raw prior findings. Classify findings as actionable, contract misunderstanding, accepted tradeoff or unsupported, with evidence for each disposition. This refines the existing four-lens/local reviewer route; it does not authorize duplicate reviewers, a different model, paid API fallback or an automatic review loop. Missing authorized execution remains BLOCKED.\n\nAdaptation source: [doubt-driven-development](https://github.com/addyosmani/agent-skills/blob/aeac41d4d005999432bb7312f7ff06383a91d59d/skills/doubt-driven-development/SKILL.md), MIT; [license](LICENSE.addyosmani).\n",
+      "append_sha256": "7676726786e091c623a32c41ab4b0b5c8fbed16ebab3a3836513d70a5cd35ff0",
+      "after_sha256": "c1b14134ee07911ebf0de1f2f53cc8af3377de9159e446a12d9c7ca2bfa9c0bc",
+      "prior_adaptation_hashes": [
+        {
+          "before_sha256": "581a781ca37d0439d8dc949df3151a80567d1e01b22893694bfed47835b1db7c",
+          "after_sha256": "540477ce2db1ffbf630b2b52a639945cdea9088adae70b419f2e017269416d11"
+        },
+        {
+          "before_sha256": "bcd9010240b9bfc4b42cac957fa60ac519aeb1504c5c00acd84cd7be015a8725",
+          "after_sha256": "af1c255da4f6a4cacabd2f561235a367fe5e5df9a53379c61ca287f7d495f97d"
+        }
+      ]
+    }
+  ],
+  "execution": "No upstream scripts, installers, hooks or fenced code executed."
+}

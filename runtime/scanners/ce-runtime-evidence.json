@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "scope": "authored synthetic Semgrep CE fixtures only",
+  "candidate": {
+    "image": "docker.io/semgrep/semgrep@sha256:c47e426f7f0cfa19af6d7877560d0a7135f683b8090ad0efc97c4ec7810dc435",
+    "config_id": "sha256:02f02a7c0dbcc7f723274d32682920bb81a86f99563fc41d7278122d8fd58cb9",
+    "platform": "linux/amd64",
+    "version": "1.181.0"
+  },
+  "runtime_review": "ACCEPT_SCOPED_SYNTHETIC_CE",
+  "review_sha256": "c59557761d12b790a26f932150f2968d97cb73d0a8671ba7ecdadbf6d85284ff",
+  "evidence_manifest_sha256": "8c90cad63fa6628c7eb9a2754be141a84ec2297d14c791d080dd367787596f3c",
+  "evidence_locator": "task-local official-image-ce-fixtures-run-v1; raw logs not included",
+  "cases": {
+    "version": "PASS exit0",
+    "help": "PASS exit0",
+    "positive": "FINDINGS exit0 one finding",
+    "clean": "CLEAN exit0 zero findings",
+    "malformed": "ERROR exit7",
+    "missing": "ERROR exit7"
+  },
+  "reported_engine": "OSS",
+  "elapsed_seconds": 19.135170209221542,
+  "isolation": "inspected network-none/read-only/cap-drop ALL/no-new-privileges/2CPU/2GiB memory+swap/128pids/256MiB tmpfs; authored fixture mounts only",
+  "provenance_review": "SCOPED_PRIVATE_USE_RESIDUAL_ACCEPTED",
+  "license_review": "SCOPED_PRIVATE_USE_NOT_IMAGE_WIDE_CLEARANCE",
+  "image_wide_notices": "NOT_ESTABLISHED: three sampled text notices",
+  "trivy_db_yarn": "See runtime-acceptance.json; final review pending",
+  "product_scans": "NOT_RUN",
+  "pin_adoption": "SCOPED_PRIVATE_USE_FINAL_REVIEW_PENDING",
+  "release": "NOT_CREATED"
+}

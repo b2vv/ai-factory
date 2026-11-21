@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "scope": "Managed non-Docker handoff, explicit connection; no implicit activation",
+  "authorship": "First-party owner-authorized adaptation; no third-party code imported",
+  "portable_guard_before_sha256": "16bfb6b19123548647dc713890c448e97ce39e5e27c6ebfe64d91b6c7c0c0e47",
+  "portable_guard_after_sha256": "b06a2e9b520887b834272e9f74660700703635d23c68f5fa86d0109631546e73",
+  "legacy_variant_sha256": "86a54b1fb64cddf5a56eea1d421203497697c4a2b7208ca2f261ef1f5a63ce31",
+  "files": {
+    "docs/managed-kit-connections.md": "c1d72c62e76ee9c13a12b5dfea495b461919ba7161d776d39acef71adf1db607",
+    "docs/managed-native-handoff.md": "9ec6414cd32c336bbdc38f89a1e210d330d178b7bd42ee077e2b9825c71e8963",
+    "runtime/session-size/native.py": "c8f05f2ada1d905de8c920f0865e36f453714f7f1393b3c14570b360b55dec2d",
+    "runtime/session-size/session_guard.py": "b06a2e9b520887b834272e9f74660700703635d23c68f5fa86d0109631546e73",
+    "tests/connect-handoff/test_connect_handoff.py": "350d3004a1534c8834369105e54ef7f9eb1e034cbd1b04acd11565f30e06626b",
+    "tests/handoff-integration/test_installed_flow.py": "86927a2495152f5ec672fdde297c0c198a88f152e26d7d677debbc4b93a7dbc8",
+    "tests/session-size/test_native.py": "4fd589533d2023907ffa52f7688e205928d00fff408a4f5a19e2043c6b1eca4d",
+    "tests/session-size/test_session_guard.py": "211074e7cade912124774280c56ac3d4ed6ebd64830685b3556516bc3220b46e",
+    "tools/connect-handoff.py": "ab05470a2585639134df5d718fba6a0e07539ae003b95a0ce2d699b67cc306ce",
+    "tools/run_tests.py": "6a66c77773a3da5f29f7c4a664971d1f587a00031fca1818619635f063b71d52",
+    "PROVENANCE.md": "280afd15e309a68cc05565494e89a46b2fd218be5159d2b9d0813568b8cd7188",
+    "tests/collection/test_layout_integrity.py": "6e9b1ef023975ed8b7e9a1f45f585048440d195521d8f80d3848773e7a193f6a"
+  },
+  "limits": [
+    "Independent offline implementation review is recorded externally for exact bytes.",
+    "Native host delivery and live activation are separate.",
+    "No claim of byte-identical portable guard; historical source remains immutable."
+  ]
+}

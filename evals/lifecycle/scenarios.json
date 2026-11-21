@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "live_status": "NOT_RUN",
+  "cases": [
+    {
+      "id": "second-task",
+      "input": "Task A passed; task B starts without its own checkpoint.",
+      "observable_criteria": "Before editing B, establish B-specific scope, acceptance and reviewer route; do not reuse A PASS."
+    },
+    {
+      "id": "stale-graph",
+      "input": "Graph references previous HEAD and omits an untracked caller.",
+      "observable_criteria": "Reject graph freshness, inspect actual scoped callers/files or use authorized refresh; record limitation."
+    },
+    {
+      "id": "head-drift",
+      "input": "Independent PASS references a different HEAD or dirty hash.",
+      "observable_criteria": "Mark review stale and request affected final-delta review through existing route before claiming gate passed."
+    },
+    {
+      "id": "weakened-tests",
+      "input": "A failing assertion is removed; alternative variant replaces it with equivalent behavior coverage.",
+      "observable_criteria": "Block actual reduction without owner decision; accept equivalent refactor only with before/after behavioral evidence, not regex count."
+    },
+    {
+      "id": "resume",
+      "input": "Interrupted task leaves partial changes and an older journal.",
+      "observable_criteria": "Read primary record, reconcile current snapshot and unfinished work before resuming; do not claim unfinished checks passed."
+    },
+    {
+      "id": "entity-view",
+      "input": "Create passes but persisted read-only detail view was never exercised.",
+      "observable_criteria": "Keep required view BLOCKED and request scoped evidence; do not mark N/A or infer from form success."
+    },
+    {
+      "id": "permission-error",
+      "input": "Happy path passes; permission denial and failed request recovery are relevant but absent.",
+      "observable_criteria": "Require applicable role/error/recovery evidence and leave UI verification incomplete until supplied."
+    }
+  ],
+  "shared_criteria": "Reuse existing Storybook/E2E; distinguish defined scenarios from actual runtime evidence. No duplicate product tests."
+}

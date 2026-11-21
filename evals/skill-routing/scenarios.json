@@ -1,0 +1,181 @@
+{
+  "schema": 1,
+  "live_status": "NOT_RUN",
+  "purpose": "Skill selection for confusable clusters: one user phrase, the skill that should load, and neighbours that must not be chosen instead.",
+  "cases": [
+    {
+      "id": "design-build",
+      "input": "Rework the settings screen so it looks deliberate; here is the current page.",
+      "expected_skill": "design-pass",
+      "not_instead": [
+        "interface-review",
+        "ux-review"
+      ]
+    },
+    {
+      "id": "design-find",
+      "input": "Something on this dashboard feels off but I cannot say what. Find the problems.",
+      "expected_skill": "ui-audit",
+      "not_instead": [
+        "interface-review",
+        "design-pass"
+      ]
+    },
+    {
+      "id": "design-point",
+      "input": "This filter row looks wrong to me.",
+      "expected_skill": "ui-audit",
+      "not_instead": [
+        "ux-review",
+        "anti-slop-design"
+      ]
+    },
+    {
+      "id": "design-audit",
+      "input": "Do a full audit of the checkout flow, visual and usability, without changing anything.",
+      "expected_skill": "interface-review",
+      "not_instead": [
+        "design-pass"
+      ]
+    },
+    {
+      "id": "design-ux-only",
+      "input": "Check the usability of this form against heuristics and WCAG.",
+      "expected_skill": "ux-review",
+      "not_instead": [
+        "anti-slop-design"
+      ]
+    },
+    {
+      "id": "design-slop-only",
+      "input": "Does this landing page look templated? List the tells.",
+      "expected_skill": "anti-slop-design",
+      "not_instead": [
+        "ux-review"
+      ]
+    },
+    {
+      "id": "design-direction",
+      "input": "Which palette and typography direction fits an internal admin portal?",
+      "expected_skill": "frontend-design",
+      "not_instead": [
+        "anti-slop-design"
+      ]
+    },
+    {
+      "id": "design-reference",
+      "input": "Rebuild this screen from the attached screenshot as exactly as you can.",
+      "expected_skill": "reference-ui-reconstruction",
+      "not_instead": [
+        "frontend-design"
+      ]
+    },
+    {
+      "id": "design-measure",
+      "input": "Is this button label clipped, and does its text pass contrast?",
+      "expected_skill": "ui-measurements",
+      "not_instead": [
+        "ux-review"
+      ]
+    },
+    {
+      "id": "review-diff",
+      "input": "Review this branch since main.",
+      "expected_skill": "code-review",
+      "not_instead": [
+        "inspector-review",
+        "step-back-review"
+      ]
+    },
+    {
+      "id": "review-landed",
+      "input": "The task is marked done and tests pass. Did it actually land in the installed package?",
+      "expected_skill": "inspector-review",
+      "not_instead": [
+        "code-review"
+      ]
+    },
+    {
+      "id": "review-plan-fit",
+      "input": "This subtask works locally. Does it still fit the parent plan and the right module owner?",
+      "expected_skill": "step-back-review",
+      "not_instead": [
+        "code-review",
+        "pattern-architecture-review"
+      ]
+    },
+    {
+      "id": "review-pattern",
+      "input": "Which design pattern fits this class hierarchy, if any?",
+      "expected_skill": "pattern-architecture-review",
+      "not_instead": [
+        "step-back-review"
+      ]
+    },
+    {
+      "id": "review-bloat",
+      "input": "What can be deleted from this diff? Is it over-engineered?",
+      "expected_skill": "ponytail-review",
+      "not_instead": [
+        "code-review"
+      ]
+    },
+    {
+      "id": "review-feedback",
+      "input": "The reviewer left six comments and two look wrong to me. Handle them.",
+      "expected_skill": "receiving-code-review",
+      "not_instead": [
+        "code-review"
+      ]
+    },
+    {
+      "id": "review-weakened",
+      "input": "The check fails; can we lower the coverage threshold to get it green?",
+      "expected_skill": "constraint-driven-development",
+      "not_instead": [
+        "ponytail"
+      ]
+    },
+    {
+      "id": "plan-critique",
+      "input": "Stress-test this plan before I split it into tasks.",
+      "expected_skill": "plan-critique",
+      "not_instead": [
+        "grilling",
+        "plan-defense"
+      ]
+    },
+    {
+      "id": "plan-defense",
+      "input": "What happens to this plan on malformed input, a dependency failure or a rollback?",
+      "expected_skill": "plan-defense",
+      "not_instead": [
+        "plan-critique"
+      ]
+    },
+    {
+      "id": "plan-grill",
+      "input": "Grill me on this idea until we agree.",
+      "expected_skill": "grilling",
+      "not_instead": [
+        "plan-critique"
+      ]
+    },
+    {
+      "id": "plan-sdd",
+      "input": "We are adding a new subsystem with a public API. Take it through the full cycle.",
+      "expected_skill": "spec-flow",
+      "not_instead": [
+        "tdd"
+      ]
+    },
+    {
+      "id": "plan-next",
+      "input": "P0 is closed and the queue is empty. What should we work on?",
+      "expected_skill": "cto-agenda",
+      "not_instead": [
+        "cto-research"
+      ]
+    }
+  ]
+}

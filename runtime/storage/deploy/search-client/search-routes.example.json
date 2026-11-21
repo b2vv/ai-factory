@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "projects": {
+    "example": {
+      "project_id": "VERIFIED_PROJECT_ID",
+      "principal_id": "VERIFIED_SEARCH_PRINCIPAL",
+      "credential_format": "split",
+      "secret_file": "/ABSOLUTE/PRIVATE/SEARCH.secret",
+      "epoch_file": "/ABSOLUTE/PRIVATE/SEARCH.epoch",
+      "port": 8780
+    }
+  }
+}

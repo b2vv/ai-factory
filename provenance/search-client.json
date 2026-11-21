@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "origin": "Owner-authorized first-party standalone candidate, selectively adapted; no third-party source.",
+  "candidate_archive_sha256": "ff0466aa3b57c6a5c98097d9efb94ce98d2a37fc0b31bdee02f2f04333978b7b",
+  "overlay_rule_original_sha256": "51d1fee1f0ad79564170a73cbeed7a3be3de93f76150c3a3d765785f4742a66f",
+  "scope": "Optional source client and canonical guidance only; no installation, access, capture or native acceptance implied.",
+  "files": {
+    "rules/archive-search.md": "162808191c1dbc1adae57d5ebade4038c9cbe0e40b962d38b0da50a12bdd7b5a",
+    "runtime/storage/deploy/search-client/archive_search.py": "f504a39fd5a8cc9f9fc6844d2b2c5a6d93240063f4f293a17a6b615b460d1bd8",
+    "runtime/storage/deploy/search-client/test_archive_search.py": "0078f90e882746bc723d88b6a616b6a0abf6118ce6a76e0a0b69a4535c1d4a24",
+    "runtime/storage/deploy/search-client/README.md": "b4dc93db4e33a3cabc1478219972e98452ac284f74977933171979d7f4b6c369",
+    "runtime/storage/deploy/search-client/search-routes.example.json": "9071d84aa1d73408bb414645a6b58556b900f97445c765431c04351e8236e00a"
+  }
+}

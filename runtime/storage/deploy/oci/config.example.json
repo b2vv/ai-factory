@@ -1,0 +1,18 @@
+{
+  "__comment": "Example storage server config (M7). Copy, edit, and pass with -config. ALL capability switches are OFF by default; this example shows the DB-enabled shape. Connection settings are required only for an enabled backend and must point at YOUR backends - the examples below are synthetic placeholders, never live endpoints. Capacity keys left unset fall back to the owner-approved D4 defaults. Env overrides (STORAGE_MONGO_ENABLED, STORAGE_MONGO_URI, STORAGE_POSTGRES_DSN, ...) take precedence over the file.",
+
+  "mongo_enabled": true,
+  "mongo_uri": "mongodb://USER:PASSWORD@mongo-host:27017/?authSource=admin",
+  "mongo_db": "factory_archive",
+  "mongo_collection": "archive",
+
+  "postgres_enabled": true,
+  "postgres_dsn": "postgres://USER:PASSWORD@pg-host:5432/factory?sslmode=disable",
+
+  "capture_enabled": true,
+
+  "wal_bytes": 268435456,
+  "live_cap_bytes": 10737418240,
+  "warn_fraction": 0.8,
+  "free_headroom": 1073741824
+}

@@ -1,0 +1,10 @@
+--- a/runtime/scanners/compose.yaml
++++ b/runtime/scanners/compose.yaml
+@@ -28,6 +28,7 @@
+       ],
+       "command": [
+         "scan",
++        "--oss-only",
+         "--disable-nosem",
+         "--config",
+         "/rules",

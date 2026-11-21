@@ -1,0 +1,23 @@
+{
+  "schema": "ai-factory-pending/1",
+  "root": "/explicit/canonical/repository",
+  "task_id": "TASK-ID",
+  "revision": "r1",
+  "stage": "review",
+  "head": "REPLACE_WITH_ACTUAL_HEAD",
+  "scope": {"docs/affected.md": "REPLACE_WITH_ACTUAL_SHA256"},
+  "review_mode": "independent_subagent",
+  "writer": "actual-writer-reference",
+  "reviewer": null,
+  "action_id": "prepare-review-1",
+  "action_owner": "actual-writer-reference",
+  "state": "pending",
+  "transfer": "none",
+  "next_action": "Prepare the exact review package under the current authorization",
+  "contact_mechanism": "Native independent subagent result",
+  "delivery_owner": "actual-writer-reference",
+  "authorization_source": "Current task instruction reference, not a new permission",
+  "runtime_available": true,
+  "required_final_verdict": true,
+  "checks": []
+}

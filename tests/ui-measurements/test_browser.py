@@ -1,0 +1,144 @@
+"""Synthetic rendered DOM fixtures; no product, native agent or visual-QA claim."""
+import hashlib,html,json,os,re,shutil,subprocess,tempfile,unittest
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+HELPER=ROOT/'skills/ui-measurements/scripts/measure-ui.cjs'
+BODY='<div id="clip" style="width:60px;white-space:nowrap;overflow:hidden">A deliberately long label that must fit</div><div id="fit" style="width:300px">Fits</div><div id="scroll" style="width:60px;overflow-x:auto"><div style="width:300px">Intentional table scroll</div></div>'
+class BrowserMeasurements(unittest.TestCase):
+ @classmethod
+ def setUpClass(cls):
+  cls.chrome=os.environ.get('CHROME_BIN') or shutil.which('chromium') or shutil.which('google-chrome')
+  if not cls.chrome:
+   if os.environ.get('AI_FACTORY_REQUIRE_UI_BROWSER')=='1':raise RuntimeError('Required Chrome/Chromium unavailable; set CHROME_BIN')
+   raise unittest.SkipTest('NOT_TESTED real browser: no existing Chrome/Chromium configured')
+ def observe(self,checks,width=390,body=BODY,extra='',context=None,expect_error=False):
+  config={'context':{'revision':'synthetic-r1','state':'ready','fixture':'layout-v1','evidence':'fixture:rendered','route':'','settled':True,**(context or {})},'checks':checks}
+  with tempfile.TemporaryDirectory() as tmp:
+   p=Path(tmp).resolve();script=HELPER.read_text();fixture='<!doctype html><meta charset=utf-8><style>body{margin:0}</style>'+body
+   driver="""const frame=document.createElement('iframe');frame.style.cssText='border:0;width:WIDTHpx;height:844px';document.body.append(frame);frame.onload=async()=>{await frame.contentDocument.fonts.ready;const w=frame.contentWindow;const config=w.JSON.parse(CONFIG);config.context.route=w.location.pathname;const measure=w.Function(SOURCE+';return measureUI;')();EXTRA;const before=w.document.documentElement.outerHTML;try{const report=measure(config);report.fixtureDomUnchanged=before===w.document.documentElement.outerHTML;document.getElementById('result').textContent=JSON.stringify(report);}catch(e){document.getElementById('result').textContent=JSON.stringify({error:e.message,fixtureDomUnchanged:before===w.document.documentElement.outerHTML});}};frame.srcdoc=FIXTURE;""".replace('WIDTH',str(width)).replace('CONFIG',json.dumps(json.dumps(config))).replace('SOURCE',json.dumps(script)).replace('FIXTURE',json.dumps(fixture)).replace('EXTRA',extra)
+   f=p/'fixture.html';f.write_text('<!doctype html><pre id="result"></pre><script>'+driver.replace('</script',r'<\/script')+'</script>')
+   r=subprocess.run([self.chrome,'--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--disable-background-networking','--user-data-dir='+str(p/'profile'),'--virtual-time-budget=2000','--window-size=1600,1000','--dump-dom',f.as_uri()],capture_output=True,text=True,timeout=25)
+   self.assertEqual(r.returncode,0,r.stderr[-1000:]);match=re.search(r'<pre id="result">(.*?)</pre>',r.stdout,re.S);self.assertIsNotNone(match,r.stdout[-1000:]);result=json.loads(html.unescape(match[1]))
+   if expect_error:
+    self.assertIn('error',result);self.assertTrue(result['fixtureDomUnchanged']);return result
+   self.assertNotIn('error',result);self.assertTrue(result['fixtureDomUnchanged']);artifact=os.environ.get('AI_FACTORY_UI_EVIDENCE_DIR')
+   if artifact:
+    out=Path(artifact);self.assertTrue(out.is_absolute() and out.is_dir());(out/(self.id().split('.')[-1]+'-'+str(width)+'.json')).write_text(json.dumps({'helper_sha256':hashlib.sha256(script.encode()).hexdigest(),'browser':'configured Chrome headless, synthetic child frame','result':result},indent=2)+'\n')
+   return result
+ def test_clip_is_a_defect_but_fitting_label_and_local_scroll_are_valid(self):
+  checks=[{'id':'clip','kind':'fit','selector':'#clip'},{'id':'fit','kind':'fit','selector':'#fit'},{'id':'scroll','kind':'fit','selector':'#scroll','scrollX':{'reason':'table requires columns','evidence':'fixture:table-contract'}}]
+  result=self.observe(checks);self.assertEqual([x['status'] for x in result['checks']],['FAIL','PASS','PASS']);self.assertEqual(result['actual']['viewport']['width'],390);self.assertEqual(result['actual']['frame'],'child')
+ def test_solid_contrast_is_measured_but_gradient_is_unknown(self):
+  body='<p id="low" style="background:rgb(255,255,255);color:rgb(200,200,200)">Low</p><p id="good" style="background:white;color:black">Good</p><p id="gradient" style="background:white linear-gradient(black,white);color:black">Unknown</p>'
+  checks=[{'id':n,'kind':'contrast','selector':'#'+n,'minimum':4.5,'source':'WCAG 1.4.3 AA normal text'} for n in ['low','good','gradient']]
+  r=self.observe(checks,body=body);self.assertEqual([x['status'] for x in r['checks']],['FAIL','PASS','NOT_TESTED']);self.assertEqual(r['checks'][1]['actual']['ratio'],21)
+ def test_only_declared_stable_fixture_values_are_invariants(self):
+  body='<p id="stable">42</p><p id="changed">43</p><p id="live">44</p><p id="clock">999</p>'
+  checks=[{'id':n,'kind':'text','selector':'#'+n,'expected':'42','fixture':{'id':'layout-v1','source':'seed:revision1','stable':n!='live'}} for n in ['stable','changed','live']]
+  r=self.observe(checks,body=body);self.assertEqual([x['status'] for x in r['checks']],['PASS','FAIL','NOT_TESTED']);self.assertEqual(r['checks'][1]['actual']['value'],'43')
+ def test_real_geometry_at_four_baseline_class_widths(self):
+  for width in [390,768,1024,1440]:
+   r=self.observe([{'id':'clip','kind':'fit','selector':'#clip'}],width=width)
+   self.assertEqual(r['actual']['viewport']['width'],width);self.assertEqual(r['checks'][0]['status'],'FAIL')
+ def test_vertical_page_scroll_is_not_horizontal_overflow(self):
+  body='<div style="height:1200px;width:100%">Tall page</div>'
+  r=self.observe([{'id':'page','kind':'fit','selector':':root','axis':'x'}],body=body)
+  self.assertEqual(r['checks'][0]['status'],'PASS');self.assertGreater(r['checks'][0]['actual']['scrollHeight'],r['checks'][0]['actual']['clientHeight'])
+  r=self.observe([{'id':'page','kind':'fit','selector':':root','axis':'x'}],body='<div style="width:1200px">Unintended page overflow</div>');self.assertEqual(r['checks'][0]['status'],'FAIL')
+ def test_unknown_render_states_and_unsupported_paint_are_not_pass(self):
+  styles=['opacity:.5','filter:blur(1px)','backdrop-filter:blur(1px)','mix-blend-mode:multiply','transform:translateX(1px)','perspective:1px','clip-path:inset(1px)','mask-image:linear-gradient(black,transparent)','text-shadow:1px 1px black','background-clip:text','-webkit-text-fill-color:red','-webkit-text-stroke:1px red','background-color:rgba(255,255,255,.5)','content-visibility:hidden','content-visibility:auto','visibility:hidden','box-shadow:inset 0 0 100px black','text-indent:-20px','background-clip:content-box','width:20px;white-space:nowrap']
+  body=''.join('<p id="c'+str(i)+'" style="background:white;color:black;'+css+'">Text</p>' for i,css in enumerate(styles))
+  checks=[{'id':'c'+str(i),'kind':'contrast','selector':'#c'+str(i),'minimum':4.5,'source':'agreed fixture threshold'} for i in range(len(styles))]
+  r=self.observe(checks,body=body);self.assertEqual([x['status'] for x in r['checks']],['NOT_TESTED']*len(styles))
+ def test_actual_running_animation_blocks_a_fit_claim(self):
+  r=self.observe([{'id':'fit','kind':'fit','selector':'#fit'}],extra="w.document.getElementById('fit').animate([{opacity:1},{opacity:.5}],{duration:100000,iterations:Infinity})")
+  self.assertEqual(r['checks'][0]['status'],'NOT_TESTED');self.assertEqual(r['checks'][0]['reason'],'active-animation')
+ def test_missing_ambiguous_hidden_and_wrong_route_are_unknown(self):
+  r=self.observe([{'id':'missing','kind':'fit','selector':'#absent'},{'id':'ambiguous','kind':'fit','selector':'div'},{'id':'hidden','kind':'fit','selector':'#hidden'}],body=BODY+'<div style="display:none"><div id="hidden">Hidden</div></div>')
+  self.assertEqual([x['status'] for x in r['checks']],['NOT_TESTED']*3)
+  r=self.observe([{'id':'fit','kind':'fit','selector':'#fit'}],extra="config.context.route='/wrong-state'");self.assertEqual(r['checks'][0]['reason'],'route-mismatch')
+ def test_first_letter_and_first_line_paint_override_are_unknown(self):
+  body='<style>#letter::first-letter{color:white}#line::first-line{color:white}</style><p id="letter" style="background:white;color:black">W</p><p id="line" style="background:white;color:black">White text</p>'
+  checks=[{'id':n,'kind':'contrast','selector':'#'+n,'minimum':4.5,'source':'agreed normal text'} for n in ['letter','line']]
+  r=self.observe(checks,body=body);self.assertEqual([x['status'] for x in r['checks']],['NOT_TESTED','NOT_TESTED'])
+ def test_generated_before_and_after_text_remain_unsupported(self):
+  body='<style>#before::before{content:"prefix";color:white}#after::after{content:"suffix";color:white}</style><p id="before" style="background:white;color:black">Text</p><p id="after" style="background:white;color:black">Text</p>'
+  checks=[{'id':n,'kind':'contrast','selector':'#'+n,'minimum':4.5,'source':'agreed threshold'} for n in ['before','after']]
+  r=self.observe(checks,body=body);self.assertEqual([x['status'] for x in r['checks']],['NOT_TESTED','NOT_TESTED'])
+ def test_opacity_and_inactive_semantics_are_independent(self):
+  body='<button disabled><span id="inactive" style="display:inline-block;background:white;color:black">Inactive</span></button><button><span id="enabled" style="display:inline-block;background:white;color:black">Enabled</span></button><button style="opacity:.5"><span id="dimmed" style="display:inline-block;background:white;color:black">Dimmed enabled</span></button><button style="opacity:0"><span id="transparent" style="display:inline-block;background:white;color:black">Transparent</span></button>'
+  checks=[{'id':n,'kind':'contrast','selector':'#'+n,'minimum':4.5,'source':'numeric fixture comparison, not inactive applicability'} for n in ['inactive','enabled','dimmed','transparent']]
+  r=self.observe(checks,body=body)
+  self.assertEqual([x['status'] for x in r['checks']],['PASS','PASS','NOT_TESTED','NOT_TESTED'])
+  self.assertEqual(r['checks'][0]['actual']['ratio'],21)
+  self.assertEqual(r['checks'][2]['reason'],'unsupported-compositing')
+  self.assertEqual(r['checks'][3]['reason'],'unrendered-target')
+ def test_fit_does_not_establish_pointer_target_area(self):
+  body='<button id="tiny" style="padding:0;border:0;width:10px;height:10px"></button><button id="padded" style="padding:15px;border:0"><span id="icon" style="display:block;width:10px;height:10px"></span></button><div id="passive" style="width:48px;height:48px"><button id="inner" style="padding:0;border:0;width:10px;height:10px"></button></div>'
+  checks=[{'id':n,'kind':'fit','selector':'#'+n} for n in ['tiny','padded','icon','passive','inner']]
+  r=self.observe(checks,body=body)
+  self.assertEqual([x['status'] for x in r['checks']],['PASS']*5)
+  self.assertEqual([(x['actual']['clientWidth'],x['actual']['clientHeight']) for x in r['checks']],[(10,10),(40,40),(10,10),(48,48),(10,10)])
+ def test_padding_needs_hit_testing_and_activation_evidence(self):
+  # Synthetic coordinate dispatch verifies fixture routing, not trusted/native input.
+  body='<button id="action" style="padding:15px;border:0"><span style="display:block;width:10px;height:10px"></span></button><div id="wrapper" style="width:48px;height:48px"><button id="inner" style="padding:0;border:0;width:10px;height:10px"></button></div><p id="evidence"></p>'
+  extra="const d=w.document;let action=0,inner=0;d.getElementById('action').addEventListener('click',()=>action++);d.getElementById('inner').addEventListener('click',()=>inner++);const hit=(id,x,y)=>{const r=d.getElementById(id).getBoundingClientRect();const n=d.elementFromPoint(r.left+x,r.top+y);n.dispatchEvent(new w.MouseEvent('click',{bubbles:true,clientX:r.left+x,clientY:r.top+y}));return n.id;};const a=hit('action',2,2);const b=hit('wrapper',30,30);d.getElementById('evidence').textContent=JSON.stringify({actionHit:a,actionCalls:action,wrapperHit:b,innerCalls:inner});"
+  expected='{"actionHit":"action","actionCalls":1,"wrapperHit":"wrapper","innerCalls":0}'
+  r=self.observe([{'id':'routing','kind':'text','selector':'#evidence','expected':expected,'fixture':{'stable':True,'id':'layout-v1','source':'synthetic-coordinate-dispatch-v1'}}],body=body,extra=extra)
+  self.assertEqual(r['checks'][0]['status'],'PASS')
+ def test_style_reads_exact_computed_values_without_a_verdict(self):
+  body='<div class="tile" role="group" style="padding:9px 4px;font-family:Georgia, serif;box-shadow:0 1px 2px black, 0 0 0 1px red;line-height:normal;width:112px;height:64px">Tile</div>'
+  r=self.observe([{'id':'tile','kind':'style','selector':'.tile','properties':['padding-top','padding-left','line-height','font-family','box-shadow']}],body=body)
+  row=r['checks'][0];e=row['elements'][0]
+  self.assertEqual((row['status'],r['status'],r['styleStatus']),('OBSERVED','OBSERVED','OBSERVED'))
+  self.assertEqual(e['values'],{'padding-top':'9px','padding-left':'4px','line-height':'normal'})
+  self.assertEqual(e['derived'],{'font-family-first':'Georgia','box-shadow-layers':2})
+  self.assertEqual((e['tag'],e['ariaRole'],e['box']['width']),('div','group',120))
+  self.assertIn('padding-top',e['inlineProperties']);self.assertNotIn('PASS',json.dumps(row))
+ def test_style_invalid_config_throws_and_leaves_dom_unchanged(self):
+  for check in [{'properties':['padding']},{'properties':['color'],'limit':51},{'properties':['color','color']}]:
+   r=self.observe([{'id':'bad','kind':'style','selector':'div',**check}],expect_error=True)
+   self.assertEqual(r['error'],'Invalid UI measurement config')
+ def test_style_matching_uses_raw_matches_and_skip_buckets(self):
+  body='<div class="m" style="display:none">h</div><div class="m" style="display:contents">c</div><svg class="m"></svg><div class="m" id="anim">a</div><div class="m">r</div>'
+  extra="w.document.getElementById('anim').animate([{opacity:1},{opacity:.5}],{duration:100000,iterations:Infinity})"
+  r=self.observe([{'id':'one','kind':'style','selector':'.m','properties':['color']},{'id':'all','kind':'style','selector':'.m','properties':['color'],'limit':5},{'id':'two','kind':'style','selector':'.m','properties':['color'],'limit':2}],body=body,extra=extra)
+  one,all_,two=r['checks']
+  self.assertEqual((one['status'],one['reason'],one['matched']),('NOT_TESTED','ambiguous-target',5))
+  self.assertEqual((all_['status'],all_['returned'],all_['elements'][0]['index']),('OBSERVED',1,4))
+  self.assertEqual(all_['skipped'],{'non-html-target':1,'unrendered-target':2,'animation-state-unavailable':0,'active-animation':1})
+  self.assertEqual((two['status'],two['reason'],two['truncated']),('NOT_TESTED','unrendered-target',True))
+ def test_style_does_not_enter_shadow_iframe_or_canvas_and_keeps_private_values_out(self):
+  body='<section id="secret-id" class="secret-class" data-owner="secret-data" style="background-image:url(https://x.test/a.png?token=secret-token)">secret-text</section><div id="host"></div><iframe srcdoc="<p class=inside>i</p>"></iframe><canvas></canvas>'
+  extra="w.document.getElementById('host').attachShadow({mode:'open'}).innerHTML='<p class=inside>s</p>'"
+  r=self.observe([{'id':'s','kind':'style','selector':'section','properties':['color','background-color']},{'id':'in','kind':'style','selector':'.inside','properties':['color']}],body=body,extra=extra)
+  out=json.dumps(r['checks'])
+  for secret in ['secret-id','secret-class','secret-data','secret-token','secret-text','x.test']:self.assertNotIn(secret,out)
+  self.assertEqual(r['checks'][0]['elements'][0]['inlineProperties'],['background-image'])
+  self.assertEqual(r['checks'][1]['reason'],'missing-target')
+  self.assertEqual(r['checks'][1]['untraversed'],{'openShadowHosts':1,'iframes':1,'canvases':1,'constructedSheets':0})
+ def test_style_reports_per_width_and_declared_scheme_with_media_state(self):
+  # Class-based themes: the same selector is read under a declared light key and a declared dark key at
+  # every baseline width. Values are keyed by the declared scheme; the media state is reported, not asserted.
+  css='<style>.p{padding-top:4px}@media (min-width:768px){.p{padding-top:8px}}@media (min-width:1024px){.p{padding-top:12px}}.light .p{color:rgb(17, 24, 39);background-color:rgb(255, 255, 255)}.dark .p{color:rgb(255, 255, 255);background-color:rgb(17, 24, 39)}</style>'
+  seen={}
+  for scheme in ['light','dark']:
+   for width in [390,768,1024,1440]:
+    r=self.observe([{'id':'p','kind':'style','selector':'.p','properties':['padding-top','color','background-color']}],width=width,body=css+'<div class="'+scheme+'"><div class="p">x</div></div>',context={'colorScheme':scheme})
+    self.assertEqual((r['context']['colorScheme'],r['styleStatus']),(scheme,'OBSERVED'))
+    self.assertIn(r['actual']['media']['prefersColorScheme'],['dark','light','no-preference']);self.assertIn(r['actual']['media']['forcedColors'],['active','none'])
+    seen[(scheme,width)]=r['checks'][0]['elements'][0]['values']
+  for scheme in ['light','dark']:
+   self.assertEqual([seen[(scheme,w)]['padding-top'] for w in [390,768,1024,1440]],['4px','8px','12px','12px'])
+  for w in [390,768,1024,1440]:
+   self.assertEqual((seen[('light',w)]['color'],seen[('light',w)]['background-color']),('rgb(17, 24, 39)','rgb(255, 255, 255)'))
+   self.assertEqual((seen[('dark',w)]['color'],seen[('dark',w)]['background-color']),('rgb(255, 255, 255)','rgb(17, 24, 39)'))
+ def test_style_resolves_escaped_font_family_names_from_real_css(self):
+  body='<p class="a" style="font-family:\'Alpha\\\' Beta\', serif">a</p><p class="b" style="font-family:\'Alpha\\\\\', serif">b</p>'
+  r=self.observe([{'id':'a','kind':'style','selector':'.a','properties':['font-family']},{'id':'b','kind':'style','selector':'.b','properties':['font-family']}],body=body)
+  a,b=[c['elements'][0]['derived']['font-family-first'] for c in r['checks']]
+  self.assertEqual((a,b),("Alpha' Beta",'Alpha\\'));self.assertNotEqual(a,b)
+ def test_style_rows_never_hide_behind_an_aggregate_pass(self):
+  r=self.observe([{'id':'fit','kind':'fit','selector':'#fit'},{'id':'style','kind':'style','selector':'#absent','properties':['color']}])
+  self.assertEqual((r['status'],r['styleStatus'],r['checks'][1]['status']),('PASS','NOT_TESTED','NOT_TESTED'))
+if __name__=='__main__':unittest.main(verbosity=2)

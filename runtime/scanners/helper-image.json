@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "image": "python@sha256:4cea12ab7d78a3312c85f8cab19b6971d4fe9704da25443986c0bc20a6678850",
+  "config": "sha256:4412cecc4af63502bd64d4b862be90b306d4134759d45cde783514dafdd6d03c",
+  "version": "3.13.17-slim-bookworm",
+  "platform": "linux/amd64",
+  "source": "https://github.com/docker-library/python/tree/e316b6c5b88b7c8e4806aa7626060c9bd8227e66/3.13/slim-bookworm",
+  "source_license": "MIT Dockerfile; PSF Python; Debian components retain their licenses",
+  "review_scope": "private local helper use; sampled notices, not universal redistribution clearance",
+  "acquisition_evidence": "537ca543c4564aac3e62418fa4bbb37958009705b8502039fb9f3bb7364d2b3d",
+  "independent_acquisition_review": "70c45a2a7bebe5880a7553e2a7bdfe44e871bc1d71896d289882bc5d8870f5e7",
+  "runtime": "NOT_RUN"
+}

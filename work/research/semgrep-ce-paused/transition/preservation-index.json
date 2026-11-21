@@ -1,0 +1,438 @@
+{
+  "decision": "Owner Sentinel_0a4f9e3cf8b48191937347d67c060d1d: official image, CE use only; preserve prior work",
+  "custom_build": "PAUSED/SUPERSEDED for this integration; not release success",
+  "tar_parser": "STOPPED BY OWNER; libarchive audit CANCELLED",
+  "preserved_roots": [
+    "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-only-plan",
+    "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-02-feasibility",
+    "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-03-preparation",
+    "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation",
+    "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot",
+    "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/supported-format-contract",
+    "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/local-parser-audit"
+  ],
+  "references": [
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-only-plan/plan-verdict.json",
+      "sha256": "844deb8da99423eb3f60d956d5b0f2405644aea75f17264a4a529047490629f5",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-only-plan/review-hashes.json",
+      "sha256": "a22a1eb13a953367da063bd45cadd9b89a7ebc5124ed43d46eec275064863b6e",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-02-feasibility/research-verdict.json",
+      "sha256": "95d099e393992597412570b98ecc1595db5b2223798402a4c6d0392aeccbdeba",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-02-feasibility/review-hashes.json",
+      "sha256": "e805c3d8e40ac20ebe820e82d8592406a19e0382a2b58c36d50715138c4b5db9",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-03-preparation/final-preparation-verdict.json",
+      "sha256": "e0a628cc1f49080112c9019d191dbd79f06f4369c89da8a1eb63ef1c8ef6b5c9",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-03-preparation/pre-hardening/review-hashes.json",
+      "sha256": "9876939c7451e84275363749bc7496251532935e0380cde9f2a7d7866191359e",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/ce-03-preparation/review-hashes.json",
+      "sha256": "8c4d66650eb9ea21419531e894d61cf1fbdcf53cee024074481791c2220eb61d",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/evidence-hashes.json",
+      "sha256": "31b008e5f854113be77c024e50adbf33cb7209262e8fbc81c2b13152dd357726",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/format-profile-run/evidence-hashes.json",
+      "sha256": "84ccae92776164ad73b531a4da1f85372ab9d97203125a134965b89575a19798",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/header-diagnostic/evidence-hashes.json",
+      "sha256": "703eeef9097688c88a49421aa0ab7357cf830a0d37bb3d76a9d0f0815eb72693",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/header-rejection-diagnostic-run/evidence-hashes.json",
+      "sha256": "0a649aae18c92f401a270cb4cabb23b6b08c5a3137a77a6c47dd036301293f1a",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/inventory-text-separation-run/evidence-hashes.json",
+      "sha256": "f6bc7a1e02189275fa57da84fe0130d29e6895c69d904ef0d6f3a14d365b3c07",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/pax-inventory-run/evidence-hashes.json",
+      "sha256": "a2abdbd0c7b2900909a4f9ab55a9fa6e3d5baa8e55dbe10a11c57b3fe2c6ea7a",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/symlink-record-run/evidence-hashes.json",
+      "sha256": "3afad96337d33d117961578fd428fd2f96b3d925000e107beec0fe54437ec48c",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/acquired/text-cap-diagnostic-run/evidence-hashes.json",
+      "sha256": "d5a863adcfb3de267220505d97cba052d569a83949bb0dd2849899059f99d53f",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/format-profile-corrected/review-hashes.json",
+      "sha256": "932c024a60a0ad74d09cc60bfce597b9ddb5dc380c8caa98bff1f1e83b24cbd4",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/format-profile-preparation/review-hashes.json",
+      "sha256": "9113f0e787497dccf315f64b2353e605882b1c8b11c05fa464baae0ebbf50119",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/header-rejection-diagnostic/review-hashes.json",
+      "sha256": "cece21f15035dd2518f945f200f870253e3d4c4dcb8b0ea3fa32f41b644801aa",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/inventory-text-separation/review-hashes.json",
+      "sha256": "d7a09031c0c85eefa3d1e290ddc0542a1a41fd64b1dbe4550263506d0d0738f3",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/pax-preparation/review-hashes.json",
+      "sha256": "35c1531960262067c8bd427a567b9f9e494e05eb6d920845874a4874a068b45b",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/pre-review/review-hashes.json",
+      "sha256": "d6835c134a7b110cddfb71060b22a257a6febb63298bfc6b3e6a7182225ad9f4",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/review-hashes.json",
+      "sha256": "c1d0b6d861c1f5493ace40743ecfeb7f16b1a84f54e1795c481ddfaa48ba20ce",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/symlink-record-preparation/review-hashes.json",
+      "sha256": "3cdc78011cdaab9f1a97e7275dcda154b461c774312d060e26bceaa35638bc85",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/pilot-acquisition-preparation/text-cap-diagnostic-preparation/review-hashes.json",
+      "sha256": "d7314005566be30028e7c350cbb544f4326eb71a9e745aa710218df9e3ce0990",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-curl-ownership-corrected/review-hashes.json",
+      "sha256": "5527aa8f4f0e281703f53ebb99563c5f58f187cb9bc2bd08d8dab55ceac20c52",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-curl-tar-preflight-v4/evidence-hashes.json",
+      "sha256": "c7dc199acaa9e299375a46cb8406d40088ab9c9d3e172a56bb1756321da75432",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-curl-tar-preflight-v4-fixed/evidence-hashes.json",
+      "sha256": "47ce4df243bcb0106f1b924594c41733ed4f6a12e2a717816628daffc3b1dd9b",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-diagnostic-gates-corrected/prior-binding.json",
+      "sha256": "441ce4e28f0a22148b0a9b72afb8a1aaf2094e75cadfb98dd1c966ea4b268b83",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-diagnostic-gates-corrected/review-hashes.json",
+      "sha256": "5e11806efe022776fcf2bb1024ca648021fe78ff6e81e81ee1dd909686ebfc38",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/prior-binding.json",
+      "sha256": "880a9c6b48725d8c9fe8700cd81c116cdbec26580f88538a118b75a757846457",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-disk-resample-corrected/review-hashes.json",
+      "sha256": "e51be80b92b019da803b2437b3f030680f918c652998e289ad614822145b70f9",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-persistence-gates-corrected/prior-binding.json",
+      "sha256": "19b74dbd98c1ae2a7cd6cda4a3fab4e6ab27a775d8410a81be0b2997a252428e",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-persistence-gates-corrected/review-hashes.json",
+      "sha256": "f734b0994c051ebf50644dc8fa9a0e9cb1da0e7875332f0a4ff9cb246f0228a2",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-corrected/review-hashes.json",
+      "sha256": "2fb9c7c62921916e3d8a52fbe6b1a75f70d4fb39d889781d31d93a7a3feaa001",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-log-corrected/review-hashes.json",
+      "sha256": "54e50d0a082351dfa3583dcea67302e686ac3eb538ae86e55d1c1535af26b572",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-package/review-hashes.json",
+      "sha256": "10dbf9ab3442e8af03c9cdaa92317a8dd62076a6aac55f45c5c9935e19a655af",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-ready/review-hashes.json",
+      "sha256": "950d47852da0aa1ff457fa52a05a334320295f4201df50d66a65f8dcdcce4955",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-run-v2/evidence-hashes.json",
+      "sha256": "3373505c1da65074bd8d2182d66803a8fd5ed45e549eb8290494d613b6df1afb",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-run-v3/evidence-hashes.json",
+      "sha256": "7555f4c46e96cb936b5eaa09ee9fa275f8645a1e55eb8ae4481a9f1e30baa16e",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-run-v4/evidence-hashes.json",
+      "sha256": "61cccd959ff632971b08a07a38c77a8cf0f80797ca7770a5c9d7aa8506a8d1ee",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-run-v5/evidence-hashes.json",
+      "sha256": "eaafc44da36ea203b10a7b0b52e68953f4ef43c6347f1470d28ffd463eb7316e",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-resolver-build-run-v6/evidence-hashes.json",
+      "sha256": "1cf73cdca2b01cc9e5e073dbf4b7721660d9bc24e94a3c838aba11873d6c0d54",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-source-closure/review-hashes.json",
+      "sha256": "bf4164cb9dc610aca7c91b3c951f8aeba18d7643f34e513dcf24fd99e706489d",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-static-recipe/review-hashes.json",
+      "sha256": "40c655c653cff8347b0859a0ecf12d67aee8561891eafdc824d649d5e5ef1da2",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-tar-preflight-integrated/prior-binding.json",
+      "sha256": "0ab61d7b66e010596c20385c96ba0662f04a1426b198f40e9dfb92311f2ad278",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-tar-preflight-integrated/review-hashes.json",
+      "sha256": "ae0683b682b983a1b50234ad07148f9baaf6e7511e5f328554b570ea123c6ae9",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/ce-watchdog-diagnostics-corrected/review-hashes.json",
+      "sha256": "9b64fc41bf24327403bbd8e3fb49e8d9ebf802ba2dd8825559168ae87a3c503e",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/config-only-command-prerequisite/review-hashes.json",
+      "sha256": "de3eca899ed6defca1a1f681003c3244c664814856e1c2999c17a064df46a447",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/container-inventory-command-corrected/review-hashes.json",
+      "sha256": "7b44f3b3090ae6fc116166d030ddc2708cefa55537d582be86c1014768582b4a",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/container-inventory-command-package/review-hashes.json",
+      "sha256": "3e0a3903bb04e15dad72c38c390246068c9285d7497571d93a8b0d33920bbf09",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/container-inventory-run/evidence-hashes.json",
+      "sha256": "4383fff83fb3384b9ca5bfb5430ba3d2c4cce8bf6401e1b2b4e301d3c739f1ba",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/metadata-pass/review-hashes.json",
+      "sha256": "53c2e9db790d3cc442c75fc22a03decb05ee7de93e511856739016ad02d42ae6",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/minimal-amd64-pilot/review-hashes.json",
+      "sha256": "12195c84fcc605813d6e095b8b73deee223f8e1b4460fc6bffbb1d0f6816bd13",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/supported-format-contract/review-hashes.json",
+      "sha256": "3dfe25f6d6dab330adf16d590abeb5ae0684553dba4f0bd52f5913d0ca3e0656",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_TASK_ARTIFACTS/ai-factory-backlog/af-03/local-parser-audit/review-hashes.json",
+      "sha256": "ad877e4cbaba17dc288e5d4187ff70d58b294a13114f20aa66f7de52500f2164",
+      "kind": "local evidence reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-curl-ownership-review.json",
+      "sha256": "2882e5ad963c44ba68cc9ce822ec917bb61f144da742dd0d64f15a2c3eaa79ab",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-diagnostic-gates-review.json",
+      "sha256": "ef74c89be5d4b9c952b4cad2728f911db309e8d76a3d30a8dfbbe05a33808e6d",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-disk-resample-review.json",
+      "sha256": "6117f6354cadaba4de092ae764f95f216eb486e2e7e813fd36e8b3130e9de3d3",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-log-capture-correction-review.json",
+      "sha256": "364d124b8f59ce29a72bd7f53d4719328cd5ab111e1cc88d4a437c029c27e14f",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-persistence-gates-review.json",
+      "sha256": "4008076c692411e843456032675b102dbaeab90915b390c3441b2a6ee1a70579",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-pilot-failed-run-review.json",
+      "sha256": "37238025a9b60fa7e23e39fd8cb401d3a98077d0eab997190017f27eaa49a444",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-pilot-holistic-codex-critique.json",
+      "sha256": "f19ddb54b92dbd3ce01cd6f01a01eaf06f73e2636d6213ed84ee8efd4e869c71",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-pilot-run-v3-review.json",
+      "sha256": "97a119a2effca8bf364e69166b3d61c4c34bc971f3435645647899f89148c449",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-pilot-run-v4-review.json",
+      "sha256": "2e95cfa77d8cd7c81f794a3c787b31e8cb478b4769478d552c0663439d7a3292",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-pilot-run-v5-review.json",
+      "sha256": "e123f33b3de45d462571f6a0b9a7c246f129cf3c01eee80d3c6788101b52f272",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-pilot-run-v6-review.json",
+      "sha256": "e4ccc421e804fb5de8076904d2b99c0b2bf819f1642256f3dd1af7497c9a1367",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-resolver-build-corrected-review.json",
+      "sha256": "c64d22739e3b7a1c94648ef0b640a934786f1362220a6d49ec29f53230ff82a4",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-resolver-build-ready-review.json",
+      "sha256": "4ed2c1b54a98d0f841d1d8ca24e618b3ef077551770a094a2405e2c3de8e2be0",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-source-closure-review.json",
+      "sha256": "23362e6007bd07ad679830e30a1da5f8ae25124f45945a59b8733e14c212b6a7",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-tar-preflight-integration-review.json",
+      "sha256": "bcb57fb51e1669975a805a4c056c937997a6783723f04859b74643b8863d4676",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/ce-watchdog-diagnostics-review.json",
+      "sha256": "620f0d02a911cc5db1ca28daffb9bf409c134d14f98033ff83cdbb9ad1c0afbc",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/container-inventory-command-review.json",
+      "sha256": "523aab8d37570b862a9b66baf1c0d9449c9982b38bd0840bac0defc566d2537f",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/container-inventory-corrected-review.json",
+      "sha256": "012329e5304e991196ab074cc5e7187e9578a0d5c88ad1dff552c0bb7c162a15",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/container-inventory-run-review.json",
+      "sha256": "a2b5156b558f1b5bb48c0a09634a1495e186ffc9813174d471a63d5a26c6f506",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/container-inventory-watchdog-mock-results.json",
+      "sha256": "b56b4e851bb4cb79a6a851494e3f02310b54e0565063ca97f959e5ff61421af1",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/format-profile-corrected-review.json",
+      "sha256": "81e68e0554550cb5e2722fd354686b47f54faa036fe0bf2c2823dbb5d8a8c3f6",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/format-profile-preparation-review.json",
+      "sha256": "1f97a15674c11db0b687ed76c2c779edd78ffa0b08d3fc05df79e819d1ffbb11",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/format-profile-run-accounting-review.json",
+      "sha256": "b4d7192d228aee876762212688cada18a86861f163e8062cff89256533ab0250",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/header-rejection-diagnostic-review.json",
+      "sha256": "4a022637d6bfcaf1de878288cae53b76d3b36ce1355697b469b2a9bbf2a0bb78",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/inventory-run-independent-review.json",
+      "sha256": "ef41f55f91642c4b62d5cb953b1804a0f4a98c19ff20afe620ca2832413063c3",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/inventory-run-packaging-addendum.json",
+      "sha256": "cbedd092ff59f9242bde2d001d2edb6d0da6c068acb41bb5753c612ec7d025ff",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/supported-format-contract-plan-review.json",
+      "sha256": "dda9cdba9ebc9df2ef646e20f2f1c571b883919e966bca3ce833eec6d7b2930d",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/symlink-record-preparation-review.json",
+      "sha256": "7e123cdfac6e18fe32b4bf34afcaf42d8c8256b9ffa7cb8e42991b53503eb704",
+      "kind": "independent review reference"
+    },
+    {
+      "path": "LOCAL_REVIEW_ARTIFACTS/symlink-record-run-evidence-review.json",
+      "sha256": "0f61a2cf95e776fc1d86d6ecadf7bd8def7f6b07cab48fa3d0fb2327a8d2a3ad",
+      "kind": "independent review reference"
+    }
+  ],
+  "storage": "Local task artifacts outside a Git working tree; no durable remote backup inferred",
+  "mutation": "No existing artifact deleted/moved/overwritten/rerun"
+}

@@ -1,0 +1,44 @@
+---
+name: implement-spec
+description: "Implements the output of /to-spec and /to-tickets in code."
+disable-model-invocation: true
+---
+
+You have been provided a spec. This spec should have tickets associated with it, describing how to implement the spec.
+
+The issue tracker should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+
+The goal is the entire spec implemented on a single **integration branch**, with every ticket resolved the way the issue tracker closes work.
+
+The tickets are not a list of steps. They are a **task graph** with blocking relationships between them. This means there is always a **frontier** of tickets which are ready to be grabbed.
+
+Here a "ticket" is a node in this tracker task graph — a different object from the `ai-factory/feature-lifecycle.md` single build task and from a wayfinder decision ticket. Same word, three objects; do not conflate them.
+
+Communication to and from subagents should be sparse. Communicate primarily through **context pointers**: to the spec, tickets, research notes, and previous commits. Don't duplicate information already available via pointers.
+
+**Implementer subagents** should be run in the background where possible for maximum concurrency.
+
+Every subagent here (exploration, implementer, merger) appends to its own working file per [agent stream-to-file](../../../rules/agent-stream-to-file.md) §2, kept with the exploration notes as `agent-<role>-<ticket>.md`. A subagent that returns empty or crashes has not finished its ticket: read its file, then redispatch once, continuing from what it recorded.
+
+## Steps
+
+1. Read the spec and tickets to understand the task graph. For a FULL-scale feature (per `ai-factory/feature-lifecycle.md`), confirm the independent planning gate was passed (recorded on the issue) or that planning was delegated to `spec-flow` and linked. If a Full feature arrived `ready-for-agent` with neither, stop and route it through the gate first; do not build straight from spec+tickets. SMALL changes keep the short path.
+
+2. (optional) Use an **exploration subagent** to conduct any exploration required by the tickets - relevant codebase files or external documentation. Ensure the exploration subagent can save files - it should save its markdown notes in a directory outside the repo, accessible by all future subagents. This lets **implementer subagents** focus on implementation rather than exploration.
+
+3. Create the integration branch. If the issue tracker closes work through PRs, or the user asks for one, open a draft PR after the first merge in step 5 (a branch with no commits ahead of main can't open one), marked as closing the spec and tickets.
+
+4. Use **implementer subagents** to implement each ticket, each in its own worktree on its own branch. Each implementer subagent:
+   - confirms its worktree is based on the integration branch before starting; if not, preserves existing work and creates a fresh isolated worktree from the integration branch instead of resetting an existing checkout;
+   - calls the Skill tool with `tdd` to build the ticket;
+   - merges the integration branch tip into its own branch before reporting done
+
+5. Once an **implementer subagent** completes, merge its work to the integration branch with a **merger subagent**.
+
+6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
+
+7. Once all tickets are complete, call the Skill tool with `code-review` on the integration branch. Fix all issues raised by the code review in a single **implementer subagent**.
+
+8. If a draft PR exists, mark it ready for review. Otherwise, resolve each ticket the way the issue tracker closes work, and report the integration branch.
+
+9. Clean up all **implementer subagent** worktrees.
