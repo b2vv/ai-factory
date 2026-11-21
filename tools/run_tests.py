@@ -15,7 +15,12 @@ def go_version_tuple(text):
     m=re.match(r'(?:go)?(\d+)(?:\.(\d+))?(?:\.(\d+))?',text.strip())
     return tuple(int(x or 0) for x in m.groups()) if m else None
 
-def run_go_suite(root, env, name, rel, tags=None, note=None):
+# Per-binary hang guard, not a speed budget. The storage api package is fsync-bound
+# (durable WAL/ledger writes): ~100s alone on macOS, where Go's Sync is F_FULLFSYNC,
+# and longer under a parallel ./... run, so 120s killed passing tests.
+STORAGE_GO_TIMEOUT='600s'
+
+def run_go_suite(root, env, name, rel, tags=None, note=None, timeout='120s'):
     """Bridge for an optional Go component (storage, dashboard, web-to-md): run its hermetic Go
     unit suite offline (GOPROXY=off, GOSUMDB=off, GOTOOLCHAIN=local, GOFLAGS=-mod=readonly).
     The Go binary is AI_FACTORY_GO if set, else `go` on PATH. The aggregate suite explicitly SKIPS
@@ -39,7 +44,7 @@ def run_go_suite(root, env, name, rel, tags=None, note=None):
     if have is None: return skip(f'cannot read toolchain version from {go}')
     if need and have<need: return skip(f'toolchain {probe.stdout.strip()} older than go.mod {".".join(map(str,need))}; set AI_FACTORY_GO')
     if note: print(f'{name}: {note}',flush=True)
-    cmd=[go,'test','-count=1','-timeout=120s']+(['-tags',tags] if tags else [])+['./...']
+    cmd=[go,'test','-count=1',f'-timeout={timeout}']+(['-tags',tags] if tags else [])+['./...']
     print(f'\n=== {name} Go suite: go test {"-tags "+tags+" " if tags else ""}./... (hermetic) ===',flush=True)
     result=subprocess.run(cmd,env=test_env,cwd=str(mod))
     print(f'{name} Go suite: '+('FAIL' if result.returncode else 'PASS'),flush=True)
@@ -106,7 +111,7 @@ with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
         print('\n=== archive restart policy fixtures ===',flush=True)
         result=subprocess.run([sys.executable,'-B','-m','unittest','discover','-s',str(archive),'-p','test_*.py','-v'],env=env,cwd=root)
         failures += result.returncode != 0
-    for name,runner in [('storage',lambda: run_go_suite(root, env, 'storage', 'runtime/storage')),
+    for name,runner in [('storage',lambda: run_go_suite(root, env, 'storage', 'runtime/storage', timeout=STORAGE_GO_TIMEOUT)),
                         ('dashboard',lambda: run_dashboard_suites(root, env)),
                         ('web-to-md',lambda: run_go_suite(root, env, 'web-to-md', 'runtime/web-to-md'))]:
         if args.suite in ('all',name): failures += runner() != 0

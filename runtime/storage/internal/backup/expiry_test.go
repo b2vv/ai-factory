@@ -23,7 +23,7 @@ func writeExpiryFixture(t *testing.T, dir, name string, created time.Time) {
 	}
 }
 func TestExpiryVerifiedTimestampBoundaryAndBudgetRecovery(t *testing.T) {
-	dir := filepath.Join(t.TempDir(), "backups")
+	dir := filepath.Join(privateTempDir(t), "backups")
 	if e := os.Mkdir(dir, 0700); e != nil {
 		t.Fatal(e)
 	}
@@ -69,7 +69,7 @@ func TestExpiryVerifiedTimestampBoundaryAndBudgetRecovery(t *testing.T) {
 func TestExpiryCorruptionFutureAndSymlinkRefuseBeforeDeletion(t *testing.T) {
 	for _, fault := range []string{"corrupt", "future", "symlink"} {
 		t.Run(fault, func(t *testing.T) {
-			dir := filepath.Join(t.TempDir(), "backups")
+			dir := filepath.Join(privateTempDir(t), "backups")
 			os.Mkdir(dir, 0700)
 			now := time.Now().UTC()
 			writeExpiryFixture(t, dir, "a-old.backup", now.Add(-31*24*time.Hour))

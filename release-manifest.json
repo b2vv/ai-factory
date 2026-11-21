@@ -1081,7 +1081,7 @@
     {
       "path": "runtime/storage/cmd/factory/archive_startup_test.go",
       "component": "storage",
-      "sha256": "d438eb245c433c9760aaa641402d9df7062905d830bc5b4f96485207f3c3dac0"
+      "sha256": "66fe56a989abe89bbeb54c979332c39b44797e23e1224c17ec67fec1343a026b"
     },
     {
       "path": "runtime/storage/cmd/factory/codex_v2_regression_test.go",
@@ -1826,7 +1826,7 @@
     {
       "path": "runtime/storage/internal/backup/expiry_test.go",
       "component": "storage",
-      "sha256": "8b55e9b544f03e03b9cbfd5e72dcb8bc9145310e97e3e9b04dda8d2ca6d16202"
+      "sha256": "bce885f56bb7747d82bc36c154d2047a57efed8d61f82e2f9d587c47300a26c3"
     },
     {
       "path": "runtime/storage/internal/backup/repository.go",
@@ -1836,7 +1836,7 @@
     {
       "path": "runtime/storage/internal/backup/repository_test.go",
       "component": "storage",
-      "sha256": "ea102d6c9fad3ff1ecda56429ec11d0b581df19e004f79c938678e708508be9c"
+      "sha256": "faa7fdccfe7e46d3f0f722aaef790f91c225785ccb98f5cdbfcb8348da743879"
     },
     {
       "path": "runtime/storage/internal/backup/rollback_sources.go",
@@ -1851,7 +1851,12 @@
     {
       "path": "runtime/storage/internal/backup/stream_test.go",
       "component": "storage",
-      "sha256": "57490f533aa3f4a5a259fd49b0ce33058368dd01349ce37bccc9d95b69c46c8d"
+      "sha256": "bfb2a7c18514d10e7399b3da52d8984f65d3f3da8f28c7862e1f47c1fcebc7c8"
+    },
+    {
+      "path": "runtime/storage/internal/backup/tempdir_test.go",
+      "sha256": "8b04fa1f7e0456b8e8b6039faf1f0c8e1b32645a92a5572c9537ef155a0a3514",
+      "component": "storage"
     },
     {
       "path": "runtime/storage/internal/backup/writer_budget_test.go",
@@ -4580,7 +4585,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "1627d44e872ac795abbb8bb5fef7969f622130c7cadee6d21890b00cc4a2caca",
+      "sha256": "14a4f2aec175a6b291e1bc0a27b5ed75ab6420c03f78e444e953d63719d1477d",
       "component": "core"
     },
     {

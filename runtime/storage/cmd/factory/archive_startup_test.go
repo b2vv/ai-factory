@@ -16,6 +16,11 @@ import (
 	"time"
 )
 
+// refusalDeadline bounds a factory process that must refuse startup and exit on its own.
+// It only catches a hang; under a loaded parallel `go test ./...` a 3s bound killed
+// processes that were still on their way to the expected refusal.
+const refusalDeadline = 20 * time.Second
+
 func TestProcessMetadataWitnessRequiresArchiveBeforeListen(t *testing.T) {
 	root := t.TempDir()
 	bin := buildFactory(t, root)
@@ -36,7 +41,7 @@ func TestProcessMetadataWitnessRequiresArchiveBeforeListen(t *testing.T) {
 	}
 	token := filepath.Join(root, "operator.json")
 	writeFile0600(t, token, `{"id":"operator","secret":"smoke-secret"}`)
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), refusalDeadline)
 	defer cancel()
 	out, err := exec.CommandContext(ctx, bin, "-state", state, "-operator-token", token, "-listen", "127.0.0.1:0").CombinedOutput()
 	if err == nil || ctx.Err() != nil || strings.Contains(string(out), "LISTEN ") || !strings.Contains(string(out), "archive metadata") {
@@ -93,7 +98,7 @@ func TestProcessBlockedAuthorityPreservesMissingIntake(t *testing.T) {
 	}()
 	writeFile0600(t, cfg, fmt.Sprintf(`{"mongo_enabled":true,"mongo_uri":"mongodb://%s","mongo_db":"synthetic","mongo_collection":"records"}`, backend.Addr().String()))
 	for attempt := 0; attempt < 2; attempt++ {
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), refusalDeadline)
 		out, err := exec.CommandContext(ctx, bin, "-state", state, "-config", cfg, "-operator-token", token, "-listen", "127.0.0.1:0").CombinedOutput()
 		if connections.Load() != 0 {
 			cancel()

@@ -10,7 +10,7 @@ import (
 )
 
 func TestRepositoryBudgetConcurrentFailureAndRecovery(t *testing.T) {
-	dir := filepath.Join(t.TempDir(), "backups")
+	dir := filepath.Join(privateTempDir(t), "backups")
 	if e := os.Mkdir(dir, 0700); e != nil {
 		t.Fatal(e)
 	}
@@ -62,7 +62,7 @@ func TestRepositoryBudgetConcurrentFailureAndRecovery(t *testing.T) {
 	}
 }
 func TestRepositoryCountsForeignAndIncompleteFiles(t *testing.T) {
-	dir := filepath.Join(t.TempDir(), "backups")
+	dir := filepath.Join(privateTempDir(t), "backups")
 	if e := os.Mkdir(dir, 0700); e != nil {
 		t.Fatal(e)
 	}

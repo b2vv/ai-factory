@@ -139,7 +139,7 @@ func TestStreamExpiryAndStrictOrdering(t *testing.T) {
 	if e := CreateStream(d, op, archive.NewMemStore(), newSnapshotFake(), []string{"p"}, &out); e != nil {
 		t.Fatal(e)
 	}
-	dir := filepath.Join(t.TempDir(), "backups")
+	dir := filepath.Join(privateTempDir(t), "backups")
 	os.Mkdir(dir, 0700)
 	os.WriteFile(filepath.Join(dir, "stream.backup"), out.Bytes(), 0600)
 	r, e := OpenRepository(dir, 1<<20, 0)
