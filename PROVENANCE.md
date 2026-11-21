@@ -496,3 +496,26 @@ evidence from actual navigation; contrast or keyboard statements without helper 
 navigation evidence are `NOT_TESTED`; missing coverage never counts as a pass. The
 description adds a plain-English pointing trigger. Examples now use an unrelated domain
 so the skill carries no test-fixture hints. No new look is added.
+
+## Optional runtime dependencies: dashboard and web-to-md (2026-11-21)
+
+The dashboard and web-to-md source is authored for this kit. Their third-party
+dependencies are resolved at build time from pinned lockfiles and are not vendored here.
+The exact list with versions, licenses and scope is in `provenance/runtime-dependencies.json`.
+
+- **web-to-md** compiles four Go modules, the set reported by `go list -deps`:
+  JohannesKaufmann/html-to-markdown/v2 v2.5.2 and JohannesKaufmann/dom v0.3.1 (MIT),
+  golang.org/x/net v0.55.0 and golang.org/x/text v0.37.0 (BSD-3-Clause). The workflow is
+  inspired by Firecrawl Local and implemented independently; no Firecrawl source is copied.
+- **dashboard** uses only the Go standard library. Its browser bundle comes from 114 npm
+  packages in `package-lock.json` (113 MIT, 1 ISC): 87 runtime packages such as React 19.2.7
+  and react-markdown 10.1.0, bundled into `ui/dist/app.js`, and 27 build-only esbuild 0.28.2
+  packages, including native platform binaries.
+
+Redistributed builds keep the dependencies' license notices. Do not strip esbuild legal
+comments from `ui/dist/app.js`, which the dashboard binary embeds. A distributed web-to-md
+binary or image ships the MIT and BSD-3-Clause texts of its compiled modules.
+
+The Go licenses were read from the module cache. The npm licenses are the declared
+lockfile fields; individual package LICENSE files were not inspected. A separate reviewer
+checked this list against `go list -deps`, the module cache and the lockfile (2026-11-21).

@@ -155,7 +155,7 @@
     },
     {
       "path": "PROVENANCE.md",
-      "sha256": "35ff1c5e2f52777dbf6dc77ec4ac2b9ff066e57ec3cd6a5e31bd2bdb5c664856",
+      "sha256": "a76220770fb62f231fbe02a2a538ea457c44f76f97f8bedfbf912afb45946e20",
       "component": "core"
     },
     {
@@ -500,7 +500,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "c7d396c22fd6b6e29d348a5f790bdb2215bbbb0a9ebda04a9a0c213f19cb0adb",
+      "sha256": "d5fcc0637bfb5edd3320814011c9aa1651e5d1f769ebd1047053aae03039f025",
       "component": "core"
     },
     {
@@ -531,6 +531,11 @@
     {
       "path": "provenance/residual-english.json",
       "sha256": "cdd8973da6e5ac3fc250989248caa71ea231ff594b2a2de13cc6109e2522526e",
+      "component": "core"
+    },
+    {
+      "path": "provenance/runtime-dependencies.json",
+      "sha256": "7a069335500d5b3ba1e8a84362b9e596f532c890554bb01e75f43b5f4f903c22",
       "component": "core"
     },
     {

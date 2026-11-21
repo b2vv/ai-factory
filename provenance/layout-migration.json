@@ -83,7 +83,7 @@
         "Current authored provenance binding refreshed for the owner-authorized narrow portable-reference correction; historical identities retained.",
         "Current authored provenance binding refreshed for the owner-authorized 2026-11-19 skill review corrections; historical identities retained."
       ],
-      "new_sha256": "35ff1c5e2f52777dbf6dc77ec4ac2b9ff066e57ec3cd6a5e31bd2bdb5c664856"
+      "new_sha256": "a76220770fb62f231fbe02a2a538ea457c44f76f97f8bedfbf912afb45946e20"
     },
     {
       "old_path": "README.md",
