@@ -216,6 +216,20 @@ def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, glo
     return "\n".join(lines).rstrip() + "\n"
 
 
+SEARCH_LINE = re.compile(r'Conversation-archive \*\*read-only search\*\* contract: `([^`\n]+)`')
+
+
+def prior_search_contract(existing):
+    """The search route this tool recorded in its managed block, retained on reconnect."""
+    if not existing or BEGIN not in existing:
+        return None
+    body = existing.split(BEGIN, 1)[1].split(END, 1)[0]
+    found = SEARCH_LINE.findall(body)
+    if len(found) > 1:
+        raise ValueError('ambiguous managed search contract')
+    return found[0] if found else None
+
+
 def task_index_pointer(project, existing, requested=None, clear=False):
     """Retain only a deliberately recorded pointer inside our managed block; never infer a path."""
     validate_markers(existing)
@@ -468,7 +482,9 @@ def main(argv=None):
     routing = ap.add_mutually_exclusive_group()
     routing.add_argument("--adapter", help="existing readable project-relative or explicit absolute Markdown adapter")
     routing.add_argument("--global-only", action="store_true", help="use installed shared workflow without a local Factory adapter")
-    ap.add_argument("--search-contract", help="path to the read-only search contract (e.g. .ai/project/capture-search.md)")
+    search = ap.add_mutually_exclusive_group()
+    search.add_argument("--search-contract", help="path to the read-only search contract (e.g. .ai/project/capture-search.md); retained on future reconnects")
+    search.add_argument("--clear-search-contract", action="store_true", help="remove only the managed search-contract pointer; leave its file untouched")
     group = ap.add_mutually_exclusive_group()
     group.add_argument("--task-index", help="existing project-relative Markdown task index; retained on future reconnects")
     group.add_argument("--clear-task-index", action="store_true", help="remove only the managed task-index pointer; leave its file untouched")
@@ -508,6 +524,11 @@ def main(argv=None):
                 if route_markers != ['<!-- ai-factory-route: global-only -->']:
                     raise ValueError('ambiguous managed routing marker')
                 global_only = True
+        # A recorded search route survives reconnect/update like the task index; a
+        # missing recorded route blocks instead of being silently dropped or replaced.
+        search_explicit = a.search_contract
+        if search_explicit is None and not a.clear_search_contract:
+            search_explicit = prior_search_contract(existing_agents)
 
     except (ValueError, OSError, UnicodeError) as exc:
         report['status'] = 'BLOCKED'
@@ -520,7 +541,8 @@ def main(argv=None):
     try:
         adapter_rel = select_route(project, a.adapter, () if global_only else ADAPTER_ROUTES,
                                    "adapter", baseline)
-        search_rel = select_route(project, a.search_contract, SEARCH_ROUTES,
+        search_rel = select_route(project, search_explicit,
+                                  () if a.clear_search_contract else SEARCH_ROUTES,
                                   "search-contract", baseline)
         if global_only:
             installed = installer.current(Path(kit['managed_root']))

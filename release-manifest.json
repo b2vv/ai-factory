@@ -296,7 +296,7 @@
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "0c1ef79f01511a3eb442d82aa2bca6bdeb00a1af26830b97b50d42e8b4d421f4"
+      "sha256": "2a7da977877eb30ebe455f3f91add54c7b409a550b0f49141f7f0ce5824cc5f5"
     },
     {
       "path": "docs/managed-native-handoff.md",
@@ -4290,7 +4290,7 @@
     },
     {
       "path": "tests/connect/test_connect_project.py",
-      "sha256": "50e2ca787a5edb76071c57c39a9dfebf26e270904a4a2279a396955a328c829c",
+      "sha256": "435dc62e0c69a32877b907a0b6db60c64552c1745491903c7fb62040e7845f28",
       "component": "core"
     },
     {
@@ -4540,7 +4540,7 @@
     },
     {
       "path": "tools/connect-project.py",
-      "sha256": "e7ea9d178dd83c834c0dac31522b29e453e80ea9fe63815b6890108c81574c0e",
+      "sha256": "745e5bf7ffcbad6b9bbfeff68b31f62fbdcfcdabef286ea6bbe8b15d427f6440",
       "component": "core"
     },
     {

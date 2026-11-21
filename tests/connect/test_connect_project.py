@@ -571,6 +571,43 @@ class ConnectProject(unittest.TestCase):
             self.assertNotIn("TOP-SECRET-VALUE", (self.proj / f).read_text())
 
     # search-not-configured is reported honestly
+    def test_explicit_search_contract_retained_on_reconnect(self):
+        # Regression: a reconnect without --search-contract silently dropped the route.
+        (self.proj / 'AGENTS.local.md').write_text('# local\nSearch route: GET only.\n')
+        rc, _ = run(self.base_args(search_contract='AGENTS.local.md') + ['--apply'])
+        self.assertEqual(rc, 0)
+        rc, report = run(self.base_args() + ['--apply'])
+        self.assertEqual(rc, 0)
+        self.assertEqual(report['routes']['search_contract'], 'AGENTS.local.md')
+        self.assertEqual(report['actions'][0]['action'], 'noop')
+        self.assertNotIn('not configured', (self.proj / 'AGENTS.local.md').read_text())
+
+    def test_retained_search_contract_wins_over_autodetected_route(self):
+        (self.proj / 'AGENTS.local.md').write_text('# local\n')
+        run(self.base_args(search_contract='AGENTS.local.md') + ['--apply'])
+        auto = self.proj / cp.SEARCH_ROUTES[0]
+        auto.parent.mkdir(parents=True, exist_ok=True); auto.write_text('# other contract')
+        rc, report = run(self.base_args())
+        self.assertEqual(rc, 0)
+        self.assertEqual(report['routes']['search_contract'], 'AGENTS.local.md')
+
+    def test_missing_retained_search_contract_blocks_not_drops(self):
+        contract = self.proj / 'search.md'; contract.write_text('# contract')
+        run(self.base_args(search_contract='search.md') + ['--apply'])
+        before = (self.proj / 'AGENTS.local.md').read_text()
+        contract.unlink()
+        rc, report = run(self.base_args() + ['--apply'])
+        self.assertEqual(rc, 1); self.assertEqual(report['status'], 'BLOCKED')
+        self.assertEqual((self.proj / 'AGENTS.local.md').read_text(), before)
+
+    def test_clear_search_contract_is_explicit(self):
+        contract = self.proj / 'search.md'; contract.write_text('# contract')
+        run(self.base_args(search_contract='search.md') + ['--apply'])
+        rc, report = run(self.base_args() + ['--clear-search-contract', '--apply'])
+        self.assertEqual(rc, 0); self.assertIsNone(report['routes']['search_contract'])
+        self.assertIn('not configured', (self.proj / 'AGENTS.local.md').read_text())
+        self.assertTrue(contract.exists())
+
     def test_search_not_configured_honest(self):
         rc, rep = run(self.base_args() + ["--apply"])
         txt = (self.proj / "AGENTS.local.md").read_text()

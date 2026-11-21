@@ -98,6 +98,9 @@ review handoff. This choice is retained by subsequent reconnects; an explicit
 records and stronger local rules remain
 in force. This mode does not create a local adapter, copy shared rules or invent an
 archive route. An existing search-only contract can still be supplied separately.
+A recorded `--search-contract` is retained by later reconnects, like the task index;
+if that file is gone the reconnect blocks instead of dropping or replacing the route.
+Use `--clear-search-contract` to remove the pointer deliberately.
 Do not restore an obsolete version-pinned adapter merely to satisfy a stale link.
 
 The connector owns only its managed blocks. Historical links outside those blocks
