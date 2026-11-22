@@ -17,7 +17,8 @@ const states = {
   'Probes recorded':['Проби зафіксовано','neutral'],
   'Verification pending':['Чекає на перевірку','warn'],
   'Partial evidence':['Часткові докази','neutral'],
-  Blocked:['Заблоковано','warn']
+  Blocked:['Заблоковано','warn'],
+  Stale:['Застаріло','warn']
 };
 const stamp = value => value ? new Intl.DateTimeFormat('uk-UA',{dateStyle:'medium',timeStyle:'short'}).format(new Date(value)) : 'невідомо';
 

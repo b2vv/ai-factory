@@ -164,17 +164,54 @@ func validStage(s feedStage, src source) bool {
 	}
 	return false
 }
+
+// validate is the full check for a current record: content, then freshness.
 func (p feedRecord) validate(id, head string, now time.Time) error {
+	if err := p.validateContent(id); err != nil {
+		return err
+	}
+	_, err := p.validateFresh(head, now)
+	return err
+}
+
+// staleReason says why a content-valid record is not current.
+type staleReason int
+
+const (
+	freshOK staleReason = iota
+	staleRevision
+	staleAge
+	staleFuture
+)
+
+// validateFresh checks only what changes with time and commits: the record's revision
+// against current HEAD and its observation age. Revision comes first.
+func (p feedRecord) validateFresh(head string, now time.Time) (staleReason, error) {
+	if p.UpdatedAt.After(now.Add(futureSkew)) {
+		return staleFuture, errors.New("observation expired or future-dated")
+	}
+	if !revisionPattern.MatchString(head) || p.Revision != head {
+		return staleRevision, errors.New("revision missing or not current")
+	}
+	if p.UpdatedAt.Before(now.Add(-feedTTL)) {
+		return staleAge, errors.New("observation expired or future-dated")
+	}
+	return freshOK, nil
+}
+
+// validateContent checks everything a card could render, independent of HEAD and time:
+// a record that passes it may be shown as stale without exposing unchecked text.
+func (p feedRecord) validateContent(id string) error {
 	if p.Schema != feedSchema && p.Schema != scopedFeedSchema || projects.name(id) == "" || p.Project != id {
 		return errors.New("unknown or mismatching schema/project")
 	}
 	if p.Schema == scopedFeedSchema && !validScope(p.ScopeID, p.ScopeSnapshot) || p.Schema == feedSchema && (p.ScopeID != "" || p.ScopeSnapshot != "") {
 		return errors.New("scope binding requires the matching schema and both values")
 	}
-	if !revisionPattern.MatchString(head) || p.Revision != head {
+	if !revisionPattern.MatchString(p.Revision) {
 		return errors.New("revision missing or not current")
 	}
-	if p.UpdatedAt.IsZero() || p.UpdatedAt.Before(now.Add(-feedTTL)) || p.UpdatedAt.After(now.Add(futureSkew)) {
+	if p.UpdatedAt.IsZero() {
 		return errors.New("observation expired or future-dated")
 	}
 	if !slug.MatchString(p.TaskID) || !textOK(p.Title, 160, false) || !textOK(p.Next, 560, false) {
@@ -236,6 +273,24 @@ func (p feedRecord) validate(id, head string, now time.Time) error {
 	}
 	return errors.New("project summary state contradicts stages")
 }
+
+// staleCard shows the last known task of a content-valid record that is no longer current.
+// Stages stay Unknown and no details are offered: stale evidence is never shown as current.
+func (p feedRecord) staleCard(head string, reason staleReason, workflow string) project {
+	out := base(p.Project, projects.name(p.Project), p.Title, head)
+	out.State, out.Observed, out.Workflow = "Stale", p.UpdatedAt.UTC().Format(time.RFC3339), workflow
+	why := "Записано " + p.UpdatedAt.UTC().Format("02.01 15:04") + " UTC, понад 48 год тому."
+	if reason == staleRevision {
+		why = "Записано для коміту " + p.Revision[:7] + "; HEAD відтоді змінився."
+		if !revisionPattern.MatchString(head) {
+			why = "Записано для коміту " + p.Revision[:7] + "; поточний HEAD не прочитано."
+		}
+	}
+	out.Next = why + " Останній відомий наступний крок: " + p.Next
+	out.Provenance = "Застарілий запис: етапи не підтверджено для поточного стану."
+	return out
+}
+
 func digestBytes(raw []byte) string {
 	id := sha256.Sum256(raw)
 	return hex.EncodeToString(id[:])
@@ -270,7 +325,12 @@ func (r roots) readOne(id string, now time.Time) (project, feedRecord) {
 	statusRaw, statusErr := fileFromFeed(r.feed, id)
 	transitionRaw, transitionErr := feedFile(r.feed, id, true)
 	f, ferr := decodeRecord(statusRaw)
-	usable := statusErr == nil && ferr == nil && f.validate(id, head, now) == nil
+	content := statusErr == nil && ferr == nil && f.validateContent(id) == nil
+	reason := staleFuture
+	if content {
+		reason, _ = f.validateFresh(head, now)
+	}
+	usable := content && reason == freshOK
 	if revision(r.repo(id)) != head {
 		return out, feedRecord{}
 	}
@@ -290,6 +350,9 @@ func (r roots) readOne(id string, now time.Time) (project, feedRecord) {
 		card.Workflow = out.Workflow
 		card.Transition = t.display(true)
 		return card, f
+	}
+	if content && f.Schema == feedSchema && (reason == staleRevision || reason == staleAge) {
+		return f.staleCard(head, reason, out.Workflow), feedRecord{}
 	}
 	if !usable || f.Schema != feedSchema {
 		return out, feedRecord{}

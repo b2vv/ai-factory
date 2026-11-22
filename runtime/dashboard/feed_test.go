@@ -144,7 +144,125 @@ func TestAtomicPublisherAndDynamicRoute(t *testing.T) {
 	if code, _, _ := get("/api/details/project-a"); code != 404 {
 		t.Fatal("mismatched HEAD exposed details")
 	}
-	if card, _ := r.readOne("project-a", now.Add(time.Second)); card.State != "Unknown" {
-		t.Fatal("stale record did not go Unknown")
+	card, rec := r.readOne("project-a", now.Add(time.Second))
+	if card.State != "Stale" || card.DetailID != "" || card.DetailToken != "" || rec.Project != "" {
+		t.Fatal("stale record must show as Stale without details or a usable record")
 	}
+	for _, st := range card.Stages {
+		if st.State != "Unknown" {
+			t.Fatal("stale card showed a stage as current")
+		}
+	}
+}
+
+func TestStaleCard(t *testing.T) {
+	now := time.Now().UTC()
+	head, other := strings.Repeat("a", 40), strings.Repeat("c", 40)
+	setup := func(t *testing.T, p feedRecord, headNow string) roots {
+		t.Helper()
+		useProjects(t, projectConfig{ID: "project-a", Name: "Project A", Root: t.TempDir()})
+		r := roots{feed: t.TempDir()}
+		writeHead(t, r.repo("project-a"), headNow)
+		raw, err := json.Marshal(p)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(r.feed, "project-a.json"), raw, 0600); err != nil {
+			t.Fatal(err)
+		}
+		return r
+	}
+	allUnknown := func(t *testing.T, c project) {
+		t.Helper()
+		for _, st := range c.Stages {
+			if st.State != "Unknown" {
+				t.Fatalf("stage %s shown as %s on a non-current card", st.Name, st.State)
+			}
+		}
+		if c.DetailID != "" || c.DetailToken != "" {
+			t.Fatal("non-current card offered details")
+		}
+	}
+	t.Run("revision moved", func(t *testing.T) {
+		r := setup(t, fixture(now), other)
+		c, rec := r.readOne("project-a", now)
+		if c.State != "Stale" || c.Task != "Fixture" || rec.Project != "" ||
+			!strings.Contains(c.Next, "коміту aaaaaaa; HEAD відтоді змінився") || !strings.Contains(c.Next, "Review plan") {
+			t.Fatalf("unexpected card: %+v", c)
+		}
+		allUnknown(t, c)
+	})
+	t.Run("too old", func(t *testing.T) {
+		p := fixture(now.Add(-feedTTL - time.Minute))
+		r := setup(t, p, head)
+		c, _ := r.readOne("project-a", now)
+		if c.State != "Stale" || !strings.Contains(c.Next, "понад 48 год тому") {
+			t.Fatalf("unexpected card: %+v", c)
+		}
+		allUnknown(t, c)
+	})
+	t.Run("both: revision reason first", func(t *testing.T) {
+		r := setup(t, fixture(now.Add(-feedTTL-time.Minute)), other)
+		if c, _ := r.readOne("project-a", now); c.State != "Stale" || !strings.Contains(c.Next, "HEAD відтоді змінився") {
+			t.Fatalf("unexpected card: %+v", c)
+		}
+	})
+	t.Run("unreadable HEAD says so", func(t *testing.T) {
+		r := setup(t, fixture(now), "not-a-sha")
+		if c, _ := r.readOne("project-a", now); c.State != "Stale" || !strings.Contains(c.Next, "поточний HEAD не прочитано") {
+			t.Fatalf("unexpected card: %+v", c)
+		}
+	})
+	t.Run("current record unchanged", func(t *testing.T) {
+		r := setup(t, fixture(now), head)
+		if c, rec := r.readOne("project-a", now); c.State != "Plan accepted" || rec.Project != "project-a" {
+			t.Fatalf("current record changed: %+v", c)
+		}
+	})
+	bare := []struct {
+		name string
+		edit func(*feedRecord)
+	}{
+		{"path in next", func(p *feedRecord) { p.Next = "see /home/example/secret-plan.md" }},
+		{"URL in title", func(p *feedRecord) { p.Title = "https://example.invalid/private" }},
+		{"URL as revision", func(p *feedRecord) { p.Revision = "https://example.invalid/x" }},
+		{"path as revision", func(p *feedRecord) { p.Revision = "../../etc/passwd" }},
+		{"control chars in revision", func(p *feedRecord) { p.Revision = "aaaaaaa\x1b[31m" + strings.Repeat("a", 30) }},
+		{"fake push stage", func(p *feedRecord) { p.Stages[4] = feedStage{"Push", "Recorded", "pushed", "one"} }},
+		{"future dated", func(p *feedRecord) { p.UpdatedAt = now.Add(futureSkew + time.Minute) }},
+	}
+	for _, tc := range bare {
+		t.Run("bare: "+tc.name, func(t *testing.T) {
+			p := fixture(now)
+			tc.edit(&p)
+			r := setup(t, p, other)
+			c, _ := r.readOne("project-a", now)
+			out, _ := json.Marshal(c)
+			if c.State != "Unknown" || c.Task != "Поточну задачу не підтверджено" ||
+				strings.Contains(string(out), "example.invalid") || strings.Contains(string(out), "/home/example") || strings.Contains(string(out), "passwd") {
+				t.Fatalf("invalid record rendered: %s", out)
+			}
+		})
+	}
+	t.Run("transition file keeps priority", func(t *testing.T) {
+		r := setup(t, fixture(now), other)
+		if err := os.WriteFile(filepath.Join(r.feed, "project-a.transition.json"), []byte("{}"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if c, _ := r.readOne("project-a", now); c.State == "Stale" || !strings.Contains(c.Next, "Запис переходу") {
+			t.Fatalf("transition path not taken: %+v", c)
+		}
+	})
+	t.Run("share view shows Stale and nothing else", func(t *testing.T) {
+		r := setup(t, fixture(now), other)
+		c, _ := r.readOne("project-a", now)
+		got := projectStates(snapshot{CheckedAt: now, Projects: []project{c}})
+		if len(got.Projects) != 1 || got.Projects[0].State != "Stale" {
+			t.Fatalf("share projection: %+v", got)
+		}
+		out, _ := json.Marshal(got)
+		if strings.Contains(string(out), "Review plan") || strings.Contains(string(out), "Fixture") {
+			t.Fatalf("share view leaked task text: %s", out)
+		}
+	})
 }

@@ -156,7 +156,7 @@ func projectStates(s snapshot) sharedSnapshot {
 				continue
 			}
 			switch p.State {
-			case "Recorded", "Decision needed", "Verification pending", "Plan accepted":
+			case "Recorded", "Decision needed", "Verification pending", "Plan accepted", "Stale":
 				state = p.State
 			}
 			break
