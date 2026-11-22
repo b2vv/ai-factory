@@ -147,6 +147,36 @@ POST_DEADLINE = 5         # read retries (2.4 s) + this stay inside the 8-second
 # The supervised worker is not bound by a hook's time limit: it waits long enough for a
 # busy server to acknowledge, so a turn the hook could not deliver still arrives.
 WORKER_SOCKET_TIMEOUT, WORKER_POST_DEADLINE, WORKER_CYCLE_DEADLINE = 40, 45, 50
+# While a worker for the same queue is alive, the hook only enqueues and returns at once,
+# so the end of a turn never waits for the server. Without a live worker it still sends.
+WORKER_HEARTBEAT_FRESH = 180
+IN_WORKER = False
+
+
+def heartbeat_path(queue):
+    return str(queue.path) + '.worker'
+
+
+def touch_heartbeat(queue):
+    path = heartbeat_path(queue)
+    fd = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
+    try:
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) & 0o077:
+            raise ValueError('unsafe worker heartbeat')
+        os.utime(fd)
+    finally:
+        os.close(fd)
+
+
+def worker_alive(queue, now=None):
+    try:
+        info = os.lstat(heartbeat_path(queue))
+    except FileNotFoundError:
+        return False
+    if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) & 0o077:
+        return False
+    return (time.time() if now is None else now) - info.st_mtime < WORKER_HEARTBEAT_FRESH
 
 
 def read_transcript(path):
@@ -291,6 +321,8 @@ def run(mode="hook", quiet_idle=False):
         headers, principal = credentials(agent_file, secret_file)
         root = os.environ.get("AF_CAPTURE_QUEUE_DIR") or os.path.join(os.path.dirname(os.path.realpath(agent_file or secret_file)), 'capture-queue')
         queue = Queue(root, {'endpoint':endpoint,'project':project,'source':source,'principal':principal})
+        if IN_WORKER:
+            touch_heartbeat(queue)
         if mode == 'status':
             status['queue'] = queue.status()
             return status
@@ -334,6 +366,9 @@ def run(mode="hook", quiet_idle=False):
             if state == 'done':
                 status.update(delivered=True, deduplicated=True, queue=queue.status())
                 return status
+            if worker_alive(queue):
+                status.update(delivery='deferred_to_worker', queue=queue.status())
+                return status
         # Hook tries at most ONE item, possibly older than this turn. Explicit worker
         # polls this mode repeatedly. Flush remains bounded by the outer deadline.
         result = drain(queue, endpoint, project, source, headers)
@@ -370,8 +405,8 @@ def main():
         return
     if mode == 'worker':
         # Supervisor opt-in only. No process spawning/registration by hooks.
-        global POST_SOCKET_TIMEOUT, POST_DEADLINE
-        POST_SOCKET_TIMEOUT, POST_DEADLINE = WORKER_SOCKET_TIMEOUT, WORKER_POST_DEADLINE
+        global POST_SOCKET_TIMEOUT, POST_DEADLINE, IN_WORKER
+        POST_SOCKET_TIMEOUT, POST_DEADLINE, IN_WORKER = WORKER_SOCKET_TIMEOUT, WORKER_POST_DEADLINE, True
         while True:
             with deadline(WORKER_CYCLE_DEADLINE):
                 run('flush', quiet_idle=True)

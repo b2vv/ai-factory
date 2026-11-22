@@ -464,6 +464,28 @@ class Loopback(unittest.TestCase):
         q=Queue(self.root/'capture-queue',self.scope)
         q.db.execute('UPDATE items SET next=0');q.close()
 
+    def test_hook_only_enqueues_while_worker_alive(self):
+        q=Queue(self.root/'capture-queue',self.scope)
+        heartbeat=str(q.path)+'.worker';q.close()
+        fd=os.open(heartbeat,os.O_CREAT|os.O_WRONLY,0o600);os.close(fd)
+        first=self.invoke()
+        self.assertEqual('deferred_to_worker',first['delivery']);self.assertTrue(first['queued'])
+        self.assertEqual([],self.requests)
+        os.utime(heartbeat,(0,0))  # a stale heartbeat: the hook sends itself again
+        second=self.invoke()
+        self.assertNotIn('delivery',second);self.assertTrue(second['delivered']);self.assertEqual(1,len(self.requests))
+
+    def test_worker_cycle_refreshes_heartbeat(self):
+        q=Queue(self.root/'capture-queue',self.scope)
+        bridge.IN_WORKER=True
+        try:
+            env={**self.env}
+            from unittest.mock import patch
+            with patch.dict(os.environ,env,clear=True):bridge.run('flush',quiet_idle=True)
+        finally:
+            bridge.IN_WORKER=False
+        self.assertTrue(bridge.worker_alive(q));q.close()
+
     def test_timeout_after_commit_replay_exact_after_restart(self):
         self.delay=bridge.POST_SOCKET_TIMEOUT+.4  # longer than the client waits
         first=self.invoke()

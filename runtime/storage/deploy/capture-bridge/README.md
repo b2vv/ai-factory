@@ -169,7 +169,11 @@ same batch identities with different payload is a visible conflict, not overwrit
 
 ### Recovery without another hook
 
-The hook makes at most one send attempt after enqueueing. Status emission has
+The hook makes at most one send attempt after enqueueing, and none while a supervised
+`--worker` for the same queue is alive: each worker cycle refreshes a private heartbeat
+file next to its queue, and a heartbeat younger than 180 seconds makes the hook only
+enqueue and return (`"delivery": "deferred_to_worker"`), so the end of a turn never waits
+for the server. Without a live worker the hook still sends once itself. Status emission has
 its own short deadline and refuses FIFO/symlink/nonprivate file targets. It does not spawn a
 background process. It is bounded by an 8-second whole-process alarm, 5-second
 network wall budget / 4-second socket timeout, SQLite-native busy wait capped at 1 second per statement and clamped to the remaining hook deadline, a 1MiB
