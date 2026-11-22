@@ -465,7 +465,7 @@ class Loopback(unittest.TestCase):
         q.db.execute('UPDATE items SET next=0');q.close()
 
     def test_timeout_after_commit_replay_exact_after_restart(self):
-        self.delay=1.4
+        self.delay=bridge.POST_SOCKET_TIMEOUT+.4  # longer than the client waits
         first=self.invoke()
         self.assertFalse(first['delivered']);self.assertTrue(first['queued'])
         self.assertEqual(len(self.stored),2)

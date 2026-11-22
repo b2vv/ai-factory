@@ -141,28 +141,31 @@ def to_line(r):
     }, ensure_ascii=False)
 
 
+TRANSCRIPT_TAIL = 32 * 1024 * 1024
+POST_SOCKET_TIMEOUT = 4   # the server can pause for a couple of seconds behind its own lock
+POST_DEADLINE = 5         # read retries (2.4 s) + this stay inside the 8-second process alarm
+
+
 def read_transcript(path):
     """Return (objs, skipped_unparseable). Independent JSON objects per line; a partial or
     foreign last line is simply not a conversation record and is counted, never fatal."""
     objs, skipped = [], 0
-    if os.stat(path).st_size > 32 * 1024 * 1024:
-        raise ValueError("transcript exceeds 32MiB")
-    consumed = 0
-    with open(path, "r", encoding="utf-8", errors="replace") as f:
-        while True:
-            line = f.readline(32 * 1024 * 1024 + 1)
-            if not line:
-                break
-            consumed += len(line.encode("utf-8"))
-            if consumed > 32 * 1024 * 1024:
-                raise ValueError("transcript exceeds 32MiB")
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                objs.append(json.loads(line))
-            except Exception:
-                skipped += 1
+    # A long session's transcript outgrows the bound, but the turn to capture is at its end:
+    # read only the last TRANSCRIPT_TAIL bytes and drop the first, partial line.
+    size = os.stat(path).st_size
+    with open(path, "rb") as f:
+        if size > TRANSCRIPT_TAIL:
+            f.seek(size - TRANSCRIPT_TAIL)
+            f.readline()
+        data = f.read(TRANSCRIPT_TAIL)
+    for line in data.decode("utf-8", errors="replace").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            objs.append(json.loads(line))
+        except Exception:
+            skipped += 1
     return objs, skipped
 
 
@@ -230,8 +233,8 @@ def post_body(endpoint, project, source, headers, body, expected, opener=None):
         req.add_header(name, value)
     opener = opener or urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect()).open
     try:
-        with deadline(2):
-            with opener(req, timeout=1) as resp:
+        with deadline(POST_DEADLINE):
+            with opener(req, timeout=POST_SOCKET_TIMEOUT) as resp:
                 raw = resp.read(65537)
                 if len(raw) > 65536:
                     return {"error":"invalid acknowledgement"}
@@ -252,7 +255,8 @@ def post_body(endpoint, project, source, headers, body, expected, opener=None):
                 "delivered":True, "redactions":len(payload.get("redactions") or [])}
     except urllib.error.HTTPError as e:
         return {"http_status":e.code, "error":"http %d" % e.code}
-    except Exception as e:
+    except (Exception, DeadlineExpired) as e:
+        # A spent wall budget is a failed attempt to record, not a reason to drop the queue row's state.
         return {"error":"post failed: %s" % type(e).__name__}
 
 

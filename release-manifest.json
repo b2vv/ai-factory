@@ -1190,12 +1190,12 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/README.md",
-      "sha256": "1a7c2c391d4a437ef8c6d6d7d8e36986306e94d986e048fffdd0dca75b501bce",
+      "sha256": "d4041642f5362a4445a32adb151491a30e5a1561d95ae06cb879144215384cc9",
       "component": "capture-bridge"
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/capture_bridge.py",
-      "sha256": "93e3d16a40c27533eda51ca38c72fc9c1b9cbcfeef6082e8439b085e404fce25",
+      "sha256": "f353ecbc0ed65d6e2d62132bab07cc635b0366ede65a7b9166fec728606f083f",
       "component": "capture-bridge"
     },
     {
@@ -1220,12 +1220,12 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/test_capture_bridge.py",
-      "sha256": "4ed7f3fd63840927318568b4574a6dac585f3e521d115236dc2d5097d5879c75",
+      "sha256": "d98b1968bcabb2cae6c019a2809a829bad2fc7e0c5ce45fb3ea1ff11a0ff084f",
       "component": "capture-bridge"
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/test_capture_queue.py",
-      "sha256": "071507bd80966b9c8fa572dd9a13dbbcc7c99eb7c0abf14c8853e8def2df6a3c",
+      "sha256": "94773898f0452749e9af6f609750162cfb082dd6d6b52ee02db8f15a26758ec3",
       "component": "capture-bridge"
     },
     {

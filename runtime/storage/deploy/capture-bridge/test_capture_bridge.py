@@ -96,6 +96,38 @@ p3, a3, _ = cb.select_turn(objs3, "S")
 check("turn still selected despite truncated trailing line",
       p3 is not None and a3 is not None and a3["uuid"] == "A1")
 
+# --- a transcript longer than the bound is read from its tail ---------------------------
+old_tail = cb.TRANSCRIPT_TAIL
+cb.TRANSCRIPT_TAIL = 2048
+try:
+    with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False) as tf:
+        for n in range(200):
+            tf.write(json.dumps({"type": "user", "sessionId": "S", "uuid": "old%d" % n,
+                                 "message": {"role": "user", "content": "early turn %d" % n}}) + "\n")
+        tf.write(json.dumps({"type": "user", "sessionId": "S", "uuid": "U9",
+                             "message": {"role": "user", "content": "last prompt"}}) + "\n")
+        tf.write(json.dumps({"type": "assistant", "sessionId": "S", "uuid": "A9", "parentUuid": "U9",
+                             "message": {"role": "assistant", "content": [{"type": "text", "text": "last answer"}]}}) + "\n")
+        long_path = tf.name
+    objs4, skipped4 = cb.read_transcript(long_path)
+    os.unlink(long_path)
+    p4, a4, _ = cb.select_turn(objs4, "S")
+    check("long transcript: only the tail is read", 0 < len(objs4) < 202 and skipped4 == 0)
+    check("long transcript: the last turn is still selected",
+          p4 is not None and a4 is not None and p4["uuid"] == "U9" and a4["uuid"] == "A9")
+finally:
+    cb.TRANSCRIPT_TAIL = old_tail
+
+# --- the network budget tolerates a short server pause and a spent budget is an error ----
+check("post budget fits the hook alarm", cb.POST_SOCKET_TIMEOUT < cb.POST_DEADLINE and 2.4 + cb.POST_DEADLINE < 8)
+seen = {}
+def slow_opener(req, timeout):
+    seen["timeout"] = timeout
+    raise cb.DeadlineExpired("deadline")
+r5 = cb.post_body("http://127.0.0.1:8780", "p", "s", {}, b"{}\n", 1, opener=slow_opener)
+check("post uses the socket timeout constant", seen.get("timeout") == cb.POST_SOCKET_TIMEOUT)
+check("a spent post budget is reported, not raised", r5 == {"error": "post failed: DeadlineExpired"})
+
 print()
 if failures:
     print("FAILURES: %d -> %s" % (len(failures), failures)); sys.exit(1)
