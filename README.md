@@ -125,7 +125,7 @@ See [runtime helpers](runtime/README.md) for exact entry points and limits.
 | Set up independent review | [Review handoff](ai-factory/review-handoff.md) |
 | Install, update or roll back the kit | [Installer contract](docs/portability-design.md) and [managed connections](docs/managed-kit-connections.md) |
 | Run optional security checks | [Scanner contract and limits](runtime/scanners/README.md) |
-| Trace history and licensing | [Provenance and notices](PROVENANCE.md), [release notes](docs/release-0.8.0-alpha.1.md) and [layout migration](docs/migration-0.4.md) |
+| Trace history and licensing | [Provenance and notices](PROVENANCE.md), release notes ([0.9.0](docs/release-0.9.0.md), [0.8.0-alpha.1](docs/release-0.8.0-alpha.1.md)) and [layout migration](docs/migration-0.4.md) |
 
 ## Scope and requirements
 

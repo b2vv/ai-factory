@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "version": "0.8.0-alpha.1+native-handoff.1",
+  "version": "0.9.0",
   "status": "ALPHA_EXPERIMENTAL_UNTAGGED_CODEX_EVENT_SUBSET",
   "license_status": "NO_IDENTIFIED_BLOCKER_FOR_USER_DIRECTED_PRIVATE_STORAGE; historical origin limitations in PROVENANCE.md",
   "platform": "POSIX/macOS; Python >=3.9; Windows unsupported",
@@ -160,7 +160,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "a64dbb695cdbc42c8f95b3f685e6fd17d6b9624d8a850bd1f4e112e5eae083cd",
+      "sha256": "7ce1f743694f10245a6d58c1dbf9cbc342c68a9123fe64bd23ff9c60a1526395",
       "component": "core"
     },
     {
@@ -372,6 +372,11 @@
       "path": "docs/release-0.8.0-alpha.1.md",
       "component": "core",
       "sha256": "84db3689283882ed60ea6a246dc38558ab1efdcfeb8998f357f0a356f1e9aa63"
+    },
+    {
+      "path": "docs/release-0.9.0.md",
+      "sha256": "c2f25f2db558ebff2318642799b3219f52081b70be05fa2e744d6cdd90330e0c",
+      "component": "core"
     },
     {
       "path": "docs/session-size-docker.md",
