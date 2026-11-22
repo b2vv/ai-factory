@@ -287,3 +287,46 @@ func TestShareTunnelHost(t *testing.T) {
 		})
 	}
 }
+
+func TestSharePasswordsAndAttemptLimit(t *testing.T) {
+	const host = "dash.share.example.test"
+	useProjects(t, projectConfig{ID: "project-a", Name: "Project A", Root: "/srv/project-a"})
+	short, tooShort := "Test-pw8", "Test-p7" // fixtures only
+	accounts := map[string]shareAccount{"colleague": {digest: sha256.Sum256([]byte(short)), access: shareStatus},
+		"seven": {digest: sha256.Sum256([]byte(tooShort)), access: shareStatus}}
+	now := time.Unix(1000, 0)
+	shareNow = func() time.Time { return now }
+	t.Cleanup(func() { shareNow = time.Now })
+	read := func() snapshot { return snapshot{CheckedAt: time.Unix(0, 0)} }
+	handler := sharedDashboard(host, accounts, nil, read)
+	get := func(user, password string) int {
+		req := httptest.NewRequest("GET", "http://"+host+"/api/status", nil)
+		if user != "" {
+			req.SetBasicAuth(user, password)
+		}
+		rec := httptest.NewRecorder()
+		handler.ServeHTTP(rec, req)
+		return rec.Code
+	}
+	if c := get("colleague", short); c != 200 {
+		t.Fatalf("8-character password: got %d", c)
+	}
+	if c := get("seven", tooShort); c != 401 {
+		t.Fatalf("7-character password must be refused even with a matching digest: got %d", c)
+	}
+	for i := 1; i < shareFailureLimit; i++ {
+		if c := get("colleague", "wrong-password"); c != 401 {
+			t.Fatalf("wrong attempt %d: got %d", i, c)
+		}
+	}
+	if c := get("", ""); c != 401 {
+		t.Fatalf("a request without credentials is a login challenge, not an attempt: got %d", c)
+	}
+	if c := get("colleague", short); c != 429 {
+		t.Fatalf("after %d wrong attempts even the right password waits: got %d", shareFailureLimit, c)
+	}
+	now = now.Add(shareFailureWindow)
+	if c := get("colleague", short); c != 200 {
+		t.Fatalf("after the window the right password works again: got %d", c)
+	}
+}

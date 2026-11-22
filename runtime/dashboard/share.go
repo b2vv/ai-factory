@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -34,6 +35,38 @@ func validShareHost(host, domain string) bool {
 }
 
 var shareTokenPattern = regexp.MustCompile(`^[a-f0-9]{64}$`)
+
+// sharePasswordPattern accepts any printable ASCII password of 8..256 characters.
+// Wrong attempts are rate-limited per listener (shareFailureLimit per shareFailureWindow).
+var sharePasswordPattern = regexp.MustCompile(`^[\x21-\x7e]{8,256}$`)
+
+const shareFailureLimit = 20
+const shareFailureWindow = time.Minute
+
+// shareFailures counts presented-but-wrong logins in a sliding window, for the whole listener.
+type shareFailures struct {
+	mu    sync.Mutex
+	times []time.Time
+}
+
+func (f *shareFailures) blocked(now time.Time) bool {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	kept := f.times[:0]
+	for _, t := range f.times {
+		if now.Sub(t) < shareFailureWindow {
+			kept = append(kept, t)
+		}
+	}
+	f.times = kept
+	return len(f.times) >= shareFailureLimit
+}
+
+func (f *shareFailures) add(now time.Time) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.times = append(f.times, now)
+}
 
 type shareAccess uint8
 
@@ -149,6 +182,9 @@ var sharedPage = template.Must(template.New("shared-dashboard").Parse(`<!doctype
 // loopback authority of this listener, exactly one X-Forwarded-Host equal to the share
 // host and exactly one X-Forwarded-Proto of https. Anything else is passed on unchanged,
 // so the exact-host check below still refuses it. Login is still required.
+// shareNow is the limiter's clock; tests replace it.
+var shareNow = time.Now
+
 func shareTunnelHost(host string, port int, next http.Handler) http.Handler {
 	local := map[string]bool{fmt.Sprintf("localhost:%d", port): true, fmt.Sprintf("127.0.0.1:%d", port): true}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -162,6 +198,7 @@ func shareTunnelHost(host string, port int, next http.Handler) http.Handler {
 }
 
 func sharedDashboard(host string, accounts map[string]shareAccount, owner http.Handler, read func() snapshot) http.Handler {
+	failures := &shareFailures{}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		dashboardHeaders(w)
 		w.Header().Set("Vary", "Authorization")
@@ -175,10 +212,18 @@ func sharedDashboard(host string, accounts map[string]shareAccount, owner http.H
 			return
 		}
 		user, password, ok := r.BasicAuth()
+		if ok && failures.blocked(shareNow()) {
+			w.Header().Set("Retry-After", "60")
+			http.Error(w, "Too many attempts", http.StatusTooManyRequests)
+			return
+		}
 		candidate := sha256.Sum256([]byte(password))
 		account := accounts[user]
 		match := subtle.ConstantTimeCompare(candidate[:], account.digest[:])
-		if !ok || len(r.Header.Values("Authorization")) != 1 || !shareTokenPattern.MatchString(password) || match != 1 || account.access == shareDenied {
+		if !ok || len(r.Header.Values("Authorization")) != 1 || !sharePasswordPattern.MatchString(password) || match != 1 || account.access == shareDenied {
+			if ok {
+				failures.add(shareNow())
+			}
 			w.Header().Set("WWW-Authenticate", `Basic realm="Factory dashboard"`)
 			http.Error(w, "Authentication required", http.StatusUnauthorized)
 			return

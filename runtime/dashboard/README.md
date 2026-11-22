@@ -103,9 +103,11 @@ and no comments or blank lines. `full` grants the same view as port 8732;
 logins have no access. Role names are lowercase and logins are case-sensitive.
 Delete any unused example row.
 
-Generate a different random 32-byte password (64 lowercase hex digits) for
-each login. Hash the password's 64-character text without a trailing newline
-and put just the lowercase digest in the file. Keep passwords in an approved
+Use a different password for each login: 8 to 256 printable ASCII characters
+without spaces (a random 32-byte, 64-hex-digit password is recommended). Hash the
+password's text without a trailing newline and put just the lowercase SHA-256 digest
+in the file. After 20 wrong logins within a minute the share listener answers 429 to
+every login attempt until the minute has passed. Keep passwords in an approved
 password manager, never in a URL, shell argument, repository, or logs. The
 example placeholders are deliberately invalid.
 
