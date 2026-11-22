@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!-- EXAMPLE ONLY. Never load verbatim. Substitute paths/UUID/source/label per scope.
-     No auth secret belongs here. Supervisor installation is separately authorized. -->
+     No auth secret belongs here. Supervisor installation is separately authorized; the kit
+     installs one only through `kit.py project install` with a host archive configuration. -->
 <plist version="1.0"><dict>
   <key>Label</key><string>local.ai-factory.capture.REPLACE_PROJECT</string>
   <key>ProgramArguments</key><array>

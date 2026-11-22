@@ -198,7 +198,9 @@ current server consent/retention. **Never** use it as an automatic 403 loop.
 A worker must run under an explicitly configured supervisor to recover after no
 further hooks, logout, process crash or a Mac restart. `worker.launchagent.example.plist`
 is a non-installed template: substitute explicit paths and project environment,
-review it, and obtain deployment authorization. One supervisor per route/principal.
+review it, and obtain deployment authorization. `kit.py project install` with a host archive
+configuration generates and starts an equivalent LaunchAgent for each new project it enrolls,
+under the owner's authority (docs/managed-capture.md); nothing else installs one. One supervisor per route/principal.
 A hard wall deadline exits the worker with the durable lease retained; the
 supervisor must restart it, after which the lease expires before replay.
 It needs the same private credential file, not a copied secret. Keep the supervisor
@@ -219,7 +221,7 @@ route isolation, malformed ACK and recovery by a separately started worker.
 patterns; it explicitly skips if Go or server source is absent. These suites are
 also included in `tools/run_tests.py` (non-storage-only mode).
 
-This change does not install a supervisor, change live kit/hooks, migrate old missed
+The bridge itself does not install a supervisor, change live kit/hooks, migrate old missed
 turns, fix server latency or change Codex capture. Codex's separate v2 catcher still
 uses single-POST delivery and needs its own scoped queue integration.
 

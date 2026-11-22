@@ -291,12 +291,12 @@
     {
       "path": "docs/managed-capture.md",
       "component": "core",
-      "sha256": "22b2c488fe2c983945496b2e26d0ed6570be90b5219691bd6db9d5dca5bfef61"
+      "sha256": "0569efb26dcec6d2f14166c438d58fa90ee0c369dc1538d1ba222d72648137f8"
     },
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "913f9ca9e79cdb1cdd5870dfac1ae78da574d1735815825839887f699d8c25b7"
+      "sha256": "576550bf73a434f39081600921051cd3d90ee606ad4d3746271627e84e3109e6"
     },
     {
       "path": "docs/managed-native-handoff.md",
@@ -1190,7 +1190,7 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/README.md",
-      "sha256": "119b3628b3686b3829f46f99d5731fe428d37d2217f41423a0f759e77a46eaf9",
+      "sha256": "d0bc4c03e6a0ae8b2b589d3dfffaa0bd64949936a90cbc89f6b3ba3ce1c18dad",
       "component": "capture-bridge"
     },
     {
@@ -1240,7 +1240,7 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/worker.launchagent.example.plist",
-      "sha256": "2061286780a77288bbb0c8eb016e2d6bd4c4ed931262cd0c15a55f5eac641f84",
+      "sha256": "2d10d881ebc62e154981e746c93aefa85946ed8f312c861b7709ca9c44f44a09",
       "component": "capture-bridge"
     },
     {
@@ -1326,7 +1326,7 @@
     {
       "path": "runtime/storage/deploy/search-client/README.md",
       "component": "search-client",
-      "sha256": "b4dc93db4e33a3cabc1478219972e98452ac284f74977933171979d7f4b6c369"
+      "sha256": "29ab555f515ed251d7a6a9b342d66707de570a929ed9a8821d1612a878d7d475"
     },
     {
       "path": "runtime/storage/deploy/search-client/archive_search.py",
@@ -4429,8 +4429,13 @@
       "component": "core"
     },
     {
+      "path": "tests/projects/test_project_archive.py",
+      "sha256": "b7e19417f3dde57746daf887bd50d62de09c5089e0bb87b106a809d4e619c8a1",
+      "component": "core"
+    },
+    {
       "path": "tests/projects/test_projects.py",
-      "sha256": "09f834455733240b2e961693ba16caab0f7dd1ac1ce59765b13796e7b4e7f920",
+      "sha256": "b6abd84dab9336777cdc72846d90d7f0d3fb244c4a2e59ff8a85162f4608dc04",
       "component": "core"
     },
     {
@@ -4629,8 +4634,13 @@
       "component": "core"
     },
     {
+      "path": "tools/project_archive.py",
+      "sha256": "5013ccd913b48e91c4f8c209e05b4f6f36c49256163e1bde24020b1d6ed504c1",
+      "component": "core"
+    },
+    {
       "path": "tools/projects.py",
-      "sha256": "6a2e555e888f0812f0112e8f63cb9a3d8195cb489bbb39eacea2ced868e61580",
+      "sha256": "9890c1287e7837aedc307b3e674592c88d8716c9eaf8446592016cc2b4cebc7c",
       "component": "core"
     },
     {

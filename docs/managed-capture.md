@@ -32,13 +32,31 @@ command below prints a plan; add `--apply` to write:
 - `kit.py project migrate --root <kit> [--include-root <root>]` builds the list once from the
   registered rows and any project-local capture hooks of the named roots. It writes only the
   list and stops unless the list regenerates the current mapping byte-for-byte.
-- `kit.py project install --root <kit> --project <root> --capture-credential <file> [--id <uuid>]`
-  connects the project (managed block, import, ignore rules), adds its list entry and its
-  mapping row. `--no-capture` lists it without capture. The credential file must already
-  exist; issuing archive grants on install is a later step.
+- `kit.py project archive --root <kit> --operator-secret-file <file> --capture-dir <dir>
+  --search-dir <dir> --search-routes <kit>/runtime/storage/deploy/search-client/search-routes.json
+  [--worker launchd --agents-dir <dir> --log-dir <dir> --python <python3>]` records, once per
+  host, where archive access for new projects comes from: paths only (0600), never a secret.
+  Without it, install behaves as below with `--capture-credential` or `--no-capture`.
+- `kit.py project install --root <kit> --project <root> [--id <uuid>]` with the archive
+  configured connects the project and issues its archive access under the operator's
+  authority: mints the archive project (an existing one only with an explicit `--id`), turns
+  on claude-code capture consent, issues a capture-only and a search-only agent grant
+  (`p-<id>-capture`, `p-<id>-search`), writes their credential files 0600 in the configured
+  directories, adds the search route alias (the project name) and a search contract
+  (`<kit>/.ai-factory-state/search-contracts/<id>.md`, pointed to from the managed block),
+  the mapping row and, on macOS, a LaunchAgent worker which it starts. A failure after a
+  grant was issued revokes it and restores every file. A rerun issues nothing: it checks each
+  recorded grant with its own files (`/v1/whoami`) and the worker; a missing worker is started,
+  a refused grant or a missing file stops with its name (remove and install again).
+  `--no-capture` issues only the search grant. `--capture-credential <file>` instead uses an
+  existing credential and issues nothing; the kit then does not manage that project's grants.
 - `kit.py project remove --root <kit> --project <root>` removes the managed block, the entry
-  and the mapping row; archive data, grants and credential files are kept.
-- `kit.py project list --root <kit>` prints entries and capabilities, never route paths.
+  and the mapping row. For kit-managed archive access it first revokes each recorded grant
+  (stopping before any change if one fails), stops the worker and deletes the plist, route
+  alias, search contract and credential files; archive data and consent are kept. Otherwise
+  archive data, grants and credential files are kept.
+- `kit.py project list --root <kit>` prints entries and capabilities (capture, search alias),
+  never route or credential paths.
 
 A write takes the kit lock, backs up every file it may change, writes the list last and
 restores the backup on failure; an interrupted write is restored by the next write command.
@@ -105,8 +123,8 @@ must refuse unknown edits. Retain queued records and delivery receipts on rollba
 
 The hook uses the existing bounded private durable queue. A timeout is ambiguous;
 workers retry identical frozen payloads, and a successful hook exit is not evidence
-of delivery. Existing project-scoped supervisors remain necessary for retry without
-new user turns and for login recovery. Do not put credentials in supervisor arguments
+of delivery. Project-scoped supervisors remain necessary for retry without new user turns
+and for login recovery; `project install` creates one only for kit-managed archive access. Do not put credentials in supervisor arguments
 or logs. A new dispatcher does not backfill previously missed conversations.
 
 Verify separately: package signatures, global registration, exact mappings, retired

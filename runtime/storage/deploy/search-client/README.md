@@ -12,6 +12,9 @@ non-runnable. Local configuration and credentials must stay outside this portabl
 source/package. After explicit installation, create the configuration through the
 normal authorized setup process, using only an existing verified search-only grant.
 A JSON file shape or a historical principal name does not prove current rights.
+`kit.py project install` with a host archive configuration writes a `split` route for each
+project it enrolls (alias = project name), from the search-only grant it has just issued,
+and `project remove` deletes it after revoking that grant.
 
 Each route has `project_id`, `principal_id`, `port`, and `credential_format`:
 

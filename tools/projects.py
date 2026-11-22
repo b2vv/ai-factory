@@ -6,8 +6,11 @@ Capture routing (the global hook's mapping file) is generated from it, so adding
 project is one standard command and never a registration-scope change. Read-only by default;
 every write needs --apply. A write takes the kit lock, backs up every file it may change, writes,
 writes the list last and clears its marker; an interrupted write is restored from that backup by
-the next write command. No secret values are read or printed; `list` prints no route paths.
-Archive grants (P6), groups (P2), the update report (P4) and kit moves (P10) are not done here.
+the next write command. No secret values are printed; `list` prints no route or credential paths.
+With an archive configuration (`project archive`), install also issues the project's archive
+access (grants, credential files, search route and contract, worker) under the operator's
+authority and remove revokes it; see tools/project_archive.py. Groups (P2), the update report
+(P4) and kit moves (P10) are not done here.
 """
 import argparse
 from contextlib import contextmanager, nullcontext, redirect_stdout
@@ -35,6 +38,7 @@ def _load(name, path):
 
 
 k = _load('_projects_kit', HERE / 'kit.py')
+A = _load('_projects_archive', HERE / 'project_archive.py')
 
 LIST = 'projects.json'
 MARKER = 'project-op-pending.json'
@@ -109,8 +113,12 @@ def validate(doc):
         raise Blocked('invalid project list')
     ids, roots, names = set(), set(), set()
     for e in doc['projects']:
-        if not isinstance(e, dict) or not ENTRY_KEYS <= set(e) <= ENTRY_KEYS | {'history'}:
+        if not isinstance(e, dict) or not ENTRY_KEYS <= set(e) <= ENTRY_KEYS | {'history', 'archive'}:
             raise Blocked('invalid project entry')
+        if 'archive' in e:
+            rec = A.check_record(e['archive'])
+            if ('capture' in rec['principals']) != (e['capabilities']['capture'].get('channel') == 'global'):
+                raise Blocked('archive record and capture capability disagree')
         canonical_uuid(e['id'])
         if not isinstance(e['name'], str) or not NAME.fullmatch(e['name']): raise Blocked('invalid project name')
         if not isinstance(e['root'], str) or not Path(e['root']).is_absolute(): raise Blocked('invalid project root')
@@ -196,8 +204,13 @@ def find(doc, root=None, ident=None):
 
 
 def public_entry(e):
-    return {key: e[key] for key in ('id', 'name', 'root', 'group', 'capabilities')} | (
-        {'history': e['history']} if 'history' in e else {})
+    """An entry without private paths: the archive record shows only as the search capability."""
+    out = json.loads(json.dumps({key: e[key] for key in ('id', 'name', 'root', 'group', 'capabilities')}))
+    rec = e.get('archive')
+    out['capabilities']['search'] = {'enabled': rec is not None, 'alias': rec['alias'] if rec else None}
+    if rec: out['archive'] = {'managed_by_kit': True, 'principals': sorted(rec['principals'].values()),
+                              'worker': rec['worker']}
+    return out | ({'history': e['history']} if 'history' in e else {})
 
 
 # --- one write: lock, backups, marker, writes, list last ---------------------------------
@@ -287,9 +300,10 @@ def cmd_list(root):
     return out
 
 
-def connect(root, project, apply):
+def connect(root, project, apply, contract=None):
     """Run the existing connect-project step in-process; returns its report."""
-    argv = ['--managed-root', str(root), '--project', str(project)] + (['--apply'] if apply else [])
+    argv = (['--managed-root', str(root), '--project', str(project)] + (['--apply'] if apply else [])
+            + (['--search-contract', str(contract)] if contract else []))
     buf = io.StringIO()
     with redirect_stdout(buf):
         code = connection().main(argv)
@@ -324,10 +338,22 @@ def capture_route(root, doc, name, args):
     return {'source_instance': source, 'credential_file': str(credential), 'queue_dir': str(queue), 'status_file': str(status)}
 
 
+def archive_surface(root, cfg, entry, route):
+    """Files the kit derives for an archive-managed entry: {path: bytes}. Credentials are not here."""
+    rec = entry['archive']
+    routes_path = Path(cfg['search_routes'])
+    out = {routes_path: A.routes_with(k.regular(routes_path), rec['alias'], A.search_route(cfg, entry['id'], rec)),
+           Path(rec['files']['search_contract']): A.contract_bytes(root, rec['alias'])}
+    if rec['worker']:
+        out[Path(rec['files']['plist'])] = A.plist_bytes(cfg, root, entry['id'], route, rec, entry['name'])
+    return out
+
+
 def install(root, args):
     project = checkout_root(args.project)
     busy(root)
     ctx = capture_context(root)
+    cfg = A.load_config(root, private_json)
     before = load(root)
     check_mapping(root, ctx, before)
     doc = json.loads(json.dumps(before or empty()))
@@ -346,8 +372,25 @@ def install(root, args):
         entry = {'id': ident, 'name': name, 'root': str(project), 'group': None,
                  'capabilities': {'capture': {'enabled': False, 'channel': None}}}
         doc['projects'].append(entry)
+    rec = entry.get('archive')
+    enroll = cfg is not None and new_entry and not args.capture_credential
+    if rec is not None:
+        if cfg is None: raise Blocked('this project has kit-managed archive access but the archive configuration is absent')
+        if args.capture_credential or (args.no_capture and 'capture' in rec['principals']):
+            raise Blocked('archive access is managed by the kit for this project; remove and install it again to change capture')
     capture = entry['capabilities']['capture']
-    if args.no_capture:
+    server = A.Server(cfg) if cfg is not None and (enroll or rec is not None) else None
+    if enroll:
+        with_capture = not args.no_capture
+        if with_capture and ctx is None: raise Blocked('global capture is not registered in this kit; pass --no-capture')
+        files, worker = A.plan_files(cfg, root, entry['id'], entry['name'], with_capture)
+        rec = entry['archive'] = A.new_record(entry['id'], entry['name'], files, worker, with_capture)
+        if with_capture:
+            ns = argparse.Namespace(capture_credential=files['capture_credential'], capture_queue=args.capture_queue,
+                                    capture_status=args.capture_status, source_instance=args.source_instance)
+            doc['routes'][entry['id']] = capture_route(root, doc, entry['name'], ns)
+            capture.update(enabled=True, channel='global')
+    elif args.no_capture:
         if capture['channel'] == 'project-local': raise Blocked('captured by a project-local hook; retire it separately')
         capture.update(enabled=False, channel=None); doc['routes'].pop(entry['id'], None)
     elif args.capture_credential:
@@ -359,32 +402,103 @@ def install(root, args):
             doc['routes'][entry['id']] = capture_route(root, doc, entry['name'], args)  # an existing route is kept as is
         capture.update(enabled=True, channel='global')
     elif new_entry and ctx is not None:
-        raise Blocked('capture needs --capture-credential (archive grants on install come later) or --no-capture')
+        raise Blocked('capture needs an archive configuration (`kit.py project archive`), --capture-credential or --no-capture')
     validate(doc)
     if ctx and mapping_rows(doc) != mapping_rows(before or empty()):
         dispatcher(root).validate_mapping({'schema': 1, 'projects': mapping_rows(doc)})
         route = doc['routes'].get(entry['id'])
-        if route: dispatcher(root).private_file(route['credential_file'], limit=64 * 1024)
-    report = connect(root, project, False)
+        if route and not enroll: dispatcher(root).private_file(route['credential_file'], limit=64 * 1024)
+    surface, bootstrap_needed = {}, False
+    if rec is not None:
+        server.health()
+        if enroll:
+            taken = [role for role, path in rec['files'].items() if os.path.lexists(path)]
+            if taken: raise Blocked('files for this project already exist: ' + ', '.join(sorted(taken)))
+            if rec['alias'] in A.routes_doc(k.regular(Path(cfg['search_routes'])))['projects']:
+                raise Blocked(f"search route alias {rec['alias']} already exists")
+            if rec['worker'] and A.worker_loaded(rec['worker']): raise Blocked(f"worker {rec['worker']} is already loaded")
+        else:
+            problems = A.probe(server, entry['id'], rec)
+            if problems: raise Blocked('; '.join(problems) + ' — no grant is re-issued automatically; remove and install again')
+            bootstrap_needed = bool(rec['worker']) and not A.worker_loaded(rec['worker'])
+        surface = archive_surface(root, cfg, entry, doc['routes'].get(entry['id']))
+    contract = rec['files']['search_contract'] if rec is not None and not enroll else None
+    report = connect(root, project, False, contract)
     files = [project / n for n in ('AGENTS.local.md', 'CLAUDE.local.md', '.gitignore')]
     new_list = encode(doc)
-    unchanged = (k.regular(root / k.STATE / LIST) == new_list
+    unchanged = (k.regular(root / k.STATE / LIST) == new_list and not bootstrap_needed
+                 and all(k.regular(p) == data for p, data in surface.items())
                  and all(a['action'] in ('noop', 'present') for a in report['actions']))
     out = {'status': 'NOOP' if unchanged else 'PLANNED', 'project': public_entry(entry),
-           'connection': report['actions'], 'capture_rows': len(mapping_rows(doc)),
-           'not_done': ['archive grants (P6)', 'search contract file (P6)']}
+           'connection': report['actions'], 'capture_rows': len(mapping_rows(doc))}
+    if enroll:
+        out['archive'] = {'authority': 'uses the operator secret file named in the archive configuration',
+                          'will_issue': sorted(rec['principals'].values()), 'worker': rec['worker'],
+                          'files': sorted(rec['files']),
+                          'search_contract': 'written on apply and pointed to from the managed block'}
+    elif rec is not None:
+        out['archive'] = {'grants': 'accepted by the server', 'worker': (
+            'bootstrap needed' if bootstrap_needed else ('loaded' if rec['worker'] else 'none'))}
+    elif cfg is None:
+        out['not_done'] = ['archive access: no archive configuration (`kit.py project archive`)']
+    if cfg is not None and rec is not None and cfg['worker']['kind'] == 'none' and 'capture' in rec['principals']:
+        out['supervise'] = 'no worker is installed on this OS: supervise `capture_bridge.py --worker` yourself'
     if unchanged or not args.apply:
         if not unchanged: out['status'] = 'PLANNED (dry-run; pass --apply to write)'
         return out
-    paths = files + ([ctx['mapping']] if ctx else []) + [root / k.STATE / LIST]
+    paths = files + list(surface) + ([ctx['mapping']] if ctx else []) + [root / k.STATE / LIST]
+    if enroll: paths = [Path(rec['files'][r]) for r in ('capture_credential', 'search_secret', 'search_epoch')
+                        if r in rec['files']] + paths
     with operation(root, ctx) as restored:
         if load(root) != before: raise Blocked('project list changed while planning')
         check_mapping(root, ctx, before)
-        steps = [('connect', lambda: connect(root, project, True))]
+        steps = [('surface', lambda: [guarded(p, data) for p, data in surface.items()]),
+                 ('connect', lambda: connect(root, project, True, rec['files']['search_contract'] if rec else None))]
         if ctx: steps.append(('mapping', lambda: guarded(ctx['mapping'], mapping_bytes(doc))))
         steps.append(('list', lambda: guarded(root / k.STATE / LIST, new_list)))
-        op = commit(root, 'install', paths, steps)
+        if enroll:
+            op, minted = enroll_apply(root, server, args, entry, rec, paths, steps)
+            out['archive']['project'] = minted
+        else:
+            op = commit(root, 'install', paths, steps)
+    if rec is not None and rec['worker'] and (enroll or bootstrap_needed):
+        out['archive']['worker'] = ('started' if A.bootstrap(rec['files']['plist'])
+                                    else 'bootstrap failed; files are kept: rerun install to retry')
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
+
+
+def enroll_apply(root, server, args, entry, rec, paths, steps):
+    """Server side first (project, consent, grants), then the files in one guarded write.
+    Any failure after a grant was issued revokes the issued grants; the file write restores itself."""
+    with_capture = 'capture' in rec['principals']
+    for role, path in rec['files'].items():
+        if os.path.lexists(path): raise Blocked(f'{role} file appeared while planning')
+    minted = server.mint(entry['id'], entry['name'], bool(args.id))
+    issued = []
+    try:
+        if with_capture: server.consent(entry['id'])
+        writes = []
+        if with_capture:
+            secret = A.new_secret(); principal = rec['principals']['capture']
+            epoch = server.grant(principal, entry['id'], 'capture', secret); issued.append(principal)
+            writes.append((rec['files']['capture_credential'], A.credential_bytes(principal, epoch, secret)))
+        secret = A.new_secret(); principal = rec['principals']['search']
+        epoch = server.grant(principal, entry['id'], 'search', secret); issued.append(principal)
+        writes += [(rec['files']['search_secret'], (secret + '\n').encode()),
+                   (rec['files']['search_epoch'], f'{epoch}\n'.encode())]
+        del secret
+        creds = ('credentials', lambda: [guarded(Path(p), data) for p, data in writes])
+        op = commit(root, 'install', paths, [creds] + steps)
+    except Exception as exc:
+        failed = []
+        for principal in issued:
+            try: server.revoke(principal)
+            except Exception: failed.append(principal)
+        note = f'archive project {entry["id"]} stays ({minted}, empty unless it was existing)'
+        if failed: note += '; STILL LIVE, revoke by hand: ' + ', '.join(failed)
+        elif issued: note += '; issued grants were revoked'
+        raise Blocked(f'{exc}; files restored; {note}') from exc
+    return op, minted
 
 
 def strip_block(text, begin, end):
@@ -410,6 +524,9 @@ def remove(root, args):
     doc['projects'] = [e for e in doc['projects'] if e['id'] != entry['id']]
     doc['routes'].pop(entry['id'], None)
     validate(doc)
+    rec = entry.get('archive')
+    cfg = A.load_config(root, private_json) if rec else None
+    if rec and cfg is None: raise Blocked('this project has kit-managed archive access but the archive configuration is absent')
     conn = connection()
     project = Path(entry['root'])
     edits = {}
@@ -421,10 +538,26 @@ def remove(root, args):
             text = raw.decode('utf-8'); conn.validate_markers(text)
             new = strip_block(text, conn.BEGIN, conn.END)
             if new != text: edits[path] = None if new is None else new.encode('utf-8')
+    credentials = []
+    if rec:
+        routes_path = Path(cfg['search_routes'])
+        routes_raw = k.regular(routes_path)
+        if routes_raw is not None and rec['alias'] in A.routes_doc(routes_raw)['projects']:
+            edits[routes_path] = A.routes_with(routes_raw, rec['alias'], None)
+        for role in ('search_contract', 'plist'):
+            path = Path(rec['files'][role]) if role in rec['files'] else None
+            if path and k.regular(path) is not None: edits[path] = None
+        credentials = [rec['files'][r] for r in ('capture_credential', 'search_secret', 'search_epoch') if r in rec['files']]
     out = {'status': 'PLANNED (dry-run; pass --apply to write)', 'project': public_entry(entry),
-           'files': {str(p): ('delete' if d is None else 'remove managed block') for p, d in edits.items()},
-           'capture_rows': len(mapping_rows(doc)),
-           'kept': ['.gitignore entries', 'archive data, grants and credential files (revoked in P6)']}
+           'files': {str(p): ('delete' if d is None else 'remove managed block' if p.name.endswith('.md') and p.parent == project
+                              else 'remove route alias' if d is not None else 'delete') for p, d in edits.items()},
+           'capture_rows': len(mapping_rows(doc))}
+    if rec:
+        out['archive'] = {'revoke': sorted(rec['principals'].values()), 'worker': rec['worker'],
+                          'delete_credentials': len(credentials)}
+        out['kept'] = ['.gitignore entries', 'archive data and capture consent']
+    else:
+        out['kept'] = ['.gitignore entries', 'archive data, grants and credential files (not managed by the kit for this project)']
     if entry['capabilities']['capture']['channel'] == 'project-local':
         out['kept'].append('project-local capture hook (retire it separately)')
     if not args.apply: return out
@@ -432,10 +565,50 @@ def remove(root, args):
     with operation(root, ctx) as restored:
         if load(root) != before: raise Blocked('project list changed while planning')
         check_mapping(root, ctx, before)
+        if rec:
+            server = A.Server(cfg)
+            server.health()
+            revoked = []
+            for principal in sorted(rec['principals'].values()):
+                try: server.revoke(principal)
+                except ValueError as exc:
+                    raise Blocked(f'{exc}; nothing else changed' + (f"; already revoked: {', '.join(revoked)}" if revoked else '')) from exc
+                revoked.append(principal)
+            stranded = 'revoked but not deleted credential files: ' + ', '.join(credentials)
+            if rec['worker'] and not A.bootout(rec['worker']):
+                raise Blocked(f"stopping worker {rec['worker']} failed; grants are revoked; {stranded}")
         steps = [('files', lambda: [guarded(p, d) for p, d in edits.items()])]
         if ctx: steps.append(('mapping', lambda: guarded(ctx['mapping'], mapping_bytes(doc))))
         steps.append(('list', lambda: guarded(root / k.STATE / LIST, encode(doc))))
-        op = commit(root, 'remove', paths, steps)
+        try:
+            op = commit(root, 'remove', paths, steps)
+        except Exception as exc:
+            if rec: raise Blocked(f'{exc}; files restored; grants are revoked; {stranded}') from exc
+            raise
+        # Credentials of revoked grants are deleted last and never copied into a backup.
+        left = []
+        for path in credentials:
+            try:
+                if os.path.lexists(path): os.unlink(path)
+            except OSError:
+                left.append(path)
+        if left: out['stranded'] = 'revoked but not deleted credential files: ' + ', '.join(left)
+    return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
+
+
+def archive(root, args):
+    """Write the archive configuration: paths only, never a secret."""
+    cfg = A.build_config(root, args)
+    path = root / k.STATE / A.CONFIG
+    data = k.encode(cfg)
+    out = {'status': 'NOOP' if k.regular(path) == data else 'PLANNED (dry-run; pass --apply to write)',
+           'config': str(path), 'worker': cfg['worker']['kind'],
+           'effect': 'later `project install` runs issue archive grants with the operator secret file named here'}
+    if cfg['worker']['kind'] == 'none':
+        out['supervise'] = 'no worker will be installed: supervise `capture_bridge.py --worker` yourself'
+    if out['status'] == 'NOOP' or not args.apply: return out
+    with operation(root, None) as restored:
+        op = commit(root, 'archive', [path], [('config', lambda: guarded(path, data))])
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
 
 
@@ -535,7 +708,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='kit.py project', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
-    for name in ('list', 'install', 'remove', 'migrate'):
+    for name in ('list', 'install', 'remove', 'migrate', 'archive'):
         p = sub.add_parser(name); p.add_argument('--root', required=True, help='installed kit root')
         if name != 'list': p.add_argument('--apply', action='store_true', help='write (default: dry-run plan)')
         if name == 'install':
@@ -548,6 +721,15 @@ def main(argv=None):
         if name == 'remove':
             w = p.add_mutually_exclusive_group(required=True)
             w.add_argument('--project'); w.add_argument('--id')
+        if name == 'archive':
+            p.add_argument('--endpoint', help=f'loopback archive endpoint (default {A.ENDPOINT})')
+            p.add_argument('--operator-secret-file', required=True, help='private operator secret file (read by install/remove only)')
+            p.add_argument('--capture-dir', required=True, help='private directory for capture credential files')
+            p.add_argument('--search-dir', required=True, help='private directory for search credential files')
+            p.add_argument('--search-routes', required=True, help='search-routes.json next to the installed search client')
+            p.add_argument('--worker', choices=('launchd', 'none'), help='default: launchd on macOS, else none')
+            p.add_argument('--agents-dir', help='LaunchAgents directory'); p.add_argument('--log-dir', help='private worker log directory')
+            p.add_argument('--python', help='absolute python3 for the worker')
         if name == 'migrate':
             p.add_argument('--include-root', action='append', default=[],
                            help='another project root to inventory (for example one captured by its own hook)')
@@ -562,7 +744,7 @@ def main(argv=None):
             ctx = capture_context(root)
             with k.lock(root), (k.lock(ctx['registration_root']) if ctx else nullcontext()):
                 restored = restore(root)
-        out = {'list': cmd_list, 'install': install, 'remove': remove, 'migrate': migrate}[a.command](
+        out = {'list': cmd_list, 'install': install, 'remove': remove, 'migrate': migrate, 'archive': archive}[a.command](
             *((root,) if a.command == 'list' else (root, a)))
         if restored: out['restored_first'] = restored
     except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as exc:

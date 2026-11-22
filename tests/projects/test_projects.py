@@ -99,7 +99,8 @@ class CleanMachine(Base):
         self.assertEqual(0o600, self.list_path.stat().st_mode & 0o777)
         listed = self.ok('list')['projects']
         self.assertEqual([{'id': applied['project']['id'], 'name': 'alpha', 'root': str(project), 'group': None,
-                           'capabilities': {'capture': {'enabled': False, 'channel': None}}}], listed)
+                           'capabilities': {'capture': {'enabled': False, 'channel': None},
+                                        'search': {'enabled': False, 'alias': None}}}], listed)
         before = self.snapshot(self.list_path, project / 'AGENTS.local.md')
         self.assertEqual('NOOP', self.ok('install', '--project', str(project), '--apply')['status'])
         self.assertEqual(before, self.snapshot(self.list_path, project / 'AGENTS.local.md'))

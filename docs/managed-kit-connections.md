@@ -150,6 +150,10 @@ Keep exact Git-root routing and existing per-project capture credentials/queues;
 replace them with an operator credential or infer enrollment from a directory prefix.
 Add or remove a captured project with `kit.py project install|remove`, which keep the
 kit's one project list and the mapping together (see "Adding or removing a project" there).
+With a host archive configuration (`kit.py project archive`), install also issues the
+project's separate capture-only and search-only grants and their files under the operator's
+authority, and remove revokes them; the operator secret itself is never used for search or
+capture and never leaves its file except as the loopback operator header.
 
 ## Exact legacy instruction migration in normal update
 
