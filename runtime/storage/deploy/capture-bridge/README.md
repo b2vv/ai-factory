@@ -173,7 +173,7 @@ The hook makes at most one send attempt after enqueueing. Status emission has
 its own short deadline and refuses FIFO/symlink/nonprivate file targets. It does not spawn a
 background process. It is bounded by an 8-second whole-process alarm, 5-second
 network wall budget / 4-second socket timeout, SQLite-native busy wait capped at 1 second per statement and clamped to the remaining hook deadline, a 1MiB
-hook input limit, the last 32MiB of the transcript (a longer transcript is read from its tail, where the turn to capture is) and clamped read retries. It always exits 0, but status
+hook input limit (the supervised `--worker` waits longer: 40-second socket timeout inside a 50-second cycle), the last 32MiB of the transcript (a longer transcript is read from its tail, where the turn to capture is) and clamped read retries. It always exits 0, but status
 errors must not be treated as delivery. These are POSIX process bounds, not a
 real-time guarantee against a hung kernel/filesystem. Durable acceptance can occur
 after the client deadline, so increasing timeout is not the correctness fix.

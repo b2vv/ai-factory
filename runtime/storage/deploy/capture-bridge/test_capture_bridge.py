@@ -120,6 +120,8 @@ finally:
 
 # --- the network budget tolerates a short server pause and a spent budget is an error ----
 check("post budget fits the hook alarm", cb.POST_SOCKET_TIMEOUT < cb.POST_DEADLINE and 2.4 + cb.POST_DEADLINE < 8)
+check("worker budget is longer and ordered",
+      cb.POST_DEADLINE < cb.WORKER_SOCKET_TIMEOUT < cb.WORKER_POST_DEADLINE < cb.WORKER_CYCLE_DEADLINE)
 seen = {}
 def slow_opener(req, timeout):
     seen["timeout"] = timeout

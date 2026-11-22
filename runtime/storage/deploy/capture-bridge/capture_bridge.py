@@ -144,6 +144,9 @@ def to_line(r):
 TRANSCRIPT_TAIL = 32 * 1024 * 1024
 POST_SOCKET_TIMEOUT = 4   # the server can pause for a couple of seconds behind its own lock
 POST_DEADLINE = 5         # read retries (2.4 s) + this stay inside the 8-second process alarm
+# The supervised worker is not bound by a hook's time limit: it waits long enough for a
+# busy server to acknowledge, so a turn the hook could not deliver still arrives.
+WORKER_SOCKET_TIMEOUT, WORKER_POST_DEADLINE, WORKER_CYCLE_DEADLINE = 40, 45, 50
 
 
 def read_transcript(path):
@@ -367,8 +370,10 @@ def main():
         return
     if mode == 'worker':
         # Supervisor opt-in only. No process spawning/registration by hooks.
+        global POST_SOCKET_TIMEOUT, POST_DEADLINE
+        POST_SOCKET_TIMEOUT, POST_DEADLINE = WORKER_SOCKET_TIMEOUT, WORKER_POST_DEADLINE
         while True:
-            with deadline(8):
+            with deadline(WORKER_CYCLE_DEADLINE):
                 run('flush', quiet_idle=True)
             time.sleep(30)
     else:
