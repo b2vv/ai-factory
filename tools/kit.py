@@ -376,6 +376,12 @@ def blocked_reason(exc):
 
 
 def main():
+    if sys.argv[1:2]==['project']:
+        # One project list: tools/projects.py (list/install/remove/migrate); no barrier, own lock and backups.
+        import importlib.util
+        ps=importlib.util.spec_from_file_location('_factory_projects',Path(__file__).absolute().parent/'projects.py')
+        projects=importlib.util.module_from_spec(ps);ps.loader.exec_module(projects)
+        return projects.main(sys.argv[2:])
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('action',nargs='?',default='plan',choices=['plan','install','update','rollback'])
     ap.add_argument('--package',type=Path);ap.add_argument('--root',type=Path,required=True)

@@ -22,6 +22,31 @@ Once registration succeeds, later normal updates reconcile the pinned registrati
 without asking agents to repair each project by hand. Changing enrolled scope is a
 new explicit specification change, not an incidental package update.
 
+## Adding or removing a project: the kit's project list
+
+Once the kit has a project list (`<kit>/.ai-factory-state/projects.json`), the list owns
+the mapping and the registered specification's `projects` rows are only the historical
+first enrollment. The global hook command and the registration stay unchanged. Each
+command below prints a plan; add `--apply` to write:
+
+- `kit.py project migrate --root <kit> [--include-root <root>]` builds the list once from the
+  registered rows and any project-local capture hooks of the named roots. It writes only the
+  list and stops unless the list regenerates the current mapping byte-for-byte.
+- `kit.py project install --root <kit> --project <root> --capture-credential <file> [--id <uuid>]`
+  connects the project (managed block, import, ignore rules), adds its list entry and its
+  mapping row. `--no-capture` lists it without capture. The credential file must already
+  exist; issuing archive grants on install is a later step.
+- `kit.py project remove --root <kit> --project <root>` removes the managed block, the entry
+  and the mapping row; archive data, grants and credential files are kept.
+- `kit.py project list --root <kit>` prints entries and capabilities, never route paths.
+
+A write takes the kit lock, backs up every file it may change, writes the list last and
+restores the backup on failure; an interrupted write is restored by the next write command.
+It refuses while a kit update is unfinished and when the mapping was edited outside the
+kit. A linked worktree is captured as its main checkout's project. After the list changes
+the mapping, rolling back a capture or instruction transaction recorded before that change
+is refused, because its recorded mapping no longer matches.
+
 The update must verify package integrity before loading its connector and bind its
 plan to the exact specification, installed state and host-file before/desired hashes.
 A package install alone without an authorized registration never activates capture.

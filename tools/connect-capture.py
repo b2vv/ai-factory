@@ -58,12 +58,18 @@ def validate_spec(spec):
         raise ValueError('mapping must be inside dedicated registration root')
     if reg == paths['managed_root'] or reg in paths['managed_root'].parents or paths['managed_root'] in reg.parents:
         raise ValueError('registration must be outside managed payload')
-    dispatcher.validate_mapping({'schema': 1, 'projects': spec['projects']})
-    for row in spec['projects']:
-        if paths['mapping_path'] in [Path(row[k]) for k in ('credential_file', 'queue_dir', 'status_file')]:
-            raise ValueError('mapping collides with route file')
-        # Metadata only; never open or serialize credential contents into receipts.
-        dispatcher.private_file(row['credential_file'], limit=64 * 1024)
+    if list_owned(paths):
+        # The kit's project list owns the mapping; registered rows are the historical first enrollment.
+        if (not isinstance(spec['projects'], list) or len(spec['projects']) > 128
+                or any(not isinstance(r, dict) or set(r) != dispatcher.ROW_KEYS for r in spec['projects'])):
+            raise ValueError('invalid historical enrollment rows')
+    else:
+        dispatcher.validate_mapping({'schema': 1, 'projects': spec['projects']})
+        for row in spec['projects']:
+            if paths['mapping_path'] in [Path(row[k]) for k in ('credential_file', 'queue_dir', 'status_file')]:
+                raise ValueError('mapping collides with route file')
+            # Metadata only; never open or serialize credential contents into receipts.
+            dispatcher.private_file(row['credential_file'], limit=64 * 1024)
     retires = spec.get('retire', [])
     if not isinstance(retires, list) or len(retires) > 256: raise ValueError('invalid retirement list')
     seen = set()
@@ -103,6 +109,14 @@ def prove_legacy(cmd, spec, paths):
         raise ValueError('legacy queue partition would change')
 
 
+PROJECT_LIST = 'projects.json'
+
+
+def list_owned(paths):
+    """True once the kit's project list exists: `tools/projects.py` then writes the mapping."""
+    return (paths['managed_root'] / installer.STATE / PROJECT_LIST).exists()
+
+
 def kit_binding(root, required=False):
     identity = connection.kit_identity(root)
     files = installer.current(root)['files']
@@ -133,7 +147,9 @@ def current(paths):
     if not p.exists(): return None
     d = installer.read_tx(p)
     if d.get('status') != 'APPLIED': raise ValueError('invalid registration state')
+    owned = list_owned(paths)
     for n, sig in d['files'].items():
+        if owned and n == str(paths['mapping_path']): continue  # written by the project list
         if installer.signature(canonical(n)) != sig: raise ValueError('registered file drift')
     return d
 
@@ -213,11 +229,13 @@ def plan(spec):
     wanted = command(paths)
     desired = {}
     # Publication order: mapping, global hook, then exact local duplicate retirement.
-    desired[str(paths['mapping_path'])] = (installer.encode({'schema': 1, 'projects': spec['projects']}), 0o600)
+    owned = list_owned(paths)
+    if not owned:
+        desired[str(paths['mapping_path'])] = (installer.encode({'schema': 1, 'projects': spec['projects']}), 0o600)
     global_path = paths['home'] / '.claude/settings.json'
     before = installer.signature(global_path)
     desired[str(global_path)] = (edit_global(installer.regular(global_path), wanted, prior), before['mode'] if before else 0o600)
-    if installer.signature(paths['mapping_path']) and not prior: raise ValueError('unowned mapping collision')
+    if not owned and installer.signature(paths['mapping_path']) and not prior: raise ValueError('unowned mapping collision')
     for n in sorted(set(e['path'] for e in spec.get('retire', []))):
         raw = installer.regular(Path(n)); before = installer.signature(Path(n))
         desired[n] = (retire_hooks(raw, [e for e in spec['retire'] if e['path'] == n], prior), before['mode'])

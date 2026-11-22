@@ -291,12 +291,12 @@
     {
       "path": "docs/managed-capture.md",
       "component": "core",
-      "sha256": "a982275c5e76ca5774ce16791250109da26ddbaa599a42f29afc9f4cf9baad16"
+      "sha256": "22b2c488fe2c983945496b2e26d0ed6570be90b5219691bd6db9d5dca5bfef61"
     },
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "539b5291fc6a39cb9de18096b0b7ca6cad5973b691f5f09fbaa0e2d92dc08ef9"
+      "sha256": "913f9ca9e79cdb1cdd5870dfac1ae78da574d1735815825839887f699d8c25b7"
     },
     {
       "path": "docs/managed-native-handoff.md",
@@ -1211,7 +1211,7 @@
     {
       "path": "runtime/storage/deploy/capture-bridge/claude_capture_dispatcher.py",
       "component": "capture-bridge",
-      "sha256": "7b502cf6b8e03f305193c76f5759557491f8ad8900402fd5c1dea057fe027cc0"
+      "sha256": "f1a638e02bb4084b935449b2dc2dc0ff29233d80fffa6b9c8b69157cec31bba7"
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/test_capture_auth.py",
@@ -4394,6 +4394,11 @@
       "component": "core"
     },
     {
+      "path": "tests/projects/test_projects.py",
+      "sha256": "09f834455733240b2e961693ba16caab0f7dd1ac1ce59765b13796e7b4e7f920",
+      "component": "core"
+    },
+    {
       "path": "tests/review/test_review_package.py",
       "sha256": "c0ca2b8d2c4451b6827eb4a82fd193a87e4c71b3de6427464d84ca68b4b7ac51",
       "component": "core"
@@ -4556,7 +4561,7 @@
     {
       "path": "tools/connect-capture.py",
       "component": "core",
-      "sha256": "f09778ae89abb63a8ab26a8af9f917019b51c995899f644d4684bbba5744bd6c"
+      "sha256": "97aefae584a5e471d76a8f59e591563be239fed26178805808ecf1075f5f23ea"
     },
     {
       "path": "tools/connect-handoff.py",
@@ -4585,12 +4590,17 @@
     },
     {
       "path": "tools/kit.py",
-      "sha256": "4a9ed2d28183b4711d6d46fb398bc5e2dd3f22a8c6bff826aa09441ec34fbe6c",
+      "sha256": "70eb1d29380ccdb0e432433e6cad3a8284efae58b1cb6e70b4963267ddafaa54",
+      "component": "core"
+    },
+    {
+      "path": "tools/projects.py",
+      "sha256": "6a2e555e888f0812f0112e8f63cb9a3d8195cb489bbb39eacea2ced868e61580",
       "component": "core"
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "14a4f2aec175a6b291e1bc0a27b5ed75ab6420c03f78e444e953d63719d1477d",
+      "sha256": "c1688ab116ae67b86b45daa2a4765c6bfbc1be03a9250623481f9cc0559590e3",
       "component": "core"
     },
     {

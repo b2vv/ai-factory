@@ -75,7 +75,7 @@ def private_file(path, read=False, limit=MAX_MAPPING):
         os.close(fd)
 
 
-def git_root(cwd):
+def _git(cwd, *args):
     p = canonical(cwd)
     if not p.is_dir():
         raise ValueError('cwd missing')
@@ -84,7 +84,7 @@ def git_root(cwd):
            'GIT_CONFIG_NOSYSTEM': '1', 'GIT_CONFIG_GLOBAL': '/dev/null',
            'GIT_TERMINAL_PROMPT': '0', 'GIT_OPTIONAL_LOCKS': '0'}
     proc = subprocess.Popen(['/usr/bin/git', '-c', 'core.fsmonitor=false', '-c', 'core.hooksPath=/dev/null',
-                             '-C', str(p), 'rev-parse', '--show-toplevel'], env=env,
+                             '-C', str(p), 'rev-parse', *args], env=env,
                             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     try:
         with deadline(1):
@@ -95,19 +95,33 @@ def git_root(cwd):
         if proc.poll() is None: proc.kill()
         proc.wait(timeout=1)
         proc.stdout.close()
-    if code != 0:
+    return p, (raw.decode('utf-8').rstrip('\n') if code == 0 else None)
+
+
+def git_root(cwd):
+    p, out = _git(cwd, '--show-toplevel')
+    if out is None:
         return None
-    root = canonical(raw.decode('utf-8').rstrip('\n'))
+    root = canonical(out)
     if root != p and root not in p.parents:
         raise ValueError('git root outside cwd ancestry')
     return root
+
+
+def main_checkout(cwd):
+    """The main checkout of a linked worktree: the parent of its common `.git` directory."""
+    _, out = _git(cwd, '--path-format=absolute', '--git-common-dir')
+    if out is None:
+        return None
+    common = canonical(out)
+    return common.parent if common.name == '.git' and common.is_dir() else None
 
 
 def validate_mapping(doc, check_roots=True):
     if not isinstance(doc, dict) or set(doc) != {'schema', 'projects'} or type(doc['schema']) is not int or doc['schema'] != 1:
         raise ValueError('unsupported mapping')
     rows = doc['projects']
-    if not isinstance(rows, list) or not 1 <= len(rows) <= 128:
+    if not isinstance(rows, list) or not 0 <= len(rows) <= 128:
         raise ValueError('invalid enrollment list')
     roots, projects, sources, statuses = set(), set(), set(), set()
     for row in rows:
@@ -148,6 +162,11 @@ def select_route(rows, cwd):
     if root is None:
         return None
     matches = [row for row in rows if row['root'] == str(root)]
+    if not matches:
+        # A linked worktree belongs to the project of its main checkout.
+        main = main_checkout(str(root))
+        if main is not None and main != root:
+            matches = [row for row in rows if row['root'] == str(main)]
     return matches[0] if len(matches) == 1 else None
 
 

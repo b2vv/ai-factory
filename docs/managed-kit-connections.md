@@ -148,6 +148,8 @@ Normal managed updates reconcile its pinned global registration and approved loc
 retirements. Installing capture files without that registration does not enroll projects.
 Keep exact Git-root routing and existing per-project capture credentials/queues; never
 replace them with an operator credential or infer enrollment from a directory prefix.
+Add or remove a captured project with `kit.py project install|remove`, which keep the
+kit's one project list and the mapping together (see "Adding or removing a project" there).
 
 ## Exact legacy instruction migration in normal update
 

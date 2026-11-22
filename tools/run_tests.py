@@ -77,7 +77,7 @@ with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
     env['GIT_TEMPLATE_DIR']=temp
     failures=0
     only=args.suite!='all'
-    for directory in ([] if only else ['tests/onboarding','tests/review','tests/session-size','tests/handoff-integration','tests/session-size-docker','tests/legacy-review','tests/legacy-session','tests/install','tests/collection','tests/checkpoint','tests/constraints','tests/ui-measurements','tests/scanners','tests/connect','tests/connect-handoff','tests/connect-capture','tests/packaging']):
+    for directory in ([] if only else ['tests/onboarding','tests/review','tests/session-size','tests/handoff-integration','tests/session-size-docker','tests/legacy-review','tests/legacy-session','tests/install','tests/collection','tests/checkpoint','tests/constraints','tests/ui-measurements','tests/scanners','tests/connect','tests/connect-handoff','tests/connect-capture','tests/projects','tests/packaging']):
         print('\n=== isolated suite: '+directory+' ===',flush=True)
         result=subprocess.run([sys.executable,'-B','-m','unittest','discover','-s',str(root/directory),'-p','test_*.py','-v'],env=env,cwd=root)
         failures += result.returncode != 0
