@@ -283,6 +283,7 @@ func main() {
 			owner := dashboardAtOrigin(*shareHost, "https://"+*shareHost, func(_ context.Context) snapshot { return sources.snapshot() }, func(id string) (project, feedRecord) { return sources.readOne(id, time.Now()) })
 			shareHandler = sharedDashboard(*shareHost, users, owner, sources.snapshot)
 		}
+		shareHandler = shareTunnelHost(*shareHost, *port, shareHandler)
 	}
 
 	if *publish || *transition {

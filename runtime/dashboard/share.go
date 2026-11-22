@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"html/template"
 	"io"
 	"io/fs"
@@ -142,13 +143,31 @@ var sharedPage = template.Must(template.New("shared-dashboard").Parse(`<!doctype
 <div class="project-grid">{{range .Projects}}<section class="project-card"><h2>{{.Name}}</h2><p class="badge">{{.State}}</p></section>{{end}}</div>
 </main></body></html>`))
 
+// shareTunnelHost lets the share listener accept a request from a local share tunnel
+// that rewrites the authority (Kiri Share sends Host: localhost:<port> and the public
+// name in X-Forwarded-Host). Only this exact shape is mapped to the share host: the
+// loopback authority of this listener, exactly one X-Forwarded-Host equal to the share
+// host and exactly one X-Forwarded-Proto of https. Anything else is passed on unchanged,
+// so the exact-host check below still refuses it. Login is still required.
+func shareTunnelHost(host string, port int, next http.Handler) http.Handler {
+	local := map[string]bool{fmt.Sprintf("localhost:%d", port): true, fmt.Sprintf("127.0.0.1:%d", port): true}
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fh, fp := r.Header.Values("X-Forwarded-Host"), r.Header.Values("X-Forwarded-Proto")
+		if local[r.Host] && len(fh) == 1 && fh[0] == host && len(fp) == 1 && fp[0] == "https" {
+			r = r.Clone(r.Context())
+			r.Host = host
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 func sharedDashboard(host string, accounts map[string]shareAccount, owner http.Handler, read func() snapshot) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		dashboardHeaders(w)
 		w.Header().Set("Vary", "Authorization")
 		w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
 		// Exact public authority is an additional restriction, not authentication.
-		// The share proxy's source IP and forwarded headers are not trusted.
+		// The share proxy's source IP is not trusted; forwarded headers only through shareTunnelHost.
 		origins := r.Header.Values("Origin")
 		if r.Host != host || len(origins) > 1 || len(origins) == 1 && origins[0] != "https://"+host ||
 			r.Header.Get("Sec-Fetch-Site") == "cross-site" && !dashboardNavigation(r) {

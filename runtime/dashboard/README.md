@@ -132,9 +132,12 @@ not the link. Kiri handles browser HTTPS, so trust its service with the Basic
 Auth headers and all responses, including the reports sent to the owner. Verify on the actual HTTPS link that an
 unauthenticated viewer gets a login challenge, a valid login works, and a
 detail URL remains unavailable to the status account. If the host is unknown, identify it before
-pointing the tunnel at a data-serving process. If Kiri does not preserve the
-required host or authentication header, disconnect the share rather than
-relaxing the checks. Use a separate channel to distribute the credential.
+pointing the tunnel at a data-serving process. Kiri Share forwards `Host: localhost:8734`
+with the public name in `X-Forwarded-Host`; the share listener (never port 8732) maps
+only that exact shape — its own loopback authority, one `X-Forwarded-Host` equal to the
+share host and one `X-Forwarded-Proto: https` — to the share host; any other forwarded
+value is refused, and login is still required. If a tunnel does not preserve the
+authentication header, disconnect the share rather than relaxing the checks. Use a separate channel to distribute the credential.
 Distribute only the appropriate individual login and password. Use separate browser profiles or private
 windows to test each role; browsers may reuse Basic Auth for the same hostname.
 To revoke one login, remove it from the file and recreate only the share

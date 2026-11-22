@@ -242,3 +242,48 @@ func TestShareDisabled(t *testing.T) {
 		}
 	}
 }
+
+func TestShareTunnelHost(t *testing.T) {
+	const host = "dash.share.example.test"
+	useProjects(t, projectConfig{ID: "project-a", Name: "Project A", Root: "/srv/project-a"})
+	password := strings.Repeat("b", 64) // fixture only
+	accounts := map[string]shareAccount{"colleague": {digest: sha256.Sum256([]byte(password)), access: shareStatus}}
+	read := func() snapshot { return snapshot{CheckedAt: time.Unix(0, 0)} }
+	handler := shareTunnelHost(host, 8734, sharedDashboard(host, accounts, nil, read))
+	cases := []struct {
+		name, authority string
+		forwarded       map[string][]string
+		login           bool
+		want            int
+	}{
+		{"tunnel without login asks for it", "localhost:8734", map[string][]string{"X-Forwarded-Host": {host}, "X-Forwarded-Proto": {"https"}}, false, 401},
+		{"tunnel with login", "localhost:8734", map[string][]string{"X-Forwarded-Host": {host}, "X-Forwarded-Proto": {"https"}}, true, 200},
+		{"loopback ip tunnel", "127.0.0.1:8734", map[string][]string{"X-Forwarded-Host": {host}, "X-Forwarded-Proto": {"https"}}, true, 200},
+		{"exact host still works", host, nil, true, 200},
+		{"other forwarded host", "localhost:8734", map[string][]string{"X-Forwarded-Host": {"evil.example.test"}, "X-Forwarded-Proto": {"https"}}, true, 403},
+		{"plain http forwarded", "localhost:8734", map[string][]string{"X-Forwarded-Host": {host}, "X-Forwarded-Proto": {"http"}}, true, 403},
+		{"no proto", "localhost:8734", map[string][]string{"X-Forwarded-Host": {host}}, true, 403},
+		{"two forwarded hosts", "localhost:8734", map[string][]string{"X-Forwarded-Host": {host, host}, "X-Forwarded-Proto": {"https"}}, true, 403},
+		{"other local port", "localhost:8732", map[string][]string{"X-Forwarded-Host": {host}, "X-Forwarded-Proto": {"https"}}, true, 403},
+		{"foreign authority with forwarded host", "evil.example.test", map[string][]string{"X-Forwarded-Host": {host}, "X-Forwarded-Proto": {"https"}}, true, 403},
+		{"loopback without forwarding", "localhost:8734", nil, true, 403},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := httptest.NewRequest("GET", "http://"+tc.authority+"/api/status", nil)
+			for k, vs := range tc.forwarded {
+				for _, v := range vs {
+					req.Header.Add(k, v)
+				}
+			}
+			if tc.login {
+				req.SetBasicAuth("colleague", password)
+			}
+			rec := httptest.NewRecorder()
+			handler.ServeHTTP(rec, req)
+			if rec.Code != tc.want {
+				t.Fatalf("got %d, want %d", rec.Code, tc.want)
+			}
+		})
+	}
+}
