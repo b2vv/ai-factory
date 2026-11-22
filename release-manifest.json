@@ -1719,6 +1719,16 @@
       "sha256": "e4d60fadcdd19ae35b78829e4af707de973a01d6bfad41ca12065b62748428a2"
     },
     {
+      "path": "runtime/storage/internal/archive/inventory.go",
+      "sha256": "da268439f4fc7545bd64932671c144f1db5bc4fee18980bb95a176eb6e0f3d69",
+      "component": "storage"
+    },
+    {
+      "path": "runtime/storage/internal/archive/inventory_integration_test.go",
+      "sha256": "91cf510f80cbf38ff7bb8c3299ca27660078dec2c92166ef8a0f08b6ac2694b9",
+      "component": "storage"
+    },
+    {
       "path": "runtime/storage/internal/archive/logical.go",
       "component": "storage",
       "sha256": "db97728a9c432b8b92431a8730cfd55a43b2fac37973298f94c112d814c08945"
@@ -1900,13 +1910,13 @@
     },
     {
       "path": "runtime/storage/internal/budgetenv/cache_test.go",
-      "sha256": "49be152318be381865d25ccb8a39bb4fa79377927aad3d9418ce4662599ed16e",
+      "sha256": "c9b9764a5eec2dfa0279dce131d988263781690628aeca60022730a8dc78e62e",
       "component": "storage"
     },
     {
       "path": "runtime/storage/internal/budgetenv/environment.go",
       "component": "storage",
-      "sha256": "e454a30bd6703817ea940724476f50f5f30901bc6a727c5fac627c4693322769"
+      "sha256": "dc9b9a5f53a9bb8abd3cded279e67929471f3017076736d43590420c8d67af19"
     },
     {
       "path": "runtime/storage/internal/budgetenv/environment_integration_test.go",
@@ -2649,9 +2659,19 @@
       "sha256": "4a7a6ea0f70784c8e317aa5e79025beaacbc96ecb85bc909e4c604de2557fc87"
     },
     {
+      "path": "runtime/storage/internal/workflow/inventory.go",
+      "sha256": "61a856dee6c582538623fea1a14627a353edd4eab185ff0136e66d2bb0e3654a",
+      "component": "storage"
+    },
+    {
+      "path": "runtime/storage/internal/workflow/inventory_integration_test.go",
+      "sha256": "1b324363cf83003f2f162eb8b8734b6daa281c09f40c338b1d8e77db74b88799",
+      "component": "storage"
+    },
+    {
       "path": "runtime/storage/internal/workflow/logical.go",
       "component": "storage",
-      "sha256": "e0cfb1a7869eaa481870f737fd73480a6b1b8fb3e46c278c2ecc7c7e57a00859"
+      "sha256": "fd8e3e02fff451eb927525eb6526e19b0d49be302d04c2b0d24ed026787f9ccc"
     },
     {
       "path": "runtime/storage/internal/workflow/migrations/0001_workflow.sql",

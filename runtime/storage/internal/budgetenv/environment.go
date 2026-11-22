@@ -30,37 +30,51 @@ type Environment struct {
 	limit                 int64
 	walLimit              int64
 	cacheMu               sync.Mutex
-	mongoSize, pgSize     cachedSize
+	mongoInv              inventoryCache[archive.Inventory]
+	pgInv                 inventoryCache[workflow.Inventory]
 }
 
-// sampleMaxAge bounds how long an unchanged token may stand for a full inventory.
-// Tokens are exact for this process's archive writes and for every PostgreSQL write;
-// the age bound covers archive writes by another process.
-const sampleMaxAge = 30 * time.Second
+// sampleMaxAge bounds how long an unchanged token may stand for an inventory; after
+// it a refresh pass rereads only changed rows. fullCheckEvery bounds how long rows that
+// were not reread go without the complete validating read.
+const (
+	sampleMaxAge   = 30 * time.Second
+	fullCheckEvery = 10 * time.Minute
+)
 
 var clock = time.Now
 
-// cachedSize keeps one full logical inventory with the change token taken BEFORE it
-// was computed. A different token, an older value or an error forces a new full read.
-type cachedSize struct {
-	token string
-	value int64
-	at    time.Time
-	ok    bool
+// inventoryCache keeps one per-row inventory with the change token taken BEFORE the
+// pass that built it. An unchanged, fresh token reuses it; otherwise a refresh pass
+// rereads only changed rows, and a full read rebuilds it periodically or after any
+// error. A failed pass leaves no inventory behind.
+type inventoryCache[T any] struct {
+	inv        *T
+	token      string
+	at, fullAt time.Time
 }
 
-func (c *cachedSize) get(token string, compute func() (int64, error)) (int64, error) {
+func (c *inventoryCache[T]) get(token string, pass func(prev *T) (*T, error), total func(*T) int64) (int64, error) {
 	now := clock()
-	if c.ok && c.token == token && !now.Before(c.at) && now.Sub(c.at) < sampleMaxAge {
-		return c.value, nil
+	fresh := c.inv != nil && !now.Before(c.at) && !now.Before(c.fullAt)
+	if fresh && c.token == token && now.Sub(c.at) < sampleMaxAge {
+		return total(c.inv), nil
 	}
-	c.ok = false
-	value, err := compute()
+	var prev *T
+	full := !fresh || now.Sub(c.fullAt) >= fullCheckEvery
+	if !full {
+		prev = c.inv
+	}
+	c.inv = nil
+	inv, err := pass(prev)
 	if err != nil {
 		return 0, err
 	}
-	*c = cachedSize{token: token, value: value, at: now, ok: true}
-	return value, nil
+	c.inv, c.token, c.at = inv, token, now
+	if full {
+		c.fullAt = now
+	}
+	return total(inv), nil
 }
 
 // The full binding is hashed, never persisted or printed. Different bindings
@@ -169,7 +183,9 @@ func (e *Environment) Sample() (budget.Sample, error) {
 	defer e.cacheMu.Unlock()
 	if e.Mongo != nil {
 		token := fmt.Sprint(archive.WriteGeneration())
-		n, err := e.mongoSize.get(token, func() (int64, error) { return e.Mongo.LogicalBytes(ctx, e.limit) })
+		n, err := e.mongoInv.get(token, func(prev *archive.Inventory) (*archive.Inventory, error) {
+			return e.Mongo.Inventory(ctx, e.limit, prev)
+		}, func(inv *archive.Inventory) int64 { return inv.Total })
 		if err != nil {
 			return s, err
 		}
@@ -185,7 +201,9 @@ func (e *Environment) Sample() (budget.Sample, error) {
 		if err != nil {
 			return s, err
 		}
-		n, err := e.pgSize.get(token, func() (int64, error) { return e.Postgres.LogicalBytes(ctx, e.limit) })
+		n, err := e.pgInv.get(token, func(prev *workflow.Inventory) (*workflow.Inventory, error) {
+			return e.Postgres.Inventory(ctx, e.limit, prev)
+		}, func(inv *workflow.Inventory) int64 { return inv.Total })
 		if err != nil {
 			return s, err
 		}
