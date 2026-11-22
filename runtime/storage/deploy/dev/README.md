@@ -26,8 +26,9 @@ no conversation capture is performed.
 ## Requirements
 
 - Docker Engine **>= 28.0.0** (earlier versions had a `127.0.0.1` port-publishing issue).
-- The image is built from source as a static `linux/amd64` binary; the builder cross-compiles
-  from the native build platform, so no emulation is required to produce the binary.
+- The image is built from source as a static Linux binary for the target platform
+  (`linux/amd64` by default in `compose.yaml`; build with `--platform linux/arm64` on an arm64
+  host to avoid emulation). The builder cross-compiles from the native build platform.
 
 ## One-time setup
 

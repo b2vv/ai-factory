@@ -204,6 +204,16 @@ func (s *PGStore) Ping(ctx context.Context) error {
 	return err
 }
 
+// WALPosition returns the cluster's current write-ahead-log position. Every committed
+// write advances it, so an unchanged position proves nothing was written in between.
+func (s *PGStore) WALPosition(ctx context.Context) (string, error) {
+	pctx, cancel := context.WithTimeout(ctx, s.opTimeout)
+	defer cancel()
+	var lsn string
+	err := s.pool.QueryRow(pctx, `SELECT pg_current_wal_lsn()::text`).Scan(&lsn)
+	return lsn, err
+}
+
 // Available reports the last observed backend state (refreshed by Ping).
 func (s *PGStore) Available() bool { return s.up.Load() }
 

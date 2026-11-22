@@ -174,6 +174,7 @@ func (s *MongoStore) Available() bool { return s.up.Load() }
 // (never silently dropped). Any other backend error is returned and marks the store
 // unavailable.
 func (s *MongoStore) Put(r Record) error {
+	defer noteWrite()
 	ctx, cancel := context.WithTimeout(context.Background(), s.opTimeout)
 	defer cancel()
 	_, err := s.coll.InsertOne(ctx, toDoc(r))
@@ -255,6 +256,7 @@ func (s *MongoStore) StorageBytes(ctx context.Context) (int64, error) {
 // collection (DeleteMany). It is real erasure, not a serve-side hide. An error is returned
 // (never silently 0) and marks the backend unavailable.
 func (s *MongoStore) Purge(project, session string) (int, error) {
+	defer noteWrite()
 	ctx, cancel := context.WithTimeout(context.Background(), s.opTimeout)
 	defer cancel()
 	filter := bson.M{"project": project}

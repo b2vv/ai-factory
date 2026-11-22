@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"aifactory.local/storage/internal/archive"
@@ -28,6 +29,38 @@ type Environment struct {
 	mongoKey, postgresKey string
 	limit                 int64
 	walLimit              int64
+	cacheMu               sync.Mutex
+	mongoSize, pgSize     cachedSize
+}
+
+// sampleMaxAge bounds how long an unchanged token may stand for a full inventory.
+// Tokens are exact for this process's archive writes and for every PostgreSQL write;
+// the age bound covers archive writes by another process.
+const sampleMaxAge = 30 * time.Second
+
+var clock = time.Now
+
+// cachedSize keeps one full logical inventory with the change token taken BEFORE it
+// was computed. A different token, an older value or an error forces a new full read.
+type cachedSize struct {
+	token string
+	value int64
+	at    time.Time
+	ok    bool
+}
+
+func (c *cachedSize) get(token string, compute func() (int64, error)) (int64, error) {
+	now := clock()
+	if c.ok && c.token == token && !now.Before(c.at) && now.Sub(c.at) < sampleMaxAge {
+		return c.value, nil
+	}
+	c.ok = false
+	value, err := compute()
+	if err != nil {
+		return 0, err
+	}
+	*c = cachedSize{token: token, value: value, at: now, ok: true}
+	return value, nil
 }
 
 // The full binding is hashed, never persisted or printed. Different bindings
@@ -132,8 +165,11 @@ func (e *Environment) Sample() (budget.Sample, error) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+	e.cacheMu.Lock()
+	defer e.cacheMu.Unlock()
 	if e.Mongo != nil {
-		n, err := e.Mongo.LogicalBytes(ctx, e.limit)
+		token := fmt.Sprint(archive.WriteGeneration())
+		n, err := e.mongoSize.get(token, func() (int64, error) { return e.Mongo.LogicalBytes(ctx, e.limit) })
 		if err != nil {
 			return s, err
 		}
@@ -145,7 +181,11 @@ func (e *Environment) Sample() (budget.Sample, error) {
 		s.Components[e.mongoKey+":pending"] = debt
 	}
 	if e.Postgres != nil {
-		n, err := e.Postgres.LogicalBytes(ctx, e.limit)
+		token, err := e.Postgres.WALPosition(ctx)
+		if err != nil {
+			return s, err
+		}
+		n, err := e.pgSize.get(token, func() (int64, error) { return e.Postgres.LogicalBytes(ctx, e.limit) })
 		if err != nil {
 			return s, err
 		}

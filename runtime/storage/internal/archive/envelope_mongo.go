@@ -76,6 +76,7 @@ func (s *MongoStore) LookupEnvelope(r Record) (Envelope, bool, error) {
 	return e, true, err
 }
 func (s *MongoStore) PutEnvelope(e Envelope) error {
+	defer noteWrite()
 	d, err := envelopeDoc(e)
 	if err != nil {
 		return err
@@ -104,6 +105,7 @@ func (s *MongoStore) PutEnvelope(e Envelope) error {
 // AttachMetadata is compare-and-set on ALL original fields and missing metadata.
 // No upsert: deletion between scan and attachment cannot resurrect a source row.
 func (s *MongoStore) AttachMetadata(e Envelope) error {
+	defer noteWrite()
 	d, err := envelopeDoc(e)
 	if err != nil {
 		return err

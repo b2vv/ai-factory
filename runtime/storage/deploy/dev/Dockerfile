@@ -5,9 +5,10 @@
 # only so the loopback control API can be exercised from the host during manual verification.
 #
 # The binary is built from the repository sources (no pre-built artifact), stdlib-only, as a
-# static CGO-free linux/amd64 executable, then placed on an empty base so the running image
-# contains nothing but the binary. The builder runs on the native build platform and
-# cross-compiles, so no emulation is needed to produce the amd64 binary.
+# static CGO-free Linux executable for the target platform (linux/amd64 or linux/arm64, chosen
+# with --platform), then placed on an empty base so the running image contains nothing but the
+# binary. The builder runs on the native build platform and cross-compiles, so no emulation is
+# needed to build, and an arm64 host runs an arm64 image without emulation.
 #
 # Default runtime contract is unchanged: the server binds loopback only unless the explicit
 # -dev-allow-nonloopback flag is passed. In this image the container binds 0.0.0.0 (container
@@ -16,10 +17,11 @@
 # tokens are still required and checked.
 
 FROM --platform=$BUILDPLATFORM golang:1.23 AS build
+ARG TARGETARCH=amd64
 WORKDIR /src
 # Build context is the storage module root (runtime/storage); copy the whole module.
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o /factory ./cmd/factory
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /factory ./cmd/factory
 
 FROM scratch
 COPY --from=build /factory /factory
