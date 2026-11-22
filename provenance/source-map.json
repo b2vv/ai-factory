@@ -1006,7 +1006,7 @@
       "source": "~/.agents/skills/arch/code-review/SKILL.md",
       "destination": "skills/arch/code-review/SKILL.md",
       "source_sha256": "099e5d787801566f9cd81f2fab4a80e5f9dcda4d13c17b024989920e15cea9c1",
-      "sha256": "f0aa1f8033adce7ffb336dab10203c6c280d0bb22c631de6d0fb054dcd8d0109",
+      "sha256": "b76f16f0a15d1ee40afbaa4f99dba7ceff77fc7a953b319e9db7d5d50a88d7d4",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved.",
@@ -1015,7 +1015,8 @@
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
         "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
         "Owner-authorized authored final-review coverage mapping and explicit existing-ADR/material-decision assessments; local thresholds and independent axes preserved; no runtime enforcement claimed.",
-        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained."
+        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
+        "Owner-authorized T23 (2026-11-22): appended the conditional 'Dashboard status' section (publish the primary task's status via the managed-block command, evidence only from the task record); existing text unchanged."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/code-review/SKILL.md"
@@ -1206,7 +1207,7 @@
       "source": "~/.agents/skills/arch/tdd/SKILL.md",
       "destination": "skills/arch/tdd/SKILL.md",
       "source_sha256": "76fbb39ff35369ef9a8cee5a99755805806d96049d32c1f0cc5ffc9958ba439c",
-      "sha256": "5c71c5c56776ae3df4221ca298e21cd7487baa01f3e88138c142eff5649a2b49",
+      "sha256": "e16f756a676dc4000a994e84235c4d3fc156dc0f3bbe10858aaf35868c425762",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized mandatory behavior-coverage reference: individual scoped mutations and CI-running plain tests; existing workflow preserved.",
@@ -1214,7 +1215,8 @@
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
         "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
-        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained."
+        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
+        "Owner-authorized T23 (2026-11-22): appended the conditional 'Dashboard status' section (publish the primary task's status via the managed-block command, evidence only from the task record); existing text unchanged."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/arch/tdd/SKILL.md"
@@ -2234,14 +2236,15 @@
       "source": "~/.agents/skills/ship/ship-report/SKILL.md",
       "destination": "skills/ship/ship-report/SKILL.md",
       "source_sha256": "9627b7ab729a2fbc4615526cb419a2c49a0e08529e32a5a68b7981dda6dc0651",
-      "sha256": "6a9e2f87726160b33fa5b19b9f6d78a0c815b4f854116de14df4d519125d8bc9",
+      "sha256": "19e5681a79e58ba6dfa373ee9b8c395b8a07bdd8a08f53112da0243cd303b549",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Inherited WIP adaptation reviewed under current user-authorized takeover; historical date/authorship unverified. Portable anti-pattern/process guidance; immutable source identity preserved.",
-        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation."
+        "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
+        "Owner-authorized T23 (2026-11-22): appended the conditional 'Dashboard status' section (publish the primary task's status via the managed-block command, evidence only from the task record); existing text unchanged."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/ship-report/SKILL.md"

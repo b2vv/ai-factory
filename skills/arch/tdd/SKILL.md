@@ -47,3 +47,12 @@ When the shape of that interface is itself in question (how deep the module is, 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle. The reviewer recommends refactoring; the authorized author implements it, reruns relevant checks and submits the final delta for review. Review itself does not authorize writes.
+
+## Dashboard status (only when the project has one)
+
+If the project's managed block (AGENTS.local.md) contains "Dashboard status for this project",
+publish the primary task's status after the implementation's test run is recorded and after your own commit, with the
+command named there: first without `--apply`, then with it. Build the status only from the task
+record's recorded evidence (stages without evidence stay `Unknown`), with no paths, URLs or secrets.
+Report a refusal; do not work around it or retry in a loop.
+See [publishing a project's status](../../../docs/dashboard-status.md).

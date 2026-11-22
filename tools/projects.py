@@ -9,7 +9,9 @@ writes the list last and clears its marker; an interrupted write is restored fro
 the next write command. No secret values are printed; `list` prints no route or credential paths.
 With an archive configuration (`project archive`), install also issues the project's archive
 access (grants, credential files, search route and contract, worker) under the operator's
-authority and remove revokes it; see tools/project_archive.py. Groups (P2), the update report
+authority and remove revokes it; see tools/project_archive.py. With a dashboard configuration
+(`project dashboard`), `project status` publishes an agent's task status (tools/project_dashboard.py)
+and install adds the publishing pointer to the project's managed block. Groups (P2), the update report
 (P4) and kit moves (P10) are not done here.
 """
 import argparse
@@ -39,6 +41,7 @@ def _load(name, path):
 
 k = _load('_projects_kit', HERE / 'kit.py')
 A = _load('_projects_archive', HERE / 'project_archive.py')
+DB = _load('_projects_dashboard', HERE / 'project_dashboard.py')
 
 LIST = 'projects.json'
 MARKER = 'project-op-pending.json'
@@ -300,10 +303,11 @@ def cmd_list(root):
     return out
 
 
-def connect(root, project, apply, contract=None):
+def connect(root, project, apply, contract=None, dashboard=None):
     """Run the existing connect-project step in-process; returns its report."""
     argv = (['--managed-root', str(root), '--project', str(project)] + (['--apply'] if apply else [])
-            + (['--search-contract', str(contract)] if contract else []))
+            + (['--search-contract', str(contract)] if contract else [])
+            + (['--dashboard-project', dashboard] if dashboard else []))
     buf = io.StringIO()
     with redirect_stdout(buf):
         code = connection().main(argv)
@@ -423,7 +427,9 @@ def install(root, args):
             bootstrap_needed = bool(rec['worker']) and not A.worker_loaded(rec['worker'])
         surface = archive_surface(root, cfg, entry, doc['routes'].get(entry['id']))
     contract = rec['files']['search_contract'] if rec is not None and not enroll else None
-    report = connect(root, project, False, contract)
+    dash_cfg = DB.load_config(root, private_json)
+    dash_id = DB.dashboard_id(dash_cfg, project) if dash_cfg else None
+    report = connect(root, project, False, contract, dash_id)
     files = [project / n for n in ('AGENTS.local.md', 'CLAUDE.local.md', '.gitignore')]
     new_list = encode(doc)
     unchanged = (k.regular(root / k.STATE / LIST) == new_list and not bootstrap_needed
@@ -431,6 +437,7 @@ def install(root, args):
                  and all(a['action'] in ('noop', 'present') for a in report['actions']))
     out = {'status': 'NOOP' if unchanged else 'PLANNED', 'project': public_entry(entry),
            'connection': report['actions'], 'capture_rows': len(mapping_rows(doc))}
+    if dash_cfg: out['dashboard'] = {'project': dash_id} if dash_id else {'project': None, 'note': 'root is not in the dashboard projects config'}
     if enroll:
         out['archive'] = {'authority': 'uses the operator secret file named in the archive configuration',
                           'will_issue': sorted(rec['principals'].values()), 'worker': rec['worker'],
@@ -453,7 +460,7 @@ def install(root, args):
         if load(root) != before: raise Blocked('project list changed while planning')
         check_mapping(root, ctx, before)
         steps = [('surface', lambda: [guarded(p, data) for p, data in surface.items()]),
-                 ('connect', lambda: connect(root, project, True, rec['files']['search_contract'] if rec else None))]
+                 ('connect', lambda: connect(root, project, True, rec['files']['search_contract'] if rec else None, dash_id))]
         if ctx: steps.append(('mapping', lambda: guarded(ctx['mapping'], mapping_bytes(doc))))
         steps.append(('list', lambda: guarded(root / k.STATE / LIST, new_list)))
         if enroll:
@@ -596,6 +603,36 @@ def remove(root, args):
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
 
 
+def dashboard(root, args):
+    """Write the dashboard publishing configuration: paths only."""
+    cfg = DB.build_config(args)
+    listed = DB.validate_projects(cfg)
+    path = root / k.STATE / DB.CONFIG
+    data = k.encode(cfg)
+    out = {'status': 'NOOP' if k.regular(path) == data else 'PLANNED (dry-run; pass --apply to write)',
+           'config': str(path), 'dashboard_projects': sorted(listed),
+           'effect': 'agents publish statuses with `kit.py project status`; rerun `project install` to add the pointer to each project'}
+    if out['status'] == 'NOOP' or not args.apply: return out
+    with operation(root, None) as restored:
+        op = commit(root, 'dashboard', [path], [('config', lambda: guarded(path, data))])
+    return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
+
+
+def status(root, args):
+    """Publish one project's status through the dashboard's own publisher. Prints no record text."""
+    cfg = DB.load_config(root, private_json)
+    if cfg is None: raise Blocked('no dashboard configuration: run `kit.py project dashboard` first')
+    rows = DB.projects(cfg)
+    if args.project not in rows: raise Blocked(f'{args.project} is not in the dashboard projects config')
+    raw = sys.stdin.buffer.read(DB.MAX_INPUT + 1)
+    record = DB.status_record(raw, args.project, DB.head(Path(rows[args.project]), git), DB.utcnow())
+    ok, message = DB.publish(cfg, record, args.apply)
+    out = {'status': ('APPLIED' if args.apply else 'VALID (dry-run; pass --apply to publish)') if ok else 'BLOCKED',
+           'project': args.project, 'revision': record['revision'][:12], 'publisher': message}
+    if not ok: out['reason'] = 'the dashboard publisher refused the status: ' + message
+    return out
+
+
 def archive(root, args):
     """Write the archive configuration: paths only, never a secret."""
     cfg = A.build_config(root, args)
@@ -708,7 +745,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='kit.py project', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
-    for name in ('list', 'install', 'remove', 'migrate', 'archive'):
+    for name in ('list', 'install', 'remove', 'migrate', 'archive', 'dashboard', 'status'):
         p = sub.add_parser(name); p.add_argument('--root', required=True, help='installed kit root')
         if name != 'list': p.add_argument('--apply', action='store_true', help='write (default: dry-run plan)')
         if name == 'install':
@@ -730,6 +767,13 @@ def main(argv=None):
             p.add_argument('--worker', choices=('launchd', 'none'), help='default: launchd on macOS, else none')
             p.add_argument('--agents-dir', help='LaunchAgents directory'); p.add_argument('--log-dir', help='private worker log directory')
             p.add_argument('--python', help='absolute python3 for the worker')
+        if name == 'dashboard':
+            p.add_argument('--source', required=True, help='dashboard Go module directory (runtime/dashboard of a checkout)')
+            p.add_argument('--projects', required=True, help='dashboard projects config (DASHBOARD_PROJECTS)')
+            p.add_argument('--feed', required=True, help='private dashboard feed directory (DASHBOARD_FEED)')
+            p.add_argument('--go', help='absolute go executable (default: from PATH)')
+        if name == 'status':
+            p.add_argument('--project', required=True, help='dashboard project id; the status JSON comes on stdin')
         if name == 'migrate':
             p.add_argument('--include-root', action='append', default=[],
                            help='another project root to inventory (for example one captured by its own hook)')
@@ -744,7 +788,8 @@ def main(argv=None):
             ctx = capture_context(root)
             with k.lock(root), (k.lock(ctx['registration_root']) if ctx else nullcontext()):
                 restored = restore(root)
-        out = {'list': cmd_list, 'install': install, 'remove': remove, 'migrate': migrate, 'archive': archive}[a.command](
+        out = {'list': cmd_list, 'install': install, 'remove': remove, 'migrate': migrate, 'archive': archive,
+               'dashboard': dashboard, 'status': status}[a.command](
             *((root,) if a.command == 'list' else (root, a)))
         if restored: out['restored_first'] = restored
     except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as exc:

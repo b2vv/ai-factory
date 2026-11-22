@@ -91,3 +91,12 @@ The skill is complete when **all** of the following hold:
       for the future `post-deploy-check`.
 - [ ] §6 accounts for the review-handoff findings; any unresolved BLOCKER is named and the report
       does not claim completion over it.
+
+## Dashboard status (only when the project has one)
+
+If the project's managed block (AGENTS.local.md) contains "Dashboard status for this project",
+publish the primary task's status after the report (closeout) is recorded and after your own commit, with the
+command named there: first without `--apply`, then with it. Build the status only from the task
+record's recorded evidence (stages without evidence stay `Unknown`), with no paths, URLs or secrets.
+Report a refusal; do not work around it or retry in a loop.
+See [publishing a project's status](../../../docs/dashboard-status.md).

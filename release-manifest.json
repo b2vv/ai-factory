@@ -269,6 +269,11 @@
       "component": "core"
     },
     {
+      "path": "docs/dashboard-status.md",
+      "sha256": "0f9dabd92ce53dcb3ee27f24c90079f35720afbdfe91d1ba4b54f32f2c376a73",
+      "component": "core"
+    },
+    {
       "path": "docs/guides/ai-assisted-onboarding.md",
       "sha256": "f5cc5089c318800a37fbff307af6eea764d50a80910893db28c058ec39b3788a",
       "component": "core"
@@ -565,7 +570,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "29df6cf98a75c2ff1420af1d8a892428c8cc254f18b84fe1dfceecde4c0a2865",
+      "sha256": "9a80fbd64fd198003dd2dc80cc5de6b4e2203048de2cfabd5ddec081d039ed3d",
       "component": "core"
     },
     {
@@ -2790,7 +2795,7 @@
     },
     {
       "path": "skills/arch/code-review/SKILL.md",
-      "sha256": "f0aa1f8033adce7ffb336dab10203c6c280d0bb22c631de6d0fb054dcd8d0109",
+      "sha256": "b76f16f0a15d1ee40afbaa4f99dba7ceff77fc7a953b319e9db7d5d50a88d7d4",
       "component": "skills"
     },
     {
@@ -2930,7 +2935,7 @@
     },
     {
       "path": "skills/arch/tdd/SKILL.md",
-      "sha256": "5c71c5c56776ae3df4221ca298e21cd7487baa01f3e88138c142eff5649a2b49",
+      "sha256": "e16f756a676dc4000a994e84235c4d3fc156dc0f3bbe10858aaf35868c425762",
       "component": "skills"
     },
     {
@@ -3390,7 +3395,7 @@
     },
     {
       "path": "skills/ship/ship-report/SKILL.md",
-      "sha256": "6a9e2f87726160b33fa5b19b9f6d78a0c815b4f854116de14df4d519125d8bc9",
+      "sha256": "19e5681a79e58ba6dfa373ee9b8c395b8a07bdd8a08f53112da0243cd303b549",
       "component": "skills"
     },
     {
@@ -4434,6 +4439,11 @@
       "component": "core"
     },
     {
+      "path": "tests/projects/test_project_dashboard.py",
+      "sha256": "57a25148c3b300ec2e5ecc9294e000d15c867613293189c0d33d1e20a4af0a93",
+      "component": "core"
+    },
+    {
       "path": "tests/projects/test_projects.py",
       "sha256": "b6abd84dab9336777cdc72846d90d7f0d3fb244c4a2e59ff8a85162f4608dc04",
       "component": "core"
@@ -4610,7 +4620,7 @@
     },
     {
       "path": "tools/connect-project.py",
-      "sha256": "a826c0dc4771ae78343835461d45ecdd8d5a36c43c4d8164c6fa0ce0e0355980",
+      "sha256": "72955cedbc949385d7d4d45ce28d877b069be92947a6a272e48156d821b6ed85",
       "component": "core"
     },
     {
@@ -4639,8 +4649,13 @@
       "component": "core"
     },
     {
+      "path": "tools/project_dashboard.py",
+      "sha256": "f6d156b2176cd2772d6356ac1c99354c51dbe3352fde4a6de22be3fdc9910aba",
+      "component": "core"
+    },
+    {
       "path": "tools/projects.py",
-      "sha256": "9890c1287e7837aedc307b3e674592c88d8716c9eaf8446592016cc2b4cebc7c",
+      "sha256": "8b929b47f2fa404e9a22914657ebbd12be5613ee2f2cc542ec90064fb4ae40cd",
       "component": "core"
     },
     {

@@ -161,7 +161,7 @@ def select_route(project, explicit, candidates, label, baseline):
     return value
 
 
-def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, global_only=False):
+def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, global_only=False, dashboard=None):
     """The managed block body (no markers). Deterministic given inputs."""
     lines = [
         "## AI Factory connection (managed)",
@@ -210,7 +210,29 @@ def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, glo
             "Conversation-archive search: not configured for this project (no capture-search "
             "contract found). Do not invent credentials or substitute the operator secret."
         )
+    if dashboard:
+        root = kit['managed_root']
+        lines.append(
+            f"Dashboard status for this project: id `{dashboard}`. After a stage of the primary task is "
+            f"recorded (and after your own commit), publish it as in `{root}/docs/dashboard-status.md`: "
+            f"`python3 -I {root}/tools/kit.py project status --root {root} --project {dashboard} [--apply] < status.json`. "
+            "Evidence only from the task record; no paths, URLs or secrets."
+        )
     return "\n".join(lines).rstrip() + "\n"
+
+
+DASHBOARD_LINE = re.compile(r'Dashboard status for this project: id `([a-z0-9][a-z0-9-]{0,62})`')
+DASHBOARD_ID = re.compile(r'[a-z0-9][a-z0-9-]{0,62}')
+
+
+def prior_dashboard(existing):
+    """The dashboard id this tool recorded in its managed block, retained on reconnect."""
+    if not existing or BEGIN not in existing:
+        return None
+    found = DASHBOARD_LINE.findall(existing.split(BEGIN, 1)[1].split(END, 1)[0])
+    if len(found) > 1:
+        raise ValueError('ambiguous managed dashboard pointer')
+    return found[0] if found else None
 
 
 SEARCH_LINE = re.compile(r'Conversation-archive \*\*read-only search\*\* contract: `([^`\n]+)`')
@@ -482,6 +504,9 @@ def main(argv=None):
     search = ap.add_mutually_exclusive_group()
     search.add_argument("--search-contract", help="path to the read-only search contract (e.g. .ai/project/capture-search.md); retained on future reconnects")
     search.add_argument("--clear-search-contract", action="store_true", help="remove only the managed search-contract pointer; leave its file untouched")
+    dash = ap.add_mutually_exclusive_group()
+    dash.add_argument("--dashboard-project", help="dashboard project id: adds the status-publishing pointer; retained on future reconnects")
+    dash.add_argument("--clear-dashboard-project", action="store_true", help="remove only the managed dashboard pointer")
     group = ap.add_mutually_exclusive_group()
     group.add_argument("--task-index", help="existing project-relative Markdown task index; retained on future reconnects")
     group.add_argument("--clear-task-index", action="store_true", help="remove only the managed task-index pointer; leave its file untouched")
@@ -526,6 +551,11 @@ def main(argv=None):
         search_explicit = a.search_contract
         if search_explicit is None and not a.clear_search_contract:
             search_explicit = prior_search_contract(existing_agents)
+        dashboard = a.dashboard_project
+        if dashboard is not None and not DASHBOARD_ID.fullmatch(dashboard):
+            raise ValueError('invalid dashboard project id')
+        if dashboard is None and not a.clear_dashboard_project:
+            dashboard = prior_dashboard(existing_agents)
 
     except (ValueError, OSError, UnicodeError) as exc:
         report['status'] = 'BLOCKED'
@@ -572,7 +602,7 @@ def main(argv=None):
     if pointer_baseline:
         baseline[pointer_baseline[0]] = pointer_baseline[1]
     report["task_index"] = task_index
-    block_body = build_block(kit, adapter_rel, search_rel, project, task_index, global_only)
+    block_body = build_block(kit, adapter_rel, search_rel, project, task_index, global_only, dashboard)
     conflicts = detect_unmanaged_import(agents_text)
     for c in conflicts:
         report["conflicts"].append(f"AGENTS.local.md has an UNMANAGED kit import outside the managed block: `{c}` "
