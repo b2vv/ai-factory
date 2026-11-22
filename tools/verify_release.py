@@ -30,5 +30,7 @@ if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--root',type=Path,required=True);a=ap.parse_args()
     try:
         result=verify(kit.absolute(a.root));print(json.dumps(result,indent=2));sys.exit(result['status']!='PASS')
-    except (ValueError,OSError,KeyError,TypeError):
-        print(json.dumps({'status':'BLOCKED','reason':'invalid release/path/checksum'}));sys.exit(1)
+    except (ValueError,OSError,KeyError,TypeError) as e:
+        # A Git checkout is not a release: export it first (tools/export_release.py).
+        detail=str(e) if isinstance(e,ValueError) else type(e).__name__
+        print(json.dumps({'status':'BLOCKED','reason':'invalid release/path/checksum','detail':detail}));sys.exit(1)

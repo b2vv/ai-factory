@@ -270,7 +270,7 @@
     },
     {
       "path": "docs/guides/ai-assisted-onboarding.md",
-      "sha256": "4d86ab91cfe1a7164c6adea40587c0a8c74db7ac76fd1f3e4461e9f8a9f3af7f",
+      "sha256": "f5cc5089c318800a37fbff307af6eea764d50a80910893db28c058ec39b3788a",
       "component": "core"
     },
     {
@@ -345,7 +345,7 @@
     },
     {
       "path": "docs/portable/onboarding.md",
-      "sha256": "0b42a9c8271c10d322ed3d3704ecaf5e42333ab018403f456843c1f0e190759e",
+      "sha256": "e7222a163b0e32436625d63d85c570b33252628380b0c00fe45061b809c83622",
       "component": "core"
     },
     {
@@ -500,7 +500,7 @@
     },
     {
       "path": "provenance/layout-migration.json",
-      "sha256": "d5fcc0637bfb5edd3320814011c9aa1651e5d1f769ebd1047053aae03039f025",
+      "sha256": "7693a3e498dd2e612b7a1efd4fd3cbe6d3844a71a06d0e65bb72a7ef446fb06d",
       "component": "core"
     },
     {
@@ -516,7 +516,7 @@
     {
       "path": "provenance/native-handoff.json",
       "component": "core",
-      "sha256": "162f7c91f6b304b4aa83bacf3f2f9e3bf2300e17be09445302559e355b93568a"
+      "sha256": "b7b4ea4273f37c99ac6d1a7b2c7c129ed5927d99a6629c69eea6b327e6545cf7"
     },
     {
       "path": "provenance/native-identity-guidance.json",
@@ -4295,7 +4295,7 @@
     },
     {
       "path": "tests/collection/test_layout_integrity.py",
-      "sha256": "5bf2174df7710ed45204012173127bab38cea386ff2b4bc3de8d8bd40e14c8b1",
+      "sha256": "640a5f1db7aeef63c0f10170ae50dfa8d5a4f075cce658f18f5d79d8038e4e38",
       "component": "core"
     },
     {
@@ -4595,7 +4595,7 @@
     },
     {
       "path": "tools/verify_release.py",
-      "sha256": "449615ba4f794ae0f83961970b7a90d21d3922452ec721e461d7d2c218daef8a",
+      "sha256": "359f75bc2e9f08e9b8113a5fb9f4421c42ed6b20788bd3df0e647aa1bc16222d",
       "component": "core"
     }
   ],

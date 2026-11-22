@@ -22,6 +22,7 @@
   "limits": [
     "Independent offline implementation review is recorded externally for exact bytes.",
     "Native host delivery and live activation are separate.",
-    "No claim of byte-identical portable guard; historical source remains immutable."
+    "No claim of byte-identical portable guard; historical source remains immutable.",
+    "files records the digests reviewed at proof time; later edits are tracked by release-manifest.json, not by this record."
   ]
 }

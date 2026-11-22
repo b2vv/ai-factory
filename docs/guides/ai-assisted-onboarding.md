@@ -31,6 +31,12 @@ Before the first Python/npm/CI run, inspect source, scripts, dependencies/lockfi
 
 Replace every placeholder below with agreed **canonical absolute paths without symlink components**. SOURCE is the complete trusted package; TARGET is a separate managed root (not home, `.agents`, `.claude`, `.codex`, `skills` or a product root); PROJECT is an existing project directory; EVIDENCE is a reviewer-accessible folder outside the product tree. Do not use `$HOME` as a temporary variable. The examples have no `--dry-run`: that flag DOES NOT EXIST; `plan` and omission of `--execute` are the read-only modes.
 
+A Git checkout is not a release package: `verify_release.py` reports BLOCKED (`unlisted package file`) on it, because the checkout also tracks the paused research archive `work/research/semgrep-ce-paused/` (outside the release manifest, see `provenance/research-archive.json`) and may hold ignored local files. Export first (`FACTORY_CHECKOUT` = your Git clone, the destination must not exist yet) and verify the export:
+
+```sh
+python3 -B "$FACTORY_CHECKOUT/tools/export_release.py" --root "$FACTORY_CHECKOUT" --destination "$FACTORY_SOURCE"
+```
+
 ```sh
 FACTORY_SOURCE='/absolute/trusted/ai-factory'
 FACTORY_TARGET='/absolute/dedicated/ai-factory-kit'

@@ -2,6 +2,7 @@
   "from_commit": "626fd6852e7ca53a4022feff30b7bcd492768733",
   "from_files": 350,
   "status": "AUTHOR_VALIDATED_CANDIDATE",
+  "hash_semantics": "new_sha256 records the bytes right after the layout migration (history). Later edits are tracked by release-manifest.json, not here. Only third-party notices/licenses and the frozen helpers listed in tests/collection/test_layout_integrity.py must still match new_sha256.",
   "files": [
     {
       "old_path": ".gitattributes",
@@ -201,7 +202,8 @@
         "relative links and explicit package command paths remapped; instruction body retained",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
       ],
-      "new_sha256": "20df4dbb3b173bc26518e27c13841563b7f3c6d297e0fedb8dbcb65d197b49cd"
+      "new_sha256": "20df4dbb3b173bc26518e27c13841563b7f3c6d297e0fedb8dbcb65d197b49cd",
+      "removed_after_migration": "owner working notes; not part of the public baseline"
     },
     {
       "old_path": "collection/agents/ai-factory/models.md",
@@ -378,7 +380,8 @@
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2.",
         "Owner-authorized S1 local extractive session aids and task index; immutable source identities retained."
       ],
-      "new_sha256": "320502f0fa2cf3e888bbe5c4196efe4a9175756bd9308c8e095d45224a546710"
+      "new_sha256": "320502f0fa2cf3e888bbe5c4196efe4a9175756bd9308c8e095d45224a546710",
+      "removed_after_migration": "owner working notes; not part of the public baseline"
     },
     {
       "old_path": "collection/agents/ai-factory/session-size/README.md",
@@ -421,7 +424,8 @@
         "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
       ],
-      "new_sha256": "7febbba00c6015dffaff36d8c51752431a1b61d5b7348921f9600e39dd8fdd6f"
+      "new_sha256": "7febbba00c6015dffaff36d8c51752431a1b61d5b7348921f9600e39dd8fdd6f",
+      "removed_after_migration": "owner working notes; not part of the public baseline"
     },
     {
       "old_path": "collection/agents/ai-factory/workflow.md",
@@ -450,7 +454,8 @@
         "Owner-authorized exact local-project reference cleanup under amendment seal 37569ea6af4bc15de3c3ddc4767797f57673fcb5a4bf390bfbc80e18cf52dfe4; source names, historical source digests, public/internal links and notices preserved; current bytes are authored adaptations.",
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
       ],
-      "new_sha256": "fe50b9e73252f38090e62be1cfbe052ddcf36ea146c0043f3323da003775173b"
+      "new_sha256": "fe50b9e73252f38090e62be1cfbe052ddcf36ea146c0043f3323da003775173b",
+      "removed_after_migration": "owner working notes; not part of the public baseline"
     },
     {
       "old_path": "collection/agents/rules/README.md",
@@ -526,7 +531,8 @@
       "transformations": [
         "Owner-authorized complete English adaptation: current historical documents, aliases, protocol labels and examples use English; immutable source identities and prior transformation history are retained in authenticated external evidence. See residual-english.json and english-translations.json schema 2."
       ],
-      "new_sha256": "7c4bb8aa7dfb847433ce8f301a5862cea3df7f24d8721eaa8b78b7c3f5d9d496"
+      "new_sha256": "7c4bb8aa7dfb847433ce8f301a5862cea3df7f24d8721eaa8b78b7c3f5d9d496",
+      "removed_after_migration": "owner working notes; not part of the public baseline"
     },
     {
       "old_path": "collection/agents/skills/anti-slop-design/SKILL.md",

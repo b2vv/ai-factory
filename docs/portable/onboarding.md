@@ -31,6 +31,12 @@ This kit is the reusable default entry for new projects when selected by the use
 
 Set SOURCE to the canonical complete release, KIT to a dedicated staged installation, REPO to the intended project, and MANIFEST to a non-secret inventory JSON in the task workspace. Populate the example with real local paths; an unchanged example is not acceptance.
 
+A Git checkout is not a release package: `verify_release.py` reports BLOCKED (`unlisted package file`) on it, because the checkout also tracks the paused research archive `work/research/semgrep-ce-paused/` (outside the release manifest, see `provenance/research-archive.json`) and may hold ignored local files. Export first (`CHECKOUT` = your Git clone, the destination must not exist yet) and verify the export:
+
+```sh
+python3 -B "$CHECKOUT/tools/export_release.py" --root "$CHECKOUT" --destination "$SOURCE"
+```
+
 ```sh
 python3 -B "$SOURCE/tools/verify_release.py" --root "$SOURCE"
 python3 -B "$SOURCE/tools/run_tests.py"
