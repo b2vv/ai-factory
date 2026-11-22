@@ -1286,7 +1286,7 @@
     {
       "path": "runtime/storage/deploy/dev/Dockerfile",
       "component": "storage",
-      "sha256": "952b44176abca6b3bb0adf385fed72b1c13d65a5f639a2c575831f345d34b14e"
+      "sha256": "4379d1b4e9d896dd5fb09e1558a5250f3634ed0e25006529ebeaddc0e147deab"
     },
     {
       "path": "runtime/storage/deploy/dev/README.md",

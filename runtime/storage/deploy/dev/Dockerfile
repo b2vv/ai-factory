@@ -17,11 +17,12 @@
 # tokens are still required and checked.
 
 FROM --platform=$BUILDPLATFORM golang:1.23 AS build
-ARG TARGETARCH=amd64
+# Set by BuildKit from --platform; a default here would override it.
+ARG TARGETARCH
 WORKDIR /src
 # Build context is the storage module root (runtime/storage); copy the whole module.
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /factory ./cmd/factory
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH:-amd64} go build -trimpath -ldflags="-s -w" -o /factory ./cmd/factory
 
 FROM scratch
 COPY --from=build /factory /factory
