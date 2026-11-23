@@ -12,7 +12,7 @@
 # The builder digest below is recorded in deploy/oci/manifest.json and must be kept in sync
 # with it. linux/amd64 only (other architectures NOT_TESTED, per §9.1).
 
-FROM --platform=$BUILDPLATFORM golang@sha256:60deed95d3888cc5e4d9ff8a10c54e5edc008c6ae3fba6187be6fb592e19e8c0 AS build
+FROM --platform=$BUILDPLATFORM golang@sha256:205c7636d74e0ffbe3d007162df7d74f859f5a8c8322dfb9f907977686c126cf AS build
 WORKDIR /src
 COPY . .
 # GOFLAGS=-mod=readonly: fail the build if go.mod/go.sum are not already consistent (no silent

@@ -9,17 +9,17 @@
     "base_ref": "origin/main",
     "candidate_state": "Owner-authorized untagged documented Codex event subset. Automatic recording OFF, native Markdown import absent, actual real conversation proof pending. Rebuild from exact source commit; alpha.1 tag unchanged.",
     "module": "aifactory.local/storage",
-    "go_directive": "go 1.23",
-    "go_mod_sha256": "35e98e4e5597ca96b69d7770e8d70d4a7dda5323b73215344e2b74f36585d492",
+    "go_directive": "go 1.27.0",
+    "go_mod_sha256": "dfa7d3c4106abd953d06c988bc7f6bb4bbfb22b54348cda7b4a2bac8debe6021",
     "go_sum_sha256": "8007256de27260dab4e912a5d76c4e1fb09986b148265d8c840f378554c9b408",
     "build_flags": "CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOFLAGS=-mod=readonly go build -trimpath -ldflags=-s -w"
   },
   "base_images": {
     "builder": {
-      "ref": "golang:1.23",
-      "registry_digest": "sha256:60deed95d3888cc5e4d9ff8a10c54e5edc008c6ae3fba6187be6fb592e19e8c0",
+      "ref": "golang:1.27.4",
+      "registry_digest": "sha256:205c7636d74e0ffbe3d007162df7d74f859f5a8c8322dfb9f907977686c126cf",
       "pinned_in_dockerfile": false,
-      "linux_amd64_digest": "sha256:e87b2a5f6df2dff71ea330d55d54f4979eb380ae58a7e3aabc9d53121243e689",
+      "linux_amd64_digest": "sha256:2cd7e1ebf475c6208122d2b9cefc638d98fcc8dfd8554c8872c9dd0c21f4ac61",
       "pin_location": "build-and-verify.sh; offline --pull=never"
     },
     "runtime": {

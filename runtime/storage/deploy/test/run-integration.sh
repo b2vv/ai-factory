@@ -9,7 +9,7 @@
 set -euo pipefail
 command -v docker >/dev/null || { echo "BLOCKED: Docker unavailable" >&2; exit 2; }
 docker info >/dev/null 2>&1 || { echo "BLOCKED: Docker daemon unavailable" >&2; exit 2; }
-BUILDER="golang@sha256:e87b2a5f6df2dff71ea330d55d54f4979eb380ae58a7e3aabc9d53121243e689"
+BUILDER="golang@sha256:2cd7e1ebf475c6208122d2b9cefc638d98fcc8dfd8554c8872c9dd0c21f4ac61"
 docker image inspect "$BUILDER" >/dev/null 2>&1 || { echo "BLOCKED: offline amd64 builder missing" >&2; exit 2; }
 MODCACHE="${STORAGE_GO_MOD_CACHE:-}"
 if [[ -z "$MODCACHE" ]] && command -v go >/dev/null; then MODCACHE="$(go env GOMODCACHE)"; fi

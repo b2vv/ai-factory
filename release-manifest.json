@@ -118,7 +118,7 @@
         "core"
       ],
       "runtime": [
-        "Go >=1.25"
+        "Go >=1.27"
       ],
       "activation": "Manual CLI build and invocation only; no hooks, services or project configuration."
     },
@@ -1016,7 +1016,7 @@
     {
       "path": "runtime/storage/THIRD-PARTY/THIRD-PARTY-NOTICES.md",
       "component": "storage",
-      "sha256": "585af2718f75b99b489eacaeb3038dcaa6ccc95ac1f2c2cd5cd58fe3433d6bc8"
+      "sha256": "d17d4643a2ff3a17ca7d179629f15331f8e1e3675296f480fba69db832da4243"
     },
     {
       "path": "runtime/storage/THIRD-PARTY/github.com/davecgh/go-spew/LICENSE",
@@ -1341,7 +1341,7 @@
     {
       "path": "runtime/storage/deploy/dev/Dockerfile",
       "component": "storage",
-      "sha256": "4379d1b4e9d896dd5fb09e1558a5250f3634ed0e25006529ebeaddc0e147deab"
+      "sha256": "e8e078cd8019a140e7008611dd2a991de2fb1b61c761cf26aafc570f356bdc96"
     },
     {
       "path": "runtime/storage/deploy/dev/README.md",
@@ -1356,7 +1356,7 @@
     {
       "path": "runtime/storage/deploy/oci/Dockerfile",
       "component": "storage",
-      "sha256": "739ad58c4c9c0fe7b7c4ab75e2f920c842bec131f1a713d8d75963a0eac692b8"
+      "sha256": "ba1699fc1c4f9427d033951c6267d94f1e7c3f28c9c89539814cf56593c4d36a"
     },
     {
       "path": "runtime/storage/deploy/oci/Dockerfile.runtime",
@@ -1366,7 +1366,7 @@
     {
       "path": "runtime/storage/deploy/oci/build-and-verify.sh",
       "component": "storage",
-      "sha256": "3e2d30a99f726c03ac3d36b08cacfdef77ec6ab11c27cdcae2a79e1eb970ed1d"
+      "sha256": "606d3082982f9bbf6c07e6dfe54272bef5f940a4163f4218ef7160e82fe1b935"
     },
     {
       "path": "runtime/storage/deploy/oci/config.example.json",
@@ -1376,7 +1376,7 @@
     {
       "path": "runtime/storage/deploy/oci/manifest.json",
       "component": "storage",
-      "sha256": "759e21b3e12671044b088c5400635efe3a023efcbcec0ad1eae024ea256598d2"
+      "sha256": "2ccdc025a9115c1bb5351226bd742304ccac91ef1839406d986214454fd1ae66"
     },
     {
       "path": "runtime/storage/deploy/search-client/README.md",
@@ -1406,12 +1406,12 @@
     {
       "path": "runtime/storage/deploy/test/e2e-process.sh",
       "component": "storage",
-      "sha256": "6c2d78b3189edb1e5b1dfc41455249b357fa1d88237240b3a5a3d5704fd76a6e"
+      "sha256": "275e7a47ceb9b1c7b7c5f834d2e68639ce774942c794cbd310de5bb3c2b2ccc1"
     },
     {
       "path": "runtime/storage/deploy/test/run-integration.sh",
       "component": "storage",
-      "sha256": "b1b80876145de0b91ee436781830557144605143e50a8ef4b551ab2c9a8c5ea5"
+      "sha256": "cb085bcb9fe697918af74df79e576fd24b262fab20123c9b8426d353ce1169ba"
     },
     {
       "path": "runtime/storage/deploy/test/seed-backlog/main.go",
@@ -1421,7 +1421,7 @@
     {
       "path": "runtime/storage/go.mod",
       "component": "storage",
-      "sha256": "007a31a3c820800f03325f1ef970df84d4204276d9f3c18c6156578ca26d12ce"
+      "sha256": "dfa7d3c4106abd953d06c988bc7f6bb4bbfb22b54348cda7b4a2bac8debe6021"
     },
     {
       "path": "runtime/storage/go.sum",
@@ -2800,7 +2800,7 @@
     },
     {
       "path": "runtime/web-to-md/README.md",
-      "sha256": "5a7c1ce4f8b5cb11bc0eb289264e6b712db05150131767c56b5a8d11a9137cb9",
+      "sha256": "c457381a46535f6005e3f5bafd141897a322ff526955f237cab72e46deec9127",
       "component": "web-to-md"
     },
     {
@@ -2815,7 +2815,7 @@
     },
     {
       "path": "runtime/web-to-md/go.mod",
-      "sha256": "881f766750c3fd15c96d17cda4a84dca96a61d032190e7bb76b4c357bc93a43c",
+      "sha256": "09f33939bda1fb308b102fcbd4ee88afc686bb460a5e06f0b3f29c2bbb1837ac",
       "component": "web-to-md"
     },
     {

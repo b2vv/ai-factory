@@ -16,7 +16,7 @@ Use the default JSON when the final URL and extraction metadata must travel
 with the content. With `--markdown`, stdout contains only Markdown and any
 extraction warnings go to stderr. Errors exit nonzero.
 
-Requires Go 1.25 or newer; use a supported, patched Go toolchain. The first
+Requires Go 1.27 or newer; use a supported, patched Go toolchain. The first
 build resolves checksum-pinned Go dependencies. The optional release component
 ships only source and tests; it does not build, install or run the command.
 No services, agent configuration, cloud fallback or product changes are required.

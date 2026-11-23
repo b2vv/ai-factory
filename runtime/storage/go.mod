@@ -6,7 +6,7 @@
 // unless explicitly enabled. Disabled by default; this module activates nothing on its own.
 module aifactory.local/storage
 
-go 1.23
+go 1.27.0
 
 require (
 	github.com/jackc/pgx/v5 v5.7.1

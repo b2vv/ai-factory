@@ -27,6 +27,6 @@ delivery graph (captured from the Go module cache; one directory per module).
 - `gopkg.in/yaml.v3` — Apache-2.0 (`NOTICE`)
 
 ## Base images (build/test only; NOT redistributed in the FROM-scratch factory image)
-- `golang:1.23` — build stage toolchain (Go, BSD-3-Clause).
+- `golang:1.27.4` — build stage toolchain (Go, BSD-3-Clause).
 - `postgres:17.5`, `mongo:7.0.16` — integration/e2e test backends only.
 - `scratch` — empty delivery base (no bundled OS userland; only the factory binary).

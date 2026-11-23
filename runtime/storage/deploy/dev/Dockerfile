@@ -16,7 +16,7 @@
 # Authentication/authorization are unchanged: an operator secret and principal-bound agent
 # tokens are still required and checked.
 
-FROM --platform=$BUILDPLATFORM golang:1.23 AS build
+FROM --platform=$BUILDPLATFORM golang:1.27.4 AS build
 # Set by BuildKit from --platform; a default here would override it.
 ARG TARGETARCH
 WORKDIR /src
