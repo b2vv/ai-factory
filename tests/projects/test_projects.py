@@ -317,7 +317,7 @@ class WithCapture(Base):
     def test_move_root_moves_every_capability(self):  # A5
         project, moved = self.moved_project()
         entry = next(e for e in self.ok('list')['projects'] if e['name'] == 'beta')
-        self.assertIn('already listed', self.blocked('move-root', '--project', str(project), '--to', str(project))['reason'])
+        self.assertEqual('NOOP', self.ok('move-root', '--project', str(project), '--to', str(project), '--apply')['status'])
         copy = git_init(self.cf.base / 'beta-copy')
         self.assertIn('still exists', self.blocked('move-root', '--project', str(project), '--to', str(copy))['reason'])
         os.rename(project, moved)
@@ -351,6 +351,12 @@ class WithCapture(Base):
         self.ok('handoff', '--profile', str(profile), '--apply')
         reason = self.blocked('move-root', '--project', str(project), '--to', str(moved), '--apply')['reason']
         self.assertIn('handoff', reason)
+        self.assertEqual(before, self.snapshot(*files))
+        registration = self.kit / k.STATE / P.INSTRUCTION_REG
+        registration.write_bytes(k.encode({'schema': 1, 'spec': {'targets': [{'recipe': 'r', 'project': str(project), 'fragment': ''}]}}))
+        registration.chmod(0o600)
+        reason = self.blocked('move-root', '--project', str(project), '--to', str(moved), '--apply')['reason']
+        self.assertIn('instruction registration', reason); self.assertIn('handoff', reason)  # every blocker, together
         self.assertEqual(before, self.snapshot(*files))
         self.blocked('move-root', '--project', str(self.cf.base / 'nope'), '--to', str(moved))
 

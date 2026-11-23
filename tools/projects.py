@@ -944,6 +944,7 @@ def move_root(root, args):
     entry = find(doc, root=old)
     if entry is None: raise Blocked('project is not in the list; pass its listed root')
     new = checkout_root(args.to)
+    if str(new) == old: return {'status': 'NOOP', 'project': public_entry(entry), 'from': old, 'to': old}
     if find(doc, root=new) is not None: raise Blocked('the new root is already listed')
     blockers = []
     if Path(old).exists(): blockers.append('the old root still exists: move the checkout first')
