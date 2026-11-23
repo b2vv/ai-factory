@@ -2551,7 +2551,7 @@
     {
       "path": "runtime/storage/internal/summary/extract_test.go",
       "component": "storage",
-      "sha256": "7e8377570fd7279a7502091f706c5e6a532689ee048a3319244a9a7e596e305b"
+      "sha256": "8c7c03262ee0751b19e39ccd07468c3d7530f896cca1c06522d17c95d517d65d"
     },
     {
       "path": "runtime/storage/internal/summary/observe.go",

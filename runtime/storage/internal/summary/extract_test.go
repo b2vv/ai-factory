@@ -283,12 +283,12 @@ func TestExtractPrefixAdmissionPrecedesLargeSerialization(t *testing.T) {
 	c.MaxInputBytes = 4 << 20
 	o := ExtractOptions{1 << 20, 1 << 20}
 	in.GeneratorVersion, _ = ExtractiveVersion(o)
-	baseline := allocatedExtractBytes(func() {
+	baseline := coldPoolExtractBytes(func() {
 		if _, e := Plan(c, now, in); e != nil {
 			t.Fatal(e)
 		}
 	})
-	limited := allocatedExtractBytes(func() {
+	limited := coldPoolExtractBytes(func() {
 		doc, _, e := GenerateExtract(c, now, in, o)
 		if e == nil || doc.Format != "" {
 			t.Fatal("oversized complete extract admitted")
@@ -341,4 +341,29 @@ func allocatedExtractBytes(call func()) int64 {
 	}
 	runtime.ReadMemStats(&after)
 	return int64(after.TotalAlloc-before.TotalAlloc) / 5
+}
+
+// coldPoolExtractBytes measures each call with empty sync.Pools (two GCs drop a pool
+// and its victim cache). Use it to compare two paths whose json encoder-buffer reuse
+// differs: Go 1.27's json/v2-backed encoding/json does not return encoder buffers grown
+// past 64 KiB to its pool, so with warm pools a large marshal (Plan's digest) adds about
+// one buffer to one path and can hide a real extra serialization in the other. Absolute bounds that assume warm pools keep
+// allocatedExtractBytes. Tests are not parallel; settings are restored before returning.
+func coldPoolExtractBytes(call func()) int64 {
+	runtime.GC()
+	gc := debug.SetGCPercent(-1)
+	procs := runtime.GOMAXPROCS(1)
+	defer func() { debug.SetGCPercent(gc); runtime.GOMAXPROCS(procs); runtime.GC() }()
+	call()
+	var total uint64
+	var before, after runtime.MemStats
+	for i := 0; i < 5; i++ {
+		runtime.GC()
+		runtime.GC()
+		runtime.ReadMemStats(&before)
+		call()
+		runtime.ReadMemStats(&after)
+		total += after.TotalAlloc - before.TotalAlloc
+	}
+	return int64(total / 5)
 }
