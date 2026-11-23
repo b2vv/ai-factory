@@ -301,7 +301,7 @@
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "576550bf73a434f39081600921051cd3d90ee606ad4d3746271627e84e3109e6"
+      "sha256": "53876af9f19e2a0a8a000db7bf91c85166662722c746798a78d67b59b6d121b3"
     },
     {
       "path": "docs/managed-native-handoff.md",
@@ -4436,7 +4436,7 @@
     {
       "path": "tests/install/test_instruction_update.py",
       "component": "core",
-      "sha256": "72ef848a30dd23d1f9542a800d7a5cfdb2a3693c7c834b0dda40c830d4860b17"
+      "sha256": "3c723205d0ddcccc63708bf75dff0f26f5cd213328e0928d8967e5b48265beef"
     },
     {
       "path": "tests/install/test_kit.py",
@@ -4696,11 +4696,11 @@
     {
       "path": "tools/instruction_update.py",
       "component": "core",
-      "sha256": "d0a253bc62987919ae814e9958e06cef2c44466834f2ea50dfad4397d5366f3a"
+      "sha256": "3bcf47ed2904bdf39d59edfcd16b2865ac517c30fc8fa4d99008e268471489ca"
     },
     {
       "path": "tools/kit.py",
-      "sha256": "70eb1d29380ccdb0e432433e6cad3a8284efae58b1cb6e70b4963267ddafaa54",
+      "sha256": "134de9318c65d915421afc4eec827c250b38e752f4fc7b69baa0cac3d840a812",
       "component": "core"
     },
     {

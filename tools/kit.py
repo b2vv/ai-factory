@@ -338,6 +338,14 @@ def blocked_reason(exc):
     if isinstance(exc, (KeyError, TypeError)):
         return 'MALFORMED_METADATA: required manifest/receipt fields are missing or the wrong type.'
     msg = str(exc)
+    # A hand-edited instruction target: re-emit only a strictly matched suffix (position, fixed recipe name, hash prefixes).
+    edited = 'instruction user edit blocks rollback'
+    if msg.startswith(edited):
+        reason = ('INSTRUCTION_TARGET_EDITED: a managed instruction target differs from both recorded states; '
+                  'put it back to the expected bytes (docs/managed-kit-connections.md), then re-plan.')
+        m = re.fullmatch(edited + r': (target \d+ recipe [a-z0-9-]+ sha256 (?:[0-9a-f]{12}|none) expected '
+                         r'(?:[0-9a-f]{12}|none)(?: or (?:[0-9a-f]{12}|none))?)', msg)
+        return reason + (' ' + m.group(1) if m else '')
     groups = [
         (('explicit canonical absolute path required', 'symlink refused', 'noncanonical release path',
           'invalid release path', 'sensitive/reserved release path', 'choose a dedicated toolkit directory',

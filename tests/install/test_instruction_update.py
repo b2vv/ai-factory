@@ -406,6 +406,37 @@ class InstructionTests(unittest.TestCase):
         self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertEqual(json.loads(r.stdout)['status'],'NOOP')
 
 
+    def test_rollback_verifies_restored_state_strictly(self):
+        r=self.apply();real=k.guarded_write
+        def skip_target(path,*args):
+            if Path(path)==self.target:return None   # a writer that silently leaves the target as it was
+            return real(path,*args)
+        with patch.object(k,'guarded_write',side_effect=skip_target),self.assertRaisesRegex(ValueError,'did not restore'):
+            self.rollback(r['transaction'])
+        receipt=json.loads((self.root/k.STATE/u.RECEIPTS/(r['transaction']+'.json')).read_text())
+        self.assertNotEqual('ROLLED_BACK',receipt['status'])
+        self.assertEqual('ROLLED_BACK',self.rollback(r['transaction'])['status'])
+        self.assertEqual(self.target.read_bytes(),self.original)
+
+    def test_hand_edit_names_target_and_accepted_states_without_a_path(self):
+        r=self.apply();after=self.target.read_bytes()
+        self.target.write_bytes(after+b'owner edit\n')
+        with self.assertRaises(ValueError) as cm:u.rollback_plan(k,self.root,r['transaction'])
+        msg=str(cm.exception)
+        self.assertRegex(msg,r'^instruction user edit blocks rollback: target 1 recipe legacy-project-size-1 sha256 [0-9a-f]{12} expected [0-9a-f]{12} or [0-9a-f]{12}$')
+        self.assertIn(k.digest(self.original)[:12],msg);self.assertIn(k.digest(after)[:12],msg)
+        reason=k.blocked_reason(ValueError(msg))
+        self.assertTrue(reason.startswith('INSTRUCTION_TARGET_EDITED'));self.assertIn('target 1 recipe legacy-project-size-1',reason)
+        self.assertNotIn(str(self.base),reason)
+        for crafted in (msg+' '+str(self.target),'instruction user edit blocks rollback: '+str(self.target)):
+            leaked=k.blocked_reason(ValueError(crafted))
+            self.assertTrue(leaked.startswith('INSTRUCTION_TARGET_EDITED'));self.assertNotIn(str(self.base),leaked);self.assertNotIn('target 1',leaked)
+        self.target.write_bytes(after);self.assertEqual('ROLLED_BACK',self.rollback(r['transaction'])['status'])
+        self.target.write_bytes(self.original+b'later edit\n')
+        with self.assertRaises(ValueError) as cm:u.rollback_plan(k,self.root,r['transaction'])
+        self.assertRegex(str(cm.exception),r'expected [0-9a-f]{12}$')   # terminal: only the before state is accepted
+
+
 class CaptureInstructionTests(unittest.TestCase):
     def setUp(self):
         policy=fixture_policy();policy.start();self.addCleanup(policy.stop)

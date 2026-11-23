@@ -232,6 +232,26 @@ are checked before restoration; foreign edits or uncertain child outcomes block.
 The shared-home writer binding remains after rollback, preventing another managed
 root from independently taking over the same instruction targets.
 
+### When a managed instruction file was edited by hand
+
+Rollback compares each whole instruction target with the two states it recorded (before and after the update); an
+update re-classifies the target's managed fragments and also stops on content it cannot classify. A hand edit anywhere
+in a target therefore blocks both. `kit.py rollback` then reports
+
+    INSTRUCTION_TARGET_EDITED: ... target <n> recipe <recipe> sha256 <current> expected <hash>[ or <hash>]
+
+with 12-hex hash prefixes and no path. `<n>` is the target's position in the transaction's instruction files, in the
+same order as the update plan and the private receipt list them. To reconcile:
+
+1. Copy your change somewhere outside the managed targets.
+2. Put the target back to exactly the bytes the kit wrote: its sha256 must start with one of the expected prefixes
+   (`shasum -a 256 <file>`). The private receipt holds both recorded documents.
+3. Re-plan, review, then execute the rollback or update as usual.
+4. Keep personal or project rules in the project's `AGENTS.local.md`, or change a managed target only through a
+   reviewed instruction spec, not by editing it in place.
+
+Never clear the pending barrier, edit a receipt or replay a subordinate transaction to get past this block.
+
 ### Why this transaction boundary
 
 The shared-home binding is intentionally permanent: silently allowing a second

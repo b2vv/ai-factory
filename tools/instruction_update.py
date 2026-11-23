@@ -531,6 +531,30 @@ def terminal_cleanup_allowed(k, root, tx, baseid, actual):
     return True
 
 
+def recipe_name(entry):
+    """The current known recipe id (a retired id maps to its successor); never the raw registered text."""
+    recipe = entry.get('recipe')
+    return (known_recipe(recipe) if isinstance(recipe, str) else None) or 'unknown'
+
+
+def edited_target(n, entry, now, permitted):
+    """Name a hand-edited target by position and recipe, never by path; list only the states the plan accepts."""
+    short = lambda sig: (sig or {}).get('sha256', 'none')[:12] if sig else 'none'
+    expected = ' or '.join(dict.fromkeys(short(sig) for sig in permitted))
+    return f"instruction user edit blocks rollback: target {n} recipe {recipe_name(entry)} sha256 {short(now)} expected {expected}"
+
+
+def verify_restored(k, root, b):
+    """After a rollback, every target, the registration and the current metadata must be back at their recorded baseline."""
+    for n, entry in enumerate(b['files'], 1):
+        if k.signature(Path(entry['path'])) != entry['before']:
+            raise ValueError(f'instruction rollback did not restore target {n}')
+    if k.signature(root/k.STATE/REG) != b['baseline'][REG]['signature']:
+        raise ValueError('instruction rollback did not restore the registration')
+    if metadata(k, root/k.STATE/CURRENT) != b['baseline'][CURRENT]:
+        raise ValueError('instruction rollback did not restore the current metadata')
+
+
 def rollback_plan(k, root, ident):
     root = k.safe_root(root)
     if not re.fullmatch('[a-f0-9]{32}', ident): raise ValueError('invalid instruction transaction')
@@ -547,10 +571,10 @@ def rollback_plan(k, root, ident):
     elif pending and current not in (b['parent'], None) and current.get('id') != ident:
         raise ValueError('instruction lineage changed during pending transaction')
     files = []
-    for entry in b['files']:
+    for n, entry in enumerate(b['files'], 1):
         now = k.signature(Path(entry['path']))
         permitted = (entry['before'],) if terminal else (entry['before'], entry['after'])
-        if now not in permitted: raise ValueError('instruction user edit blocks rollback')
+        if now not in permitted: raise ValueError(edited_target(n, entry, now, permitted))
         files.append({'path': entry['path'], 'current': now})
     regnow = k.signature(root/k.STATE/REG)
     allowedreg = (b['baseline'][REG]['signature'],) if terminal else (b['baseline'][REG]['signature'], b['registration_after'])
@@ -622,6 +646,7 @@ def rollback(k, root, ident, expected, exclusive):
             if result['status'] not in ('ROLLED_BACK', 'NOOP'): raise ValueError('delegated rollback incomplete')
         tx['status'] = 'BASE_ROLLED_BACK'; save(k, root, tx)
         rollback_plan(k, root, ident)  # Verify every restored output before completion.
+        verify_restored(k, root, b)     # Strictly: the plan above still accepts the `after` states.
         tx['status'] = 'ROLLED_BACK'; save(k, root, tx)
         clear_pending(k, root, ident)
         return {'status': 'ROLLED_BACK', 'transaction': ident}
