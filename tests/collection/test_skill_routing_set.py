@@ -94,6 +94,12 @@ class RoutingSet(unittest.TestCase):
             again = subprocess.run([sys.executable, '-I', str(builder), str(dest)], capture_output=True)
             self.assertNotEqual(0, again.returncode)  # never writes into an existing directory
 
+    def test_ui_audit_is_asked_for_even_when_the_code_seems_enough(self):
+        # F5 (2026-11-23): for "this filter row looks wrong" the model answered from the CSS without ui-audit.
+        desc = skill_descriptions()['ui-audit']
+        self.assertIn('even when the cause seems readable from the code', desc)
+        self.assertIn('rendered screen', desc)
+
     def test_parser_reads_the_first_skill(self):
         init = json.dumps({'type': 'system', 'subtype': 'init', 'model': 'm-1'})
         bash = json.dumps({'type': 'assistant', 'message': {'content': [

@@ -187,7 +187,7 @@
     },
     {
       "destination": "skills/ui-audit/SKILL.md",
-      "sha256": "e8ff3e2591470eff74713774cabd26e33ae4909e8c3a4568b80b1cb32077b298",
+      "sha256": "5eecae87da237f3ab634af181c13b6d7e1e4a6bf6720f504f4879f99fdf395fc",
       "kind": "Owner-authorized authored first-party skill (ui-audit); read-only UI/UX problem finder with an owner confirmation loop, distinct from upstream MIT adaptation; hands confirmed problems to interface-review and design-pass; see PROVENANCE.md"
     }
   ],

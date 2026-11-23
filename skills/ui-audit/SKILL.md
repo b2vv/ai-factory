@@ -1,6 +1,6 @@
 ---
 name: ui-audit
-description: "Finds UI/UX problems on a rendered screen by looking at it the way a user does, and reports each as a numbered, located, plain-language problem the owner can confirm with one word. Use when the owner asks what is wrong with a screen, says something looks or feels off without naming it, points to a specific UI region and says it looks or feels wrong, or wants problems found before a review gate. Triggers: \"ui-audit\", \"find the problems on this screen\", \"what is wrong here\", \"something is off\"."
+description: "Finds UI/UX problems on a rendered screen by looking at it the way a user does, and reports each as a numbered, located, plain-language problem the owner can confirm with one word. Use when the owner asks what is wrong with a screen, says something looks or feels off without naming it, points to a specific UI region and says it looks or feels wrong, or wants problems found before a review gate. Use it even when the cause seems readable from the code: it checks the rendered screen and lists each problem for one-word confirmation, which a code read does not. Triggers: \"ui-audit\", \"find the problems on this screen\", \"what is wrong here\", \"something is off\"."
 ---
 
 # ui-audit — find the problems, then name them
