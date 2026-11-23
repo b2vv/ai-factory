@@ -375,11 +375,12 @@ def cmd_list(root, dashboard_config=False):
     return out
 
 
-def connect(root, project, apply, contract=None, dashboard=None):
+def connect(root, project, apply, contract=None, dashboard=None, work_dirs=()):
     """Run the existing connect-project step in-process; returns its report."""
     argv = (['--managed-root', str(root), '--project', str(project)] + (['--apply'] if apply else [])
             + (['--search-contract', str(contract)] if contract else [])
-            + (['--dashboard-project', dashboard] if dashboard else []))
+            + (['--dashboard-project', dashboard] if dashboard else [])
+            + [x for w in work_dirs for x in ('--work-dir', w)])
     buf = io.StringIO()
     with redirect_stdout(buf):
         code = connection().main(argv)
@@ -387,6 +388,11 @@ def connect(root, project, apply, contract=None, dashboard=None):
     if code != 0 or report.get('status') == 'BLOCKED':
         raise Blocked('connect-project: ' + '; '.join(report.get('conflicts') or [report.get('reason', 'blocked')]))
     return report
+
+
+def created_work(project, report):
+    """work/ READMEs the connect step will create: part of the guarded set, so a failed write removes them."""
+    return [project / a['file'] for a in report['actions'] if a['action'] == 'create' and a['file'].startswith('work/')]
 
 
 def check_mapping(root, ctx, doc):
@@ -516,7 +522,7 @@ def install(root, args):
         dash_id = DB.dashboard_id(dash_cfg, project) if dash_cfg else None
     check_dashboard(root, before)
     new_dash = dashboard_bytes(doc)
-    report = connect(root, project, False, contract, dash_id)
+    report = connect(root, project, False, contract, dash_id, getattr(args, 'work_dir', ()))
     files = [project / n for n in ('AGENTS.local.md', 'CLAUDE.local.md', '.gitignore')]
     new_list = encode(doc)
     dash_changed = k.regular(dashboard_path(root)) != new_dash
@@ -543,7 +549,7 @@ def install(root, args):
     if unchanged or not args.apply:
         if not unchanged: out['status'] = 'PLANNED (dry-run; pass --apply to write)'
         return out
-    paths = files + list(surface) + ([ctx['mapping']] if ctx else []) + [dashboard_path(root), root / k.STATE / LIST]
+    paths = files + created_work(project, report) + list(surface) + ([ctx['mapping']] if ctx else []) + [dashboard_path(root), root / k.STATE / LIST]
     if dash_changed: dashboard_validated(root, new_dash)
     if enroll: paths = [Path(rec['files'][r]) for r in ('capture_credential', 'search_secret', 'search_epoch')
                         if r in rec['files']] + paths
@@ -551,7 +557,8 @@ def install(root, args):
         if load(root) != before: raise Blocked('project list changed while planning')
         check_mapping(root, ctx, before)
         steps = [('surface', lambda: [guarded(p, data) for p, data in surface.items()]),
-                 ('connect', lambda: connect(root, project, True, rec['files']['search_contract'] if rec else None, dash_id))]
+                 ('connect', lambda: connect(root, project, True, rec['files']['search_contract'] if rec else None, dash_id,
+                                             getattr(args, 'work_dir', ())))]
         if ctx: steps.append(('mapping', lambda: guarded(ctx['mapping'], mapping_bytes(doc))))
         check_dashboard(root, before)
         steps.append(('dashboard', lambda: guarded(dashboard_path(root), new_dash)))
@@ -979,7 +986,7 @@ def move_root(root, args):
     if not args.apply: return out
     if k.regular(dashboard_path(root)) != new_dash: dashboard_validated(root, new_dash)
     files = [new / n for n in ('AGENTS.local.md', 'CLAUDE.local.md', '.gitignore')]
-    paths = files + ([ctx['mapping']] if ctx else []) + [dashboard_path(root), root / k.STATE / LIST]
+    paths = files + created_work(new, report) + ([ctx['mapping']] if ctx else []) + [dashboard_path(root), root / k.STATE / LIST]
     with operation(root, ctx) as restored:
         if load(root) != before: raise Blocked('project list changed while planning')
         check_mapping(root, ctx, before)
@@ -1037,6 +1044,8 @@ def parser():
             c.add_argument('--capture-credential', help='existing private capture credential file for this project')
             c.add_argument('--no-capture', action='store_true')
             p.add_argument('--capture-queue'); p.add_argument('--capture-status'); p.add_argument('--source-instance')
+            p.add_argument('--work-dir', action='append', default=[], metavar='ROLE=DIR',
+                           help='map a work/ role to an existing work/ directory (retained; ROLE= clears)')
         if name == 'group':
             p.add_argument('--project', required=True, help='listed root of the project')
             g = p.add_mutually_exclusive_group(required=True)

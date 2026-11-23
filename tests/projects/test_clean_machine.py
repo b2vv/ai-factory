@@ -24,7 +24,11 @@ class CleanMachine(unittest.TestCase):
         base = Path(tmp.name).resolve()
         self.home = base / 'home'; self.home.mkdir(mode=0o700)
         self.pkg = base / 'release'
-        export_release.export(self.manifest_copy(base / 'source'), self.pkg)
+        archive = json.loads((ROOT / export_release.ARCHIVE).read_text())['files']
+        if all((ROOT / n).is_file() for n in archive):   # a source tree: export the release from it
+            export_release.export(self.manifest_copy(base / 'source', list(archive)), self.pkg)
+        else:                                             # an exported package is itself the release
+            self.manifest_copy(self.pkg, [])
         self.kit = self.home / 'kit'
         self.project = self.home / 'work' / 'app'; self.project.mkdir(parents=True)
         subprocess.run(['/usr/bin/git', 'init', '-q', str(self.project)], check=True,
@@ -33,11 +37,10 @@ class CleanMachine(unittest.TestCase):
         self.outputs = []
 
     @staticmethod
-    def manifest_copy(dest):
-        """Only the files the release lists (plus the declared archive inventory): a checkout's untracked files stay out."""
+    def manifest_copy(dest, archive):
+        """Only the files the release lists (plus `archive`): a checkout's untracked files stay out."""
         manifest = json.loads((ROOT / 'release-manifest.json').read_text())
-        archive = json.loads((ROOT / export_release.ARCHIVE).read_text())['files']
-        for name in [e['path'] for e in manifest['files']] + list(archive) + ['release-manifest.json', 'checksums.sha256']:
+        for name in [e['path'] for e in manifest['files']] + archive + ['release-manifest.json', 'checksums.sha256']:
             target = dest / name; target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes((ROOT / name).read_bytes()); target.chmod((ROOT / name).stat().st_mode & 0o777)
         return dest
@@ -61,6 +64,8 @@ class CleanMachine(unittest.TestCase):
         connected = self.kit_cli(installed, 'project', 'install', '--root', str(self.kit), '--project', str(self.project), '--apply')
         self.assertEqual('APPLIED', connected['status'])
         self.assertIn('@AGENTS.local.md', (self.project / 'CLAUDE.local.md').read_text())
+        self.assertEqual(['archive', 'in-progress', 'tasks', 'tech-debt'], sorted(p.name for p in (self.project / 'work').iterdir()))
+        self.assertIn('Work layout: tasks `work/tasks/`', (self.project / 'AGENTS.local.md').read_text())
         self.assertEqual(['app'], [e['name'] for e in self.kit_cli(installed, 'project', 'list', '--root', str(self.kit))['projects']])
         update = self.kit_cli(installed, 'update', '--package', str(self.pkg), '--root', str(self.kit))
         self.assertEqual('NOOP', update['status'])

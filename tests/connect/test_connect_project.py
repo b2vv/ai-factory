@@ -764,6 +764,125 @@ class TaskIndexConnection(unittest.TestCase):
         self.assertNotIn('ai-factory-task-index:',(self.proj/'AGENTS.local.md').read_text())
         self.assertEqual(index.read_bytes(),before)
 
+    # T28: work/ layout on connect
+    ROLES = ("tasks", "in-progress", "archive", "tech-debt")
+
+    def block(self):
+        text = (self.proj / "AGENTS.local.md").read_text()
+        return text.split(cp.BEGIN, 1)[1].split(cp.END, 1)[0]
+
+    def test_fresh_project_gets_four_work_directories(self):
+        rc, plan = run(self.base_args())
+        self.assertEqual(rc, 0)
+        self.assertEqual("created", plan["work_layout"]["mode"])
+        self.assertIn({"file": "work/archive/README.md", "action": "create"}, plan["actions"])
+        self.assertFalse((self.proj / "work").exists())            # dry run writes nothing
+        rc, rep = run(self.base_args() + ["--apply"])
+        self.assertEqual(rc, 0)
+        for role in self.ROLES:
+            readme = self.proj / "work" / role / "README.md"
+            self.assertEqual(0o644, readme.stat().st_mode & 0o777)
+            self.assertTrue(readme.read_text().startswith("# "))
+        self.assertIn("Work layout: tasks `work/tasks/`; in progress `work/in-progress/`; "
+                      "archive `work/archive/`; tech debt `work/tech-debt/`.", self.block())
+        self.assertIn("moves to the archive as a pointer", self.block())
+        self.assertNotIn("not mapped", self.block())
+        before = {p: p.read_bytes() for p in self.proj.rglob("*") if p.is_file()}
+        rc, again = run(self.base_args() + ["--apply"])           # reconnect is NOOP
+        self.assertEqual(rc, 0)
+        self.assertEqual("existing", again["work_layout"]["mode"])
+        self.assertEqual(before, {p: p.read_bytes() for p in self.proj.rglob("*") if p.is_file()})
+        self.assertTrue(all(x["action"] in ("noop", "present") for x in again["actions"]))
+
+    def test_existing_layout_kept_and_mapped_without_guessing(self):
+        for name in ("queue", "backlog", "debt", "archive", "draft", ".hidden"):
+            (self.proj / "work" / name).mkdir(parents=True)
+        (self.proj / "work" / "archive" / "T1.md").write_text("done\n")
+        (self.proj / "work" / "notes.md").write_text("a file is not a role\n")
+        rc, rep = run(self.base_args() + ["--apply"])
+        self.assertEqual(rc, 0)
+        self.assertEqual({"tasks": None, "in-progress": None, "archive": "archive", "tech-debt": "debt"},
+                         rep["work_layout"]["roles"])
+        self.assertEqual({"tasks": ["queue", "backlog"], "in-progress": []}, rep["work_layout"]["unmapped"])
+        self.assertEqual([".hidden", "archive", "backlog", "debt", "draft", "notes.md", "queue"],
+                         sorted(p.name for p in (self.proj / "work").iterdir()))      # nothing created or moved
+        self.assertEqual("done\n", (self.proj / "work" / "archive" / "T1.md").read_text())
+        block = self.block()
+        self.assertIn("tasks: not mapped; in progress: not mapped; archive `work/archive/`; tech debt `work/tech-debt/`"
+                      .replace("`work/tech-debt/`", "`work/debt/`"), block)
+        self.assertIn("ask the owner, do not guess", block)
+
+    def test_empty_role_directories_left_by_rollback_are_completed(self):
+        for role in ("tasks", "archive"):
+            (self.proj / "work" / role).mkdir(parents=True)
+        rc, rep = run(self.base_args() + ["--apply"])
+        self.assertEqual("created", rep["work_layout"]["mode"])
+        for role in self.ROLES:
+            self.assertTrue((self.proj / "work" / role / "README.md").is_file())
+        (self.proj / "work" / "tech-debt" / "README.md").unlink()   # a used, non-empty layout is not refilled
+        (self.proj / "work" / "tasks" / "T1.md").write_text("open\n")
+        rc, rep = run(self.base_args() + ["--apply"])
+        self.assertEqual("existing", rep["work_layout"]["mode"])
+        self.assertFalse((self.proj / "work" / "tech-debt" / "README.md").exists())
+
+    def test_role_name_wins_over_other_names(self):
+        for name in ("tasks", "queue", "done"):
+            (self.proj / "work" / name).mkdir(parents=True)
+        rc, rep = run(self.base_args())
+        self.assertEqual("tasks", rep["work_layout"]["roles"]["tasks"])
+        self.assertEqual("done", rep["work_layout"]["roles"]["archive"])
+
+    def test_explicit_work_dir_retained_cleared_and_checked(self):
+        for name in ("queue", "backlog"):
+            (self.proj / "work" / name).mkdir(parents=True)
+        rc, rep = run(self.base_args() + ["--work-dir", "tasks=queue", "--apply"])
+        self.assertEqual(rc, 0)
+        self.assertEqual("queue", rep["work_layout"]["roles"]["tasks"])
+        self.assertIn('<!-- ai-factory-work-layout: {"tasks": "queue"} -->', self.block())
+        rc, again = run(self.base_args() + ["--apply"])
+        self.assertEqual("queue", again["work_layout"]["roles"]["tasks"])  # retained without the flag
+        self.assertEqual("noop", [x for x in again["actions"] if x["file"] == "AGENTS.local.md"][0]["action"])
+        (self.proj / "work" / "queue").rmdir()
+        before = (self.proj / "AGENTS.local.md").read_bytes()
+        rc, gone = run(self.base_args() + ["--apply"])
+        self.assertNotEqual(rc, 0)
+        self.assertIn("--work-dir tasks=", gone["conflicts"][0])
+        self.assertEqual(before, (self.proj / "AGENTS.local.md").read_bytes())
+        rc, cleared = run(self.base_args() + ["--work-dir", "tasks=", "--apply"])
+        self.assertEqual(rc, 0)
+        self.assertNotIn("ai-factory-work-layout", self.block())
+        self.assertEqual("backlog", cleared["work_layout"]["roles"]["tasks"])
+
+    def test_bad_work_input_blocks_before_writes(self):
+        (self.proj / "work" / "queue").mkdir(parents=True)
+        for value in ("tasks", "nope=queue", "tasks=../x", "tasks=a/b", "tasks=missing"):
+            with self.subTest(value=value):
+                rc, rep = run(self.base_args() + ["--work-dir", value, "--apply"])
+                self.assertNotEqual(rc, 0)
+                self.assertFalse((self.proj / "AGENTS.local.md").exists())
+        (self.proj / "work" / "queue").rmdir(); (self.proj / "work").rmdir()
+        (self.proj / "work").write_text("not a directory\n")
+        rc, rep = run(self.base_args() + ["--apply"])
+        self.assertNotEqual(rc, 0)
+        self.assertFalse((self.proj / "AGENTS.local.md").exists())
+        (self.proj / "work").unlink()
+        elsewhere = self.tmp / "elsewhere"; elsewhere.mkdir()
+        (self.proj / "work").symlink_to(elsewhere)
+        with self.assertRaises(ValueError):  # like every symlinked target: refused before any write
+            run(self.base_args() + ["--apply"])
+        self.assertEqual([], list(elsewhere.iterdir()))
+        self.assertFalse((self.proj / "AGENTS.local.md").exists())
+
+    def test_malformed_work_marker_blocks(self):
+        run(self.base_args() + ["--apply"])
+        p = self.proj / "AGENTS.local.md"
+        for bad in ('<!-- ai-factory-work-layout: [1] -->', '<!-- ai-factory-work-layout: {"nope": "tasks"} -->'):
+            with self.subTest(bad=bad):
+                p.write_text(p.read_text().replace(cp.END, bad + "\n" + cp.END))
+                rc, rep = run(self.base_args() + ["--apply"])
+                self.assertNotEqual(rc, 0)
+                p.write_text(p.read_text().replace(bad + "\n", ""))
+
     def test_bad_index_rejected_before_writes(self):
         index=self.make_index();(self.proj/'link.md').symlink_to(index)
         for name in ['missing.md','../outside.md',str(index),'link.md','work/tasks.md`\nextra','AGENTS.local.md']:

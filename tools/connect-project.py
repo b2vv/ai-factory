@@ -11,6 +11,10 @@ What it does, idempotently:
   * Writes a single delimited *managed block* into `AGENTS.local.md` that points at the
     canonical kit (`--managed-root`), imports the kit entry rules (`@<root>/rules/agent-entry.md`),
     and references the project adapter and the capture-search contract (by path, never copied).
+  * Records the work/ layout (tasks, in progress, archive, tech debt) in the block. A project with no
+    work/ subdirectories gets `work/tasks/`, `work/in-progress/`, `work/archive/`, `work/tech-debt/`,
+    each with a README; an existing layout is kept, nothing is moved or created beside it, and only
+    its mapping is recorded (an ambiguous role stays unmapped until `--work-dir ROLE=DIR`).
   * Optionally points to an existing --task-index, retained unless explicitly changed/cleared; never creates a tracker.
   * Ensures `CLAUDE.local.md` imports `@AGENTS.local.md`.
   * Appends the local entrypoint paths to `.gitignore` (deduplicated), preserving existing rules.
@@ -161,7 +165,8 @@ def select_route(project, explicit, candidates, label, baseline):
     return value
 
 
-def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, global_only=False, dashboard=None):
+def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, global_only=False, dashboard=None,
+                work=None):
     """The managed block body (no markers). Deterministic given inputs."""
     lines = [
         "## AI Factory connection (managed)",
@@ -188,6 +193,8 @@ def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, glo
             "Keep readiness, handoff and evidence in that primary record; do not create a second tracker.",
             "",
         ])
+    if work:
+        lines.extend(work_lines(work))
     if global_only:
         lines.extend([
             "<!-- ai-factory-route: global-only -->",
@@ -282,6 +289,113 @@ def task_index_pointer(project, existing, requested=None, clear=False):
         raise ValueError('missing or oversized task index; no tracker is created')
     raw.decode('utf-8')
     return value, (path, installer.signature(path))
+
+
+# The work/ layout (owner decision 2026-11-23): a project with no work/ subdirectories gets these four,
+# each with a README; a project with its own layout is kept and only its mapping is recorded.
+WORK = 'work'
+WORK_ROLES = (  # role, label, recognised existing names (the role name itself wins)
+    ('tasks', 'tasks', ('tasks', 'queue', 'backlog', 'todo')),
+    ('in-progress', 'in progress', ('in-progress', 'wip', 'doing', 'active')),
+    ('archive', 'archive', ('archive', 'archived', 'done')),
+    ('tech-debt', 'tech debt', ('tech-debt', 'debt', 'techdebt')),
+)
+WORK_README = {
+    'tasks': 'Open task records, one Markdown file per task.',
+    'in-progress': 'Tasks being worked on. A task that starts moves here from tasks/.',
+    'archive': ('Closed tasks, kept as pointers: what was done, which commit or PR, where the result is. '
+                'A closed task moves here; it is not deleted.'),
+    'tech-debt': 'Known debt and deliberate shortcuts, each with the trigger for revisiting it.',
+}
+WORK_MARKER = re.compile(r'<!-- ai-factory-work-layout: (.+) -->')
+WORK_DIR_NAME = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,62}')
+
+
+def prior_work_map(existing):
+    """Explicit role→directory choices this tool recorded in its managed block, retained on reconnect."""
+    if not existing or BEGIN not in existing:
+        return {}
+    body = existing.split(BEGIN, 1)[1].split(END, 1)[0]
+    lines = [line for line in body.splitlines() if 'ai-factory-work-layout:' in line]
+    if len(lines) > 1:
+        raise ValueError('ambiguous managed work layout')
+    if not lines:
+        return {}
+    match = WORK_MARKER.fullmatch(lines[0])
+    value = json.loads(match.group(1)) if match else None
+    if not isinstance(value, dict) or not all(isinstance(v, str) for v in value.values()):
+        raise ValueError('invalid managed work layout marker')
+    return value
+
+
+def work_dirs(project):
+    """Plain, non-hidden subdirectories of work/ (symlinks are not part of the layout)."""
+    work = installer.absolute(project / WORK)
+    if not work.exists():
+        return []
+    if not work.is_dir():
+        raise ValueError('work/ exists and is not a directory')
+    return sorted(p.name for p in work.iterdir() if not p.name.startswith('.') and not p.is_symlink() and p.is_dir())
+
+
+def work_layout(project, prior, requested):
+    """Resolve the work/ layout: {'mode', 'roles': {role: dir|None}, 'explicit', 'unmapped': {role: [candidates]},
+    'create': [Path]}. Detection matches names only; an ambiguous role stays unmapped, never guessed."""
+    explicit = dict(prior)
+    roles = [r for r, _, _ in WORK_ROLES]
+    for item in requested:
+        role, sep, name = item.partition('=')
+        if not sep or role not in roles:
+            raise ValueError(f'--work-dir needs ROLE=DIR with ROLE one of {", ".join(roles)}')
+        if name and not WORK_DIR_NAME.fullmatch(name):
+            raise ValueError('--work-dir DIR must be one plain directory name under work/')
+        if name: explicit[role] = name
+        else: explicit.pop(role, None)
+    if set(explicit) - set(roles):
+        raise ValueError('invalid managed work layout marker')
+    present = work_dirs(project)
+    for role, name in explicit.items():
+        if name not in present:
+            raise ValueError(f'recorded work/ directory for {role} is missing: work/{name} '
+                             f'(create it, or pass --work-dir {role}= to clear the choice)')
+    # Empty role-named directories only (e.g. left by a rolled-back connect) are still a fresh layout.
+    if not explicit and all(n in roles and not any((project / WORK / n).iterdir()) for n in present):
+        return {'mode': 'created', 'roles': {r: r for r in roles}, 'explicit': {}, 'unmapped': {},
+                'create': [project / WORK / r / 'README.md' for r in roles]}
+    out = {'mode': 'existing', 'roles': {}, 'explicit': explicit, 'unmapped': {}, 'create': []}
+    for role, _, names in WORK_ROLES:
+        if role in explicit:
+            out['roles'][role] = explicit[role]
+            continue
+        found = [n for n in names if n in present]
+        if role in found or len(found) == 1:
+            out['roles'][role] = role if role in found else found[0]
+        else:
+            out['roles'][role] = None
+            out['unmapped'][role] = found
+    return out
+
+
+def work_lines(layout):
+    if layout['explicit']:
+        yield '<!-- ai-factory-work-layout: ' + json.dumps(layout['explicit'], sort_keys=True) + ' -->'
+    parts = []
+    for role, label, _ in WORK_ROLES:
+        name = layout['roles'][role]
+        parts.append(f"{label} `work/{name}/`" if name else f"{label}: not mapped")
+    yield "Work layout: " + "; ".join(parts) + "."
+    yield ("A task that starts moves to in progress; a task that closes moves to the archive as a pointer "
+           "(what was done, which commit or PR, where the result is), never deleted. Other work/ directories "
+           "are the project's own.")
+    if layout['unmapped']:
+        yield ("A role that is not mapped has no agreed directory: ask the owner, do not guess "
+               "(record the choice with `--work-dir ROLE=DIR`).")
+    yield ""
+
+
+def work_readme(role):
+    label = next(l for r, l, _ in WORK_ROLES if r == role)
+    return f"# {label[0].upper() + label[1:]}\n\n{WORK_README[role]}\n".encode()
 
 
 def validate_markers(text):
@@ -513,6 +627,9 @@ def main(argv=None):
     group = ap.add_mutually_exclusive_group()
     group.add_argument("--task-index", help="existing project-relative Markdown task index; retained on future reconnects")
     group.add_argument("--clear-task-index", action="store_true", help="remove only the managed task-index pointer; leave its file untouched")
+    ap.add_argument("--work-dir", action="append", default=[], metavar="ROLE=DIR",
+                    help="map a work/ role (tasks, in-progress, archive, tech-debt) to an existing work/ directory; "
+                         "retained on future reconnects; ROLE= clears the choice (repeatable)")
     ap.add_argument("--gitignore-extra", action="append", default=[], help="extra local path to gitignore (repeatable)")
     ap.add_argument("--git-root", help="git root to check tracked-status against (default: --project)")
     ap.add_argument("--reconcile-identity", action="store_true",
@@ -605,7 +722,21 @@ def main(argv=None):
     if pointer_baseline:
         baseline[pointer_baseline[0]] = pointer_baseline[1]
     report["task_index"] = task_index
-    block_body = build_block(kit, adapter_rel, search_rel, project, task_index, global_only, dashboard)
+    try:
+        work = work_layout(project, prior_work_map(agents_text), a.work_dir)
+        for path in work['create']:
+            baseline[installer.absolute(path)] = installer.signature(path)
+    except (ValueError, OSError) as exc:
+        report["status"] = "BLOCKED"
+        report["conflicts"].append(str(exc))
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 1
+    report["work_layout"] = {"mode": work["mode"], "roles": work["roles"], "explicit": work["explicit"],
+                             "unmapped": work["unmapped"]}
+    for path in work['create']:
+        report["actions"].append({"file": str(path.relative_to(project)),
+                                  "action": "create" if baseline[path] is None else "present"})
+    block_body = build_block(kit, adapter_rel, search_rel, project, task_index, global_only, dashboard, work)
     conflicts = detect_unmanaged_import(agents_text)
     for c in conflicts:
         report["conflicts"].append(f"AGENTS.local.md has an UNMANAGED kit import outside the managed block: `{c}` "
@@ -661,12 +792,19 @@ def main(argv=None):
             if b"# AI Factory local connection" not in raw:
                 text += newline + b"# AI Factory local connection (machine-specific; never committed)" + newline
             writes[gi_p] = text + newline.join(w.encode("utf-8") for w in gi_add) + newline
+        readmes = {}
+        for path in work['create']:
+            if baseline[path] is None:
+                readmes[path] = work_readme(path.parent.name)
         # Explicit coordinated writer window: reject any drift before first publication.
         if kit_identity(a.managed_root) != kit:
             raise ValueError("installed kit changed while planning")
         for path, expected in baseline.items():
             if installer.signature(path) != expected:
                 raise ValueError("project changed while planning")
+        # READMEs first: if a later write fails, a rerun sees the directories and records the same layout.
+        for path, data in readmes.items():  # project files, committed with the project: not private
+            installer.guarded_write(path, None, {"sha256": installer.digest(data), "mode": 0o644}, data)
         for path, data in writes.items():
             expected = baseline[path]
             desired = {"sha256": installer.digest(data), "mode": expected["mode"] if expected else 0o600}

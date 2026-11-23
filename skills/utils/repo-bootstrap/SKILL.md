@@ -52,7 +52,7 @@ The skill is **idempotent**: a second run on the same repository creates nothing
 | 3 | Contract file (`AGENT.md` / `AGENTS.md` / `CLAUDE.md`) | contains pointers to 1, 2 and orchestration rules | a pointer line, not a copy of content |
 | 4 | `CLAUDE.local.md` — persistence channel | file exists; **in `.gitignore`** | live-note channel + fallback to artifacts home |
 | 5 | Artifacts home (`reports/` or `work/reports/`) | directory exists or convention is named in manifest | — |
-| 5a | `work/` — tasks, debt, archive | directories exist; manifest names them **individually** and says where closed work moves | layout by **state**, not topic; archive holds pointers |
+| 5a | `work/` — tasks, debt, archive | directories exist; manifest names them **individually** and says where closed work moves | layout by **state**, not topic; archive holds pointers. A kit-connected project already has the layout recorded in the managed block of `AGENTS.local.md` (`Work layout:`): reuse those names; a role marked not mapped is the owner's choice |
 | 6 | Machine gates | which scripts actually exist: lint, typecheck, test, e2e, formatter | manifest section; **record missing ones as gaps** |
 | 7 | Task tracker and triage labels | `docs/agents/issue-tracker.md` | delegate `setup-matt-pocock-skills` — do not duplicate |
 | 8 | CRG code graph (optional) | existing configuration paths; separately registration/availability, root/revision/hash/coverage | inventory only; stale/unavailable → file-based fallback. No install/build/registration in this onboarding |

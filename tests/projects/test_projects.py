@@ -105,6 +105,18 @@ class CleanMachine(Base):
         self.assertEqual('NOOP', self.ok('install', '--project', str(project), '--apply')['status'])
         self.assertEqual(before, self.snapshot(self.list_path, project / 'AGENTS.local.md'))
 
+    def test_install_creates_work_layout_and_records_choice(self):
+        project = git_init(self.cf.base / 'alpha')
+        plan = self.ok('install', '--project', str(project))
+        self.assertIn({'file': 'work/tasks/README.md', 'action': 'create'}, plan['connection'])
+        self.assertFalse((project / 'work').exists())
+        self.ok('install', '--project', str(project), '--apply')
+        self.assertEqual(['archive', 'in-progress', 'tasks', 'tech-debt'], sorted(p.name for p in (project / 'work').iterdir()))
+        (project / 'work' / 'queue').mkdir()
+        self.ok('install', '--project', str(project), '--work-dir', 'tasks=queue', '--apply')
+        self.assertIn('tasks `work/queue/`', (project / 'AGENTS.local.md').read_text())
+        self.assertEqual('NOOP', self.ok('install', '--project', str(project))['status'])  # the choice is retained
+
     def test_input_checks(self):
         project = git_init(self.cf.base / 'alpha')
         self.blocked('install', '--project', str(self.cf.base / 'missing'))
@@ -368,7 +380,8 @@ class WithCapture(Base):
     def test_failure_restores_every_file(self):
         self.migrate()
         project = self.second()
-        files = [self.mapping, self.list_path, project / 'AGENTS.local.md', project / 'CLAUDE.local.md', project / '.gitignore']
+        files = [self.mapping, self.list_path, project / 'AGENTS.local.md', project / 'CLAUDE.local.md', project / '.gitignore',
+                 *[project / 'work' / r / 'README.md' for r in ('tasks', 'in-progress', 'archive', 'tech-debt')]]
         before = self.snapshot(*files)
         P.FAULT = ('before-list', ValueError('injected'))
         self.blocked('install', '--project', str(project), '--capture-credential', str(self.credential('beta')), '--apply')

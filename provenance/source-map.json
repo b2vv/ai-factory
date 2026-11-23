@@ -3766,7 +3766,7 @@
       "source": "~/.agents/skills/utils/repo-bootstrap/SKILL.md",
       "destination": "skills/utils/repo-bootstrap/SKILL.md",
       "source_sha256": "f23264994ee42ce507b32b287d2045a4b1ee9061f9927651fbfe9b54c99877d0",
-      "sha256": "cc72b5df7044dca2d438d22200830989a82047402cedee4ddad389ffdb7f204b",
+      "sha256": "0d3c736108f045df9c3c13eeadd7f6a4d2a5dcb8e45d836dd934dd4f4268c47d",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
@@ -3776,7 +3776,8 @@
         "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
         "Owner-authorized narrow portable rule/document references and selected-skill script paths; historical source identities, operational home examples and existing policy boundaries preserved.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
-        "Owner-authorized public privacy cleanup, 2026-11-21: private project, person and host identifiers neutralized or removed before republication; original identities retained."
+        "Owner-authorized public privacy cleanup, 2026-11-21: private project, person and host identifiers neutralized or removed before republication; original identities retained.",
+        "Owner-authorized (T28, 2026-11-23): row 5a reuses the work/ layout the kit connection records in the managed block; a role marked not mapped is the owner's choice; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/utils/repo-bootstrap/SKILL.md"

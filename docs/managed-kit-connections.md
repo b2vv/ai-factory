@@ -129,6 +129,19 @@ Missing, ambiguous or changed inputs block the affected connection. This deliver
 navigation through AGENTS.local.md, not a second tracker, automatic task selection
 or hook registration. See [task continuation](../ai-factory/task-continuation.md).
 
+The connector also records the project's `work/` layout in the managed block: tasks,
+in progress, archive and tech debt, plus the rule that a started task moves to in
+progress and a closed one moves to the archive as a pointer. A project with no `work/`
+subdirectories (or only empty ones named after the roles, as a rolled-back connect leaves) gets `work/tasks/`, `work/in-progress/`, `work/archive/` and
+`work/tech-debt/`, each with a short README (project files, mode 0644). A project
+with its own layout is kept: nothing is moved or created beside it, its directories are
+matched by name (the role name wins; otherwise exactly one of `queue`/`backlog`/`todo`,
+`wip`/`doing`/`active`, `archived`/`done`, `debt`/`techdebt`), and a role with no or
+several matches is recorded as not mapped, for the owner to decide. Record that choice
+with `--work-dir ROLE=DIR` (repeatable, also on `kit.py project install`); it is retained
+on later reconnects, `--work-dir ROLE=` clears it, and a recorded directory that is gone
+blocks the reconnect. Reconnect is NOOP when nothing changed.
+
 The installer does not clean project AGENTS.md or project-local symlinks. Retire
 only proven task-owned blocks/links with exact baseline guards and recoverable
 backups. Do not repeat cleanup another project agent already completed. Resolve
