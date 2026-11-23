@@ -417,9 +417,11 @@ def install(root, args):
     elif args.dashboard_id:
         old = entry['capabilities'].get('dashboard', {})
         cap = {**old, 'id': args.dashboard_id, 'name': args.dashboard_name or old.get('name') or entry['name']}
+        if args.dashboard_workflow == '': cap.pop('workflow', None)
+        elif args.dashboard_workflow is not None: cap['workflow'] = args.dashboard_workflow
         entry['capabilities']['dashboard'] = cap
-    elif args.dashboard_name:
-        raise Blocked('--dashboard-name needs --dashboard-id')
+    elif args.dashboard_name or args.dashboard_workflow is not None:
+        raise Blocked('--dashboard-name and --dashboard-workflow need --dashboard-id')
     server = A.Server(cfg) if cfg is not None and (enroll or rec is not None) else None
     if enroll:
         with_capture = not args.no_capture
@@ -894,6 +896,7 @@ def main(argv=None):
             d.add_argument('--dashboard-id', help='put the project on the dashboard with this id')
             d.add_argument('--no-dashboard', action='store_true', help='take the project off the dashboard')
             p.add_argument('--dashboard-name', help='dashboard display name (default: current or the entry name)')
+            p.add_argument('--dashboard-workflow', help="the project's workflow note on its dashboard card (an empty value removes it)")
         if name == 'dashboard-import':
             p.add_argument('--from', dest='source_file', required=True, help='hand-kept dashboard projects.json')
         if name == 'status':

@@ -129,6 +129,21 @@ class ListCommands(T.Base):
         self.install(self.a, '--no-dashboard')
         self.assertIsNone(self.generated())  # the last capability removed deletes the file
 
+    def test_install_sets_and_clears_the_workflow_note(self):
+        self.install(self.a, '--dashboard-id', 'alpha', '--dashboard-workflow', 'Plan, review, then merge.')
+        self.assertEqual('Plan, review, then merge.', self.generated()[0]['workflow'])
+        DB.go_validate(CFG, self.gen.read_bytes())
+        self.assertEqual('NOOP', self.install(self.a)['status'])  # kept without the flag
+        self.install(self.a, '--dashboard-id', 'alpha', '--dashboard-name', 'Alpha')
+        self.assertEqual('Plan, review, then merge.', self.generated()[0]['workflow'])  # a rename keeps it
+        self.install(self.a, '--dashboard-id', 'alpha', '--dashboard-workflow', '')
+        self.assertNotIn('workflow', self.generated()[0])  # an empty note clears it
+        before = self.gen.read_bytes()
+        for bad in ('x' * 561, 'see https://example.invalid', 'C:\\tmp'):
+            self.blocked('install', '--project', str(self.a), '--dashboard-id', 'alpha', '--dashboard-workflow', bad, '--apply')
+        self.blocked('install', '--project', str(self.a), '--dashboard-workflow', 'x', '--apply')  # needs the id
+        self.assertEqual(before, self.gen.read_bytes())
+
     def test_remove_drops_the_row(self):
         self.install(self.a, '--dashboard-id', 'alpha')
         self.install(self.b, '--dashboard-id', 'beta')

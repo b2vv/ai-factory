@@ -296,7 +296,7 @@
     {
       "path": "docs/managed-capture.md",
       "component": "core",
-      "sha256": "49cc817be249381a61d0102d33b3a82d767ac3796efbe0354ae2b9b3cbc3f467"
+      "sha256": "f68e24445fa5f72c55d6308057d6d3488d107496add926f41917963ba985b036"
     },
     {
       "path": "docs/managed-kit-connections.md",
@@ -4515,7 +4515,7 @@
     },
     {
       "path": "tests/projects/test_project_dashboard_list.py",
-      "sha256": "4d663c05029fbaf889d80c94f04db2356ef372db0d55de4ef7fceec549b70ec8",
+      "sha256": "79538b3e19de69c1cbbf79d8ec2bb738a24e9fb808c9482e6b6dd5b7ceba51b7",
       "component": "core"
     },
     {
@@ -4735,7 +4735,7 @@
     },
     {
       "path": "tools/projects.py",
-      "sha256": "20f6981f389d6ca25cbf7cc82fe40a160d95dd55cedc74ae84129f39dd0e41fe",
+      "sha256": "52ca2f1fd1a1f1988576c3d2754c62077f6f8bdb476c3fbc98e0141040567a01",
       "component": "core"
     },
     {

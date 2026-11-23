@@ -70,9 +70,10 @@ without paths or URLs, ≤ 8 aliases, a clean absolute root, ≤ 32 projects); w
 the bytes are also checked by the dashboard validator. A generated file edited outside the
 kit stops the write.
 
-- `kit.py project install ... --dashboard-id <id> [--dashboard-name <name>]` sets the
-  capability (the name defaults to the current one, then the entry name); `--no-dashboard`
-  removes it; without either flag it is kept.
+- `kit.py project install ... --dashboard-id <id> [--dashboard-name <name>] [--dashboard-workflow <note>]`
+  sets the capability (the name defaults to the current one, then the entry name; the workflow
+  note, shown on the project's card, is kept unless given, and an empty value removes it);
+  `--no-dashboard` removes the capability; without either flag it is kept.
 - `kit.py project dashboard-import --root <kit> --from <projects.json>` imports a hand-kept
   dashboard config once: each row is matched to a list entry by root; an unknown root or an
   entry that already has a different id stops with nothing written.
