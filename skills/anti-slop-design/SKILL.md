@@ -115,10 +115,12 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 
 Record observed evidence, not an automatic style score. Applicable functional/accessibility requirements and agreed acceptance block readiness when failed or untested; contextual preferences require a reasoned design decision. Use [ui-measurements](../ui-measurements/SKILL.md) only for missing supported measurements in the existing evidence record. Do not count unsupported contrast, glyph clipping or unvisited states as PASS.
 
+For a joint ranking (interface-review; also this pre-flight when design-pass §5 runs it) use the ux-review scale (step 3, Rank) for a failed applicable requirement or agreed acceptance item; an untested one stays `NOT_TESTED` and keeps the gate `BLOCKED`; a preference with a recorded reason is not a finding.
+
 This pre-flight is also applied **before implementation** to a variant shown for visual fit, next to its real neighbours; this skill owns that visual-fit verdict. The concept card, the separate compatibility and visual-fit outcomes and the evidence record are in [concept fit](references/concept-fit.md).
 
 - [ ] **Design read** announced (§0)?
-- [ ] **Dials** explicit and justified by the brief, not a silent baseline?
+- [ ] **Dials** explicit and justified by the brief, not a silent baseline (N/A for a design-pass Targeted change, which keeps the existing style)?
 - [ ] **Punctuation and typography** follow the project voice and content; no universal zero-em-dash rule?
 - [ ] **Theme coherence** follows supported project themes/reference; deliberate section inversion is allowed when justified?
 - [ ] **Color/shape coherence**: accents, semantic colors and radius variants follow the established system?

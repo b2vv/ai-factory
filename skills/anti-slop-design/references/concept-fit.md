@@ -29,7 +29,8 @@ IDs from the [semantic-consistency](../../ux-review/references/semantic-consiste
 - The product's current look is evidence of the concept but may itself contain drift; it is not
   a norm by itself (norms: semantic-consistency §4).
 - Where the card is kept is an open owner decision (design standards or task record); until it
-  is decided, the card is written into the task record.
+  is decided, the card is written into the task record, or, without one, into the audit report (audit mode)
+  or the design-pass final report (design-pass §6).
 
 ## 2. Two separate checks
 
@@ -50,8 +51,8 @@ The product is not changed to show a variant; in audit mode the showing happens 
 product (existing preview/Storybook or a temporary prototype).
 
 **Temporary vs evidence.** Temporary code, prototypes and stands are removed after the check.
-Before removal, a short record goes into the task record — or, in an audit without a task record,
-into the audit report (semantic-consistency §5). The record holds the variant shown (what it changed), state,
+Before removal, a short record goes into the task record — or, without a task record, into the audit
+report (semantic-consistency §5) or the design-pass final report (design-pass §6). The record holds the variant shown (what it changed), state,
 viewport, color scheme, verdict, decision, and a link to a kept screenshot if one exists.
 A verdict without this record cannot be verified and is treated as `NOT_TESTED`.
 

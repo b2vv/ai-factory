@@ -1,6 +1,6 @@
 ---
 name: ux-review
-description: 'Audits a screen, flow or prototype against cited UX rules (Nielsen heuristics, Laws of UX, UX-related WCAG 2.2 criteria, patterns for forms, tables, states, navigation, copy, touch targets and cognitive load) and returns ranked violations, each with a source and an observable check. Usability only: templated looks belong to anti-slop-design, mockup fidelity to design-pass. Use to critique the UX of a screen or redesign, define UX acceptance criteria or gate interface readiness. Triggers: "ux-review", "UX audit", "usability review".'
+description: 'Audits a screen, flow or prototype against cited UX rules (Nielsen heuristics, Laws of UX, UX-related WCAG 2.2 criteria, patterns for forms, tables, states, navigation, copy, touch targets and cognitive load) and returns ranked violations, each with a source and an observable check. Usability only: templated looks belong to anti-slop-design, mockup fidelity to reference-ui-reconstruction. Use to critique the UX of a screen or redesign, define UX acceptance criteria or gate interface readiness. Triggers: "ux-review", "UX audit", "usability review".'
 ---
 
 
@@ -24,13 +24,13 @@ During the rule pass and before gating, consult the shared [reference anti-patte
 
 UX review or audit of a specific screen / flow / prototype / redesign; defining UX acceptance;
 a final interface-readiness gate before delivery. Not palette/typography selection (that is
-`frontend-design`) or pixel parity with a mockup (that is `design-pass`).
+`frontend-design`) or pixel parity with a mockup (that is `reference-ui-reconstruction`, which design-pass runs).
 
 
 ## Procedure
 
 0. **Scope.** Name the artifact (live page / screenshot / prototype / multistep flow), **viewports**
-   (read and apply the [shared viewport contract](../design-pass/references/viewport-coverage.md): phone, tablet portrait, tablet landscape, desktop at 100%; text enlargement/reflow separately), and **who/why** (role + user task).
+   (read and apply the [shared viewport contract](../design-pass/references/viewport-coverage.md): its four baseline classes, plus text enlargement/reflow separately), and **who/why** (role + user task).
    Without a user task, half the heuristics are meaningless.
    When a task record exists, load its acceptance criteria (feature-lifecycle "one primary task record") as the baseline, not a fresh standalone list. Ranked violations and any UX acceptance are PROPOSED additions for agreement; ux-review does not itself rewrite the agreed acceptance/scope. Role + task are still required.
 
@@ -73,7 +73,7 @@ Before ranking, record the target accessibility level from project requirements;
 
 ## Gate mode (readiness pre-flight)
 
-As in `anti-slop-design`, the interface is not “ready” until the blocker+major list is empty **or** each
+The interface is not “ready” until the blocker+major list (scale in step 3, Rank) is empty **or** each
 item is a dated limitation explicitly accepted by the user (magnitude or mechanism, not “we will fix it later”).
 A major `drift` counts like a major violation. An open gating decision keeps the gate BLOCKED;
 open stylistic decisions do not block it.
@@ -87,7 +87,7 @@ For UI regression review of a branch or PR, take the changed screens/components 
 
 ## Priority when layers disagree
 
-**For contextual heuristics the order is [design-pass §3](../design-pass/SKILL.md#3-priority-and-limits-of-general-rules): authoritative reference > project > catalog > generic** (in a review the catalog is the method layer). Canonical repository tokens, patterns and standards (local
+**For contextual heuristics the order is [design-pass §3](../design-pass/SKILL.md#3-priority-and-limits-of-general-rules): authoritative reference > project > catalog > generic** (in a review the anti-slop catalog takes the method's place in this order; it remains a catalog, not a method). Canonical repository tokens, patterns and standards (local
 design skill, `CLAUDE.md`/`AGENTS.md`, design system) **override** a generic rule where they cover it
 (e.g. a project intentionally keeps a button enabled+no-op rather than `disabled`: this is a
 project decision, not a violation). The skill rule applies where the project is silent. Where sources themselves conflict
@@ -120,5 +120,5 @@ Conditionally reuse [ui-measurements](../ui-measurements/SKILL.md) for missing s
 
 **Companion:** rules are in [`references/rules.md`](references/rules.md). Complements, does not replace:
 [`anti-slop-design`](../anti-slop-design/SKILL.md) (machine clichés in appearance), accessibility review
-(WCAG conformance), [`design-pass`](../design-pass/SKILL.md) (mockup reconstruction),
+(WCAG conformance), [`reference-ui-reconstruction`](../reference-ui-reconstruction/SKILL.md) (mockup reconstruction, run by [`design-pass`](../design-pass/SKILL.md)),
 [`frontend-design`](../ship/frontend-design/SKILL.md) (visual decision method).

@@ -177,7 +177,7 @@
     },
     {
       "destination": "skills/anti-slop-design/references/concept-fit.md",
-      "sha256": "54573826ad63e3b090b5dfaa9dceffc9c08e18aa82e9e55f9016313eb656d578",
+      "sha256": "c783f5ff7824b7c5a74c58f5276b4d106bc21bb0bf174bffe9d15ff2a5b58e57",
       "kind": "Owner-authorized original semantic-consistency guidance (design skills); not upstream content; see PROVENANCE.md"
     },
     {
@@ -194,10 +194,10 @@
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "38fc606be066da8a8c55feebe33ca809d317c926174d5cec413a8f1df1c44dac",
+      "before_sha256": "4847bf83f27f7acb9b9843e6be49777a44b1a9fb5f9bc62be3ea71765d2afb47",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "c6db24e241ffdf3f07779d4d74346f2636618d549096d626003c5da61f621980",
+      "after_sha256": "03b4129346ff6de5ceb075d4e89bb76a67bba95b37ba79024fc7d444b147e0f2",
       "prior_adaptation_hashes": [
         {
           "before_sha256": "b5e8f37db63c882d771558b46d582e99c99b9e833beb1df5363659928bd29adb",
@@ -218,6 +218,10 @@
         {
           "before_sha256": "42ca1888f6fb14c2ce707637fca4c3a5727fe7403bce72aaaf5b6852d50376df",
           "after_sha256": "af5c0a0073e6568b57665a99ae811b1a4404acba8bc0f0e98d453ae7bb09c348"
+        },
+        {
+          "before_sha256": "38fc606be066da8a8c55feebe33ca809d317c926174d5cec413a8f1df1c44dac",
+          "after_sha256": "c6db24e241ffdf3f07779d4d74346f2636618d549096d626003c5da61f621980"
         }
       ]
     },

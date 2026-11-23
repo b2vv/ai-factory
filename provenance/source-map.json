@@ -974,7 +974,7 @@
       "source": "~/.agents/skills/anti-slop-design/SKILL.md",
       "destination": "skills/anti-slop-design/SKILL.md",
       "source_sha256": "feeaa8863d5e41439dd574a10bf23d1ec08d09d679822c9cb2c905553396f571",
-      "sha256": "b19d29f56eef43b876a391dc7e0a480f368ee7b04290f8e3dd3f8f6b0a5de0a6",
+      "sha256": "f5f2d21abb174e25a23de5659a0a7936e9840d77fb35f9b6640de72ca44f2610",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -985,7 +985,8 @@
         "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
         "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained.",
         "Owner-authorized concept-fit pre-flight pointer, 2026-11-18; MIT notice and original identities retained.",
-        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained."
+        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/anti-slop-design/SKILL.md"
@@ -1498,7 +1499,7 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "c6db24e241ffdf3f07779d4d74346f2636618d549096d626003c5da61f621980",
+      "sha256": "03b4129346ff6de5ceb075d4e89bb76a67bba95b37ba79024fc7d444b147e0f2",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -1515,7 +1516,8 @@
         "Owner-authorized semantic-consistency and concept-fit pointers in §2/§4/§5, 2026-11-18; §3 priority unchanged; original identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
         "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change.",
-        "Owner-authorized (T12, 2026-11-23, decision D3 a): relative skill links are opened from the skill's real location in the kit (realpath, no-shell fallback via the kit root); no other behavior change."
+        "Owner-authorized (T12, 2026-11-23, decision D3 a): relative skill links are opened from the skill's real location in the kit (realpath, no-shell fallback via the kit root); no other behavior change.",
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1741,7 +1743,7 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "fbad43cf270d4e161751d9dc4edefcdfb3d6f3084395e3e5a0f6dac4dc952c5e",
+      "sha256": "0ebd23e80613c44273c48f9b692ba1885a9fbfd1260d8614462350d5871daed7",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
@@ -1755,7 +1757,8 @@
         "Owner-authorized A1-A6 design-semantics clarification, 2026-11-19; scoped norm/dependency and evidence interpretation, no helper or source-priority change; historical identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
         "Owner-authorized minimum evidence for interface-review keyboard, contrast and interaction claims; original source identity and hash retained.",
-        "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change."
+        "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change.",
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"
@@ -3958,7 +3961,7 @@
       "source": "~/.agents/skills/ux-review/SKILL.md",
       "destination": "skills/ux-review/SKILL.md",
       "source_sha256": "af2e4fddf30ce8465f332de91d1f4360dfe140e474e1027d92f10e557a5f5462",
-      "sha256": "4d2182e2b3d17f104316ef2084c73cc862953f82ba87949bc29737c0ea4dc581",
+      "sha256": "bbee80bfde6971eea337e4f0f88a730c96e87339c6bc83a05ebc5a2ddfd746f2",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -3972,7 +3975,8 @@
         "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained.",
         "Owner-authorized semantic-consistency rule-pass outcomes (drift, owner decisions) and gate, 2026-11-18; original identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
-        "Owner-authorized conditional RTL review reference; original source identity and hash retained."
+        "Owner-authorized conditional RTL review reference; original source identity and hash retained.",
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/SKILL.md"

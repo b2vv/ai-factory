@@ -52,7 +52,7 @@ Run the helpers the chosen row names, in this order:
 
 When a [ui-audit](../ui-audit/SKILL.md) report exists for the screen, its confirmed problems and its requirement failures (§4 there, kept whatever the owner answered) are part of the brief.
 
-Read the task record's CURRENT acceptance criteria (feature-lifecycle "one primary task record") as the baseline; do not re-derive a parallel acceptance. PROPOSE UI-observable checks (viewport/state) as additions — proposed, not adopted. UX does not itself change the agreed acceptance/scope; a scope change is agreed by the owner first, then recorded. When there is no task record (small work with no durable record), a short message is sufficient, without extra files.
+Read the task record's CURRENT acceptance criteria (feature-lifecycle "one primary task record") as the baseline; do not re-derive a parallel acceptance. PROPOSE UI-observable checks (viewport/state) as additions — proposed, not adopted. UX does not itself change the agreed acceptance/scope; a scope change is agreed by the owner first, then recorded. When there is no task record (small work with no durable record), a short message is sufficient, without extra files. That message also carries the concept card lines and concept-fit evidence records; they are then not durable.
 
 
 ## 3. Priority and limits of general rules

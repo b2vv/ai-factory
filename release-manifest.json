@@ -500,7 +500,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "8714a5df0d7efe758792338d5e508df6864e7645cb590ca2cbf10835fb3ccfc7",
+      "sha256": "33fd7a7560604d02692cd6c0811d7f218a2cb1e325a518dd2d55e349367b7037",
       "component": "core"
     },
     {
@@ -570,7 +570,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "4fcff1e33c504daf6cf7aa56834ebeb94c8bfbbcc38f05925aeef817c889e9f6",
+      "sha256": "b2819480dc4352d03b9c37d6a2ff1ddf3b194f817e9074791fcb4698dfb12f2a",
       "component": "core"
     },
     {
@@ -2820,12 +2820,12 @@
     },
     {
       "path": "skills/anti-slop-design/SKILL.md",
-      "sha256": "b19d29f56eef43b876a391dc7e0a480f368ee7b04290f8e3dd3f8f6b0a5de0a6",
+      "sha256": "f5f2d21abb174e25a23de5659a0a7936e9840d77fb35f9b6640de72ca44f2610",
       "component": "skills"
     },
     {
       "path": "skills/anti-slop-design/references/concept-fit.md",
-      "sha256": "54573826ad63e3b090b5dfaa9dceffc9c08e18aa82e9e55f9016313eb656d578",
+      "sha256": "c783f5ff7824b7c5a74c58f5276b4d106bc21bb0bf174bffe9d15ff2a5b58e57",
       "component": "skills"
     },
     {
@@ -3115,7 +3115,7 @@
     },
     {
       "path": "skills/design-pass/SKILL.md",
-      "sha256": "c6db24e241ffdf3f07779d4d74346f2636618d549096d626003c5da61f621980",
+      "sha256": "03b4129346ff6de5ceb075d4e89bb76a67bba95b37ba79024fc7d444b147e0f2",
       "component": "skills"
     },
     {
@@ -3230,7 +3230,7 @@
     },
     {
       "path": "skills/interface-review/SKILL.md",
-      "sha256": "fbad43cf270d4e161751d9dc4edefcdfb3d6f3084395e3e5a0f6dac4dc952c5e",
+      "sha256": "0ebd23e80613c44273c48f9b692ba1885a9fbfd1260d8614462350d5871daed7",
       "component": "skills"
     },
     {
@@ -4300,7 +4300,7 @@
     },
     {
       "path": "skills/ux-review/SKILL.md",
-      "sha256": "4d2182e2b3d17f104316ef2084c73cc862953f82ba87949bc29737c0ea4dc581",
+      "sha256": "bbee80bfde6971eea337e4f0f88a730c96e87339c6bc83a05ebc5a2ddfd746f2",
       "component": "skills"
     },
     {
@@ -4391,6 +4391,11 @@
     {
       "path": "tests/collection/test_skill_link_base.py",
       "sha256": "bb0813e836f3d811c72b938598ff1b78b03f2874e78331ba699f2ae330de7765",
+      "component": "core"
+    },
+    {
+      "path": "tests/collection/test_skill_vocabulary.py",
+      "sha256": "d8093f4b311150837f49b2427d82930f1b7eb61d8969a7ac5d3f7faa8bbf0138",
       "component": "core"
     },
     {

@@ -26,12 +26,12 @@ viewport and UI state) still applies.
 ## Sequence
 
 0. **Scope + evidence (once).** Name the artifact (screen / flow / prototype / diff), **viewports**
-   (read and apply the [shared viewport contract](../design-pass/references/viewport-coverage.md): phone, tablet portrait, tablet landscape, desktop at 100%; text enlargement/reflow separately), **role + task**. Capture screenshots / walk through the flow — all lenses
+   (read and apply the [shared viewport contract](../design-pass/references/viewport-coverage.md): its four baseline classes, plus text enlargement/reflow separately), **role + task**. Capture screenshots / walk through the flow — all lenses
    use the SAME evidence, not memory. For PRs, use diff mode (below).
 
 1. **Project layer (when in a repository).** Load the local design skill / tokens / `CLAUDE.md`/
    `AGENTS.md`. It **overrides** generic rules where they overlap (e.g. deliberate enabled+no-op instead of `disabled`
-   is a project decision, not a violation). For contextual design defaults the order is [design-pass §3](../design-pass/SKILL.md#3-priority-and-limits-of-general-rules): **authoritative reference > project > catalog > generic** (in a review the catalog is the method layer). Applicable accessibility/function requirements retain their own authority; neither a project aesthetic nor a reference waives them.
+   is a project decision, not a violation). For contextual design defaults the order is [design-pass §3](../design-pass/SKILL.md#3-priority-and-limits-of-general-rules): **authoritative reference > project > catalog > generic** (in a review the anti-slop catalog takes the method's place in this order; it remains a catalog, not a method). Applicable accessibility/function requirements retain their own authority; neither a project aesthetic nor a reference waives them.
 
 2. **Visual lens — [`anti-slop-design`](../anti-slop-design/SKILL.md).** Machine-generated visual cliches +
    §3 pre-flight as a gate. Owns: template typography, decoration, generic palette, “AI appearance”.
@@ -56,8 +56,9 @@ viewport and UI state) still applies.
      are not findings: merge them into one unranked list, grouped by role and cause, each marked
      *gating* or *stylistic* ([semantic-consistency](../ux-review/references/semantic-consistency.md) §5).
    - **Concept fit** outcomes (compatibility and visual fit, kept separate) are merged under the visual
-     lens, which owns them ([concept fit](../anti-slop-design/references/concept-fit.md)); they are
-     not repeated or re-researched here.
+     lens; anti-slop-design owns the visual-fit verdict and design-pass (in audit mode, the proposal)
+     carries the compatibility outcome ([concept fit](../anti-slop-design/references/concept-fit.md) §5);
+     they are not repeated or re-researched here.
 
 
 ## Measurement and rule priority
