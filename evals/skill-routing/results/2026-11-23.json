@@ -5,10 +5,10 @@
   "model": "claude-opus-5-5",
   "auth": "subscription (claude.ai login), no API key or third-party backend",
   "trials_per_case": 1,
-  "note": "Smoke run, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. The design-* cases were rerun after a ui-measurements description change (kit transaction 9617c922); their first-run outcome is kept in first_run. Fixture: disposable generic repository (plan, feature branch with one commit, static HTML screens, a PNG reference).",
+  "note": "Smoke runs, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. trials lists every run of a case in order with the kit transaction it ran against: ee98fb00 (all cases), 9617c922 (design cases after the ui-measurements description change), 8fca62dd (design cases after interface-review's description named audit mode; design-product-audit ran three times). outcome and first_skill are the latest trial. Fixture: disposable generic repository (plan, feature branch with one commit, static HTML screens, a PNG reference).",
   "summary": {
-    "PASS": 20,
-    "NO_SKILL": 5
+    "PASS": 21,
+    "NO_SKILL": 4
   },
   "results": [
     {
@@ -16,223 +16,455 @@
       "expected": "design-pass",
       "first_skill": "design-pass",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "design-pass",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "design-pass",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "design-pass",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "design-pass",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-find",
       "expected": "ui-audit",
       "first_skill": "ui-audit",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "ui-audit",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-point",
       "expected": "ui-audit",
       "first_skill": "none",
       "outcome": "NO_SKILL",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "ui-audit",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        }
+      ]
     },
     {
       "id": "design-audit",
       "expected": "interface-review",
       "first_skill": "interface-review",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "interface-review",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "interface-review",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "interface-review",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "interface-review",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-ux-only",
       "expected": "ux-review",
       "first_skill": "ux-review",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "ux-review",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "ux-review",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "ux-review",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "ux-review",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-slop-only",
       "expected": "anti-slop-design",
       "first_skill": "anti-slop-design",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "anti-slop-design",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "anti-slop-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "anti-slop-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "anti-slop-design",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-direction",
       "expected": "frontend-design",
       "first_skill": "frontend-design",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "frontend-design",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-reference",
       "expected": "reference-ui-reconstruction",
-      "first_skill": "none",
-      "outcome": "NO_SKILL",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "none",
-        "outcome": "NO_SKILL"
-      }
+      "first_skill": "reference-ui-reconstruction",
+      "outcome": "PASS",
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "reference-ui-reconstruction",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-measure",
       "expected": "ui-measurements",
       "first_skill": "ui-measurements",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "ui-measurements",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "ui-measurements",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "ui-measurements",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "ui-measurements",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-product-audit",
       "expected": "interface-review",
       "first_skill": "none",
       "outcome": "NO_SKILL",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "none",
-        "outcome": "NO_SKILL"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        }
+      ]
     },
     {
       "id": "design-method",
       "expected": "frontend-design",
       "first_skill": "frontend-design",
       "outcome": "PASS",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "frontend-design",
-        "outcome": "PASS"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "design-critique",
       "expected": "interface-review",
       "first_skill": "none",
       "outcome": "NO_SKILL",
-      "kit_transaction": "9617c922",
-      "first_run": {
-        "first_skill": "none",
-        "outcome": "NO_SKILL"
-      }
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "9617c922",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "8fca62dd",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        }
+      ]
     },
     {
       "id": "review-diff",
       "expected": "code-review",
       "first_skill": "code-review",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "code-review",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "review-crg",
       "expected": "crg-review-changes",
       "first_skill": "crg-review-changes",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "crg-review-changes",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "review-landed",
       "expected": "inspector-review",
       "first_skill": "inspector-review",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "inspector-review",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "review-plan-fit",
       "expected": "step-back-review",
       "first_skill": "step-back-review",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "step-back-review",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "review-pattern",
       "expected": "pattern-architecture-review",
       "first_skill": "none",
       "outcome": "NO_SKILL",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        }
+      ]
     },
     {
       "id": "review-bloat",
       "expected": "ponytail-review",
       "first_skill": "ponytail-review",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "ponytail-review",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "review-feedback",
       "expected": "receiving-code-review",
       "first_skill": "receiving-code-review",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "receiving-code-review",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "review-weakened",
       "expected": "constraint-driven-development",
       "first_skill": "constraint-driven-development",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "constraint-driven-development",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "plan-critique",
       "expected": "plan-critique",
       "first_skill": "plan-critique",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "plan-critique",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "plan-defense",
       "expected": "plan-defense",
       "first_skill": "plan-defense",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "plan-defense",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "plan-grill",
       "expected": "grilling",
       "first_skill": "grilling",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "grilling",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "plan-sdd",
       "expected": "spec-flow",
       "first_skill": "spec-flow",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "spec-flow",
+          "outcome": "PASS"
+        }
+      ]
     },
     {
       "id": "plan-next",
       "expected": "cto-agenda",
       "first_skill": "cto-agenda",
       "outcome": "PASS",
-      "kit_transaction": "ee98fb00"
+      "trials": [
+        {
+          "kit_transaction": "ee98fb00",
+          "first_skill": "cto-agenda",
+          "outcome": "PASS"
+        }
+      ]
     }
   ]
 }
