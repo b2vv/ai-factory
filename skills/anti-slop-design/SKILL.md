@@ -1,6 +1,6 @@
 ---
 name: anti-slop-design
-description: 'A concrete catalog of frontend AI tells (typography, color, layout, decoration, copy, motion), three dials and a mechanical pre-flight gate that keep an interface from looking templated. The factual companion to the methodological `frontend-design`. Use when building or refactoring the appearance of a page, portal, app or screen, when asked to avoid an AI-generated or templated look, or to check a finished screen for clichés. Triggers: "anti-slop", "taste", "design tells", "critique the design".'
+description: 'A concrete catalog of frontend AI tells (typography, color, layout, decoration, copy, motion), three dials and a mechanical pre-flight gate that keep an interface from looking templated. The factual companion to the methodological `frontend-design`. Use when building or refactoring the appearance of a page, portal, app or screen, when asked to avoid an AI-generated or templated look, or to check a finished screen for clichés. Triggers: "anti-slop", "taste", "design tells".'
 license: Adapted from leonxlnx/taste-skill (MIT); see Provenance.
 ---
 

@@ -415,12 +415,17 @@
     },
     {
       "path": "evals/skill-routing/README.md",
-      "sha256": "11128e37fae18213dd731bbf53a0d6b5274d427b7430ad6758eb91aa22613857",
+      "sha256": "6c5899133952dc566606e3dffe5ee336ef7bb5852512eca0b0919ec59fefdc68",
+      "component": "core"
+    },
+    {
+      "path": "evals/skill-routing/run_routing.py",
+      "sha256": "0fe672fe60c50e397f5b1e03f77ade3fc52d2a5932903da1b8070564bf0df3f3",
       "component": "core"
     },
     {
       "path": "evals/skill-routing/scenarios.json",
-      "sha256": "bed05e76cacbc15c1228aa5b6bcb1cc51cc9cd4a6611f646a43bb3efb6d49ba8",
+      "sha256": "10a90dffcc2325a90c5b49d22d74fece6f71f842dc1fe36364300e40179bef30",
       "component": "core"
     },
     {
@@ -570,7 +575,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "b2819480dc4352d03b9c37d6a2ff1ddf3b194f817e9074791fcb4698dfb12f2a",
+      "sha256": "f7341963ccd9b51f517444fca8a74cf239504243bdbca22f83f40e4a6ecdc68c",
       "component": "core"
     },
     {
@@ -2820,7 +2825,7 @@
     },
     {
       "path": "skills/anti-slop-design/SKILL.md",
-      "sha256": "f5f2d21abb174e25a23de5659a0a7936e9840d77fb35f9b6640de72ca44f2610",
+      "sha256": "1e4c6844407bb16504314ca3a78dcf087ffe6c28665ccbaa461ab2e25ebd854c",
       "component": "skills"
     },
     {
@@ -4391,6 +4396,11 @@
     {
       "path": "tests/collection/test_skill_link_base.py",
       "sha256": "bb0813e836f3d811c72b938598ff1b78b03f2874e78331ba699f2ae330de7765",
+      "component": "core"
+    },
+    {
+      "path": "tests/collection/test_skill_routing_set.py",
+      "sha256": "c684578203ab50218dcd91419548514ed7b6a3e9bdf304ec5456ffb42a2cc07f",
       "component": "core"
     },
     {

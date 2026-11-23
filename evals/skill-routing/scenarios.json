@@ -18,7 +18,9 @@
       "expected_skill": "ui-audit",
       "not_instead": [
         "interface-review",
-        "design-pass"
+        "design-pass",
+        "ux-review",
+        "anti-slop-design"
       ]
     },
     {
@@ -35,7 +37,8 @@
       "input": "Do a full audit of the checkout flow, visual and usability, without changing anything.",
       "expected_skill": "interface-review",
       "not_instead": [
-        "design-pass"
+        "design-pass",
+        "ui-audit"
       ]
     },
     {
@@ -67,7 +70,8 @@
       "input": "Rebuild this screen from the attached screenshot as exactly as you can.",
       "expected_skill": "reference-ui-reconstruction",
       "not_instead": [
-        "frontend-design"
+        "frontend-design",
+        "design-pass"
       ]
     },
     {
@@ -75,7 +79,33 @@
       "input": "Is this button label clipped, and does its text pass contrast?",
       "expected_skill": "ui-measurements",
       "not_instead": [
-        "ux-review"
+        "ux-review",
+        "ui-audit"
+      ]
+    },
+    {
+      "id": "design-product-audit",
+      "input": "Audit the screens of our admin product for inconsistent names and actions between them and propose clearer ones, without changing code.",
+      "expected_skill": "interface-review",
+      "not_instead": [
+        "ui-audit",
+        "design-pass"
+      ]
+    },
+    {
+      "id": "design-method",
+      "input": "Before anyone builds it, what visual direction should the new reporting portal take?",
+      "expected_skill": "frontend-design",
+      "not_instead": [
+        "design-pass"
+      ]
+    },
+    {
+      "id": "design-critique",
+      "input": "Critique the design of this screen.",
+      "expected_skill": "interface-review",
+      "not_instead": [
+        "anti-slop-design"
       ]
     },
     {
@@ -85,6 +115,14 @@
       "not_instead": [
         "inspector-review",
         "step-back-review"
+      ]
+    },
+    {
+      "id": "review-crg",
+      "input": "This repository has an indexed code-review graph. Use it to review the impact of my diff on callers and flows.",
+      "expected_skill": "crg-review-changes",
+      "not_instead": [
+        "code-review"
       ]
     },
     {

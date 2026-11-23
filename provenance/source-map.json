@@ -974,7 +974,7 @@
       "source": "~/.agents/skills/anti-slop-design/SKILL.md",
       "destination": "skills/anti-slop-design/SKILL.md",
       "source_sha256": "feeaa8863d5e41439dd574a10bf23d1ec08d09d679822c9cb2c905553396f571",
-      "sha256": "f5f2d21abb174e25a23de5659a0a7936e9840d77fb35f9b6640de72ca44f2610",
+      "sha256": "1e4c6844407bb16504314ca3a78dcf087ffe6c28665ccbaa461ab2e25ebd854c",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -986,7 +986,8 @@
         "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained.",
         "Owner-authorized concept-fit pre-flight pointer, 2026-11-18; MIT notice and original identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
-        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed.",
+        "Owner-authorized (T11, 2026-11-23): trigger \"critique the design\" removed so a screen critique routes to interface-review; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/anti-slop-design/SKILL.md"

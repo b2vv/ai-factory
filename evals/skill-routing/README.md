@@ -1,6 +1,6 @@
 # Skill-routing evaluation set
 
-Status: **NOT_RUN / NOT_TESTED**. This folder holds definitions only; no model launcher is shipped and no result is claimed.
+Status: **NOT_RUN / NOT_TESTED**. This folder holds definitions and a trace scorer; no model launcher is shipped and no result is claimed.
 
 [scenarios.json](scenarios.json) lists one user phrase per case, the skill whose description should win (`expected_skill`) and the neighbouring skills that must not be chosen in its place (`not_instead`). The cases cover the clusters where descriptions overlap: interface work, review, and planning gates.
 
@@ -9,6 +9,17 @@ Status: **NOT_RUN / NOT_TESTED**. This folder holds definitions only; no model l
 Run under the same authorization and metering rules as the [lifecycle evaluation contract](../lifecycle/README.md): an explicitly authorized operator, an existing subscription session, a disposable fixture repository, no credentials or product writes.
 
 For each case start a fresh session with the installed kit, send only `input`, and record which skill loaded first from the raw trace. A case passes when that skill equals `expected_skill`. Loading a `not_instead` skill first is a routing failure; loading it later as a delegated step of the expected skill is not. Record the skill-description bytes under test (kit version or manifest hash), the CLI and model, and the trace per trial. Report passes over trials with the sample size.
+
+### Procedure
+
+[run_routing.py](run_routing.py) never starts a model: `--list` prints the cases, `--parse TRACE` prints the first skill a trace loaded (or `none`), and `--score DIR` scores `DIR/<case id>.jsonl` for every case as `PASS`, `NO_SKILL`, `FAIL_NOT_INSTEAD`, `FAIL_OTHER` or `NOT_RUN`.
+
+1. Confirm the CLI session uses the user's subscription (for Claude Code, `claude auth status` shows the account login, not an API key) and that no API-key or third-party-backend variables are set. Otherwise stop: BLOCKED.
+2. Build a disposable git fixture with generic artifacts the phrases can point at: a short plan, a feature branch with one commit of diff, a few static HTML screens (settings, dashboard with a filter row, a checkout flow, a form, a landing page, an admin area) and a PNG reference image. No product code, no credentials.
+3. Per case, from the fixture root, start a fresh session with only the input and without the file-editing tools (the shell stays available, so run it only in the disposable fixture), for example `claude -p "<input>" --output-format stream-json --verbose --max-turns 4 --disallowedTools Edit,Write,NotebookEdit`, and save stdout as `<case id>.jsonl`.
+4. Run `run_routing.py --score <dir>` and record the outcomes with the date, CLI version, model (from the trace's init event) and the kit transaction. Keep traces outside the package.
+
+User-level instructions and memory of the operator's account load in every session and cannot be removed without another login; record that they were present. One trial per case is a smoke run, not a statistical result. `NO_SKILL` (the model asked for context instead of loading a skill) is reported apart from a wrong skill.
 
 ## Maintaining it
 
