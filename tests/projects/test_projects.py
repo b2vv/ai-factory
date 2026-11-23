@@ -207,7 +207,18 @@ class Handoff(Base):
         self.blocked('handoff', '--profile', str(self.profile([], managed_root=self.cf.base)), '--apply')
         loose = self.profile([]); loose.chmod(0o622)
         self.blocked('handoff', '--profile', str(loose), '--apply')
+        self.blocked('handoff', '--profile', 'relative/profile.json', '--apply')
+        link = self.cf.base / 'link.json'; link.symlink_to(self.profile([]))
+        self.blocked('handoff', '--profile', str(link), '--apply')
         self.assertFalse((self.kit / k.STATE / P.HANDOFF).exists())
+
+    def test_unreadable_handoff_configuration_degrades_list(self):
+        alpha = git_init(self.cf.base / 'alpha'); self.ok('install', '--project', str(alpha), '--apply')
+        self.ok('handoff', '--profile', str(self.profile([alpha])), '--apply')
+        (self.kit / k.STATE / P.HANDOFF).chmod(0o644)
+        out = self.ok('list')
+        self.assertEqual('NOT_READ', out['handoff']['status'])
+        self.assertEqual(['alpha'], [e['name'] for e in out['projects']])
 
 
 class UpdateReport(Base):
@@ -295,6 +306,53 @@ class WithCapture(Base):
         self.ok('remove', '--project', str(project), '--apply')
         self.assertEqual(original, self.mapping.read_bytes())
         self.assertEqual('NOOP', self.cf.plan(False)['status'])
+
+    def moved_project(self):
+        self.migrate()
+        project = self.second()
+        self.ok('install', '--project', str(project), '--capture-credential', str(self.credential('beta')),
+                '--dashboard-id', 'beta', '--apply')
+        return project, self.cf.base / 'beta-moved'
+
+    def test_move_root_moves_every_capability(self):  # A5
+        project, moved = self.moved_project()
+        entry = next(e for e in self.ok('list')['projects'] if e['name'] == 'beta')
+        self.assertIn('already listed', self.blocked('move-root', '--project', str(project), '--to', str(project))['reason'])
+        copy = git_init(self.cf.base / 'beta-copy')
+        self.assertIn('still exists', self.blocked('move-root', '--project', str(project), '--to', str(copy))['reason'])
+        os.rename(project, moved)
+        files = [self.mapping, self.list_path, P.dashboard_path(self.kit)]
+        before = self.snapshot(*files)
+        plan = self.ok('move-root', '--project', str(project) + '/', '--to', str(moved))
+        self.assertTrue(plan['status'].startswith('PLANNED'), plan)
+        self.assertEqual(before, self.snapshot(*files))
+        self.assertEqual('APPLIED', self.ok('move-root', '--project', str(project), '--to', str(moved), '--apply')['status'])
+        rows = {r['project']: r['root'] for r in json.loads(self.mapping.read_text())['projects']}
+        self.assertEqual(str(moved), rows[entry['id']])
+        self.assertEqual(self.cf.spec['projects'][0]['root'], rows[self.cf.spec['projects'][0]['project']])
+        self.assertEqual([str(moved)], [r['root'] for r in json.loads(P.dashboard_path(self.kit).read_text()) if r['id'] == 'beta'])
+        after = next(e for e in self.ok('list')['projects'] if e['name'] == 'beta')
+        self.assertEqual({**entry, 'root': str(moved)}, after)
+        self.assertEqual('NOOP', self.ok('install', '--project', str(moved), '--apply')['status'])
+
+    def test_move_root_failure_restores_and_blockers_stop_it(self):
+        project, moved = self.moved_project()
+        os.rename(project, moved)
+        files = [self.mapping, self.list_path, P.dashboard_path(self.kit), moved / 'AGENTS.local.md', moved / 'CLAUDE.local.md']
+        before = self.snapshot(*files)
+        for step in ('before-connect', 'before-mapping', 'before-dashboard', 'before-list', 'before-clear'):
+            P.FAULT = (step, ValueError('injected'))
+            self.blocked('move-root', '--project', str(project), '--to', str(moved), '--apply')
+            self.assertEqual(before, self.snapshot(*files), step)
+        P.FAULT = None
+        profile = self.cf.private / 'handoff-profile.json'
+        profile.write_bytes(k.encode({'schema': 1, 'managed_root': str(self.kit), 'store': str(self.cf.private / 's'),
+                                      'roots': [str(project)]})); profile.chmod(0o600)
+        self.ok('handoff', '--profile', str(profile), '--apply')
+        reason = self.blocked('move-root', '--project', str(project), '--to', str(moved), '--apply')['reason']
+        self.assertIn('handoff', reason)
+        self.assertEqual(before, self.snapshot(*files))
+        self.blocked('move-root', '--project', str(self.cf.base / 'nope'), '--to', str(moved))
 
     def test_mapping_edit_outside_the_kit_blocks(self):
         self.migrate()

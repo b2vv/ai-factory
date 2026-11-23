@@ -322,8 +322,7 @@ def guarded(path, data, mode=0o600):
 
 def handoff_roots(root, path):
     """Enrolled Git roots from a native handoff profile (connect-handoff.py writes it). Read-only."""
-    path = Path(path)
-    if not path.is_absolute(): raise Blocked('handoff profile must be an absolute path')
+    path = k.absolute(path)  # absolute, no '..', no symlink in the path or its parents
     st = path.lstat()
     if not stat.S_ISREG(st.st_mode) or st.st_nlink != 1 or st.st_size > 32768 or st.st_uid != os.getuid():
         raise Blocked('handoff profile must be a private regular file of this user')
@@ -359,9 +358,13 @@ def cmd_list(root, dashboard_config=False):
         return {'status': 'OK', 'dashboard_projects': json.loads(data) if data else []}
     out = {'status': 'OK', 'projects': [public_entry(e) for e in (doc or empty())['projects']],
            'list': 'present' if doc else 'absent'}
-    cfg = private_json(root / k.STATE / HANDOFF)
+    try:
+        cfg = private_json(root / k.STATE / HANDOFF)
+    except (ValueError, OSError) as exc:
+        cfg = {'unreadable': str(exc) if isinstance(exc, ValueError) else type(exc).__name__}
     if cfg is not None:
         try:
+            if 'unreadable' in cfg: raise Blocked('the handoff configuration cannot be read: ' + cfg['unreadable'])
             if set(cfg) != {'schema', 'profile'} or cfg['schema'] != 1: raise Blocked('unsupported handoff configuration')
             enrolled = handoff_roots(root, cfg['profile'])
         except (ValueError, OSError) as exc:
@@ -909,7 +912,7 @@ def group(root, args):
     before = load(root)
     if before is None: raise Blocked('no project list; install a project first')
     doc = json.loads(json.dumps(before))
-    entry = find(doc, root=args.project)
+    entry = find(doc, root=str(k.absolute(args.project)))
     if entry is None: raise Blocked('project is not in the list; pass its listed root')
     entry['group'] = None if args.ungroup else args.group
     validate(doc)
@@ -921,6 +924,70 @@ def group(root, args):
     with operation(root, ctx) as restored:
         if load(root) != before: raise Blocked('project list changed while planning')
         op = commit(root, 'group', [root / k.STATE / LIST], [('list', lambda: guarded(root / k.STATE / LIST, encode(doc)))])
+    return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
+
+
+def move_root(root, args):
+    """Point a listed project at its moved checkout (S5/A5). The kit never moves files.
+
+    Every capability follows the new root in one guarded write (list, generated capture mapping and
+    dashboard projects, managed block), or nothing is written and every blocker is named.
+    """
+    busy(root)
+    ctx = capture_context(root)
+    before = load(root)
+    if before is None: raise Blocked('no project list; install a project first')
+    check_mapping(root, ctx, before)
+    check_dashboard(root, before)
+    doc = json.loads(json.dumps(before))
+    old = str(k.absolute(args.project))
+    entry = find(doc, root=old)
+    if entry is None: raise Blocked('project is not in the list; pass its listed root')
+    new = checkout_root(args.to)
+    if find(doc, root=new) is not None: raise Blocked('the new root is already listed')
+    blockers = []
+    if Path(old).exists(): blockers.append('the old root still exists: move the checkout first')
+    ins = private_json(root / k.STATE / INSTRUCTION_REG)
+    if any(t.get('project') and str(Path(t['project']).resolve()) == old for t in ((ins or {}).get('spec') or {}).get('targets', [])):
+        blockers.append('the instruction registration names the old root; change it with an instruction update first')
+    hcfg = private_json(root / k.STATE / HANDOFF)
+    if hcfg is not None:
+        try:
+            if old in handoff_roots(root, hcfg['profile']):
+                blockers.append('native handoff is enrolled for the old root: re-enroll the new root with connect-handoff.py')
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            blockers.append('the handoff profile cannot be read (' + (str(exc) if isinstance(exc, ValueError) else type(exc).__name__) + ')')
+    dash_cfg = DB.load_config(root, private_json)
+    generated = dash_cfg is None or dash_cfg['projects'] == str(dashboard_path(root))
+    if not generated and DB.dashboard_id(dash_cfg, Path(old)):
+        blockers.append('the hand-kept dashboard projects config names the old root: run `project dashboard-import` first')
+    if blockers: raise Blocked('cannot move the root: ' + '; '.join(blockers))
+    entry['root'] = str(new)
+    validate(doc)
+    rec = entry.get('archive')
+    contract = rec['files']['search_contract'] if rec else None
+    dash_id = entry['capabilities'].get('dashboard', {}).get('id') if generated else None
+    report = connect(root, new, False, contract, dash_id)
+    new_list, new_dash = encode(doc), dashboard_bytes(doc)
+    follows = ['project list'] + (['capture mapping'] if ctx and entry['capabilities']['capture']['channel'] == 'global' else []) \
+        + (['dashboard projects'] if 'dashboard' in entry['capabilities'] else [])
+    out = {'status': 'PLANNED (dry-run; pass --apply to write)', 'project': public_entry(entry), 'from': old, 'to': str(new),
+           'follows': follows, 'connection': report['actions']}
+    if k.regular(dashboard_path(root)) != new_dash:
+        out['dashboard'] = {'restart': 'dashboard-projects.json changes: restart the dashboard containers to show it'}
+    if not args.apply: return out
+    if k.regular(dashboard_path(root)) != new_dash: dashboard_validated(root, new_dash)
+    files = [new / n for n in ('AGENTS.local.md', 'CLAUDE.local.md', '.gitignore')]
+    paths = files + ([ctx['mapping']] if ctx else []) + [dashboard_path(root), root / k.STATE / LIST]
+    with operation(root, ctx) as restored:
+        if load(root) != before: raise Blocked('project list changed while planning')
+        check_mapping(root, ctx, before)
+        check_dashboard(root, before)
+        steps = [('connect', lambda: connect(root, new, True, contract, dash_id))]
+        if ctx: steps.append(('mapping', lambda: guarded(ctx['mapping'], mapping_bytes(doc))))
+        steps.append(('dashboard', lambda: guarded(dashboard_path(root), new_dash)))
+        steps.append(('list', lambda: guarded(root / k.STATE / LIST, new_list)))
+        op = commit(root, 'move-root', paths, steps)
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
 
 
@@ -959,7 +1026,7 @@ def parser():
     ap = argparse.ArgumentParser(prog='kit.py project', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
-    for name in ('list', 'install', 'remove', 'group', 'migrate', 'archive', 'dashboard', 'handoff', 'status', 'queue', 'dashboard-import'):
+    for name in ('list', 'install', 'remove', 'group', 'move-root', 'migrate', 'archive', 'dashboard', 'handoff', 'status', 'queue', 'dashboard-import'):
         p = sub.add_parser(name); p.add_argument('--root', required=True, help='installed kit root')
         if name != 'list': p.add_argument('--apply', action='store_true', help='write (default: dry-run plan)')
         if name == 'install':
@@ -973,6 +1040,9 @@ def parser():
             p.add_argument('--project', required=True, help='listed root of the project')
             g = p.add_mutually_exclusive_group(required=True)
             g.add_argument('--group', help='group name ([A-Za-z0-9_.-], up to 64)'); g.add_argument('--ungroup', action='store_true')
+        if name == 'move-root':
+            p.add_argument('--project', required=True, help='listed (old) root of the project')
+            p.add_argument('--to', required=True, help='main checkout root after the move')
         if name == 'handoff':
             p.add_argument('--profile', required=True, help='native handoff profile written by connect-handoff.py')
         if name == 'remove':
@@ -1024,7 +1094,7 @@ def main(argv=None):
             ctx = capture_context(root)
             with k.lock(root), (k.lock(ctx['registration_root']) if ctx else nullcontext()):
                 restored = restore(root)
-        out = {'list': cmd_list, 'install': install, 'remove': remove, 'group': group, 'migrate': migrate, 'archive': archive,
+        out = {'list': cmd_list, 'install': install, 'remove': remove, 'group': group, 'move-root': move_root, 'migrate': migrate, 'archive': archive,
                'dashboard': dashboard, 'handoff': handoff, 'status': status, 'queue': queue, 'dashboard-import': dashboard_import}[a.command](
             *((root, a.dashboard_config) if a.command == 'list' else (root, a)))
         if restored: out['restored_first'] = restored
