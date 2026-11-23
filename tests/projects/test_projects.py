@@ -130,6 +130,45 @@ class CleanMachine(Base):
         self.assertEqual([], self.ok('list')['projects'])
 
 
+class Groups(Base):
+    """A3: a group is a `group` field on each member's entry; grouping writes only the project list."""
+    capture = False
+
+    def test_group_three_projects_leaves_a_fourth_and_host_files_unchanged(self):
+        roots = {n: git_init(self.cf.base / n) for n in ('alpha', 'beta', 'gamma', 'delta')}
+        for p in roots.values(): self.ok('install', '--project', str(p), '--apply')
+        files = [p / n for p in roots.values() for n in ('AGENTS.local.md', 'CLAUDE.local.md', '.gitignore')]
+        host = self.snapshot(*files)
+        delta = next(e for e in self.ok('list')['projects'] if e['name'] == 'delta')
+        before = self.list_path.read_bytes()
+        plan = self.ok('group', '--project', str(roots['alpha']), '--group', 'billing')
+        self.assertTrue(plan['status'].startswith('PLANNED'), plan)
+        self.assertEqual(before, self.list_path.read_bytes())
+        self.assertEqual('APPLIED', self.ok('group', '--project', str(roots['alpha']), '--group', 'billing', '--apply')['status'])
+        self.ok('group', '--project', str(roots['beta']), '--group', 'billing', '--apply')
+        out = self.ok('group', '--project', str(roots['gamma']), '--group', 'billing', '--apply')
+        self.assertEqual(['alpha', 'beta', 'gamma'], out['group_members'])
+        listed = {e['name']: e for e in self.ok('list')['projects']}
+        self.assertEqual({'billing'}, {listed[n]['group'] for n in ('alpha', 'beta', 'gamma')})
+        self.assertEqual(delta, listed['delta'])
+        self.assertEqual(host, self.snapshot(*files))
+        self.assertEqual('NOOP', self.ok('group', '--project', str(roots['gamma']), '--group', 'billing', '--apply')['status'])
+        self.ok('group', '--project', str(roots['beta']), '--ungroup', '--apply')
+        listed = {e['name']: e for e in self.ok('list')['projects']}
+        self.assertEqual((None, 'billing'), (listed['beta']['group'], listed['alpha']['group']))
+
+    def test_group_input_checks(self):
+        project = git_init(self.cf.base / 'alpha')
+        self.blocked('group', '--project', str(project), '--group', 'g')
+        self.ok('install', '--project', str(project), '--apply')
+        before = self.list_path.read_bytes()
+        self.blocked('group', '--project', str(project), '--group', 'bad name', '--apply')
+        self.blocked('group', '--project', str(self.cf.base / 'other'), '--group', 'g', '--apply')
+        with redirect_stdout(io.StringIO()), self.assertRaises(SystemExit):
+            P.main(['group', '--root', str(self.kit), '--project', str(project), '--group', 'g', '--ungroup'])
+        self.assertEqual(before, self.list_path.read_bytes())
+
+
 class UpdateReport(Base):
     """A6: update checks every listed project and reports each one; it repairs nothing and keeps the list bytes."""
     capture = False

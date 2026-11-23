@@ -12,7 +12,7 @@ access (grants, credential files, search route and contract, worker) under the o
 authority and remove revokes it; see tools/project_archive.py. With a dashboard configuration
 (`project dashboard`), `project status` publishes an agent's task status (tools/project_dashboard.py)
 and install adds the publishing pointer to the project's managed block. `kit.py update` reports each listed project
-through check_projects (read-only). Groups (P2) and kit moves (P10) are not done here.
+through check_projects (read-only); `project group` sets an entry's group. Kit moves (P10) are not done here.
 """
 import argparse
 from contextlib import contextmanager, nullcontext, redirect_stdout
@@ -858,6 +858,32 @@ def migrate(root, args):
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
 
 
+def group(root, args):
+    """Put a listed project in a group, or take it out (S3/A3). Writes only the project list.
+
+    Membership is the `group` field of each member's entry, so it is mutual and transitive by construction.
+    Archive search does not apply groups yet (spec: out of scope).
+    """
+    if args.group is not None and not NAME.fullmatch(args.group): raise Blocked('invalid --group')
+    ctx = capture_context(root)
+    before = load(root)
+    if before is None: raise Blocked('no project list; install a project first')
+    doc = json.loads(json.dumps(before))
+    entry = find(doc, root=args.project)
+    if entry is None: raise Blocked('project is not in the list; pass its listed root')
+    entry['group'] = None if args.ungroup else args.group
+    validate(doc)
+    members = sorted(e['name'] for e in doc['projects'] if entry['group'] is not None and e['group'] == entry['group'])
+    unchanged = encode(doc) == encode(before)
+    out = {'status': 'NOOP' if unchanged else 'PLANNED (dry-run; pass --apply to write)',
+           'project': public_entry(entry), 'group_members': members, 'writes': [] if unchanged else ['project list']}
+    if unchanged or not args.apply: return out
+    with operation(root, ctx) as restored:
+        if load(root) != before: raise Blocked('project list changed while planning')
+        op = commit(root, 'group', [root / k.STATE / LIST], [('list', lambda: guarded(root / k.STATE / LIST, encode(doc)))])
+    return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
+
+
 def check_projects(root):
     """After a kit update: the install plan of every listed project, read-only (S6/A6).
 
@@ -893,7 +919,7 @@ def parser():
     ap = argparse.ArgumentParser(prog='kit.py project', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
-    for name in ('list', 'install', 'remove', 'migrate', 'archive', 'dashboard', 'status', 'queue', 'dashboard-import'):
+    for name in ('list', 'install', 'remove', 'group', 'migrate', 'archive', 'dashboard', 'status', 'queue', 'dashboard-import'):
         p = sub.add_parser(name); p.add_argument('--root', required=True, help='installed kit root')
         if name != 'list': p.add_argument('--apply', action='store_true', help='write (default: dry-run plan)')
         if name == 'install':
@@ -903,6 +929,10 @@ def parser():
             c.add_argument('--capture-credential', help='existing private capture credential file for this project')
             c.add_argument('--no-capture', action='store_true')
             p.add_argument('--capture-queue'); p.add_argument('--capture-status'); p.add_argument('--source-instance')
+        if name == 'group':
+            p.add_argument('--project', required=True, help='listed root of the project')
+            g = p.add_mutually_exclusive_group(required=True)
+            g.add_argument('--group', help='group name ([A-Za-z0-9_.-], up to 64)'); g.add_argument('--ungroup', action='store_true')
         if name == 'remove':
             w = p.add_mutually_exclusive_group(required=True)
             w.add_argument('--project'); w.add_argument('--id')
@@ -952,7 +982,7 @@ def main(argv=None):
             ctx = capture_context(root)
             with k.lock(root), (k.lock(ctx['registration_root']) if ctx else nullcontext()):
                 restored = restore(root)
-        out = {'list': cmd_list, 'install': install, 'remove': remove, 'migrate': migrate, 'archive': archive,
+        out = {'list': cmd_list, 'install': install, 'remove': remove, 'group': group, 'migrate': migrate, 'archive': archive,
                'dashboard': dashboard, 'status': status, 'queue': queue, 'dashboard-import': dashboard_import}[a.command](
             *((root, a.dashboard_config) if a.command == 'list' else (root, a)))
         if restored: out['restored_first'] = restored
