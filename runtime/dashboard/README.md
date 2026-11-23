@@ -58,7 +58,10 @@ validates the projects config with the dashboard itself, mounts the config
 read-only and each project's `.git` at `/inputs/projects/<id>/.git`, and the
 container reads them via `-roots-under /inputs/projects`. Run `sh docker-local.sh run` only after confirming that the engine
 honors host-loopback publication. Verify actual listeners for IPv4 and IPv6;
-a Host header check is not a network access restriction. Do not use Kiri Share
+a Host header check is not a network access restriction. The local listener
+also refuses any request carrying proxy headers (`Forwarded`, `Via`,
+`X-Forwarded-*`, `X-Real-IP`, `CF-Connecting-IP`, `True-Client-IP`): it has no
+login and must never sit behind a proxy or tunnel. Do not use Kiri Share
 to publish internal reports. Never build or replace
 the service for a record update. The container has a dedicated bridge,
 loopback-only publishing, no Docker socket, non-root user, read-only root,
@@ -225,7 +228,7 @@ view never shows it. Agents publish it with `kit.py project queue`.
 
 ```sh
 npm run build
-node --test ui/markdown.test.js ui/queue.test.js
+node --test ui/markdown.test.js ui/queue.test.js ui/status.test.js
 GOPROXY=off go test ./...
 GOPROXY=off go vet ./...
 ```

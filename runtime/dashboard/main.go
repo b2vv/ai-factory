@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -167,8 +168,24 @@ func dashboardNavigation(r *http.Request) bool {
 	return r.Method == http.MethodGet && r.URL.Path == "/" && r.Header.Get("Sec-Fetch-Mode") == "navigate" && r.Header.Get("Sec-Fetch-Dest") == "document"
 }
 
+// proxyHeaders are set by proxies and tunnels. The local listener must never sit behind one: only the share
+// listener may, and it maps its tunnel's exact headers itself (shareTunnelHost).
+var proxyHeaders = []string{"Forwarded", "Via", "X-Forwarded-For", "X-Forwarded-Host", "X-Forwarded-Proto",
+	"X-Forwarded-Port", "X-Forwarded-Server", "X-Forwarded-Ssl", "X-Real-IP", "CF-Connecting-IP", "True-Client-IP"}
+
+// dashboard is the local listener's handler: no login, so it refuses any request that came through a proxy.
 func dashboard(host string, read func(context.Context) snapshot, readProject func(string) (project, feedRecord)) http.Handler {
-	return dashboardAtOrigin(host, "http://"+host, read, readProject)
+	next := dashboardAtOrigin(host, "http://"+host, read, readProject)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		for _, name := range proxyHeaders {
+			if _, proxied := r.Header[http.CanonicalHeaderKey(name)]; proxied {
+				dashboardHeaders(w)
+				http.Error(w, "Forbidden", http.StatusForbidden)
+				return
+			}
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 func dashboardAtOrigin(host, origin string, read func(context.Context) snapshot, readProject func(string) (project, feedRecord)) http.Handler {
@@ -231,6 +248,30 @@ func dashboardAtOrigin(host, origin string, read func(context.Context) snapshot,
 	})
 }
 
+// shareOptions are the share listener's flags; shareHandlerFor turns them into its handler or refuses them.
+type shareOptions struct {
+	host, domain, digest string
+	auth                 bool
+	port                 int
+	publishing, probe    bool
+}
+
+func shareHandlerFor(o shareOptions, sources roots) (http.Handler, error) {
+	if o.publishing || o.probe || o.port == 8732 || !validShareHost(o.host, o.domain) {
+		return nil, errors.New("share mode requires its own port, -share-domain and an exact host one label under it")
+	}
+	var handler http.Handler = http.HandlerFunc(shareForbidden)
+	if o.auth {
+		users, err := loadShareAccounts(o.digest)
+		if err != nil {
+			return nil, errors.New("invalid share credentials file")
+		}
+		owner := dashboardAtOrigin(o.host, "https://"+o.host, func(_ context.Context) snapshot { return sources.snapshot() }, func(id string) (project, feedRecord) { return sources.readOne(id, time.Now()) })
+		handler = sharedDashboard(o.host, users, owner, sources.snapshot)
+	}
+	return shareTunnelHost(o.host, o.port, handler), nil
+}
+
 func main() {
 	projectsPath := flag.String("projects", os.Getenv("DASHBOARD_PROJECTS"), "absolute path to the projects JSON config outside the kit (default $DASHBOARD_PROJECTS)")
 	rootsUnder := flag.String("roots-under", "", "replace every configured root with DIR/<id> (read-only container mounts)")
@@ -279,19 +320,12 @@ func main() {
 	})
 	var shareHandler http.Handler
 	if sharing {
-		if publishers > 0 || *probe || *port == 8732 || !validShareHost(*shareHost, *shareDomain) {
-			log.Fatal("share mode requires its own port, -share-domain and an exact host one label under it")
+		h, err := shareHandlerFor(shareOptions{host: *shareHost, domain: *shareDomain, digest: *shareDigest, auth: *shareAuth,
+			port: *port, publishing: publishers > 0, probe: *probe}, sources)
+		if err != nil {
+			log.Fatal(err)
 		}
-		shareHandler = http.HandlerFunc(shareForbidden)
-		if *shareAuth {
-			users, err := loadShareAccounts(*shareDigest)
-			if err != nil {
-				log.Fatal("invalid share credentials file")
-			}
-			owner := dashboardAtOrigin(*shareHost, "https://"+*shareHost, func(_ context.Context) snapshot { return sources.snapshot() }, func(id string) (project, feedRecord) { return sources.readOne(id, time.Now()) })
-			shareHandler = sharedDashboard(*shareHost, users, owner, sources.snapshot)
-		}
-		shareHandler = shareTunnelHost(*shareHost, *port, shareHandler)
+		shareHandler = h
 	}
 
 	if publishers > 0 {

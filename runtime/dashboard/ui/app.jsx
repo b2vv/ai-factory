@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {ReviewedMarkdown} from './markdown.js';
 import {queueView} from './queue.js';
+import {validSnapshot} from './status.js';
 
 const names = {Plan:'План',Implementation:'Реалізація',Tests:'Тести',Review:'Рев’ю',Push:'Push',Update:'Update'};
 const states = {
@@ -92,6 +93,7 @@ function App() {
         const res=await fetch('/api/status',{cache:'no-store',signal:active.signal});
         if(!res.ok) throw Error('unavailable');
         const data=await res.json();
+        if(!validSnapshot(data)) throw Error('unexpected status shape');
         if(alive){setResult(data);setFailed(false);}
       } catch { if(alive)setFailed(true); }
       finally {clearTimeout(cutoff);if(alive)timer=setTimeout(refresh,10000);}

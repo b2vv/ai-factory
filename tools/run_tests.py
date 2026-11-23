@@ -64,8 +64,8 @@ def run_dashboard_suites(root, env):
         print('\n=== dashboard node suite: SKIPPED ('+('no node on PATH' if not node else 'node_modules absent; run npm ci')+') ===',flush=True)
         if args.suite=='dashboard': print('dashboard required node suite: BLOCKED (not executed)',flush=True)
         return code if code or args.suite!='dashboard' else 2
-    print('\n=== dashboard node suite: node --test ui/markdown.test.js ui/queue.test.js ===',flush=True)
-    result=subprocess.run([node,'--test','ui/markdown.test.js','ui/queue.test.js'],env=env,cwd=str(mod))
+    print('\n=== dashboard node suite: node --test ui/markdown.test.js ui/queue.test.js ui/status.test.js ===',flush=True)
+    result=subprocess.run([node,'--test','ui/markdown.test.js','ui/queue.test.js','ui/status.test.js'],env=env,cwd=str(mod))
     print('dashboard node suite: '+('FAIL' if result.returncode else 'PASS'),flush=True)
     return code or (1 if result.returncode else 0)
 root=Path(__file__).resolve().parent.parent

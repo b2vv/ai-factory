@@ -495,5 +495,13 @@ func (r roots) publishFile(raw []byte, id string, kind feedKind, apply bool, rec
 	if err := recheck(); err != nil {
 		return err
 	}
-	return os.Rename(tmp.Name(), filepath.Join(r.feed, feedName(id, kind)))
+	if err := os.Rename(tmp.Name(), filepath.Join(r.feed, feedName(id, kind))); err != nil {
+		return err
+	}
+	// Best effort: the record is already in place, and a reported failure would make the retry refuse its timestamp.
+	if dir, err := os.Open(r.feed); err == nil {
+		_ = dir.Sync()
+		dir.Close()
+	}
+	return nil
 }

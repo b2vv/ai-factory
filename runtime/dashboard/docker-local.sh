@@ -53,7 +53,7 @@ if [ "$action" = share ]; then
     on)
       : "${DASHBOARD_SHARE_DIGEST:?set the path to the share accounts file}"
       mount_path digest "$DASHBOARD_SHARE_DIGEST"
-      test -f "$DASHBOARD_SHARE_DIGEST" ;;
+      test -f "$DASHBOARD_SHARE_DIGEST" || { echo >&2 'share accounts file is missing'; exit 2; } ;;
     off) ;;
     *) echo >&2 'DASHBOARD_SHARE_AUTH must be on or off'; exit 2 ;;
   esac

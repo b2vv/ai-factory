@@ -660,7 +660,7 @@
     },
     {
       "path": "runtime/dashboard/README.md",
-      "sha256": "ca71ed7e74fd3527404b4f09ee1b65eaf2bfbec4e7225818510075e3508a1fa7",
+      "sha256": "40b4f8859e7ed0eb0f09062a508001eede60cb60079e6268efffdf3d46a00e48",
       "component": "dashboard"
     },
     {
@@ -675,12 +675,12 @@
     },
     {
       "path": "runtime/dashboard/docker-local.sh",
-      "sha256": "29a0b9cf651c74db58086e1acc091dd0c2c05dd4977fc3834c6be98cff5357f3",
+      "sha256": "0fed7343952d8b50990754e65a8282f8dc626770588045ae9fb7cb6f4f324f59",
       "component": "dashboard"
     },
     {
       "path": "runtime/dashboard/feed.go",
-      "sha256": "99ea183f2f5faf9604d6dd4c376b9fe515af3554a337dee43044fca545c49fc2",
+      "sha256": "a3c95489d0f4859cc0c4fc8243fd24fc93b6de8c93606cff12003517548b6c43",
       "component": "dashboard"
     },
     {
@@ -694,8 +694,13 @@
       "component": "dashboard"
     },
     {
+      "path": "runtime/dashboard/hardening_test.go",
+      "sha256": "6229f0ac029a106fe3bc06287d1b55a536170eb638e3700b84d3396b17c8098c",
+      "component": "dashboard"
+    },
+    {
       "path": "runtime/dashboard/main.go",
-      "sha256": "dfb7d42da8ba56ee70a8aeca16f0e5ce220819fd21baba75cadbdba748d76e6d",
+      "sha256": "02258d26d21910b3bd41ef1b6fff7ac3457887cc1b78ae9524bd764a7a844f40",
       "component": "dashboard"
     },
     {
@@ -770,7 +775,7 @@
     },
     {
       "path": "runtime/dashboard/ui/app.jsx",
-      "sha256": "d861144e3ad9db31d7b3cde1746edeb366c09cd79f2574d7619228e900f7f7ff",
+      "sha256": "cc3c7e219941fd40e92a4291fc01344cae117b4a429727515efd26d289f4df14",
       "component": "dashboard"
     },
     {
@@ -796,6 +801,16 @@
     {
       "path": "runtime/dashboard/ui/queue.test.js",
       "sha256": "8ea59f5c552dafa0bbd63f84362f550f51b40f540f03d5fbebe53784a51fef26",
+      "component": "dashboard"
+    },
+    {
+      "path": "runtime/dashboard/ui/status.js",
+      "sha256": "44c5e30ce65453e932dd6bdaafabbe47f5b605fab2dd908a7a4bd51e2701e4d0",
+      "component": "dashboard"
+    },
+    {
+      "path": "runtime/dashboard/ui/status.test.js",
+      "sha256": "c7d0c2d25b0514b3b592d6521ee8cec498703768e6be0ff07ec1df1fc7561d51",
       "component": "dashboard"
     },
     {
@@ -4690,7 +4705,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "8a548fcb579cf4a9358d82232900594465f108dd906d80033a6c6fe583aa3ace",
+      "sha256": "61befbebaa65fa2a80ab0c2a6ae5bf374c9d7fa717d500540b7d3b6b9aaa98d2",
       "component": "core"
     },
     {
