@@ -1498,7 +1498,7 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "f61806188de1c5f8e7383dfc6a8e2478849c6f0cfdcdc75e430574b428b07d76",
+      "sha256": "af5c0a0073e6568b57665a99ae811b1a4404acba8bc0f0e98d453ae7bb09c348",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -1513,7 +1513,8 @@
         "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained.",
         "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained.",
         "Owner-authorized semantic-consistency and concept-fit pointers in §2/§4/§5, 2026-11-18; §3 priority unchanged; original identities retained.",
-        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained."
+        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
+        "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1739,7 +1740,7 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "5f66d0027d13fd3dc62aa065264b2235c2d654f8f91d128fc6c8bc391b76376d",
+      "sha256": "fbad43cf270d4e161751d9dc4edefcdfb3d6f3084395e3e5a0f6dac4dc952c5e",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
@@ -1752,7 +1753,8 @@
         "Owner-authorized owner-decision section, gating rule, concept-fit merge and opt-in audit mode, 2026-11-18; original identities retained.",
         "Owner-authorized A1-A6 design-semantics clarification, 2026-11-19; scoped norm/dependency and evidence interpretation, no helper or source-priority change; historical identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
-        "Owner-authorized minimum evidence for interface-review keyboard, contrast and interaction claims; original source identity and hash retained."
+        "Owner-authorized minimum evidence for interface-review keyboard, contrast and interaction claims; original source identity and hash retained.",
+        "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"

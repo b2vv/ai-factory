@@ -172,7 +172,7 @@
     },
     {
       "destination": "skills/ux-review/references/semantic-consistency.md",
-      "sha256": "2d9b7e0bfd5182f5492597424e8044cad09286d3e0cdfe6061c1bfd67c5198f5",
+      "sha256": "151ae437ec7b6a74e41a6fba34fc9f808a4743b62500dd4c1d53f39c2a02ed03",
       "kind": "Owner-authorized original semantic-consistency guidance (design skills); not upstream content; see PROVENANCE.md"
     },
     {
@@ -187,17 +187,17 @@
     },
     {
       "destination": "skills/ui-audit/SKILL.md",
-      "sha256": "41164b289b46606de78dc7106201b1e2a076e1a2378079ff852c894e8d0e8f83",
+      "sha256": "3148243f72ce3c5c2cfb8dd994b7394015c4d6e6e240b7405938c65d1011b450",
       "kind": "Owner-authorized authored first-party skill (ui-audit); read-only UI/UX problem finder with an owner confirmation loop, distinct from upstream MIT adaptation; hands confirmed problems to interface-review and design-pass; see PROVENANCE.md"
     }
   ],
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "6af92321b159031471f50705c938e4de13528d943ed5c5e0836140deea1247aa",
+      "before_sha256": "42ca1888f6fb14c2ce707637fca4c3a5727fe7403bce72aaaf5b6852d50376df",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "f61806188de1c5f8e7383dfc6a8e2478849c6f0cfdcdc75e430574b428b07d76",
+      "after_sha256": "af5c0a0073e6568b57665a99ae811b1a4404acba8bc0f0e98d453ae7bb09c348",
       "prior_adaptation_hashes": [
         {
           "before_sha256": "b5e8f37db63c882d771558b46d582e99c99b9e833beb1df5363659928bd29adb",
@@ -210,6 +210,10 @@
         {
           "before_sha256": "16050d2240014a19be12774c48ec93991166860b99e5da2ce41ef80afd3b2a3e",
           "after_sha256": "18006094ab2304c4e64d76f403ef4f51033339a7ae0167451a2fbf50f1bc5d1a"
+        },
+        {
+          "before_sha256": "6af92321b159031471f50705c938e4de13528d943ed5c5e0836140deea1247aa",
+          "after_sha256": "f61806188de1c5f8e7383dfc6a8e2478849c6f0cfdcdc75e430574b428b07d76"
         }
       ]
     },

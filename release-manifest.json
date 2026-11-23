@@ -500,7 +500,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "27b109bb45093dcf9fb76a3199258f4ccb5afa2d10747ae4d21bbc46a6d816e9",
+      "sha256": "d5b47583ac1f80238154c7b51a27d7081a0916ce15c3d9a61fa117db8ecb8a69",
       "component": "core"
     },
     {
@@ -570,7 +570,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "2ce1a8a2bc61b744b8cc8a2d482c6fae78b47a71370248a627672946e3fd435d",
+      "sha256": "12d698cb914897d01fb013fb6eda44aa5945fb14f29fe93d04fa773532db91b3",
       "component": "core"
     },
     {
@@ -3115,7 +3115,7 @@
     },
     {
       "path": "skills/design-pass/SKILL.md",
-      "sha256": "f61806188de1c5f8e7383dfc6a8e2478849c6f0cfdcdc75e430574b428b07d76",
+      "sha256": "af5c0a0073e6568b57665a99ae811b1a4404acba8bc0f0e98d453ae7bb09c348",
       "component": "skills"
     },
     {
@@ -3230,7 +3230,7 @@
     },
     {
       "path": "skills/interface-review/SKILL.md",
-      "sha256": "5f66d0027d13fd3dc62aa065264b2235c2d654f8f91d128fc6c8bc391b76376d",
+      "sha256": "fbad43cf270d4e161751d9dc4edefcdfb3d6f3084395e3e5a0f6dac4dc952c5e",
       "component": "skills"
     },
     {
@@ -4180,7 +4180,7 @@
     },
     {
       "path": "skills/ui-audit/SKILL.md",
-      "sha256": "41164b289b46606de78dc7106201b1e2a076e1a2378079ff852c894e8d0e8f83",
+      "sha256": "3148243f72ce3c5c2cfb8dd994b7394015c4d6e6e240b7405938c65d1011b450",
       "component": "skills"
     },
     {
@@ -4315,7 +4315,7 @@
     },
     {
       "path": "skills/ux-review/references/semantic-consistency.md",
-      "sha256": "2d9b7e0bfd5182f5492597424e8044cad09286d3e0cdfe6061c1bfd67c5198f5",
+      "sha256": "151ae437ec7b6a74e41a6fba34fc9f808a4743b62500dd4c1d53f39c2a02ed03",
       "component": "skills"
     },
     {
@@ -4381,6 +4381,11 @@
     {
       "path": "tests/collection/test_layout_integrity.py",
       "sha256": "640a5f1db7aeef63c0f10170ae50dfa8d5a4f075cce658f18f5d79d8038e4e38",
+      "component": "core"
+    },
+    {
+      "path": "tests/collection/test_skill_handoffs.py",
+      "sha256": "03e51595a45732c831c38de65164941d0a2672558128af128d25df4dedcbf096",
       "component": "core"
     },
     {

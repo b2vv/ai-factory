@@ -50,6 +50,8 @@ Run the helpers the chosen row names, in this order:
 3. **Visual filter:** anti-slop-design §0–§1: announce the design read and justify the applicable dials from the brief. Its catalog checks appropriateness; the project's style stays. Its §3 pre-flight runs at two points with different objects: on a variant shown for visual fit before implementation (step 4, per concept fit), and on the implemented result in the §5 final pass.
 4. **Meaning and concept:** the plan names the component roles it touches and reads their values by role ([semantic-consistency](../ux-review/references/semantic-consistency.md)), not per class. Before implementation, check the proposal's concept compatibility against the concept card and, where the change warrants it, show a variant for visual fit ([concept fit](../anti-slop-design/references/concept-fit.md)); visual fit not shown stays NOT_TESTED, never `fits`.
 
+When a [ui-audit](../ui-audit/SKILL.md) report exists for the screen, its confirmed problems and its requirement failures (§4 there, kept whatever the owner answered) are part of the brief.
+
 Read the task record's CURRENT acceptance criteria (feature-lifecycle "one primary task record") as the baseline; do not re-derive a parallel acceptance. PROPOSE UI-observable checks (viewport/state) as additions — proposed, not adopted. UX does not itself change the agreed acceptance/scope; a scope change is agreed by the owner first, then recorded. When there is no task record (small work with no durable record), a short message is sufficient, without extra files.
 
 
@@ -105,6 +107,7 @@ If a tool, launch, data or access is blocked, perform available independent chec
 - implementation passes appropriate project checks;
 - the current result has been inspected in a browser at every applicable baseline viewport under the shared contract, with the primary journey and applicable states checked;
 - any reference has been compared at the target viewport, with differences described; relevant measurements are bound to the same route/state/fixture/revision, and unsupported or missing checks stay NOT_TESTED;
+- every confirmed ui-audit problem (not taste) and every ui-audit requirement failure in the brief is fixed and rechecked, or carries a recorded owner decision or an accepted dated limitation;
 - applicable anti-slop pre-flight and UX pass are complete; blocker/major findings are fixed and rechecked. The only exception is a limitation explicitly accepted by the user with a date and impact, with status “done with limitations”. Merely recording a defect does not mean it is accepted.
 
 At the end, briefly report what changed and why; which screens/journeys/viewports were checked; where evidence is; and what remains. Use **PASS / FAIL / NOT_TESTED / N/A** for checks, with grounds (a required untested check blocks the gate: **BLOCKED**). Untested is not PASS; explain inapplicability for N/A. If a key check is blocked, status is “implemented, verification incomplete”, with a specific next step instead of unconditional “done”.

@@ -16,8 +16,11 @@ skill — this supplies only sequence and **merge**, so several lenses do not co
 
 Full review/audit of a screen, flow, prototype or PR; the final interface “readiness” gate. For one
 lens, invoke the corresponding skill directly (`ux-review` for usability, `anti-slop-design` for appearance).
-To find and name problems with the owner before a gate, without ranking or gating, use [`ui-audit`](../ui-audit/SKILL.md);
-its confirmed problems are evidence here, not findings to rediscover.
+To find and name problems with the owner before a gate, without ranking or gating, use [`ui-audit`](../ui-audit/SKILL.md).
+Its confirmed problems, and every entry that fails an applicable accessibility, keyboard or functional requirement whatever
+the owner answered, are evidence here and enter the merge, not findings to rediscover. Such a requirement entry leaves the
+gate only through a dated limitation the owner explicitly accepted (ui-audit §4). The reuse condition below (same build,
+viewport and UI state) still applies.
 
 
 ## Sequence

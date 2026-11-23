@@ -211,7 +211,8 @@ a sorted list of numbers.
   its report and the owner chooses where it is kept.
 - **Across tasks** — a decision lives only in its task record. A later run finds earlier
   decisions through the project's existing task index or by searching earlier task records for
-  the same role ID; it does not assume them. A decision that must hold for all future work goes
+  the same role ID; it does not assume them. ui-audit records its consistency decisions with the
+  same keys (role ID, cause, key, selector), so a run finds decisions from either. A decision that must hold for all future work goes
   through `record-norm` into the design standards. A recorded decision whose role or selector no
   longer exists is reported as stale and never applied silently. If there is no task index or
   earlier records cannot be read, say so: earlier decisions are not covered and every item is
