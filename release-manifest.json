@@ -4509,6 +4509,11 @@
       "component": "core"
     },
     {
+      "path": "tests/projects/test_clean_machine.py",
+      "sha256": "0d43681b1e00c8fd427c28693b417dee56b66e03dc956f441b1af6645ef22eca",
+      "component": "core"
+    },
+    {
       "path": "tests/projects/test_project_archive.py",
       "sha256": "b7e19417f3dde57746daf887bd50d62de09c5089e0bb87b106a809d4e619c8a1",
       "component": "core"
