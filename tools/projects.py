@@ -735,6 +735,19 @@ def status(root, args):
     return out
 
 
+def queue(root, args):
+    """Publish one project's open-task list through the dashboard's own publisher. Prints no item text."""
+    cfg = DB.load_config(root, private_json)
+    if cfg is None: raise Blocked('no dashboard configuration: run `kit.py project dashboard` first')
+    if args.project not in DB.projects(cfg): raise Blocked(f'{args.project} is not in the dashboard projects config')
+    record = DB.queue_record(sys.stdin.buffer.read(DB.QUEUE_INPUT + 1), args.project, DB.utcnow())
+    ok, message = DB.publish(cfg, record, args.apply, '-publish-queue')
+    out = {'status': ('APPLIED' if args.apply else 'VALID (dry-run; pass --apply to publish)') if ok else 'BLOCKED',
+           'project': args.project, 'items': len(record['items']), 'omitted': record['omitted'], 'publisher': message}
+    if not ok: out['reason'] = 'the dashboard publisher refused the queue: ' + message
+    return out
+
+
 def archive(root, args):
     """Write the archive configuration: paths only, never a secret."""
     cfg = A.build_config(root, args)
@@ -847,7 +860,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='kit.py project', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
-    for name in ('list', 'install', 'remove', 'migrate', 'archive', 'dashboard', 'status', 'dashboard-import'):
+    for name in ('list', 'install', 'remove', 'migrate', 'archive', 'dashboard', 'status', 'queue', 'dashboard-import'):
         p = sub.add_parser(name); p.add_argument('--root', required=True, help='installed kit root')
         if name != 'list': p.add_argument('--apply', action='store_true', help='write (default: dry-run plan)')
         if name == 'install':
@@ -885,6 +898,8 @@ def main(argv=None):
             p.add_argument('--from', dest='source_file', required=True, help='hand-kept dashboard projects.json')
         if name == 'status':
             p.add_argument('--project', required=True, help='dashboard project id; the status JSON comes on stdin')
+        if name == 'queue':
+            p.add_argument('--project', required=True, help='dashboard project id; {"items": [...]} comes on stdin')
         if name == 'migrate':
             p.add_argument('--include-root', action='append', default=[],
                            help='another project root to inventory (for example one captured by its own hook)')
@@ -900,7 +915,7 @@ def main(argv=None):
             with k.lock(root), (k.lock(ctx['registration_root']) if ctx else nullcontext()):
                 restored = restore(root)
         out = {'list': cmd_list, 'install': install, 'remove': remove, 'migrate': migrate, 'archive': archive,
-               'dashboard': dashboard, 'status': status, 'dashboard-import': dashboard_import}[a.command](
+               'dashboard': dashboard, 'status': status, 'queue': queue, 'dashboard-import': dashboard_import}[a.command](
             *((root, a.dashboard_config) if a.command == 'list' else (root, a)))
         if restored: out['restored_first'] = restored
     except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as exc:

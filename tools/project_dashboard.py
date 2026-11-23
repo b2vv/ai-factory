@@ -223,8 +223,39 @@ def status_record(raw, ident, revision, now):
             'updatedAt': now.strftime('%Y-%m-%dT%H:%M:%SZ'), **doc}
 
 
-def publish(cfg, record, apply):
-    code, out, err = run_dashboard(cfg, ['-publish'] + (['-apply'] if apply else []),
+QUEUE_SCHEMA = 'factory-dashboard/queue/1'
+QUEUE_INPUT = 256 * 1024    # larger than the record cap, so trimming can engage
+QUEUE_MAX_BYTES, QUEUE_MAX_ITEMS = 32 * 1024, 64
+
+
+def queue_record(raw, ident, now):
+    """The queue record for the dashboard: the agent's items in its order, trimmed from the end to the record caps.
+
+    `omitted` counts only what was trimmed here; listing every not-closed task is the agent's duty."""
+    if len(raw) > QUEUE_INPUT: raise Blocked('queue input is larger than 256 KiB')
+    try:
+        doc = json.loads(raw)
+    except (ValueError, UnicodeDecodeError):
+        raise Blocked('queue input is not JSON') from None
+    if not isinstance(doc, dict): raise Blocked('queue input must be a JSON object')
+    filled = sorted(set(doc) & {'schema', 'project', 'updatedAt', 'omitted'})
+    if filled: raise Blocked('queue input must not set ' + ', '.join(filled) + ' (the command fills them)')
+    if set(doc) != {'items'} or not isinstance(doc['items'], list):
+        raise Blocked('queue input must be {"items": [...]}')
+    items = list(doc['items'])
+    record = {'schema': QUEUE_SCHEMA, 'project': ident, 'updatedAt': now.strftime('%Y-%m-%dT%H:%M:%SZ'),
+              'items': items[:QUEUE_MAX_ITEMS], 'omitted': max(0, len(items) - QUEUE_MAX_ITEMS)}
+    while len(encode_record(record)) > QUEUE_MAX_BYTES and record['items']:
+        record['items'].pop(); record['omitted'] += 1
+    return record
+
+
+def encode_record(record):
+    return json.dumps(record, ensure_ascii=False).encode('utf-8')
+
+
+def publish(cfg, record, apply, flag='-publish'):
+    code, out, err = run_dashboard(cfg, [flag] + (['-apply'] if apply else []),
                                    stdin=json.dumps(record, ensure_ascii=False).encode('utf-8'))
     message = last_line(out) if code == 0 else last_line(err) or last_line(out) or f'exit {code}'
     return code == 0, message

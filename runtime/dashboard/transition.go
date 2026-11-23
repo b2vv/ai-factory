@@ -81,7 +81,7 @@ func (r roots) publishTransition(input io.Reader, apply bool, now time.Time) err
 	if err != nil {
 		return errors.New("could not read transition")
 	}
-	t, err := decodeBounded[transitionRecord](raw)
+	t, err := decodeBounded[transitionRecord](raw, maxFeed, canonicalField)
 	if err != nil {
 		return err
 	}
@@ -89,13 +89,13 @@ func (r roots) publishTransition(input io.Reader, apply bool, now time.Time) err
 	if projects.name(id) == "" {
 		return errors.New("unknown project")
 	}
-	return r.publishFile(raw, id, true, apply, func() error {
+	return r.publishFile(raw, id, kindTransition, apply, func() error {
 		if err := t.validate(id, revision(r.repo(id)), now); err != nil {
 			return err
 		}
-		previous, err := feedFile(r.feed, id, true)
+		previous, err := feedFile(r.feed, id, kindTransition)
 		if err == nil {
-			prev, e := decodeBounded[transitionRecord](previous)
+			prev, e := decodeBounded[transitionRecord](previous, maxFeed, canonicalField)
 			if e != nil || prev.Schema != transitionSchema || prev.Project != id || prev.UpdatedAt.IsZero() {
 				return errors.New("existing transition is invalid; inspect manually")
 			}

@@ -34,7 +34,8 @@ func TestSharedDashboardBoundary(t *testing.T) {
 			{ID: "project-a", Name: "PRIVATE_NAME", State: "Recorded", Revision: "PRIVATE_REVISION",
 				Task: "PRIVATE_TASK", Next: "PRIVATE_NEXT", DetailID: "PRIVATE_DETAIL", DetailToken: "PRIVATE_TOKEN",
 				Observed: "PRIVATE_TIME", Provenance: "PRIVATE_PROVENANCE", Workflow: "PRIVATE_WORKFLOW",
-				Stages: []stage{{Name: "PRIVATE_STAGE", State: "PRIVATE_STAGE_STATE", Source: "PRIVATE_SOURCE"}}},
+				Stages: []stage{{Name: "PRIVATE_STAGE", State: "PRIVATE_STAGE_STATE", Source: "PRIVATE_SOURCE"}},
+				Queue:  &queueDisplay{Items: []queueItem{{ID: "t1", Title: "PRIVATE_QUEUE_TITLE", State: "Ready", Summary: "PRIVATE_QUEUE_SUMMARY"}}}},
 			{ID: "project-b", State: "PRIVATE_STATE"},
 			{ID: "unexpected", State: "Recorded", Name: "PRIVATE_PROJECT"},
 		}}

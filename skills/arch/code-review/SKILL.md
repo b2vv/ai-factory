@@ -114,5 +114,7 @@ If the project's managed block (AGENTS.local.md) contains "Dashboard status for 
 publish the primary task's status after the review verdict is recorded and after your own commit, with the
 command named there: first without `--apply`, then with it. Build the status only from the task
 record's recorded evidence (stages without evidence stay `Unknown`), with no paths, URLs or secrets.
+Then publish the open-task list (`kit.py project queue`) from the task index: every not-closed task with a
+one-line summary, the proposed next task marked `recommended`.
 Report a refusal; do not work around it or retry in a loop.
 See [publishing a project's status](../../../docs/dashboard-status.md).

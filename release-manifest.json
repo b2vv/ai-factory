@@ -270,7 +270,7 @@
     },
     {
       "path": "docs/dashboard-status.md",
-      "sha256": "0f9dabd92ce53dcb3ee27f24c90079f35720afbdfe91d1ba4b54f32f2c376a73",
+      "sha256": "e32db54007762495f5d4075e77d5029e52d557d62ab952597ffc45d72d721037",
       "component": "core"
     },
     {
@@ -570,7 +570,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "9a80fbd64fd198003dd2dc80cc5de6b4e2203048de2cfabd5ddec081d039ed3d",
+      "sha256": "2ce1a8a2bc61b744b8cc8a2d482c6fae78b47a71370248a627672946e3fd435d",
       "component": "core"
     },
     {
@@ -660,7 +660,7 @@
     },
     {
       "path": "runtime/dashboard/README.md",
-      "sha256": "b873b0e2ad115b431975ac50cc4d11523776dbbef48f77f7ccc1c857360ecbe1",
+      "sha256": "ca71ed7e74fd3527404b4f09ee1b65eaf2bfbec4e7225818510075e3508a1fa7",
       "component": "dashboard"
     },
     {
@@ -680,7 +680,7 @@
     },
     {
       "path": "runtime/dashboard/feed.go",
-      "sha256": "40da6a000e114f290d57b68d3c30c3f06838cec9ff75c3f96d9fe861ffab6e24",
+      "sha256": "99ea183f2f5faf9604d6dd4c376b9fe515af3554a337dee43044fca545c49fc2",
       "component": "dashboard"
     },
     {
@@ -695,7 +695,7 @@
     },
     {
       "path": "runtime/dashboard/main.go",
-      "sha256": "d063c1201de69ff616eacf41e3354718b6c394e2469a183fd1bc9287130d1ef9",
+      "sha256": "dfb7d42da8ba56ee70a8aeca16f0e5ce220819fd21baba75cadbdba748d76e6d",
       "component": "dashboard"
     },
     {
@@ -729,6 +729,16 @@
       "component": "dashboard"
     },
     {
+      "path": "runtime/dashboard/queue.go",
+      "sha256": "f3e003e83238c2a27d8d225f1df99b80f530373451fe10268afa73d28896b092",
+      "component": "dashboard"
+    },
+    {
+      "path": "runtime/dashboard/queue_test.go",
+      "sha256": "b9a3dcb0addc3cb5c6c5575eb6863587ea6af803d3e4591ecb137c33d8353abc",
+      "component": "dashboard"
+    },
+    {
       "path": "runtime/dashboard/share.accounts.example",
       "sha256": "7018468ccaa92341c0c9571cee95a73e0a1dd5836977a8bf3d8ea091c58a0af9",
       "component": "dashboard"
@@ -745,12 +755,12 @@
     },
     {
       "path": "runtime/dashboard/share_test.go",
-      "sha256": "402048f8eb1b8bc7c2fe485a0623d98d947af3860f99d470068076fa80f491f5",
+      "sha256": "873374bba62d210c02245dcdc1ee44bc784ecef2c79325e9fa58a2010ace3ace",
       "component": "dashboard"
     },
     {
       "path": "runtime/dashboard/transition.go",
-      "sha256": "6417f0ae845c2f1b961e52df637309c0bb5453ed831aec362da19df98352f821",
+      "sha256": "bf5df451a36f2820551bbc0627e17514091b2e43618e4ff24d1147d2fd276642",
       "component": "dashboard"
     },
     {
@@ -760,7 +770,7 @@
     },
     {
       "path": "runtime/dashboard/ui/app.jsx",
-      "sha256": "5af145e25aa656b381794c8e47c1a16d2c8b586fc3129846d5a5c19797930cd2",
+      "sha256": "d861144e3ad9db31d7b3cde1746edeb366c09cd79f2574d7619228e900f7f7ff",
       "component": "dashboard"
     },
     {
@@ -779,8 +789,18 @@
       "component": "dashboard"
     },
     {
+      "path": "runtime/dashboard/ui/queue.js",
+      "sha256": "741a4eb03c4987b5059b0a234562ce2f16b969fbcca219a8214228faced1dc9b",
+      "component": "dashboard"
+    },
+    {
+      "path": "runtime/dashboard/ui/queue.test.js",
+      "sha256": "8ea59f5c552dafa0bbd63f84362f550f51b40f540f03d5fbebe53784a51fef26",
+      "component": "dashboard"
+    },
+    {
       "path": "runtime/dashboard/ui/style.css",
-      "sha256": "267bebebd9869a97cf6829ceddf5329307361521eeba45906f010aef95b4205f",
+      "sha256": "0f27140e5a8b5e8304a5aece7fb89d5f5ccfec271a35c0ba738eeb284d59617d",
       "component": "dashboard"
     },
     {
@@ -2800,7 +2820,7 @@
     },
     {
       "path": "skills/arch/code-review/SKILL.md",
-      "sha256": "b76f16f0a15d1ee40afbaa4f99dba7ceff77fc7a953b319e9db7d5d50a88d7d4",
+      "sha256": "e15f440d9c63e9fa793c922a5366869ef8a7f131bf153f27881fea27fb4d948b",
       "component": "skills"
     },
     {
@@ -2940,7 +2960,7 @@
     },
     {
       "path": "skills/arch/tdd/SKILL.md",
-      "sha256": "e16f756a676dc4000a994e84235c4d3fc156dc0f3bbe10858aaf35868c425762",
+      "sha256": "c21262c73e53df2a8c8d63f7c731fb69c087de783da6f1f20ae8d928b8efdbd4",
       "component": "skills"
     },
     {
@@ -3400,7 +3420,7 @@
     },
     {
       "path": "skills/ship/ship-report/SKILL.md",
-      "sha256": "19e5681a79e58ba6dfa373ee9b8c395b8a07bdd8a08f53112da0243cd303b549",
+      "sha256": "cb3bfc59ad467022c51e03ce4f3d57cf58058fd9b2631dc548ee78e6c15cf3a2",
       "component": "skills"
     },
     {
@@ -4445,7 +4465,7 @@
     },
     {
       "path": "tests/projects/test_project_dashboard.py",
-      "sha256": "57a25148c3b300ec2e5ecc9294e000d15c867613293189c0d33d1e20a4af0a93",
+      "sha256": "d1e5aee1bba0c3365c4a7861cf4059b34dc50a90c53887e65e5aac51aa05eb80",
       "component": "core"
     },
     {
@@ -4660,17 +4680,17 @@
     },
     {
       "path": "tools/project_dashboard.py",
-      "sha256": "2be0dde07e89727fb21ca519be3efe1018bb6fc500cf437b2105abffcf8acb38",
+      "sha256": "9cbb74eaaaedc4ada7c6bcbf5fbf00d208f339f3695fad91598db6ad854dd038",
       "component": "core"
     },
     {
       "path": "tools/projects.py",
-      "sha256": "ba53daaca8e4ee7b3229d99fb6cbd7886147269293d9bebf0e79e65e7e529c55",
+      "sha256": "20f6981f389d6ca25cbf7cc82fe40a160d95dd55cedc74ae84129f39dd0e41fe",
       "component": "core"
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "c1688ab116ae67b86b45daa2a4765c6bfbc1be03a9250623481f9cc0559590e3",
+      "sha256": "8a548fcb579cf4a9358d82232900594465f108dd906d80033a6c6fe583aa3ace",
       "component": "core"
     },
     {

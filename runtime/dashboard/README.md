@@ -208,11 +208,24 @@ poll (~10s) without any image build, container restart, or repo edit.
   "not confirmed" card. A present transition file keeps its own behavior. The status-only share
   view shows the state `Stale`.
 
+## Open-task list: `factory-dashboard/queue/1`
+
+`-publish-queue [-apply]` reads one `<project>.queue.json` record from stdin (dry-run by default;
+same private feed directory, lock and 0600 file as the status). Members: `schema`, `project`
+(a configured id), `updatedAt` (not in the future, strictly later than the published one),
+`items` (0–64) and `omitted` (≥ 0). Each item: `id` (task slug, unique), `title` (≤ 120 bytes),
+`state` (`In progress`, `Ready`, `Proposed`, `Paused`, `Blocked`), `summary` (≤ 560 bytes),
+optional `blockedBy` (≤ 120 bytes, only with `Blocked`) and `recommended` (at most one).
+Text follows the status rules (no paths, URLs or control characters); the file is at most 32 KiB.
+The list is not bound to a revision: it is shown under the stages with its publish time, marked
+outdated after 7 days; an invalid file is ignored. `items: []` clears it. The status-only share
+view never shows it. Agents publish it with `kit.py project queue`.
+
 ## Checks
 
 ```sh
 npm run build
-node --test ui/markdown.test.js
+node --test ui/markdown.test.js ui/queue.test.js
 GOPROXY=off go test ./...
 GOPROXY=off go vet ./...
 ```

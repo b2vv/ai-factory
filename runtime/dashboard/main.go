@@ -39,6 +39,7 @@ type project struct {
 	Provenance  string             `json:"provenance,omitempty"`
 	Workflow    string             `json:"workflow,omitempty"`
 	Transition  *transitionDisplay `json:"transition,omitempty"`
+	Queue       *queueDisplay      `json:"queue,omitempty"`
 }
 type snapshot struct {
 	CheckedAt time.Time `json:"checkedAt"`
@@ -237,6 +238,7 @@ func main() {
 	feedRoot := flag.String("feed", "feed", "private status directory, or read-only mount in Docker")
 	publish := flag.Bool("publish", false, "validate one status JSON record from stdin; dry-run by default")
 	transition := flag.Bool("publish-transition", false, "validate and optionally write one metadata-only workflow transition from stdin")
+	queue := flag.Bool("publish-queue", false, "validate and optionally write one project's open-task queue from stdin")
 	apply := flag.Bool("apply", false, "atomically publish the validated JSON instead of dry-run")
 	port := flag.Int("port", 8732, "local IPv4 port; 0 selects a temporary free port")
 	container := flag.Bool("container", false, "listen on the container bridge; publish only a host loopback port")
@@ -247,7 +249,13 @@ func main() {
 	shareDigest := flag.String("share-digest", "", "mode-0600 file with one login, role, and password digest per line")
 	flag.Parse()
 	sources := roots{*feedRoot}
-	if flag.NArg() != 0 || *apply && !*publish && !*transition || *publish && *transition || *listProjects && (*publish || *transition || *probe) {
+	publishers := 0
+	for _, on := range []bool{*publish, *transition, *queue} {
+		if on {
+			publishers++
+		}
+	}
+	if flag.NArg() != 0 || *apply && publishers == 0 || publishers > 1 || *listProjects && (publishers > 0 || *probe) {
 		log.Fatal("invalid arguments; see -help")
 	}
 	if !*probe {
@@ -271,7 +279,7 @@ func main() {
 	})
 	var shareHandler http.Handler
 	if sharing {
-		if *publish || *transition || *probe || *port == 8732 || !validShareHost(*shareHost, *shareDomain) {
+		if publishers > 0 || *probe || *port == 8732 || !validShareHost(*shareHost, *shareDomain) {
 			log.Fatal("share mode requires its own port, -share-domain and an exact host one label under it")
 		}
 		shareHandler = http.HandlerFunc(shareForbidden)
@@ -286,7 +294,7 @@ func main() {
 		shareHandler = shareTunnelHost(*shareHost, *port, shareHandler)
 	}
 
-	if *publish || *transition {
+	if publishers > 0 {
 		if *container || *probe {
 			log.Fatal("publishing runs on host only")
 		}
@@ -294,12 +302,20 @@ func main() {
 		if *transition {
 			write = sources.publishTransition
 		}
+		if *queue {
+			write = sources.publishQueue
+		}
 		if err := write(os.Stdin, *apply, time.Now()); err != nil {
 			log.Fatal(err)
 		}
-		if *apply {
+		switch {
+		case *queue && *apply:
+			fmt.Println("Queue published atomically.")
+		case *queue:
+			fmt.Println("Dry run: valid queue; no writes.")
+		case *apply:
 			fmt.Println("Status published atomically.")
-		} else {
+		default:
 			fmt.Println("Dry run: valid status for current HEAD; no writes.")
 		}
 		return

@@ -58,3 +58,29 @@ the dashboard source directory configured on this host (`kit.py project dashboar
   rejects them, and the status can be shown on a shared view.
 - A refusal (HEAD moved, an observation not later than the current one, another
   publish in progress) is reported, not worked around. Do not retry in a loop.
+
+## The open-task list (queue)
+
+With the status, publish the project's open tasks so the owner can see what each one
+carries and choose the next one without opening the repository:
+
+    python3 -I <kit>/tools/kit.py project queue --root <kit> --project <id> --apply < queue.json
+
+The input is `{"items": [...]}`, built from the project's task index: **every task that is
+not closed** (not DONE, not CANCELLED), in the order you want shown. Each item is
+`{id, title, state, summary, blockedBy?, recommended?}`:
+
+- `id`: the task id as a lowercase slug (for example `t24`); `title` ≤ 120 bytes.
+- `state`: `In progress`, `Ready`, `Proposed`, `Paused` or `Blocked`.
+- `summary`: one plain sentence or two (≤ 560 bytes) from the task record: what the task
+  changes and why it matters.
+- `blockedBy` (only with `Blocked`): what it waits for, for example `T05`.
+- `recommended: true` on at most one item: the task you propose next.
+
+The command adds `schema`, `project`, `updatedAt` and `omitted`; do not set them. If the
+list exceeds 64 items or 32 KiB it keeps your order and drops items from the end, and
+the card says how many were not shown. Publish `{"items": []}` when no task is open. A
+project without a task index publishes no queue; its card then says the list is not
+published. The list is not bound to HEAD: it stays shown after later commits, with its
+publish time, and is marked outdated after 7 days. The same text rules apply (no paths,
+URLs, secrets or personal data).

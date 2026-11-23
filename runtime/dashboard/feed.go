@@ -69,15 +69,16 @@ func textOK(s string, limit int, multiline bool) bool {
 	return true
 }
 func decodeRecord(raw []byte) (feedRecord, error) {
-	return decodeBounded[feedRecord](raw)
+	return decodeBounded[feedRecord](raw, maxFeed, canonicalField)
 }
 
-func decodeBounded[T any](raw []byte) (T, error) {
+// decodeBounded decodes one JSON object of at most limit bytes whose member names are all in allowed.
+func decodeBounded[T any](raw []byte, limit int, allowed map[string]bool) (T, error) {
 	var out T
-	if len(raw) == 0 || len(raw) > maxFeed || !utf8.Valid(raw) {
+	if len(raw) == 0 || len(raw) > limit || !utf8.Valid(raw) {
 		return out, errors.New("record size or encoding invalid")
 	}
-	if err := uniqueFields(raw, canonicalField); err != nil {
+	if err := uniqueFields(raw, allowed); err != nil {
 		return out, err
 	}
 	d := json.NewDecoder(bytes.NewReader(raw))
@@ -318,12 +319,20 @@ func (p feedRecord) card(head, token string) project {
 	out.Provenance = "Локальний запис, внесений видавцем дашборда. Збіг HEAD не підтверджує стан незакомічених змін."
 	return out
 }
+
+// readOne is a project's card with its open-task queue, which is not bound to the revision.
 func (r roots) readOne(id string, now time.Time) (project, feedRecord) {
+	card, report := r.readStatus(id, now)
+	card.Queue = r.readQueue(id, now)
+	return card, report
+}
+
+func (r roots) readStatus(id string, now time.Time) (project, feedRecord) {
 	head := revision(r.repo(id))
 	out := base(id, projects.name(id), "Поточну задачу не підтверджено", head)
 	out.Workflow = projects.byID[id].Workflow
 	statusRaw, statusErr := fileFromFeed(r.feed, id)
-	transitionRaw, transitionErr := feedFile(r.feed, id, true)
+	transitionRaw, transitionErr := feedFile(r.feed, id, kindTransition)
 	f, ferr := decodeRecord(statusRaw)
 	content := statusErr == nil && ferr == nil && f.validateContent(id) == nil
 	reason := staleFuture
@@ -335,7 +344,7 @@ func (r roots) readOne(id string, now time.Time) (project, feedRecord) {
 		return out, feedRecord{}
 	}
 	if !missing(transitionErr) {
-		t, err := decodeBounded[transitionRecord](transitionRaw)
+		t, err := decodeBounded[transitionRecord](transitionRaw, maxFeed, canonicalField)
 		if transitionErr != nil || err != nil || t.validate(id, head, now) != nil {
 			out.Next = "Запис переходу застарів або недійсний. Поточні гейти не підтверджено."
 			return out, feedRecord{}
@@ -365,14 +374,33 @@ func (r roots) readOne(id string, now time.Time) (project, feedRecord) {
 
 func missing(err error) bool { return os.IsNotExist(err) }
 
-func fileFromFeed(dir, id string) ([]byte, error) { return feedFile(dir, id, false) }
-func feedName(id string, transition bool) string {
-	if transition {
+// feedKind names one of a project's feed files; each kind has its own file name and size bound.
+type feedKind int
+
+const (
+	kindStatus feedKind = iota
+	kindTransition
+	kindQueue
+)
+
+func (k feedKind) limit() int {
+	if k == kindQueue {
+		return maxQueue
+	}
+	return maxFeed
+}
+
+func fileFromFeed(dir, id string) ([]byte, error) { return feedFile(dir, id, kindStatus) }
+func feedName(id string, kind feedKind) string {
+	switch kind {
+	case kindTransition:
 		return id + ".transition.json"
+	case kindQueue:
+		return id + ".queue.json"
 	}
 	return id + ".json"
 }
-func feedFile(dir, id string, transition bool) ([]byte, error) {
+func feedFile(dir, id string, kind feedKind) ([]byte, error) {
 	if projects.name(id) == "" {
 		return nil, errors.New("unknown project")
 	}
@@ -381,12 +409,12 @@ func feedFile(dir, id string, transition bool) ([]byte, error) {
 		return nil, err
 	}
 	defer root.Close()
-	f, info, err := boundedFile(root, feedName(id, transition), maxFeed)
+	f, info, err := boundedFile(root, feedName(id, kind), int64(kind.limit()))
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
-	raw, err := io.ReadAll(io.LimitReader(f, maxFeed+1))
+	raw, err := io.ReadAll(io.LimitReader(f, int64(kind.limit())+1))
 	if err != nil || int64(len(raw)) != info.Size() {
 		return nil, errors.New("status changed during read")
 	}
@@ -405,7 +433,7 @@ func (r roots) publish(input io.Reader, apply bool, now time.Time) error {
 	if projects.name(id) == "" {
 		return errors.New("unknown project")
 	}
-	return r.publishFile(raw, id, false, apply, func() error {
+	return r.publishFile(raw, id, kindStatus, apply, func() error {
 		if err := p.validate(id, revision(r.repo(id)), now); err != nil {
 			return err
 		}
@@ -425,7 +453,7 @@ func (r roots) publish(input io.Reader, apply bool, now time.Time) error {
 	})
 }
 
-func (r roots) publishFile(raw []byte, id string, transition, apply bool, recheck func() error) error {
+func (r roots) publishFile(raw []byte, id string, kind feedKind, apply bool, recheck func() error) error {
 	if err := recheck(); err != nil {
 		return err
 	}
@@ -467,5 +495,5 @@ func (r roots) publishFile(raw []byte, id string, transition, apply bool, rechec
 	if err := recheck(); err != nil {
 		return err
 	}
-	return os.Rename(tmp.Name(), filepath.Join(r.feed, feedName(id, transition)))
+	return os.Rename(tmp.Name(), filepath.Join(r.feed, feedName(id, kind)))
 }

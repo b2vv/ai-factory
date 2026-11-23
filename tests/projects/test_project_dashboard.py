@@ -6,6 +6,7 @@ temporary project with a real commit and a private feed. Skipped without Go.
 import importlib.util
 import io
 import json
+import time
 import os
 from pathlib import Path
 import shutil
@@ -148,6 +149,53 @@ class Dashboard(T.Base):
         P.connect(self.kit, self.project, True)
         again = (self.project / 'AGENTS.local.md').read_text()
         self.assertEqual(agents, again)
+
+    def queue(self, doc, *extra, raw=None):
+        stdin = io.BytesIO(raw if raw is not None else json.dumps(doc).encode())
+        old = sys.stdin
+        sys.stdin = io.TextIOWrapper(stdin)
+        try:
+            return self.run_cli('queue', '--project', 'alpha', *extra)
+        finally:
+            sys.stdin = old
+
+    def test_queue_publishes_in_order_and_prints_no_item_text(self):
+        self.configure()
+        items = [{'id': 't2', 'title': 'Second fixture task', 'state': 'Ready', 'summary': 'Fixture summary two.', 'recommended': True},
+                 {'id': 't1', 'title': 'First fixture task', 'state': 'Blocked', 'summary': 'Fixture summary one.', 'blockedBy': 'T9'}]
+        dry = self.queue({'items': items})
+        self.assertTrue(dry['status'].startswith('VALID'), dry)
+        self.assertFalse((self.feed / 'alpha.queue.json').exists())
+        out = self.queue({'items': items}, '--apply')
+        self.assertEqual(('APPLIED', 2, 0), (out['status'], out['items'], out['omitted']), out)
+        rec = json.loads((self.feed / 'alpha.queue.json').read_text())
+        self.assertEqual(('factory-dashboard/queue/1', 'alpha', ['t2', 't1']),
+                         (rec['schema'], rec['project'], [i['id'] for i in rec['items']]))
+        self.assertNotIn('fixture task', json.dumps(out))
+        time.sleep(1.1)  # the publisher needs a strictly newer observation
+        self.assertEqual('APPLIED', self.queue({'items': []}, '--apply')['status'])
+        self.assertEqual([], json.loads((self.feed / 'alpha.queue.json').read_text())['items'])
+
+    def test_queue_trims_from_the_end_and_counts_it(self):
+        self.configure()
+        items = [{'id': f't{i}', 'title': f'Task {i}', 'state': 'Ready', 'summary': 'S' * 500} for i in range(80)]
+        out = self.queue({'items': items}, '--apply')
+        self.assertEqual('APPLIED', out['status'], out)
+        rec = json.loads((self.feed / 'alpha.queue.json').read_bytes())
+        self.assertEqual(80, len(rec['items']) + rec['omitted'])
+        self.assertEqual(['t0', 't1'], [i['id'] for i in rec['items'][:2]])
+        self.assertLessEqual(len((self.feed / 'alpha.queue.json').read_bytes()), 32 * 1024)
+        self.assertGreater(rec['omitted'], 16)  # 64-item cap and the 32 KiB cap both applied
+
+    def test_queue_refusals(self):
+        self.configure()
+        self.assertIn('must not set omitted', self.queue({'items': [], 'omitted': 3})['reason'])
+        self.assertIn('{"items"', self.queue({'items': {}})['reason'])
+        self.assertIn('256 KiB', self.queue(None, raw=b' ' * (257 * 1024))['reason'])
+        leak = self.queue({'items': [{'id': 't1', 'title': 'T', 'state': 'Ready', 'summary': 'see /home/example/plan.md'}]}, '--apply')
+        self.assertIn('refused', leak['reason'])
+        self.assertNotIn('plan.md', json.dumps(leak))
+        self.assertFalse((self.feed / 'alpha.queue.json').exists())
 
     def run_cli_with_stdin(self, argv, doc):
         old = sys.stdin

@@ -48,3 +48,12 @@ h2{font-size:clamp(1.35rem,3.5vw,2.2rem);letter-spacing:-.035em;line-height:1.18
 .pilot-details-body pre{max-width:100%;overflow:auto}
 
 @media(min-width:601px) and (max-width:900px){.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.queue{margin-top:22px;border-top:1px solid var(--line);padding-top:14px}
+.queue h3{margin:0 0 6px;font-size:1.02rem;color:#1c302b}
+.queue-list{list-style:none;margin:8px 0 0;padding:0}
+.queue-list li{border-top:1px solid #e2e8e1;padding:11px 0;display:grid;gap:5px}
+.queue-list li:first-child{border-top:0}
+.queue-list p{margin:0;color:#405048;line-height:1.5;font-size:.9rem}
+.queue-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.queue-head strong{overflow-wrap:anywhere}
+.queue-pick{font-size:.72rem;font-weight:700;color:#214d37;background:#daeadd;border-radius:6px;padding:2px 7px}

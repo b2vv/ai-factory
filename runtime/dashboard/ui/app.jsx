@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {ReviewedMarkdown} from './markdown.js';
+import {queueView} from './queue.js';
 
 const names = {Plan:'План',Implementation:'Реалізація',Tests:'Тести',Review:'Рев’ю',Push:'Push',Update:'Update'};
 const states = {
@@ -63,6 +64,21 @@ function PilotDetails({id,token,label}) {
     </div>}
   </details>;
 }
+function OpenTasks({queue}) {
+  const view=queueView(queue);
+  return <section className="queue" aria-labelledby="queue-title">
+    <h3 id="queue-title">Відкриті задачі</h3>
+    {queue && <p className="observed">Список опубліковано: <time dateTime={queue.updatedAt}>{stamp(queue.updatedAt)}</time>.{view.stale && ' Список задач застарів.'}</p>}
+    {view.note && <p className="observed">{view.note}</p>}
+    {view.rows.length>0 && <ul className="queue-list">{view.rows.map(r=><li key={r.id}>
+      <div className="queue-head"><strong>{r.id.toUpperCase()} · {r.title}</strong>{r.recommended && <span className="queue-pick">Рекомендовано</span>}</div>
+      <p>{r.summary}</p>
+      {r.blocked && <p className="observed">{r.blocked}</p>}
+      <span className={'badge '+r.tone}><span aria-hidden="true"></span>{r.label}</span>
+    </li>)}</ul>}
+    {view.more && <p className="observed">{view.more}</p>}
+  </section>;
+}
 function App() {
   const [result,setResult]=useState(null);
   const [failed,setFailed]=useState(false);
@@ -114,6 +130,7 @@ function App() {
         <div className="stage-copy"><h3>{names[s.name]}</h3><p>{s.detail}</p>{s.source&&<p className="source">{s.source}</p>}</div>
         <Badge state={s.state}/>
       </li>)}</ol>
+      <OpenTasks queue={chosen.queue}/>
     </section>}
   </main>;
 }
