@@ -172,3 +172,71 @@ func TestLedgerDurableAcceptErrorReopenKeepsDebtAndRejectsConflict(t *testing.T)
 		t.Fatal("known no-write conflict poisoned accounting")
 	}
 }
+
+// T29: a backend outage between Reserve and Finish leaves the ingest intent of a record the WAL has
+// accepted. While the sampler still fails, capture stays refused; once it works again the next
+// capture proves the intent from the WAL (as start-up does) and proceeds without a restart.
+// An intent the WAL does not prove keeps blocking.
+func TestPendingIngestIntentRecoversAfterSamplerReturns(t *testing.T) {
+	root := t.TempDir()
+	dir := filepath.Join(root, "wal")
+	cfg := config.Default()
+	cfg.FreeHeadroom = 0
+	store := archive.NewMemStore()
+	i, e := Open(dir, config.NewAccountant(cfg), store)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer i.Close()
+	calls, failFrom, failTo := 0, -1, -1
+	outage := errors.New("synthetic backend outage")
+	sample := func() (budget.Sample, error) {
+		calls++
+		if calls >= failFrom && calls <= failTo {
+			return budget.Sample{}, outage
+		}
+		return budget.LocalSample(root, cfg.LiveCapBytes)
+	}
+	l, e := budget.Initialize(filepath.Join(root, "budget.bin"), budget.Policy{LiveCap: cfg.LiveCapBytes}, sample)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer l.Close()
+	if e = i.SetBudget(l); e != nil {
+		t.Fatal(e)
+	}
+	usage := config.Usage{FreeBytes: 1 << 40}
+	m2 := archive.Record{Project: "p", MessageID: "m2", Text: "synthetic"}
+	failFrom, failTo = calls+2, calls+1000 // Reserve samples fine, Finish hits the outage
+	if rc, e := i.Accept(archive.IdentityKey(m2), m2, usage); !errors.Is(e, outage) || rc.Seq == 0 {
+		t.Fatal("expected an accepted record with an unfinished intent", rc, e)
+	}
+	if p := l.Snapshot().Pending; len(p) != 1 || p[0].Evidence.Kind != "ingest" {
+		t.Fatal("ingest intent not retained", p)
+	}
+	m3 := archive.Record{Project: "p", MessageID: "m3", Text: "synthetic"}
+	if rc, e := i.Accept(archive.IdentityKey(m3), m3, usage); e == nil || rc.Seq != 0 {
+		t.Fatal("capture must stay refused while the backend is down", rc, e)
+	}
+	failTo = calls // the backend is back
+	if rc, e := i.Accept(archive.IdentityKey(m3), m3, usage); e != nil || rc.Duplicate {
+		t.Fatal("capture did not recover", rc, e)
+	}
+	if p := l.Snapshot().Pending; len(p) != 0 {
+		t.Fatal("liability left after recovery", p)
+	}
+	if _, e = i.Drain(); e != nil {
+		t.Fatal(e)
+	}
+	if got := len(store.All("p")); got != 2 {
+		t.Fatal("m2 (accepted during the outage) and m3 must both drain; got", got)
+	}
+	// An intent no accepted record proves is never resolved by this path.
+	if e = l.Reserve(intent("ingest", "unproven", []byte("x")), 0); e != nil {
+		t.Fatal(e)
+	}
+	m4 := archive.Record{Project: "p", MessageID: "m4", Text: "synthetic"}
+	if rc, e := i.Accept(archive.IdentityKey(m4), m4, usage); !errors.Is(e, budget.ErrBlocked) || rc.Seq != 0 {
+		t.Fatal("unproven intent must keep blocking", rc, e)
+	}
+}

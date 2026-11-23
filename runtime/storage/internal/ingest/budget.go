@@ -29,6 +29,14 @@ func (i *Ingestor) SetBudget(l *budget.Ledger) error {
 	if len(pending) != 1 || (pending[0].Evidence.Kind != "ingest" && pending[0].Evidence.Kind != "maintenance") {
 		return nil
 	}
+	return i.recoverPending(l)
+}
+
+// recoverPending resolves the single pending ingest/maintenance intent only on positive WAL proof,
+// at start-up and (T29) before a new ingest reservation, so a backend outage between Reserve and
+// Finish does not block capture until a restart. Recover re-samples, so it fails closed while the
+// backend is still down. Callers hold i.mu.
+func (i *Ingestor) recoverPending(l *budget.Ledger) error {
 	recs, rep, e := wal.Accepted(i.dir)
 	if e != nil {
 		return e

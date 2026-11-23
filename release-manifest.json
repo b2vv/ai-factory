@@ -1406,7 +1406,7 @@
     {
       "path": "runtime/storage/deploy/test/e2e-process.sh",
       "component": "storage",
-      "sha256": "275e7a47ceb9b1c7b7c5f834d2e68639ce774942c794cbd310de5bb3c2b2ccc1"
+      "sha256": "d1165797ac47dcb45c738e81683fb3e093f3694c72f812c2899d9d50a3eec426"
     },
     {
       "path": "runtime/storage/deploy/test/run-integration.sh",
@@ -2221,12 +2221,12 @@
     {
       "path": "runtime/storage/internal/ingest/budget.go",
       "component": "storage",
-      "sha256": "bd4b393ee9019075c827e595eb4c728387ea28970a9d7f6d710acc1d16678073"
+      "sha256": "0c2f5d0f0766be2a01daa3cdf8c5dc8de87bb9903ae71818b60b5fcd1e54e1b5"
     },
     {
       "path": "runtime/storage/internal/ingest/budget_test.go",
       "component": "storage",
-      "sha256": "b4e921f71d3eb4e13748cbfa17d3206072c65d3030c4ae08419475f8f34f30eb"
+      "sha256": "9f183cb90455e889755a6d2f84b94dc9de63593ba51b00a7edf7642905099a40"
     },
     {
       "path": "runtime/storage/internal/ingest/codex_v2_regression_test.go",
@@ -2281,7 +2281,7 @@
     {
       "path": "runtime/storage/internal/ingest/ingest.go",
       "component": "storage",
-      "sha256": "05223ea10125ed5e6b2eb07229a2f3697bef6650ab0451fcba4aaf309a38c2d7"
+      "sha256": "35b2ff90f2314d19871b10341942b6820731f925254c98b8ec71811bb7ced4c6"
     },
     {
       "path": "runtime/storage/internal/ingest/ingest_integration_test.go",

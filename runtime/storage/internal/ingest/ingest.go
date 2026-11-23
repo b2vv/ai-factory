@@ -294,6 +294,11 @@ func (i *Ingestor) Accept(key string, r archive.Record, usage config.Usage) (wal
 	// Charge every admitted write attempt, including partial-error paths, to
 	// stale concurrent measurements. Pending archive debt exists only after acceptance.
 	if i.budget != nil && keyIsNew {
+		if p := i.budget.Snapshot().Pending; len(p) == 1 && p[0].Evidence.Kind == "ingest" {
+			if e := i.recoverPending(i.budget); e != nil {
+				return wal.Receipt{}, e
+			}
+		}
 		if e := i.budget.Reserve(intent("ingest", key, payload), liveCost+64); e != nil {
 			return wal.Receipt{}, e
 		}

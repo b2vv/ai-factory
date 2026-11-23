@@ -199,33 +199,38 @@ echo "==> BACKEND-DOWN: stop Mongo; /health must flip mongo_up=false and capture
 compose stop mongo >/dev/null
 for _ in $(seq 1 40); do echo "$(health)" | grep -q '"mongo_up":false' && break; sleep 0.5; done
 echo "$(health)" | grep -q '"mongo_up":false' || { echo "!! mongo_up did not flip false"; exit 1; }
-# IMPORTANT SERVER-LEVEL BEHAVIOR (honest): the live-capacity meter reads Mongo StorageBytes,
-# so with Mongo down the capacity measurement fails and capture is REJECTED at admission
-# (fail-closed, 503) BEFORE any WAL write. The server therefore does NOT buffer-then-drain a
-# capture while Mongo is down; it refuses it. (The WAL buffer-then-drain path F5/F6 is proven
-# at the INGEST unit level in ingest.TestArchiveUnavailableBuffersThenDrains, where admission
-# is independent of Mongo - but it is NOT reachable through this API capture path while Mongo
-# is down, because the meter depends on Mongo. This is a known limitation, not a silent pass.)
+# Server-level behavior (T29): admission samples a cached Mongo inventory (fresh for up to 30s).
+# With a fresh cache the capture is admitted and durably accepted to the WAL, but the budget
+# accounting cannot finish (its sampler now has to ask Mongo) and the server answers 503 with
+# outcome inspect_receipts and the record's receipt; the record drains once Mongo returns. With a
+# stale cache the measurement fails first and the capture is refused before any WAL write. Both are
+# fail-closed; the receipts in the response say which one happened.
 code=$(curljson -X POST "${H[@]}" -d "${CAP//m1/m2}" http://127.0.0.1:${PORT}/v1/capture)
 echo "   capture while Mongo down -> HTTP ${code}: $(cat "${WORK}/resp.json")"
 [[ "$code" == 503 ]] || { echo "!! expected a fail-closed 503 while Mongo down"; exit 1; }
-# Nothing was admitted, so nothing can resurrect: the archive copy of m2 must not appear later.
+M2_ACCEPTED=$(python3 -c "import json;print(1 if any('m2' in r for r in json.load(open('${WORK}/resp.json')).get('receipts') or []) else 0)")
+echo "   m2 durably accepted during the outage: ${M2_ACCEPTED}"
 
 echo "==> RECOVERY: restart Mongo; /health recovers and capture WORKS AGAIN"
 compose start mongo >/dev/null
 for _ in $(seq 1 60); do echo "$(health)" | grep -q '"mongo_up":true' && break; sleep 0.5; done
 echo "$(health)" | grep -q '"mongo_up":true' || { echo "!! mongo_up did not recover"; exit 1; }
-# A fresh capture after recovery must succeed and be queryable; m2 (refused while down) must NOT exist.
+# A fresh capture after recovery must succeed without a restart (T29: an unfinished intent is proven
+# from the WAL and resolved). m2 is present exactly when the outage response carried its receipt.
 [[ "$(curljson -X POST "${H[@]}" -d "${CAP//m1/m3}" http://127.0.0.1:${PORT}/v1/capture)" == 200 ]] || { echo "!! capture did not recover"; cat "${WORK}/resp.json"; exit 1; }
+want=$((2 + M2_ACCEPTED))
 for _ in $(seq 1 20); do
   curljson "${AQ[@]}" "http://127.0.0.1:${PORT}/v1/archive/query?project=proj-A&q=hello" >/dev/null
   n=$(python3 -c "import json;print(len(json.load(open('${WORK}/resp.json')).get('hits',[])))")
-  [[ "$n" -ge 2 ]] && break; sleep 0.5
+  [[ "$n" -ge "$want" ]] && break; sleep 0.5
 done
-echo "   post-recovery hit count: ${n} (expect 2: m1 + m3; m2 was refused while Mongo down, never admitted)"
-[[ "${n}" -eq 2 ]] || { echo "!! unexpected hit count after recovery (got ${n})"; cat "${WORK}/resp.json"; exit 1; }
-grep -q '"MessageID":"m2"' "${WORK}/resp.json" && { echo "!! m2 must NOT exist (it was refused, never admitted)"; exit 1; }
-
+echo "   post-recovery hit count: ${n} (expect ${want}: m1, m3$( [[ $M2_ACCEPTED == 1 ]] && echo ', m2 accepted during the outage'))"
+[[ "${n}" -eq "$want" ]] || { echo "!! unexpected hit count after recovery (got ${n})"; cat "${WORK}/resp.json"; exit 1; }
+if [[ "$M2_ACCEPTED" == 1 ]]; then
+  grep -q '"MessageID":"m2"' "${WORK}/resp.json" || { echo "!! m2 was accepted during the outage and must drain"; exit 1; }
+else
+  grep -q '"MessageID":"m2"' "${WORK}/resp.json" && { echo "!! m2 was refused before the WAL and must not exist"; exit 1; }
+fi
 
 echo "==> PostgreSQL-only workflow must work without capture or Mongo"
 docker rm -f "${FACTORY}" >/dev/null
