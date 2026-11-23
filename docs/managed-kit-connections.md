@@ -29,8 +29,24 @@ exists: restore the checkout, `kit.py project move-root`, or `kit.py project rem
 
 One global kit per home: `~/.agents/.ai-factory-instructions/owner.json` names it. Registering
 instructions or capture from another kit directory stops with HOME_BOUND_TO_ANOTHER_KIT and
-names the existing kit; run the update from that kit. Moving a kit to another directory is not
-supported yet.
+names the existing kit; run the update from that kit. `connect-handoff.py` and
+`tools/connect-skills.sh` refuse the same way.
+
+To put the kit in another directory, install the same release there first
+(`kit.py install --package P --root K2`), then plan and run `kit.py move --root K --to K2
+--package P [--apply]`. The move re-points every file that names K: the home binding, the
+global instruction targets, the capture and native handoff hooks and their registration
+records (pass `--handoff-registration <root>` when handoff is enrolled), the project list
+and its derived files, each listed project's managed block, the capture worker plists
+(reloaded with launchctl) and the skills links. Each part is then checked by its own module
+from K2, and the move completes only if every check is NOOP; otherwise every file is restored.
+K's payload and records are not changed. `kit.py move --root K2 --rollback` restores the
+exact bytes every file had before the move and refuses a file that changed since. A move that
+was killed leaves a marker in both kits; every `kit.py` command on either refuses until
+`kit.py move --root <either> --recover` restores it. The move reports, but does not do:
+trusting the rewritten Codex hooks again in Codex, and restarting dashboard containers that
+mount K's dashboard projects file. When no registration names the home, pass `--home` to
+include its global files and skills links.
 
 Keep checksums and receipts as integrity evidence. Projects reference the stable
 managed root rather than a development branch or commit-specific checkout. A kit

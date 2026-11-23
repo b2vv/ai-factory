@@ -53,6 +53,17 @@ fi
 # Follow a directory symlink to its real location so we add entries in the real tree.
 target=$(CDPATH= cd -- "$target" && pwd -P)
 
+# One kit per home (T15 A17, T30 A6): skills of another kit than the one bound to this home are not connected.
+kit_root=$(CDPATH= cd -- "$script_dir/.." && pwd -P)
+owner="$HOME/.agents/.ai-factory-instructions/owner.json"
+if [ -f "$owner" ]; then
+  bound=$(python3 -I -c 'import json,sys; d=json.load(open(sys.argv[1])); print(d.get("root","") if isinstance(d,dict) else "")' "$owner") \
+    || { echo "unreadable home binding: $owner" >&2; exit 2; }
+  if [ "$bound" != "$kit_root" ]; then
+    echo "home already bound to another managed root: $bound" >&2; exit 3
+  fi
+fi
+
 ts=$(date +%Y%m%d-%H%M%S)
 hold="$target/.superseded-$ts"
 connected=0; skipped_identical=0; conflicts=0; already=0

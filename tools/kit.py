@@ -351,7 +351,7 @@ def blocked_reason(exc):
         # The one path echoed: the existing kit root, only when it is a plain absolute path.
         m = re.fullmatch(re.escape(bound) + r': (/[A-Za-z0-9._ /-]{1,512})', msg)
         return ('HOME_BOUND_TO_ANOTHER_KIT: the global kit for this home is installed at ' + (m.group(1) if m else 'another directory')
-                + '; run install/update from that kit (moving a kit to another directory is not supported yet).')
+                + '; run install/update from that kit, or move it with `kit.py move`.')
     groups = [
         (('explicit canonical absolute path required', 'symlink refused', 'noncanonical release path',
           'invalid release path', 'sensitive/reserved release path', 'choose a dedicated toolkit directory',
@@ -404,7 +404,23 @@ def project_report(root,out):
     return out if rows is None else {**out,'projects':rows}
 
 
+def _sibling(name):
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('_factory_'+name,Path(__file__).absolute().parent/(name+'.py'))
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return module
+
+
 def main():
+    if sys.argv[1:2]==['move']:
+        return _sibling('kit_move').main(sys.argv[2:])
+    # An interrupted `kit.py move` is restored before anything else touches either kit (T30).
+    roots=[sys.argv[i+1] for i,a in enumerate(sys.argv[1:-1],1) if a=='--root']+[a[7:] for a in sys.argv[1:] if a.startswith('--root=')]
+    for value in roots:
+        marked=Path(value)/STATE/'move-interrupted.json'
+        if marked.is_absolute() and marked.exists():
+            print(json.dumps({'status':'BLOCKED','reason':'a kit move was interrupted: run `kit.py move --root '
+                              +str(marked.parent.parent)+' --recover` first'}));return 1
     if sys.argv[1:2]==['project']:
         # One project list: tools/projects.py (list/install/remove/migrate); no barrier, own lock and backups.
         import importlib.util

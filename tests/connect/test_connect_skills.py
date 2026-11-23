@@ -4,7 +4,10 @@ ROOT=Path(os.environ.get('AI_FACTORY_TEST_ROOT',Path(__file__).resolve().parents
 class SkillLinks(unittest.TestCase):
  def setUp(self):
   self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.root=Path(self.tmp.name);self.kit=self.root/'kit';self.target=self.root/'global';(self.kit/'tools').mkdir(parents=True);self.target.mkdir();self.skill=self.kit/'skills/example';self.skill.mkdir(parents=True);(self.skill/'SKILL.md').write_text('---\nname: example\ndescription: Synthetic fixture\n---\n');shutil.copyfile(ROOT/'tools/connect-skills.sh',self.kit/'tools/connect-skills.sh')
- def run_linker(self):return subprocess.run(['sh',str(self.kit/'tools/connect-skills.sh'),'--dry-run',str(self.target)],capture_output=True,text=True,timeout=5)
+ def run_linker(self):
+  # An isolated HOME: the linker reads the home's kit binding (T30 A6), never the real one in a test.
+  home=self.root/'home';home.mkdir(exist_ok=True)
+  return subprocess.run(['sh',str(self.kit/'tools/connect-skills.sh'),'--dry-run',str(self.target)],capture_output=True,text=True,timeout=5,env={**os.environ,'HOME':str(home)})
  def test_correct_live_link_is_already(self):
   link=self.target/'example';link.symlink_to(self.skill,target_is_directory=True);r=self.run_linker();self.assertEqual(r.returncode,0,r.stderr);self.assertIn('ALREADY  example',r.stdout);self.assertEqual(link.readlink(),self.skill)
  def test_relative_correct_link_is_already(self):

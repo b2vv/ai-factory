@@ -301,7 +301,7 @@
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "daaa520d9d3c1030e50abc6d0272b7fb31c6cfdef44dd5e703eda82e5a676099"
+      "sha256": "af419d65dbebacb37f737c090079fda5cd248c50527723d12e6724d10e0bbe59"
     },
     {
       "path": "docs/managed-native-handoff.md",
@@ -4436,7 +4436,7 @@
     {
       "path": "tests/connect/test_connect_skills.py",
       "component": "core",
-      "sha256": "ed58aea7889b3b0c1ef034991ed863d3d49964e3fd75d42176b2a768d23126dc"
+      "sha256": "45a4a31aadec4f15009802aeec66a3a60dd09ce7fa917637336206ca02723b9c"
     },
     {
       "path": "tests/constraints/test_evidence.py",
@@ -4491,6 +4491,11 @@
     {
       "path": "tests/legacy-session/test_session_guard.py",
       "sha256": "dfe101ba9e14461badd6b7ab774d23a52a62e1bdc0e3677e0265fb4c73f0cbaf",
+      "component": "core"
+    },
+    {
+      "path": "tests/move/test_kit_move.py",
+      "sha256": "8dc7539f5ce8a33b7ce02e3dcde0565def2e000e6367d8be6527560a0e2a21e5",
       "component": "core"
     },
     {
@@ -4706,7 +4711,7 @@
     {
       "path": "tools/connect-handoff.py",
       "component": "core",
-      "sha256": "ab05470a2585639134df5d718fba6a0e07539ae003b95a0ce2d699b67cc306ce"
+      "sha256": "96d635616c740d1d58e0eff9d699bb4311062dcaa7a824e4abb3e6c1b6872d07"
     },
     {
       "path": "tools/connect-project.py",
@@ -4715,7 +4720,7 @@
     },
     {
       "path": "tools/connect-skills.sh",
-      "sha256": "55f33986e0f75e4de3a39cb5d19ecb402a2cfc2fe2787ddd043096b1431d2bd2",
+      "sha256": "41dd9b1a2217cc506f5c55f10bd6ebbfb1974f118b3b19e4361cfb20523b0600",
       "component": "core"
     },
     {
@@ -4730,7 +4735,12 @@
     },
     {
       "path": "tools/kit.py",
-      "sha256": "a36600359ec71feba7ee89da2ed01bffd3909e2429b9a0dd1cbe71c05e8aaee5",
+      "sha256": "6f18f0efc89ac9a324d4341b681754c48583637e4b983e1bebcb272c3f836f24",
+      "component": "core"
+    },
+    {
+      "path": "tools/kit_move.py",
+      "sha256": "7d1cf7f8d6e72eb9e891a438c6108a40c7c118470344e873bcdc3f6dd212dd33",
       "component": "core"
     },
     {
@@ -4750,7 +4760,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "61befbebaa65fa2a80ab0c2a6ae5bf374c9d7fa717d500540b7d3b6b9aaa98d2",
+      "sha256": "dff03d900c29b3c380013adf563173d2b4f88c34599b7e51f7ba3f2e20f256ba",
       "component": "core"
     },
     {

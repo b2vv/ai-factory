@@ -287,8 +287,22 @@ def edit_hooks(raw, host, wanted, prior, retires):
     return raw if raw is not None and strict_json(raw) == obj else encoded
 
 
+def check_owner(paths):
+    """One kit per home (T15 A17, T30 A6): another kit's home binding keeps this kit off the global hook files."""
+    owner_path = paths['home'] / '.agents/.ai-factory-instructions/owner.json'
+    if not owner_path.exists(): return
+    try:
+        owner = json.loads(installer.regular(owner_path))
+    except ValueError:
+        raise ValueError('unreadable home binding') from None
+    if owner != {'schema': 1, 'root': str(paths['managed_root'])}:
+        bound = owner.get('root') if isinstance(owner, dict) else None
+        raise ValueError('home already bound to another managed root' + (f': {bound}' if isinstance(bound, str) else ''))
+
+
 def plan(spec, accepted_settings_sha256=None):
     paths = validate_spec(spec)
+    check_owner(paths)
     if accepted_settings_sha256 is not None and not re.fullmatch('[a-f0-9]{64}', accepted_settings_sha256):
         raise ValueError('exact reviewed settings hash required')
     binding = kit_binding(paths['managed_root'])
