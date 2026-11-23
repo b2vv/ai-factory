@@ -80,7 +80,9 @@ Factory source repository
 **Update the kit once, then verify its consumers.** Use the normal reviewed
 `kit.py` update with the complete desired component set, backup and rollback.
 Reconcile project identity metadata where needed, preserving local adapters and
-rules. Projects use the stable installed path; hashes and receipts verify the bytes
+rules. Projects are connected with `kit.py project install` into the kit's one project
+list; `kit.py update` then reports each listed project as OK, needing repair (with the
+standard command) or blocked. Projects use the stable installed path; hashes and receipts verify the bytes
 rather than requiring a separate checkout per project. This is not an automatic
 pull of remote `main`. Already-open sessions may need to reread instructions or
 restart at a safe boundary.

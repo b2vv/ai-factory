@@ -23,6 +23,15 @@ needed components and inspect every proposed removal. Never update with only the
 new skill's component. Use explicit source/destination paths and the reviewed
 plan ID for `kit.py update --execute --exclusive-window`.
 
+After an update, read its `projects` report: each listed project is OK, NEEDS_REPAIR (run
+the `kit.py project install` command it names) or PROBLEM (for example a root that no longer
+exists: restore the checkout, `kit.py project move-root`, or `kit.py project remove`).
+
+One global kit per home: `~/.agents/.ai-factory-instructions/owner.json` names it. Registering
+instructions or capture from another kit directory stops with HOME_BOUND_TO_ANOTHER_KIT and
+names the existing kit; run the update from that kit. Moving a kit to another directory is not
+supported yet.
+
 Keep checksums and receipts as integrity evidence. Projects reference the stable
 managed root rather than a development branch or commit-specific checkout. A kit
 update is an explicit reviewed publication; it is not a background Git pull.

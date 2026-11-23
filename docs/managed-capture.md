@@ -58,6 +58,20 @@ command below prints a plan; add `--apply` to write:
 - `kit.py project list --root <kit>` prints entries and capabilities (capture, search alias),
   never route or credential paths. `--dashboard-config` prints the dashboard's project list
   generated from the kit list (below).
+- `kit.py project group --root <kit> --project <root> --group <name>` (or `--ungroup`) sets the
+  entry's group. Membership is the field on each member, so it is mutual and transitive; only the
+  list is written. Archive search does not apply groups yet.
+- `kit.py project move-root --root <kit> --project <old root> --to <new root>` points an entry
+  at its moved checkout (the kit never moves files). The entry, the generated mapping and
+  dashboard rows and the new checkout's managed block change in one guarded write, or nothing
+  changes and every blocker is named: the old root still exists, the instruction registration
+  or native handoff names the old root, or a hand-kept dashboard config does.
+- `kit.py project handoff --root <kit> --profile <file>` records where the native handoff
+  profile is (a path only); `list` then marks each project handoff-enrolled or not, read-only.
+  Enrollment itself stays with `connect-handoff.py`.
+- `kit.py update` (plan and execute) checks every listed project with the install dry-run and
+  adds a `projects` report: OK, NEEDS_REPAIR with the changes and the `project install` command
+  that repairs them, or PROBLEM with its reason. It repairs nothing.
 
 ### The dashboard's project list
 

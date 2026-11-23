@@ -160,7 +160,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "7ce1f743694f10245a6d58c1dbf9cbc342c68a9123fe64bd23ff9c60a1526395",
+      "sha256": "489f48ae3e0149e1099448aaa3a066783e2967a7441acfc6c2a4fb236d5dead1",
       "component": "core"
     },
     {
@@ -296,12 +296,12 @@
     {
       "path": "docs/managed-capture.md",
       "component": "core",
-      "sha256": "f68e24445fa5f72c55d6308057d6d3488d107496add926f41917963ba985b036"
+      "sha256": "f7ed421cd7042239198fa1e7bce0c498cb18d08017a177d1bf66b8dda3b058d6"
     },
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "53876af9f19e2a0a8a000db7bf91c85166662722c746798a78d67b59b6d121b3"
+      "sha256": "891fcd4302df15917e8df75d4396d1f8d8dfc0ebbae8d73043522b1557d473aa"
     },
     {
       "path": "docs/managed-native-handoff.md",
