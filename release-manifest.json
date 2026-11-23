@@ -4451,7 +4451,7 @@
     {
       "path": "tests/install/test_capture_update.py",
       "component": "core",
-      "sha256": "0eadeac3491a28adb79b2a2de40451fd917411857640753067e074708bd991e7"
+      "sha256": "a695e44df1993c85a9398314140f3fbc68daf9d9adfba377329505c1ca495023"
     },
     {
       "path": "tests/install/test_components.py",
@@ -4461,7 +4461,7 @@
     {
       "path": "tests/install/test_instruction_update.py",
       "component": "core",
-      "sha256": "3c723205d0ddcccc63708bf75dff0f26f5cd213328e0928d8967e5b48265beef"
+      "sha256": "1fb5ae211525b9f59aa2fb3bea59e3711609cb53d0cdea4e4e340e887bd1c473"
     },
     {
       "path": "tests/install/test_kit.py",
@@ -4691,7 +4691,7 @@
     {
       "path": "tools/capture_update.py",
       "component": "core",
-      "sha256": "9e145fcce47cdb1ea7fb3f203670850646cda4f6cc5f0f3526ba6cd67b27b7c0"
+      "sha256": "d98f29978377c6fddabb0d5b28309785793868a43d02d95db86352b62dd81f1a"
     },
     {
       "path": "tools/connect-capture.py",
@@ -4721,11 +4721,11 @@
     {
       "path": "tools/instruction_update.py",
       "component": "core",
-      "sha256": "3bcf47ed2904bdf39d59edfcd16b2865ac517c30fc8fa4d99008e268471489ca"
+      "sha256": "e378b1cad8ee76d8b1ab6c32acb46197714a1b246b3af85d3f8f12e3df065e05"
     },
     {
       "path": "tools/kit.py",
-      "sha256": "e6399011ff6fa2c265def6f7e446caf49654d750b5ec64953c2fe2e8c4417256",
+      "sha256": "a36600359ec71feba7ee89da2ed01bffd3909e2429b9a0dd1cbe71c05e8aaee5",
       "component": "core"
     },
     {

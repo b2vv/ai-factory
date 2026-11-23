@@ -85,6 +85,12 @@ def plan(k, package, root, components=(), spec_path=None):
         raise ValueError('capture specification required')
     if spec.get('managed_root') != str(root):
         raise ValueError('capture specification root mismatch')
+    # One global kit per home (T15 A17): the instruction owner record names it; capture writes the same global files.
+    owner_path = k.absolute(spec['home'])/'.agents/.ai-factory-instructions/owner.json'
+    owner = private_json(k, owner_path) if owner_path.exists() else None
+    if owner is not None and owner != {'schema': 1, 'root': str(root)}:
+        bound = owner.get('root') if isinstance(owner, dict) else None
+        raise ValueError('home already bound to another managed root' + (f': {bound}' if isinstance(bound, str) else ''))
     cp = c.plan(spec)
     new = {'schema': 1, 'spec': spec, 'spec_sha256': k.digest(k.encode(spec))}
     desired = k.encode(new)

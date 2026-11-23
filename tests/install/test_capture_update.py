@@ -55,6 +55,13 @@ class UpdateTests(unittest.TestCase):
         p=self.plan(spec);return u.apply(k,self.pkg,self.root,[],self.sp if spec else None,p['plan_id'],True)
     def rollback(self,tx):
         p=u.rollback_plan(k,self.root,tx);return u.rollback(k,self.root,tx,p.get('plan_id'),True)
+    def test_capture_from_another_kit_for_a_bound_home_is_refused(self):  # T15 A17
+        d=self.home/'.agents/.ai-factory-instructions';d.mkdir(parents=True);d.chmod(0o700)
+        first=self.home/'first-kit';(d/'owner.json').write_bytes(k.encode({'schema':1,'root':str(first)}));(d/'owner.json').chmod(0o600)
+        with self.assertRaises(ValueError) as cm:self.plan()
+        reason=k.blocked_reason(cm.exception)
+        self.assertTrue(reason.startswith('HOME_BOUND_TO_ANOTHER_KIT'),reason);self.assertIn(str(first),reason)
+        self.assertFalse((self.home/'.claude/settings.json').exists())
     def test_explicit_registration_normal_update_and_idempotence(self):
         self.assertFalse(u.active(k,self.root));r=self.apply();self.assertEqual('APPLIED',r['status'])
         self.assertTrue(u.active(k,self.root));self.assertEqual('NOOP',self.plan(False)['status'])

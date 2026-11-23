@@ -287,7 +287,8 @@ def check_home(k, home, root):
     private_dir(k, directory)
     owner = private_json(k, directory/'owner.json')
     if owner is not None and owner != {'schema': 1, 'root': str(root)}:
-        raise ValueError('home already bound to another managed root')
+        bound = owner.get('root') if isinstance(owner, dict) else None
+        raise ValueError('home already bound to another managed root' + (f': {bound}' if isinstance(bound, str) else ''))
     return directory
 
 

@@ -272,6 +272,18 @@ class InstructionTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.rollback(ident)
         self.assertEqual(self.target.read_bytes(),self.original)
 
+    def test_second_kit_for_the_same_home_is_refused_naming_the_first(self):  # T15 A17
+        self.apply()
+        other = self.home/'other-kit'
+        p = k.plan(self.package, other, []); k.apply(self.package, other, [], p['plan_id'])
+        sp = self.private/'spec2.json'; sp.write_bytes(k.encode({**self.spec, 'managed_root': str(other)})); sp.chmod(0o600)
+        before = self.target.read_bytes()
+        with self.assertRaises(ValueError) as cm: u.plan(k, self.package, other, [], sp)
+        reason = k.blocked_reason(cm.exception)
+        self.assertTrue(reason.startswith('HOME_BOUND_TO_ANOTHER_KIT'), reason)
+        self.assertIn(str(self.root), reason)
+        self.assertEqual(before, self.target.read_bytes())
+
     def test_home_binding_and_same_home_lock(self):
         import fcntl
         self.apply();other=self.home/'other-kit';other.mkdir()

@@ -346,6 +346,12 @@ def blocked_reason(exc):
         m = re.fullmatch(edited + r': (target \d+ recipe [a-z0-9-]+ sha256 (?:[0-9a-f]{12}|none) expected '
                          r'(?:[0-9a-f]{12}|none)(?: or (?:[0-9a-f]{12}|none))?)', msg)
         return reason + (' ' + m.group(1) if m else '')
+    bound = 'home already bound to another managed root'
+    if msg.startswith(bound):
+        # The one path echoed: the existing kit root, only when it is a plain absolute path.
+        m = re.fullmatch(re.escape(bound) + r': (/[A-Za-z0-9._ /-]{1,512})', msg)
+        return ('HOME_BOUND_TO_ANOTHER_KIT: the global kit for this home is installed at ' + (m.group(1) if m else 'another directory')
+                + '; run install/update from that kit (moving a kit to another directory is not supported yet).')
     groups = [
         (('explicit canonical absolute path required', 'symlink refused', 'noncanonical release path',
           'invalid release path', 'sensitive/reserved release path', 'choose a dedicated toolkit directory',
