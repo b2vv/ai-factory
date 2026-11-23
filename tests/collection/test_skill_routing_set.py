@@ -1,5 +1,5 @@
 """The skill-routing eval set names real skills, covers the confusable pairs and is scored mechanically (T11)."""
-import importlib.util, json, re, unittest
+import importlib.util, json, re, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -69,6 +69,26 @@ class RoutingSet(unittest.TestCase):
         desc = skill_descriptions()['interface-review']
         self.assertIn("read-only audit of an existing product's screens", desc)
         self.assertIn('(audit mode)', desc)
+
+    def test_fixture_is_realistic_and_deterministic(self):
+        builder = EVALS / 'make_fixture.py'
+        with tempfile.TemporaryDirectory() as tmp:
+            heads = []
+            for name in ('a', 'b'):
+                dest = Path(tmp) / name
+                subprocess.run([sys.executable, '-I', str(builder), str(dest)], check=True, capture_output=True)
+                heads.append(subprocess.check_output(['git', '-C', str(dest), 'rev-parse', 'HEAD']).strip())
+            self.assertEqual(heads[0], heads[1])
+            dest = Path(tmp) / 'a'
+            self.assertEqual(b'feature/csv-export', subprocess.check_output(['git', '-C', str(dest), 'branch', '--show-current']).strip())
+            screens = list((dest / 'ui' / 'admin').glob('*.html'))
+            self.assertGreaterEqual(len(screens), 6)
+            for rel in ('PLAN.md', 'REVIEW-COMMENTS.md', 'src/billing/documents.py', 'ui/dashboard.html',
+                        'ui/reference/settings-mockup.png', 'ui/checkout/payment.html'):
+                self.assertTrue((dest / rel).is_file(), rel)
+            self.assertGreaterEqual((dest / 'src/billing/documents.py').read_text().count('class '), 5)
+            again = subprocess.run([sys.executable, '-I', str(builder), str(dest)], capture_output=True)
+            self.assertNotEqual(0, again.returncode)  # never writes into an existing directory
 
     def test_parser_reads_the_first_skill(self):
         init = json.dumps({'type': 'system', 'subtype': 'init', 'model': 'm-1'})

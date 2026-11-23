@@ -415,7 +415,12 @@
     },
     {
       "path": "evals/skill-routing/README.md",
-      "sha256": "332bf250843b02b08a38374b9d56f7efc2ed0e4207b505471c09f83244a9bc27",
+      "sha256": "2ec5118ea7252d9e0ecd2d1a1cfd0971f19187a54ecc9995822b57d8cbbd199f",
+      "component": "core"
+    },
+    {
+      "path": "evals/skill-routing/make_fixture.py",
+      "sha256": "b9a5bac97f75dd0ea54f27e86e850f1e0e714efd1c259465229df9ae11cd6e6d",
       "component": "core"
     },
     {
@@ -4405,7 +4410,7 @@
     },
     {
       "path": "tests/collection/test_skill_routing_set.py",
-      "sha256": "d43fdc682b5fe3c2083ba366424bd42c7e5e3e2a765b6679e897a339a680376d",
+      "sha256": "359e2ec670224b20e060a926d1d4e6bfa975139cc9632df5caac4c7e0170de79",
       "component": "core"
     },
     {
