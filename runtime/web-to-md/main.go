@@ -11,6 +11,7 @@ import (
 	"os"
 	"slices"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
@@ -27,7 +28,7 @@ type result struct {
 }
 
 func convert(input io.Reader, source *url.URL) (result, error) {
-	raw, err := readBounded(input)
+	raw, err := readLimit(input, maxDecoded, "decoded HTML exceeds 6 MiB limit")
 	if err != nil {
 		return result{}, err
 	}
@@ -54,12 +55,7 @@ func convert(input io.Reader, source *url.URL) (result, error) {
 			if n.Data == "body" {
 				body = n
 			}
-			isMain := n.Data == "main"
-			for _, a := range n.Attr {
-				if a.Key == "role" && a.Val == "main" {
-					isMain = true
-				}
-			}
+			isMain := mainRegion(n)
 			if isMain && !inMain {
 				mains = append(mains, n)
 			}
@@ -70,7 +66,13 @@ func convert(input io.Reader, source *url.URL) (result, error) {
 		}
 		for child := n.FirstChild; child != nil; {
 			next := child.NextSibling
-			if child.Type == html.CommentNode || child.Type == html.ElementNode && remove(child.Data) {
+			if child.Type == html.CommentNode || child.Type == html.ElementNode && (remove(child.Data) ||
+				child.Data == "header" && !inMain && !inArticle && !containsRegion(child)) {
+				n.RemoveChild(child)
+			} else if child.Type == html.ElementNode && child.Data == "img" {
+				if alt := altText(child); alt != "" {
+					n.InsertBefore(&html.Node{Type: html.TextNode, Data: alt}, child)
+				}
 				n.RemoveChild(child)
 			} else if err := visit(child, depth+1, inMain, inArticle); err != nil {
 				return err
@@ -201,9 +203,48 @@ func tableGridSize(root *html.Node) int {
 	return rows * width
 }
 
+// mainRegion reports a <main> element or a role attribute whose token list names main, in any case.
+func mainRegion(n *html.Node) bool {
+	if n.Data == "main" {
+		return true
+	}
+	for _, a := range n.Attr {
+		if a.Key == "role" && slices.ContainsFunc(strings.Fields(a.Val), func(v string) bool { return strings.EqualFold(v, "main") }) {
+			return true
+		}
+	}
+	return false
+}
+
+// containsRegion reports whether a main or article region lies inside n (a header wrapping the content is kept).
+func containsRegion(n *html.Node) bool {
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		if c.Type == html.ElementNode && (c.Data == "article" || mainRegion(c) || containsRegion(c)) {
+			return true
+		}
+	}
+	return false
+}
+
+// altText is an image's alt text as plain text: whitespace collapsed, at most 200 bytes on a rune boundary.
+func altText(n *html.Node) string {
+	for _, a := range n.Attr {
+		if a.Key == "alt" {
+			alt := strings.Join(strings.Fields(a.Val), " ")
+			for len(alt) > 200 {
+				_, size := utf8.DecodeLastRuneInString(alt)
+				alt = alt[:len(alt)-size]
+			}
+			return alt
+		}
+	}
+	return ""
+}
+
+// remove drops non-content elements. Forms stay (their content is often the page); only controls go.
 func remove(tag string) bool {
 	switch tag {
-	case "script", "style", "nav", "footer", "form", "iframe", "svg", "img", "picture", "video", "audio", "template", "noscript":
+	case "script", "style", "nav", "footer", "input", "select", "textarea", "button", "datalist", "iframe", "svg", "picture", "video", "audio", "template", "noscript":
 		return true
 	}
 	return false

@@ -2750,12 +2750,17 @@
     },
     {
       "path": "runtime/web-to-md/README.md",
-      "sha256": "5309df5f91daeea2cd305f9924e293e09359870cb5b69abaf455ce8ce9467e49",
+      "sha256": "5a7c1ce4f8b5cb11bc0eb289264e6b712db05150131767c56b5a8d11a9137cb9",
       "component": "web-to-md"
     },
     {
       "path": "runtime/web-to-md/fetch.go",
-      "sha256": "20205eac809c566554b62eb7de99549eca055145b9fc8e3d3afdb86a42258bc1",
+      "sha256": "32fb9b75ceeb94ce45c34d45dce2828f37e3d5ea92180fad54e4392c53ce246e",
+      "component": "web-to-md"
+    },
+    {
+      "path": "runtime/web-to-md/fetch_test.go",
+      "sha256": "6b1a5f4a55004469c5c7dd271a8026fdf0d0507a18c302c4586a56f026567795",
       "component": "web-to-md"
     },
     {
@@ -2770,7 +2775,7 @@
     },
     {
       "path": "runtime/web-to-md/main.go",
-      "sha256": "e558a63f2d0728ece74cb13f80352cbce70b6748dfbd894ea48ad3456c0eed99",
+      "sha256": "c70ade5dd663ce7cc456c3325b44a7dfaf755df6bd02a726986b6a8541da8b4f",
       "component": "web-to-md"
     },
     {

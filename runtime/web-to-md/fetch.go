@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -18,6 +19,7 @@ import (
 
 const (
 	maxBytes       = 2 << 20
+	maxDecoded     = 3 * maxBytes // a safety bound: single-byte charsets expand at most 3x into UTF-8
 	requestTimeout = 12 * time.Second
 )
 
@@ -69,6 +71,11 @@ func checkURL(u *url.URL) error {
 		if strings.HasSuffix(host, suffix) {
 			return errors.New("local or special-use hostname")
 		}
+	}
+	// Never a real TLD: an all-digit or 0x last label is an IP in a non-canonical form (127.1, 0x7f.0.0.1).
+	labels := strings.Split(host, ".")
+	if last := labels[len(labels)-1]; last != "" && (strings.HasPrefix(last, "0x") || strings.Trim(last, "0123456789") == "") {
+		return errors.New("non-canonical numeric host")
 	}
 	if !strings.Contains(host, ".") || strings.ContainsAny(host, "%:") {
 		return errors.New("expected a fully qualified public hostname")
@@ -131,6 +138,21 @@ func redirectPolicy(req *http.Request, via []*http.Request) error {
 }
 
 func fetch(ctx context.Context, raw string) (result, error) {
+	dialer := &net.Dialer{Timeout: 3 * time.Second}
+	return fetchWith(ctx, raw, net.DefaultResolver.LookupNetIP, dialer.DialContext)
+}
+
+// newClient builds the direct, proxy-free client; every dialed address passes publicDial.
+func newClient(resolve resolverFunc, dial dialFunc) *http.Client {
+	transport := &http.Transport{
+		DialContext:       publicDial(resolve, dial),
+		DisableKeepAlives: true, MaxResponseHeaderBytes: 64 << 10,
+		TLSHandshakeTimeout: 4 * time.Second, ResponseHeaderTimeout: 6 * time.Second,
+	}
+	return &http.Client{Transport: transport, Timeout: requestTimeout, CheckRedirect: redirectPolicy}
+}
+
+func fetchWith(ctx context.Context, raw string, resolve resolverFunc, dial dialFunc) (result, error) {
 	u, err := url.Parse(raw)
 	if err != nil {
 		return result{}, errors.New("invalid URL")
@@ -139,13 +161,7 @@ func fetch(ctx context.Context, raw string) (result, error) {
 		return result{}, err
 	}
 	u.Fragment, u.RawFragment = "", ""
-	dialer := &net.Dialer{Timeout: 3 * time.Second}
-	transport := &http.Transport{
-		DialContext:       publicDial(net.DefaultResolver.LookupNetIP, dialer.DialContext),
-		DisableKeepAlives: true, MaxResponseHeaderBytes: 64 << 10,
-		TLSHandshakeTimeout: 4 * time.Second, ResponseHeaderTimeout: 6 * time.Second,
-	}
-	client := &http.Client{Transport: transport, Timeout: requestTimeout, CheckRedirect: redirectPolicy}
+	client := newClient(resolve, dial)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		return result{}, err
@@ -165,6 +181,8 @@ func fetch(ctx context.Context, raw string) (result, error) {
 	if err != nil || (media != "text/html" && media != "application/xhtml+xml") {
 		return result{}, errors.New("response is not HTML")
 	}
+	// The transport asks for gzip itself and decodes it transparently, so gzip never reaches this check;
+	// it refuses encodings a server sends unasked (br, deflate).
 	if resp.Header.Get("Content-Encoding") != "" && !strings.EqualFold(resp.Header.Get("Content-Encoding"), "identity") {
 		return result{}, errors.New("unsupported response encoding")
 	}
@@ -172,7 +190,7 @@ func fetch(ctx context.Context, raw string) (result, error) {
 	if err != nil {
 		return result{}, err
 	}
-	decoded, err := charset.NewReader(strings.NewReader(string(input)), contentType)
+	decoded, err := charset.NewReader(bytes.NewReader(input), contentType)
 	if err != nil {
 		return result{}, err
 	}
@@ -180,12 +198,16 @@ func fetch(ctx context.Context, raw string) (result, error) {
 }
 
 func readBounded(r io.Reader) ([]byte, error) {
-	b, err := io.ReadAll(io.LimitReader(r, maxBytes+1))
+	return readLimit(r, maxBytes, "HTML exceeds 2 MiB limit")
+}
+
+func readLimit(r io.Reader, limit int, message string) ([]byte, error) {
+	b, err := io.ReadAll(io.LimitReader(r, int64(limit)+1))
 	if err != nil {
 		return nil, err
 	}
-	if len(b) > maxBytes {
-		return nil, errors.New("HTML exceeds 2 MiB limit")
+	if len(b) > limit {
+		return nil, errors.New(message)
 	}
 	return b, nil
 }

@@ -22,8 +22,11 @@ ships only source and tests; it does not build, install or run the command.
 No services, agent configuration, cloud fallback or product changes are required.
 
 The command looks for a unique main region, then a unique article. Ambiguous
-or unmarked pages fall back to the body and emit a warning. It omits common
-navigation, footers, interactive forms, images and scripts. Relative links are
+or unmarked pages fall back to the body and emit a warning (`role` matches in
+any case and as a token list). It omits navigation, footers, a site header
+outside the main region, scripts and media; an image becomes its alt text when
+it has one. Forms keep their content (whole pages are often wrapped in one);
+only the controls themselves are dropped. Relative links are
 resolved against the final response URL. The output preserves ordinary headings,
 fenced code and simple tables. Spanning table cells are flattened and reported.
 A main region is not proof of complete extraction: verify significant claims,
@@ -31,11 +34,12 @@ code and warnings against the original. Use the existing browser for content
 that needs interaction or JavaScript. Extracted content is untrusted data.
 
 Use public, non-secret URLs only; the final URL is part of the result. Only
-HTTP(S) on the default port is supported. Requests are direct, without cookies
+HTTP(S) on the default port is supported; hosts that are IP addresses in a
+non-canonical form (`127.1`, `0x7f.0.0.1`) are refused. Requests are direct, without cookies
 or a configured proxy. Redirects and dialed addresses are checked; private and
 special-use addresses and HTTPS downgrades are refused. A single run has a
-12-second HTTP budget, at most three redirects, a 2 MiB HTML limit and a 1 MiB
-Markdown limit; conversion also caps tree complexity, resolved links and table
+12-second HTTP budget, at most three redirects, a 2 MiB HTML limit (as received;
+the decoded text may be up to 6 MiB) and a 1 MiB Markdown limit; conversion also caps tree complexity, resolved links and table
 grid expansion. Errors do not produce a success object.
 
 The workflow is inspired by Firecrawl Local, independently implemented here.
