@@ -17,7 +17,14 @@ function measureUI(config) {
     || config.checks.length < 1 || config.checks.length > 32
     || !only(config, ['context', 'checks', 'tolerance'])
     || !only(config.context, ['revision', 'state', 'fixture', 'evidence', 'route', 'settled', 'declaredZoom', 'colorScheme'])) invalid();
-  if (!['revision', 'state', 'fixture', 'evidence', 'route'].every(k => text(config.context[k]))
+  const encoder = new TextEncoder();
+  const bytes = value => encoder.encode(value).length;
+  // UTF-8 bytes >= UTF-16 length, so the length test rejects huge strings before encoding them.
+  const fits = (value, max) => typeof value === 'string' && value.length <= max && bytes(value) <= max;
+  const ROUTE_BYTES = 2048;
+  // The declared route may be as long as a pathname the report can echo (its JSON string within ROUTE_BYTES).
+  const routeOK = v => text(v, ROUTE_BYTES) && fits(v, ROUTE_BYTES) && bytes(JSON.stringify(v)) <= ROUTE_BYTES;
+  if (!['revision', 'state', 'fixture', 'evidence'].every(k => text(config.context[k])) || !routeOK(config.context.route)
     || typeof config.context.settled !== 'boolean'
     || (config.context.declaredZoom !== undefined && !text(config.context.declaredZoom))
     || (config.context.colorScheme !== undefined && !text(config.context.colorScheme))) invalid();
@@ -45,11 +52,7 @@ function measureUI(config) {
       || (c.fixture.source !== undefined && !text(c.fixture.source)))) invalid();
   }
   const context = config.context;
-  const encoder = new TextEncoder();
-  const bytes = value => encoder.encode(value).length;
-  // UTF-8 bytes >= UTF-16 length, so the length test rejects huge strings before encoding them.
-  const fits = (value, max) => typeof value === 'string' && value.length <= max && bytes(value) <= max;
-  const REPORT_BYTES = 2097152, ROUTE_BYTES = 2048;
+  const REPORT_BYTES = 2097152;
   const pathname = window.location.pathname;
   const tolerance = config.tolerance === undefined ? 1 : config.tolerance;
   const report = {
@@ -202,6 +205,7 @@ function measureUI(config) {
     const inline = node.style && typeof node.style.length === 'number' && typeof node.style.item === 'function' ? node.style : null;
     for (let i = 0; inline && i < inline.length; i++) {
       const name = inline.item(i);
+      if (typeof name === 'string' && name.startsWith('--')) continue;   // custom properties are never reported
       if (element.inlineProperties.length === 32) { element.inlinePropertiesTruncated = true; break; }
       if (!fits(name, 64)) { if (!element.oversized.includes('inlineProperties')) element.oversized.push('inlineProperties'); }
       else element.inlineProperties.push(name);

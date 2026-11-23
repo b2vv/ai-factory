@@ -108,10 +108,12 @@ def outcome_tables(concept_text):
   if line.startswith('|'):cur.append(line);continue
   if cur:tables.append(cur);cur=[]
  return [[m.group(1) for m in map(lambda l:re.match(r'^\| `([^`]+)` \|',l),t) if m] for t in tables]
-STYLE_PASS_OK=r'\b(?:never|not|no)\W{0,3}PASS\b|excluded'
+# A negation at PASS: up to two words between it and PASS ("never changes the PASS"), or right after PASS ("`PASS` never").
+STYLE_PASS_OK=r'\b(?:never|not|no)\b(?:\W+\w+){0,2}?\W+`?PASS\b|\bPASS`?\s+(?:never|not)\b'
 def style_pass_violations(files):
- """A sentence naming `style` and PASS must negate PASS directly or say the rows are excluded."""
- return [(path,s.strip()[:120]) for path,text in files.items() for s in sentences(text) if '`style`' in s and re.search(r'\bPASS\b',s) and not re.search(STYLE_PASS_OK,s)]
+ """A sentence naming style (with or without backticks) and PASS must negate PASS at PASS; "not excluded" never passes."""
+ return [(path,s.strip()[:120]) for path,text in files.items() for s in sentences(text)
+         if re.search(r'\bstyle\b',s) and re.search(r'\bPASS\b',s) and (re.search(r'\bnot\s+excluded\b',s) or not re.search(STYLE_PASS_OK,s))]
 def concept_outcome_violations(concept_text):
  """`compatible` must be conditioned on the already-accepted norm; `extends concept` must cover a norm change."""
  rows={m.group(1):m.group(2) for m in re.finditer(r'^\| `(compatible|extends concept)` \| ([^|]+)\|',concept_text,re.M)}
@@ -144,6 +146,12 @@ class DesignSemanticsText(unittest.TestCase):
  def test_style_rows_never_claimed_to_pass(self):
   self.assertEqual(style_pass_violations(self.files),[])
   self.assertTrue(style_pass_violations({'x.md':'A `style` row that is not blocked counts toward PASS.'}))
+  for bad in ('A `style` row is not excluded and counts toward PASS.','A `style` row is not excluded from PASS.',
+              'A style row counts toward PASS.'):
+   self.assertTrue(style_pass_violations({'x.md':bad}),bad)
+  for good in ('`style` rows return observed values only (OBSERVED/NOT_TESTED, never PASS).',
+               'a style row never changes the PASS/FAIL aggregate.','an aggregate `PASS` never implies that a style reading exists.'):
+   self.assertFalse(style_pass_violations({'x.md':good}),good)
  def test_concept_fit_keeps_two_exact_outcome_sets(self):
   text=CONCEPT.read_text()
   self.assertEqual(outcome_tables(text),CONCEPT_OUTCOMES)

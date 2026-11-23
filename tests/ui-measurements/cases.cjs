@@ -328,7 +328,7 @@ console.log('PASS existing reason strings');
 // 6/12/12a. Byte caps.
 const big = 'ж'.repeat(65);                 // 130 B (2-byte chars), > 128
 values = { 'font-family': big, 'padding-top': 'x'.repeat(256), 'margin-top': 'x'.repeat(257), color: 'rgb(0, 0, 0)' };
-nodes = [el({ localName: 'x-' + 'a'.repeat(63), role: 'r'.repeat(65), inline: ['--' + 'n'.repeat(63), ...Array(40).fill(0).map((_, i) => 'p' + i)] })];
+nodes = [el({ localName: 'x-' + 'a'.repeat(63), role: 'r'.repeat(65), inline: ['n'.repeat(65), ...Array(40).fill(0).map((_, i) => 'p' + i)] })];
 let e = measureUI(cfg(style({ properties: ['font-family', 'padding-top', 'margin-top', 'color'] }))).checks[0].elements[0];
 assert.equal(e.tag, null); assert.equal(e.ariaRole, null);
 assert.deepEqual(e.oversized.sort(), ['ariaRole', 'font-family-first', 'inlineProperties', 'margin-top', 'tag']);
@@ -337,7 +337,11 @@ assert.equal(e.inlineProperties.length, 32); assert.equal(e.inlinePropertiesTrun
 values = { 'font-family': 'a'.repeat(128) }; nodes = [el({ localName: 'x-' + 'a'.repeat(62), role: 'r'.repeat(64) })];
 e = measureUI(cfg(style({ properties: ['font-family'] }))).checks[0].elements[0];
 assert.equal(e.derived['font-family-first'].length, 128); assert.equal(e.tag.length, 64); assert.equal(e.ariaRole.length, 64); assert.deepEqual(e.oversized, []);
-console.log('PASS UTF-8 field caps at and over each bound');
+values = { color: 'rgb(0, 0, 0)' }; nodes = [el({ inline: ['--user-42-secret-token', 'padding-top', '--' + 'n'.repeat(80)] })];
+e = measureUI(cfg(style({ properties: ['color'] }))).checks[0].elements[0];
+assert.deepEqual(e.inlineProperties, ['padding-top']); assert.deepEqual(e.oversized, []);
+assert.ok(!JSON.stringify(e).includes('secret-token'));
+console.log('PASS UTF-8 field caps at and over each bound; custom properties never reported');
 
 // 8. Element budget 400 / 401.
 nodes = Array(50).fill(0).map(() => el()); values = { 'padding-top': '1px' };
@@ -488,7 +492,16 @@ const realStringify = JSON.stringify;
 JSON.stringify = (v, ...rest) => { if (typeof v === 'string' && v.length > 4096) throw new RangeError('Invalid string length'); return realStringify(v, ...rest); };
 try { setPage('/' + '"'.repeat(1000000)); r = measureUI({ context: ctx(), checks: [sc] }); } finally { JSON.stringify = realStringify; }
 assert.equal(r.actual.route, null); assert.equal(r.actual.routeOversized, true); assert.equal(r.checks[0].reason, 'route-mismatch');
-console.log('PASS route echo capped; full pathname still binds or mismatches the declared route');
+// A configured route may be as long as an echoable pathname (2048 JSON bytes), e.g. a percent-encoded Cyrillic path.
+const encoded = '/' + '%D0%B6'.repeat(199);         // 1195 bytes, longer than the 512 of other context strings
+setPage(encoded); r = measureUI({ context: ctx({ route: encoded }), checks: [sc] });
+assert.equal(r.checks[0].status, 'OBSERVED'); assert.equal(r.actual.route, encoded);
+setPage(atCap); r = measureUI({ context: ctx({ route: atCap }), checks: [sc] });
+assert.equal(r.checks[0].status, 'OBSERVED');
+for (const bad of [atCap + 'a', '   ', '/' + 'ж'.repeat(1024)]) {
+  assert.throws(() => measureUI({ context: ctx({ route: bad }), checks: [sc] }), /Invalid UI measurement config/);
+}
+console.log('PASS route echo capped; full pathname still binds or mismatches the declared route; long routes configurable');
 
 // Worst-case configuration within every config cap stays under the report bound with all rows intact.
 const ctrl = n => '\u0001'.repeat(n);                // 6 JSON bytes per char

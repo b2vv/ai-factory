@@ -500,7 +500,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "29850522e384d09b8713ca1ee8223ae84b3fc9ad618acbcb0e7de3930741a8e1",
+      "sha256": "27b109bb45093dcf9fb76a3199258f4ccb5afa2d10747ae4d21bbc46a6d816e9",
       "component": "core"
     },
     {
@@ -4191,12 +4191,12 @@
     {
       "path": "skills/ui-measurements/references/contract.md",
       "component": "skills",
-      "sha256": "8e718683db20e4b1f13919faa1355117d81302180c39f62abced329ca6c5f931"
+      "sha256": "e25d720e634dc40b9a0f8e57cb02e2daae23deaadd4476fb9fc29cad6dfdccd8"
     },
     {
       "path": "skills/ui-measurements/scripts/measure-ui.cjs",
       "component": "skills",
-      "sha256": "07c14ce8b4c356200b2843767c6b490e0563f46914a001bb2ad12573e1d05c6e"
+      "sha256": "3fd45ef3022ad059afc6e2419cf9dbcdebd14fe0fae9d502a2f07d4bbc124e54"
     },
     {
       "path": "skills/utils/migrate-to-shoehorn/SKILL.md",
@@ -4370,7 +4370,7 @@
     },
     {
       "path": "tests/collection/test_design_semantics_text.py",
-      "sha256": "c571f2f536f829365d2a60d465aed95868e34d22aee0b1086ad1dec1648d33fc",
+      "sha256": "6a2f10736ba9100dbfd8517c7bba2bac93927631b5e4a77848aac561453fc62f",
       "component": "core"
     },
     {
@@ -4636,12 +4636,17 @@
     {
       "path": "tests/ui-measurements/cases.cjs",
       "component": "core",
-      "sha256": "28e7989f692c584edcd27a44b1996f7bdf2d8ce7c9f5ad3c3f1ae73181bb63a4"
+      "sha256": "3b5bca26dd53352cec3d652869edcce23e0fc16fca424b09f1d60a63cbbde9ef"
     },
     {
       "path": "tests/ui-measurements/test_browser.py",
       "component": "core",
       "sha256": "f450c7b5f2925be4ee36bf530a926d087a2e07a0c03566be409ac5c3ba1ad560"
+    },
+    {
+      "path": "tests/ui-measurements/test_contract_reasons.py",
+      "sha256": "92a8273fd92033040958cf360f8cafe91355e019802d8fb05bcfe8a61ccd3876",
+      "component": "core"
     },
     {
       "path": "tests/ui-measurements/test_node.py",

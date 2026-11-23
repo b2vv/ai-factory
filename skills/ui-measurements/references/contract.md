@@ -50,7 +50,8 @@ rest-state norm, record interaction-state evidence, or explicitly justify state 
 a noninteractive target in the existing evidence record. Otherwise that comparison is `NOT_TESTED`.
 
 Each of 1–32 checks needs a unique ID (up to 80 characters), selector (up to 256)
-and kind `fit`, `contrast`, `text` or `style` (see below). Context/other source strings are up to 512
+and kind `fit`, `contrast`, `text` or `style` (see below). The declared route may be as long as
+a pathname the report can echo (its JSON string ≤ 2048 UTF-8 bytes); other context/source strings are up to 512
 characters; expected fixture text is up to 2048 and can be empty. Geometry tolerance
 is finite 0–2 CSS px, default 1 for integer CSSOM dimensions; do not use tolerance to
 excuse a visible defect. `axis` is x/y/both (default both). An intentional scroll-x
@@ -167,12 +168,13 @@ elements; callers must not count it as the full set (the calling review lens dec
                values: { 'padding-top': '9px', 'line-height': 'normal' }, // exact strings as returned
                derived: { 'font-family-first': 'Inter', 'box-shadow-layers': 0 },
                // font-family / box-shadow, when listed in properties, appear in derived instead of values
-               inlineProperties: ['padding-top', 'padding-left'],         // inline longhand names only, as the element's CSSOM style lists them
+               inlineProperties: ['padding-top', 'padding-left'],         // inline longhand names only, as the element's CSSOM style lists them; custom properties (--*) are never reported
                oversized: [] }],                                         // see Field size limits
   untraversed: { openShadowHosts: 1, iframes: 0, canvases: 0, constructedSheets: 0 } }
 ```
 
-**Reasons** reuse the existing helper strings; only `budget` is new:
+**Reasons** for `style` rows reuse the existing helper strings; only `budget` is new. The full list of reasons the
+helper can return, for every kind, is in "All reasons" below.
 
 | Reason | When |
 |---|---|
@@ -187,6 +189,33 @@ elements; callers must not count it as the full set (the calling review lens dec
 
 Unsupported properties or options are invalid configuration, not a runtime status.
 
+**All reasons.** A `NOT_TESTED` row carries exactly one of these fixed strings:
+
+| Reason | Kind | When |
+|---|---|---|
+| `viewport-unavailable` | all | the frame has no finite positive viewport |
+| `route-mismatch` | all | `location.pathname` differs from the declared route |
+| `state-not-settled` | all | the runner declared `settled: false` |
+| `fonts-not-settled` | all | `document.fonts` is missing or not `loaded` |
+| `invalid-selector` | all | the selector does not parse |
+| `missing-target` | all | no match |
+| `ambiguous-target` | all | more than one match where one is required |
+| `non-html-target` | all | the target is not an HTML element |
+| `unrendered-target` | all | hidden, collapsed, transparent or not content-visible |
+| `animation-state-unavailable` | all | the animation API is missing |
+| `active-animation` | all | an animation is pending, running or paused |
+| `oversized-value` | fit, contrast | an echoed computed string exceeds 64 UTF-8 bytes |
+| `unsupported-text-target` | contrast | not visible leaf text |
+| `unsupported-compositing` | contrast | filters, blend modes, transforms, masks or similar on the path |
+| `unsupported-paint` | contrast | gradients, images, shadows, strokes, text offsets or overflow |
+| `unsupported-pseudo-paint` | contrast | pseudo content or first-letter/first-line paint overrides |
+| `non-opaque-or-non-srgb` | contrast | foreground or background is not an opaque sRGB colour |
+| `stable-fixture-not-established` | text | `fixture.stable` is not true, its ID differs from the context, or no source |
+| `oversized-text` | text | the target text is longer than the 2048 expected-text cap |
+| `budget` | style | this or an earlier style check would exceed a budget |
+| `report-budget` | fit, contrast, text | the row would push the report over its byte bound (defensive) |
+| `unsupported-check` | — | defensive: an unknown kind (configuration validation already refuses it) |
+
 ### Field size limits (UTF-8 bytes)
 
 Sizes are **UTF-8 bytes of the string value**, measured with `new TextEncoder().encode(s).length`,
@@ -200,6 +229,8 @@ not characters:
 | `derived.font-family-first` | 128 B | omitted from `derived`, `'font-family-first'` listed in `oversized` |
 | each name in `inlineProperties` | 64 B | the name is dropped, `'inlineProperties'` listed in `oversized` |
 | `inlineProperties` count | 32 | first 32 in declaration order, `inlinePropertiesTruncated: true` |
+
+Custom properties (names starting with `--`) are skipped before both limits: never listed, never counted, never `oversized`.
 | `reason`, keys of `skipped`, `untraversed`, `oversized` entries | fixed strings / integers | — |
 
 Nothing is truncated or guessed. Field caps only keep one element small; the binding bounds are
