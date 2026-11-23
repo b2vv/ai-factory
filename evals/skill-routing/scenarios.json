@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "live_status": "NOT_RUN",
+  "live_status": "RUN_ONCE_N1",
   "purpose": "Skill selection for confusable clusters: one user phrase, the skill that should load, and neighbours that must not be chosen instead.",
   "cases": [
     {
