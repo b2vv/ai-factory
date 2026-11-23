@@ -5,7 +5,7 @@
   "model": "claude-opus-5-5",
   "auth": "subscription (claude.ai login), no API key or third-party backend",
   "trials_per_case": 1,
-  "note": "Smoke runs, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. trials lists every run of a case in order with the kit transaction it ran against: ee98fb00 (all cases), 9617c922 (design cases after the ui-measurements description change), 8fca62dd (design cases after interface-review's description named audit mode; design-product-audit ran three times). outcome and first_skill are the latest trial. Fixture: disposable generic repository (plan, feature branch with one commit, static HTML screens, a PNG reference).",
+  "note": "Smoke runs, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. trials lists every run of a case in order with the kit transaction it ran against: ee98fb00 (all cases), 9617c922 (design cases after the ui-measurements description change), 8fca62dd (design cases after interface-review's description named audit mode; design-product-audit ran three times), 0b2db1ae (review-pattern, three more trials, no description change). outcome and first_skill are the latest trial. Fixture: disposable generic repository (plan, feature branch with one commit, static HTML screens, a PNG reference).",
   "summary": {
     "PASS": 21,
     "NO_SKILL": 4
@@ -357,6 +357,21 @@
       "trials": [
         {
           "kit_transaction": "ee98fb00",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "0b2db1ae",
+          "first_skill": "pattern-architecture-review",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "0b2db1ae",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "0b2db1ae",
           "first_skill": "none",
           "outcome": "NO_SKILL"
         }
