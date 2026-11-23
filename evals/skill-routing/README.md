@@ -1,6 +1,6 @@
 # Skill-routing evaluation set
 
-Status: **RUN 2026-11-23**, toy fixture then the realistic one (1–3 trials per case on it): on the realistic fixture the latest trial is 23 PASS, 2 NO_SKILL, and no trial in any run loaded a wrong skill; see [results/2026-11-23.json](results/2026-11-23.json). A smoke run, not a statistical result. This folder holds definitions, a trace scorer and recorded results; no model launcher is shipped.
+Status: **RUN 2026-11-23**, toy fixture then the realistic one (1–3 trials per case on it): on the realistic fixture the latest trial is 24 PASS, 1 NO_SKILL, and no trial in any run loaded a wrong skill; see [results/2026-11-23.json](results/2026-11-23.json). A smoke run, not a statistical result. This folder holds definitions, a trace scorer and recorded results; no model launcher is shipped.
 
 [scenarios.json](scenarios.json) lists one user phrase per case, the skill whose description should win (`expected_skill`) and the neighbouring skills that must not be chosen in its place (`not_instead`). The cases cover the clusters where descriptions overlap: interface work, review, and planning gates.
 

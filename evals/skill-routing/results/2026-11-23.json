@@ -5,10 +5,10 @@
   "model": "claude-opus-5-5",
   "auth": "subscription (claude.ai login), no API key or third-party backend",
   "trials_per_case": 1,
-  "note": "Smoke runs, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. trials lists every run of a case in order with the kit transaction it ran against: ee98fb00 (all cases), 9617c922 (design cases after the ui-measurements description change), 8fca62dd (design cases after interface-review's description named audit mode; design-product-audit ran three times), 0b2db1ae (review-pattern, three more trials, no description change). 321f5287 (all cases on the realistic fixture from make_fixture.py; the five earlier no-skill cases ran three times). 2d9f4ad9 (design cases after interface-review's description asked for it on any critique or audit; product-audit and critique ran three times). Each trial names its fixture: toy (hand-made, early runs) or realistic. outcome and first_skill are the latest trial. ",
+  "note": "Smoke runs, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. trials lists every run of a case in order with the kit transaction it ran against: ee98fb00 (all cases), 9617c922 (design cases after the ui-measurements description change), 8fca62dd (design cases after interface-review's description named audit mode; design-product-audit ran three times), 0b2db1ae (review-pattern, three more trials, no description change). 321f5287 (all cases on the realistic fixture from make_fixture.py; the five earlier no-skill cases ran three times). 2d9f4ad9 (design cases after interface-review's description asked for it on any critique or audit; product-audit and critique ran three times). c09fdff9 (design cases after ui-audit's description asked for it even when the cause seems readable from the code; the filter-row case ran four times). Each trial names its fixture: toy (hand-made, early runs) or realistic. outcome and first_skill are the latest trial. ",
   "summary": {
-    "PASS": 23,
-    "NO_SKILL": 2
+    "PASS": 24,
+    "NO_SKILL": 1
   },
   "results": [
     {
@@ -43,6 +43,12 @@
         },
         {
           "kit_transaction": "2d9f4ad9",
+          "fixture": "realistic",
+          "first_skill": "design-pass",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
           "fixture": "realistic",
           "first_skill": "design-pass",
           "outcome": "PASS"
@@ -84,14 +90,20 @@
           "fixture": "realistic",
           "first_skill": "ui-audit",
           "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
         }
       ]
     },
     {
       "id": "design-point",
       "expected": "ui-audit",
-      "first_skill": "none",
-      "outcome": "NO_SKILL",
+      "first_skill": "ui-audit",
+      "outcome": "PASS",
       "trials": [
         {
           "kit_transaction": "ee98fb00",
@@ -135,6 +147,30 @@
           "fixture": "realistic",
           "first_skill": "none",
           "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
         }
       ]
     },
@@ -170,6 +206,12 @@
         },
         {
           "kit_transaction": "2d9f4ad9",
+          "fixture": "realistic",
+          "first_skill": "interface-review",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
           "fixture": "realistic",
           "first_skill": "interface-review",
           "outcome": "PASS"
@@ -211,6 +253,12 @@
           "fixture": "realistic",
           "first_skill": "ux-review",
           "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "ux-review",
+          "outcome": "PASS"
         }
       ]
     },
@@ -249,6 +297,12 @@
           "fixture": "realistic",
           "first_skill": "anti-slop-design",
           "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "anti-slop-design",
+          "outcome": "PASS"
         }
       ]
     },
@@ -284,6 +338,12 @@
         },
         {
           "kit_transaction": "2d9f4ad9",
+          "fixture": "realistic",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
           "fixture": "realistic",
           "first_skill": "frontend-design",
           "outcome": "PASS"
@@ -337,6 +397,12 @@
           "fixture": "realistic",
           "first_skill": "reference-ui-reconstruction",
           "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "reference-ui-reconstruction",
+          "outcome": "PASS"
         }
       ]
     },
@@ -372,6 +438,12 @@
         },
         {
           "kit_transaction": "2d9f4ad9",
+          "fixture": "realistic",
+          "first_skill": "ui-measurements",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
           "fixture": "realistic",
           "first_skill": "ui-measurements",
           "outcome": "PASS"
@@ -449,6 +521,12 @@
           "fixture": "realistic",
           "first_skill": "interface-review",
           "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
+          "fixture": "realistic",
+          "first_skill": "interface-review",
+          "outcome": "PASS"
         }
       ]
     },
@@ -484,6 +562,12 @@
         },
         {
           "kit_transaction": "2d9f4ad9",
+          "fixture": "realistic",
+          "first_skill": "frontend-design",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
           "fixture": "realistic",
           "first_skill": "frontend-design",
           "outcome": "PASS"
@@ -546,6 +630,12 @@
         },
         {
           "kit_transaction": "2d9f4ad9",
+          "fixture": "realistic",
+          "first_skill": "interface-review",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "c09fdff9",
           "fixture": "realistic",
           "first_skill": "interface-review",
           "outcome": "PASS"
