@@ -72,7 +72,7 @@
     },
     {
       "destination": "skills/design-pass/references/browser-state-evidence.md",
-      "sha256": "93ac16bec1cdaeb9047f29964b13c6fbac73e82013a192ba20977f909ff45511",
+      "sha256": "235e903189d3116fbcf140d9c8d730d7911941a757e28ae62c54ee945891e6c7",
       "kind": "selective authored adaptation with retained MIT notice"
     },
     {
@@ -152,7 +152,7 @@
     },
     {
       "destination": "skills/ui-measurements/SKILL.md",
-      "sha256": "a15a2875787b81a913842127d404f00bd0aab4dde4f304a7d5dda470466bde70",
+      "sha256": "fb8ed701b8548462217ac573e1ebadb84263aa3c8b605ad6dce26df9602e0f37",
       "kind": "Owner-authorized original UI measurement helper and instructions; not upstream content; see PROVENANCE.md"
     },
     {
@@ -187,17 +187,17 @@
     },
     {
       "destination": "skills/ui-audit/SKILL.md",
-      "sha256": "3148243f72ce3c5c2cfb8dd994b7394015c4d6e6e240b7405938c65d1011b450",
+      "sha256": "e8ff3e2591470eff74713774cabd26e33ae4909e8c3a4568b80b1cb32077b298",
       "kind": "Owner-authorized authored first-party skill (ui-audit); read-only UI/UX problem finder with an owner confirmation loop, distinct from upstream MIT adaptation; hands confirmed problems to interface-review and design-pass; see PROVENANCE.md"
     }
   ],
   "adaptations": [
     {
       "destination": "skills/design-pass/SKILL.md",
-      "before_sha256": "4847bf83f27f7acb9b9843e6be49777a44b1a9fb5f9bc62be3ea71765d2afb47",
+      "before_sha256": "bdafc245372c3867b1ca4796806fde09fcc51418fbf89f7e11ad1f38b2142c0c",
       "append": "\n## Browser evidence refinement\n\nFor permission/session/error recovery states and action-correlated DOM, console or network evidence, use [browser state evidence](references/browser-state-evidence.md). Reuse the existing entity coverage and reviewer route; this adds no tool installation or second checklist.\n",
       "append_sha256": "b1289f6eebe53f41715667250c6e3b0df66566a2a98c3471a40d03e9ae199ce3",
-      "after_sha256": "03b4129346ff6de5ceb075d4e89bb76a67bba95b37ba79024fc7d444b147e0f2",
+      "after_sha256": "4abc2f29132fa04588cac6c37630b12c3dde7619ef802bf9aa94f60c43241ae3",
       "prior_adaptation_hashes": [
         {
           "before_sha256": "b5e8f37db63c882d771558b46d582e99c99b9e833beb1df5363659928bd29adb",
@@ -222,6 +222,10 @@
         {
           "before_sha256": "38fc606be066da8a8c55feebe33ca809d317c926174d5cec413a8f1df1c44dac",
           "after_sha256": "c6db24e241ffdf3f07779d4d74346f2636618d549096d626003c5da61f621980"
+        },
+        {
+          "before_sha256": "4847bf83f27f7acb9b9843e6be49777a44b1a9fb5f9bc62be3ea71765d2afb47",
+          "after_sha256": "03b4129346ff6de5ceb075d4e89bb76a67bba95b37ba79024fc7d444b147e0f2"
         }
       ]
     },

@@ -76,7 +76,7 @@ evidence into the decisions section does not make it pass. Run on a screenshot/l
 
 **Minimum evidence for keyboard, contrast and interaction claims.** These three checks are PASS or FAIL only with the evidence below; details are in the [ux-review measurement rules](../ux-review/SKILL.md#measurement-and-rule-priority) and [ui-measurements](../ui-measurements/SKILL.md). Purely visual findings need no live interaction when a matching screenshot shows them.
 - Keyboard: actual key presses with focus observed at each stop; DOM or source order is not keyboard evidence.
-- Contrast: the `measureUI` `contrast` result; a ratio calculated by hand is not evidence.
+- Contrast: an existing project/a11y measurement of the actual paint and the `measureUI` `contrast` result when the owner accepted the offered run, as the ux-review measurement rules define it; a ratio calculated by hand is not evidence.
 - Interaction: a safe action (changes no live or shared data) and the result observed after it.
 - For these three checks, missing evidence is `NOT_TESTED`: never PASS, and it never satisfies an acceptance criterion.
 

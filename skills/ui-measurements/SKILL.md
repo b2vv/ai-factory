@@ -1,14 +1,16 @@
 ---
 name: ui-measurements
-description: Measure selected UI box fit, supported solid text contrast and explicitly stable fixture values, and read selected computed style values as facts, through an existing browser runner or agent browser. Use conditionally during design-pass or interface review when current project checks leave a relevant measurement gap.
+description: Measure selected UI box fit, supported solid text contrast and explicitly stable fixture values, and read selected computed style values as facts, through an existing browser runner or agent browser. Use during design-pass or interface review: for supported text contrast when the owner accepts the offered run (offered also when the project has its own measurement), and for box fit, stable fixture values or computed style when current project checks leave a relevant measurement gap.
 ---
 
 # Selected UI measurements
 
 Support the existing [design-pass](../design-pass/SKILL.md) facade and review lenses;
 do not become a new design method, global scanner or accessibility certification.
-Reuse current Storybook/E2E/a11y observations first. Run this helper only for a
-missing relevant measurement, in the already authorized browser/project stack.
+For supported text contrast, offer the owner a run, also when the project has its own
+measurement (a cross-check against a poor design), and run it after a yes. For other values, reuse current
+Storybook/E2E/a11y observations first and run it only for a missing relevant measurement.
+Run it in the already authorized browser/project stack.
 No installation, screenshots, video or animated demonstration is required by this
 helper. It does not authorize navigation, test data changes or host registration.
 
@@ -19,8 +21,8 @@ helper. It does not authorize navigation, test data changes or host registration
    disabled/enabled pairs with the facade; one state does not prove the other.
    Use authorized fixtures/interactions; changing live data needs its own permission.
 2. Confirm the agreed expectation and a tool that can actually measure it. Use
-   [the invocation contract](references/contract.md) only if the project lacks an
-   equivalent current check. Wait for the named state with the existing runner;
+   [the invocation contract](references/contract.md) for supported text contrast once the owner
+   accepted the run, and otherwise only if the project lacks an equivalent current check. Wait for the named state with the existing runner;
    never infer settled state from a timeout alone.
 3. Evaluate `scripts/measure-ui.cjs` in that browser context. The function reads
    explicitly selected targets and returns expected/actual values, actual frame

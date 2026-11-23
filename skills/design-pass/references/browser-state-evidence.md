@@ -21,9 +21,9 @@ Map each affected acceptance criterion to the most appropriate existing level an
 
 ## Conditional selected measurements
 
-When existing current-state Storybook/E2E/a11y evidence leaves a relevant numeric
-gap, use [ui-measurements](../../ui-measurements/SKILL.md) in the same authorized
-browser context. Attach its expected/actual selected-box, supported contrast or
+For supported text contrast when the owner accepted the offered run, and otherwise when existing current-state
+Storybook/E2E/a11y evidence leaves a relevant numeric gap, use
+[ui-measurements](../../ui-measurements/SKILL.md) in the same authorized browser context. Attach its expected/actual selected-box, supported contrast or
 stable-fixture observations to the existing route/state/viewport/revision record;
 do not create a second scan, state matrix or acceptance contract. Keep unsupported
 paint, unresolved runtime state and dynamic values NOT_TESTED. A computed ratio

@@ -505,7 +505,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "33fd7a7560604d02692cd6c0811d7f218a2cb1e325a518dd2d55e349367b7037",
+      "sha256": "d38595f617a4562214cd81e6da68c5d1f0d2f186e1200e2bd45f3fa6f73cd203",
       "component": "core"
     },
     {
@@ -575,7 +575,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "f7341963ccd9b51f517444fca8a74cf239504243bdbca22f83f40e4a6ecdc68c",
+      "sha256": "b9c0df17437da87539e5650c597098825f970749f3f51d6bc7a56a0c41c49e6f",
       "component": "core"
     },
     {
@@ -2825,7 +2825,7 @@
     },
     {
       "path": "skills/anti-slop-design/SKILL.md",
-      "sha256": "1e4c6844407bb16504314ca3a78dcf087ffe6c28665ccbaa461ab2e25ebd854c",
+      "sha256": "09f1c18ce613364c311f7fcb66ca5acae16f283cb46eb4a2c38ac28f1cbe3b55",
       "component": "skills"
     },
     {
@@ -3120,12 +3120,12 @@
     },
     {
       "path": "skills/design-pass/SKILL.md",
-      "sha256": "03b4129346ff6de5ceb075d4e89bb76a67bba95b37ba79024fc7d444b147e0f2",
+      "sha256": "4abc2f29132fa04588cac6c37630b12c3dde7619ef802bf9aa94f60c43241ae3",
       "component": "skills"
     },
     {
       "path": "skills/design-pass/references/browser-state-evidence.md",
-      "sha256": "93ac16bec1cdaeb9047f29964b13c6fbac73e82013a192ba20977f909ff45511",
+      "sha256": "235e903189d3116fbcf140d9c8d730d7911941a757e28ae62c54ee945891e6c7",
       "component": "skills"
     },
     {
@@ -3235,7 +3235,7 @@
     },
     {
       "path": "skills/interface-review/SKILL.md",
-      "sha256": "0ebd23e80613c44273c48f9b692ba1885a9fbfd1260d8614462350d5871daed7",
+      "sha256": "44fd842770d0a202576d5efec374a11b8ee3a0c13c75c70b16779c7cf6ec64f6",
       "component": "skills"
     },
     {
@@ -3375,7 +3375,7 @@
     },
     {
       "path": "skills/ship/frontend-design/SKILL.md",
-      "sha256": "6290cf58a12c8d1e3c96015c5f8284598857bc8ce719a327d2b9f1b5eaea452e",
+      "sha256": "6331b3feffa81b081e772f616a104b9a7da78e9e5edad614882978821f7830d7",
       "component": "skills"
     },
     {
@@ -4185,13 +4185,13 @@
     },
     {
       "path": "skills/ui-audit/SKILL.md",
-      "sha256": "3148243f72ce3c5c2cfb8dd994b7394015c4d6e6e240b7405938c65d1011b450",
+      "sha256": "e8ff3e2591470eff74713774cabd26e33ae4909e8c3a4568b80b1cb32077b298",
       "component": "skills"
     },
     {
       "path": "skills/ui-measurements/SKILL.md",
       "component": "skills",
-      "sha256": "a15a2875787b81a913842127d404f00bd0aab4dde4f304a7d5dda470466bde70"
+      "sha256": "fb8ed701b8548462217ac573e1ebadb84263aa3c8b605ad6dce26df9602e0f37"
     },
     {
       "path": "skills/ui-measurements/references/contract.md",
@@ -4305,7 +4305,7 @@
     },
     {
       "path": "skills/ux-review/SKILL.md",
-      "sha256": "bbee80bfde6971eea337e4f0f88a730c96e87339c6bc83a05ebc5a2ddfd746f2",
+      "sha256": "8e60ad8a4de68ea1158a8be925df876a3649d0da1440253f6674de3f46f23b1f",
       "component": "skills"
     },
     {
@@ -4375,7 +4375,7 @@
     },
     {
       "path": "tests/collection/test_design_semantics_text.py",
-      "sha256": "6a2f10736ba9100dbfd8517c7bba2bac93927631b5e4a77848aac561453fc62f",
+      "sha256": "08f83e0e1673ba5e61e35dc662f7e62c19a28815146ab3af18fb64c00876caf1",
       "component": "core"
     },
     {
@@ -4405,7 +4405,7 @@
     },
     {
       "path": "tests/collection/test_skill_vocabulary.py",
-      "sha256": "d8093f4b311150837f49b2427d82930f1b7eb61d8969a7ac5d3f7faa8bbf0138",
+      "sha256": "50df17d87f56f1e70c104a3efc759f11ebf54d98205c081acae1609d462386ae",
       "component": "core"
     },
     {

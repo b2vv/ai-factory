@@ -40,5 +40,26 @@ class Vocabulary(unittest.TestCase):
         self.assertIn('concept card lines and concept-fit evidence records', flat('design-pass/SKILL.md'))
 
 
+    def test_one_contrast_evidence_rule(self):
+        # L16a, owner 23.11: offer a ui-measurements contrast run (also beside a project measurement); run after a yes.
+        ux = flat('ux-review/SKILL.md')
+        self.assertIn('Contrast evidence is a measurement of the actual paint', ux)
+        self.assertIn('also when the project has its own measurement', ux)
+        self.assertIn('run it only after a yes', ux)
+        self.assertIn('contrast stays NOT_TESTED, never PASS', ux)
+        self.assertIn('when the owner accepts the offered run', flat('ui-measurements/SKILL.md'))
+        self.assertIn('when the owner accepted the offered run', flat('interface-review/SKILL.md'))
+        self.assertIn('offer the owner a ui-measurements `contrast` run', flat('ui-audit/SKILL.md'))
+        self.assertNotIn('only for missing supported measurements', flat('anti-slop-design/SKILL.md'))
+        self.assertIn('when the owner accepted the offered run', flat('ship/frontend-design/SKILL.md'))
+        for path in ('interface-review/SKILL.md', 'ui-audit/SKILL.md', 'design-pass/SKILL.md', 'anti-slop-design/SKILL.md'):
+            text = flat(path)
+            self.assertIn('ux-review measurement rules', text, path)
+            self.assertNotIn('Contrast: the `measureUI` `contrast` result;', text, path)
+        for path in ('ux-review/SKILL.md', 'interface-review/SKILL.md', 'ui-audit/SKILL.md', 'design-pass/SKILL.md',
+                     'anti-slop-design/SKILL.md', 'ui-measurements/SKILL.md', 'ship/frontend-design/SKILL.md'):
+            self.assertNotRegex(flat(path), r'(?i)always (run|use) (the )?\[?ui-measurements|run always', path)
+
+
 if __name__ == '__main__':
     unittest.main()

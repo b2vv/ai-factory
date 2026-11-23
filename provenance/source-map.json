@@ -974,7 +974,7 @@
       "source": "~/.agents/skills/anti-slop-design/SKILL.md",
       "destination": "skills/anti-slop-design/SKILL.md",
       "source_sha256": "feeaa8863d5e41439dd574a10bf23d1ec08d09d679822c9cb2c905553396f571",
-      "sha256": "1e4c6844407bb16504314ca3a78dcf087ffe6c28665ccbaa461ab2e25ebd854c",
+      "sha256": "09f1c18ce613364c311f7fcb66ca5acae16f283cb46eb4a2c38ac28f1cbe3b55",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -987,7 +987,8 @@
         "Owner-authorized concept-fit pre-flight pointer, 2026-11-18; MIT notice and original identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
         "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed.",
-        "Owner-authorized (T11, 2026-11-23): trigger \"critique the design\" removed so a screen critique routes to interface-review; no rule removed."
+        "Owner-authorized (T11, 2026-11-23): trigger \"critique the design\" removed so a screen critique routes to interface-review; no rule removed.",
+        "Owner-authorized (L16a, 2026-11-23, revised): the agent offers the owner a ui-measurements contrast run (also beside an existing project measurement, as a cross-check) and runs it after a yes; both measurements recorded, a disagreement is a finding, neither means NOT_TESTED; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/anti-slop-design/SKILL.md"
@@ -1500,7 +1501,7 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "03b4129346ff6de5ceb075d4e89bb76a67bba95b37ba79024fc7d444b147e0f2",
+      "sha256": "4abc2f29132fa04588cac6c37630b12c3dde7619ef802bf9aa94f60c43241ae3",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -1518,7 +1519,8 @@
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
         "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change.",
         "Owner-authorized (T12, 2026-11-23, decision D3 a): relative skill links are opened from the skill's real location in the kit (realpath, no-shell fallback via the kit root); no other behavior change.",
-        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed.",
+        "Owner-authorized (L16a, 2026-11-23, revised): the agent offers the owner a ui-measurements contrast run (also beside an existing project measurement, as a cross-check) and runs it after a yes; both measurements recorded, a disagreement is a finding, neither means NOT_TESTED; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -1744,7 +1746,7 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "0ebd23e80613c44273c48f9b692ba1885a9fbfd1260d8614462350d5871daed7",
+      "sha256": "44fd842770d0a202576d5efec374a11b8ee3a0c13c75c70b16779c7cf6ec64f6",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
@@ -1759,7 +1761,8 @@
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
         "Owner-authorized minimum evidence for interface-review keyboard, contrast and interaction claims; original source identity and hash retained.",
         "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change.",
-        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed.",
+        "Owner-authorized (L16a, 2026-11-23, revised): the agent offers the owner a ui-measurements contrast run (also beside an existing project measurement, as a cross-check) and runs it after a yes; both measurements recorded, a disagreement is a finding, neither means NOT_TESTED; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"
@@ -2090,7 +2093,7 @@
       "source": "~/.agents/skills/ship/frontend-design/SKILL.md",
       "destination": "skills/ship/frontend-design/SKILL.md",
       "source_sha256": "0bf4156e15de358351d8964a85cf38a67b518d79f678bd2cce41a2fbd4495450",
-      "sha256": "6290cf58a12c8d1e3c96015c5f8284598857bc8ce719a327d2b9f1b5eaea452e",
+      "sha256": "6331b3feffa81b081e772f616a104b9a7da78e9e5edad614882978821f7830d7",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
@@ -2099,7 +2102,8 @@
         "Inherited historical attribution remains unverified; reviewed current takeover qualifies the portable adaptation.",
         "Owner-authorized conditional UI measurements and requirement-versus-preference alignment; immutable upstream/source identity retained.",
         "Owner-authorized concept-card plan line (concept fit), 2026-11-18; original identities retained.",
-        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained."
+        "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
+        "Owner-authorized (L16a, 2026-11-23, revised): the agent offers the owner a ui-measurements contrast run (also beside an existing project measurement, as a cross-check) and runs it after a yes; both measurements recorded, a disagreement is a finding, neither means NOT_TESTED; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ship/frontend-design/SKILL.md"
@@ -3962,7 +3966,7 @@
       "source": "~/.agents/skills/ux-review/SKILL.md",
       "destination": "skills/ux-review/SKILL.md",
       "source_sha256": "af2e4fddf30ce8465f332de91d1f4360dfe140e474e1027d92f10e557a5f5462",
-      "sha256": "bbee80bfde6971eea337e4f0f88a730c96e87339c6bc83a05ebc5a2ddfd746f2",
+      "sha256": "8e60ad8a4de68ea1158a8be925df876a3649d0da1440253f6674de3f46f23b1f",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -3977,7 +3981,8 @@
         "Owner-authorized semantic-consistency rule-pass outcomes (drift, owner decisions) and gate, 2026-11-18; original identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
         "Owner-authorized conditional RTL review reference; original source identity and hash retained.",
-        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed."
+        "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed.",
+        "Owner-authorized (L16a, 2026-11-23, revised): the agent offers the owner a ui-measurements contrast run (also beside an existing project measurement, as a cross-check) and runs it after a yes; both measurements recorded, a disagreement is a finding, neither means NOT_TESTED; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/ux-review/SKILL.md"

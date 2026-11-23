@@ -113,7 +113,7 @@ Every rule has an **override path**. Avoid by default; override when the brand/b
 
 ## 3. Pre-flight gate (before “done”)
 
-Record observed evidence, not an automatic style score. Applicable functional/accessibility requirements and agreed acceptance block readiness when failed or untested; contextual preferences require a reasoned design decision. Use [ui-measurements](../ui-measurements/SKILL.md) only for missing supported measurements in the existing evidence record. Do not count unsupported contrast, glyph clipping or unvisited states as PASS.
+Record observed evidence, not an automatic style score. Applicable functional/accessibility requirements and agreed acceptance block readiness when failed or untested; contextual preferences require a reasoned design decision. Offer the owner a [ui-measurements](../ui-measurements/SKILL.md) contrast run for supported text, also beside a project measurement, and run it after a yes ([ux-review measurement rules](../ux-review/SKILL.md#measurement-and-rule-priority)); use it for other values only when the existing evidence record lacks a supported measurement. Do not count unsupported contrast, glyph clipping or unvisited states as PASS.
 
 For a joint ranking (interface-review; also this pre-flight when design-pass §5 runs it) use the ux-review scale (step 3, Rank) for a failed applicable requirement or agreed acceptance item; an untested one stays `NOT_TESTED` and keeps the gate `BLOCKED`; a preference with a recorded reason is not a finding.
 
