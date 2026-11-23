@@ -1746,7 +1746,7 @@
       "source": "~/.agents/skills/interface-review/SKILL.md",
       "destination": "skills/interface-review/SKILL.md",
       "source_sha256": "4f61c763bed1f84d6105128fc7efe67eb9c5e280c546cf1e1afee8ad6bcd5f70",
-      "sha256": "d6738ddb0e37737975c631a6971e935b82af6af408a9e72f7785d9bb32035217",
+      "sha256": "67cf242c3a6987fc036ffd4e507747c8c1a4595f982162291f3b319bbfc64121",
       "source_mode": "0o644",
       "transformations": [
         "Owner-authorized viewport coverage correction: shared four-class baseline and separate text/reflow evidence, 2026-10-24",
@@ -1763,7 +1763,8 @@
         "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change.",
         "Owner-authorized (T10, 2026-11-23): design-skill vocabulary aligned (one severity scale, gate owners named consistently, Targeted dials N/A, concept-fit storage without a task record); no rule removed.",
         "Owner-authorized (L16a, 2026-11-23, revised): the agent offers the owner a ui-measurements contrast run (also beside an existing project measurement, as a cross-check) and runs it after a yes; both measurements recorded, a disagreement is a finding, neither means NOT_TESTED; no rule removed.",
-        "Owner-authorized (T11 F1, 2026-11-23): description names audit mode (read-only audit of an existing product's screens) so the product-audit phrase routes here; no rule removed."
+        "Owner-authorized (T11 F1, 2026-11-23): description names audit mode (read-only audit of an existing product's screens) so the product-audit phrase routes here; no rule removed.",
+        "Owner-authorized (T11 F1/F3, 2026-11-23): description says to use the skill for any interface critique, review or product audit even when a quick look seems enough, names the single-lens neighbours and takes the trigger \"critique the design\"; no rule removed."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/interface-review/SKILL.md"

@@ -67,8 +67,12 @@ class RoutingSet(unittest.TestCase):
     def test_interface_review_advertises_audit_mode(self):
         # Routing follow-up F1 (2026-11-23): the product-audit case loaded no skill twice.
         desc = skill_descriptions()['interface-review']
-        self.assertIn("read-only audit of an existing product's screens", desc)
-        self.assertIn('(audit mode)', desc)
+        self.assertIn("the screens of an existing product (audit mode", desc)
+        # F1/F3 (2026-11-23): the model did audits and critiques ad hoc; the description says to use it even then
+        # and names the single-lens neighbours so a broad request is not split off.
+        self.assertIn('even when a quick look seems enough', desc)
+        for neighbour in ('ux-review', 'anti-slop-design', 'ui-audit'):
+            self.assertIn(neighbour, desc)
 
     def test_fixture_is_realistic_and_deterministic(self):
         builder = EVALS / 'make_fixture.py'

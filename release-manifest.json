@@ -585,7 +585,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "4ff4c261cc41f848577d576d933f40cf739ae25e0d14a1df9497b2e65dfc87c8",
+      "sha256": "14c4b31559ae9e30995576c1fa1031cea6d4e900229bd07e6a7a08cf922ac506",
       "component": "core"
     },
     {
@@ -3245,7 +3245,7 @@
     },
     {
       "path": "skills/interface-review/SKILL.md",
-      "sha256": "d6738ddb0e37737975c631a6971e935b82af6af408a9e72f7785d9bb32035217",
+      "sha256": "67cf242c3a6987fc036ffd4e507747c8c1a4595f982162291f3b319bbfc64121",
       "component": "skills"
     },
     {
@@ -4410,7 +4410,7 @@
     },
     {
       "path": "tests/collection/test_skill_routing_set.py",
-      "sha256": "359e2ec670224b20e060a926d1d4e6bfa975139cc9632df5caac4c7e0170de79",
+      "sha256": "de18e69f4cdbfb15dd69ef09ec0c626eb0306eac8cec19808bd64a79adc7260a",
       "component": "core"
     },
     {
