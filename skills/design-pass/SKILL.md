@@ -117,7 +117,7 @@ Reconcile the summary and plan checklist with evidence for the final revision/di
 
 ## Helper skills
 
-Open helper-skill links as files relative to this directory; do not assume a slash command or special tool is available. If a resource is missing, name it, continue with this skill's available requirements and do not count an unperformed specialized gate.
+Open helper-skill links as files relative to this file's real location (resolve the base directory with `realpath` first, as in the entry rule "Open a skill's relative links from its real location"); do not assume a slash command or special tool is available. If a resource is missing, name it, continue with this skill's available requirements and do not count an unperformed specialized gate.
 
 ## Browser evidence refinement
 

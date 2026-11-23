@@ -500,7 +500,7 @@
     },
     {
       "path": "provenance/authorized-additions.json",
-      "sha256": "d5b47583ac1f80238154c7b51a27d7081a0916ce15c3d9a61fa117db8ecb8a69",
+      "sha256": "8714a5df0d7efe758792338d5e508df6864e7645cb590ca2cbf10835fb3ccfc7",
       "component": "core"
     },
     {
@@ -570,7 +570,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "12d698cb914897d01fb013fb6eda44aa5945fb14f29fe93d04fa773532db91b3",
+      "sha256": "4fcff1e33c504daf6cf7aa56834ebeb94c8bfbbcc38f05925aeef817c889e9f6",
       "component": "core"
     },
     {
@@ -585,7 +585,7 @@
     },
     {
       "path": "rules/agent-entry.md",
-      "sha256": "5d2f0589c701063cedef74069ab9c3dad17b8854ce018fe9115655d019e3950f",
+      "sha256": "1fdb0f5f2d7015d1313e88016fe15ddd905b58bc96b7c0de02b15d05543b8336",
       "component": "core"
     },
     {
@@ -3115,7 +3115,7 @@
     },
     {
       "path": "skills/design-pass/SKILL.md",
-      "sha256": "af5c0a0073e6568b57665a99ae811b1a4404acba8bc0f0e98d453ae7bb09c348",
+      "sha256": "c6db24e241ffdf3f07779d4d74346f2636618d549096d626003c5da61f621980",
       "component": "skills"
     },
     {
@@ -4386,6 +4386,11 @@
     {
       "path": "tests/collection/test_skill_handoffs.py",
       "sha256": "03e51595a45732c831c38de65164941d0a2672558128af128d25df4dedcbf096",
+      "component": "core"
+    },
+    {
+      "path": "tests/collection/test_skill_link_base.py",
+      "sha256": "bb0813e836f3d811c72b938598ff1b78b03f2874e78331ba699f2ae330de7765",
       "component": "core"
     },
     {

@@ -103,6 +103,16 @@ Follow [read-only archive search](archive-search.md) when a prior conversation o
 decision is needed. Resolve the current project route first; missing access blocks
 only that lookup, never authorizes another project grant or a new credential.
 
+### 5. Open a skill's relative links from its real location
+
+A host may report a skill's base directory through a discovery symlink (for example `~/.claude/skills/<name>`),
+while the skill's relative links are written from its real location in the kit. Resolve the base first
+(`realpath <base>`, or `cd -P <base> && pwd`) and join each link to that path; never join `..` to the symlinked
+path, because a tool that normalizes the path will look in the wrong place. Without a shell, find the skill's real
+file under the kit root named in the project's managed block (`<kit>/skills/**/<name>/SKILL.md`) and join from its
+directory. Once resolved, a skill linked from it is already in the real tree: keep joining from real paths. A link
+that fails from the symlinked path is not missing until it also fails from the real path.
+
 ## How to add a rule
 
 1. A file in `rules/`, an entry in [`rules/README.md`](README.md).

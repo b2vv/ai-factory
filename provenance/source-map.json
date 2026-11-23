@@ -1498,7 +1498,7 @@
       "source": "~/.agents/skills/design-pass/SKILL.md",
       "destination": "skills/design-pass/SKILL.md",
       "source_sha256": "07122d78ab13c894ac9399686d00a63cfd682c6048780652cf2d200987958c6e",
-      "sha256": "af5c0a0073e6568b57665a99ae811b1a4404acba8bc0f0e98d453ae7bb09c348",
+      "sha256": "c6db24e241ffdf3f07779d4d74346f2636618d549096d626003c5da61f621980",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -1514,7 +1514,8 @@
         "Owner-authorized UI state coverage and measurement interpretation clarification; original identities retained.",
         "Owner-authorized semantic-consistency and concept-fit pointers in §2/§4/§5, 2026-11-18; §3 priority unchanged; original identities retained.",
         "Owner-authorized skill review corrections, 2026-11-19: standards-manifest source and numbered coverage steps in code-review, agent working-file pointers, routing sections, narrowed descriptions, shared CRG runtime contract moved to ai-factory/crg.md, shared anti-pattern pointer kept only where it applies; original identities retained.",
-        "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change."
+        "Owner-authorized (T09, 2026-11-23): ui-audit handoffs stated on both sides (requirement failures enter the interface-review merge whatever the owner answered; design-pass brief and Done cover ui-audit entries); no other behavior change.",
+        "Owner-authorized (T12, 2026-11-23, decision D3 a): relative skill links are opened from the skill's real location in the kit (realpath, no-shell fallback via the kit root); no other behavior change."
       ],
       "category": "shared",
       "previous_release_destination": "collection/agents/skills/design-pass/SKILL.md"
@@ -4416,7 +4417,7 @@
       "source": "~/.agents/AGENTS.md",
       "destination": "rules/agent-entry.md",
       "source_sha256": "b7dffab20ba9d6cc341173912fe192e4df217023a922299f338b3407b915b4fa",
-      "sha256": "5d2f0589c701063cedef74069ab9c3dad17b8854ce018fe9115655d019e3950f",
+      "sha256": "1fdb0f5f2d7015d1313e88016fe15ddd905b58bc96b7c0de02b15d05543b8336",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4429,7 +4430,8 @@
         "Owner-authorized explicit primary task/index continuation navigation; no tracker, hook registration or automatic dispatch; historical source identity retained.",
         "Owner-authorized roadmap-pivot task reconciliation: compare each candidate with current direction, delivered slices and dependencies; optional evidence, no automatic task closure or execution.",
         "Owner-authorized independence through clean context and adequate capability; same-model review allowed, mandatory tier inequality and guessed author tier removed; historical source digests preserved.",
-        "Owner-authorized public privacy cleanup, 2026-11-21: private project, person and host identifiers neutralized or removed before republication; original identities retained."
+        "Owner-authorized public privacy cleanup, 2026-11-21: private project, person and host identifiers neutralized or removed before republication; original identities retained.",
+        "Owner-authorized (T12, 2026-11-23, decision D3 a): relative skill links are opened from the skill's real location in the kit (realpath, no-shell fallback via the kit root); no other behavior change."
       ],
       "category": "canonical-instructions-and-guides",
       "previous_release_destination": "collection/agents/AGENTS.md"
