@@ -296,7 +296,7 @@
     {
       "path": "docs/managed-capture.md",
       "component": "core",
-      "sha256": "0569efb26dcec6d2f14166c438d58fa90ee0c369dc1538d1ba222d72648137f8"
+      "sha256": "49cc817be249381a61d0102d33b3a82d767ac3796efbe0354ae2b9b3cbc3f467"
     },
     {
       "path": "docs/managed-kit-connections.md",
@@ -660,7 +660,7 @@
     },
     {
       "path": "runtime/dashboard/README.md",
-      "sha256": "91fa0f5a85d20cd03b4545e724fd0d93692cff63f254ace6ca8b86c0c5a0b4dd",
+      "sha256": "b873b0e2ad115b431975ac50cc4d11523776dbbef48f77f7ccc1c857360ecbe1",
       "component": "dashboard"
     },
     {
@@ -4444,6 +4444,11 @@
       "component": "core"
     },
     {
+      "path": "tests/projects/test_project_dashboard_list.py",
+      "sha256": "4d663c05029fbaf889d80c94f04db2356ef372db0d55de4ef7fceec549b70ec8",
+      "component": "core"
+    },
+    {
       "path": "tests/projects/test_projects.py",
       "sha256": "b6abd84dab9336777cdc72846d90d7f0d3fb244c4a2e59ff8a85162f4608dc04",
       "component": "core"
@@ -4650,12 +4655,12 @@
     },
     {
       "path": "tools/project_dashboard.py",
-      "sha256": "f6d156b2176cd2772d6356ac1c99354c51dbe3352fde4a6de22be3fdc9910aba",
+      "sha256": "2be0dde07e89727fb21ca519be3efe1018bb6fc500cf437b2105abffcf8acb38",
       "component": "core"
     },
     {
       "path": "tools/projects.py",
-      "sha256": "8b929b47f2fa404e9a22914657ebbd12be5613ee2f2cc542ec90064fb4ae40cd",
+      "sha256": "ba53daaca8e4ee7b3229d99fb6cbd7886147269293d9bebf0e79e65e7e529c55",
       "component": "core"
     },
     {

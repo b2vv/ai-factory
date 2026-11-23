@@ -56,7 +56,29 @@ command below prints a plan; add `--apply` to write:
   alias, search contract and credential files; archive data and consent are kept. Otherwise
   archive data, grants and credential files are kept.
 - `kit.py project list --root <kit>` prints entries and capabilities (capture, search alias),
-  never route or credential paths.
+  never route or credential paths. `--dashboard-config` prints the dashboard's project list
+  generated from the kit list (below).
+
+### The dashboard's project list
+
+An entry may carry a `dashboard` capability `{id, name, workflow?, aliases?}`. Every list
+write also writes `<kit>/.ai-factory-state/dashboard-projects.json` (0600): the dashboard's
+projects config for the entries that have it, in list order, with `root` = the entry root;
+the file is absent when no entry has it. The kit checks the dashboard's own rules before
+writing (id and alias shape and uniqueness, name ≤ 80 and workflow ≤ 560 UTF-8 bytes
+without paths or URLs, ≤ 8 aliases, a clean absolute root, ≤ 32 projects); with Go present
+the bytes are also checked by the dashboard validator. A generated file edited outside the
+kit stops the write.
+
+- `kit.py project install ... --dashboard-id <id> [--dashboard-name <name>]` sets the
+  capability (the name defaults to the current one, then the entry name); `--no-dashboard`
+  removes it; without either flag it is kept.
+- `kit.py project dashboard-import --root <kit> --from <projects.json>` imports a hand-kept
+  dashboard config once: each row is matched to a list entry by root; an unknown root or an
+  entry that already has a different id stops with nothing written.
+- To switch, run `kit.py project dashboard --projects <kit>/.ai-factory-state/dashboard-projects.json`
+  and start the dashboard containers with `DASHBOARD_PROJECTS` set to that file. Install and
+  remove then report `restart` whenever the file changes; the kit never restarts containers.
 
 A write takes the kit lock, backs up every file it may change, writes the list last and
 restores the backup on failure; an interrupted write is restored by the next write command.

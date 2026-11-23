@@ -30,6 +30,11 @@ data, symlinked or oversized files are rejected as a whole.
 `go run . -projects FILE -list-projects` validates the file and prints the
 `id<TAB>root` lines that the container launcher mounts.
 
+With a managed kit the file need not be kept by hand: the kit generates
+`<kit>/.ai-factory-state/dashboard-projects.json` from its project list (see
+`docs/managed-capture.md`, "The dashboard's project list"). Point
+`DASHBOARD_PROJECTS` at it and recreate the containers after it changes.
+
 ## Run
 
 Go 1.27.4, Node.js and npm are needed. The lockfile pins React, react-markdown
