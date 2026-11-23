@@ -1,6 +1,6 @@
 ---
 name: interface-review
-description: 'Orchestrates a complete interface review in one pass: the visual gate (anti-slop-design), the usability audit (ux-review), the project layer and, when available, a11y conformance and copywriting, merged into deduplicated ranked findings and one gate. The review counterpart of design-pass, which builds. Use for a full review or audit of a screen, flow, prototype or PR rather than a single lens. Triggers: "interface-review", "full interface review", "interface readiness gate", "critique the screen or flow".'
+description: 'Orchestrates a complete interface review in one pass: the visual gate (anti-slop-design), the usability audit (ux-review), the project layer and, when available, a11y conformance and copywriting, merged into deduplicated ranked findings and one gate. The review counterpart of design-pass, which builds. Use for a full review or audit of a screen, flow, prototype or PR rather than a single lens, and for a read-only audit of an existing product's screens for inconsistent names, actions or meaning with proposed changes (audit mode). Triggers: "interface-review", "full interface review", "interface readiness gate", "critique the screen or flow".'
 ---
 
 

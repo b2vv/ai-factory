@@ -64,6 +64,12 @@ class RoutingSet(unittest.TestCase):
                   if name in interface and re.search(r'[“"]critique the ', desc, re.I)}
         self.assertEqual(owners, {'interface-review'})
 
+    def test_interface_review_advertises_audit_mode(self):
+        # Routing follow-up F1 (2026-11-23): the product-audit case loaded no skill twice.
+        desc = skill_descriptions()['interface-review']
+        self.assertIn("read-only audit of an existing product's screens", desc)
+        self.assertIn('(audit mode)', desc)
+
     def test_parser_reads_the_first_skill(self):
         init = json.dumps({'type': 'system', 'subtype': 'init', 'model': 'm-1'})
         bash = json.dumps({'type': 'assistant', 'message': {'content': [
