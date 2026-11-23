@@ -415,7 +415,7 @@
     },
     {
       "path": "evals/skill-routing/README.md",
-      "sha256": "2ec5118ea7252d9e0ecd2d1a1cfd0971f19187a54ecc9995822b57d8cbbd199f",
+      "sha256": "28847c6894113c3e5cdccad8f3c64e062204cb045d7297fae01242a237a8b9ad",
       "component": "core"
     },
     {
@@ -425,7 +425,7 @@
     },
     {
       "path": "evals/skill-routing/results/2026-11-23.json",
-      "sha256": "88b3387cddd11e9676ccb7284e224500b0a22feeccfffaff6d2500bc69e2212a",
+      "sha256": "7654de528d240800979f697c15f71d3b583de62d323328bb8e7bd72797426b34",
       "component": "core"
     },
     {

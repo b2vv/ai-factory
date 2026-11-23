@@ -5,10 +5,10 @@
   "model": "claude-opus-5-5",
   "auth": "subscription (claude.ai login), no API key or third-party backend",
   "trials_per_case": 1,
-  "note": "Smoke runs, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. trials lists every run of a case in order with the kit transaction it ran against: ee98fb00 (all cases), 9617c922 (design cases after the ui-measurements description change), 8fca62dd (design cases after interface-review's description named audit mode; design-product-audit ran three times), 0b2db1ae (review-pattern, three more trials, no description change). outcome and first_skill are the latest trial. Fixture: disposable generic repository (plan, feature branch with one commit, static HTML screens, a PNG reference).",
+  "note": "Smoke runs, not a statistical result. User-level instructions and memory of the operator's account loaded in every session. trials lists every run of a case in order with the kit transaction it ran against: ee98fb00 (all cases), 9617c922 (design cases after the ui-measurements description change), 8fca62dd (design cases after interface-review's description named audit mode; design-product-audit ran three times), 0b2db1ae (review-pattern, three more trials, no description change). 321f5287 (all cases on the realistic fixture from make_fixture.py; the five earlier no-skill cases ran three times). Each trial names its fixture: toy (hand-made, early runs) or realistic. outcome and first_skill are the latest trial. ",
   "summary": {
-    "PASS": 21,
-    "NO_SKILL": 4
+    "PASS": 22,
+    "NO_SKILL": 3
   },
   "results": [
     {
@@ -20,15 +20,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "design-pass",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "design-pass",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "design-pass",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "design-pass",
           "outcome": "PASS"
         }
@@ -43,15 +52,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "ui-audit",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "ui-audit",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "ui-audit",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "ui-audit",
           "outcome": "PASS"
         }
@@ -60,23 +78,45 @@
     {
       "id": "design-point",
       "expected": "ui-audit",
-      "first_skill": "none",
-      "outcome": "NO_SKILL",
+      "first_skill": "ui-audit",
+      "outcome": "PASS",
       "trials": [
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "ui-audit",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "none",
+          "outcome": "NO_SKILL",
+          "note": "turn cap reached before a skill was chosen"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "ui-audit",
+          "outcome": "PASS"
         }
       ]
     },
@@ -89,15 +129,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "interface-review",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "interface-review",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "interface-review",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "interface-review",
           "outcome": "PASS"
         }
@@ -112,15 +161,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "ux-review",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "ux-review",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "ux-review",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "ux-review",
           "outcome": "PASS"
         }
@@ -135,15 +193,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "anti-slop-design",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "anti-slop-design",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "anti-slop-design",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "anti-slop-design",
           "outcome": "PASS"
         }
@@ -158,15 +225,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "frontend-design",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "frontend-design",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "frontend-design",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "frontend-design",
           "outcome": "PASS"
         }
@@ -181,15 +257,36 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "reference-ui-reconstruction",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "reference-ui-reconstruction",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "reference-ui-reconstruction",
+          "outcome": "PASS"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "reference-ui-reconstruction",
           "outcome": "PASS"
         }
@@ -204,15 +301,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "ui-measurements",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "ui-measurements",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "ui-measurements",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "ui-measurements",
           "outcome": "PASS"
         }
@@ -227,25 +333,48 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "none",
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "none",
           "outcome": "NO_SKILL"
         }
@@ -260,15 +389,24 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "frontend-design",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "frontend-design",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "frontend-design",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "frontend-design",
           "outcome": "PASS"
         }
@@ -283,15 +421,36 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "9617c922",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "8fca62dd",
+          "first_skill": "none",
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "none",
+          "outcome": "NO_SKILL"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "none",
           "outcome": "NO_SKILL"
         }
@@ -300,13 +459,21 @@
     {
       "id": "review-diff",
       "expected": "code-review",
-      "first_skill": "code-review",
-      "outcome": "PASS",
+      "first_skill": "none",
+      "outcome": "NO_SKILL",
       "trials": [
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "code-review",
-          "outcome": "PASS"
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "none",
+          "outcome": "NO_SKILL",
+          "note": "turn cap reached before a skill was chosen"
         }
       ]
     },
@@ -318,6 +485,13 @@
       "trials": [
         {
           "kit_transaction": "ee98fb00",
+          "first_skill": "crg-review-changes",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "crg-review-changes",
           "outcome": "PASS"
         }
@@ -332,6 +506,13 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "inspector-review",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "inspector-review",
           "outcome": "PASS"
         }
       ]
@@ -345,6 +526,13 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "step-back-review",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "step-back-review",
           "outcome": "PASS"
         }
       ]
@@ -352,28 +540,50 @@
     {
       "id": "review-pattern",
       "expected": "pattern-architecture-review",
-      "first_skill": "none",
-      "outcome": "NO_SKILL",
+      "first_skill": "pattern-architecture-review",
+      "outcome": "PASS",
       "trials": [
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
         },
         {
           "kit_transaction": "0b2db1ae",
           "first_skill": "pattern-architecture-review",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "0b2db1ae",
+          "first_skill": "none",
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "0b2db1ae",
+          "first_skill": "none",
+          "outcome": "NO_SKILL",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "pattern-architecture-review",
           "outcome": "PASS"
         },
         {
-          "kit_transaction": "0b2db1ae",
-          "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "pattern-architecture-review",
+          "outcome": "PASS"
         },
         {
-          "kit_transaction": "0b2db1ae",
-          "first_skill": "none",
-          "outcome": "NO_SKILL"
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "pattern-architecture-review",
+          "outcome": "PASS"
         }
       ]
     },
@@ -385,6 +595,13 @@
       "trials": [
         {
           "kit_transaction": "ee98fb00",
+          "first_skill": "ponytail-review",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "ponytail-review",
           "outcome": "PASS"
         }
@@ -399,6 +616,13 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "receiving-code-review",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "receiving-code-review",
           "outcome": "PASS"
         }
       ]
@@ -411,6 +635,13 @@
       "trials": [
         {
           "kit_transaction": "ee98fb00",
+          "first_skill": "constraint-driven-development",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "constraint-driven-development",
           "outcome": "PASS"
         }
@@ -425,6 +656,13 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "plan-critique",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "plan-critique",
           "outcome": "PASS"
         }
       ]
@@ -437,6 +675,13 @@
       "trials": [
         {
           "kit_transaction": "ee98fb00",
+          "first_skill": "plan-defense",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "plan-defense",
           "outcome": "PASS"
         }
@@ -451,6 +696,13 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "grilling",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "grilling",
           "outcome": "PASS"
         }
       ]
@@ -464,6 +716,13 @@
         {
           "kit_transaction": "ee98fb00",
           "first_skill": "spec-flow",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
+          "first_skill": "spec-flow",
           "outcome": "PASS"
         }
       ]
@@ -476,6 +735,13 @@
       "trials": [
         {
           "kit_transaction": "ee98fb00",
+          "first_skill": "cto-agenda",
+          "outcome": "PASS",
+          "fixture": "toy"
+        },
+        {
+          "kit_transaction": "321f5287",
+          "fixture": "realistic",
           "first_skill": "cto-agenda",
           "outcome": "PASS"
         }
