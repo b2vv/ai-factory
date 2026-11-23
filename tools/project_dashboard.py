@@ -193,7 +193,8 @@ def dashboard_id(cfg, root):
 
 
 def last_line(text):
-    lines = [l.strip() for l in text.splitlines() if l.strip()]
+    # `go run` ends a failed program's output with its own "exit status N"; the reason is the line before.
+    lines = [l.strip() for l in text.splitlines() if l.strip() and not re.fullmatch(r'exit status \d+', l.strip())]
     if not lines: return ''
     line = lines[-1]
     # Go's log prefix is a date and time; the publisher's messages carry no record text.

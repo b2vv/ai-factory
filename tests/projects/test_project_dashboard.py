@@ -27,6 +27,7 @@ def load(name, path):
 
 T = load('projects_dashboard_base', ROOT / 'tests/projects/test_projects.py')
 P, k, git_init = T.P, T.k, T.git_init
+DB = P.DB
 GO = shutil.which('go') or ('/usr/local/go/bin/go' if os.access('/usr/local/go/bin/go', os.X_OK) else None)
 SOURCE = ROOT / 'runtime/dashboard'
 
@@ -200,6 +201,15 @@ class Dashboard(T.Base):
         self.assertIn('refused', leak['reason'])
         self.assertNotIn('plan.md', json.dumps(leak))
         self.assertFalse((self.feed / 'alpha.queue.json').exists())
+        # The publisher's own reason is shown, not the trailing "exit status 1" of `go run`.
+        bad = self.queue({'items': [{'id': 't1', 'title': 'T', 'state': 'Verified locally', 'summary': 'S'}]})
+        self.assertIn('invalid queue task t1', bad['reason'])
+        self.assertNotIn('exit status', bad['reason'])
+
+    def test_last_line_skips_go_run_exit_status(self):
+        self.assertEqual('invalid Plan evidence state',
+                         DB.last_line('2026/11/23 21:35:51 invalid Plan evidence state\nexit status 1\n'))
+        self.assertEqual('', DB.last_line('exit status 2\n'))
 
     def run_cli_with_stdin(self, argv, doc):
         old = sys.stdin
