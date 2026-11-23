@@ -59,6 +59,18 @@ the dashboard source directory configured on this host (`kit.py project dashboar
 - A refusal (HEAD moved, an observation not later than the current one, another
   publish in progress) is reported, not worked around. Do not retry in a loop.
 
+## The card's details (`markdown`)
+
+Always include `markdown`: it is what the owner reads when opening the card, so they can
+decide without opening the repository. Keep it short (≤ 4 KiB), plain Markdown with
+level-3 headings, written for the owner in the language the project uses with them:
+
+- **Done**: what this stage changed, in a few bullets of observable effect.
+- **Not done**: what is left or was not verified.
+- **Owner decision** (only when one is needed): the question and its choices.
+
+The same text rules apply: no paths, URLs, secrets or personal data, no raw HTML or images.
+
 ## The open-task list (queue)
 
 With the status, publish the project's open tasks so the owner can see what each one

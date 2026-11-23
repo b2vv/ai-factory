@@ -270,7 +270,7 @@
     },
     {
       "path": "docs/dashboard-status.md",
-      "sha256": "e32db54007762495f5d4075e77d5029e52d557d62ab952597ffc45d72d721037",
+      "sha256": "75b183c02bff595554eb3a991f372047dabe59fe93611aa45ae257e8d98d5008",
       "component": "core"
     },
     {
@@ -4515,7 +4515,7 @@
     },
     {
       "path": "tests/projects/test_project_dashboard.py",
-      "sha256": "d1e5aee1bba0c3365c4a7861cf4059b34dc50a90c53887e65e5aac51aa05eb80",
+      "sha256": "6c333ebe7a9dbe8acbd0be6a6f29deea8b89a6e415c2264e846fa2637a0622c8",
       "component": "core"
     },
     {
@@ -4705,7 +4705,7 @@
     },
     {
       "path": "tools/connect-project.py",
-      "sha256": "72955cedbc949385d7d4d45ce28d877b069be92947a6a272e48156d821b6ed85",
+      "sha256": "bbeda8beb8bd6b5a1b4ab5e7952fd9f9b47edbb3910ca746c75ba0b2ab4e3e04",
       "component": "core"
     },
     {

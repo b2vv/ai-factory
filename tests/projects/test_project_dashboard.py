@@ -132,6 +132,10 @@ class Dashboard(T.Base):
         agents = (self.project / 'AGENTS.local.md').read_text()
         self.assertIn('Dashboard status for this project: id `alpha`', agents)
         self.assertIn('project status --root', agents)
+        # The pointer asks for the card's details and the open-task list, not only the stages.
+        self.assertIn('Include `markdown`', agents)
+        self.assertIn('project queue --root', agents)
+        self.assertIn('--project alpha --apply < queue.json', agents)
         self.assertEqual('NOOP', self.ok('install', '--project', str(self.project), '--apply')['status'])
 
     def test_search_contract_and_dashboard_pointer_together(self):

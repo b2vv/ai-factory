@@ -216,7 +216,10 @@ def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, glo
             f"Dashboard status for this project: id `{dashboard}`. After a stage of the primary task is "
             f"recorded (and after your own commit), publish it as in `{root}/docs/dashboard-status.md`: "
             f"`python3 -I {root}/tools/kit.py project status --root {root} --project {dashboard} [--apply] < status.json`. "
-            "Evidence only from the task record; no paths, URLs or secrets."
+            "Evidence only from the task record; no paths, URLs or secrets. "
+            "Include `markdown` (the card's details: what was done, what is not done, what the owner must decide). "
+            "If the project has a task index, publish its open tasks with each status: "
+            f"`python3 -I {root}/tools/kit.py project queue --root {root} --project {dashboard} --apply < queue.json`."
         )
     return "\n".join(lines).rstrip() + "\n"
 
