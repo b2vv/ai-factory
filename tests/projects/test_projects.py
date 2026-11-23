@@ -169,6 +169,47 @@ class Groups(Base):
         self.assertEqual(before, self.list_path.read_bytes())
 
 
+class Handoff(Base):
+    """A15: native handoff shows in `list` as a read-only capability read from the handoff profile."""
+    capture = False
+
+    def profile(self, roots, managed_root=None):
+        path = self.cf.private / 'handoff-profile.json'
+        path.write_bytes(k.encode({'schema': 1, 'managed_root': str(managed_root or self.kit),
+                                   'store': str(self.cf.private / 'handoff-store'), 'roots': [str(r) for r in roots]}))
+        path.chmod(0o600)
+        return path
+
+    def state(self):
+        return {str(p): p.read_bytes() for p in sorted((self.kit / k.STATE).rglob('*')) if p.is_file()}
+
+    def test_list_marks_enrolled_project_and_writes_nothing(self):
+        alpha, beta = git_init(self.cf.base / 'alpha'), git_init(self.cf.base / 'beta')
+        for p in (alpha, beta): self.ok('install', '--project', str(p), '--apply')
+        without = {e['name']: e for e in self.ok('list')['projects']}
+        self.assertNotIn('handoff', without['alpha']['capabilities'])
+        profile = self.profile([alpha])
+        self.assertTrue(self.ok('handoff', '--profile', str(profile))['status'].startswith('PLANNED'))
+        self.assertEqual('APPLIED', self.ok('handoff', '--profile', str(profile), '--apply')['status'])
+        self.assertEqual('NOOP', self.ok('handoff', '--profile', str(profile), '--apply')['status'])
+        raw, state = profile.read_bytes(), self.state()
+        listed = {e['name']: e for e in self.ok('list')['projects']}
+        self.assertEqual({'enrolled': True}, listed['alpha']['capabilities']['handoff'])
+        self.assertEqual({'enrolled': False}, listed['beta']['capabilities']['handoff'])
+        self.assertEqual((raw, state), (profile.read_bytes(), self.state()))
+        profile.write_text('not json'); profile.chmod(0o600)
+        out = self.ok('list')
+        self.assertEqual('NOT_READ', out['handoff']['status'])
+        self.assertNotIn('handoff', {e['name']: e for e in out['projects']}['alpha']['capabilities'])
+
+    def test_handoff_configuration_checks(self):
+        self.blocked('handoff', '--profile', str(self.cf.base / 'missing.json'), '--apply')
+        self.blocked('handoff', '--profile', str(self.profile([], managed_root=self.cf.base)), '--apply')
+        loose = self.profile([]); loose.chmod(0o622)
+        self.blocked('handoff', '--profile', str(loose), '--apply')
+        self.assertFalse((self.kit / k.STATE / P.HANDOFF).exists())
+
+
 class UpdateReport(Base):
     """A6: update checks every listed project and reports each one; it repairs nothing and keeps the list bytes."""
     capture = False

@@ -4525,7 +4525,7 @@
     },
     {
       "path": "tests/projects/test_projects.py",
-      "sha256": "f67808cd626c075202251ad69e2d9b2aeb8449220dbdf263ae9bd06f40406fed",
+      "sha256": "78cae8749c317f8f9e3b99c64e224eafe5e16a42ce0f58d431aebacef3ec4715",
       "component": "core"
     },
     {
@@ -4740,7 +4740,7 @@
     },
     {
       "path": "tools/projects.py",
-      "sha256": "ae588c089b5d2938b0034d2dde942c2c1873ed5d7b66690ceb801fb0d2c001c4",
+      "sha256": "39760a711f7ddf4e5915cd13493d5427a66255009e797b591f922a4f01c377c6",
       "component": "core"
     },
     {

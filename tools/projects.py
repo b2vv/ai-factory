@@ -45,6 +45,7 @@ DB = _load('_projects_dashboard', HERE / 'project_dashboard.py')
 
 LIST = 'projects.json'
 MARKER = 'project-op-pending.json'
+HANDOFF = 'handoff.json'  # path of the native handoff profile; connect-handoff.py owns the enrollment
 BACKUPS = 'project-backups'
 KEEP_BACKUPS = 20
 CAPTURE_REG = 'capture-registration.json'
@@ -319,6 +320,36 @@ def guarded(path, data, mode=0o600):
     if before != after: k.guarded_write(path, before, after, data)
 
 
+def handoff_roots(root, path):
+    """Enrolled Git roots from a native handoff profile (connect-handoff.py writes it). Read-only."""
+    path = Path(path)
+    if not path.is_absolute(): raise Blocked('handoff profile must be an absolute path')
+    st = path.lstat()
+    if not stat.S_ISREG(st.st_mode) or st.st_nlink != 1 or st.st_size > 32768 or st.st_uid != os.getuid():
+        raise Blocked('handoff profile must be a private regular file of this user')
+    if st.st_mode & 0o022: raise Blocked('handoff profile must not be writable by other users')
+    doc = strict(path.read_bytes())
+    if not isinstance(doc, dict) or set(doc) != {'schema', 'managed_root', 'store', 'roots'} or doc['schema'] != 1 \
+            or not isinstance(doc['roots'], list) or not all(isinstance(r, str) for r in doc['roots']):
+        raise Blocked('unsupported handoff profile')
+    if doc['managed_root'] != str(root): raise Blocked('handoff profile belongs to another kit root')
+    return set(doc['roots'])
+
+
+def handoff(root, args):
+    """Record where the native handoff profile is, so `list` can show enrollment. Paths only; handoff state untouched."""
+    profile = str(Path(args.profile))
+    handoff_roots(root, profile)
+    path = root / k.STATE / HANDOFF
+    data = k.encode({'schema': 1, 'profile': profile})
+    out = {'status': 'NOOP' if k.regular(path) == data else 'PLANNED (dry-run; pass --apply to write)',
+           'config': str(path), 'effect': '`project list` shows handoff enrollment; enrollment changes stay in connect-handoff.py'}
+    if out['status'] == 'NOOP' or not args.apply: return out
+    with operation(root, None) as restored:
+        op = commit(root, 'handoff', [path], [('config', lambda: guarded(path, data))])
+    return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
+
+
 # --- commands -----------------------------------------------------------------------------
 
 def cmd_list(root, dashboard_config=False):
@@ -328,6 +359,15 @@ def cmd_list(root, dashboard_config=False):
         return {'status': 'OK', 'dashboard_projects': json.loads(data) if data else []}
     out = {'status': 'OK', 'projects': [public_entry(e) for e in (doc or empty())['projects']],
            'list': 'present' if doc else 'absent'}
+    cfg = private_json(root / k.STATE / HANDOFF)
+    if cfg is not None:
+        try:
+            if set(cfg) != {'schema', 'profile'} or cfg['schema'] != 1: raise Blocked('unsupported handoff configuration')
+            enrolled = handoff_roots(root, cfg['profile'])
+        except (ValueError, OSError) as exc:
+            out['handoff'] = {'status': 'NOT_READ', 'reason': str(exc) if isinstance(exc, ValueError) else type(exc).__name__}
+        else:
+            for e in out['projects']: e['capabilities']['handoff'] = {'enrolled': e['root'] in enrolled}
     if (root / k.STATE / MARKER).exists(): out['interrupted'] = 'a project write was interrupted; the next write command restores it'
     return out
 
@@ -848,7 +888,7 @@ def migrate(root, args):
                     'inventory': inventory}
     out = {'status': 'PLANNED (dry-run; pass --apply to write)', 'projects': [public_entry(e) for e in doc['projects']],
            'inventory': inventory, 'writes': [str(root / k.STATE / LIST)],
-           'not_inventoried': ['dashboard config (P7)', 'native handoff enrollment (P8)'],
+           'not_inventoried': ['dashboard config (P7)', 'native handoff enrollment (shown by `project list` after `project handoff`)'],
            'rollback': 'delete projects.json; no other file is changed'}
     if not args.apply: return out
     with operation(root, ctx) as restored:
@@ -919,7 +959,7 @@ def parser():
     ap = argparse.ArgumentParser(prog='kit.py project', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
-    for name in ('list', 'install', 'remove', 'group', 'migrate', 'archive', 'dashboard', 'status', 'queue', 'dashboard-import'):
+    for name in ('list', 'install', 'remove', 'group', 'migrate', 'archive', 'dashboard', 'handoff', 'status', 'queue', 'dashboard-import'):
         p = sub.add_parser(name); p.add_argument('--root', required=True, help='installed kit root')
         if name != 'list': p.add_argument('--apply', action='store_true', help='write (default: dry-run plan)')
         if name == 'install':
@@ -933,6 +973,8 @@ def parser():
             p.add_argument('--project', required=True, help='listed root of the project')
             g = p.add_mutually_exclusive_group(required=True)
             g.add_argument('--group', help='group name ([A-Za-z0-9_.-], up to 64)'); g.add_argument('--ungroup', action='store_true')
+        if name == 'handoff':
+            p.add_argument('--profile', required=True, help='native handoff profile written by connect-handoff.py')
         if name == 'remove':
             w = p.add_mutually_exclusive_group(required=True)
             w.add_argument('--project'); w.add_argument('--id')
@@ -983,7 +1025,7 @@ def main(argv=None):
             with k.lock(root), (k.lock(ctx['registration_root']) if ctx else nullcontext()):
                 restored = restore(root)
         out = {'list': cmd_list, 'install': install, 'remove': remove, 'group': group, 'migrate': migrate, 'archive': archive,
-               'dashboard': dashboard, 'status': status, 'queue': queue, 'dashboard-import': dashboard_import}[a.command](
+               'dashboard': dashboard, 'handoff': handoff, 'status': status, 'queue': queue, 'dashboard-import': dashboard_import}[a.command](
             *((root, a.dashboard_config) if a.command == 'list' else (root, a)))
         if restored: out['restored_first'] = restored
     except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as exc:
