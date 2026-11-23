@@ -130,6 +130,47 @@ class CleanMachine(Base):
         self.assertEqual([], self.ok('list')['projects'])
 
 
+class UpdateReport(Base):
+    """A6: update checks every listed project and reports each one; it repairs nothing and keeps the list bytes."""
+    capture = False
+
+    def update(self, *extra):
+        cmd = [sys.executable, str(ROOT / 'tools/kit.py'), 'update', '--package', str(self.cf.pkg), '--root', str(self.kit), *extra]
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        out = json.loads(r.stdout)
+        self.assertEqual(1 if out['status'] == 'BLOCKED' else 0, r.returncode, r.stdout + r.stderr)
+        return out
+
+    def test_update_reports_each_project_and_repairs_nothing(self):
+        roots = [git_init(self.cf.base / n) for n in ('alpha', 'beta', 'gamma')]
+        for p in roots: self.ok('install', '--project', str(p), '--apply')
+        (roots[1] / 'CLAUDE.local.md').write_text('# imports nothing\n')
+        before = self.snapshot(self.list_path, *(p / n for p in roots for n in ('AGENTS.local.md', 'CLAUDE.local.md')))
+        plan = self.update()
+        self.assertEqual({'alpha', 'beta', 'gamma'}, {r['project'] for r in plan['projects']})
+        out = self.update('--execute', '--exclusive-window', '--plan-id', plan['plan_id'])
+        self.assertEqual('APPLIED', out['status'], out)
+        report = {r['project']: r for r in out['projects']}
+        self.assertEqual({'alpha', 'beta', 'gamma'}, set(report))
+        self.assertEqual(('OK', 'OK'), (report['alpha']['status'], report['gamma']['status']))
+        beta = report['beta']
+        self.assertEqual('NEEDS_REPAIR', beta['status'], beta)
+        self.assertTrue(any(c['file'] == 'CLAUDE.local.md' for c in beta['changes']), beta)
+        self.assertIn('project install', beta['fix']); self.assertIn(str(roots[1]), beta['fix'])
+        self.assertEqual(before, self.snapshot(self.list_path, *(p / n for p in roots for n in ('AGENTS.local.md', 'CLAUDE.local.md'))))
+        self.assertEqual('OK', {r['project']: r for r in self.update()['projects']}['alpha']['status'])
+
+    def test_missing_root_is_a_problem_and_no_list_means_no_report(self):
+        self.assertNotIn('projects', self.update())
+        gone = git_init(self.cf.base / 'gone')
+        entry = self.ok('install', '--project', str(gone), '--apply')['project']
+        subprocess.run(['/bin/rm', '-r', str(gone)], check=True)
+        row = self.update()['projects'][0]
+        self.assertEqual(('gone', 'PROBLEM'), (row['project'], row['status']), row)
+        self.assertIn('does not exist', row['problem']); self.assertIn('project remove', row['fix'])
+        self.assertIn(entry['id'], row['fix'])
+
+
 class WithCapture(Base):
     """Capture registered (and later instructions): the frozen case of T15 (A4, A9, A12, A16)."""
 

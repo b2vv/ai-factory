@@ -11,8 +11,8 @@ With an archive configuration (`project archive`), install also issues the proje
 access (grants, credential files, search route and contract, worker) under the operator's
 authority and remove revokes it; see tools/project_archive.py. With a dashboard configuration
 (`project dashboard`), `project status` publishes an agent's task status (tools/project_dashboard.py)
-and install adds the publishing pointer to the project's managed block. Groups (P2), the update report
-(P4) and kit moves (P10) are not done here.
+and install adds the publishing pointer to the project's managed block. `kit.py update` reports each listed project
+through check_projects (read-only). Groups (P2) and kit moves (P10) are not done here.
 """
 import argparse
 from contextlib import contextmanager, nullcontext, redirect_stdout
@@ -858,7 +858,38 @@ def migrate(root, args):
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
 
 
-def main(argv=None):
+def check_projects(root):
+    """After a kit update: the install plan of every listed project, read-only (S6/A6).
+
+    Returns None without a project list. Each row is OK, NEEDS_REPAIR (what install would change, and the
+    standard command that repairs it) or PROBLEM (why the plan stopped). Nothing is written or repaired.
+    """
+    doc = load(root)
+    if doc is None: return None
+    kit = shlex.quote(str(root))
+    rows = []
+    for e in doc['projects']:
+        row = {'project': e['name'], 'root': e['root']}
+        fix = f"kit.py project install --root {kit} --project {shlex.quote(e['root'])} --apply"
+        if not Path(e['root']).is_dir():
+            rows.append({**row, 'status': 'PROBLEM', 'problem': 'the project root does not exist',
+                         'fix': f"restore the checkout at that root, or: kit.py project remove --root {kit} --id {e['id']} --apply"})
+            continue
+        try:
+            out = install(root, parser().parse_args(['install', '--root', str(root), '--project', e['root']]))
+        except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as exc:
+            rows.append({**row, 'status': 'PROBLEM', 'problem': str(exc) if isinstance(exc, ValueError) else type(exc).__name__,
+                         'fix': 'resolve the problem, then: ' + fix})
+            continue
+        if out['status'] == 'NOOP':
+            rows.append({**row, 'status': 'OK'})
+        else:
+            changes = [a for a in out['connection'] if a['action'] not in ('noop', 'present')]
+            rows.append({**row, 'status': 'NEEDS_REPAIR', 'changes': changes, 'fix': fix})
+    return rows
+
+
+def parser():
     ap = argparse.ArgumentParser(prog='kit.py project', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
@@ -906,7 +937,11 @@ def main(argv=None):
         if name == 'migrate':
             p.add_argument('--include-root', action='append', default=[],
                            help='another project root to inventory (for example one captured by its own hook)')
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv=None):
+    a = parser().parse_args(argv)
     try:
         root = k.safe_root(a.root)
         if not k.current(root)['files']: raise Blocked('no managed kit is installed at --root')

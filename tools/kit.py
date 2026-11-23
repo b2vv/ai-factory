@@ -383,6 +383,21 @@ def blocked_reason(exc):
     return 'INVALID_OR_UNSAFE_INPUT: validation rejected the input/state; inspect the receipt without forcing.'
 
 
+def project_report(root,out):
+    """S6/A6: after `update`, check every listed project read-only and report each one (tools/projects.py)."""
+    if out.get('status')=='BLOCKED' or not (root/STATE/'projects.json').exists():return out
+    import importlib.util
+    path=root/'tools'/'projects.py'
+    if not path.exists():path=Path(__file__).absolute().parent/'projects.py'
+    try:
+        spec=importlib.util.spec_from_file_location('_factory_projects_report',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        rows=module.check_projects(root)
+    except (ValueError,OSError,KeyError,TypeError,AttributeError,ImportError) as exc:
+        rows={'status':'NOT_CHECKED','reason':str(exc) if isinstance(exc,ValueError) else type(exc).__name__}
+    return out if rows is None else {**out,'projects':rows}
+
+
 def main():
     if sys.argv[1:2]==['project']:
         # One project list: tools/projects.py (list/install/remove/migrate); no barrier, own lock and backups.
@@ -440,7 +455,9 @@ def main():
                     if a.action!='update' or not current(a.root)['files']: raise ValueError('instruction migration requires installed update')
                     if not a.exclusive_window or not a.plan_id: raise ValueError('plan id and exclusive writer window required')
                     out=instructions.apply(sys.modules[__name__],a.package,a.root,a.component,a.instruction_spec,a.capture_spec,a.plan_id,True)
-            print(json.dumps(instructions.public(out),indent=2));return 1 if out.get('status')=='BLOCKED' else 0
+            pub=instructions.public(out)
+            if a.action=='update':pub=project_report(a.root,pub)
+            print(json.dumps(pub,indent=2));return 1 if out.get('status')=='BLOCKED' else 0
         if a.action=='rollback':
             if not a.transaction:raise ValueError('transaction required')
             combined=capture is not None and capture.is_transaction(sys.modules[__name__],a.root,a.transaction)
@@ -458,7 +475,9 @@ def main():
                 if a.action=='install' and current(a.root)['files'] and out['status']!='NOOP':raise ValueError('use update for managed installation')
                 if a.action=='update' and not current(a.root)['files']:raise ValueError('use install for new destination')
                 out=capture.apply(sys.modules[__name__],a.package,a.root,a.component,a.capture_spec,a.plan_id,a.exclusive_window) if registered else apply(a.package,a.root,a.component,a.plan_id)
-        print(json.dumps(capture.public(out) if capture else out,indent=2));return 1 if out.get('status')=='BLOCKED' else 0
+        pub=capture.public(out) if capture else out
+        if a.action=='update':pub=project_report(a.root,pub)
+        print(json.dumps(pub,indent=2));return 1 if out.get('status')=='BLOCKED' else 0
     except (ValueError,OSError,KeyError,TypeError,json.JSONDecodeError) as exc:
         print(json.dumps({'status':'BLOCKED','reason':blocked_reason(exc)}));return 1
 
