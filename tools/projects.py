@@ -115,7 +115,7 @@ def validate(doc):
         raise Blocked('unsupported project list')
     if not isinstance(doc['projects'], list) or not isinstance(doc['routes'], dict):
         raise Blocked('invalid project list')
-    ids, roots, names = set(), set(), set()
+    ids, roots, names, ports = set(), set(), set(), set()
     for e in doc['projects']:
         if not isinstance(e, dict) or not ENTRY_KEYS <= set(e) <= ENTRY_KEYS | {'history', 'archive'}:
             raise Blocked('invalid project entry')
@@ -129,11 +129,19 @@ def validate(doc):
         if e['group'] is not None and (not isinstance(e['group'], str) or not NAME.fullmatch(e['group'])):
             raise Blocked('invalid group')
         cap = e['capabilities']
-        if (not isinstance(cap, dict) or not {'capture'} <= set(cap) <= {'capture', 'dashboard'} or not isinstance(cap['capture'], dict)
+        if (not isinstance(cap, dict) or not {'capture'} <= set(cap) <= {'capture', 'dashboard', 'obsidian'} or not isinstance(cap['capture'], dict)
                 or set(cap['capture']) != {'enabled', 'channel'} or type(cap['capture']['enabled']) is not bool
                 or cap['capture']['channel'] not in CHANNELS
                 or cap['capture']['enabled'] != (cap['capture']['channel'] is not None)):
             raise Blocked('invalid capabilities')
+        if 'obsidian' in cap:
+            obs = cap['obsidian']
+            if (not isinstance(obs, dict) or set(obs) != {'vault', 'port'} or not isinstance(obs['vault'], str)
+                    or not os.path.isabs(obs['vault']) or not OBSIDIAN_VAULT.fullmatch(obs['vault'])
+                    or type(obs['port']) is not int or not 1024 <= obs['port'] <= 65535):
+                raise Blocked('invalid obsidian capability')
+            if obs['port'] in ports: raise Blocked(f"obsidian port {obs['port']} is recorded for two projects")
+            ports.add(obs['port'])
         if e['id'] in ids or e['root'] in roots or e['name'] in names: raise Blocked('duplicate project entry')
         ids.add(e['id']); roots.add(e['root']); names.add(e['name'])
         routed = cap['capture']['channel'] == 'global'
@@ -143,6 +151,15 @@ def validate(doc):
             raise Blocked('invalid capture route')
     DB.check_capabilities(dashboard_entries(doc))
     return doc
+
+
+OBSIDIAN_VAULT = re.compile(r'[^\x00-\x1f\x7f-\x9f`]+')
+
+
+def obsidian_args(entry):
+    """The registry is authoritative: its pointer, or an explicit clear so no stale marker survives (T33 B1)."""
+    obs = entry['capabilities'].get('obsidian')
+    return ['--obsidian-vault', obs['vault'], '--obsidian-port', str(obs['port'])] if obs else ['--clear-obsidian']
 
 
 def dashboard_entries(doc):
@@ -375,9 +392,9 @@ def cmd_list(root, dashboard_config=False):
     return out
 
 
-def connect(root, project, apply, contract=None, dashboard=None, work_dirs=()):
+def connect(root, project, apply, contract=None, dashboard=None, work_dirs=(), obsidian=()):
     """Run the existing connect-project step in-process; returns its report."""
-    argv = (['--managed-root', str(root), '--project', str(project)] + (['--apply'] if apply else [])
+    argv = (['--managed-root', str(root), '--project', str(project)] + (['--apply'] if apply else []) + list(obsidian)
             + (['--search-contract', str(contract)] if contract else [])
             + (['--dashboard-project', dashboard] if dashboard else [])
             + [x for w in work_dirs for x in ('--work-dir', w)])
@@ -471,6 +488,13 @@ def install(root, args):
         entry['capabilities']['dashboard'] = cap
     elif args.dashboard_name or args.dashboard_workflow is not None:
         raise Blocked('--dashboard-name and --dashboard-workflow need --dashboard-id')
+    if (args.obsidian_vault is None) != (args.obsidian_port is None):
+        raise Blocked('--obsidian-vault and --obsidian-port go together')
+    if args.clear_obsidian:
+        entry['capabilities'].pop('obsidian', None)
+    elif args.obsidian_vault is not None:
+        if not os.path.isabs(args.obsidian_vault): raise Blocked('--obsidian-vault must be an absolute path')
+        entry['capabilities']['obsidian'] = {'vault': os.path.realpath(args.obsidian_vault), 'port': args.obsidian_port}
     server = A.Server(cfg) if cfg is not None and (enroll or rec is not None) else None
     if enroll:
         with_capture = not args.no_capture
@@ -522,7 +546,7 @@ def install(root, args):
         dash_id = DB.dashboard_id(dash_cfg, project) if dash_cfg else None
     check_dashboard(root, before)
     new_dash = dashboard_bytes(doc)
-    report = connect(root, project, False, contract, dash_id, getattr(args, 'work_dir', ()))
+    report = connect(root, project, False, contract, dash_id, getattr(args, 'work_dir', ()), obsidian_args(entry))
     files = [project / n for n in ('AGENTS.local.md', 'CLAUDE.local.md', '.gitignore')]
     new_list = encode(doc)
     dash_changed = k.regular(dashboard_path(root)) != new_dash
@@ -531,6 +555,7 @@ def install(root, args):
                  and all(a['action'] in ('noop', 'present') for a in report['actions']))
     out = {'status': 'NOOP' if unchanged else 'PLANNED', 'project': public_entry(entry),
            'connection': report['actions'], 'capture_rows': len(mapping_rows(doc))}
+    if report.get('obsidian'): out['obsidian'] = report['obsidian']
     if dash_cfg: out['dashboard'] = {'project': dash_id} if dash_id else {'project': None, 'note': 'root is not in the dashboard projects config'}
     if dash_changed:
         out.setdefault('dashboard', {})['restart'] = 'dashboard-projects.json changes: restart the dashboard containers to show it'
@@ -558,7 +583,7 @@ def install(root, args):
         check_mapping(root, ctx, before)
         steps = [('surface', lambda: [guarded(p, data) for p, data in surface.items()]),
                  ('connect', lambda: connect(root, project, True, rec['files']['search_contract'] if rec else None, dash_id,
-                                             getattr(args, 'work_dir', ())))]
+                                             getattr(args, 'work_dir', ()), obsidian_args(entry)))]
         if ctx: steps.append(('mapping', lambda: guarded(ctx['mapping'], mapping_bytes(doc))))
         check_dashboard(root, before)
         steps.append(('dashboard', lambda: guarded(dashboard_path(root), new_dash)))
@@ -975,7 +1000,7 @@ def move_root(root, args):
     rec = entry.get('archive')
     contract = rec['files']['search_contract'] if rec else None
     dash_id = entry['capabilities'].get('dashboard', {}).get('id') if generated else None
-    report = connect(root, new, False, contract, dash_id)
+    report = connect(root, new, False, contract, dash_id, obsidian=obsidian_args(entry))
     new_list, new_dash = encode(doc), dashboard_bytes(doc)
     follows = ['project list'] + (['capture mapping'] if ctx and entry['capabilities']['capture']['channel'] == 'global' else []) \
         + (['dashboard projects'] if 'dashboard' in entry['capabilities'] else [])
@@ -991,7 +1016,7 @@ def move_root(root, args):
         if load(root) != before: raise Blocked('project list changed while planning')
         check_mapping(root, ctx, before)
         check_dashboard(root, before)
-        steps = [('connect', lambda: connect(root, new, True, contract, dash_id))]
+        steps = [('connect', lambda: connect(root, new, True, contract, dash_id, obsidian=obsidian_args(entry)))]
         if ctx: steps.append(('mapping', lambda: guarded(ctx['mapping'], mapping_bytes(doc))))
         steps.append(('dashboard', lambda: guarded(dashboard_path(root), new_dash)))
         steps.append(('list', lambda: guarded(root / k.STATE / LIST, new_list)))
@@ -1080,6 +1105,10 @@ def parser():
             d.add_argument('--no-dashboard', action='store_true', help='take the project off the dashboard')
             p.add_argument('--dashboard-name', help='dashboard display name (default: current or the entry name)')
             p.add_argument('--dashboard-workflow', help="the project's workflow note on its dashboard card (an empty value removes it)")
+            o = p.add_mutually_exclusive_group()
+            o.add_argument('--obsidian-vault', help="absolute path of the project's Obsidian vault (with --obsidian-port; kept in the list)")
+            o.add_argument('--clear-obsidian', action='store_true', help='remove the Obsidian pointer from the list and the managed block')
+            p.add_argument('--obsidian-port', type=int, help="the vault's Local REST API HTTP port (with --obsidian-vault)")
         if name == 'dashboard-import':
             p.add_argument('--from', dest='source_file', required=True, help='hand-kept dashboard projects.json')
         if name == 'status':

@@ -158,6 +158,48 @@ with `--work-dir ROLE=DIR` (repeatable, also on `kit.py project install`); it is
 on later reconnects, `--work-dir ROLE=` clears it, and a recorded directory that is gone
 blocks the reconnect. Reconnect is NOOP when nothing changed.
 
+### Optional Obsidian documentation channel
+
+A project with its own Obsidian vault served by the Local REST API with MCP plugin can record it at
+connect time: `kit.py project install --root <kit> --project <repo> --obsidian-vault <vaults>/<project>
+--obsidian-port <port> [--apply]` (the same two flags exist on `connect-project.py`). The managed
+block then names the vault, the MCP server `obsidian` in the project's local scope, the endpoint
+`http://127.0.0.1:<port>/mcp/`, the REST fallback (`GET /vault/` → `200` first), the source rule
+(contracts, ADRs and evidence stay in the repository; the vault holds overviews, handoffs and links)
+and the owner's one step, run from the project root with the token the owner types:
+
+```bash
+claude mcp add -s local --transport http obsidian http://127.0.0.1:<port>/mcp/ --header "Authorization: Bearer <TOKEN>"
+```
+
+The kit never reads, stores, prints or asks for that token; it never edits `~/.claude.json`, runs
+`claude mcp`, configures the plugin or writes into the vault. It does not create a vault layout either.
+
+Authority: through `kit.py project install` the project list is authoritative. The pair is stored as
+`capabilities.obsidian` of the entry (`kit.py project list` shows it), two projects cannot record
+the same port, and every install regenerates the managed lines from the list — a hand-edited marker
+is rewritten and reported as `obsidian.reconciled`, and an entry without the pointer removes any
+marker. `--clear-obsidian` removes the entry key and the lines together (both restored on rollback).
+Standalone `connect-project.py` keeps the pointer in its block marker on later reconnects instead.
+
+Before writing, a read-only, token-free check runs only when a pointer is configured:
+1. The vault path is absolute, without control characters or backticks; it is resolved with
+   `realpath` (the resolved path is recorded), must hold a real `.obsidian/` directory and must not
+   be inside the project checkout. A violation blocks the connect.
+2. Only `enableInsecureServer` and `insecurePort` are taken from the plugin's settings file in the
+   vault; everything else in it, including the API key, is dropped and never reported. HTTP disabled
+   or a different port blocks the connect ("port N is not this vault's HTTP port"); an unreadable
+   or malformed file blocks with a fixed message; a missing file is `PENDING` (install/enable the plugin).
+3. `GET http://127.0.0.1:<port>/` with proxies ignored and a 2-second timeout: the plugin answers
+   this path without a token. `OK` when it reports the Obsidian REST API; `PENDING` when nothing
+   answers (open the vault in Obsidian; an IPv6-only binding also shows here); `WARN` when another
+   service answers. Network states never block a connect or a `kit.py update` project row.
+4. The authenticated `GET /vault/` and MCP `Connected` are `NOT_VERIFIED` by the kit: after the
+   owner adds the MCP server, the agent checks `GET /vault/` through it.
+
+An Obsidian section written by hand outside the managed block is left untouched; connect reports
+`obsidian.duplicate_hint` so the owner can remove it once the managed lines are in place.
+
 The installer does not clean project AGENTS.md or project-local symlinks. Retire
 only proven task-owned blocks/links with exact baseline guards and recoverable
 backups. Do not repeat cleanup another project agent already completed. Resolve

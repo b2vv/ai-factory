@@ -4184,7 +4184,7 @@
       "source": "~/.agents/ai-factory/onboarding.md",
       "destination": "ai-factory/onboarding.md",
       "source_sha256": "447bd78eeefc80a962204299a8cc81e2d4cadd85ac6f280fc9b8b834ef3f104b",
-      "sha256": "5fcf831d1c47b6517c32457a96b2fe0060c5921b9ed715212ef76f9becced1e8",
+      "sha256": "def9698fecf7061083fb497e56861d0099d01e3b9ebfdb5d4fae31c30218fa71",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4192,7 +4192,8 @@
         "0.4 explicit path/example and test-import relocation; no policy merge",
         "0.6.1 documentation hygiene routing; original skills unchanged",
         "Owner-authorized English translation; original identities/digests, compatibility literals and normative contracts preserved; translation is an authored adaptation, not original bytes.",
-        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records."
+        "Owner-authorized English section-anchor migration: redundant Cyrillic compatibility anchors removed and actual internal fragments migrated to existing English heading IDs; immutable original identities and prior adaptation history retained. See english-translations.json anchor_migration for exact source-bound mappings and removed historical literal records.",
+        "Owner-authorized (T33, 2026-11-24): step 0 points to the optional Obsidian pointer recorded at connect time and states that it neither performs nor authorizes the synchronization step; no rule removed."
       ],
       "category": "full-plan-and-rules",
       "previous_release_destination": "collection/agents/ai-factory/onboarding.md"

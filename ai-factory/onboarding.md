@@ -108,6 +108,7 @@ Fill the final result using the [acceptance template](../templates/acceptance-fu
 
 ## Obsidian: verification and agreed synchronization
 
+0. The vault and its MCP endpoint can be recorded at connect time (`--obsidian-vault`/`--obsidian-port`, see [managed kit connections](../docs/managed-kit-connections.md#optional-obsidian-documentation-channel)); that pointer and its token-free check do not perform or authorize this step.
 1. If the project uses Obsidian/Shared, find the actual vault and resolved target of its Shared link. Check the target of each involved vault; do not infer sharing from the name `4 - Shared`. If the target is the same, there is one canonical note too. No Obsidian in scope → N/A with a reason, without creating a vault/integration.
 2. Read only the relevant workflow/report note; compare with canonical sources and current results. Record path, source/revision/date and current/stale/missing. A symlink or yesterday's sync does not prove currency today, live MCP or write permission.
 3. If the current request already authorizes this exact synchronization, perform it without asking again. Otherwise leave PENDING: exact target, proposed minimal diff, reason and required authorization scope. If the channel is unavailable — PENDING + repo/task fallback; authorized independent work continues. Do not install tools/MCP, change permissions or create automation.

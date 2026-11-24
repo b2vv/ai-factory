@@ -225,7 +225,7 @@
     },
     {
       "path": "ai-factory/onboarding.md",
-      "sha256": "5fcf831d1c47b6517c32457a96b2fe0060c5921b9ed715212ef76f9becced1e8",
+      "sha256": "def9698fecf7061083fb497e56861d0099d01e3b9ebfdb5d4fae31c30218fa71",
       "component": "core"
     },
     {
@@ -301,7 +301,7 @@
     {
       "path": "docs/managed-kit-connections.md",
       "component": "core",
-      "sha256": "af419d65dbebacb37f737c090079fda5cd248c50527723d12e6724d10e0bbe59"
+      "sha256": "e1a847b5b553bf7c465f3af5335fcbf958d4e8b663f5b6b7c6ceeb11d886af2f"
     },
     {
       "path": "docs/managed-native-handoff.md",
@@ -585,7 +585,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "095ca58db3a5a5d39f3880d870817943623bb818248cbdf792512df6ef59f7cb",
+      "sha256": "f680256a650f92dd35082ef2c93d9c60a5e6a8433c3b844ce36b63490855334c",
       "component": "core"
     },
     {
@@ -4434,6 +4434,11 @@
       "sha256": "d4de97b4287457ada75d968761f211641e6236878ecfa6e6239d822d946e3b30"
     },
     {
+      "path": "tests/connect/test_connect_obsidian.py",
+      "sha256": "d57cdcfd381fb1c41fa8b8fe53e1c0cd0dd38d4ffd63547a7cfcb518b748f241",
+      "component": "core"
+    },
+    {
       "path": "tests/connect/test_connect_project.py",
       "sha256": "b58bbf64964fa4627d6b85f9679f4d698f02fade9eb188438bb01f8cb9c949f0",
       "component": "core"
@@ -4546,6 +4551,11 @@
     {
       "path": "tests/projects/test_projects.py",
       "sha256": "4c528da4a86a74d15ee10bc410e44c3084d1c0b6352eba9d95cf44fe8fc8bfe7",
+      "component": "core"
+    },
+    {
+      "path": "tests/projects/test_projects_obsidian.py",
+      "sha256": "4a96cc13edcc1d7a5d71825608ab61b0a6e7e2b5eebfedc59648014d2aa7cd83",
       "component": "core"
     },
     {
@@ -4725,7 +4735,7 @@
     },
     {
       "path": "tools/connect-project.py",
-      "sha256": "ffd23eed7c2cd9d30820e3945d02e029b82483023f15f4cccca762d09d15286f",
+      "sha256": "d461b4bbb7ebf18374a94fad547216a19622217b06df194a51c78d18dacd1769",
       "component": "core"
     },
     {
@@ -4770,7 +4780,7 @@
     },
     {
       "path": "tools/projects.py",
-      "sha256": "91619bff6a6ebc58078d2ee455ebf6b5cdafea8cb0b33a3a604f0f751f43bc2e",
+      "sha256": "4ccc8c91e1ec07102eb66703e27428aee08c45fe26e1da027457a71b71ae186d",
       "component": "core"
     },
     {

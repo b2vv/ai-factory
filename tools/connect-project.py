@@ -15,6 +15,9 @@ What it does, idempotently:
     work/ subdirectories gets `work/tasks/`, `work/in-progress/`, `work/archive/`, `work/tech-debt/`,
     each with a README; an existing layout is kept, nothing is moved or created beside it, and only
     its mapping is recorded (an ambiguous role stays unmapped until `--work-dir ROLE=DIR`).
+  * Optionally records the project's Obsidian vault (--obsidian-vault/--obsidian-port): vault, MCP endpoint and the
+    owner's `claude mcp add -s local` step (the token never passes through this tool), after a read-only,
+    token-free check (vault path rule, the plugin's HTTP port in the vault settings, `GET /` on 127.0.0.1).
   * Optionally points to an existing --task-index, retained unless explicitly changed/cleared; never creates a tracker.
   * Ensures `CLAUDE.local.md` imports `@AGENTS.local.md`.
   * Appends the local entrypoint paths to `.gitignore` (deduplicated), preserving existing rules.
@@ -166,7 +169,7 @@ def select_route(project, explicit, candidates, label, baseline):
 
 
 def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, global_only=False, dashboard=None,
-                work=None):
+                work=None, obsidian=None):
     """The managed block body (no markers). Deterministic given inputs."""
     lines = [
         "## AI Factory connection (managed)",
@@ -228,6 +231,8 @@ def build_block(kit, adapter_rel, search_rel, project_root, task_index=None, glo
             "If the project has a task index, publish its open tasks with each status: "
             f"`python3 -I {root}/tools/kit.py project queue --root {root} --project {dashboard} --apply < queue.json`."
         )
+    if obsidian:
+        lines.extend(obsidian_lines(obsidian, kit))
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -243,6 +248,155 @@ def prior_dashboard(existing):
     if len(found) > 1:
         raise ValueError('ambiguous managed dashboard pointer')
     return found[0] if found else None
+
+
+OBSIDIAN_MARKER = '<!-- ai-factory-obsidian: '
+OBSIDIAN_SETTINGS = ('.obsidian', 'plugins', 'obsidian-local-rest-api', 'data.json')
+OBSIDIAN_SERVICE = 'Obsidian Local REST API'
+OBSIDIAN_SETTINGS_MAX = 64 * 1024
+OBSIDIAN_REPLY_MAX = 16 * 1024
+
+
+def obsidian_marker(pointer):
+    return OBSIDIAN_MARKER + json.dumps({'vault': pointer['vault'], 'port': pointer['port']}, sort_keys=True) + ' -->'
+
+
+def prior_obsidian(existing):
+    """The Obsidian pointer this tool recorded in its managed block, retained on reconnect."""
+    if not existing or BEGIN not in existing:
+        return None
+    body = existing.split(BEGIN, 1)[1].split(END, 1)[0]
+    found = [line for line in body.splitlines() if 'ai-factory-obsidian:' in line]
+    if len(found) > 1:
+        raise ValueError('ambiguous managed obsidian pointer')
+    if not found:
+        return None
+    line = found[0]
+    if not (line.startswith(OBSIDIAN_MARKER) and line.endswith(' -->')):
+        raise ValueError('malformed managed obsidian pointer')
+    try:
+        value = json.loads(line[len(OBSIDIAN_MARKER):-4])
+    except ValueError:
+        raise ValueError('malformed managed obsidian pointer') from None
+    if not isinstance(value, dict) or set(value) != {'vault', 'port'}:
+        raise ValueError('malformed managed obsidian pointer')
+    return {'vault': value['vault'], 'port': value['port']}
+
+
+def obsidian_pointer(project, vault, port):
+    """Validate the vault path rule and port; returns the pointer with the realpath-resolved vault."""
+    if not isinstance(vault, str) or not os.path.isabs(vault) or any(
+            ord(ch) < 32 or 127 <= ord(ch) <= 159 or ch == '`' for ch in vault):
+        raise ValueError('obsidian vault must be an absolute path without control characters or backticks')
+    if type(port) is not int or not 1024 <= port <= 65535:
+        raise ValueError('obsidian port must be an integer 1024-65535')
+    resolved = os.path.realpath(vault)
+    marker = os.path.join(resolved, '.obsidian')
+    if not os.path.isdir(resolved) or os.path.islink(marker) or not os.path.isdir(marker):
+        raise ValueError('obsidian vault must be an existing directory with a real .obsidian/ directory')
+    root = os.path.realpath(str(project))
+    if resolved == root or resolved.startswith(root.rstrip(os.sep) + os.sep):
+        raise ValueError('obsidian vault must not be inside the project checkout')
+    return {'vault': resolved, 'port': port}
+
+
+def obsidian_settings(vault):
+    """Only `enableInsecureServer` and `insecurePort` of the plugin settings; the rest (the API key) is dropped.
+
+    Returns None when the file is missing. Every other problem raises a fixed message: no file content,
+    no other key and no exception text can reach a report.
+    """
+    path = Path(vault, *OBSIDIAN_SETTINGS)
+    fixed = 'obsidian plugin settings are not a readable regular JSON file of the expected shape'
+    try:
+        raw = installer.regular(path)
+        if raw is None:
+            return None
+        if len(raw) > OBSIDIAN_SETTINGS_MAX:
+            raise ValueError
+        doc = json.loads(raw)
+        if not isinstance(doc, dict):
+            raise ValueError
+        enabled, port = doc.get('enableInsecureServer'), doc.get('insecurePort')
+        if type(enabled) is not bool or (port is not None and type(port) is not int):
+            raise ValueError
+    except Exception:
+        raise ValueError(fixed) from None
+    return {'enabled': enabled, 'port': port}
+
+
+def obsidian_http(port):
+    """Token-free `GET http://127.0.0.1:N/`, proxies ignored: (state, reason)."""
+    import http.client
+    import urllib.error
+    import urllib.request
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    try:
+        with opener.open(urllib.request.Request(f'http://127.0.0.1:{port}/'), timeout=2) as reply:
+            data = reply.read(OBSIDIAN_REPLY_MAX + 1)
+    except (urllib.error.HTTPError, http.client.HTTPException):  # an answer, but not a usable HTTP reply
+        return 'WARN', f'port {port} answers but not as the Obsidian REST API'
+    except (OSError, ValueError):
+        return 'PENDING', ('nothing answers on the port: open the vault in Obsidian '
+                           '(an IPv6-only binding also shows here)')
+    try:
+        doc = json.loads(data) if len(data) <= OBSIDIAN_REPLY_MAX else None
+    except ValueError:
+        doc = None
+    if isinstance(doc, dict) and doc.get('status') == 'OK' and doc.get('service') == OBSIDIAN_SERVICE:
+        return 'OK', 'the Obsidian REST API answers on the port'
+    return 'WARN', f'port {port} answers but not as the Obsidian REST API'
+
+
+def obsidian_check(pointer):
+    """Read-only, token-free check; raises ValueError for the stable (BLOCKED) faults."""
+    port = pointer['port']
+    checks = []
+    settings = obsidian_settings(pointer['vault'])
+    if settings is None:
+        checks.append({'check': 'plugin settings', 'state': 'PENDING',
+                       'reason': 'no Local REST API settings in the vault: install/enable the plugin'})
+    elif not settings['enabled'] or settings['port'] != port:
+        raise ValueError(f"port {port} is not this vault's HTTP port")
+    else:
+        checks.append({'check': 'plugin settings', 'state': 'OK', 'reason': f'the vault serves HTTP on port {port}'})
+    state, reason = obsidian_http(port)
+    checks.append({'check': 'GET /', 'state': state, 'reason': reason})
+    checks.append({'check': 'GET /vault/ and MCP', 'state': 'NOT_VERIFIED',
+                   'reason': 'owner adds MCP; the agent checks GET /vault/ via MCP'})
+    order = ('OK', 'PENDING', 'WARN')
+    overall = max((c['state'] for c in checks if c['state'] in order), key=order.index)
+    return overall, checks
+
+
+def obsidian_lines(pointer, kit):
+    vault, port = pointer['vault'], pointer['port']
+    endpoint = f'http://127.0.0.1:{port}/mcp/'
+    return [
+        "",
+        obsidian_marker(pointer),
+        f"Obsidian vault (documentation channel): `{vault}` — MCP server `obsidian` in this project's local scope, "
+        f"endpoint `{endpoint}`; it works only while the vault is open in Obsidian.",
+        "Token: supplied by the owner; it lives only in `~/.claude.json` (local scope) and the plugin settings. "
+        "Never copy it into project files and never print it.",
+        "Owner step, from the project root (the owner types the token): "
+        f"`claude mcp add -s local --transport http obsidian {endpoint} --header \"Authorization: Bearer <TOKEN>\"`; "
+        "then `claude mcp list` shows `obsidian` connected.",
+        "If MCP did not connect: REST on the same host with the same header; check `GET /vault/` → `200` first.",
+        "Source rule: the repository holds contracts, ADRs and evidence; the vault holds overviews, handoffs and links "
+        f"(`{Path(kit['managed_root']) / 'ai-factory/workflow.md'}`). Never put secrets or other projects' private "
+        "details in the vault.",
+    ]
+
+
+OBSIDIAN_HEADING = re.compile(r'(?im)^#{1,6} .*obsidian')
+
+
+def outside_obsidian_heading(existing):
+    if not existing:
+        return False
+    outside = existing.split(BEGIN, 1)[0] + (existing.split(END, 1)[1] if END in existing else '')
+    return bool(OBSIDIAN_HEADING.search(outside))
 
 
 SEARCH_LINE = re.compile(r'Conversation-archive \*\*read-only search\*\* contract: `([^`\n]+)`')
@@ -627,6 +781,10 @@ def main(argv=None):
     group = ap.add_mutually_exclusive_group()
     group.add_argument("--task-index", help="existing project-relative Markdown task index; retained on future reconnects")
     group.add_argument("--clear-task-index", action="store_true", help="remove only the managed task-index pointer; leave its file untouched")
+    obs = ap.add_mutually_exclusive_group()
+    obs.add_argument("--obsidian-vault", help="absolute path of the project's Obsidian vault (with --obsidian-port); retained on future reconnects")
+    obs.add_argument("--clear-obsidian", action="store_true", help="remove only the managed Obsidian pointer")
+    ap.add_argument("--obsidian-port", type=int, help="the vault's Local REST API HTTP port (with --obsidian-vault)")
     ap.add_argument("--work-dir", action="append", default=[], metavar="ROLE=DIR",
                     help="map a work/ role (tasks, in-progress, archive, tech-debt) to an existing work/ directory; "
                          "retained on future reconnects; ROLE= clears the choice (repeatable)")
@@ -676,6 +834,24 @@ def main(argv=None):
             raise ValueError('invalid dashboard project id')
         if dashboard is None and not a.clear_dashboard_project:
             dashboard = prior_dashboard(existing_agents)
+        if (a.obsidian_vault is None) != (a.obsidian_port is None):
+            raise ValueError('--obsidian-vault and --obsidian-port go together')
+        prior_obs = prior_obsidian(existing_agents)
+        if a.obsidian_vault is not None:
+            obsidian = obsidian_pointer(project, a.obsidian_vault, a.obsidian_port)
+        elif a.clear_obsidian or prior_obs is None:
+            obsidian = None
+        else:
+            obsidian = obsidian_pointer(project, prior_obs['vault'], prior_obs['port'])
+        if obsidian is not None:
+            obs_state, obs_checks = obsidian_check(obsidian)
+            report['obsidian'] = {'state': obs_state, 'vault': obsidian['vault'], 'port': obsidian['port'],
+                                  'checks': obs_checks, 'reconciled': prior_obs not in (None, obsidian)}
+        elif prior_obs is not None:
+            report['obsidian'] = {'state': 'CLEARED', 'reconciled': True}
+        if obsidian is not None and outside_obsidian_heading(existing_agents):
+            report['obsidian']['duplicate_hint'] = ('AGENTS.local.md has an Obsidian section outside the managed '
+                                                    'block: remove it by hand once the managed lines are in place')
 
     except (ValueError, OSError, UnicodeError) as exc:
         report['status'] = 'BLOCKED'
@@ -736,7 +912,7 @@ def main(argv=None):
     for path in work['create']:
         report["actions"].append({"file": str(path.relative_to(project)),
                                   "action": "create" if baseline[path] is None else "present"})
-    block_body = build_block(kit, adapter_rel, search_rel, project, task_index, global_only, dashboard, work)
+    block_body = build_block(kit, adapter_rel, search_rel, project, task_index, global_only, dashboard, work, obsidian)
     conflicts = detect_unmanaged_import(agents_text)
     for c in conflicts:
         report["conflicts"].append(f"AGENTS.local.md has an UNMANAGED kit import outside the managed block: `{c}` "
