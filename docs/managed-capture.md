@@ -108,6 +108,13 @@ A package install alone without an authorized registration never activates captu
 Use the CLI help for the exact plan, execute and recovery options shipped with the
 version being installed; never substitute an unreviewed sequence of manual edits.
 
+`~/.claude/settings.json` is shared with native handoff, other tools and the owner. The
+registration pins only its own `Stop` hook and the `permissions` section there: other
+edits are not drift, a changed or missing own hook is `registered hook drift`, and a
+changed `permissions` section is `registered permissions drift`. When nothing of its own
+changes, the owner's exact bytes and formatting are kept. Every other registered file
+keeps a whole-file check.
+
 ### Registration specification
 
 The private specification has `schema: 1`, `home`, `managed_root`,

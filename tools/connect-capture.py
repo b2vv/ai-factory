@@ -148,10 +148,42 @@ def current(paths):
     d = installer.read_tx(p)
     if d.get('status') != 'APPLIED': raise ValueError('invalid registration state')
     owned = list_owned(paths)
+    shared = str(paths['home'] / '.claude/settings.json')
     for n, sig in d['files'].items():
         if owned and n == str(paths['mapping_path']): continue  # written by the project list
-        if installer.signature(canonical(n)) != sig: raise ValueError('registered file drift')
+        if installer.signature(canonical(n)) == sig: continue
+        if n != shared: raise ValueError('registered file drift')
+        # A shared host file: other registrations and the owner edit it too. Pin only this registration's hook and
+        # the permissions section (C6). A record without the pin recovers it from its receipts.
+        raw = installer.regular(canonical(n))
+        if not own_hook_present(raw, d['command']): raise ValueError('registered hook drift')
+        if permissions_digest(raw) != recorded_permissions(state, d, n, sig): raise ValueError('registered permissions drift')
     return d
+
+
+def recorded_permissions(state, record, path, signature):
+    """The pinned permissions digest; for a record written before the pin, recover it from the receipt bytes."""
+    if path in record.get('permissions', {}): return record['permissions'][path]
+    for file in sorted((state / 'receipts').glob('*.json')):
+        for entry in installer.read_tx(file).get('plan', {}).get('changes', []):
+            if entry['path'] == path and entry['after'] == signature:
+                raw = base64.b64decode(entry['bytes'], validate=True)
+                if installer.digest(raw) != signature['sha256']: raise ValueError('invalid registered settings evidence')
+                return permissions_digest(raw)
+    raise ValueError('registered file drift')
+
+
+def permissions_digest(raw):
+    d = strict_json(raw) if raw is not None else {}
+    return installer.digest(installer.encode(d.get('permissions') if isinstance(d, dict) else None))
+
+
+def own_hook_present(raw, wanted):
+    if raw is None: return False
+    d = hooks_document(raw)
+    expected = {'type': 'command', 'command': wanted, 'timeout': 15}
+    groups = [g for g in d['hooks'].get('Stop', []) for h in g['hooks'] if h.get('command') == wanted]
+    return len(groups) == 1 and groups[0] == {'hooks': [expected]}
 
 
 def command(paths):
@@ -234,7 +266,10 @@ def plan(spec):
         desired[str(paths['mapping_path'])] = (installer.encode({'schema': 1, 'projects': spec['projects']}), 0o600)
     global_path = paths['home'] / '.claude/settings.json'
     before = installer.signature(global_path)
-    desired[str(global_path)] = (edit_global(installer.regular(global_path), wanted, prior), before['mode'] if before else 0o600)
+    raw = installer.regular(global_path); edited = edit_global(raw, wanted, prior)
+    if raw is not None and installer.encode(strict_json(edited)) == installer.encode(strict_json(raw)):
+        edited = raw  # nothing of ours to change: keep the owner's exact bytes and formatting
+    desired[str(global_path)] = (edited, before['mode'] if before else 0o600)
     if not owned and installer.signature(paths['mapping_path']) and not prior: raise ValueError('unowned mapping collision')
     for n in sorted(set(e['path'] for e in spec.get('retire', []))):
         raw = installer.regular(Path(n)); before = installer.signature(Path(n))
@@ -243,9 +278,10 @@ def plan(spec):
     for target, (raw, mode) in desired.items():
         before = installer.signature(Path(target)); after = {'sha256': installer.digest(raw), 'mode': mode}; files[target] = after
         if before != after: changes.append({'path': target, 'before': before, 'after': after, 'bytes': base64.b64encode(raw).decode()})
+    permissions = {str(global_path): permissions_digest(desired[str(global_path)][0])}
     data = {'schema': 1, 'spec': spec, 'kit': binding, 'python_signature': python_signature(paths), 'files': files,
-            'changes': changes, 'prior': prior, 'command': wanted}
-    result = {**data, 'plan_id': installer.digest(installer.encode(data)), 'status': 'PLANNED' if changes or not prior or prior['kit'] != binding or prior['python_signature'] != python_signature(paths) or prior['spec'] != spec else 'NOOP'}
+            'changes': changes, 'prior': prior, 'command': wanted, 'permissions': permissions}
+    result = {**data, 'plan_id': installer.digest(installer.encode(data)), 'status': 'PLANNED' if changes or not prior or prior['kit'] != binding or prior['python_signature'] != python_signature(paths) or prior['spec'] != spec or prior.get('permissions') != permissions else 'NOOP'}
     prepare_transaction(result, '0' * 32)
     return result
 
@@ -262,7 +298,7 @@ def write_receipt(path, value):
 
 
 def installed_record(p, txid):
-    return {**{k: p[k] for k in ['spec', 'kit', 'files', 'command', 'python_signature']}, 'status': 'APPLIED', 'id': txid}
+    return {**{k: p[k] for k in ['spec', 'kit', 'files', 'command', 'python_signature', 'permissions']}, 'status': 'APPLIED', 'id': txid}
 
 
 def prepare_transaction(p, txid):

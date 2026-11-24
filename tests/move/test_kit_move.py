@@ -104,7 +104,8 @@ class Move(unittest.TestCase):
         self.assertTrue(any('unfinished' in b for b in M.build(self.old, self.new, self.cf.pkg).blockers))
         (self.new / self.k.STATE / 'pending.json').unlink()
         settings = self.cf.home / '.claude/settings.json'
-        settings.write_bytes(settings.read_bytes() + b'\n')  # drift from the capture record
+        doc = json.loads(settings.read_bytes()); doc['permissions'] = {'defaultMode': 'bypassPermissions'}
+        settings.write_bytes(json.dumps(doc).encode())  # drift from the capture record (C6: permissions are pinned)
         blocked = M.build(self.old, self.new, self.cf.pkg).blockers
         self.assertTrue(any('drift' in b for b in blocked), blocked)
         settings.write_bytes(before[str(settings)])

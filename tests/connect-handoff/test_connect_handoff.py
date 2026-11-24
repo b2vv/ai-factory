@@ -458,48 +458,81 @@ class RegistrationTests(unittest.TestCase):
             self.assertFalse(list(copied.rglob('__pycache__')))
             self.assertEqual(before, self.snapshot())
 
-    def test_explicit_reconcile_only_autocompact_preserves_bytes(self):
+    def test_unrelated_settings_edit_is_not_drift(self):
+        # C6: the shared settings file pins only this registration's hooks and the permissions section.
+        self.apply()
+        target = self.home / '.claude/settings.json'
+        doc = json.loads(target.read_bytes()); doc['autoCompactWindow'] = 500000
+        doc['hooks'].setdefault('Stop', []).append({'hooks': [{'type': 'command', 'command': 'other-tool'}]})
+        raw = json.dumps(doc, indent=3).encode(); target.write_bytes(raw)
+        self.assertEqual('NOOP', c.plan(self.spec)['status'])
+        self.assertEqual('VERIFIED', c.verify(self.spec)['status'])
+        self.assertEqual(raw, target.read_bytes())
+
+    def test_reregistration_keeps_own_hook_before_another_tool(self):
+        self.apply()
+        target = self.home / '.claude/settings.json'
+        doc = json.loads(target.read_bytes())
+        for groups in doc['hooks'].values():
+            groups.append({'hooks': [{'type': 'command', 'command': 'later-tool'}]})
+        raw = json.dumps(doc).encode(); target.write_bytes(raw)
+        p = c.plan(self.spec)
+        self.assertEqual([], p['changes'])  # appending ours after the other tool would reorder and rewrite
+        self.assertEqual('NOOP', p['status']); self.assertEqual(raw, target.read_bytes())
+
+    def test_reconcile_with_accepted_hash_preserves_bytes(self):
         self.apply()
         target = self.home / '.claude/settings.json'
         doc = json.loads(target.read_bytes()); doc['autoCompactWindow'] = 600000
         raw = json.dumps(doc, indent=3).encode(); target.write_bytes(raw)
-        with self.assertRaisesRegex(ValueError, 'registered file drift'): c.plan(self.spec)
         sha = k.digest(raw)
         p = c.plan(self.spec, sha)
-        self.assertEqual('PLANNED', p['status']); self.assertEqual([], p['changes'])
+        self.assertEqual([], p['changes'])
         with self.assertRaises(ValueError): c.apply(self.spec, p['plan_id'], True, '0'*64)
-        result = c.apply(self.spec, p['plan_id'], True, sha)
-        self.assertEqual('APPLIED', result['status'])
+        c.apply(self.spec, p['plan_id'], True, sha)
         self.assertEqual(raw, target.read_bytes())
         self.assertEqual('VERIFIED', c.verify(self.spec)['status'])
-        self.assertEqual('NOOP', c.plan(self.spec)['status'])
-        c.rollback(self.spec, result['transaction'], True)
-        self.assertEqual(raw, target.read_bytes())
-        with self.assertRaisesRegex(ValueError, 'registered file drift'): c.verify(self.spec)
 
-    def test_reconcile_rejects_boolean_numeric_permission_drift(self):
+    def test_permission_drift_blocks_with_or_without_accepted_hash(self):
         target = self.home / '.claude/settings.json'
         target.parent.mkdir(parents=True)
         target.write_text(json.dumps({'permissions': {'flag': True}}))
         self.apply()
-        doc = json.loads(target.read_bytes())
-        doc['autoCompactWindow'] = 600000
-        doc['permissions']['flag'] = 1
-        target.write_text(json.dumps(doc))
-        with self.assertRaises(ValueError): c.plan(self.spec, k.digest(target.read_bytes()))
+        for change in [lambda d: d['permissions'].__setitem__('flag', 1),
+                       lambda d: d['permissions'].__setitem__('defaultMode', 'bypassPermissions'),
+                       lambda d: d.pop('permissions')]:
+            doc = json.loads(target.read_bytes()); saved = target.read_bytes()
+            change(doc); target.write_text(json.dumps(doc))
+            with self.assertRaisesRegex(ValueError, 'registered permissions drift'): c.plan(self.spec)
+            with self.assertRaisesRegex(ValueError, 'registered permissions drift'): c.plan(self.spec, k.digest(target.read_bytes()))
+            with self.assertRaisesRegex(ValueError, 'registered permissions drift'): c.verify(self.spec)
+            target.write_bytes(saved)
 
-    def test_reconcile_rejects_other_drift_and_stale_hash(self):
+    def test_own_hook_removed_or_changed_is_drift(self):
         self.apply()
-        target = self.home / '.claude/settings.json'
-        baseline = json.loads(target.read_bytes())
-        for extra in [{'permissions': {'defaultMode': 'bypassPermissions'}}, {'hooks': {}}, {'autoCompactWindow': 500000}]:
-            doc = dict(baseline); doc['autoCompactWindow'] = 600000; doc.update(extra)
+        for host in ('claude', 'codex'):
+            target = self.config(host); saved = target.read_bytes()
+            doc = json.loads(saved); doc['hooks'] = {}
             target.write_text(json.dumps(doc))
-            with self.assertRaises(ValueError): c.plan(self.spec, k.digest(target.read_bytes()))
-        doc = dict(baseline); doc['autoCompactWindow'] = 600000; target.write_text(json.dumps(doc))
-        sha = k.digest(target.read_bytes()); p = c.plan(self.spec, sha)
-        target.write_text(json.dumps(doc, indent=1))
-        with self.assertRaises(ValueError): c.apply(self.spec, p['plan_id'], True, sha)
+            with self.assertRaisesRegex(ValueError, 'registered hook drift'): c.plan(self.spec)
+            doc = json.loads(saved)
+            for groups in doc['hooks'].values():
+                for g in groups:
+                    for h in g['hooks']: h['command'] += ' --changed'
+            target.write_text(json.dumps(doc))
+            with self.assertRaisesRegex(ValueError, 'registered hook drift'): c.verify(self.spec)
+            target.write_bytes(saved)
+
+    def test_legacy_record_without_pin_recovers_it_from_receipts(self):
+        self.apply()
+        current = Path(self.spec['registration_root']) / '.ai-factory-state/current.json'
+        record = json.loads(current.read_bytes()); record.pop('permissions'); record.pop('integrity', None)
+        k.write_tx(current, record)
+        target = self.home / '.claude/settings.json'
+        doc = json.loads(target.read_bytes()); doc['autoCompactWindow'] = 500000; target.write_text(json.dumps(doc))
+        self.assertEqual('PLANNED', c.plan(self.spec)['status'])  # writes the pin on the next apply
+        doc['permissions'] = {'defaultMode': 'bypassPermissions'}; target.write_text(json.dumps(doc))
+        with self.assertRaisesRegex(ValueError, 'registered permissions drift'): c.plan(self.spec)
 
     def test_wrong_plan_and_exclusive_required(self):
         before = self.snapshot()

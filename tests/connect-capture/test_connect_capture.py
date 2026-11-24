@@ -64,6 +64,27 @@ class Connector(unittest.TestCase):
         self.assertEqual(c.find_transaction(self.spec,result['plan_id']),result['transaction'])
         self.assertEqual(os.stat(self.reg/'mapping.json').st_mode&0o777,0o600)
 
+    def test_shared_settings_pins_only_own_hook_and_permissions(self):
+        # C6: other tools and the owner edit the shared settings file; only our hook and the permissions are pinned.
+        self.apply(); saved=self.global_path.read_bytes()
+        doc=json.loads(saved);doc['theme']='light';doc['hooks']['Stop'].append({'hooks':[{'type':'command','command':'echo other'}]})
+        raw=json.dumps(doc,indent=3).encode();self.global_path.write_bytes(raw)
+        self.assertEqual('NOOP',c.plan(self.spec)['status']);self.assertEqual('VERIFIED',c.verify(self.spec)['status'])
+        self.assertEqual(raw,self.global_path.read_bytes())
+        doc['permissions']={'defaultMode':'bypassPermissions'};self.global_path.write_text(json.dumps(doc))
+        with self.assertRaisesRegex(ValueError,'registered permissions drift'):c.plan(self.spec)
+        doc=json.loads(saved);doc['hooks']['Stop']=[g for g in doc['hooks']['Stop'] if 'echo unrelated' in json.dumps(g)]
+        self.global_path.write_text(json.dumps(doc))
+        with self.assertRaisesRegex(ValueError,'registered hook drift'):c.verify(self.spec)
+
+    def test_record_without_permissions_pin_recovers_it_from_receipts(self):
+        self.apply();cur=self.reg/k.STATE/'current.json'
+        rec=k.read_tx(cur);rec.pop('permissions');k.write_tx(cur,rec)
+        doc=json.loads(self.global_path.read_text());doc['theme']='light';self.global_path.write_text(json.dumps(doc))
+        self.assertEqual('PLANNED',c.plan(self.spec)['status'])  # the next apply writes the pin
+        doc['permissions']={'allow':['Bash']};self.global_path.write_text(json.dumps(doc))
+        with self.assertRaisesRegex(ValueError,'registered permissions drift'):c.plan(self.spec)
+
     def test_two_phase_global_then_retirement_only_reconcile(self):
         retire = self.spec['retire']; self.spec['retire'] = []
         self.apply()

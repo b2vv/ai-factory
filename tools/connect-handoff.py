@@ -172,34 +172,6 @@ def state_path(paths):
     return paths['registration_root'] / installer.STATE
 
 
-def settings_drift_allowed(paths, receipt, path, signature, accepted_sha256):
-    target = str(paths['home'] / '.claude/settings.json')
-    actual = installer.signature(canonical(path))
-    if (path != target or not actual or actual['mode'] != signature['mode']
-            or actual['sha256'] != accepted_sha256):
-        return False
-    # Recover the exact registered document from integrity-checked transaction
-    # evidence. Never adopt changed hooks, permissions or authentication settings.
-    baseline = None
-    for file in sorted((state_path(paths) / 'receipts').glob('*.json')):
-        tx = installer.read_tx(file)
-        for entry in tx.get('plan', {}).get('changes', []):
-            if entry['path'] == path and entry['after'] == signature:
-                raw = base64.b64decode(entry['bytes'], validate=True)
-                if installer.digest(raw) != signature['sha256']:
-                    raise ValueError('invalid registered settings evidence')
-                baseline = strict_json(raw)
-    if baseline is None:
-        raise ValueError('registered settings baseline unavailable')
-    actual_doc = strict_json(installer.regular(canonical(path)))
-    # Only this reviewed, non-security setting may differ. No broad drift bypass.
-    before = dict(baseline)
-    after = dict(actual_doc)
-    before.pop('autoCompactWindow', None)
-    value = after.pop('autoCompactWindow', None)
-    return installer.encode(before) == installer.encode(after) and type(value) is int and value == 600000
-
-
 def current(paths, accepted_settings_sha256=None):
     state = state_path(paths)
     if (state / 'pending.json').exists():
@@ -215,11 +187,53 @@ def current(paths, accepted_settings_sha256=None):
     receipt = installer.read_tx(file)
     if receipt.get('status') != 'APPLIED':
         raise ValueError('invalid current registration')
+    shared = shared_files(paths)
     for path, signature in receipt['files'].items():
-        if installer.signature(canonical(path)) != signature:
-            if not accepted_settings_sha256 or not settings_drift_allowed(paths, receipt, path, signature, accepted_settings_sha256):
-                raise ValueError('registered file drift')
+        if installer.signature(canonical(path)) == signature: continue
+        if path not in shared: raise ValueError('registered file drift')
+        # A shared host file: other registrations and the owner edit it too. Pin only this registration's hooks and
+        # the permissions section (C6). A record without the pin recovers it from its receipts.
+        raw = installer.regular(canonical(path))
+        if not own_hooks_present(raw, shared[path], receipt['commands']): raise ValueError('registered hook drift')
+        if permissions_digest(raw) != recorded_permissions(state, receipt, path, signature): raise ValueError('registered permissions drift')
     return receipt
+
+
+def recorded_permissions(state, record, path, signature):
+    """The pinned permissions digest; for a record written before the pin, recover it from the receipt bytes."""
+    if path in record.get('permissions', {}): return record['permissions'][path]
+    for file in sorted((state / 'receipts').glob('*.json')):
+        for entry in installer.read_tx(file).get('plan', {}).get('changes', []):
+            if entry['path'] == path and entry['after'] == signature:
+                raw = base64.b64decode(entry['bytes'], validate=True)
+                if installer.digest(raw) != signature['sha256']: raise ValueError('invalid registered settings evidence')
+                return permissions_digest(raw)
+    raise ValueError('registered file drift')
+
+
+def permissions_digest(raw):
+    d = strict_json(raw) if raw is not None else {}
+    return installer.digest(installer.encode(d.get('permissions') if isinstance(d, dict) else None))
+
+
+def shared_files(paths):
+    """Host hook files other registrations and the owner also write: path -> host."""
+    return {str(paths['home'] / '.claude/settings.json'): 'claude', str(paths['home'] / '.codex/hooks.json'): 'codex'}
+
+
+def unshared(paths, files):
+    return {path: sig for path, sig in files.items() if path not in shared_files(paths)}
+
+
+def own_hooks_present(raw, host, commands):
+    if raw is None: return False
+    hooks = hooks_document(raw).get('hooks', {})
+    for entry in commands:
+        if entry['host'] != host: continue
+        found = [h for g in hooks.get(entry['event'], []) for h in g['hooks']
+                 if h.get('type') == 'command' and h.get('command') == entry['command']]
+        if len(found) != 1: return False
+    return True
 
 
 def command(paths, host):
@@ -266,6 +280,7 @@ def edit_hooks(raw, host, wanted, prior, retires):
     old_commands = {(x['event'], x['command']) for x in (prior or {}).get('commands', []) if x['host'] == host}
     selected = {(x['event'], x['command']) for x in retires if x['host'] == host}
     previous_retired = {(x['event'], x['command']) for x in (prior or {}).get('retired', []) if x['host'] == host}
+    place = {}
     for event, value in sorted(old_commands | selected):
         matches = [(group, handler) for group in hooks.get(event, []) for handler in group['hooks']
                    if handler.get('type') == 'command' and handler.get('command') == value]
@@ -273,6 +288,8 @@ def edit_hooks(raw, host, wanted, prior, retires):
             raise ValueError('ambiguous or absent exact retirement')
         emptied = set()
         for group, handler in matches:
+            if value == wanted and group == {'hooks': [handler]}:
+                place[event] = hooks[event].index(group)  # re-registration: keep our hook where it was (C6)
             group['hooks'].remove(handler)
             if not group['hooks']:
                 emptied.add(id(group))
@@ -281,7 +298,8 @@ def edit_hooks(raw, host, wanted, prior, retires):
     for event in EVENTS:
         if any(h.get('command') == wanted for g in hooks.get(event, []) for h in g['hooks']):
             raise ValueError('unowned command collision')
-        hooks.setdefault(event, []).append({'hooks': [{'type': 'command', 'command': wanted}]})
+        groups = hooks.setdefault(event, [])
+        groups.insert(place.get(event, len(groups)), {'hooks': [{'type': 'command', 'command': wanted}]})
     encoded = installer.encode(obj)
     # Unchanged semantic document retains original formatting/bytes.
     return raw if raw is not None and strict_json(raw) == obj else encoded
@@ -343,10 +361,11 @@ def plan(spec, accepted_settings_sha256=None):
         files[target] = after
         if before != after:
             changes.append({'path': target, 'before': before, 'after': after, 'bytes': base64.b64encode(raw).decode()})
+    permissions = {target: permissions_digest(desired[target][0]) for target in shared_files(paths) if target in desired}
     data = {'schema': 1, 'spec': spec, 'kit': binding, 'python_signature': python_signature(paths), 'files': files, 'changes': changes,
             'accepted_settings_sha256': accepted_settings_sha256, 'prior': prior, 'commands': [{'host': h, 'event': e, 'command': command(paths, h)} for h in spec['hosts'] for e in EVENTS],
-            'retired': spec.get('retire', [])}
-    result = {**data, 'plan_id': installer.digest(installer.encode(data)), 'status': 'PLANNED' if changes or (prior and (prior['kit'] != binding or prior['python_signature'] != python_signature(paths) or prior['spec'] != spec or prior['files'] != files)) else 'NOOP'}
+            'retired': spec.get('retire', []), 'permissions': permissions}
+    result = {**data, 'plan_id': installer.digest(installer.encode(data)), 'status': 'PLANNED' if changes or (prior and (prior['kit'] != binding or prior['python_signature'] != python_signature(paths) or prior['spec'] != spec or unshared(paths, prior['files']) != unshared(paths, files) or prior.get('permissions') != permissions)) else 'NOOP'}
     # Bind the maximum journal size while planning, before creating state or publishing targets.
     prepare_transaction(result, '0' * 32)
     return result
@@ -368,7 +387,7 @@ def write_receipt(path, value):
 
 
 def installed_record(p, txid):
-    record = {key: p[key] for key in ('spec', 'kit', 'files', 'commands', 'retired', 'python_signature')}
+    record = {key: p[key] for key in ('spec', 'kit', 'files', 'commands', 'retired', 'python_signature', 'permissions')}
     return {**record, 'status': 'APPLIED', 'id': txid}
 
 

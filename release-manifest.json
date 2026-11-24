@@ -296,7 +296,7 @@
     {
       "path": "docs/managed-capture.md",
       "component": "core",
-      "sha256": "f7ed421cd7042239198fa1e7bce0c498cb18d08017a177d1bf66b8dda3b058d6"
+      "sha256": "055e5f100eaa3024fb0cfef47af3c811c628bdaebadf592f745492ec6a22b405"
     },
     {
       "path": "docs/managed-kit-connections.md",
@@ -306,7 +306,7 @@
     {
       "path": "docs/managed-native-handoff.md",
       "component": "core",
-      "sha256": "cbc68c9b6f20061cb2c685ef3fe31da9230782af02a6f1926ea4fb26db5323e1"
+      "sha256": "88d7fe85f0eff8d56f611abdb1f1ea515bedffd920403996ba67a5f861dff885"
     },
     {
       "path": "docs/migration-0.4.md",
@@ -4421,12 +4421,17 @@
     {
       "path": "tests/connect-capture/test_connect_capture.py",
       "component": "core",
-      "sha256": "d3cada0c97362ce6b8db0f727d973c98e707a2da36dc0fce8d00dae90e9619df"
+      "sha256": "b0b1894f6e6548a679d4fb591b4843921a4883fd99aa0e03ca9e5a51677c0c84"
     },
     {
       "path": "tests/connect-handoff/test_connect_handoff.py",
       "component": "core",
-      "sha256": "350d3004a1534c8834369105e54ef7f9eb1e034cbd1b04acd11565f30e06626b"
+      "sha256": "80c050dcb5771d59a633c829f1839b73c5d1ee31b275775fa18c519ee788d89d"
+    },
+    {
+      "path": "tests/connect-handoff/test_shared_settings.py",
+      "component": "core",
+      "sha256": "d4de97b4287457ada75d968761f211641e6236878ecfa6e6239d822d946e3b30"
     },
     {
       "path": "tests/connect/test_connect_project.py",
@@ -4495,7 +4500,7 @@
     },
     {
       "path": "tests/move/test_kit_move.py",
-      "sha256": "8dc7539f5ce8a33b7ce02e3dcde0565def2e000e6367d8be6527560a0e2a21e5",
+      "sha256": "e903c4d348d837d9267eb712b7a8296815d8cd039252b5cf820ea9e9ecdb3b87",
       "component": "core"
     },
     {
@@ -4706,12 +4711,12 @@
     {
       "path": "tools/connect-capture.py",
       "component": "core",
-      "sha256": "97aefae584a5e471d76a8f59e591563be239fed26178805808ecf1075f5f23ea"
+      "sha256": "36731cd1b5e0eee8faf24fafd760eb5cf8933422ba8e8848851168766906c96b"
     },
     {
       "path": "tools/connect-handoff.py",
       "component": "core",
-      "sha256": "96d635616c740d1d58e0eff9d699bb4311062dcaa7a824e4abb3e6c1b6872d07"
+      "sha256": "0b6aebfb62bfbb350deeb88c2767cd38c8c0459c316188f56c80a55fed17cab0"
     },
     {
       "path": "tools/connect-project.py",

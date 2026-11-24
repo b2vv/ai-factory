@@ -73,20 +73,16 @@ Rollback of registration and rollback of kit files are distinct. Follow the exis
 
 Isolated fixtures test schema/claims, upgrade/NOOP/rollback, failure injection and unrelated-hook preservation. They do not prove native discovery, trust, model access or delivered context. A source checkout with another writer is not an approved packaging input. Full source/release gates, exact independent final review, a live writer window and native output receipt remain separate prerequisites.
 
-### Explicit reconciliation of the reviewed Claude compaction setting
+### Shared host settings files
 
-When an owner has added `autoCompactWindow: 600000` after registration, normal
-plan/verify still rejects whole-file drift. The narrow `reconcile-plan` and
-`reconcile-apply` modes accept `--accept-settings-sha256 <reviewed-current-hash>`.
-They recover the registered settings from integrity-checked transaction evidence,
-require every other JSON value (including hooks and permissions) and file mode to
-be unchanged, and preserve the current settings bytes exactly. All other registered
-targets retain strict drift checks. Apply requires the exact plan ID and
-`--exclusive-window`; no settings, trust, session store, or claims are rewritten.
-A subsequent normal verify must be VERIFIED and normal plan NOOP.
+`~/.claude/settings.json` and `~/.codex/hooks.json` are shared: capture registers its own hook there and the owner
+edits the rest. For these two files a registration pins only its own hooks (each recorded command once, unchanged)
+and the `permissions` section; any other edit (another tool's hooks, `autoCompactWindow`, theme, models) is not
+drift, and re-registering capture does not make handoff report drift (or the reverse). A changed or missing own hook
+blocks as `registered hook drift`; a changed `permissions` section blocks as `registered permissions drift`, with or
+without an accepted settings hash. A record written before the permissions pin recovers it from its integrity-checked
+receipts; without that evidence the file must match exactly. All other registered targets (profile, legacy loader)
+keep strict whole-file checks.
 
-This is not a generic drift adoption option: missing baseline evidence, other
-settings edits, a different threshold, stale hash, changed hooks or pending
-transactions block reconciliation. Rolling back its receipt-only transaction
-restores the old registration receipt, including its previously stale relationship
-to the preserved user settings; it does not undo the owner's compaction setting.
+The `reconcile-plan` / `reconcile-apply` modes with `--accept-settings-sha256` remain for compatibility: they write a
+receipt for the current settings bytes without changing them, and never adopt changed hooks or permissions.
