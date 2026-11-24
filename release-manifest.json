@@ -4777,6 +4777,16 @@
       "path": "tools/verify_release.py",
       "sha256": "359f75bc2e9f08e9b8113a5fb9f4421c42ed6b20788bd3df0e647aa1bc16222d",
       "component": "core"
+    },
+    {
+      "path": "work/AGENDA.md",
+      "component": "core",
+      "sha256": "f3d4a99701398a5f3e8e48f98ade80206021f1e8f4dc22b63329a05abb6fae6a"
+    },
+    {
+      "path": "work/CTO-RESEARCH.md",
+      "component": "core",
+      "sha256": "a48c7066f0aa7655a6987dc321625f62131f29c3b65d51e06c777fe83485ab42"
     }
   ],
   "alpha_acceptance": {
