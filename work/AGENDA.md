@@ -60,4 +60,5 @@ Goes to: a small task record (below the spec-flow threshold), TDD on the test he
 
 ## Done since the last agenda
 First agenda in this repository; the earlier task queue closed before it (last: kit move → e7cdc70).
-- done: C6 → 116c34a (confirmed real; capture and handoff now pin only own hooks + permissions; kit b7d9300e). Next: C3.
+- done: C6 → 116c34a (confirmed real; capture and handoff now pin only own hooks + permissions; kit b7d9300e). 
+- done: C3 → 9e82752 (checkout runs use a package view plus the exporter's check; TMPDIR resolved). D3 → fbd9747, cdea7a9.

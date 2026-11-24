@@ -1280,7 +1280,7 @@
     },
     {
       "path": "runtime/storage/deploy/capture-bridge/test_capture_queue.py",
-      "sha256": "cf3f5706c774eb0c6ce1a9950ed4f7a6a95c9e280769dc7635e290fa31559b58",
+      "sha256": "081a432884dcea80b1692c94214782e466bea5ddb0559f2428d944df0eb6a8d5",
       "component": "capture-bridge"
     },
     {
@@ -4791,7 +4791,7 @@
     {
       "path": "work/AGENDA.md",
       "component": "core",
-      "sha256": "f3d4a99701398a5f3e8e48f98ade80206021f1e8f4dc22b63329a05abb6fae6a"
+      "sha256": "19d6c224cb6544c34cf6cc3728c47a9d8d7f514bead2fed39f621f070890d454"
     },
     {
       "path": "work/CTO-RESEARCH.md",

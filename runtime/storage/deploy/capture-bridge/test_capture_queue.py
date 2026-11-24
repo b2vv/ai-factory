@@ -609,6 +609,8 @@ class Loopback(unittest.TestCase):
                 if len(self.requests)>=2:break
                 time.sleep(.05)
             self.assertEqual(len(self.requests),2)
+            # The server saw the request before the worker records its receipt: wait for the receipt, not the request.
+            while time.monotonic()<end and self.invoke('status')['queue']['receipts']!=1:time.sleep(.05)
         finally:proc.terminate();proc.communicate(timeout=3)
         self.assertEqual(self.invoke('status')['queue']['receipts'],1)
 
