@@ -9,7 +9,9 @@ import sys
 import tempfile
 
 import argparse
-ap=argparse.ArgumentParser();ap.add_argument('--previous-release',type=Path);ap.add_argument('--suite',choices=['all','storage','dashboard','web-to-md'],default='all');args=ap.parse_args()
+ap=argparse.ArgumentParser();ap.add_argument('--previous-release',type=Path);ap.add_argument('--suite',choices=['all','storage','dashboard','web-to-md'],default='all')
+ap.add_argument('--in-place',action='store_true',help='run the Python suites on this tree as it is, even in a Git checkout')
+args=ap.parse_args()
 
 def go_version_tuple(text):
     m=re.match(r'(?:go)?(\d+)(?:\.(\d+))?(?:\.(\d+))?',text.strip())
@@ -68,14 +70,32 @@ def run_dashboard_suites(root, env):
     result=subprocess.run([node,'--test','ui/markdown.test.js','ui/queue.test.js','ui/status.test.js'],env=env,cwd=str(mod))
     print('dashboard node suite: '+('FAIL' if result.returncode else 'PASS'),flush=True)
     return code or (1 if result.returncode else 0)
-root=Path(__file__).resolve().parent.parent
+sys.dont_write_bytecode=True  # the runner's own import must not leave __pycache__ in a package tree
+from package_view import export_check, package_view, stale_manifest
+
+source=Path(__file__).resolve().parent.parent
+# Resolve TMPDIR once: macOS puts it under the /var -> /private/var symlink, which path guards refuse (C3).
+os.environ['TMPDIR']=os.path.realpath(tempfile.gettempdir()); tempfile.tempdir=None
+view_dir=None;refused=None
+if (source/'.git').exists() and not args.in_place:
+    stale=stale_manifest(source)
+    if stale:
+        print('WARNING: release-manifest.json is stale for '+str(len(stale))+' file(s); package checks will fail until it is regenerated:',flush=True)
+        for name in stale[:20]: print('  '+name,flush=True)
+    refused=export_check(source)
+    if refused: print('FAIL: the exporter refuses the tracked files: '+refused+' (declare every tracked file in release-manifest.json)',flush=True)
+    view_dir=tempfile.TemporaryDirectory(prefix='ai-factory-package-view-')
+    root=package_view(source,Path(view_dir.name))
+    print('Python suites run on a package view of the checkout (manifest-listed files only): '+str(root)+' (use --in-place to run on the checkout itself)',flush=True)
+else:
+    root=source
 env={k:v for k,v in os.environ.items() if not k.startswith('GIT_')}
 env['PYTHONPATH']=str(root/'tools')+os.pathsep+str(root/'runtime/onboarding')
 if args.previous_release: env['AI_FACTORY_PREVIOUS_RELEASE']=str(args.previous_release.resolve())
 env.update(GIT_CONFIG_GLOBAL=os.devnull,GIT_CONFIG_NOSYSTEM='1',PYTHONDONTWRITEBYTECODE='1')
 with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
     env['GIT_TEMPLATE_DIR']=temp
-    failures=0
+    failures=1 if view_dir is not None and refused else 0
     only=args.suite!='all'
     for directory in ([] if only else ['tests/onboarding','tests/review','tests/session-size','tests/handoff-integration','tests/session-size-docker','tests/legacy-review','tests/legacy-session','tests/install','tests/collection','tests/checkpoint','tests/constraints','tests/ui-measurements','tests/scanners','tests/connect','tests/connect-handoff','tests/connect-capture','tests/projects','tests/move','tests/packaging']):
         print('\n=== isolated suite: '+directory+' ===',flush=True)
@@ -111,8 +131,9 @@ with tempfile.TemporaryDirectory(prefix='ai-factory-fixtures-') as temp:
         print('\n=== archive restart policy fixtures ===',flush=True)
         result=subprocess.run([sys.executable,'-B','-m','unittest','discover','-s',str(archive),'-p','test_*.py','-v'],env=env,cwd=root)
         failures += result.returncode != 0
-    for name,runner in [('storage',lambda: run_go_suite(root, env, 'storage', 'runtime/storage', timeout=STORAGE_GO_TIMEOUT)),
-                        ('dashboard',lambda: run_dashboard_suites(root, env)),
-                        ('web-to-md',lambda: run_go_suite(root, env, 'web-to-md', 'runtime/web-to-md'))]:
+    # Go and node suites do not treat their tree as a package: they run on the checkout itself (node_modules included).
+    for name,runner in [('storage',lambda: run_go_suite(source, env, 'storage', 'runtime/storage', timeout=STORAGE_GO_TIMEOUT)),
+                        ('dashboard',lambda: run_dashboard_suites(source, env)),
+                        ('web-to-md',lambda: run_go_suite(source, env, 'web-to-md', 'runtime/web-to-md'))]:
         if args.suite in ('all',name): failures += runner() != 0
     raise SystemExit(1 if failures else 0)

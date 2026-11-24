@@ -4519,6 +4519,11 @@
       "component": "core"
     },
     {
+      "path": "tests/packaging/test_package_view.py",
+      "component": "core",
+      "sha256": "193eb6226e624402d58e7516034a1a78e82c0d4a0f218d67918682b5a9a4d8c4"
+    },
+    {
       "path": "tests/projects/test_clean_machine.py",
       "sha256": "95afa15259aa24d4f2d045318775102a19a8aa36ca0eb1633248789104131221",
       "component": "core"
@@ -4749,6 +4754,11 @@
       "component": "core"
     },
     {
+      "path": "tools/package_view.py",
+      "component": "core",
+      "sha256": "8bd86785f35f3b7c0f9ea50b2c2ea4666c94c20d54ec96c797f2a5a7264ddf40"
+    },
+    {
       "path": "tools/project_archive.py",
       "sha256": "5013ccd913b48e91c4f8c209e05b4f6f36c49256163e1bde24020b1d6ed504c1",
       "component": "core"
@@ -4765,7 +4775,7 @@
     },
     {
       "path": "tools/run_tests.py",
-      "sha256": "dff03d900c29b3c380013adf563173d2b4f88c34599b7e51f7ba3f2e20f256ba",
+      "sha256": "42752cbbff3e01066ae3d5e248a160a922f86d22df1cab0c8d339290302a4fc1",
       "component": "core"
     },
     {
