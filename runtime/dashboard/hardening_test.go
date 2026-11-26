@@ -115,3 +115,57 @@ func TestDockerLocalNamesAMissingDigest(t *testing.T) {
 		t.Fatalf("exit %v: %s", err, out)
 	}
 }
+
+func TestDockerLocalUsesTheChosenEngine(t *testing.T) {
+	sh, err := exec.LookPath("sh")
+	if err != nil {
+		t.Skip("no sh")
+	}
+	dir := t.TempDir()
+	bin := filepath.Join(dir, "bin")
+	if err := os.Mkdir(bin, 0700); err != nil {
+		t.Fatal(err)
+	}
+	calls := filepath.Join(dir, "calls")
+	root := filepath.Join(dir, "project")
+	if err := os.MkdirAll(filepath.Join(root, ".git"), 0700); err != nil {
+		t.Fatal(err)
+	}
+	stubs := map[string]string{"go": "#!/bin/sh\nprintf 'p1\\t%s\\n' " + root + "\n", "docker": "#!/bin/sh\necho \"$*\" >> " + calls + "\nexit 0\n"}
+	for tool, body := range stubs {
+		if err := os.WriteFile(filepath.Join(bin, tool), []byte(body), 0700); err != nil {
+			t.Fatal(err)
+		}
+	}
+	projectsFile := filepath.Join(dir, "projects.json")
+	feed := filepath.Join(dir, "feed")
+	if err := os.WriteFile(projectsFile, []byte("[]"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Mkdir(feed, 0700); err != nil {
+		t.Fatal(err)
+	}
+	run := func(extra ...string) (string, error) {
+		os.Remove(calls)
+		cmd := exec.Command(sh, "docker-local.sh", "share", "sha256:"+strings.Repeat("a", 64))
+		cmd.Env = append([]string{"PATH=" + bin + ":/usr/bin:/bin", "DASHBOARD_PROJECTS=" + projectsFile, "DASHBOARD_FEED=" + feed,
+			"DASHBOARD_SHARE_HOST=dash-*.share.example.test", "DASHBOARD_SHARE_DOMAIN=share.example.test"}, extra...)
+		out, err := cmd.CombinedOutput()
+		got, _ := os.ReadFile(calls)
+		return string(out) + string(got), err
+	}
+	out, err := run()
+	if err != nil || strings.Contains(out, "--context") || !strings.Contains(out, "run --detach") {
+		t.Fatalf("default engine: %v: %s", err, out)
+	}
+	out, err = run("DASHBOARD_DOCKER_CONTEXT=partner-engine")
+	if err != nil || strings.Count(out, "--context partner-engine ") < 2 {
+		t.Fatalf("chosen engine: %v: %s", err, out)
+	}
+	for _, bad := range []string{"DASHBOARD_DOCKER_CONTEXT=a b", "DASHBOARD_DOCKER_CONTEXT=-H tcp://x", "DASHBOARD_BUILDER=x;y"} {
+		out, err = run(bad)
+		if exit, ok := err.(*exec.ExitError); !ok || exit.ExitCode() != 2 || strings.Contains(out, "run --detach") {
+			t.Fatalf("accepted %q: %v: %s", bad, err, out)
+		}
+	}
+}

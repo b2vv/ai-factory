@@ -204,7 +204,7 @@ var sharedPage = template.Must(template.New("shared-dashboard").Parse(`<!doctype
 </main></body></html>`))
 
 // shareTunnelHost lets the share listener accept a request from a local share tunnel
-// that rewrites the authority (Kiri Share sends Host: localhost:<port> and the public
+// that rewrites the authority (Kiri Share, for one, sends Host: localhost:<port> and the public
 // name in X-Forwarded-Host). Only this exact shape is mapped to the share host: the
 // loopback authority of this listener, exactly one X-Forwarded-Host equal to the share
 // host and exactly one X-Forwarded-Proto of https. Anything else is passed on unchanged,

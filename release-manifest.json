@@ -675,7 +675,7 @@
     },
     {
       "path": "runtime/dashboard/README.md",
-      "sha256": "3c79f91870bb3e391d9a1d2e265ad9b2eb455745c9274f8b157ae6acb01c93fa",
+      "sha256": "8a7bac9540990aeace4839db507a19c55b3c0b03e7264e65f9cc1223efec51ba",
       "component": "dashboard"
     },
     {
@@ -690,7 +690,7 @@
     },
     {
       "path": "runtime/dashboard/docker-local.sh",
-      "sha256": "0fed7343952d8b50990754e65a8282f8dc626770588045ae9fb7cb6f4f324f59",
+      "sha256": "21045ab4454399c4322aa50984dc0c4f4c9bb685643f6fb6691c8b61006b94f5",
       "component": "dashboard"
     },
     {
@@ -710,7 +710,7 @@
     },
     {
       "path": "runtime/dashboard/hardening_test.go",
-      "sha256": "6229f0ac029a106fe3bc06287d1b55a536170eb638e3700b84d3396b17c8098c",
+      "sha256": "16af8b1dfa67eb3260aa6514021bfa83dfec019727f099e38bb399634c06e4c4",
       "component": "dashboard"
     },
     {
@@ -765,12 +765,12 @@
     },
     {
       "path": "runtime/dashboard/share.env.example",
-      "sha256": "4e43aa655e225ab7165655f24ea4236b2f53f62a52401b36a2fc2f73feacb0d3",
+      "sha256": "726412aa3733b6852627826fc8168a4d60207df4efebdd5101b0aa9d00c4a841",
       "component": "dashboard"
     },
     {
       "path": "runtime/dashboard/share.go",
-      "sha256": "5648060033304abf9bb7405d6ab64a88bb1858b7a3473c94837c747f080d01d3",
+      "sha256": "1b3488694e170657babbdde94e54da3588d2b4108880d3388d9d0713ed8eaed3",
       "component": "dashboard"
     },
     {

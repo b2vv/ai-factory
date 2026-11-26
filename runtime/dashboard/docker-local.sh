@@ -1,20 +1,35 @@
 #!/bin/sh
-# Build or run the local dashboard with the explicit Kiri engine and builder.
+# Build or run the local dashboard.
 # The project list comes from DASHBOARD_PROJECTS (a JSON file outside the kit);
 # the private feed directory comes from DASHBOARD_FEED.
+# DASHBOARD_DOCKER_CONTEXT selects the Docker engine and DASHBOARD_BUILDER the buildx
+# builder; leave either unset to use the current one.
 set -eu
 cd "$(dirname "$0")"
 tag=factory-dashboard:local
 action="${1:-}"
+docker_name() {
+  printf '%s\n' "$2" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$' || { echo >&2 "invalid $1 name"; exit 2; }
+}
+dock=docker
+if [ -n "${DASHBOARD_DOCKER_CONTEXT:-}" ]; then
+  docker_name 'Docker context' "$DASHBOARD_DOCKER_CONTEXT"
+  dock="docker --context $DASHBOARD_DOCKER_CONTEXT"
+fi
+builder=
+if [ -n "${DASHBOARD_BUILDER:-}" ]; then
+  docker_name builder "$DASHBOARD_BUILDER"
+  builder="--builder $DASHBOARD_BUILDER"
+fi
 if [ "$action" = build ]; then
   context="$(mktemp -d "${TMPDIR:-/tmp}/dashboard-image.XXXXXXXX")"
   trap 'rm -f "$context/factory-dashboard" "$context/Dockerfile"; rmdir "$context"' EXIT HUP INT TERM
   CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOPROXY=off go build -trimpath -o "$context/factory-dashboard" .
   file "$context/factory-dashboard"
   cp Dockerfile "$context/Dockerfile"
-  docker --context kiri buildx build --builder kiri-build --platform linux/amd64 --load --network none \
+  $dock buildx build $builder --platform linux/amd64 --load --network none \
     --build-arg DASHBOARD_UID="$(id -u)" --build-arg DASHBOARD_GID="$(id -g)" --tag "$tag" "$context"
-  docker --context kiri image inspect "$tag" --format '{{.Id}} {{.Os}}/{{.Architecture}}'
+  $dock image inspect "$tag" --format '{{.Id}} {{.Os}}/{{.Architecture}}'
   exit
 fi
 case "$action" in
@@ -59,8 +74,8 @@ if [ "$action" = share ]; then
   esac
   network=factory-dashboard-share
 fi
-if ! docker --context kiri network inspect "$network" >/dev/null 2>&1; then
-  docker --context kiri network create --driver bridge --label app=ai-factory-dashboard "$network"
+if ! $dock network inspect "$network" >/dev/null 2>&1; then
+  $dock network create --driver bridge --label app=ai-factory-dashboard "$network"
 fi
 set -- --detach --platform linux/amd64 --label app=ai-factory-dashboard --network "$network" \
  --read-only --cap-drop ALL --security-opt no-new-privileges:true --user "$(id -u):$(id -g)" --pids-limit 32 --memory 128m \
@@ -80,18 +95,19 @@ if [ "$action" = share ]; then
   if [ "$share_auth" = on ]; then
     set -- "$@" --mount "type=bind,src=$DASHBOARD_SHARE_DIGEST,dst=/inputs/share-digest,readonly"
   fi
-  # $inputs is a fixed, space-separated argument list without user values.
+  # $inputs is a fixed, space-separated argument list without user values;
+# $dock and $builder hold only validated names.
   set -- "$@" --name factory-dashboard-share --no-healthcheck \
     --publish 127.0.0.1:8734:8734 "$image" -container -port 8734 $inputs \
     -share-host "$DASHBOARD_SHARE_HOST" -share-domain "$DASHBOARD_SHARE_DOMAIN"
   if [ "$share_auth" = on ]; then
     set -- "$@" -share-auth -share-digest /inputs/share-digest
   fi
-  exec docker --context kiri run "$@"
+  exec $dock run "$@"
 fi
 if [ "$action" = candidate ]; then
-  exec docker --context kiri run "$@" --name factory-dashboard-expansion-candidate --no-healthcheck \
+  exec $dock run "$@" --name factory-dashboard-expansion-candidate --no-healthcheck \
     --publish 127.0.0.1:8733:8733 "$image" -container -port 8733 $inputs
 fi
-exec docker --context kiri run "$@" --name factory-dashboard --restart unless-stopped \
+exec $dock run "$@" --name factory-dashboard --restart unless-stopped \
   --publish 127.0.0.1:8732:8732 "$image"

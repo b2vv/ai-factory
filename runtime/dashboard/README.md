@@ -47,9 +47,11 @@ npm run build
 GOPROXY=off go run . -projects "$HOME/.config/factory-dashboard/projects.json" -feed /absolute/private/feed
 ```
 
-Open <http://127.0.0.1:8732/> on that host. To run in the existing local Kiri
-context, build the statically linked Linux/amd64 scratch image with
-`sh docker-local.sh build` after building the browser bundle. The image runs
+Open <http://127.0.0.1:8732/> on that host. To run in Docker, build the
+statically linked Linux/amd64 scratch image with `sh docker-local.sh build`
+after building the browser bundle. The launcher uses the current Docker
+context and buildx builder; set `DASHBOARD_DOCKER_CONTEXT` and
+`DASHBOARD_BUILDER` to choose others (plain names only). The image runs
 as a non-root user; the launcher passes your user and group IDs as the
 `DASHBOARD_UID`/`DASHBOARD_GID` build arguments (default 65532). The launcher
 requires `DASHBOARD_PROJECTS` and `DASHBOARD_FEED` (absolute host paths
@@ -61,7 +63,7 @@ honors host-loopback publication. Verify actual listeners for IPv4 and IPv6;
 a Host header check is not a network access restriction. The local listener
 also refuses any request carrying proxy headers (`Forwarded`, `Via`,
 `X-Forwarded-*`, `X-Real-IP`, `CF-Connecting-IP`, `True-Client-IP`): it has no
-login and must never sit behind a proxy or tunnel. Do not use Kiri Share
+login and must never sit behind a proxy or tunnel. Do not use a share tunnel
 to publish internal reports. Never build or replace
 the service for a record update. The container has a dedicated bridge,
 loopback-only publishing, no Docker socket, non-root user, read-only root,
@@ -71,13 +73,15 @@ configured project's read-only `.git` metadata to verify HEAD. It mounts no proj
 The reader supports ordinary SHA-1 Git checkouts with loose/packed refs; Git
 worktree indirection and reftable are unsupported and fail closed.
 
-## Optional Kiri Share view
+## Optional share view (your own tunnel)
 
 This is a separate authenticated Dashboard. The owner sees the same information
 as on port 8732. Colleagues see only the configured project names, their status
 labels, and the read time. Their account cannot retrieve reports, task titles,
 revisions, evidence sources, or the full dashboard assets. The normal Dashboard
-remains on port 8732 without a login. **Never point Kiri Share at port 8732.**
+remains on port 8732 without a login. **Never point a share tunnel at port 8732.**
+Use any HTTPS tunnel or share service you trust (for example Kiri Share,
+Cloudflare Tunnel or ngrok); set its hostname and domain in `share.env`.
 
 The share listener is closed by default. With `DASHBOARD_SHARE_AUTH=off`
 (or omitted), all requests on it return 403, including requests that carry
@@ -141,15 +145,15 @@ Check that a status login returns only the projected status and all
 private routes return 404 for that login. Verify full Dashboard behavior with
 the separate full login.
 
-Only then may an explicitly approved Kiri Share HTTPS link target
+Only then may an explicitly approved HTTPS share link target
 `127.0.0.1:8734`. The URL is public: the application's login restricts access,
-not the link. Kiri handles browser HTTPS, so trust its service with the Basic
+not the link. The tunnel handles browser HTTPS, so trust its service with the Basic
 Auth headers and all responses, including the reports sent to the owner. Verify on the actual HTTPS link that an
 unauthenticated viewer gets a login challenge, a valid login works, and a
 detail URL remains unavailable to the status account. If the host is unknown, identify it before
-pointing the tunnel at a data-serving process. Kiri Share forwards `Host: localhost:8734`
-with the public name in `X-Forwarded-Host`; the share listener (never port 8732) maps
-only that exact shape — its own loopback authority, one `X-Forwarded-Host` equal to the
+pointing the tunnel at a data-serving process. A tunnel either keeps the public `Host`
+(accepted as is) or, like Kiri Share, forwards `Host: localhost:8734` with the public name
+in `X-Forwarded-Host`; the share listener (never port 8732) maps only that exact shape — its own loopback authority, one `X-Forwarded-Host` equal to the
 share host and one `X-Forwarded-Proto: https` — to the share host; any other forwarded
 value is refused, and login is still required. If a tunnel does not preserve the
 authentication header, disconnect the share rather than relaxing the checks. Use a separate channel to distribute the credential.
