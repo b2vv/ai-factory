@@ -113,6 +113,19 @@ file under the kit root named in the project's managed block (`<kit>/skills/**/<
 directory. Once resolved, a skill linked from it is already in the real tree: keep joining from real paths. A link
 that fails from the symlinked path is not missing until it also fails from the real path.
 
+### 6. Small work leaves a record
+
+Work below the project's spec/plan threshold still leaves history. Before you report the result of a small task that
+took more than one step, append a short entry to the existing task record it belongs to (the task, plan or phase
+record the project uses; a new short task record in the project's task directory only when none fits — every
+connected project has one in its `work/` layout), with no second tracker: the owner's words that
+asked for or allowed it, what changed (files, commits, settings), what was checked and what was not checked. This
+includes work outside the repository (notes vaults, host files, other projects' local files). Only a trivial one-step
+action needs no record. The same record carries the short checkpoint before the change
+([pre-code-checkpoint.md](../ai-factory/pre-code-checkpoint.md), "Small"); this rule makes the end of the work land
+there too. **Why this is here:** the rule existed in the workflow documents, but small tasks were executed and
+reported only in chat, so their history was lost.
+
 ## How to add a rule
 
 1. A file in `rules/`, an entry in [`rules/README.md`](README.md).
