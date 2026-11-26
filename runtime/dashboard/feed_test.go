@@ -141,16 +141,18 @@ func TestAtomicPublisherAndDynamicRoute(t *testing.T) {
 		t.Fatal("replayed old timestamp")
 	}
 	writeHead(t, r.repo("project-a"), strings.Repeat("b", 40))
-	if code, _, _ := get("/api/details/project-a"); code != 404 {
-		t.Fatal("mismatched HEAD exposed details")
+	// A moved HEAD keeps the last record readable, marked Stale with the commit it was recorded for.
+	if code, txt, _ := get("/api/details/project-a"); code != 200 || txt != p.Markdown {
+		t.Fatal("stale record lost its details")
 	}
 	card, rec := r.readOne("project-a", now.Add(time.Second))
-	if card.State != "Stale" || card.DetailID != "" || card.DetailToken != "" || rec.Project != "" {
-		t.Fatal("stale record must show as Stale without details or a usable record")
+	if card.State != "Stale" || card.DetailToken == "" || rec.Project != "project-a" ||
+		!strings.Contains(card.Provenance, "не підтверджують поточний стан") {
+		t.Fatalf("stale record must show as Stale with its last details: %+v", card)
 	}
-	for _, st := range card.Stages {
-		if st.State != "Unknown" {
-			t.Fatal("stale card showed a stage as current")
+	for i, st := range card.Stages {
+		if st.State != p.Stages[i].State {
+			t.Fatal("stale card did not keep the recorded stage")
 		}
 	}
 }
@@ -172,25 +174,27 @@ func TestStaleCard(t *testing.T) {
 		}
 		return r
 	}
-	allUnknown := func(t *testing.T, c project) {
+	// A non-current card keeps the recorded stages and says they are not the current state.
+	lastKnown := func(t *testing.T, c project) {
 		t.Helper()
-		for _, st := range c.Stages {
-			if st.State != "Unknown" {
-				t.Fatalf("stage %s shown as %s on a non-current card", st.Name, st.State)
+		want := fixture(now).Stages
+		for i, st := range c.Stages {
+			if st.State != want[i].State || st.Detail != want[i].Detail {
+				t.Fatalf("stage %s shown as %s, recorded %s", st.Name, st.State, want[i].State)
 			}
 		}
-		if c.DetailID != "" || c.DetailToken != "" {
-			t.Fatal("non-current card offered details")
+		if !strings.Contains(c.Provenance, "коміту aaaaaaa") || !strings.Contains(c.Provenance, "не підтверджують поточний стан") {
+			t.Fatalf("non-current card does not say its stages are not current: %q", c.Provenance)
 		}
 	}
 	t.Run("revision moved", func(t *testing.T) {
 		r := setup(t, fixture(now), other)
 		c, rec := r.readOne("project-a", now)
-		if c.State != "Stale" || c.Task != "Fixture" || rec.Project != "" ||
+		if c.State != "Stale" || c.Task != "Fixture" || rec.Project != "project-a" ||
 			!strings.Contains(c.Next, "коміту aaaaaaa; HEAD відтоді змінився") || !strings.Contains(c.Next, "Review plan") {
 			t.Fatalf("unexpected card: %+v", c)
 		}
-		allUnknown(t, c)
+		lastKnown(t, c)
 	})
 	t.Run("too old", func(t *testing.T) {
 		p := fixture(now.Add(-feedTTL - time.Minute))
@@ -199,7 +203,7 @@ func TestStaleCard(t *testing.T) {
 		if c.State != "Stale" || !strings.Contains(c.Next, "понад 48 год тому") {
 			t.Fatalf("unexpected card: %+v", c)
 		}
-		allUnknown(t, c)
+		lastKnown(t, c)
 	})
 	t.Run("both: revision reason first", func(t *testing.T) {
 		r := setup(t, fixture(now.Add(-feedTTL-time.Minute)), other)

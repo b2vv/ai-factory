@@ -3,7 +3,8 @@
 A read-only, local view for the projects you list in a projects config. The
 dashboard reads explicitly published status records, not agent activity,
 working-tree code, archives, raw task logs, or chat transcripts. It displays
-Unknown for missing, invalid, stale or mismatched records.
+Unknown for missing, invalid or mismatched records, and marks a stale record as
+Stale while still showing what it recorded.
 
 ## Projects config
 
@@ -214,8 +215,10 @@ poll (~10s) without any image build, container restart, or repo edit.
   freshness guard, not proof of uncommitted bytes or independent sign-off.
   Updating `updatedAt` without rechecking the evidence is not a new observation.
 - A record that is otherwise valid but no longer current (HEAD moved, or older than 48 hours)
-  is shown as **Stale** ("Застаріло"): its task, title and last next action with the reason,
-  all six stages Unknown and no details. Its content is checked in full first (text, path/URL
+  is shown as **Stale** ("Застаріло"): its task, title, last next action with the reason, and the
+  six stages, sources and details as recorded, under a line naming the commit they were recorded
+  for and saying they do not confirm the current state. Projects commit often, so hiding them
+  left almost every card empty. Its content is checked in full first (text, path/URL
   guard, 40-hex revision, sources, stages, state); a record failing that check shows the bare
   "not confirmed" card. A present transition file keeps its own behavior. The status-only share
   view shows the state `Stale`.

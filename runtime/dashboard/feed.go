@@ -275,11 +275,12 @@ func (p feedRecord) validateContent(id string) error {
 	return errors.New("project summary state contradicts stages")
 }
 
-// staleCard shows the last known task of a content-valid record that is no longer current.
-// Stages stay Unknown and no details are offered: stale evidence is never shown as current.
-func (p feedRecord) staleCard(head string, reason staleReason, workflow string) project {
-	out := base(p.Project, projects.name(p.Project), p.Title, head)
-	out.State, out.Observed, out.Workflow = "Stale", p.UpdatedAt.UTC().Format(time.RFC3339), workflow
+// staleCard shows the last known record of a content-valid record that is no longer current:
+// its task, stages, sources and details as recorded, under the Stale state and a line naming
+// the commit and time they were recorded for, so they are never read as the current state.
+func (p feedRecord) staleCard(head, token string, reason staleReason, workflow string) project {
+	out := p.card(head, token)
+	out.State, out.Workflow = "Stale", workflow
 	why := "Записано " + p.UpdatedAt.UTC().Format("02.01 15:04") + " UTC, понад 48 год тому."
 	if reason == staleRevision {
 		why = "Записано для коміту " + p.Revision[:7] + "; HEAD відтоді змінився."
@@ -288,7 +289,8 @@ func (p feedRecord) staleCard(head string, reason staleReason, workflow string) 
 		}
 	}
 	out.Next = why + " Останній відомий наступний крок: " + p.Next
-	out.Provenance = "Застарілий запис: етапи не підтверджено для поточного стану."
+	out.Provenance = "Етапи нижче — з останнього запису для коміту " + p.Revision[:7] +
+		". Вони показують, що було зафіксовано тоді, і не підтверджують поточний стан."
 	return out
 }
 
@@ -361,7 +363,7 @@ func (r roots) readStatus(id string, now time.Time) (project, feedRecord) {
 		return card, f
 	}
 	if content && f.Schema == feedSchema && (reason == staleRevision || reason == staleAge) {
-		return f.staleCard(head, reason, out.Workflow), feedRecord{}
+		return f.staleCard(head, digestBytes(statusRaw), reason, out.Workflow), f
 	}
 	if !usable || f.Schema != feedSchema {
 		return out, feedRecord{}
