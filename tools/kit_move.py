@@ -45,7 +45,8 @@ MARKER = 'move-interrupted.json'
 RECORDS = 'move-records'
 HOME_STATE = '.agents/.ai-factory-instructions'
 CARRIED = ('projects.json', 'archive.json', 'dashboard.json', 'handoff.json', 'dashboard-projects.json',
-           'capture-registration.json', 'instruction-registration.json')
+           'capture-registration.json', 'instruction-registration.json', 'dashboard-reminder.json',
+           'dashboard-reminded.json')
 SPECS = ('capture-registration.json', 'instruction-registration.json')
 BUSY = ('pending.json', 'capture-update-pending.json', 'instruction-update-pending.json', 'project-op-pending.json')
 SEARCH_ROUTES = 'runtime/storage/deploy/search-client/search-routes.json'

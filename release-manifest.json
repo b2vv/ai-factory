@@ -270,7 +270,7 @@
     },
     {
       "path": "docs/dashboard-status.md",
-      "sha256": "75b183c02bff595554eb3a991f372047dabe59fe93611aa45ae257e8d98d5008",
+      "sha256": "dfd89932a9cc3e5148130f56d4aaa7f0a67837e530188c80986fa443b6f7b584",
       "component": "core"
     },
     {
@@ -585,7 +585,7 @@
     },
     {
       "path": "provenance/source-map.json",
-      "sha256": "b2731a2fc0141fcb53ce9afdbefe20bf63edf6b4668422cc24a1ce7592731b06",
+      "sha256": "590bc78869d7caee138bb20f5185a6d8577d09f1abaaeb8450992a4b3ec19ff8",
       "component": "core"
     },
     {
@@ -600,7 +600,7 @@
     },
     {
       "path": "rules/agent-entry.md",
-      "sha256": "e3b7053e65ca6ced514f526765d821dcf4349ab08d940dede51945c9596bd8b0",
+      "sha256": "d1ead5b54cb95e441bbbc414731a6091b8f767cd39788bc0c8ab27b8d9faba57",
       "component": "core"
     },
     {
@@ -4384,6 +4384,11 @@
       "component": "core"
     },
     {
+      "path": "tests/collection/test_dashboard_publish_rule.py",
+      "sha256": "b51bae6121d706604a77958dbf0798388fad9f61f659d453e0b5addf862e3c0f",
+      "component": "core"
+    },
+    {
       "path": "tests/collection/test_design_semantics_text.py",
       "sha256": "08f83e0e1673ba5e61e35dc662f7e62c19a28815146ab3af18fb64c00876caf1",
       "component": "core"
@@ -4536,6 +4541,11 @@
     {
       "path": "tests/projects/test_clean_machine.py",
       "sha256": "95afa15259aa24d4f2d045318775102a19a8aa36ca0eb1633248789104131221",
+      "component": "core"
+    },
+    {
+      "path": "tests/projects/test_dashboard_reminder.py",
+      "sha256": "4e81118d2a88c6aa627911ccd042cf8215539f8dd80aa29900a0fdc6454d2bfe",
       "component": "core"
     },
     {
@@ -4749,6 +4759,11 @@
       "component": "core"
     },
     {
+      "path": "tools/dashboard_reminder.py",
+      "sha256": "4977202e2c8e90e8d01d944ac3f561479d0c53f4583b9c4e3ba08783c7e68a9d",
+      "component": "core"
+    },
+    {
       "path": "tools/export_release.py",
       "sha256": "2e03d1255180ef455f97f5234a1f7cc0342d560a4b1bb9fddfab78416edee3f2",
       "component": "core"
@@ -4765,7 +4780,7 @@
     },
     {
       "path": "tools/kit_move.py",
-      "sha256": "7d1cf7f8d6e72eb9e891a438c6108a40c7c118470344e873bcdc3f6dd212dd33",
+      "sha256": "fc3093bf0ad9540b6058ae207091c591eb26f1a97dde0062e5f6363e5ca46c62",
       "component": "core"
     },
     {
@@ -4785,7 +4800,7 @@
     },
     {
       "path": "tools/projects.py",
-      "sha256": "4ccc8c91e1ec07102eb66703e27428aee08c45fe26e1da027457a71b71ae186d",
+      "sha256": "9e9338ff0d3dd34e32915580fbd2911783e8f8c6a5420c2743d0ffa50cbe273b",
       "component": "core"
     },
     {

@@ -10,7 +10,8 @@ the next write command. No secret values are printed; `list` prints no route or 
 With an archive configuration (`project archive`), install also issues the project's archive
 access (grants, credential files, search route and contract, worker) under the operator's
 authority and remove revokes it; see tools/project_archive.py. With a dashboard configuration
-(`project dashboard`), `project status` publishes an agent's task status (tools/project_dashboard.py)
+(`project dashboard`, which also registers the kit's publish reminder Stop hook for Claude Code and Codex,
+tools/dashboard_reminder.py; `--no-reminder` removes it), `project status` publishes an agent's task status (tools/project_dashboard.py)
 and install adds the publishing pointer to the project's managed block. `kit.py update` reports each listed project
 through check_projects (read-only); `project group` sets an entry's group. Kit moves (P10) are not done here.
 """
@@ -782,18 +783,163 @@ def dashboard_import(root, args):
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
 
 
+# --- dashboard publish reminder (T36): the kit's own Stop hook, only with a dashboard ------------
+
+REMINDER_REG = 'dashboard-reminder.json'
+REMINDER = 'tools/dashboard_reminder.py'
+HOOK_FILES = {'claude': '.claude/settings.json', 'codex': '.codex/hooks.json'}
+HOME_OWNER = '.agents/.ai-factory-instructions/owner.json'
+REMINDER_TIMEOUT = 15
+
+
+def reminder_home(root, explicit):
+    """The home a kit registration names (as kit_move.find_home does), or --home; never guessed from the environment."""
+    named = set()
+    for name in (CAPTURE_REG, INSTRUCTION_REG):
+        reg = private_json(root / k.STATE / name)
+        home = reg.get('spec', {}).get('home') if isinstance(reg, dict) and isinstance(reg.get('spec'), dict) else None
+        if isinstance(home, str): named.add(str(k.absolute(home)))
+    if explicit is not None:
+        home = str(k.absolute(explicit))
+        if named and named != {home}: raise Blocked('--home differs from the home the kit registrations name')
+        named = {home}
+    if len(named) > 1: raise Blocked('the kit registrations name different homes')
+    if not named: return None
+    home = k.absolute(named.pop())
+    if not home.is_dir(): raise Blocked('the home directory does not exist')
+    owner = private_json(home / HOME_OWNER)
+    if owner is not None and owner != {'schema': 1, 'root': str(root)}:
+        raise Blocked('home already bound to another managed root')  # one kit per home (T15 A17)
+    return home
+
+
+def reminder_command(root, host):
+    python = Path(sys.executable)
+    if not python.is_absolute(): raise Blocked('the Python running the kit has no absolute path')
+    return shlex.join([str(python), '-I', '-B', str(root / REMINDER), '--kit', str(root), '--host', host])
+
+
+def hook_doc(raw):
+    """A host hook file (Claude settings.json or Codex hooks.json) in the shape the kit's hook writers accept."""
+    doc = {} if raw is None else strict(raw)
+    if not isinstance(doc, dict) or not isinstance(doc.get('hooks', {}), dict): raise Blocked('unsupported hooks configuration')
+    for groups in doc.get('hooks', {}).values():
+        if not isinstance(groups, list): raise Blocked('unsupported hooks configuration')
+        for g in groups:
+            if not isinstance(g, dict) or not isinstance(g.get('hooks'), list) or any(not isinstance(h, dict) for h in g['hooks']):
+                raise Blocked('unsupported hooks configuration')
+    return doc
+
+
+def permissions_digest(raw):
+    # Same pin as connect-capture.py / connect-handoff.py (C6): only the own hook and the permissions section.
+    d = strict(raw) if raw is not None else {}
+    return k.digest(k.encode(d.get('permissions') if isinstance(d, dict) else None))
+
+
+def reminder_handler(command):
+    return {'type': 'command', 'command': command, 'timeout': REMINDER_TIMEOUT}
+
+
+def edit_reminder(doc, name, old, wanted):
+    """Move this file's reminder hook from `old` (the registered command or None) to `wanted` (None = absent).
+
+    Only the exact own group is touched; other hooks keep their order. Returns True when the document changed."""
+    hooks = doc.setdefault('hooks', {})
+    def matches(command):
+        return [(event, i, g) for event, groups in hooks.items() for i, g in enumerate(groups)
+                for h in g['hooks'] if h.get('command') == command]
+    if old is None:
+        if wanted is None: return False
+        if matches(wanted): raise Blocked(f'{name} already has a reminder hook the kit did not register')
+        hooks.setdefault('Stop', []).append({'hooks': [reminder_handler(wanted)]})
+        return True
+    found = matches(old)
+    if not found:
+        if wanted is None: return False  # the owner already removed it
+        raise Blocked(f'the registered reminder hook is missing from {name}: remove it with --no-reminder --apply, then register again')
+    if len(found) != 1 or found[0][0] != 'Stop' or found[0][2] != {'hooks': [reminder_handler(old)]}:
+        raise Blocked(f'the registered reminder hook in {name} was changed: remove it with --no-reminder --apply, then register again')
+    _, i, _ = found[0]
+    if wanted == old: return False
+    if wanted is None:
+        del hooks['Stop'][i]
+        if not hooks['Stop']: del hooks['Stop']
+    else:
+        hooks['Stop'][i] = {'hooks': [reminder_handler(wanted)]}  # same place
+    return True
+
+
+def reminder_plan(root, args):
+    """(report, writes, record bytes or None) for the reminder hook; writes = [(path, bytes or None, mode)]."""
+    rec_path = root / k.STATE / REMINDER_REG
+    prior = private_json(rec_path)
+    if prior is not None and (not isinstance(prior, dict) or prior.get('schema') != 1 or not isinstance(prior.get('hooks'), list)):
+        raise Blocked('invalid dashboard reminder record')
+    owned = {h['host']: h for h in (prior or {'hooks': []})['hooks']}
+    report, targets = {'action': 'remove' if args.no_reminder else 'register', 'hosts': {}}, {}
+    if not args.no_reminder:
+        home = reminder_home(root, args.home)
+        if home is None:
+            report['note'] = 'no kit registration names the home: pass --home to register the reminder'
+        elif not (root / REMINDER).is_file():
+            report['note'] = 'the reminder hook is not installed in this kit: update the kit, then rerun'
+        else:
+            targets = {host: home / rel for host, rel in HOOK_FILES.items() if (home / rel).parent.is_dir()}
+    writes, hooks = [], []
+    if not args.no_reminder:  # registering never drops a host it cannot see now; only --no-reminder removes
+        hooks = [owned[h] for h in sorted(set(owned) - set(targets))]
+    for host in sorted(set(targets) | (set(owned) if args.no_reminder else set())):
+        old = owned.get(host)
+        if old and host in targets and str(targets[host]) != old['path']:
+            raise Blocked('the reminder is registered in another home: remove it with --no-reminder --apply first')
+        path = k.absolute(old['path'] if old else targets[host])
+        raw = k.regular(path)
+        doc = hook_doc(raw)
+        wanted = reminder_command(root, host) if host in targets else None
+        if old and wanted and raw is not None and permissions_digest(raw) != old['permissions']:
+            raise Blocked(f'the permissions in {path.name} changed since the reminder was registered: review them, '
+                          'remove the reminder with --no-reminder --apply, then register it again')
+        changed = edit_reminder(doc, path.name, old['command'] if old else None, wanted)
+        created = old['created'] if old else raw is None
+        data = k.encode(doc) if changed else raw
+        if changed and wanted is None and created and doc == {'hooks': {}}: data = None  # the file was the kit's own
+        mode = k.signature(path)['mode'] if raw is not None else 0o600
+        if changed: writes.append((path, data, mode))
+        report['hosts'][host] = {'file': str(path), 'hook': ('registered' if not changed else 'register' if not old else 'update')
+                                 if wanted else ('remove' if changed else 'absent')}
+        if wanted: hooks.append({'host': host, 'path': str(path), 'command': wanted, 'created': created,
+                                 'permissions': permissions_digest(data)})
+    if any(h['host'] == 'codex' for h in hooks):
+        report['codex_trust'] = ('Codex runs a new or changed hook only after the owner reviews and trusts it in Codex (/hooks); '
+                                 'the kit never writes Codex trust')
+    if not args.no_reminder:
+        report['remove_with'] = 'rerun this command with --no-reminder --apply'
+    hooks.sort(key=lambda h: h['host'])
+    record = k.encode({'schema': 1, 'hooks': hooks}) if hooks else None
+    return report, writes, record
+
+
 def dashboard(root, args):
-    """Write the dashboard publishing configuration: paths only."""
+    """Write the dashboard publishing configuration (paths only) and register its publish reminder hook."""
     cfg = DB.build_config(args)
     listed = DB.validate_projects(cfg)
     path = root / k.STATE / DB.CONFIG
     data = k.encode(cfg)
-    out = {'status': 'NOOP' if k.regular(path) == data else 'PLANNED (dry-run; pass --apply to write)',
-           'config': str(path), 'dashboard_projects': sorted(listed),
-           'effect': 'agents publish statuses with `kit.py project status`; rerun `project install` to add the pointer to each project'}
+    reminder, writes, record = reminder_plan(root, args)
+    rec_path = root / k.STATE / REMINDER_REG
+    unchanged = k.regular(path) == data and not writes and k.regular(rec_path) == record
+    out = {'status': 'NOOP' if unchanged else 'PLANNED (dry-run; pass --apply to write)',
+           'config': str(path), 'dashboard_projects': sorted(listed), 'reminder': reminder,
+           'effect': 'agents publish statuses with `kit.py project status`; rerun `project install` to add the pointer to each project; '
+                     'the Stop reminder asks once per new commit in a dashboard project to publish or say why not'}
     if out['status'] == 'NOOP' or not args.apply: return out
+    steps = [('config', lambda: guarded(path, data))]
+    for target, raw, mode in writes:
+        steps.append(('reminder-hook', lambda target=target, raw=raw, mode=mode: guarded(target, raw, mode)))
+    steps.append(('reminder-record', lambda: guarded(rec_path, record)))
     with operation(root, None) as restored:
-        op = commit(root, 'dashboard', [path], [('config', lambda: guarded(path, data))])
+        op = commit(root, 'dashboard', [path] + [w[0] for w in writes] + [rec_path], steps)
     return {**out, 'status': 'APPLIED', 'op': op} | ({'restored_first': restored} if restored else {})
 
 
@@ -1097,6 +1243,8 @@ def parser():
             p.add_argument('--projects', required=True, help='dashboard projects config (DASHBOARD_PROJECTS)')
             p.add_argument('--feed', required=True, help='private dashboard feed directory (DASHBOARD_FEED)')
             p.add_argument('--go', help='absolute go executable (default: from PATH)')
+            p.add_argument('--home', help='home whose Claude/Codex hook files get the reminder (default: the home a kit registration names)')
+            p.add_argument('--no-reminder', action='store_true', help='remove the publish reminder Stop hook this command registered')
         if name == 'list':
             p.add_argument('--dashboard-config', action='store_true', help='print the generated dashboard projects array')
         if name == 'install':

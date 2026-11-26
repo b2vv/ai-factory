@@ -4431,7 +4431,7 @@
       "source": "~/.agents/AGENTS.md",
       "destination": "rules/agent-entry.md",
       "source_sha256": "b7dffab20ba9d6cc341173912fe192e4df217023a922299f338b3407b915b4fa",
-      "sha256": "e3b7053e65ca6ced514f526765d821dcf4349ab08d940dede51945c9596bd8b0",
+      "sha256": "d1ead5b54cb95e441bbbc414731a6091b8f767cd39788bc0c8ab27b8d9faba57",
       "source_mode": "0o644",
       "transformations": [
         "source/alias local links mapped to included portable destination",
@@ -4446,7 +4446,8 @@
         "Owner-authorized independence through clean context and adequate capability; same-model review allowed, mandatory tier inequality and guessed author tier removed; historical source digests preserved.",
         "Owner-authorized public privacy cleanup, 2026-11-21: private project, person and host identifiers neutralized or removed before republication; original identities retained.",
         "Owner-authorized (T12, 2026-11-23, decision D3 a): relative skill links are opened from the skill's real location in the kit (realpath, no-shell fallback via the kit root); no other behavior change.",
-        "Owner-authorized (T34, 2026-11-25): new before-skill rule §6 'Small work leaves a record' so small multi-step work is recorded in the existing task record in every connected project; no other behavior change."
+        "Owner-authorized (T34, 2026-11-25): new before-skill rule §6 'Small work leaves a record' so small multi-step work is recorded in the existing task record in every connected project; no other behavior change.",
+        "Owner-authorized (T36, 2026-11-27): new before-skill rule §7 'Projects on the dashboard publish their status' so agents in dashboard projects publish after the commit that records a stage, with the kit's Stop reminder as the check; no other behavior change."
       ],
       "category": "canonical-instructions-and-guides",
       "previous_release_destination": "collection/agents/AGENTS.md"

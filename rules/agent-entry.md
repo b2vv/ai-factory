@@ -126,6 +126,17 @@ action needs no record. The same record carries the short checkpoint before the 
 there too. **Why this is here:** the rule existed in the workflow documents, but small tasks were executed and
 reported only in chat, so their history was lost.
 
+### 7. Projects on the dashboard publish their status
+
+When the project's managed block contains "Dashboard status for this project", the project is on the host's dashboard.
+After your own commit that records a stage of the primary task in its task record, publish the status (and the
+open-task list) with the `kit.py project status` command from that block, as `docs/dashboard-status.md` in the kit
+describes, before you report the stage. A commit that records no stage needs no publish. A project without that line
+publishes nothing. Where the dashboard is set up, the kit's Stop reminder (Claude Code and Codex) is the check: once
+per new commit it asks you to publish, or to say in one line why no publish is needed; answer it, do not ignore it or
+work around it. **Why this is here:** the publishing pointer lived only in the managed block, and agents in connected
+projects stopped publishing for days while committing many stages, so the dashboard showed stale cards.
+
 ## How to add a rule
 
 1. A file in `rules/`, an entry in [`rules/README.md`](README.md).

@@ -13,6 +13,18 @@ the status to the project's current HEAD, and the dashboard shows it only while 
 stays there. A later commit by anyone shows the card as "Застаріло" (stale) until the
 next stage is published. That is the intended signal, not an error.
 
+## The reminder
+
+`kit.py project dashboard --apply`, the command that sets the dashboard up on the host, also registers the kit's own
+Stop hook (`tools/dashboard_reminder.py`) in the Claude Code settings and in the Codex hooks file of the home a kit
+registration names (or `--home`), for each host whose directory exists. `project install` never registers it; the
+same command with `--no-reminder --apply` removes it. The hook does nothing outside dashboard projects: it reads the
+dashboard projects list on each Stop, so adding or removing a project from the dashboard changes its scope. When the
+session's Git root is a dashboard project whose HEAD moved past the last published status (or was never published),
+it asks once per commit: publish if a stage was recorded since, or say in one line why no publish is needed. Any
+error leaves it silent. Codex runs a new or changed hook only after the owner reviews and trusts it in Codex
+(`/hooks`); the kit never writes Codex trust.
+
 ## How
 
 Write the status JSON from the task record, then run the command from the managed
