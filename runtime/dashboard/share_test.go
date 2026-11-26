@@ -289,6 +289,78 @@ func TestShareTunnelHost(t *testing.T) {
 	}
 }
 
+func TestShareHostPattern(t *testing.T) {
+	const domain = "share.example.test"
+	for _, valid := range []string{"dash-*.share.example.test", "d*.share.example.test", "factory-dashboard-share-*.share.example.test"} {
+		if !validShareHost(valid, domain) {
+			t.Fatalf("rejected host pattern %q", valid)
+		}
+	}
+	for _, invalid := range []string{"*.share.example.test", "-*.share.example.test", "da*sh.share.example.test", "dash-**.share.example.test",
+		"*dash.share.example.test", "dash-*.*.example.test", "dash-*.other.example.test", "Dash-*.share.example.test",
+		strings.Repeat("a", 63) + "*.share.example.test"} {
+		if validShareHost(invalid, domain) {
+			t.Fatalf("accepted invalid host pattern %q", invalid)
+		}
+	}
+
+	const host = "dash-*.share.example.test"
+	useProjects(t, projectConfig{ID: "project-a", Name: "Project A", Root: "/srv/project-a"})
+	password := strings.Repeat("b", 64) // fixture only
+	accounts := map[string]shareAccount{"colleague": {digest: sha256.Sum256([]byte(password)), access: shareStatus}}
+	read := func() snapshot { return snapshot{CheckedAt: time.Unix(0, 0)} }
+	handler := shareTunnelHost(host, 8734, sharedDashboard(host, accounts, nil, read))
+	tunnel := func(name string) map[string][]string {
+		return map[string][]string{"X-Forwarded-Host": {name}, "X-Forwarded-Proto": {"https"}}
+	}
+	cases := []struct {
+		name, authority, origin string
+		forwarded               map[string][]string
+		login                   bool
+		want                    int
+	}{
+		{"new suffix without login asks for it", "localhost:8734", "", tunnel("dash-k3x9q1.share.example.test"), false, 401},
+		{"new suffix with login", "localhost:8734", "", tunnel("dash-k3x9q1.share.example.test"), true, 200},
+		{"another suffix with login", "127.0.0.1:8734", "", tunnel("dash-zz01.share.example.test"), true, 200},
+		{"same-name origin", "localhost:8734", "https://dash-k3x9q1.share.example.test", tunnel("dash-k3x9q1.share.example.test"), true, 200},
+		{"other-name origin", "localhost:8734", "https://dash-other1.share.example.test", tunnel("dash-k3x9q1.share.example.test"), true, 403},
+		{"direct matching name", "dash-k3x9q1.share.example.test", "", nil, true, 200},
+		{"literal pattern as host", host, "", nil, true, 403},
+		{"literal pattern forwarded", "localhost:8734", "", tunnel(host), true, 403},
+		{"empty suffix", "localhost:8734", "", tunnel("dash-.share.example.test"), true, 403},
+		{"suffix with a hyphen", "localhost:8734", "", tunnel("dash-a-b.share.example.test"), true, 403},
+		{"suffix with a dot", "localhost:8734", "", tunnel("dash-a.b.share.example.test"), true, 403},
+		{"upper-case suffix", "localhost:8734", "", tunnel("dash-ABC.share.example.test"), true, 403},
+		{"other prefix", "localhost:8734", "", tunnel("evil-abc.share.example.test"), true, 403},
+		{"other domain", "localhost:8734", "", tunnel("dash-abc.evil.example.test"), true, 403},
+		{"plain http forwarded", "localhost:8734", "", map[string][]string{"X-Forwarded-Host": {"dash-abc.share.example.test"}, "X-Forwarded-Proto": {"http"}}, true, 403},
+		{"two forwarded hosts", "localhost:8734", "", map[string][]string{"X-Forwarded-Host": {"dash-abc.share.example.test", "dash-abc.share.example.test"}, "X-Forwarded-Proto": {"https"}}, true, 403},
+		{"other local port", "localhost:8732", "", tunnel("dash-abc.share.example.test"), true, 403},
+		{"loopback without forwarding", "localhost:8734", "", nil, true, 403},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := httptest.NewRequest("GET", "http://"+tc.authority+"/api/status", nil)
+			for k, vs := range tc.forwarded {
+				for _, v := range vs {
+					req.Header.Add(k, v)
+				}
+			}
+			if tc.origin != "" {
+				req.Header.Set("Origin", tc.origin)
+			}
+			if tc.login {
+				req.SetBasicAuth("colleague", password)
+			}
+			rec := httptest.NewRecorder()
+			handler.ServeHTTP(rec, req)
+			if rec.Code != tc.want {
+				t.Fatalf("got %d, want %d", rec.Code, tc.want)
+			}
+		})
+	}
+}
+
 func TestSharePasswordsAndAttemptLimit(t *testing.T) {
 	const host = "dash.share.example.test"
 	useProjects(t, projectConfig{ID: "project-a", Name: "Project A", Root: "/srv/project-a"})

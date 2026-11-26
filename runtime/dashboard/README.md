@@ -102,7 +102,12 @@ chmod 600 "$config/share.env" "$config/share.accounts"
 Edit `share.env`: set the exact assigned hostname and the provider domain it
 belongs to (`DASHBOARD_SHARE_DOMAIN`, passed as `-share-domain`; required
 whenever sharing is configured). The hostname must be exactly one DNS label
-under that domain; wildcards, ports, schemes and other hosts are rejected.
+under that domain; ports, schemes and other hosts are rejected. If the provider
+issues a new random suffix each time the link is recreated (for example
+`dash-k3x9q1.share.example.test` after a restart), end that label in one `*`
+after a fixed prefix (`dash-*.share.example.test`): the `*` matches 1–32
+lowercase letters and digits only, never a dot or a hyphen, and the listener
+refuses every name that does not match. A bare `*` label is rejected.
 When ready, change `off` to `on`. In
 `share.accounts`, replace the example logins and all hash placeholders.
 Each line is `login role sha256-digest`, with a single space between fields

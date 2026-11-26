@@ -258,7 +258,7 @@ type shareOptions struct {
 
 func shareHandlerFor(o shareOptions, sources roots) (http.Handler, error) {
 	if o.publishing || o.probe || o.port == 8732 || !validShareHost(o.host, o.domain) {
-		return nil, errors.New("share mode requires its own port, -share-domain and an exact host one label under it")
+		return nil, errors.New("share mode requires its own port, -share-domain and a host one label under it (exact, or that label ending in one *)")
 	}
 	var handler http.Handler = http.HandlerFunc(shareForbidden)
 	if o.auth {
@@ -284,7 +284,7 @@ func main() {
 	port := flag.Int("port", 8732, "local IPv4 port; 0 selects a temporary free port")
 	container := flag.Bool("container", false, "listen on the container bridge; publish only a host loopback port")
 	probe := flag.Bool("probe", false, "verify architecture and local shell health inside the container, then exit")
-	shareHost := flag.String("share-host", "", "exact assigned share hostname, one label under -share-domain (selects a separate share listener)")
+	shareHost := flag.String("share-host", "", "assigned share hostname, one label under -share-domain; end that label in * to accept a provider's changing random suffix (selects a separate share listener)")
 	shareDomain := flag.String("share-domain", "", "required with sharing: the share provider's domain, e.g. share.example.test")
 	shareAuth := flag.Bool("share-auth", false, "allow only configured logins on the share listener; otherwise return 403")
 	shareDigest := flag.String("share-digest", "", "mode-0600 file with one login, role, and password digest per line")

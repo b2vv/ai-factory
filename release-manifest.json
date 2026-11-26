@@ -675,7 +675,7 @@
     },
     {
       "path": "runtime/dashboard/README.md",
-      "sha256": "40b4f8859e7ed0eb0f09062a508001eede60cb60079e6268efffdf3d46a00e48",
+      "sha256": "3c79f91870bb3e391d9a1d2e265ad9b2eb455745c9274f8b157ae6acb01c93fa",
       "component": "dashboard"
     },
     {
@@ -715,7 +715,7 @@
     },
     {
       "path": "runtime/dashboard/main.go",
-      "sha256": "02258d26d21910b3bd41ef1b6fff7ac3457887cc1b78ae9524bd764a7a844f40",
+      "sha256": "1758cebd6182c427caa336f1d46d6b820bc7271920e0577ba72ec05c3be5cc1d",
       "component": "dashboard"
     },
     {
@@ -765,17 +765,17 @@
     },
     {
       "path": "runtime/dashboard/share.env.example",
-      "sha256": "193007cb4cad7706c75c5d2e3bb451ef44cd0b3b7a5a80f0888ddebd5b5a56f7",
+      "sha256": "4e43aa655e225ab7165655f24ea4236b2f53f62a52401b36a2fc2f73feacb0d3",
       "component": "dashboard"
     },
     {
       "path": "runtime/dashboard/share.go",
-      "sha256": "5b119d1ce5f57393c43a612453c261fed263077bab4e7e4229ae6ea6ddc846bf",
+      "sha256": "5648060033304abf9bb7405d6ab64a88bb1858b7a3473c94837c747f080d01d3",
       "component": "dashboard"
     },
     {
       "path": "runtime/dashboard/share_test.go",
-      "sha256": "873374bba62d210c02245dcdc1ee44bc784ecef2c79325e9fa58a2010ace3ace",
+      "sha256": "6dbd516f4e279099b039cd2da147306ea0fa8dc782ae394ca72f61055e6d4e37",
       "component": "dashboard"
     },
     {

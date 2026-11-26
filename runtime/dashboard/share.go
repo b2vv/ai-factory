@@ -26,12 +26,39 @@ const dnsLabel = `[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?`
 var shareDomainPattern = regexp.MustCompile(`^` + dnsLabel + `(?:\.` + dnsLabel + `)+$`)
 var shareLabelPattern = regexp.MustCompile(`^` + dnsLabel + `$`)
 
+// shareSuffixPattern is what one '*' in a share host stands for: the random suffix a
+// share provider appends when it assigns a new link name (for example after a restart).
+var shareSuffixPattern = regexp.MustCompile(`^[a-z0-9]{1,32}$`)
+
+// validShareHost accepts an exact host one label under domain, or that label ending in
+// one '*' after a non-empty prefix (dash-*.share.example.test).
 func validShareHost(host, domain string) bool {
 	if len(domain) > 200 || !shareDomainPattern.MatchString(domain) {
 		return false
 	}
 	label, rest, ok := strings.Cut(host, ".")
-	return ok && rest == domain && shareLabelPattern.MatchString(label)
+	if !ok || rest != domain {
+		return false
+	}
+	if prefix, found := strings.CutSuffix(label, "*"); found {
+		return prefix != "" && shareLabelPattern.MatchString(prefix+"0")
+	}
+	return shareLabelPattern.MatchString(label)
+}
+
+// shareHostMatches reports whether name is the configured share host: equal to it, or,
+// for a host with '*', the same name with one random suffix in place of the '*'.
+func shareHostMatches(host, name string) bool {
+	prefix, rest, found := strings.Cut(host, "*")
+	if !found {
+		return name == host
+	}
+	tail, ok := strings.CutPrefix(name, prefix)
+	if !ok {
+		return false
+	}
+	suffix, domain, ok := strings.Cut(tail, ".")
+	return ok && "."+domain == rest && shareSuffixPattern.MatchString(suffix) && shareLabelPattern.MatchString(prefix+suffix)
 }
 
 var shareTokenPattern = regexp.MustCompile(`^[a-f0-9]{64}$`)
@@ -182,16 +209,34 @@ var sharedPage = template.Must(template.New("shared-dashboard").Parse(`<!doctype
 // loopback authority of this listener, exactly one X-Forwarded-Host equal to the share
 // host and exactly one X-Forwarded-Proto of https. Anything else is passed on unchanged,
 // so the exact-host check below still refuses it. Login is still required.
+// A host with '*' (shareHostMatches) maps every matching name, and an Origin of that
+// same name, to the configured host; any other name is refused here.
 // shareNow is the limiter's clock; tests replace it.
 var shareNow = time.Now
 
 func shareTunnelHost(host string, port int, next http.Handler) http.Handler {
 	local := map[string]bool{fmt.Sprintf("localhost:%d", port): true, fmt.Sprintf("127.0.0.1:%d", port): true}
+	pattern := strings.Contains(host, "*")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		name := r.Host
 		fh, fp := r.Header.Values("X-Forwarded-Host"), r.Header.Values("X-Forwarded-Proto")
-		if local[r.Host] && len(fh) == 1 && fh[0] == host && len(fp) == 1 && fp[0] == "https" {
+		if local[r.Host] && len(fh) == 1 && len(fp) == 1 && fp[0] == "https" {
+			name = fh[0]
+		}
+		if !shareHostMatches(host, name) {
+			if pattern {
+				shareForbidden(w, r)
+				return
+			}
+			next.ServeHTTP(w, r)
+			return
+		}
+		if name != r.Host || pattern {
 			r = r.Clone(r.Context())
 			r.Host = host
+			if origins := r.Header.Values("Origin"); pattern && len(origins) == 1 && origins[0] == "https://"+name {
+				r.Header.Set("Origin", "https://"+host)
+			}
 		}
 		next.ServeHTTP(w, r)
 	})
