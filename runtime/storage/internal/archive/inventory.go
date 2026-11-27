@@ -53,7 +53,7 @@ func inventoryRead(raw bson.Raw) (string, docState, error) {
 // Inventory builds (prev == nil) or refreshes the per-document inventory. Any
 // error returns no inventory, so the caller cannot keep a half-merged one.
 func (s *MongoStore) Inventory(ctx context.Context, limit int64, prev *Inventory) (*Inventory, error) {
-	ctx, cancel := context.WithTimeout(ctx, s.opTimeout)
+	ctx, cancel := context.WithTimeout(ctx, InventoryTimeout)
 	defer cancel()
 	next := &Inventory{docs: map[string]docState{}}
 	if prev == nil {

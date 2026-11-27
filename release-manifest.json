@@ -1156,7 +1156,7 @@
     {
       "path": "runtime/storage/cmd/factory/main.go",
       "component": "storage",
-      "sha256": "d50ebecb7fc6a3143d27182765a00d666b1f165ebba3fc469da441c85e059406"
+      "sha256": "35edcb4466065aff17a7d31c744ca40d031ad28b6c2508d2ac3e7d3f2e6efc42"
     },
     {
       "path": "runtime/storage/cmd/factory/metadata_startup_process_test.go",
@@ -1775,7 +1775,7 @@
     },
     {
       "path": "runtime/storage/internal/archive/inventory.go",
-      "sha256": "da268439f4fc7545bd64932671c144f1db5bc4fee18980bb95a176eb6e0f3d69",
+      "sha256": "96417940c3b8b8ba8d3a739da64c5a7f9f879ca2c388d53e338bbddb8f0d0df2",
       "component": "storage"
     },
     {
@@ -1786,7 +1786,7 @@
     {
       "path": "runtime/storage/internal/archive/logical.go",
       "component": "storage",
-      "sha256": "db97728a9c432b8b92431a8730cfd55a43b2fac37973298f94c112d814c08945"
+      "sha256": "5af0d66f91beb8246a63ff0f22dc83fd90c6038b7a43cc1a74d23bfeead198b8"
     },
     {
       "path": "runtime/storage/internal/archive/metadata.go",
@@ -1806,7 +1806,7 @@
     {
       "path": "runtime/storage/internal/archive/mongo.go",
       "component": "storage",
-      "sha256": "c5cf1d49cbb1e1b88c80d400c9aef046329150e9d89d2adc1544999ff403979b"
+      "sha256": "205c7faa27596cd00c946b2d1a5dba264de80f8edf3be73414e9b27155b98975"
     },
     {
       "path": "runtime/storage/internal/archive/mongo_integration_test.go",
@@ -1946,7 +1946,7 @@
     {
       "path": "runtime/storage/internal/budget/ledger.go",
       "component": "storage",
-      "sha256": "201ab3ed01b03885d4f12d06077b0f02cd315d3e85fece9bbc8366f31bd95277"
+      "sha256": "cabb31eeba0a5df475fcb858c588023a3105627058cc02194632a40f48ddbc6f"
     },
     {
       "path": "runtime/storage/internal/budget/ledger_test.go",
@@ -1971,12 +1971,17 @@
     {
       "path": "runtime/storage/internal/budgetenv/environment.go",
       "component": "storage",
-      "sha256": "dc9b9a5f53a9bb8abd3cded279e67929471f3017076736d43590420c8d67af19"
+      "sha256": "55aafcc5b01c74688a597a62ad4250b457fa37e33f55655fb5cf32fe60b9e72b"
     },
     {
       "path": "runtime/storage/internal/budgetenv/environment_integration_test.go",
       "component": "storage",
       "sha256": "0422cfaed9c89be13da5cd3f44f511a5c793ef27c76395b860b2bcab8540759e"
+    },
+    {
+      "path": "runtime/storage/internal/budgetenv/serve_cached_test.go",
+      "component": "storage",
+      "sha256": "a979b270a22f8e842a4c1268ba32b1ddb1293049319ae6de7b30b5ba80188681"
     },
     {
       "path": "runtime/storage/internal/capture/CODEX-EVENTS.md",
@@ -2715,7 +2720,7 @@
     },
     {
       "path": "runtime/storage/internal/workflow/inventory.go",
-      "sha256": "61a856dee6c582538623fea1a14627a353edd4eab185ff0136e66d2bb0e3654a",
+      "sha256": "0772159fad3943bd09997b4aad1d27cee782c4ffd376542f7328bcccd3fde053",
       "component": "storage"
     },
     {
@@ -2726,7 +2731,7 @@
     {
       "path": "runtime/storage/internal/workflow/logical.go",
       "component": "storage",
-      "sha256": "fd8e3e02fff451eb927525eb6526e19b0d49be302d04c2b0d24ed026787f9ccc"
+      "sha256": "ad01cce9ee67f8b05fbbc81001c4324032cccd06f609d21ec3b231a1ab688bb8"
     },
     {
       "path": "runtime/storage/internal/workflow/migrations/0001_workflow.sql",
@@ -2756,7 +2761,7 @@
     {
       "path": "runtime/storage/internal/workflow/postgres.go",
       "component": "storage",
-      "sha256": "c68e2556e7624a274d0a66f734662101e7e3206a996350acb7550e38c53ed246"
+      "sha256": "0f1719b3183c62c0f56ae3dbf7aae7b9ef813857f9fe9d5f888a2ea5ad90f573"
     },
     {
       "path": "runtime/storage/internal/workflow/postgres_integration_test.go",

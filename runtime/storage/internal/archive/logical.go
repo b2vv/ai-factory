@@ -19,7 +19,7 @@ func SchemaLogicalBytes() int64 {
 // LogicalBytes streams canonical managed records with a bounded cursor. Unknown
 // fields or an inconsistent identity refuse rather than disappear from billing.
 func (s *MongoStore) LogicalBytes(ctx context.Context, limit int64) (int64, error) {
-	ctx, cancel := context.WithTimeout(ctx, s.opTimeout)
+	ctx, cancel := context.WithTimeout(ctx, InventoryTimeout)
 	defer cancel()
 	total := SchemaLogicalBytes()
 	if total > limit {

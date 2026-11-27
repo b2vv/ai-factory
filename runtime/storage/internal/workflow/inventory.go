@@ -42,7 +42,7 @@ type Inventory struct {
 // REPEATABLE READ READ ONLY snapshot. A changed table set or metadata schema rebuilds
 // it; any error returns no inventory, so the caller cannot keep a half-merged one.
 func (s *PGStore) Inventory(ctx context.Context, limit int64, prev *Inventory) (*Inventory, error) {
-	ctx, cancel := context.WithTimeout(ctx, s.opTimeout)
+	ctx, cancel := context.WithTimeout(ctx, InventoryTimeout)
 	defer cancel()
 	tx, e := s.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.RepeatableRead, AccessMode: pgx.ReadOnly})
 	if e != nil {

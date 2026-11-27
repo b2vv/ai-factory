@@ -198,6 +198,14 @@ func run() error {
 	stateDir := *state
 	ingWalDir := filepath.Join(stateDir, "ingest", "wal")
 	if budgetEnv != nil {
+		// The full backend inventory takes longer than a request may wait: measure it
+		// in the background and admit against the latest fresh measurement plus the
+		// bytes reserved since (fail-closed when none is fresh). A failed first pass
+		// does not stop the server; capture stays refused until a pass succeeds.
+		logf := func(format string, args ...any) { fmt.Fprintf(os.Stderr, "factory: "+format+"\n", args...) }
+		if err := budgetEnv.ServeCached(logf); err != nil {
+			logf("WARNING: first capacity measurement failed; capture refused until one succeeds: %v", err)
+		}
 		srv.SetSharedUsageMeter(budgetEnv.Usage)
 	} else {
 		srv.SetSharedUsageMeter(func() (config.Usage, error) { return measureUsage(stateDir, ingWalDir, mongoStore, pgStore) })

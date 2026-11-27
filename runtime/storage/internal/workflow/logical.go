@@ -148,7 +148,7 @@ func managedLayout(ctx context.Context, q querier) (map[string]bool, bool, error
 // LogicalBytes reads only managed relations, including all declared index
 // representations. It works before initial migration and never performs DDL.
 func (s *PGStore) LogicalBytes(ctx context.Context, limit int64) (int64, error) {
-	ctx, cancel := context.WithTimeout(ctx, s.opTimeout)
+	ctx, cancel := context.WithTimeout(ctx, InventoryTimeout)
 	defer cancel()
 	total := SchemaLogicalBytes()
 	if total > limit {

@@ -42,6 +42,11 @@ var ErrSchemaNewerThanImage = errors.New("workflow: database schema is newer tha
 // than overwriting newer state.
 var ErrVersionConflict = errors.New("workflow: version conflict (optimistic CAS fence rejected a stale writer)")
 
+// InventoryTimeout bounds one logical inventory pass (Inventory, LogicalBytes).
+// A pass reads every managed row, so it gets minutes, not the per-operation
+// timeout; callers keep it off request paths (budgetenv measures in the background).
+const InventoryTimeout = 5 * time.Minute
+
 // PGStore implements Store against a real PostgreSQL deployment.
 type PGStore struct {
 	pool      *pgxpool.Pool

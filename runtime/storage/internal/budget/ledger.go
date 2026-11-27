@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"syscall"
 )
 
@@ -52,6 +53,10 @@ type Ledger struct {
 	state      State
 	sample     Sampler
 	poisoned   bool
+	// reserved counts every byte this process reserved since Open.
+	// It only grows, so a sampler that reuses an older measurement can add what
+	// was reserved after it without taking the ledger lock.
+	reserved atomic.Int64
 }
 
 // Open acquires an accounting-specific nonblocking lock in addition to the
@@ -150,6 +155,25 @@ func Initialize(path string, policy Policy, sample Sampler) (*Ledger, error) {
 }
 func (l *Ledger) Close() error         { l.mu.Lock(); defer l.mu.Unlock(); return l.file.Close() }
 func (l *Ledger) SetSampler(s Sampler) { l.mu.Lock(); defer l.mu.Unlock(); l.sample = s }
+
+// ReservedTotal is the monotone total of bytes reserved since Open. It is safe
+// to call from a sampler, which runs under the ledger lock.
+func (l *Ledger) ReservedTotal() int64 { return l.reserved.Load() }
+
+// ReservedBase is the baseline to take BEFORE a measurement that a sampler will
+// reuse: ReservedTotal minus every still-pending intent, so a write reserved
+// earlier but landing after the measurement's snapshot (an in-flight write, or
+// an intent left by a previous process) still counts as growth. It takes the
+// ledger lock: never call it from a sampler.
+func (l *Ledger) ReservedBase() int64 {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	n := l.reserved.Load()
+	for _, p := range l.state.Pending {
+		n -= p.Bytes
+	}
+	return n
+}
 func (l *Ledger) Snapshot() State {
 	l.mu.Lock()
 	defer l.mu.Unlock()
@@ -201,6 +225,7 @@ func (l *Ledger) Reserve(evidence Evidence, growth int64) error {
 		return ErrCapacity
 	}
 	next.Pending = []Intent{{Evidence: evidence, Bytes: growth}}
+	l.reserved.Add(growth)
 	return l.persist(next)
 }
 

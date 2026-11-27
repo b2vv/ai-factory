@@ -94,6 +94,11 @@ var ErrIDConflict = errors.New("archive: record identity already stored with a d
 // ErrUnavailable is the shared fail-closed signal when an enabled backend is down.
 var ErrUnavailable = errors.New("archive: backend unavailable; serving fails closed (no fabricated empty history)")
 
+// InventoryTimeout bounds one logical inventory pass (Inventory, LogicalBytes).
+// A pass reads every managed row, so it gets minutes, not the per-operation
+// timeout; callers keep it off request paths (budgetenv measures in the background).
+const InventoryTimeout = 5 * time.Minute
+
 // MongoStore implements Store against a real MongoDB deployment.
 type MongoStore struct {
 	client    *mongo.Client
