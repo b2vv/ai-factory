@@ -837,8 +837,14 @@ def permissions_digest(raw):
     return k.digest(k.encode(d.get('permissions') if isinstance(d, dict) else None))
 
 
+REMINDER_LABEL = 'AI Factory dashboard reminder'
+
+
 def reminder_handler(command):
-    return {'type': 'command', 'command': command, 'timeout': REMINDER_TIMEOUT}
+    handler = {'type': 'command', 'command': command, 'timeout': REMINDER_TIMEOUT}
+    # Codex lists hooks for trust review by this label (like the archive hooks); Claude needs no trust step.
+    if command.endswith('--host codex'): handler['statusMessage'] = REMINDER_LABEL
+    return handler
 
 
 def edit_reminder(doc, name, old, wanted):

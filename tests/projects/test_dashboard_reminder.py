@@ -197,6 +197,8 @@ class Registration(T.Base):
             self.assertEqual(1, len(own))
             self.assertEqual(15, own[0]['timeout'])
             self.assertTrue(own[0]['command'].endswith(f'--kit {self.kit} --host {host}'))
+            # Codex lists hooks for trust review by label; Claude gets none.
+            self.assertEqual('AI Factory dashboard reminder' if host == 'codex' else None, own[0].get('statusMessage'))
             self.assertEqual(json.loads(self.before[path]), self.without_own(path))  # everything else kept, same order
         stops = json.loads(self.settings.read_text())['hooks']['Stop']
         self.assertIn('owner-stop', json.dumps(stops[-2]))                     # appended after existing hooks
