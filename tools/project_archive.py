@@ -2,7 +2,7 @@
 
 Used by tools/projects.py only. The archive configuration (`<kit>/.ai-factory-state/archive.json`,
 0600) holds paths, never a secret. With it, installing a project mints the archive project,
-turns on claude-code capture consent and issues two separate agent grants (capture-only and
+turns on capture consent for Claude Code and Codex and issues two separate agent grants (capture-only and
 search-only), writes their credential files 0600, adds a search route alias, a search contract
 and a launchd worker. Secrets are generated in memory, sent only to the loopback archive and
 written only to the 0600 credential files; nothing here prints them.
@@ -18,6 +18,8 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+
+CAPTURE_PROVIDERS = ('claude-code', 'codex-hook-v2')
 
 CONFIG = 'archive.json'
 ENDPOINT = 'http://127.0.0.1:8780'
@@ -161,9 +163,12 @@ class Server:
         raise Blocked(f'minting the archive project failed (HTTP {code})')
 
     def consent(self, ident):
-        code, _ = self.operator('/v1/consent', {'Project': ident, 'Provider': 'claude-code',
-                                                'Capability': 'capture', 'Enabled': True})
-        if code != 200: raise Blocked(f'turning on capture consent failed (HTTP {code})')
+        # Every capture provider the kit wires: Claude Code hooks and the Codex v2 hook snapshots
+        # (runtime/storage internal/capture CodexSnapshotProvider). Consent is per provider.
+        for provider in CAPTURE_PROVIDERS:
+            code, _ = self.operator('/v1/consent', {'Project': ident, 'Provider': provider,
+                                                    'Capability': 'capture', 'Enabled': True})
+            if code != 200: raise Blocked(f'turning on {provider} capture consent failed (HTTP {code})')
 
     def grant(self, principal, ident, op, secret):
         code, d = self.operator('/v1/grants', {'principal_id': principal, 'kind': 'agent', 'projects': [ident],

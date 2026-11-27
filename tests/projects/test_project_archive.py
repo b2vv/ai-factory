@@ -349,5 +349,31 @@ class Archive(T.Base):
             '--search-dir', str(self.search_dir), '--search-routes', str(wrong), '--worker', 'none')['reason'])
 
 
+
+class Consent(unittest.TestCase):
+    """Install turns on capture consent for every provider the kit wires (Claude Code and Codex hooks)."""
+    def server(self, codes):
+        srv = object.__new__(A.Server)
+        sent = []
+        def operator(path, body):
+            sent.append((path, body)); return codes.pop(0), {}
+        srv.operator = operator
+        return srv, sent
+
+    def test_consent_covers_claude_and_codex(self):
+        srv, sent = self.server([200, 200])
+        srv.consent('p1')
+        self.assertEqual([('/v1/consent', {'Project': 'p1', 'Provider': p, 'Capability': 'capture', 'Enabled': True})
+                          for p in ('claude-code', 'codex-hook-v2')], sent)
+
+    def test_a_refused_provider_stops_install(self):
+        srv, _ = self.server([200, 403])
+        with self.assertRaisesRegex(A.Blocked, 'codex-hook-v2 capture consent failed'):
+            srv.consent('p1')
+
+    def test_provider_name_matches_the_server(self):
+        go = (Path(__file__).resolve().parents[2] / 'runtime/storage/internal/capture/codex_event.go').read_text()
+        self.assertIn('CodexSnapshotProvider = "codex-hook-v2"', go)
+
 if __name__ == '__main__':
     unittest.main()
